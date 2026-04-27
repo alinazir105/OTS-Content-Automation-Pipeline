@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>INTRODUCTION TO MS PAINT – computer class 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* ── RESET & ROOT ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#1F6A75; --p-dk:#155158; --a:#00E5CC; --a2:#F49040;
+  --bg-s:#0a1628; --bg-e:#0d2b3e;
+  --card:rgba(255,255,255,0.08); --txt:#e0f7fa;
+  --radius:16px; --radius-sm:10px;
+  --shadow:0 8px 32px rgba(0,0,0,0.35);
+  --font-hero:'Orbitron', 'Segoe UI', sans-serif; --font-body:'Exo 2', 'Segoe UI', sans-serif;
+  --correct:#22c55e; --incorrect:#ef4444;
+  /* Typography scale (bigger + consistent across sections) */
+  --fs:clamp(17px, 0.45vw + 15px, 21px);      /* base */
+  --fs-sm:clamp(15px, 0.25vw + 14px, 18px);   /* small labels */
+  --fs-lg:clamp(18px, 0.65vw + 15px, 24px);   /* section titles */
+  --fs-xl:clamp(22px, 1.1vw + 16px, 34px);    /* hero title */
+}
+html{scroll-behavior:smooth}
+body{
+  background:linear-gradient(135deg,var(--bg-s) 0%,var(--bg-e) 100%);
+  color:var(--txt); font-family:var(--font-body);
+  min-height:100vh; padding:0; line-height:1.65;
+  font-size:var(--fs);
+}
+
+/* ── PARTICLES CANVAS ────────────────────────────────────── */
+#particlesBg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.page-wrap{
+  position:relative;z-index:1;
+  width:100%;
+  max-width:none;
+  margin:0 auto;
+  padding:clamp(12px, 2vw, 28px);
+}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg, #1F6A75 0%, #155158 100%);
+  border-radius:var(--radius);padding:2.5rem 1.5rem 2rem;
+  text-align:center;margin-bottom:1.25rem;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-badge{
+  display:inline-block;background:rgba(255,255,255,.15);
+  padding:.35rem 1rem;border-radius:50px;font-size:.85rem;
+  margin-bottom:.75rem;letter-spacing:.05em;text-transform:uppercase;
+}
+.hero h1{
+  font-family:var(--font-hero);
+  font-size:var(--fs-xl);
+  line-height:1.15;margin-bottom:.5rem;color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.hero-tagline{font-size:clamp(1.05rem, .55vw + .95rem, 1.35rem);opacity:.9;max-width:680px;margin:0 auto .75rem;}
+.hero-meta{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.9rem;opacity:.8;}
+.hero-meta span{display:flex;align-items:center;gap:.4rem;}
+
+/* ── PROGRESS BAR ────────────────────────────────────────── */
+.progress-bar-wrap{
+  background:var(--card);backdrop-filter:blur(8px);
+  border-radius:var(--radius);padding:.9rem 1.25rem;
+  margin-bottom:1.25rem;
+  border:1px solid rgba(255,255,255,.08);
+}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-weight:600;font-size:.9rem;}
+.prog-track{height:10px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .6s ease;border-radius:5px;}
+.sound-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.1);color:var(--txt);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.sound-btn:hover{background:rgba(255,255,255,.2);}
+
+/* ── CARDS ───────────────────────────────────────────────── */
+.section-card{
+  background:var(--card);backdrop-filter:blur(12px);
+  border-radius:var(--radius);padding:1.5rem;
+  margin-bottom:1.25rem;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:var(--shadow);
+}
+.section-title{
+  display:flex;align-items:center;gap:10px;
+  color:var(--a);font-size:var(--fs-lg);font-weight:800;
+  padding-bottom:.6rem;margin-bottom:1rem;
+  border-bottom:2px solid rgba(255,255,255,.08);
+}
+
+/* ── OBJECTIVES ──────────────────────────────────────────── */
+.objectives-list{list-style:none;display:grid;gap:.5rem;}
+.objectives-list li{display:flex;align-items:center;gap:.65rem;padding:.75rem 1rem;background:rgba(255,255,255,.05);border-radius:var(--radius-sm);font-size:1.02rem;}
+.objectives-list li i{color:var(--a);flex-shrink:0;}
+
+/* ── CONCEPTS ────────────────────────────────────────────── */
+.concepts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.concept-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--radius);padding:1.25rem;
+  text-align:center;transition:transform .3s,box-shadow .3s;
+  cursor:default;
+}
+.concept-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
+.concept-emoji{font-size:2.5rem;margin-bottom:.6rem;}
+.concept-term{font-size:1.18rem;font-weight:800;color:var(--a);margin-bottom:.45rem;}
+.concept-def{font-size:1.02rem;opacity:.92;margin-bottom:.85rem;}
+.concept-examples{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;}
+.example-tag{background:rgba(255,255,255,.1);padding:.28rem .7rem;border-radius:50px;font-size:var(--fs-sm);}
+
+/* ── FUN FACTS ───────────────────────────────────────────── */
+.fun-facts-wrap{display:grid;gap:.75rem;}
+.fun-fact{
+  background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border-left:4px solid var(--a2);border-radius:var(--radius-sm);
+  padding:1rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;font-size:1.05rem;
+}
+.fun-fact i{color:var(--a2);flex-shrink:0;margin-top:.15rem;}
+
+/* ── ENRICHMENT SECTIONS (tiered) ─────────────────────────── */
+.enrich-text{opacity:.92;line-height:1.8;font-size:1.05rem;}
+.enrich-list{display:grid;gap:.55rem;margin-left:1.1rem;}
+.enrich-list li{margin-left:.2rem;}
+.qa-wrap{display:grid;gap:.75rem;}
+.qa-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:1rem;}
+.qa-q{font-weight:800;color:var(--a);margin-bottom:.35rem;}
+.qa-a{opacity:.92;}
+.glossary{display:grid;gap:.65rem;}
+.gloss-row{display:grid;grid-template-columns:minmax(140px, 220px) 1fr;gap:.8rem;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.85rem 1rem;}
+.gloss-term{font-weight:900;color:#fff;}
+.gloss-def{opacity:.9;}
+.enrich-acc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.7rem 1rem;}
+.enrich-acc + .enrich-acc{margin-top:.6rem;}
+.enrich-acc summary{cursor:pointer;font-weight:800;color:#fff;}
+.enrich-body{padding:.75rem 0 0;opacity:.94;}
+.steps{margin-left:1.2rem;display:grid;gap:.4rem;}
+.final,.why,.answer,.kp{margin-top:.6rem;}
+
+/* ── 3D SCENE ────────────────────────────────────────────── */
+.scene-wrap{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  height:360px;background:#000;
+  border:1px solid rgba(255,255,255,.1);
+}
+#scene3dCanvas{display:block;width:100%!important;height:100%!important;}
+.scene-controls{
+  position:absolute;bottom:14px;right:14px;
+  display:flex;flex-direction:column;gap:.4rem;z-index:5;
+}
+.scene-btn{
+  width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;backdrop-filter:blur(6px);
+}
+.scene-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1);}
+.scene-hint{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.6);padding:.4rem 1rem;border-radius:50px;
+  font-size:var(--fs-sm);color:rgba(255,255,255,.88);backdrop-filter:blur(6px);
+  animation:fadePulse 3s infinite;white-space:nowrap;z-index:5;
+}
+@keyframes fadePulse{0%,100%{opacity:.7}50%{opacity:1}}
+.scene-desc{
+  position:absolute;bottom:14px;left:14px;
+  background:rgba(0,0,0,.7);padding:.6rem 1rem;border-radius:var(--radius-sm);
+  font-size:clamp(.95rem, .25vw + .9rem, 1.05rem);color:rgba(255,255,255,.88);max-width:260px;
+  backdrop-filter:blur(6px);line-height:1.4;z-index:5;
+}
+
+/* ── TABS ────────────────────────────────────────────────── */
+.tabs-wrap{margin-bottom:1.25rem;}
+.tabs-header{
+  display:flex;overflow-x:auto;scrollbar-width:none;
+  background:rgba(0,0,0,.3);border-radius:var(--radius) var(--radius) 0 0;
+  border:1px solid rgba(255,255,255,.08);border-bottom:none;
+}
+.tabs-header::-webkit-scrollbar{display:none}
+.tab-btn{
+  flex:1;min-width:90px;padding:.85rem .75rem;border:none;background:transparent;
+  color:rgba(255,255,255,.6);cursor:pointer;font-family:var(--font-body);font-weight:600;
+  font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);display:flex;align-items:center;justify-content:center;gap:6px;
+  white-space:nowrap;transition:all .25s;position:relative;
+}
+.tab-btn::after{
+  content:'';position:absolute;bottom:0;left:50%;width:0;height:3px;
+  background:var(--a);transition:all .25s;transform:translateX(-50%);
+  border-radius:3px 3px 0 0;
+}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,.05);}
+.tab-btn.active{
+  background:linear-gradient(135deg, #1F6A75, #155158);color:#fff;
+  box-shadow:0 4px 15px rgba(0,0,0,.3);
+}
+.tab-btn.active::after{width:70%;}
+.tab-content{
+  background:rgba(0,0,0,.25);backdrop-filter:blur(8px);
+  border-radius:0 0 var(--radius) var(--radius);
+  border:1px solid rgba(255,255,255,.08);border-top:none;
+  padding:1.5rem;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn{
+  padding:.8rem 1.4rem;border:none;border-radius:var(--radius);
+  font-family:var(--font-body);font-weight:700;cursor:pointer;
+  transition:all .25s;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;min-height:46px;font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);
+}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.35);}
+.btn-outline{background:transparent;color:var(--a);border:2px solid var(--a);}
+.btn-outline:hover{background:var(--a);color:#000;}
+.btn-row{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:1.25rem;}
+
+/* ── GAME ELEMENTS ───────────────────────────────────────── */
+.game-section{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.game-instruction{margin-bottom:1rem;opacity:.9;display:flex;align-items:center;gap:.5rem;font-size:1.05rem;}
+
+/* Sort */
+.sort-zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem;}
+.sort-zone{
+  min-height:140px;border:2.5px dashed var(--cat-color,var(--a));
+  border-radius:var(--radius);padding:.75rem;
+  background:rgba(255,255,255,.03);transition:all .25s;
+}
+.sort-zone.drag-over{background:rgba(255,255,255,.1);transform:scale(1.02);}
+.sort-zone h4{color:var(--cat-color,var(--a));margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;font-size:1.05rem;}
+.sort-items-drop{min-height:60px;display:flex;flex-wrap:wrap;gap:.4rem;align-content:flex-start;}
+.item-pool{
+  display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;
+  background:rgba(255,255,255,.05);border-radius:var(--radius);
+}
+.sort-item{
+  background:rgba(255,255,255,.12);padding:.45rem .9rem;border-radius:50px;
+  cursor:grab;font-weight:600;font-size:1.02rem;transition:all .2s;
+  border:1.5px solid rgba(255,255,255,.15);user-select:none;
+}
+.sort-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.2);}
+.sort-item.correct{background:rgba(34,197,94,.2);border-color:var(--correct);}
+.sort-item.incorrect{background:rgba(239,68,68,.2);border-color:var(--incorrect);}
+
+/* Quiz & TF */
+.quiz-header{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;
+  background:rgba(255,255,255,.05);border-radius:var(--radius-sm);
+}
+.quiz-title{font-weight:700;display:flex;align-items:center;gap:.5rem;color:var(--a);}
+.quiz-prog-wrap{flex:1;min-width:140px;}
+.quiz-prog-bar{height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden;}
+.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .4s;}
+.quiz-prog-text{font-size:var(--fs-sm);margin-top:.3rem;opacity:.8;}
+.quiz-card{background:rgba(255,255,255,.05);border-radius:var(--radius);padding:1.25rem;border:1px solid rgba(255,255,255,.08);}
+.slide-in{animation:slideIn .25s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.quiz-q{font-size:clamp(1.15rem, .35vw + 1.05rem, 1.35rem);font-weight:800;margin-bottom:1rem;line-height:1.4;}
+.q-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.12);margin-right:6px;font-size:.85rem;
+}
+.quiz-options{display:grid;gap:.6rem;}
+.quiz-opt{
+  width:100%;text-align:left;padding:.85rem 1rem;
+  background:rgba(255,255,255,.07);border:2px solid transparent;
+  border-radius:var(--radius-sm);color:var(--txt);font-family:var(--font-body);
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.75rem;
+  font-size:1.05rem;font-weight:600;
+}
+.quiz-opt:hover{border-color:var(--p);background:rgba(255,255,255,.12);}
+.quiz-opt.selected{border-color:var(--p);}
+.quiz-opt.correct{background:rgba(34,197,94,.15);border-color:var(--correct);}
+.quiz-opt.incorrect{background:rgba(239,68,68,.15);border-color:var(--incorrect);}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;background:var(--p);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.95rem;flex-shrink:0;
+}
+.quiz-feedback{
+  margin-top:.85rem;padding:.85rem 1rem;border-radius:var(--radius-sm);
+  display:flex;align-items:flex-start;gap:.65rem;font-size:1.02rem;
+}
+.quiz-feedback.hidden{display:none!important}
+.fb-success{background:rgba(34,197,94,.15);border:1px solid var(--correct);color:#86efac;}
+.fb-error{background:rgba(239,68,68,.15);border:1px solid var(--incorrect);color:#fca5a5;}
+.quiz-nav{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.25rem;}
+
+/* TF buttons */
+.tf-choices{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0;}
+.tf-btn{
+  padding:1.1rem;border-radius:var(--radius);font-weight:800;font-size:1.05rem;
+  cursor:pointer;border:2px solid;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.tf-true{border-color:var(--correct);background:rgba(34,197,94,.1);color:#86efac;}
+.tf-false{border-color:var(--incorrect);background:rgba(239,68,68,.1);color:#fca5a5;}
+.tf-btn.selected,.tf-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);}
+.tf-true.selected,.tf-true:hover{background:rgba(34,197,94,.25);}
+.tf-false.selected,.tf-false:hover{background:rgba(239,68,68,.25);}
+.tf-true.correct{background:rgba(34,197,94,.35)!important;}
+.tf-false.correct{background:rgba(239,68,68,.35)!important;}
+
+/* Results overlay */
+.results-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;z-index:2000;
+}
+.results-overlay.hidden{display:none!important}
+.results-card{
+  background:linear-gradient(135deg,var(--bg-s),var(--bg-e));
+  border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);
+  padding:2rem;width:min(480px,100%);text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.results-icon{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p),var(--a));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;margin:0 auto .75rem;
+}
+.results-card h3{font-size:1.4rem;margin-bottom:.4rem;}
+.results-card p{opacity:.85;margin-bottom:.6rem;}
+.stars-row{display:flex;gap:.3rem;justify-content:center;color:#fbbf24;font-size:1.2rem;margin:.5rem 0;}
+
+/* Memory */
+.memory-score-row{display:flex;gap:2rem;margin-bottom:.75rem;font-size:.95rem;opacity:.85;}
+.memory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;}
+.mem-card{height:80px;cursor:pointer;perspective:800px;}
+.mem-card-inner{
+  width:100%;height:100%;position:relative;transition:transform .5s;
+  transform-style:preserve-3d;
+}
+.mem-card.flipped .mem-card-inner{transform:rotateY(180deg);}
+.mem-card.matched .mem-card-inner{transform:rotateY(180deg);}
+.mem-card-front,.mem-card-back{
+  position:absolute;inset:0;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  backface-visibility:hidden;font-size:.85rem;font-weight:600;
+  text-align:center;padding:.4rem;
+}
+.mem-card-front{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;font-size:1.4rem;}
+.mem-card-back{background:linear-gradient(135deg,var(--a),var(--p));color:#000;transform:rotateY(180deg);}
+.mem-card.matched .mem-card-back{background:linear-gradient(135deg,var(--correct),#16a34a);}
+
+/* Fill blanks / scramble */
+.blanks-container{display:grid;gap:.85rem;}
+.blank-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
+.blank-sentence{font-size:1rem;line-height:1.8;margin-bottom:.4rem;}
+.blank-input{
+  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);
+  border-radius:8px;padding:.4rem .75rem;color:var(--txt);
+  font-family:var(--font-body);font-size:.95rem;
+  outline:none;transition:border .2s;width:auto;max-width:180px;
+}
+.blank-input:focus{border-color:var(--a);}
+.blank-hint{font-size:.82rem;opacity:.65;margin:.35rem 0;display:flex;align-items:center;gap:.4rem;}
+.blank-hint i{color:var(--a2);}
+.blank-result{padding:.35rem .75rem;border-radius:6px;font-size:.85rem;font-weight:600;margin-top:.35rem;}
+.blank-result.hidden{display:none!important}
+.scramble-letters{
+  font-size:1.4rem;letter-spacing:.2rem;font-weight:800;
+  color:var(--a);margin-bottom:.5rem;
+}
+.scramble-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
+.game-feedback{padding:.85rem 1rem;border-radius:var(--radius-sm);margin-top:1rem;display:flex;align-items:center;gap:.6rem;}
+.game-feedback.hidden{display:none!important}
+.hidden{display:none!important}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:600px){
+  .scene-wrap{height:280px}
+  .sort-zones{grid-template-columns:1fr}
+  .tf-choices{grid-template-columns:1fr}
+  .memory-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
+  .btn{min-height:44px;padding:.7rem 1rem;font-size:.88rem}
+  .hero h1{font-size:1.5rem}
+  .concepts-grid{grid-template-columns:1fr}
+  .scene-desc{display:none}
+  .gloss-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="particlesBg"></canvas>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="hero">
+    <div class="hero-badge"><i class="fas fa-microchip"></i> computer · class 1</div>
+    <h1>INTRODUCTION TO MS PAINT</h1>
+    <p class="hero-tagline">Let's explore the magical world of MS Paint and create amazing drawings with fun tools!</p>
+    <div class="hero-meta">
+      <span><i class="fas fa-layer-group"></i> Unit 6</span>
+      <span><i class="fas fa-gamepad"></i> 4 Activities</span>
+      <span><i class="fas fa-star"></i> Interactive</span>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap">
+    <div class="prog-top">
+      <span><i class="fas fa-trophy"></i> Your Progress</span>
+      <span style="display:flex;align-items:center;gap:.6rem">
+        <span id="progPct">0%</span>
+        <button class="sound-btn" id="soundBtn"><i class="fas fa-volume-up"></i></button>
+      </span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES -->
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-bullseye"></i> Learning Objectives</h2>
+    <ul class="objectives-list"><li><i class="fas fa-check-circle"></i> Identify the paint windows and different tools of drawing.</li><li><i class="fas fa-check-circle"></i> Use the pencil tool to draw.</li><li><i class="fas fa-check-circle"></i> Use the eraser tool to correct mistakes while drawing.</li><li><i class="fas fa-check-circle"></i> Use the brush tool to colour simple shapes.</li><li><i class="fas fa-check-circle"></i> Use the text tool to write the name of shapes.</li><li><i class="fas fa-check-circle"></i> Use line tool to draw shapes.</li><li><i class="fas fa-check-circle"></i> Use Undo and Redo buttons.</li><li><i class="fas fa-check-circle"></i> Draw different shapes using shape tool.</li></ul>
+  </div>
+
+  <!-- KEY CONCEPTS -->
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-lightbulb"></i> Key Concepts</h2>
+    <div class="concepts-grid">
+    <div class="concept-card">
+      <div class="concept-emoji">🎨</div>
+      <h3 class="concept-term">MS Paint</h3>
+      <p class="concept-def">MS Paint is a simple computer program for drawing and painting pictures on a digital canvas. It's like a digital drawing book where you can use many colors and tools.</p>
+      <div class="concept-examples"><span class="example-tag">Drawing a house</span><span class="example-tag">Coloring a flower</span><span class="example-tag">Making a birthday card</span><span class="example-tag">Creating simple cartoons</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🖼️</div>
+      <h3 class="concept-term">Canvas</h3>
+      <p class="concept-def">The Canvas is the large white area in MS Paint where you can draw and paint your pictures. It's like your digital paper where all your creativity comes to life.</p>
+      <div class="concept-examples"><span class="example-tag">Drawing a sun on the canvas</span><span class="example-tag">Painting a tree on the canvas</span><span class="example-tag">Writing your name on the canvas</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">✏️</div>
+      <h3 class="concept-term">Toolbox</h3>
+      <p class="concept-def">The Toolbox is a special box in MS Paint that holds different tools you can use to draw, erase, and write. It's like a pencil case for your computer, full of helpful items.</p>
+      <div class="concept-examples"><span class="example-tag">Finding the pencil in the Toolbox</span><span class="example-tag">Selecting the eraser from the Toolbox</span><span class="example-tag">Choosing the text tool from the Toolbox</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">✍️</div>
+      <h3 class="concept-term">Pencil Tool</h3>
+      <p class="concept-def">The Pencil Tool is a tool in the Toolbox that lets you draw freehand lines, just like using a real pencil on paper. You can draw anything you imagine with it.</p>
+      <div class="concept-examples"><span class="example-tag">Drawing squiggly lines</span><span class="example-tag">Sketching a cloud</span><span class="example-tag">Making a simple stick figure</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🧼</div>
+      <h3 class="concept-term">Eraser Tool</h3>
+      <p class="concept-def">The Eraser Tool is a tool in the Toolbox used to remove mistakes or parts of your drawing. It helps you clean up your artwork and make it perfect.</p>
+      <div class="concept-examples"><span class="example-tag">Erasing a wrong line</span><span class="example-tag">Cleaning up extra color</span><span class="example-tag">Removing a part of a shape</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🖌️</div>
+      <h3 class="concept-term">Brush Tool</h3>
+      <p class="concept-def">The Brush Tool lets you paint with different brush sizes and styles, adding color to your shapes and drawings. It's like having many paintbrushes to make your pictures vibrant.</p>
+      <div class="concept-examples"><span class="example-tag">Coloring a large area</span><span class="example-tag">Painting a background</span><span class="example-tag">Adding thick lines</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🅰️</div>
+      <h3 class="concept-term">Text Tool</h3>
+      <p class="concept-def">The Text Tool allows you to type words and letters onto your drawing. You can label your pictures, add fun messages, or write your name on your artwork.</p>
+      <div class="concept-examples"><span class="example-tag">Writing 'Hello!' on your drawing</span><span class="example-tag">Adding your name to a picture</span><span class="example-tag">Labeling a drawn animal</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">📏</div>
+      <h3 class="concept-term">Line Tool</h3>
+      <p class="concept-def">The Line Tool is used to draw perfectly straight lines in any direction. It helps you create neat edges and geometric shapes easily, making your drawings look tidy.</p>
+      <div class="concept-examples"><span class="example-tag">Drawing a straight road</span><span class="example-tag">Making the side of a square</span><span class="example-tag">Creating a fence</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🔺</div>
+      <h3 class="concept-term">Shapes Box</h3>
+      <p class="concept-def">The Shapes Box is a collection of ready-made shapes like circles, squares, and triangles that you can easily add to your drawing. It makes drawing perfect shapes simple and quick.</p>
+      <div class="concept-examples"><span class="example-tag">Adding a perfect circle</span><span class="example-tag">Drawing a neat square</span><span class="example-tag">Placing a triangle for a roof</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">🌈</div>
+      <h3 class="concept-term">Colour Box</h3>
+      <p class="concept-def">The Colour Box is a palette of many different colors you can choose from to fill your drawings or use with your tools. It brings your artwork to life with vibrant hues.</p>
+      <div class="concept-examples"><span class="example-tag">Picking red for an apple</span><span class="example-tag">Choosing blue for the sky</span><span class="example-tag">Selecting green for grass</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">↩️</div>
+      <h3 class="concept-term">Undo Button</h3>
+      <p class="concept-def">The Undo Button helps you go back one step if you make a mistake, making your last action disappear. It's like a magic 'do-over' button, so you don't have to worry about errors.</p>
+      <div class="concept-examples"><span class="example-tag">Removing a wrong line you just drew</span><span class="example-tag">Undoing a color fill</span><span class="example-tag">Reversing a shape placement</span></div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-emoji">↪️</div>
+      <h3 class="concept-term">Redo Button</h3>
+      <p class="concept-def">The Redo Button helps you bring back an action you just undid, if you change your mind. It's like a 'bring back' button, giving you more control over your drawing steps.</p>
+      <div class="concept-examples"><span class="example-tag">Bringing back a line you accidentally undid</span><span class="example-tag">Restoring a color fill</span><span class="example-tag">Re-applying a shape</span></div>
+    </div></div>
+  </div>
+
+  <!-- 3D EXPLORER -->
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-cube"></i> 3D Explorer · <em style="font-size:.85rem;opacity:.7;font-style:normal">A vibrant 3D scene featuring a rotating computer monitor dis</em></h2>
+    <div class="scene-wrap">
+      <canvas id="scene3dCanvas"></canvas>
+      <div class="scene-hint"><i class="fas fa-hand-paper"></i> Drag to rotate · Scroll/pinch to zoom</div>
+      <div class="scene-controls">
+        <button class="scene-btn" id="btn3dZoomIn"  title="Zoom in"><i class="fas fa-plus"></i></button>
+        <button class="scene-btn" id="btn3dZoomOut" title="Zoom out"><i class="fas fa-minus"></i></button>
+        <button class="scene-btn" id="btn3dReset"   title="Reset view"><i class="fas fa-sync-alt"></i></button>
+      </div>
+      <div class="scene-desc">A vibrant 3D scene featuring a rotating computer monitor displaying a colorful M</div>
+    </div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-star"></i> Fun Facts</h2>
+    <div class="fun-facts-wrap"><div class="fun-fact"><i class="fas fa-star"></i> The shortcut key for Undo is Ctrl+Z.</div><div class="fun-fact"><i class="fas fa-star"></i> The shortcut key for Redo is Ctrl+Y.</div></div>
+  </div>
+
+  
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-book"></i> Story Explanation</h2>
+    <div class="enrich-text">Once upon a time, in a land of computers, there lived a friendly program named MS Paint. It loved to help children draw and color. One sunny morning, a little girl named Maya wanted to draw her dream house. She opened MS Paint and saw a big white Canvas, just like a blank sheet of paper. On the side, there was a Toolbox filled with magical tools: a Pencil to draw lines, an Eraser to fix wobbly lines, and a Brush to splash colors. Maya picked the Pencil Tool and drew the walls. Oops! One line was too long. \'No worries!\' she thought, and clicked the Undo Button, and the line magically shortened. Then, she used the Shapes Box to add a perfect square for a window and a triangle for the roof. She chose bright red from the Colour Box and used the Brush Tool to paint the roof. Finally, she used the Text Tool to write \'Maya\'s Dream House\' on her drawing. MS Paint helped Maya bring her imagination to life, making her very happy!</div>
+  </div>
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Common Mistakes</h2>
+    <ul class='enrich-list'><li>**Forgetting to select a tool:** Children often try to draw or color without first clicking on the desired tool (e.g., Pencil, Brush). Remind them to always select a tool from the Toolbox before attempting an action.</li><li>**Not understanding Undo/Redo:** They might get frustrated after making a mistake, not knowing that the Undo button can easily fix it. Explain that Undo is their \'magic eraser\' for actions, and Redo can bring things back if they change their mind.</li><li>**Incorrectly using the Eraser:** Sometimes, children might erase too much or struggle to erase precisely. Teach them to adjust the eraser size and to click and drag carefully over the specific area they want to remove.</li><li>**Difficulty with straight lines:** Drawing perfectly straight lines freehand can be challenging. Introduce the Line Tool early to help them create neat edges and shapes without frustration.</li><li>**Confusing Text Tool with Pencil Tool for writing:** They might try to \'draw\' letters with the Pencil Tool instead of using the Text Tool for neat, typed words. Emphasize that the Text Tool is for writing words.</li><li>**Not saving their work:** After creating a beautiful drawing, children might close MS Paint without saving, losing all their hard work. Teach them the importance of the \'Save\' option.</li></ul>
+  </div>
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-bolt"></i> Quick Check</h2>
+    <div class='qa-wrap'><div class='qa-item'><div class='qa-q'>What is MS Paint?</div><div class='qa-a'>A simple computer program for drawing and painting pictures.</div></div><div class='qa-item'><div class='qa-q'>What is the Canvas used for?</div><div class='qa-a'>It\'s the main area where you draw and paint.</div></div><div class='qa-item'><div class='qa-q'>Which tool helps you correct mistakes?</div><div class='qa-a'>The Eraser Tool.</div></div><div class='qa-item'><div class='qa-q'>What does the Undo button do?</div><div class='qa-a'>It helps you go back one step to fix a mistake.</div></div><div class='qa-item'><div class='qa-q'>Which tool allows you to type words?</div><div class='qa-a'>The Text Tool.</div></div></div>
+  </div>
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-spell-check"></i> Glossary</h2>
+    <div class='glossary'><div class='gloss-row'><div class='gloss-term'>MS Paint</div><div class='gloss-def'>A basic graphics editor program included with Microsoft Windows, used for creating and editing simple images.</div></div><div class='gloss-row'><div class='gloss-term'>Interface</div><div class='gloss-def'>The visual layout and controls of a software program that allow users to interact with it.</div></div><div class='gloss-row'><div class='gloss-term'>Pixel</div><div class='gloss-def'>The smallest individual point of color on a digital display, forming part of an image.</div></div><div class='gloss-row'><div class='gloss-term'>Save</div><div class='gloss-def'>To store your created drawing or document on the computer\'s memory for future use.</div></div><div class='gloss-row'><div class='gloss-term'>Open</div><div class='gloss-def'>To load a previously saved file or document into a program for viewing or editing.</div></div></div>
+  </div>
+  <div class="section-card">
+    <h2 class="section-title"><i class="fas fa-person-chalkboard"></i> Worked Examples</h2>
+    <div class='enrich-block'><details class='enrich-acc'><summary>Example 1: You drew a line that is too long. How do you fix it?</summary><div class='enrich-body'><ol class='steps'><li>Select the Eraser Tool from the Toolbox.</li><li>Click and drag the eraser over the part of the line you want to remove.</li><li>Release the mouse button when the extra part is gone.</li></ol><div class=final><b>Final:</b> The extra part of the line is removed.</div><div class=why><b>Why:</b> The Eraser Tool is designed to remove pixels from your drawing, allowing you to correct mistakes by \'erasing\' them.</div></div></details><details class='enrich-acc'><summary>Example 2: You want to draw a perfect square. How can you do this easily?</summary><div class='enrich-body'><ol class='steps'><li>Click on the Shapes Box.</li><li>Select the \'Rectangle\' shape.</li><li>Click and drag on the Canvas while holding down the Shift key to draw a perfect square.</li></ol><div class=final><b>Final:</b> A perfect square is drawn on the canvas.</div><div class=why><b>Why:</b> The Shapes Box provides pre-defined shapes. Holding the Shift key while drawing a rectangle ensures it becomes a perfect square.</div></div></details><details class='enrich-acc'><summary>Example 3: You want to add your name to your drawing. Which tool should you use?</summary><div class='enrich-body'><ol class='steps'><li>Click on the Text Tool (usually represented by \'A\').</li><li>Click on the Canvas where you want to type your name.</li><li>A text box will appear; type your name inside it.</li></ol><div class=final><b>Final:</b> Your name appears on the drawing.</div><div class=why><b>Why:</b> The Text Tool is specifically designed for adding words and letters to your artwork, allowing you to label or personalize your creations.</div></div></details></div>
+  </div>
+
+  <!-- GAMES TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs-header">
+      <button class="tab-btn active" data-tab="sort"><i class="fas fa-layer-group"></i> Sort</button>
+      <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
+      <button class="tab-btn" data-tab="tf"><i class="fas fa-check-double"></i> True/False</button>
+      <button class="tab-btn" data-tab="extra"><i class="fas fa-brain"></i> Memory</button>
+    </div>
+    <div class="tab-content">
+      
+<div class="game-section" id="tab-sort">
+  <p class="game-instruction"><i class="fas fa-hand-point-up"></i> Drag each item to the correct category: 'Drawing Tools' or 'Interface Parts'.</p>
+  <div class="sort-zones">
+      <div class="sort-zone" data-category="Drawing Tools"
+           style="--cat-color:#FFD700">
+        <h4><i class="fas fa-pencil"></i> Drawing Tools</h4>
+        <div class="sort-items-drop"></div>
+      </div>
+      <div class="sort-zone" data-category="Interface Parts"
+           style="--cat-color:#87CEEB">
+        <h4><i class="fas fa-desktop"></i> Interface Parts</h4>
+        <div class="sort-items-drop"></div>
+      </div></div>
+  <div class="item-pool" id="sortPool">
+      <div class="sort-item" draggable="true"
+           data-answer="Drawing Tools">
+        🧼 Eraser
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Drawing Tools">
+        🖌️ Brush
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        🔺 Shapes Box
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        🧰 Toolbox
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        ↪️ Redo Button
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Drawing Tools">
+        🅰️ Text
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        🌈 Colour Box
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        🖼️ Canvas
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Drawing Tools">
+        📏 Line
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Interface Parts">
+        ↩️ Undo Button
+      </div>
+      <div class="sort-item" draggable="true"
+           data-answer="Drawing Tools">
+        ✏️ Pencil
+      </div></div>
+  <div class="game-feedback hidden" id="sortFeedback"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="checkSort"><i class="fas fa-check"></i> Check</button>
+    <button class="btn btn-outline" id="resetSort"><i class="fas fa-redo"></i> Reset</button>
+  </div>
+</div>
+      
+<div class="game-section hidden" id="tab-quiz">
+  <div class="quiz-header">
+    <span class="quiz-title"><i class="fas fa-question-circle"></i> Knowledge Quiz</span>
+    <div class="quiz-prog-wrap">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quizProgFill"></div></div>
+      <span class="quiz-prog-text" id="quizProgText">Q 1 / 10</span>
+    </div>
+  </div>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-options" id="quizOpts"></div>
+    <div class="quiz-feedback hidden" id="quizFb"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-outline" id="quizPrev"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn btn-primary" id="quizNext">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+  <div class="results-overlay hidden" id="quizResults">
+    <div class="results-card">
+      <div class="results-icon"><i class="fas fa-star"></i></div>
+      <h3 id="quizResultTitle"></h3>
+      <p id="quizResultScore"></p>
+      <div class="stars-row" id="quizStars"></div>
+      <p id="quizResultTip"></p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="quizRetry"><i class="fas fa-redo"></i> Try Again</button>
+        <button class="btn btn-outline" id="quizClose"><i class="fas fa-times"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+      
+<div class="game-section hidden" id="tab-tf">
+  <div class="quiz-header">
+    <span class="quiz-title"><i class="fas fa-check-double"></i> True or False?</span>
+    <div class="quiz-prog-wrap">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="tfProgFill"></div></div>
+      <span class="quiz-prog-text" id="tfProgText">1 / 8</span>
+    </div>
+  </div>
+  <div class="quiz-card" id="tfCard">
+    <div class="quiz-q" id="tfQ"></div>
+    <div class="tf-choices">
+      <button class="tf-btn tf-true"  id="tfTrue" ><i class="fas fa-check"></i> True</button>
+      <button class="tf-btn tf-false" id="tfFalse"><i class="fas fa-times"></i> False</button>
+    </div>
+    <div class="quiz-feedback hidden" id="tfFb"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-outline" id="tfPrev"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn btn-primary"  id="tfNext">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+  <div class="results-overlay hidden" id="tfResults">
+    <div class="results-card">
+      <div class="results-icon"><i class="fas fa-award"></i></div>
+      <h3 id="tfResultTitle"></h3>
+      <p id="tfResultScore"></p>
+      <div class="stars-row" id="tfStars"></div>
+      <p id="tfResultTip"></p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="tfRetry"><i class="fas fa-redo"></i> Try Again</button>
+        <button class="btn btn-outline" id="tfClose"><i class="fas fa-times"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+      
+<div class="game-section hidden" id="tab-extra">
+  <p class="game-instruction"><i class="fas fa-brain"></i> Flip cards to find matching pairs!</p>
+  <div class="memory-score-row">
+    <span>Moves: <strong id="memMoves">0</strong></span>
+    <span>Matched: <strong id="memMatched">0</strong> / 6</span>
+  </div>
+  <div class="memory-grid" id="memGrid">
+    <div class="mem-card" data-pair="0" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">🖼️ Canvas</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="0" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Drawing Area</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="1" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">↩️ Undo</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="1" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Go Back</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="2" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">✏️ Pencil</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="2" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Freehand Draw</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="3" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">🧼 Eraser</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="3" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Fix Mistakes</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="4" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">🌈 Colors</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="4" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Paint Palette</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="5" data-side="term">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">🔺 Shapes</div>
+      </div>
+    </div>
+    <div class="mem-card" data-pair="5" data-side="match">
+      <div class="mem-card-inner">
+        <div class="mem-card-front"><i class="fas fa-question"></i></div>
+        <div class="mem-card-back">Ready-made Forms</div>
+      </div>
+    </div></div>
+  <div class="btn-row" style="margin-top:1rem">
+    <button class="btn btn-primary" id="memReset"><i class="fas fa-redo"></i> New Game</button>
+  </div>
+</div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ── PROGRESS ──────────────────────────────────────────────────
+const PROGRESS = (function(){
+  const done={sort:false,quiz:false,tf:false,extra:false};
+  function mark(k){
+    done[k]=true;
+    const n=Object.values(done).filter(Boolean).length;
+    const pct=Math.round(n/4*100);
+    document.getElementById('progFill').style.width=pct+'%';
+    document.getElementById('progPct').textContent=pct+'%';
+  }
+  return {mark};
+})();
+
+// ── SOUND ─────────────────────────────────────────────────────
+const SFX = (function(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  let ctx=null, master=null, on=true;
+  const btn=document.getElementById('soundBtn');
+
+  function ensureCtx(){
+    if(!on||!AC) return null;
+    if(!ctx){ ctx=new AC(); master=ctx.createGain(); master.gain.value=1.2; master.connect(ctx.destination); }
+    if(ctx.state==='suspended') ctx.resume().catch(()=>{});
+    return ctx;
+  }
+
+  function tone(freq,dur,type='sine',gain=0.07,when=0,endFreq=null){
+    const c=ensureCtx(); if(!c) return;
+    const t0=c.currentTime+when;
+    const osc=c.createOscillator(); const g=c.createGain();
+    osc.type=type; osc.frequency.setValueAtTime(freq,t0);
+    if(endFreq!==null) osc.frequency.linearRampToValueAtTime(endFreq,t0+dur);
+    g.gain.setValueAtTime(0.001,t0); g.gain.exponentialRampToValueAtTime(Math.min(gain,0.12),t0+0.01);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    osc.connect(g); g.connect(master||c.destination);
+    osc.start(t0); osc.stop(t0+dur+0.05);
+  }
+
+  function play(name){
+    if(name==='click')  { tone(500,0.06,'triangle',0.06); return; }
+    if(name==='correct'){ tone(520,0.14,'sine',0.08,0,880); return; }
+    if(name==='wrong')  { tone(300,0.18,'triangle',0.08,0,150); return; }
+    if(name==='complete'){ tone(523,0.12,'sine',0.08,0,784); tone(659,0.12,'sine',0.08,.12,988); tone(784,0.14,'sine',0.07,.24,1046); return; }
+  }
+
+  function toggle(){ on=!on; btn.innerHTML=on?'<i class="fas fa-volume-up"></i>':'<i class="fas fa-volume-mute"></i>'; if(on)play('click'); }
+  btn.addEventListener('click',toggle);
+  ['pointerdown','keydown'].forEach(ev=>window.addEventListener(ev,()=>ensureCtx(),{once:true,passive:true}));
+  return {play};
+})();
+
+// ── TABS ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    SFX.play('click');
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.game-section').forEach(s=>s.classList.add('hidden'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+  });
+});
+
+// ── BACKGROUND PARTICLES ─────────────────────────────────────
+(function(){
+  const cv=document.getElementById('particlesBg');
+  const ctx=cv.getContext('2d');
+  const COLORS=["#00E5CC", "#1F6A75", "#F49040"];
+  let W,H,particles=[];
+
+  function resize(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
+  window.addEventListener('resize',resize); resize();
+
+  for(let i=0;i<55;i++) particles.push({
+    x:Math.random()*W, y:Math.random()*H,
+    r:1+Math.random()*2.5, vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+    c:COLORS[Math.floor(Math.random()*COLORS.length)], o:0.1+Math.random()*0.4
+  });
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c; ctx.globalAlpha=p.o; ctx.fill(); ctx.globalAlpha=1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── 3D SCENE ─────────────────────────────────────────────────
+
+// ── 3D SCENE SETUP ──────────────────────────────────────────────
+const scene3d      = new THREE.Scene();
+const clock        = new THREE.Clock();
+const sceneObjects = [];
+const labelSprites = [];
+scene3d.background = new THREE.Color('#E0FFFF');
+scene3d.fog        = new THREE.FogExp2('#E0FFFF', 0.04);
+
+const ambLight = new THREE.AmbientLight(0xffffff, 0.55);
+scene3d.add(ambLight);
+const ptLight1 = new THREE.PointLight(0x00E5CC, 1.5, 30);
+ptLight1.position.set(5, 5, 5);
+scene3d.add(ptLight1);
+const ptLight2 = new THREE.PointLight(0xADD8E6, 0.8, 20);
+ptLight2.position.set(-5, -5, 8);
+scene3d.add(ptLight2);
+
+// Starfield background
+(function() {
+  const starGeo = new THREE.BufferGeometry();
+  const starVerts = [];
+  for (let i = 0; i < 600; i++) {
+    starVerts.push((Math.random()-0.5)*80, (Math.random()-0.5)*80, (Math.random()-0.5)*80);
+  }
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
+  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.08, transparent: true, opacity: 0.7 });
+  scene3d.add(new THREE.Points(starGeo, starMat));
+})();
+
+// Ground grid
+const gridHelper = new THREE.GridHelper(20, 20, 0x1F6A75, 0x155158);
+gridHelper.position.y = -2.5;
+gridHelper.material.opacity = 0.3;
+gridHelper.material.transparent = true;
+scene3d.add(gridHelper);
+
+// Create content objects
+
+  {
+    const geo = new THREE.IcosahedronGeometry(0.7, 1);
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0x4A90E2,
+      shininess: 90,
+      emissive: 0x4A90E2,
+      emissiveIntensity: 0.15,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const angle0 = (Math.PI * 2 / 5) * 0;
+    mesh.position.set(
+      2.5 * Math.cos(angle0),
+      (Math.random() - 0.5) * 0.5,
+      2.5 * Math.sin(angle0)
+    );
+    mesh.userData.baseY   = mesh.position.y;
+    mesh.userData.offset  = 0 * 1.3;
+    mesh.userData.orbitR  = 2.5;
+    mesh.userData.anim    = 'rotate';
+    mesh.userData.label   = 'MS Paint';
+    scene3d.add(mesh);
+    sceneObjects.push(mesh);
+
+    // Floating text label (sprite)
+    const canvas = document.createElement('canvas');
+    canvas.width  = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.roundRect(0, 0, 256, 64, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('MS Paint', 128, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(1.8, 0.45, 1);
+    sprite.position.copy(mesh.position);
+    sprite.position.y += 1.2;
+    scene3d.add(sprite);
+    labelSprites.push({ sprite, mesh });
+  }
+  {
+    const geo = new THREE.IcosahedronGeometry(0.7, 1);
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0xFF6B6B,
+      shininess: 90,
+      emissive: 0xFF6B6B,
+      emissiveIntensity: 0.15,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const angle1 = (Math.PI * 2 / 5) * 1;
+    mesh.position.set(
+      2.5 * Math.cos(angle1),
+      (Math.random() - 0.5) * 0.5,
+      2.5 * Math.sin(angle1)
+    );
+    mesh.userData.baseY   = mesh.position.y;
+    mesh.userData.offset  = 1 * 1.3;
+    mesh.userData.orbitR  = 2.5;
+    mesh.userData.anim    = 'float';
+    mesh.userData.label   = 'Colors';
+    scene3d.add(mesh);
+    sceneObjects.push(mesh);
+
+    // Floating text label (sprite)
+    const canvas = document.createElement('canvas');
+    canvas.width  = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.roundRect(0, 0, 256, 64, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Colors', 128, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(1.8, 0.45, 1);
+    sprite.position.copy(mesh.position);
+    sprite.position.y += 1.2;
+    scene3d.add(sprite);
+    labelSprites.push({ sprite, mesh });
+  }
+  {
+    const geo = new THREE.CylinderGeometry(0.5, 0.5, 1.4, 32);
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0x6B4226,
+      shininess: 90,
+      emissive: 0x6B4226,
+      emissiveIntensity: 0.15,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const angle2 = (Math.PI * 2 / 5) * 2;
+    mesh.position.set(
+      2.5 * Math.cos(angle2),
+      (Math.random() - 0.5) * 0.5,
+      2.5 * Math.sin(angle2)
+    );
+    mesh.userData.baseY   = mesh.position.y;
+    mesh.userData.offset  = 2 * 1.3;
+    mesh.userData.orbitR  = 2.5;
+    mesh.userData.anim    = 'pulse';
+    mesh.userData.label   = 'Brush';
+    scene3d.add(mesh);
+    sceneObjects.push(mesh);
+
+    // Floating text label (sprite)
+    const canvas = document.createElement('canvas');
+    canvas.width  = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.roundRect(0, 0, 256, 64, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Brush', 128, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(1.8, 0.45, 1);
+    sprite.position.copy(mesh.position);
+    sprite.position.y += 1.2;
+    scene3d.add(sprite);
+    labelSprites.push({ sprite, mesh });
+  }
+  {
+    const geo = new THREE.CylinderGeometry(0.5, 0.5, 1.4, 32);
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0xFFD700,
+      shininess: 90,
+      emissive: 0xFFD700,
+      emissiveIntensity: 0.15,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const angle3 = (Math.PI * 2 / 5) * 3;
+    mesh.position.set(
+      2.5 * Math.cos(angle3),
+      (Math.random() - 0.5) * 0.5,
+      2.5 * Math.sin(angle3)
+    );
+    mesh.userData.baseY   = mesh.position.y;
+    mesh.userData.offset  = 3 * 1.3;
+    mesh.userData.orbitR  = 2.5;
+    mesh.userData.anim    = 'bounce';
+    mesh.userData.label   = 'Pencil';
+    scene3d.add(mesh);
+    sceneObjects.push(mesh);
+
+    // Floating text label (sprite)
+    const canvas = document.createElement('canvas');
+    canvas.width  = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.roundRect(0, 0, 256, 64, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Pencil', 128, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(1.8, 0.45, 1);
+    sprite.position.copy(mesh.position);
+    sprite.position.y += 1.2;
+    scene3d.add(sprite);
+    labelSprites.push({ sprite, mesh });
+  }
+  {
+    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0xFFFFFF,
+      shininess: 90,
+      emissive: 0xFFFFFF,
+      emissiveIntensity: 0.15,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const angle4 = (Math.PI * 2 / 5) * 4;
+    mesh.position.set(
+      2.5 * Math.cos(angle4),
+      (Math.random() - 0.5) * 0.5,
+      2.5 * Math.sin(angle4)
+    );
+    mesh.userData.baseY   = mesh.position.y;
+    mesh.userData.offset  = 4 * 1.3;
+    mesh.userData.orbitR  = 2.5;
+    mesh.userData.anim    = 'orbit';
+    mesh.userData.label   = 'Canvas';
+    scene3d.add(mesh);
+    sceneObjects.push(mesh);
+
+    // Floating text label (sprite)
+    const canvas = document.createElement('canvas');
+    canvas.width  = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.roundRect(0, 0, 256, 64, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Canvas', 128, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(1.8, 0.45, 1);
+    sprite.position.copy(mesh.position);
+    sprite.position.y += 1.2;
+    scene3d.add(sprite);
+    labelSprites.push({ sprite, mesh });
+  }
+
+// ── CAMERA + RENDERER ─────────────────────────────────────────────
+const canvas3dEl = document.getElementById('scene3dCanvas');
+const cam3d = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
+cam3d.position.set(0, 1.5, 7);
+let targetCamZ3d = 7;
+
+const renderer3d = new THREE.WebGLRenderer({ canvas: canvas3dEl, antialias: true, alpha: false });
+renderer3d.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+// Resize handler
+function resize3d() {
+  const cont = canvas3dEl.parentElement;
+  const w = cont.clientWidth, h = cont.clientHeight || 400;
+  renderer3d.setSize(w, h, false);
+  cam3d.aspect = w / h;
+  cam3d.updateProjectionMatrix();
+}
+resize3d();
+window.addEventListener('resize', resize3d);
+
+// ── CONTROLS (drag + pinch-zoom) ──────────────────────────────────
+let isDrag3d = false, prevMouse3d = {x:0,y:0};
+let rotX3d = 0, rotY3d = 0.3;
+let autoRot3d = true;
+
+canvas3dEl.addEventListener('mousedown', e => { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.clientX,y:e.clientY}; });
+canvas3dEl.addEventListener('mousemove', e => {
+  if (!isDrag3d) return;
+  rotY3d += (e.clientX - prevMouse3d.x) * 0.01;
+  rotX3d += (e.clientY - prevMouse3d.y) * 0.01;
+  rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
+  prevMouse3d = {x:e.clientX, y:e.clientY};
+});
+canvas3dEl.addEventListener('mouseup',   () => isDrag3d = false);
+canvas3dEl.addEventListener('mouseleave',() => isDrag3d = false);
+canvas3dEl.addEventListener('wheel', e => {
+  e.preventDefault();
+  targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d + e.deltaY * 0.02));
+}, {passive:false});
+
+let initPinch3d = 0;
+canvas3dEl.addEventListener('touchstart', e => {
+  if (e.touches.length===1) { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.touches[0].clientX,y:e.touches[0].clientY}; }
+  if (e.touches.length===2) { const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; initPinch3d=Math.hypot(dx,dy); }
+}, {passive:true});
+canvas3dEl.addEventListener('touchmove', e => {
+  if (e.touches.length===1 && isDrag3d) {
+    rotY3d += (e.touches[0].clientX - prevMouse3d.x) * 0.012;
+    rotX3d += (e.touches[0].clientY - prevMouse3d.y) * 0.012;
+    rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
+    prevMouse3d = {x:e.touches[0].clientX,y:e.touches[0].clientY};
+  }
+  if (e.touches.length===2 && initPinch3d>0) {
+    const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+    const d=Math.hypot(dx,dy);
+    targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d*(initPinch3d/d)));
+    initPinch3d=d;
+  }
+}, {passive:true});
+canvas3dEl.addEventListener('touchend', () => isDrag3d=false);
+
+document.getElementById('btn3dZoomIn').addEventListener('click',  () => targetCamZ3d = Math.max(3,  targetCamZ3d - 1.5));
+document.getElementById('btn3dZoomOut').addEventListener('click', () => targetCamZ3d = Math.min(15, targetCamZ3d + 1.5));
+document.getElementById('btn3dReset').addEventListener('click',   () => { targetCamZ3d=7; rotX3d=0; rotY3d=0.3; autoRot3d=true; });
+
+// ── ANIMATION LOOP ────────────────────────────────────────────────
+function loop3d() {
+  requestAnimationFrame(loop3d);
+  const t = clock.getElapsedTime();
+  if (autoRot3d) rotY3d += 0.004;
+  scene3d.rotation.y = rotY3d;
+  scene3d.rotation.x = rotX3d;
+  cam3d.position.z += (targetCamZ3d - cam3d.position.z) * 0.08;
+  // Animate each object
+  
+  // Object 0: MS Paint
+  if (sceneObjects[0]) {
+    const mesh = sceneObjects[0];
+    const t = clock.getElapsedTime();
+    mesh.rotation.y += 0.012; mesh.rotation.x += 0.005;
+    // Update label sprite position
+    if (labelSprites[0]) {
+      labelSprites[0].sprite.position.copy(mesh.position);
+      labelSprites[0].sprite.position.y += 1.2;
+    }
+  }
+  // Object 1: Colors
+  if (sceneObjects[1]) {
+    const mesh = sceneObjects[1];
+    const t = clock.getElapsedTime();
+    mesh.position.y = mesh.userData.baseY + Math.sin(t * 2 + mesh.userData.offset) * 0.3;
+    // Update label sprite position
+    if (labelSprites[1]) {
+      labelSprites[1].sprite.position.copy(mesh.position);
+      labelSprites[1].sprite.position.y += 1.2;
+    }
+  }
+  // Object 2: Brush
+  if (sceneObjects[2]) {
+    const mesh = sceneObjects[2];
+    const t = clock.getElapsedTime();
+    const s = 1 + Math.sin(t * 3 + mesh.userData.offset) * 0.08; mesh.scale.setScalar(s);
+    // Update label sprite position
+    if (labelSprites[2]) {
+      labelSprites[2].sprite.position.copy(mesh.position);
+      labelSprites[2].sprite.position.y += 1.2;
+    }
+  }
+  // Object 3: Pencil
+  if (sceneObjects[3]) {
+    const mesh = sceneObjects[3];
+    const t = clock.getElapsedTime();
+    mesh.position.y = mesh.userData.baseY + Math.abs(Math.sin(t * 2.5 + mesh.userData.offset)) * 0.5;
+    // Update label sprite position
+    if (labelSprites[3]) {
+      labelSprites[3].sprite.position.copy(mesh.position);
+      labelSprites[3].sprite.position.y += 1.2;
+    }
+  }
+  // Object 4: Canvas
+  if (sceneObjects[4]) {
+    const mesh = sceneObjects[4];
+    const t = clock.getElapsedTime();
+    mesh.position.x = mesh.userData.orbitR * Math.cos(t + mesh.userData.offset); mesh.position.z = mesh.userData.orbitR * Math.sin(t + mesh.userData.offset);
+    // Update label sprite position
+    if (labelSprites[4]) {
+      labelSprites[4].sprite.position.copy(mesh.position);
+      labelSprites[4].sprite.position.y += 1.2;
+    }
+  }
+  renderer3d.render(scene3d, cam3d);
+}
+loop3d();
+
+
+// ── GAMES ─────────────────────────────────────────────────────
+
+// ── SORT GAME ───────────────────────────────────────────────────
+(function() {
+  const pool = document.getElementById('sortPool');
+  const zones = document.querySelectorAll('.sort-zone');
+  let dragged = null;
+
+  // ── Desktop drag ──────────────────────────────────────────────
+  document.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('dragstart', () => { dragged=item; item.style.opacity='0.4'; SFX.play('click'); });
+    item.addEventListener('dragend',   () => { item.style.opacity='1'; dragged=null; });
+  });
+
+  zones.forEach(zone => {
+    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', ()  => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      if (dragged) zone.querySelector('.sort-items-drop').appendChild(dragged);
+    });
+  });
+
+  // ── Touch drag ────────────────────────────────────────────────
+  let ghost=null, touchItem=null, touchOrigin=null, touchNext=null, activeZone=null;
+
+  function getZoneAt(x,y){
+    const el=document.elementFromPoint(x,y);
+    return el?el.closest('.sort-zone'):null;
+  }
+
+  document.querySelectorAll('.sort-item').forEach(item=>{
+    item.addEventListener('touchstart', e=>{
+      if(e.touches.length!==1) return;
+      if(e.cancelable)e.preventDefault();
+      touchItem=item; touchOrigin=item.parentElement; touchNext=item.nextElementSibling;
+      item.style.opacity='0.4';
+      ghost=item.cloneNode(true);
+      ghost.style.cssText='position:fixed;z-index:9999;pointer-events:none;opacity:0.9;transform:translate(-50%,-50%)';
+      document.body.appendChild(ghost);
+      const t=e.touches[0];
+      ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
+      SFX.play('click');
+    },{passive:false});
+  });
+
+  document.addEventListener('touchmove', e=>{
+    if(!touchItem||!ghost) return;
+    if(e.cancelable)e.preventDefault();
+    const t=e.touches[0];
+    ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
+    const z=getZoneAt(t.clientX,t.clientY);
+    if(activeZone!==z){ zones.forEach(z2=>z2.classList.remove('drag-over')); if(z)z.classList.add('drag-over'); activeZone=z; }
+  },{passive:false});
+
+  document.addEventListener('touchend', e=>{
+    if(!touchItem) return;
+    zones.forEach(z=>z.classList.remove('drag-over'));
+    const t=e.changedTouches[0];
+    const z=getZoneAt(t.clientX,t.clientY);
+    if(z) z.querySelector('.sort-items-drop').appendChild(touchItem);
+    else { if(touchNext&&touchNext.parentElement===touchOrigin) touchOrigin.insertBefore(touchItem,touchNext); else touchOrigin.appendChild(touchItem); }
+    touchItem.style.opacity='1';
+    if(ghost&&ghost.parentNode) ghost.parentNode.removeChild(ghost);
+    ghost=null; touchItem=null; touchOrigin=null; touchNext=null; activeZone=null;
+  });
+
+  // ── Check / Reset ─────────────────────────────────────────────
+  document.getElementById('checkSort').addEventListener('click', ()=>{
+    SFX.play('click');
+    let correct=0, total=0;
+    zones.forEach(zone=>{
+      zone.querySelectorAll('.sort-item').forEach(item=>{
+        total++;
+        const ok = item.dataset.answer === zone.dataset.category;
+        item.classList.toggle('correct',ok);
+        item.classList.toggle('incorrect',!ok);
+        if(ok) correct++;
+      });
+    });
+    const fb=document.getElementById('sortFeedback');
+    fb.classList.remove('hidden');
+    if(correct===total){
+      fb.className='game-feedback fb-success';
+      fb.innerHTML='<i class="fas fa-trophy"></i> Perfect! All items sorted correctly!';
+      SFX.play('complete'); PROGRESS.mark('sort');
+    } else {
+      fb.className='game-feedback fb-error';
+      fb.innerHTML=`<i class="fas fa-times-circle"></i> ${correct} / ${total} correct. Keep trying!`;
+      SFX.play('wrong');
+    }
+  });
+
+  document.getElementById('resetSort').addEventListener('click', ()=>{
+    SFX.play('click');
+    document.querySelectorAll('.sort-item').forEach(item=>{
+      item.classList.remove('correct','incorrect');
+      pool.appendChild(item);
+    });
+    document.getElementById('sortFeedback').classList.add('hidden');
+  });
+})();
+
+
+// ── QUIZ ────────────────────────────────────────────────────────
+(function() {
+  const QS = [{"question": "What is the main area where you draw in MS Paint called?", "options": ["Canvas", "Toolbox"], "correct_index": 0, "explanation": "The Canvas is the big white space where you draw and paint your pictures."}, {"question": "Which button helps you fix a mistake by going back one step?", "options": ["Undo", "Redo"], "correct_index": 0, "explanation": "The Undo button makes your last action disappear, helping you fix mistakes."}, {"question": "What tool would you use to write your name on a drawing?", "options": ["Pencil Tool", "Text Tool"], "correct_index": 1, "explanation": "The Text Tool lets you type words and letters onto your drawing."}, {"question": "Can the Colour box in MS Paint offer many different colors?", "options": ["Yes", "No"], "correct_index": 0, "explanation": "The Colour box provides a wide range of colors for your drawings."}, {"question": "Which tool is best for drawing a perfect circle or square?", "options": ["Shapes Tool", "Pencil Tool"], "correct_index": 0, "explanation": "The Shapes Tool provides ready-made perfect shapes like circles and squares."}, {"question": "If you accidentally erase something and want it back, which button helps?", "options": ["Undo", "Redo"], "correct_index": 1, "explanation": "The Redo button brings back an action you just undid."}, {"question": "Is the Eraser Tool used to add color to your drawing?", "options": ["Yes", "No"], "correct_index": 1, "explanation": "The Eraser Tool is used to remove mistakes, not to add color."}, {"question": "What is the shortcut key for Undo?", "options": ["Ctrl+Z", "Ctrl+Y"], "correct_index": 0, "explanation": "Ctrl+Z is the shortcut key for the Undo action."}, {"question": "What is the shortcut key for Redo?", "options": ["Ctrl+Z", "Ctrl+Y"], "correct_index": 1, "explanation": "Ctrl+Y is the shortcut key for the Redo action."}, {"question": "To open MS Paint, do you usually single-click or double-click its icon?", "options": ["Single-click", "Double-click"], "correct_index": 1, "explanation": "You usually double-click the MS Paint icon to open the program."}];
+  let idx=0, answers=Array(QS.length).fill(null);
+
+  function render(anim=true) {
+    const q=QS[idx];
+    document.getElementById('quizQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${q.question}`;
+    const optsEl=document.getElementById('quizOpts');
+    optsEl.innerHTML='';
+    q.options.forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='quiz-opt';
+      btn.dataset.i=i;
+      btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+i)}</span> ${opt}`;
+      btn.addEventListener('click',()=>selectQ(i));
+      if(answers[idx]===i) btn.classList.add('selected');
+      optsEl.appendChild(btn);
+    });
+    if(answers[idx]!==null) revealQ();
+    document.getElementById('quizNext').disabled = answers[idx]===null;
+    document.getElementById('quizPrev').disabled = idx===0;
+    document.getElementById('quizNext').innerHTML = idx===QS.length-1 ?
+      'Finish <i class="fas fa-flag-checkered"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
+    const pct=Math.round(answers.filter(a=>a!==null).length/QS.length*100);
+    document.getElementById('quizProgFill').style.width=pct+'%';
+    document.getElementById('quizProgText').textContent=`Q ${idx+1} / ${QS.length}`;
+    if(anim){ const card=document.getElementById('quizCard'); card.classList.remove('slide-in'); void card.offsetWidth; card.classList.add('slide-in'); }
+  }
+
+  function selectQ(i) {
+    answers[idx]=i;
+    const correct=i===QS[idx].correct_index;
+    SFX.play(correct?'correct':'wrong');
+    revealQ();
+    document.getElementById('quizNext').disabled=false;
+  }
+
+  function revealQ() {
+    const q=QS[idx]; const sel=answers[idx];
+    document.querySelectorAll('.quiz-opt').forEach(btn=>{
+      const i=parseInt(btn.dataset.i);
+      btn.classList.remove('selected','correct','incorrect');
+      if(i===q.correct_index) btn.classList.add('correct');
+      if(i===sel && sel!==q.correct_index) btn.classList.add('incorrect');
+      if(i===sel) btn.classList.add('selected');
+    });
+    const fb=document.getElementById('quizFb');
+    const ok=sel===q.correct_index;
+    fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
+    fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${q.explanation}</strong>`;
+  }
+
+  document.getElementById('quizPrev').addEventListener('click',()=>{ SFX.play('click'); if(idx>0){idx--;render();} });
+  document.getElementById('quizNext').addEventListener('click',()=>{
+    if(answers[idx]===null){ SFX.play('wrong'); return; }
+    SFX.play('click');
+    if(idx<QS.length-1){idx++;render();}
+    else showResults();
+  });
+
+  function calcScore(){ return answers.reduce((a,v,i)=>a+(v===QS[i].correct_index?1:0),0); }
+
+  function showResults(){
+    const sc=calcScore(), total=QS.length;
+    SFX.play(sc===total?'complete':'click');
+    document.getElementById('quizResultScore').textContent=`You scored ${sc} / ${total}`;
+    const stars=Math.round(sc/total*5);
+    document.getElementById('quizStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
+    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
+    document.getElementById('quizResultTitle').textContent=titles[Math.min(stars,4)];
+    document.getElementById('quizResultTip').textContent=sc===total?'Amazing! You got everything right!':'Review the lesson and try again!';
+    document.getElementById('quizResults').classList.remove('hidden');
+    if(sc===total){ PROGRESS.mark('quiz'); }
+  }
+
+  function restart(){ SFX.play('click'); idx=0; answers=Array(QS.length).fill(null); document.getElementById('quizResults').classList.add('hidden'); render(); }
+
+  document.getElementById('quizRetry').addEventListener('click', restart);
+  document.getElementById('quizClose').addEventListener('click',()=>{ SFX.play('click'); document.getElementById('quizResults').classList.add('hidden'); });
+  document.getElementById('quizResults').addEventListener('click',e=>{ if(e.target===document.getElementById('quizResults')) document.getElementById('quizResults').classList.add('hidden'); });
+
+  render(false);
+})();
+
+
+// ── TRUE/FALSE ───────────────────────────────────────────────────
+(function() {
+  const ITEMS = [{"text": "The canvas is the area where you can draw and paint.", "correct": true, "explanation": "Yes, the canvas is the big white space in MS Paint specifically for drawing and painting."}, {"text": "The Undo button helps you correct mistakes.", "correct": true, "explanation": "That's right! The Undo button lets you go back one step to fix any errors."}, {"text": "The Colour box only has one color.", "correct": false, "explanation": "No, the Colour box has many different colors for you to choose from to make your drawings vibrant."}, {"text": "The Tools box has items like pencils and erasers.", "correct": true, "explanation": "Correct! The Toolbox contains various drawing tools, including the pencil and eraser."}, {"text": "You need to double-click on shapes to select them.", "correct": false, "explanation": "You usually just single-click on a shape in the Shapes box to select it for drawing."}, {"text": "The Brush tool is used to write text.", "correct": false, "explanation": "The Brush tool is for painting, while the Text tool is used for writing words and letters."}, {"text": "The Line tool helps you draw perfectly straight lines.", "correct": true, "explanation": "Yes, the Line tool is designed to help you create neat and straight lines easily."}, {"text": "MS Paint is a program for writing stories.", "correct": false, "explanation": "MS Paint is mainly for drawing and painting pictures, not for writing long stories."}];
+  let idx=0, answers=Array(ITEMS.length).fill(null);
+
+  function render(anim=true) {
+    const item=ITEMS[idx];
+    document.getElementById('tfQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${item.text}`;
+    [['tfTrue',true],['tfFalse',false]].forEach(([id,val])=>{
+      const btn=document.getElementById(id);
+      btn.classList.remove('selected','correct','incorrect');
+      if(answers[idx]===val){btn.classList.add('selected'); if(val===item.correct)btn.classList.add('correct'); else btn.classList.add('incorrect');}
+    });
+    if(answers[idx]!==null){
+      const correctBtn=document.getElementById(item.correct?'tfTrue':'tfFalse');
+      correctBtn.classList.add('correct');
+    }
+    const fb=document.getElementById('tfFb');
+    if(answers[idx]!==null){
+      const ok=answers[idx]===item.correct;
+      fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
+      fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${item.explanation}</strong>`;
+    } else { fb.className='quiz-feedback hidden'; fb.innerHTML=''; }
+    document.getElementById('tfNext').disabled=answers[idx]===null;
+    document.getElementById('tfPrev').disabled=idx===0;
+    document.getElementById('tfNext').innerHTML=idx===ITEMS.length-1?'Finish <i class="fas fa-flag-checkered"></i>':'Next <i class="fas fa-arrow-right"></i>';
+    const pct=Math.round(answers.filter(a=>a!==null).length/ITEMS.length*100);
+    document.getElementById('tfProgFill').style.width=pct+'%';
+    document.getElementById('tfProgText').textContent=`${idx+1} / ${ITEMS.length}`;
+    if(anim){const card=document.getElementById('tfCard');card.classList.remove('slide-in');void card.offsetWidth;card.classList.add('slide-in');}
+  }
+
+  function choose(val){
+    answers[idx]=val;
+    const ok=val===ITEMS[idx].correct;
+    SFX.play(ok?'correct':'wrong');
+    render(false);
+    document.getElementById('tfNext').disabled=false;
+  }
+
+  document.getElementById('tfTrue').addEventListener('click',()=>choose(true));
+  document.getElementById('tfFalse').addEventListener('click',()=>choose(false));
+  document.getElementById('tfPrev').addEventListener('click',()=>{SFX.play('click');if(idx>0){idx--;render();}  });
+  document.getElementById('tfNext').addEventListener('click',()=>{
+    if(answers[idx]===null){SFX.play('wrong');return;}
+    SFX.play('click');
+    if(idx<ITEMS.length-1){idx++;render();}
+    else showResults();
+  });
+
+  function calcScore(){return answers.reduce((a,v,i)=>a+(v===ITEMS[i].correct?1:0),0);}
+
+  function showResults(){
+    const sc=calcScore(),total=ITEMS.length;
+    SFX.play(sc===total?'complete':'click');
+    document.getElementById('tfResultScore').textContent=`You scored ${sc} / ${total}`;
+    const stars=Math.round(sc/total*5);
+    document.getElementById('tfStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
+    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
+    document.getElementById('tfResultTitle').textContent=titles[Math.min(stars,4)];
+    document.getElementById('tfResultTip').textContent=sc===total?'Excellent! You aced it!':'Review and try again!';
+    document.getElementById('tfResults').classList.remove('hidden');
+    if(sc===total) PROGRESS.mark('tf');
+  }
+
+  function restart(){SFX.play('click');idx=0;answers=Array(ITEMS.length).fill(null);document.getElementById('tfResults').classList.add('hidden');render();}
+  document.getElementById('tfRetry').addEventListener('click',restart);
+  document.getElementById('tfClose').addEventListener('click',()=>{SFX.play('click');document.getElementById('tfResults').classList.add('hidden');});
+  document.getElementById('tfResults').addEventListener('click',e=>{if(e.target===document.getElementById('tfResults'))document.getElementById('tfResults').classList.add('hidden');});
+
+  render(false);
+})();
+
+
+// ── MEMORY GAME ─────────────────────────────────────────────────
+(function() {
+  let flipped=[], matched=0, moves=0, locked=false;
+
+  function shuffle() {
+    const grid=document.getElementById('memGrid');
+    const cards=[...grid.querySelectorAll('.mem-card')];
+    for(let i=cards.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      grid.appendChild(cards[j]);
+      [cards[i],cards[j]]=[cards[j],cards[i]];
+    }
+  }
+
+  function reset() {
+    flipped=[]; matched=0; moves=0; locked=false;
+    document.querySelectorAll('.mem-card').forEach(c=>{
+      c.classList.remove('flipped','matched');
+    });
+    document.getElementById('memMoves').textContent='0';
+    document.getElementById('memMatched').textContent='0';
+    shuffle();
+    SFX.play('click');
+  }
+
+  document.querySelectorAll('.mem-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      if(locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      card.classList.add('flipped');
+      flipped.push(card);
+      SFX.play('click');
+      if(flipped.length===2){
+        moves++;
+        document.getElementById('memMoves').textContent=moves;
+        locked=true;
+        const [a,b]=flipped;
+        if(a.dataset.pair===b.dataset.pair && a.dataset.side!==b.dataset.side){
+          a.classList.add('matched'); b.classList.add('matched');
+          matched++;
+          document.getElementById('memMatched').textContent=matched;
+          flipped=[]; locked=false;
+          SFX.play('correct');
+          if(matched===6) { SFX.play('complete'); PROGRESS.mark('extra'); }
+        } else {
+          SFX.play('wrong');
+          setTimeout(()=>{ a.classList.remove('flipped'); b.classList.remove('flipped'); flipped=[]; locked=false; },900);
+        }
+      }
+    });
+  });
+
+  document.getElementById('memReset').addEventListener('click', reset);
+  shuffle();
+})();
+
+
+</script>
+</body>
+</html>

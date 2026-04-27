@@ -1,0 +1,3186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- CLASS: 10 | SUBJECT: physics | VERSION: 1.0 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 10: General Waves Properties | Class 10 Physics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      line-height: 1.75;
+      background: #0f0f1a;
+      color: #e0e0f0
+    }
+
+    :root {
+      --amber: #FDCB6E;
+      --dark: #1E1E2E;
+      --accent: #4C6EF5;
+      --white: #ffffff;
+      --card-bg: #252538;
+      --border: #3a3a5c;
+      --success: #00b894;
+      --danger: #e17055;
+      --text-muted: #9090b0;
+    }
+
+    /* CURTAIN */
+    #curtain {
+      position: fixed;
+      inset: 0;
+      background: #1E1E2E;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px
+    }
+
+    #curtain h2 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      color: var(--amber);
+      font-size: 2rem
+    }
+
+    #curtain p {
+      color: #9090b0;
+      font-size: 18px
+    }
+
+    .curtain-bar {
+      width: 260px;
+      height: 4px;
+      background: #3a3a5c;
+      border-radius: 4px;
+      overflow: hidden
+    }
+
+    .curtain-fill {
+      height: 100%;
+      background: var(--amber);
+      width: 0%;
+      border-radius: 4px;
+      transition: width 2s ease
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(30, 30, 46, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .nav-brand {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      color: var(--amber);
+      font-weight: 700
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .nav-links a {
+      color: #9090b0;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s
+    }
+
+    .nav-links a:hover {
+      color: var(--amber);
+      background: rgba(253, 203, 110, 0.1)
+    }
+
+    /* HERO */
+    .hero {
+      width: 100%;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1E1E2E 0%, #12122a 50%, #1a1a35 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(76, 110, 245, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(253, 203, 110, 0.1) 0%, transparent 50%)
+    }
+
+    .hero-content {
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(253, 203, 110, 0.15);
+      border: 1px solid rgba(253, 203, 110, 0.3);
+      color: var(--amber);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 1px
+    }
+
+    .hero h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px
+    }
+
+    .hero h1 span {
+      color: var(--amber)
+    }
+
+    .hero-sub {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: #9090b0;
+      max-width: 700px;
+      margin: 0 auto 40px
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 48px
+    }
+
+    .hero-stat {
+      text-align: center
+    }
+
+    .hero-stat .num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--amber)
+    }
+
+    .hero-stat .lbl {
+      font-size: 14px;
+      color: #9090b0
+    }
+
+    .hero-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 80px 0;
+      width: 100%
+    }
+
+    .container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 0 40px
+    }
+
+    .section-header {
+      margin-bottom: 48px
+    }
+
+    .section-num {
+      font-family: 'Fira Code', monospace;
+      color: var(--amber);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      display: block
+    }
+
+    .section-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 12px
+    }
+
+    .section-desc {
+      font-size: 18px;
+      color: #9090b0;
+      max-width: 700px
+    }
+
+    /* OBJECTIVES */
+    #objectives {
+      background: #1a1a2e
+    }
+
+    .obj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px
+    }
+
+    .obj-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      opacity: 1;
+      transform: none
+    }
+
+    .obj-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(76, 110, 245, 0.15);
+      border: 1px solid rgba(76, 110, 245, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0
+    }
+
+    .obj-text h4 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1rem;
+      color: var(--white);
+      margin-bottom: 4px
+    }
+
+    .obj-text p {
+      font-size: 17px;
+      color: #9090b0;
+      line-height: 1.5
+    }
+
+    /* THEORY */
+    #theory {
+      background: #0f0f1a
+    }
+
+    .theory-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 32px;
+      opacity: 1;
+      transform: none
+    }
+
+    .theory-block h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      color: var(--amber);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .theory-block h3 .tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      background: rgba(253, 203, 110, 0.1);
+      border: 1px solid rgba(253, 203, 110, 0.2);
+      color: var(--amber);
+      padding: 3px 10px;
+      border-radius: 20px
+    }
+
+    .theory-block p {
+      font-size: 18px;
+      color: #c0c0e0;
+      line-height: 1.8;
+      margin-bottom: 12px
+    }
+
+    .theory-block p:last-child {
+      margin-bottom: 0
+    }
+
+    .theory-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px
+    }
+
+    @media(max-width:768px) {
+      .theory-two-col {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* COMPARISON TABLE */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border)
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    thead {
+      background: rgba(76, 110, 245, 0.15)
+    }
+
+    th {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 16px;
+      color: var(--white);
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--border)
+    }
+
+    td {
+      font-size: 16px;
+      color: #c0c0e0;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(58, 58, 92, 0.5)
+    }
+
+    tr:last-child td {
+      border-bottom: none
+    }
+
+    tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02)
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600
+    }
+
+    .badge-em {
+      background: rgba(76, 110, 245, 0.2);
+      color: #7a9fff
+    }
+
+    .badge-mech {
+      background: rgba(0, 184, 148, 0.2);
+      color: #00b894
+    }
+
+    /* EXAMINER TIP */
+    .tip-box {
+      background: linear-gradient(135deg, rgba(253, 203, 110, 0.08), rgba(253, 203, 110, 0.03));
+      border: 1px solid rgba(253, 203, 110, 0.3);
+      border-left: 4px solid var(--amber);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 28px 0
+    }
+
+    .tip-box .tip-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: var(--amber);
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .tip-box p {
+      font-size: 18px;
+      color: #c0c0e0;
+      margin: 0
+    }
+
+    /* FORMULA HIGHLIGHT */
+    .formula-box {
+      background: rgba(30, 30, 46, 0.8);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      text-align: center
+    }
+
+    .formula-box .formula {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.4rem;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .formula-box .formula-desc {
+      font-size: 17px;
+      color: #9090b0
+    }
+
+    /* PROPERTIES LIST */
+    .props-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px
+    }
+
+    .prop-item {
+      background: rgba(76, 110, 245, 0.05);
+      border: 1px solid rgba(76, 110, 245, 0.2);
+      border-radius: 12px;
+      padding: 20px
+    }
+
+    .prop-item h4 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 8px
+    }
+
+    .prop-item p {
+      font-size: 17px;
+      color: #c0c0e0;
+      line-height: 1.6
+    }
+
+    /* THREE.JS SECTION */
+    #visualization {
+      background: #1a1a2e
+    }
+
+    .viz-container {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative
+    }
+
+    #wave-canvas {
+      display: block;
+      background: #0a0a1a
+    }
+
+    .viz-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 16px;
+      background: #1a1a2e;
+      border-top: 1px solid var(--border)
+    }
+
+    .viz-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      transition: all 0.2s
+    }
+
+    .viz-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber)
+    }
+
+    .viz-btn.active {
+      background: rgba(253, 203, 110, 0.15);
+      border-color: var(--amber);
+      color: var(--amber)
+    }
+
+    .viz-fallback {
+      display: none;
+      min-height: 300px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: #1a1a2e;
+      border-radius: 16px;
+      font-size: 72px
+    }
+
+    .viz-fallback p {
+      font-size: 18px;
+      color: #9090b0
+    }
+
+    .viz-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      padding: 16px;
+      background: #1a1a2e;
+      border-top: 1px solid var(--border)
+    }
+
+    .viz-metric {
+      text-align: center
+    }
+
+    .viz-metric .val {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.3rem;
+      color: var(--amber);
+      display: block
+    }
+
+    .viz-metric .lbl {
+      font-size: 14px;
+      color: #9090b0
+    }
+
+    /* WORKED EXAMPLES */
+    #examples {
+      background: #0f0f1a
+    }
+
+    .example-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      opacity: 1
+    }
+
+    .example-header {
+      background: linear-gradient(135deg, rgba(76, 110, 245, 0.2), rgba(76, 110, 245, 0.05));
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .example-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0
+    }
+
+    .example-header h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.2rem;
+      color: var(--white)
+    }
+
+    .example-body {
+      padding: 28px
+    }
+
+    .step-list {
+      list-style: none
+    }
+
+    .step-list li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      opacity: 1
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(253, 203, 110, 0.1);
+      border: 1px solid rgba(253, 203, 110, 0.3);
+      color: var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 3px
+    }
+
+    .step-content {
+      flex: 1
+    }
+
+    .step-content strong {
+      color: var(--amber);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 17px
+    }
+
+    .step-content p,
+    .step-content span {
+      font-size: 18px;
+      color: #c0c0e0;
+      line-height: 1.7
+    }
+
+    .step-formula {
+      font-family: 'Fira Code', monospace;
+      background: #0a0a1a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin-top: 10px;
+      color: var(--amber);
+      font-size: 1rem;
+      display: block
+    }
+
+    /* PRACTICE */
+    #practice {
+      background: #1a1a2e
+    }
+
+    .practice-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      align-items: center
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+      border: 2px solid transparent
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: #1a1a2e;
+      border-color: var(--amber)
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--amber)
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border-color: var(--border)
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--amber);
+      color: var(--amber)
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--white);
+      border-color: var(--accent)
+    }
+
+    .btn-accent:hover {
+      background: transparent;
+      color: var(--accent)
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      opacity: 1
+    }
+
+    .q-header {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 20px
+    }
+
+    .q-num-badge {
+      background: rgba(76, 110, 245, 0.15);
+      border: 1px solid rgba(76, 110, 245, 0.3);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      white-space: nowrap;
+      margin-top: 4px
+    }
+
+    .q-text {
+      font-size: 18px;
+      color: var(--white);
+      font-weight: 500;
+      line-height: 1.6;
+      flex: 1
+    }
+
+    .options-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    @media(max-width:600px) {
+      .options-list {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: #c0c0e0;
+      padding: 14px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      transition: all 0.2s;
+      display: block
+    }
+
+    .option-btn:hover {
+      border-color: var(--accent);
+      color: var(--white);
+      background: rgba(76, 110, 245, 0.08)
+    }
+
+    .option-btn.correct {
+      background: rgba(0, 184, 148, 0.15);
+      border-color: var(--success);
+      color: var(--success)
+    }
+
+    .option-btn.wrong {
+      background: rgba(225, 112, 85, 0.15);
+      border-color: var(--danger);
+      color: var(--danger)
+    }
+
+    .hint-area {
+      margin-top: 16px
+    }
+
+    .hint-btn {
+      background: rgba(253, 203, 110, 0.08);
+      border: 1px solid rgba(253, 203, 110, 0.2);
+      color: var(--amber);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      font-family: 'Inter', sans-serif;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      transition: all 0.2s
+    }
+
+    .hint-btn:hover {
+      background: rgba(253, 203, 110, 0.15)
+    }
+
+    .hint-text {
+      background: rgba(253, 203, 110, 0.05);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 10px;
+      font-size: 17px;
+      color: #c0c0e0;
+      display: none
+    }
+
+    .hint-text.visible {
+      display: block
+    }
+
+    .score-display {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      display: none
+    }
+
+    .score-display.visible {
+      display: block
+    }
+
+    .score-big {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--amber)
+    }
+
+    .score-label {
+      font-size: 18px;
+      color: #9090b0;
+      margin-top: 8px
+    }
+
+    /* MOCK TEST */
+    #mock-test {
+      background: #0f0f1a
+    }
+
+    .mock-header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 28px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .timer-display {
+      font-family: 'Fira Code', monospace;
+      font-size: 2rem;
+      color: var(--amber);
+      background: rgba(253, 203, 110, 0.1);
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(253, 203, 110, 0.3)
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      min-width: 200px
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #3a3a5c;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      transition: width 0.4s
+    }
+
+    #mock-start-screen {
+      text-align: center;
+      padding: 60px 40px
+    }
+
+    #mock-start-screen h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2rem;
+      color: var(--white);
+      margin-bottom: 16px
+    }
+
+    #mock-start-screen p {
+      font-size: 18px;
+      color: #9090b0;
+      max-width: 500px;
+      margin: 0 auto 32px
+    }
+
+    /* MIND MAP */
+    #mindmap {
+      background: #1a1a2e
+    }
+
+    .mindmap-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      overflow-x: auto
+    }
+
+    #mindmap-svg {
+      width: 100%;
+      min-height: 500px;
+      display: block
+    }
+
+    /* FLIP CARDS */
+    #revision {
+      background: #0f0f1a
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px
+    }
+
+    .flip-card {
+      height: 200px;
+      cursor: pointer;
+      perspective: 1000px
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg)
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center
+    }
+
+    .flip-front {
+      background: var(--card-bg);
+      border: 1px solid var(--border)
+    }
+
+    .flip-back {
+      background: linear-gradient(135deg, rgba(76, 110, 245, 0.2), rgba(76, 110, 245, 0.05));
+      border: 1px solid rgba(76, 110, 245, 0.4);
+      transform: rotateY(180deg)
+    }
+
+    .flip-front h4 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      color: var(--white);
+      line-height: 1.4
+    }
+
+    .flip-front .flip-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: block
+    }
+
+    .flip-back p {
+      font-size: 17px;
+      color: #c0c0e0;
+      line-height: 1.6
+    }
+
+    .flip-hint {
+      font-size: 13px;
+      color: #9090b0;
+      margin-top: 8px;
+      position: absolute;
+      bottom: 12px;
+      width: 100%;
+      text-align: center
+    }
+
+    /* PERFORMANCE */
+    #performance {
+      background: #1a1a2e
+    }
+
+    .chart-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 600px;
+      margin: 0 auto
+    }
+
+    /* FORMULA SHEET */
+    #formula-sheet {
+      position: fixed;
+      right: -380px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 360px;
+      background: #1E1E2E;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 16px 0 0 16px;
+      z-index: 900;
+      transition: right 0.3s ease;
+      box-shadow: -8px 0 40px rgba(0, 0, 0, 0.4)
+    }
+
+    #formula-sheet.open {
+      right: 0
+    }
+
+    .fs-toggle {
+      position: absolute;
+      left: -48px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 80px;
+      background: #1E1E2E;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      writing-mode: vertical-rl;
+      font-size: 13px;
+      color: var(--amber);
+      font-weight: 600;
+      letter-spacing: 2px
+    }
+
+    .fs-content {
+      padding: 24px;
+      max-height: 80vh;
+      overflow-y: auto
+    }
+
+    .fs-content h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.2rem;
+      color: var(--amber);
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px
+    }
+
+    .fs-item {
+      margin-bottom: 20px
+    }
+
+    .fs-item h4 {
+      font-size: 15px;
+      color: #9090b0;
+      margin-bottom: 6px
+    }
+
+    .fs-item .formula {
+      font-family: 'Fira Code', monospace;
+      color: var(--amber);
+      font-size: 1.1rem;
+      background: #0a0a1a;
+      padding: 10px 14px;
+      border-radius: 8px;
+      display: block;
+      border: 1px solid var(--border)
+    }
+
+    /* SPACED REP */
+    .sr-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      justify-content: center
+    }
+
+    .sr-btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      transition: all 0.2s;
+      border: 2px solid
+    }
+
+    .sr-easy {
+      background: rgba(0, 184, 148, 0.15);
+      border-color: var(--success);
+      color: var(--success)
+    }
+
+    .sr-easy:hover {
+      background: rgba(0, 184, 148, 0.25)
+    }
+
+    .sr-hard {
+      background: rgba(225, 112, 85, 0.15);
+      border-color: var(--danger);
+      color: var(--danger)
+    }
+
+    .sr-hard:hover {
+      background: rgba(225, 112, 85, 0.25)
+    }
+
+    .sr-counter {
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: #9090b0;
+      margin-top: 16px;
+      text-align: center
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      .nav-links {
+        display: none
+      }
+
+      .hero-stats {
+        gap: 24px
+      }
+
+      .example-header {
+        flex-wrap: wrap
+      }
+    }
+
+    /* SCROLL ANIMATIONS base */
+    .fade-in {
+      opacity: 1;
+      transform: none
+    }
+
+    .scroll-reveal {
+      opacity: 1;
+      transform: none
+    }
+
+    /* MISC */
+    .highlight {
+      color: var(--amber)
+    }
+
+    .text-accent {
+      color: var(--accent)
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 4px
+    }
+
+    .chip-wave {
+      background: rgba(76, 110, 245, 0.15);
+      color: #7a9fff;
+      border: 1px solid rgba(76, 110, 245, 0.3)
+    }
+
+    .chip-em {
+      background: rgba(253, 203, 110, 0.15);
+      color: var(--amber);
+      border: 1px solid rgba(253, 203, 110, 0.3)
+    }
+
+    .sr-card-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center
+    }
+
+    .sr-card-wrap h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 12px
+    }
+
+    .sr-card-wrap p {
+      font-size: 18px;
+      color: #c0c0e0;
+      display: none
+    }
+
+    .sr-card-wrap p.show {
+      display: block
+    }
+
+    .sr-card-wrap .reveal-btn {
+      margin-top: 20px;
+      background: rgba(76, 110, 245, 0.15);
+      border: 1px solid rgba(76, 110, 245, 0.3);
+      color: var(--accent);
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      font-family: 'Inter', sans-serif
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CURTAIN -->
+  <div id="curtain">
+    <h2>⚡ Loading Waves Unit</h2>
+    <p>Preparing your physics lesson…</p>
+    <div class="curtain-bar">
+      <div class="curtain-fill" id="curtain-fill"></div>
+    </div>
+  </div>
+
+  <!-- FORMULA SHEET -->
+  <div id="formula-sheet">
+    <div class="fs-toggle" id="fs-toggle">FORMULAE</div>
+    <div class="fs-content">
+      <h3>📐 Formula Sheet – Unit 10</h3>
+      <div class="fs-item">
+        <h4>Wave Speed</h4><span class="formula">v = f × λ</span>
+      </div>
+      <div class="fs-item">
+        <h4>Time Period</h4><span class="formula">T = 1 / f</span>
+      </div>
+      <div class="fs-item">
+        <h4>Simple Pendulum Period</h4><span class="formula">T = 2π √(L/g)</span>
+      </div>
+      <div class="fs-item">
+        <h4>SHM Acceleration</h4><span class="formula">a = −k × x</span>
+      </div>
+      <div class="fs-item">
+        <h4>Law of Reflection</h4><span class="formula">∠i = ∠r</span>
+      </div>
+      <div class="fs-item">
+        <h4>Snell's Law (Refraction)</h4><span class="formula">n₁ sin θ₁ = n₂ sin θ₂</span>
+      </div>
+      <div class="fs-item">
+        <h4>Frequency</h4><span class="formula">f = cycles / time</span>
+      </div>
+      <div class="fs-item">
+        <h4>g (Earth)</h4><span class="formula">g ≈ 9.8 m/s²</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-brand">⚡ Unit 10 · Waves</div>
+    <div class="nav-links">
+      <a href="#objectives">Objectives</a>
+      <a href="#theory">Theory</a>
+      <a href="#visualization">3D Viz</a>
+      <a href="#examples">Examples</a>
+      <a href="#practice">Practice</a>
+      <a href="#mock-test">Mock Test</a>
+      <a href="#mindmap">Mind Map</a>
+      <a href="#revision">Revision</a>
+      <a href="#performance">Performance</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">CLASS 10 · PHYSICS · UNIT 10</div>
+      <h1>General <span>Waves</span><br>Properties</h1>
+      <p class="hero-sub">Master wave fundamentals: formation, transverse & longitudinal waves, SHM, reflection,
+        refraction, and diffraction — all at board exam level.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a href="#theory" class="btn btn-primary">Start Learning →</a>
+        <a href="#practice" class="btn btn-secondary">Practice Questions</a>
+        <a href="#mock-test" class="btn btn-accent">Mock Test</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num" id="stat-topics">0</span><span class="lbl">Topics Covered</span></div>
+        <div class="hero-stat"><span class="num" id="stat-qs">0</span><span class="lbl">Practice Questions</span></div>
+        <div class="hero-stat"><span class="num" id="stat-cards">0</span><span class="lbl">Revision Cards</span></div>
+        <div class="hero-stat"><span class="num" id="stat-formulas">0</span><span class="lbl">Key Formulas</span></div>
+      </div>
+    </div>
+    <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0f0f1a" />
+    </svg>
+  </section>
+
+  <!-- OBJECTIVES -->
+  <section id="objectives">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 01 — LEARNING OBJECTIVES</span>
+        <h2 class="section-title">What You Will Learn</h2>
+        <p class="section-desc">By the end of this unit, you should be able to:</p>
+      </div>
+      <div class="obj-grid">
+        <div class="obj-card">
+          <div class="obj-icon">🌊</div>
+          <div class="obj-text">
+            <h4>Define Waves</h4>
+            <p>Explain how waves form and transfer energy through a medium</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">↕️</div>
+          <div class="obj-text">
+            <h4>Transverse Waves</h4>
+            <p>Identify crests, troughs, amplitude and wavelength in transverse waves</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">↔️</div>
+          <div class="obj-text">
+            <h4>Longitudinal Waves</h4>
+            <p>Describe compressions and rarefactions in longitudinal waves</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">⚡</div>
+          <div class="obj-text">
+            <h4>EM vs Mechanical</h4>
+            <p>Compare electromagnetic and mechanical waves using key properties</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">🔁</div>
+          <div class="obj-text">
+            <h4>Wave Properties</h4>
+            <p>Apply concepts of reflection, refraction, and diffraction</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">📐</div>
+          <div class="obj-text">
+            <h4>Wave Characteristics</h4>
+            <p>Use frequency, wavelength, period, and wave speed in calculations</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">🔄</div>
+          <div class="obj-text">
+            <h4>Simple Harmonic Motion</h4>
+            <p>Explain SHM and prove the pendulum executes SHM</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">🕰️</div>
+          <div class="obj-text">
+            <h4>Pendulum Period</h4>
+            <p>Calculate the time period of a simple pendulum using T = 2π√(L/g)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section id="theory">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 02 — THEORY NOTES</span>
+        <h2 class="section-title">Core Concepts</h2>
+        <p class="section-desc">Detailed theory extracted directly from the syllabus content.</p>
+      </div>
+
+      <!-- Block 1: Waves -->
+      <div class="theory-block">
+        <h3>🌊 What Are Waves? <span class="tag">FOUNDATION</span></h3>
+        <p>Waves are a fundamental concept in physics that describe the <strong class="highlight">transfer of energy and
+            information</strong> through a medium or space. Crucially, waves transfer energy — not matter — from one
+          place to another.</p>
+        <p>Waves are formed when a disturbance or energy input is applied to a medium. This disturbance can be caused by
+          various factors, such as the motion of an object, changes in pressure, or vibrations. Once the initial
+          disturbance occurs, it creates a ripple effect, where neighbouring particles of the medium interact with each
+          other, transmitting the disturbance outward in all directions.</p>
+        <div class="tip-box">
+          <div class="tip-label">✏️ EXAMINER'S TIP</div>
+          <p>A common exam mistake is to say waves transfer matter. Always state: <em>"Waves transfer energy, not
+              matter."</em> This is worth a mark in 2–3 mark questions.</p>
+        </div>
+      </div>
+
+      <!-- Block 2: Ripple Tank -->
+      <div class="theory-block">
+        <h3>💧 Water Wave in a Ripple Tank <span class="tag">EXPERIMENT</span></h3>
+        <p>A ripple tank is a shallow container filled with water used to study wave properties. An overhead light
+          source shines down onto the water surface. The resulting light and dark regions on a screen or the tank's
+          bottom allow observation and study of wave properties like wavelength, frequency, amplitude, and wave speed.
+        </p>
+        <p>The ripple tank is a valuable tool for understanding wave behaviour in a controlled setting. Key observations
+          include the formation of circular wavefronts from a point source and straight wavefronts from a vibrating bar.
+        </p>
+      </div>
+
+      <!-- Block 3: Transverse Waves -->
+      <div class="theory-block">
+        <h3>↕️ Transverse Waves <span class="tag">KEY CONCEPT</span></h3>
+        <p>Transverse waves are a type of wave in which the particles of the medium move <strong
+            class="highlight">perpendicular (at right angles) to the direction</strong> in which the wave is
+          propagating.</p>
+        <div class="theory-two-col">
+          <div>
+            <h4 style="color:var(--amber);font-family:'Bricolage Grotesque',sans-serif;margin-bottom:12px">Regions of
+              Transverse Waves</h4>
+            <div class="prop-item" style="margin-bottom:12px">
+              <h4>1. Amplitude</h4>
+              <p>The maximum displacement or distance that a particle in the medium moves from its equilibrium (rest)
+                position.</p>
+            </div>
+            <div class="prop-item" style="margin-bottom:12px">
+              <h4>2. Crest</h4>
+              <p>The highest point or peak of a transverse wave — maximum positive displacement from equilibrium.</p>
+            </div>
+            <div class="prop-item">
+              <h4>3. Trough</h4>
+              <p>The lowest point of a transverse wave — maximum displacement in the downward direction from
+                equilibrium.</p>
+            </div>
+          </div>
+          <div
+            style="background:#0a0a1a;border-radius:12px;padding:20px;display:flex;align-items:center;justify-content:center;min-height:200px">
+            <svg viewBox="0 0 400 180" style="width:100%;max-width:400px">
+              <defs>
+                <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+                  <polygon points="0 0,8 3,0 6" fill="#FDCB6E" />
+                </marker>
+              </defs>
+              <!-- equilibrium line -->
+              <line x1="20" y1="90" x2="380" y2="90" stroke="#3a3a5c" stroke-width="1.5" stroke-dasharray="4" />
+              <!-- wave -->
+              <path d="M20,90 Q70,20 120,90 Q170,160 220,90 Q270,20 320,90 Q370,160 380,140" stroke="#4C6EF5"
+                stroke-width="3" fill="none" />
+              <!-- labels -->
+              <text x="120" y="14" fill="#FDCB6E" font-size="13" text-anchor="middle"
+                font-family="Fira Code">Crest</text>
+              <line x1="120" y1="22" x2="120" y2="35" stroke="#FDCB6E" stroke-width="1" marker-end="url(#arr)" />
+              <text x="220" y="174" fill="#4C6EF5" font-size="13" text-anchor="middle"
+                font-family="Fira Code">Trough</text>
+              <line x1="220" y1="166" x2="220" y2="155" stroke="#4C6EF5" stroke-width="1" marker-end="url(#arr)" />
+              <!-- amplitude arrow -->
+              <line x1="30" y1="90" x2="30" y2="20" stroke="#00b894" stroke-width="2" marker-end="url(#arr)" />
+              <text x="36" y="55" fill="#00b894" font-size="12" font-family="Fira Code">A</text>
+              <!-- wavelength -->
+              <line x1="20" y1="170" x2="220" y2="170" stroke="#9090b0" stroke-width="1.5" marker-end="url(#arr)" />
+              <line x1="220" y1="170" x2="20" y2="170" stroke="#9090b0" stroke-width="1.5" marker-end="url(#arr)" />
+              <text x="120" y="182" fill="#9090b0" font-size="12" text-anchor="middle" font-family="Fira Code">λ
+                (wavelength)</text>
+            </svg>
+          </div>
+        </div>
+        <div class="tip-box">
+          <div class="tip-label">✏️ EXAMINER'S TIP</div>
+          <p>In transverse waves, particle motion is <em>perpendicular</em> to wave motion. Examples: light, water
+            waves, waves on a rope. Sound is NOT a transverse wave.</p>
+        </div>
+      </div>
+
+      <!-- Block 4: Longitudinal Waves -->
+      <div class="theory-block">
+        <h3>↔️ Longitudinal Waves <span class="tag">KEY CONCEPT</span></h3>
+        <p>Longitudinal waves are a type of wave in which the particles of the medium move <strong
+            class="highlight">parallel to the direction</strong> in which the wave is propagating.</p>
+        <div class="theory-two-col">
+          <div>
+            <div class="prop-item" style="margin-bottom:12px">
+              <h4>1. Compression</h4>
+              <p>A region where particles are close together, resulting in a <strong>high-pressure area</strong>.
+                Corresponds to regions of maximum particle density.</p>
+            </div>
+            <div class="prop-item">
+              <h4>2. Rarefaction</h4>
+              <p>A region where particles are spread out, resulting in a <strong>low-pressure area</strong>. Corresponds
+                to regions of minimum particle density.</p>
+            </div>
+          </div>
+          <div
+            style="background:#0a0a1a;border-radius:12px;padding:20px;display:flex;align-items:center;justify-content:center;min-height:180px">
+            <svg viewBox="0 0 400 140" style="width:100%">
+              <!-- compression waves -->
+              <g>
+                <!-- Compression bands -->
+                <rect x="20" y="30" width="30" height="80" rx="4" fill="rgba(76,110,245,0.3)" stroke="#4C6EF5"
+                  stroke-width="1" />
+                <rect x="80" y="30" width="15" height="80" rx="4" fill="rgba(76,110,245,0.08)" stroke="#3a3a5c"
+                  stroke-width="1" />
+                <rect x="120" y="30" width="30" height="80" rx="4" fill="rgba(76,110,245,0.3)" stroke="#4C6EF5"
+                  stroke-width="1" />
+                <rect x="180" y="30" width="15" height="80" rx="4" fill="rgba(76,110,245,0.08)" stroke="#3a3a5c"
+                  stroke-width="1" />
+                <rect x="220" y="30" width="30" height="80" rx="4" fill="rgba(76,110,245,0.3)" stroke="#4C6EF5"
+                  stroke-width="1" />
+                <rect x="280" y="30" width="15" height="80" rx="4" fill="rgba(76,110,245,0.08)" stroke="#3a3a5c"
+                  stroke-width="1" />
+                <rect x="320" y="30" width="30" height="80" rx="4" fill="rgba(76,110,245,0.3)" stroke="#4C6EF5"
+                  stroke-width="1" />
+                <text x="35" y="125" fill="#4C6EF5" font-size="11" text-anchor="middle" font-family="Fira Code">C</text>
+                <text x="88" y="125" fill="#9090b0" font-size="11" text-anchor="middle" font-family="Fira Code">R</text>
+                <text x="135" y="125" fill="#4C6EF5" font-size="11" text-anchor="middle"
+                  font-family="Fira Code">C</text>
+                <text x="188" y="125" fill="#9090b0" font-size="11" text-anchor="middle"
+                  font-family="Fira Code">R</text>
+                <text x="235" y="125" fill="#4C6EF5" font-size="11" text-anchor="middle"
+                  font-family="Fira Code">C</text>
+                <text x="288" y="125" fill="#9090b0" font-size="11" text-anchor="middle"
+                  font-family="Fira Code">R</text>
+                <text x="335" y="125" fill="#4C6EF5" font-size="11" text-anchor="middle"
+                  font-family="Fira Code">C</text>
+              </g>
+              <!-- wavelength -->
+              <line x1="20" y1="12" x2="120" y2="12" stroke="#FDCB6E" stroke-width="1.5" />
+              <text x="70" y="10" fill="#FDCB6E" font-size="11" text-anchor="middle" font-family="Fira Code">λ</text>
+              <text x="200" y="22" fill="#9090b0" font-size="11" text-anchor="middle" font-family="Fira Code">C =
+                Compression R = Rarefaction</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 5: EM vs Mechanical -->
+      <div class="theory-block">
+        <h3>⚡ Electromagnetic vs Mechanical Waves <span class="tag">COMPARISON</span></h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Electromagnetic Waves</th>
+                <th>Mechanical Waves</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nature</td>
+                <td><span class="badge badge-em">Transverse Oscillating Fields</span></td>
+                <td><span class="badge badge-mech">Longitudinal / Transverse</span></td>
+              </tr>
+              <tr>
+                <td>Medium Requirement</td>
+                <td>No medium needed</td>
+                <td>Require a medium</td>
+              </tr>
+              <tr>
+                <td>Propagation</td>
+                <td>Can travel through vacuum</td>
+                <td>Need a physical medium</td>
+              </tr>
+              <tr>
+                <td>Speed</td>
+                <td>Speed of light in vacuum (3×10⁸ m/s)</td>
+                <td>Speed depends on medium</td>
+              </tr>
+              <tr>
+                <td>Interaction</td>
+                <td>Interact with charged particles</td>
+                <td>Interact with medium</td>
+              </tr>
+              <tr>
+                <td>Polarization</td>
+                <td>Can be polarized</td>
+                <td>Polarization possible (transverse only)</td>
+              </tr>
+              <tr>
+                <td>Examples</td>
+                <td>Radio waves, light, X-rays</td>
+                <td>Sound, water, seismic waves</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip-box">
+          <div class="tip-label">✏️ EXAMINER'S TIP</div>
+          <p>Sound cannot travel through a vacuum — it is a mechanical wave. Light can travel through a vacuum — it is
+            an electromagnetic wave. This distinction is very frequently tested!</p>
+        </div>
+      </div>
+
+      <!-- Block 6: Wave Properties -->
+      <div class="theory-block">
+        <h3>🔁 Properties of Waves <span class="tag">CORE</span></h3>
+        <p>Wave properties describe behaviour when waves encounter boundaries or changes in medium.</p>
+        <div class="props-list">
+          <div class="prop-item">
+            <h4>🪞 Reflection</h4>
+            <p>The bouncing back of a wave when it encounters a boundary or obstacle. Follows the law: <strong>angle of
+                incidence = angle of reflection</strong>.</p>
+          </div>
+          <div class="prop-item">
+            <h4>🔀 Refraction</h4>
+            <p>The bending of a wave as it passes from one medium to another with different propagation speeds. The
+              direction changes at the boundary.</p>
+          </div>
+          <div class="prop-item">
+            <h4>🌀 Diffraction</h4>
+            <p>The bending and spreading out of a wave as it encounters an obstacle or passes through an opening
+              (aperture). Significant when obstacle size ≤ wavelength.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 7: Wave Characteristics -->
+      <div class="theory-block">
+        <h3>📏 Characteristics of Waves <span class="tag">FORMULAE</span></h3>
+        <div class="props-list">
+          <div class="prop-item">
+            <h4>Wavelength (λ)</h4>
+            <p>Distance between two successive points in phase. For transverse: crest to crest. For longitudinal:
+              compression to compression.</p>
+          </div>
+          <div class="prop-item">
+            <h4>Frequency (f)</h4>
+            <p>Number of complete oscillations per second. Unit: <strong>hertz (Hz)</strong>.</p>
+          </div>
+          <div class="prop-item">
+            <h4>Time Period (T)</h4>
+            <p>Time for one complete oscillation. T = 1/f. Unit: <strong>seconds (s)</strong>.</p>
+          </div>
+          <div class="prop-item">
+            <h4>Wave Speed (v)</h4>
+            <p>Rate at which the wave propagates through the medium. v = f × λ</p>
+          </div>
+          <div class="prop-item">
+            <h4>Amplitude</h4>
+            <p>Maximum displacement from the equilibrium position. Related to the energy carried by the wave.</p>
+          </div>
+          <div class="prop-item">
+            <h4>Wave Front</h4>
+            <p>An imaginary surface that connects all points of a wave that are in the same phase.</p>
+          </div>
+        </div>
+        <div class="formula-box">
+          <span class="formula">v = f × λ</span>
+          <span class="formula-desc">Wave speed = frequency × wavelength | T = 1/f</span>
+        </div>
+      </div>
+
+      <!-- Block 8: SHM -->
+      <div class="theory-block">
+        <h3>🔄 Simple Harmonic Motion (SHM) <span class="tag">ADVANCED</span></h3>
+        <p>A motion repeating itself in an equal time interval is referred to as <strong class="highlight">periodic or
+            oscillatory motion</strong>.</p>
+        <p>When an object oscillates about a fixed position (mean position) and its acceleration is directly
+          proportional to its displacement from the mean position, and is always directed towards the mean position, the
+          motion is called <strong class="highlight">Simple Harmonic Motion (SHM)</strong>.</p>
+        <div class="formula-box">
+          <span class="formula">a ∝ −x &nbsp;&nbsp;→&nbsp;&nbsp; a = −kx</span>
+          <span class="formula-desc">Acceleration is proportional to displacement, directed toward mean position. k =
+            spring constant.</span>
+        </div>
+        <p>Many phenomena exhibit SHM including: electromagnetic waves, alternating current circuits, musical
+          instruments, bridges, and molecular motion.</p>
+      </div>
+
+      <!-- Block 9: Simple Pendulum -->
+      <div class="theory-block">
+        <h3>🕰️ Simple Pendulum & Proof of SHM <span class="tag">PROOF</span></h3>
+        <p>A simple pendulum is a point mass suspended by a weightless, inextensible string from a rigid support that
+          swings back and forth under the influence of gravity.</p>
+        <div class="theory-two-col">
+          <div>
+            <h4 style="color:var(--amber);font-family:'Bricolage Grotesque',sans-serif;margin-bottom:12px">Forces on a
+              Displaced Pendulum</h4>
+            <p>When the bob is displaced by a small angle θ, two forces act:</p>
+            <ul style="margin:12px 0 12px 20px;color:#c0c0e0;font-size:18px;line-height:2">
+              <li><strong>Tension T</strong> — along the string/rod</li>
+              <li><strong>Weight W = mg</strong> — acting vertically downward, resolved into: <br>mgsinθ (restoring
+                force) and mgcosθ (along string)</li>
+            </ul>
+            <p>The restoring force −mgsinθ is proportional to displacement (for small θ, sinθ ≈ θ). Thus acceleration ∝
+              −displacement → <strong class="highlight">SHM is proved</strong>.</p>
+            <p>Energy exchange: PE is maximum at extremes (A, B); KE is maximum at mean position (O).</p>
+          </div>
+          <div
+            style="background:#0a0a1a;border-radius:12px;padding:20px;display:flex;align-items:center;justify-content:center">
+            <svg viewBox="0 0 260 280" style="width:100%;max-width:280px">
+              <!-- pivot -->
+              <line x1="130" y1="10" x2="80" y2="10" stroke="#3a3a5c" stroke-width="3" />
+              <line x1="130" y1="10" x2="180" y2="10" stroke="#3a3a5c" stroke-width="3" />
+              <!-- strings -->
+              <line x1="130" y1="10" x2="130" y2="200" stroke="#9090b0" stroke-width="1.5" stroke-dasharray="4" />
+              <line x1="130" y1="10" x2="90" y2="200" stroke="#FDCB6E" stroke-width="2" />
+              <!-- bob -->
+              <circle cx="90" cy="205" r="16" fill="#4C6EF5" stroke="#FDCB6E" stroke-width="2" />
+              <!-- angle arc -->
+              <path d="M130,50 A40,40 0 0,0 110,75" stroke="#FDCB6E" stroke-width="1.5" fill="none" />
+              <text x="118" y="68" fill="#FDCB6E" font-size="14" font-family="Fira Code">θ</text>
+              <!-- L label -->
+              <text x="104" y="110" fill="#9090b0" font-size="14" font-family="Fira Code">L</text>
+              <!-- T arrow -->
+              <line x1="90" y1="190" x2="105" y2="80" stroke="#00b894" stroke-width="2" />
+              <text x="110" y="100" fill="#00b894" font-size="13" font-family="Fira Code">T</text>
+              <!-- mg -->
+              <line x1="90" y1="220" x2="90" y2="258" stroke="#e17055" stroke-width="2" />
+              <text x="95" y="252" fill="#e17055" font-size="13" font-family="Fira Code">mg</text>
+              <!-- components -->
+              <line x1="90" y1="205" x2="55" y2="245" stroke="#FDCB6E" stroke-width="1.5" stroke-dasharray="3" />
+              <text x="20" y="250" fill="#FDCB6E" font-size="11" font-family="Fira Code">mgsinθ</text>
+            </svg>
+          </div>
+        </div>
+        <div class="formula-box">
+          <span class="formula">T = 2π √(L / g)</span>
+          <span class="formula-desc">T = period (s) | L = length of pendulum (m) | g = acceleration due to gravity (9.8
+            m/s²)</span>
+        </div>
+        <div class="tip-box">
+          <div class="tip-label">✏️ EXAMINER'S TIP</div>
+          <p>The period of a simple pendulum depends ONLY on its length (L) and g — it does NOT depend on the mass of
+            the bob or the amplitude (for small angles). This is a classic exam trap!</p>
+        </div>
+      </div>
+
+      <!-- Block 10: Damped System -->
+      <div class="theory-block">
+        <h3>📉 Damped System & Damped Oscillation <span class="tag">EXTENSION</span></h3>
+        <p>A <strong class="highlight">damped system</strong> is a mechanical system that experiences a dissipation of
+          energy, causing the amplitude of its oscillations to decrease over time. This energy is usually lost to
+          friction or air resistance.</p>
+        <p>In a <strong class="highlight">ball and bowl system</strong>, a ball placed in a bowl-shaped hollow moves
+          back and forth inside when displaced. The ball experiences a restoring force directed toward the centre,
+          proportional to its displacement — this is SHM. Over time, friction causes damping and the oscillations die
+          out.</p>
+        <div style="background:#0a0a1a;border-radius:12px;padding:20px;margin-top:16px">
+          <svg viewBox="0 0 500 150" style="width:100%;max-height:150px">
+            <!-- Damped wave -->
+            <path
+              d="M10,75 Q35,20 60,75 Q85,130 110,75 Q125,40 140,75 Q155,110 170,75 Q180,50 190,75 Q200,100 210,75 Q216,60 222,75 Q228,90 234,75 Q238,66 242,75 Q246,84 250,75 Q252,70 254,75 Q256,80 258,75 L490,75"
+              stroke="#4C6EF5" stroke-width="2.5" fill="none" />
+            <!-- envelope -->
+            <path d="M10,75 Q60,10 110,75 Q160,140 210,75 Q250,45 490,75" stroke="#FDCB6E" stroke-width="1.5"
+              fill="none" stroke-dasharray="6" />
+            <path d="M10,75 Q60,140 110,75 Q160,10 210,75 Q250,105 490,75" stroke="#FDCB6E" stroke-width="1.5"
+              fill="none" stroke-dasharray="6" />
+            <line x1="10" y1="75" x2="490" y2="75" stroke="#3a3a5c" stroke-width="1" stroke-dasharray="3" />
+            <text x="480" y="70" fill="#9090b0" font-size="12" font-family="Fira Code">t</text>
+            <text x="10" y="15" fill="#FDCB6E" font-size="12" font-family="Fira Code">Amplitude decreases → Energy
+              dissipated</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3D VISUALIZATION -->
+  <section id="visualization">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 03 — INTERACTIVE 3D</span>
+        <h2 class="section-title">Wave Visualizer</h2>
+        <p class="section-desc">Interact with a live 3D transverse wave simulation. Change frequency, amplitude, and
+          wave type.</p>
+      </div>
+      <div class="viz-container">
+        <canvas id="wave-canvas" width="900" height="400"></canvas>
+        <div id="viz-fallback" class="viz-fallback">
+          <span>🌊</span>
+          <p>3D visualization not available in this browser.<br>Please use a browser with WebGL support.</p>
+        </div>
+        <div class="viz-controls">
+          <button class="viz-btn active" id="btn-transverse">Transverse Wave</button>
+          <button class="viz-btn" id="btn-longitudinal">Longitudinal Wave</button>
+          <button class="viz-btn" id="btn-increase-freq">+ Frequency</button>
+          <button class="viz-btn" id="btn-decrease-freq">− Frequency</button>
+          <button class="viz-btn" id="btn-increase-amp">+ Amplitude</button>
+          <button class="viz-btn" id="btn-decrease-amp">− Amplitude</button>
+          <button class="viz-btn" id="btn-reset-viz">↺ Reset</button>
+          <button class="viz-btn" id="btn-snapshot">📷 Snapshot</button>
+        </div>
+        <div class="viz-info">
+          <div class="viz-metric"><span class="val" id="viz-freq">1.0 Hz</span><span class="lbl">Frequency</span></div>
+          <div class="viz-metric"><span class="val" id="viz-amp">1.0</span><span class="lbl">Amplitude</span></div>
+          <div class="viz-metric"><span class="val" id="viz-wave">Transverse</span><span class="lbl">Wave Type</span>
+          </div>
+          <div class="viz-metric"><span class="val" id="viz-lambda">--</span><span class="lbl">Wavelength</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKED EXAMPLES -->
+  <section id="examples">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 04 — WORKED EXAM EXAMPLES</span>
+        <h2 class="section-title">Solved Problems</h2>
+        <p class="section-desc">Step-by-step solutions to typical board exam questions.</p>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-num">1</div>
+          <h3>Calculate wave speed given frequency and wavelength</h3>
+        </div>
+        <div class="example-body">
+          <p style="font-size:18px;color:#c0c0e0;margin-bottom:20px"><strong>Question:</strong> A wave has a frequency
+            of 500 Hz and a wavelength of 0.68 m. Calculate the wave speed.</p>
+          <ul class="step-list">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Identify the formula</strong>
+                <p>Wave speed formula:</p><span class="step-formula">v = f × λ</span>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>List given values</strong>
+                <p>Frequency f = 500 Hz, Wavelength λ = 0.68 m</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Substitute and calculate</strong><span class="step-formula">v = 500 ×
+                  0.68 = 340 m/s</span></div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>State the answer</strong>
+                <p>Wave speed <strong class="highlight">v = 340 m/s</strong> (which is the speed of sound in air at room
+                  temperature — a good sanity check!)</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-num">2</div>
+          <h3>Calculate the period of a simple pendulum</h3>
+        </div>
+        <div class="example-body">
+          <p style="font-size:18px;color:#c0c0e0;margin-bottom:20px"><strong>Question:</strong> A simple pendulum has a
+            length of 0.25 m. Calculate its time period. (g = 9.8 m/s²)</p>
+          <ul class="step-list">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Identify the formula</strong><span class="step-formula">T = 2π
+                  √(L/g)</span></div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Substitute values</strong><span class="step-formula">T = 2π √(0.25 /
+                  9.8)</span></div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Calculate step by step</strong><span class="step-formula">L/g = 0.25/9.8
+                  = 0.02551 → √0.02551 = 0.1597</span></div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Final calculation</strong><span class="step-formula">T = 2 × 3.1416 ×
+                  0.1597 ≈ 1.003 s</span></div>
+            </li>
+            <li>
+              <div class="step-num">5</div>
+              <div class="step-content"><strong>State the answer</strong>
+                <p><strong class="highlight">T ≈ 1.0 s</strong>. Note: The period does NOT depend on the mass of the
+                  bob.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-num">3</div>
+          <h3>Find the frequency and wavelength from wave speed and period</h3>
+        </div>
+        <div class="example-body">
+          <p style="font-size:18px;color:#c0c0e0;margin-bottom:20px"><strong>Question:</strong> A wave travels at 330
+            m/s with a time period of 0.002 s. Find: (a) the frequency, (b) the wavelength.</p>
+          <ul class="step-list">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Part (a) — Find frequency</strong><span class="step-formula">f = 1/T =
+                  1/0.002 = 500 Hz</span></div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Part (b) — Find wavelength</strong>
+                <p>Rearrange v = f × λ → λ = v/f</p><span class="step-formula">λ = 330/500 = 0.66 m</span>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Final answers</strong>
+                <p>Frequency = <strong class="highlight">500 Hz</strong>, Wavelength = <strong class="highlight">0.66
+                    m</strong></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-num">4</div>
+          <h3>Prove a pendulum's motion is SHM (short answer)</h3>
+        </div>
+        <div class="example-body">
+          <p style="font-size:18px;color:#c0c0e0;margin-bottom:20px"><strong>Question:</strong> Explain why the motion
+            of a simple pendulum is Simple Harmonic Motion.</p>
+          <ul class="step-list">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>State definition of SHM</strong>
+                <p>SHM requires: acceleration is directly proportional to displacement from mean position and always
+                  directed toward the mean position: a = −kx</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Identify restoring force</strong>
+                <p>For a displaced pendulum, the component of weight along the arc is the restoring force: F = −mg sin
+                  θ. For small angles, sin θ ≈ θ, so F ∝ −θ ∝ −x.</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Link to SHM condition</strong>
+                <p>Since F ∝ −x, then by Newton's 2nd law: ma ∝ −x, so a ∝ −x. This satisfies the condition for SHM. ✓
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Conclusion</strong>
+                <p>The motion of a simple pendulum (for small angles) satisfies the SHM condition and therefore <strong
+                    class="highlight">executes Simple Harmonic Motion</strong>.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 05 — PRACTICE QUESTIONS</span>
+        <h2 class="section-title">Question Bank</h2>
+        <p class="section-desc">20 randomised questions with 3-level hints and instant feedback.</p>
+      </div>
+      <div class="practice-controls">
+        <button class="btn btn-primary" id="btn-new-q">🔀 New Question</button>
+        <button class="btn btn-secondary" id="btn-show-all">Show All Questions</button>
+        <span style="color:#9090b0;font-size:17px" id="score-tracker">Score: 0 / 0</span>
+      </div>
+      <div id="practice-area"></div>
+      <div id="score-display" class="score-display">
+        <div class="score-big" id="final-score-num">0/20</div>
+        <div class="score-label">Questions Answered</div>
+        <button class="btn btn-primary" style="margin-top:24px" id="btn-restart-practice">🔄 Restart Practice</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOCK TEST -->
+  <section id="mock-test">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 06 — MOCK TEST</span>
+        <h2 class="section-title">Timed Mock Exam</h2>
+        <p class="section-desc">Full exam simulation: 20 questions, 25-minute timer, auto-scored with topic breakdown.
+        </p>
+      </div>
+      <div id="mock-start-screen">
+        <h3>📝 Mock Exam — Unit 10</h3>
+        <p>20 multiple choice questions covering all wave topics. Time limit: 25 minutes. Results will show your weak
+          areas.</p>
+        <button class="btn btn-primary" style="font-size:18px;padding:16px 40px" id="btn-start-mock">Start Mock
+          Exam</button>
+      </div>
+      <div id="mock-test-area" style="display:none">
+        <div class="mock-header">
+          <div class="timer-display" id="mock-timer">25:00</div>
+          <div style="flex:1">
+            <div style="font-size:17px;color:#9090b0">Question <span id="mock-q-num">1</span> of 20</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar">
+                <div class="progress-fill" id="mock-progress" style="width:5%"></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-secondary" id="btn-submit-mock">Submit Test</button>
+        </div>
+        <div id="mock-question-container"></div>
+      </div>
+      <div id="mock-results" style="display:none">
+        <div
+          style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:40px;text-align:center;margin-bottom:28px">
+          <div class="score-big" id="mock-final-score">--</div>
+          <div class="score-label">Mock Exam Score</div>
+          <div style="margin-top:20px;font-size:18px;color:#c0c0e0" id="mock-feedback"></div>
+        </div>
+        <div id="mock-breakdown"
+          style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:28px"></div>
+        <div style="text-align:center;margin-top:24px">
+          <button class="btn btn-primary" id="btn-retake-mock">🔄 Retake Mock</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIND MAP -->
+  <section id="mindmap">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 07 — MIND MAP</span>
+        <h2 class="section-title">Topic Overview</h2>
+        <p class="section-desc">Visual connections between all wave concepts.</p>
+      </div>
+      <div class="mindmap-wrap">
+        <svg id="mindmap-svg" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg"
+          style="min-height:500px;width:100%">
+          <!-- Central node -->
+          <g id="mm-center" opacity="1">
+            <ellipse cx="450" cy="280" rx="80" ry="42" fill="rgba(76,110,245,0.3)" stroke="#4C6EF5" stroke-width="2" />
+            <text x="450" y="275" text-anchor="middle" fill="white" font-family="Bricolage Grotesque,sans-serif"
+              font-weight="700" font-size="15">WAVES</text>
+            <text x="450" y="293" text-anchor="middle" fill="#9090b0" font-family="Inter,sans-serif" font-size="12">Unit
+              10</text>
+          </g>
+          <!-- Branch 1: Formation -->
+          <g id="mm-b1" opacity="1">
+            <line x1="380" y1="255" x2="220" y2="140" stroke="rgba(253,203,110,0.4)" stroke-width="2" />
+            <ellipse cx="180" cy="120" rx="72" ry="32" fill="rgba(253,203,110,0.15)" stroke="#FDCB6E"
+              stroke-width="1.5" />
+            <text x="180" y="116" text-anchor="middle" fill="#FDCB6E" font-family="Bricolage Grotesque,sans-serif"
+              font-size="13" font-weight="600">Formation</text>
+            <text x="180" y="131" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif"
+              font-size="11">Disturbance → Ripple</text>
+          </g>
+          <!-- Branch 2: Types -->
+          <g id="mm-b2" opacity="1">
+            <line x1="450" y1="238" x2="450" y2="110" stroke="rgba(76,110,245,0.4)" stroke-width="2" />
+            <ellipse cx="450" cy="88" rx="90" ry="32" fill="rgba(76,110,245,0.2)" stroke="#4C6EF5" stroke-width="1.5" />
+            <text x="450" y="84" text-anchor="middle" fill="#7a9fff" font-family="Bricolage Grotesque,sans-serif"
+              font-size="13" font-weight="600">Wave Types</text>
+            <text x="450" y="99" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif"
+              font-size="11">Transverse | Longitudinal</text>
+            <!-- Sub: Transverse -->
+            <line x1="390" y1="68" x2="300" y2="42" stroke="rgba(76,110,245,0.3)" stroke-width="1.5" />
+            <rect x="220" y="22" width="80" height="32" rx="8" fill="rgba(76,110,245,0.1)" stroke="#4C6EF5"
+              stroke-width="1" />
+            <text x="260" y="36" text-anchor="middle" fill="#7a9fff" font-family="Inter,sans-serif"
+              font-size="11">Transverse</text>
+            <text x="260" y="48" text-anchor="middle" fill="#9090b0" font-family="Inter,sans-serif"
+              font-size="10">Crest/Trough</text>
+            <!-- Sub: Longitudinal -->
+            <line x1="510" y1="68" x2="600" y2="42" stroke="rgba(76,110,245,0.3)" stroke-width="1.5" />
+            <rect x="590" y="22" width="90" height="32" rx="8" fill="rgba(76,110,245,0.1)" stroke="#4C6EF5"
+              stroke-width="1" />
+            <text x="635" y="36" text-anchor="middle" fill="#7a9fff" font-family="Inter,sans-serif"
+              font-size="11">Longitudinal</text>
+            <text x="635" y="48" text-anchor="middle" fill="#9090b0" font-family="Inter,sans-serif"
+              font-size="10">Comp/Rarefaction</text>
+          </g>
+          <!-- Branch 3: Properties -->
+          <g id="mm-b3" opacity="1">
+            <line x1="520" y1="258" x2="680" y2="170" stroke="rgba(0,184,148,0.4)" stroke-width="2" />
+            <ellipse cx="740" cy="145" rx="90" ry="32" fill="rgba(0,184,148,0.15)" stroke="#00b894"
+              stroke-width="1.5" />
+            <text x="740" y="141" text-anchor="middle" fill="#00b894" font-family="Bricolage Grotesque,sans-serif"
+              font-size="13" font-weight="600">Properties</text>
+            <text x="740" y="156" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif"
+              font-size="11">Reflect | Refract | Diffract</text>
+          </g>
+          <!-- Branch 4: Characteristics -->
+          <g id="mm-b4" opacity="1">
+            <line x1="525" y1="295" x2="700" y2="310" stroke="rgba(225,112,85,0.4)" stroke-width="2" />
+            <ellipse cx="790" cy="312" rx="95" ry="32" fill="rgba(225,112,85,0.15)" stroke="#e17055"
+              stroke-width="1.5" />
+            <text x="790" y="308" text-anchor="middle" fill="#e17055" font-family="Bricolage Grotesque,sans-serif"
+              font-size="13" font-weight="600">Characteristics</text>
+            <text x="790" y="323" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif" font-size="11">f,
+              λ, T, v, Amplitude</text>
+          </g>
+          <!-- Branch 5: SHM -->
+          <g id="mm-b5" opacity="1">
+            <line x1="450" y1="322" x2="450" y2="440" stroke="rgba(253,203,110,0.4)" stroke-width="2" />
+            <ellipse cx="450" cy="470" rx="90" ry="32" fill="rgba(253,203,110,0.15)" stroke="#FDCB6E"
+              stroke-width="1.5" />
+            <text x="450" y="466" text-anchor="middle" fill="#FDCB6E" font-family="Bricolage Grotesque,sans-serif"
+              font-size="13" font-weight="600">SHM</text>
+            <text x="450" y="481" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif" font-size="11">a =
+              −kx | Pendulum</text>
+            <!-- sub SHM nodes -->
+            <line x1="380" y1="475" x2="280" y2="510" stroke="rgba(253,203,110,0.25)" stroke-width="1.5" />
+            <rect x="195" y="496" width="90" height="32" rx="8" fill="rgba(253,203,110,0.08)"
+              stroke="rgba(253,203,110,0.3)" stroke-width="1" />
+            <text x="240" y="510" text-anchor="middle" fill="#FDCB6E" font-family="Inter,sans-serif"
+              font-size="11">Pendulum</text>
+            <text x="240" y="522" text-anchor="middle" fill="#9090b0" font-family="Inter,sans-serif"
+              font-size="10">T=2π√(L/g)</text>
+            <line x1="520" y1="475" x2="620" y2="510" stroke="rgba(253,203,110,0.25)" stroke-width="1.5" />
+            <rect x="614" y="496" width="90" height="32" rx="8" fill="rgba(253,203,110,0.08)"
+              stroke="rgba(253,203,110,0.3)" stroke-width="1" />
+            <text x="659" y="510" text-anchor="middle" fill="#FDCB6E" font-family="Inter,sans-serif" font-size="11">Ball
+              &amp; Bowl</text>
+            <text x="659" y="522" text-anchor="middle" fill="#9090b0" font-family="Inter,sans-serif"
+              font-size="10">Restoring Force</text>
+          </g>
+          <!-- Branch 6: EM vs Mechanical -->
+          <g id="mm-b6" opacity="1">
+            <line x1="375" y1="265" x2="220" y2="320" stroke="rgba(122,159,255,0.4)" stroke-width="2" />
+            <ellipse cx="155" cy="335" rx="95" ry="32" fill="rgba(76,110,245,0.1)" stroke="#7a9fff"
+              stroke-width="1.5" />
+            <text x="155" y="331" text-anchor="middle" fill="#7a9fff" font-family="Bricolage Grotesque,sans-serif"
+              font-size="12" font-weight="600">EM vs Mechanical</text>
+            <text x="155" y="346" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif"
+              font-size="10">Vacuum | Medium</text>
+          </g>
+          <!-- Branch 7: Damping -->
+          <g id="mm-b7" opacity="1">
+            <line x1="385" y1="305" x2="230" y2="415" stroke="rgba(122,159,255,0.3)" stroke-width="2" />
+            <ellipse cx="175" cy="430" rx="80" ry="30" fill="rgba(76,110,245,0.08)" stroke="#7a9fff"
+              stroke-width="1.5" />
+            <text x="175" y="426" text-anchor="middle" fill="#7a9fff" font-family="Bricolage Grotesque,sans-serif"
+              font-size="12" font-weight="600">Damping</text>
+            <text x="175" y="441" text-anchor="middle" fill="#c0c0e0" font-family="Inter,sans-serif"
+              font-size="10">Amplitude ↓ over time</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVISION FLIP CARDS -->
+  <section id="revision">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 08 — QUICK REVISION</span>
+        <h2 class="section-title">Flip Cards</h2>
+        <p class="section-desc">Click each card to reveal the answer. Great for last-minute revision.</p>
+      </div>
+      <div class="flip-grid" id="flip-grid"></div>
+
+      <div class="divider" style="margin:48px 0"></div>
+
+      <!-- Spaced Repetition -->
+      <div class="section-header">
+        <span class="section-num">// 08b — SPACED REPETITION</span>
+        <h2 class="section-title">Smart Flashcards</h2>
+        <p class="section-desc">Rate your confidence — cards you struggle with appear more often. Progress saved
+          locally.</p>
+      </div>
+      <div class="sr-card-wrap" id="sr-card">
+        <h3 id="sr-question">Loading...</h3>
+        <button class="reveal-btn" id="sr-reveal-btn" onclick="srReveal()">Reveal Answer</button>
+        <p id="sr-answer"></p>
+      </div>
+      <div class="sr-controls">
+        <button class="sr-btn sr-easy" onclick="srRate('easy')">😊 Easy</button>
+        <button class="sr-btn sr-hard" onclick="srRate('hard')">😓 Hard</button>
+      </div>
+      <div class="sr-counter" id="sr-counter">Card 1 of 12</div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE -->
+  <section id="performance">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">// 09 — PERFORMANCE TRACKER</span>
+        <h2 class="section-title">Your Progress</h2>
+        <p class="section-desc">Topic-by-topic performance breakdown from your practice sessions.</p>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="radar-chart" width="500" height="500" style="max-width:500px;margin:0 auto;display:block"></canvas>
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <button class="btn btn-secondary" id="btn-reset-stats">🗑️ Reset Stats</button>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#0a0a15;border-top:1px solid var(--border);padding:40px;text-align:center">
+    <p style="font-size:17px;color:#9090b0">Unit 10 · General Waves Properties · Class 10 Physics · Digital School</p>
+    <p style="font-size:14px;color:#5a5a7a;margin-top:8px">Board Exam Preparation Material — Version 1.0</p>
+  </footer>
+
+  <script>
+    // ============================================================
+    // QUESTION BANK (20 questions)
+    // ============================================================
+    const QUESTIONS = [
+      { id: 1, topic: 'Wave Basics', q: 'Which of the following best describes what waves transfer?', opts: ['Matter only', 'Energy only', 'Both matter and energy', 'Neither matter nor energy'], ans: 1, hints: ['Think about what happens when a wave passes through water — do the water particles travel far?', 'The water molecules move up and down but don\'t travel with the wave.', 'Waves transfer ENERGY, not matter.'] },
+      { id: 2, topic: 'Wave Types', q: 'In a transverse wave, how do particles of the medium move relative to the wave direction?', opts: ['Parallel to wave direction', 'Perpendicular to wave direction', 'In circular paths', 'They do not move'], ans: 1, hints: ['Think about a wave on a rope.', 'The rope moves up and down while the wave travels sideways.', 'Perpendicular means at right angles (90°).'] },
+      { id: 3, topic: 'Wave Types', q: 'In a longitudinal wave, regions of high pressure are called:', opts: ['Crests', 'Troughs', 'Compressions', 'Rarefactions'], ans: 2, hints: ['Think about where particles are squashed together.', 'High pressure = particles close together.', 'The answer begins with "C".'] },
+      { id: 4, topic: 'Wave Types', q: 'Which of these is an example of a transverse wave?', opts: ['Sound wave in air', 'Seismic P-wave', 'Light wave', 'All of the above'], ans: 2, hints: ['Sound is a longitudinal wave.', 'Seismic P-waves are also longitudinal.', 'Light is an electromagnetic wave — what type of wave is EM?'] },
+      { id: 5, topic: 'EM vs Mechanical', q: 'Which of the following can travel through a vacuum?', opts: ['Sound waves', 'Water waves', 'Light waves', 'Seismic waves'], ans: 2, hints: ['Mechanical waves need a medium.', 'Sound is a mechanical wave.', 'Electromagnetic waves do not need a medium.'] },
+      { id: 6, topic: 'Wave Characteristics', q: 'A wave has frequency 200 Hz and wavelength 1.5 m. What is its speed?', opts: ['133.3 m/s', '300 m/s', '201.5 m/s', '198.5 m/s'], ans: 1, hints: ['Use the wave equation.', 'v = f × λ', 'v = 200 × 1.5 = ?'] },
+      { id: 7, topic: 'Wave Characteristics', q: 'If the time period of a wave is 0.01 s, what is its frequency?', opts: ['0.01 Hz', '10 Hz', '100 Hz', '1000 Hz'], ans: 2, hints: ['Use T = 1/f, rearranged.', 'f = 1/T', 'f = 1/0.01 = ?'] },
+      { id: 8, topic: 'SHM', q: 'In Simple Harmonic Motion, the acceleration of the object is:', opts: ['Constant', 'Directly proportional to displacement, directed away from mean position', 'Directly proportional to displacement, directed toward mean position', 'Zero at all times'], ans: 2, hints: ['The restoring force always acts toward equilibrium.', 'a = −kx — what does the negative sign mean?', 'The acceleration always points back toward the mean (rest) position.'] },
+      { id: 9, topic: 'Simple Pendulum', q: 'The time period of a simple pendulum depends on:', opts: ['Mass of the bob only', 'Length of the pendulum only', 'Both mass and length', 'Neither mass nor length'], ans: 1, hints: ['T = 2π√(L/g) — look at the formula.', 'Does "m" (mass) appear in the formula?', 'Only L and g appear in the formula.'] },
+      { id: 10, topic: 'Simple Pendulum', q: 'A pendulum of length 1 m has period T₁. If the length is increased to 4 m, what is the new period?', opts: ['T₁/2', 'T₁', '2T₁', '4T₁'], ans: 2, hints: ['T = 2π√(L/g)', 'If L increases by factor 4, √L increases by √4 = 2', 'New T = 2 × old T = 2T₁.'] },
+      { id: 11, topic: 'Reflection', q: 'The law of reflection states that:', opts: ['Angle of incidence > angle of reflection', 'Angle of incidence = angle of reflection', 'Angle of incidence < angle of reflection', 'Angles are measured from the surface, not the normal'], ans: 1, hints: ['This law applies to all waves.', 'Angles are always measured from the NORMAL (perpendicular to the surface).', '∠i = ∠r'] },
+      { id: 12, topic: 'Refraction', q: 'Refraction of a wave occurs because:', opts: ['The wave bounces off a surface', 'The wave changes speed when entering a new medium', 'The wave bends around an obstacle', 'The wave amplified in the new medium'], ans: 1, hints: ['Think about what happens to light entering water.', 'The direction changes — but why?', 'Speed changes → direction changes (unless wave hits perpendicular).'] },
+      { id: 13, topic: 'Diffraction', q: 'Diffraction is most significant when:', opts: ['Wavelength is much smaller than the gap size', 'Wavelength equals or is larger than the gap size', 'The wave travels very fast', 'The amplitude is large'], ans: 1, hints: ['Think about sound bending around corners more than light does.', 'Sound has a longer wavelength than light.', 'Significant diffraction when λ ≥ gap size or obstacle size.'] },
+      { id: 14, topic: 'Wave Characteristics', q: 'A wavefront connects all points in a wave that are:', opts: ['At maximum amplitude', 'In the same phase', 'At minimum amplitude', 'Moving at maximum speed'], ans: 1, hints: ['Think about what "in phase" means.', 'Points at the same stage of oscillation.', 'All points on a wavefront have the same phase.'] },
+      { id: 15, topic: 'EM vs Mechanical', q: 'Which property is TRUE for electromagnetic waves but NOT for mechanical waves?', opts: ['Can be reflected', 'Can be refracted', 'Can travel through a vacuum', 'Can transfer energy'], ans: 2, hints: ['Both types can reflect, refract, and diffract.', 'Both types transfer energy.', 'EM waves can travel without any medium — through a vacuum.'] },
+      { id: 16, topic: 'SHM', q: 'In the ball-and-bowl system, the restoring force is:', opts: ['Directed away from the centre', 'Constant in magnitude', 'Directed toward the centre of the bowl', 'Equal to the weight of the ball always'], ans: 2, hints: ['What does "restoring" mean?', 'The force always tries to bring the ball back to equilibrium.', 'For SHM: restoring force is directed TOWARD the mean position.'] },
+      { id: 17, topic: 'Wave Basics', q: 'What is the ripple tank used to study?', opts: ['Only wave speed', 'Only wavelength', 'Wave properties including wavelength, frequency, amplitude and speed', 'The colour of waves'], ans: 2, hints: ['The ripple tank is a general wave demonstration tool.', 'You can change the frequency of the vibrating bar.', 'You can observe wavelength, frequency, speed, and amplitude.'] },
+      { id: 18, topic: 'Simple Pendulum', q: 'At which point does a simple pendulum have MAXIMUM kinetic energy?', opts: ['At extreme positions A and B', 'At the mean position O', 'Halfway between O and A', 'The kinetic energy is constant'], ans: 1, hints: ['Think about where the pendulum moves fastest.', 'At the extremes, it momentarily stops — so KE = 0 there.', 'Maximum speed → maximum KE — this happens at the lowest point (O).'] },
+      { id: 19, topic: 'Wave Characteristics', q: 'Which unit is used to measure frequency?', opts: ['Metres (m)', 'Seconds (s)', 'Hertz (Hz)', 'Metres per second (m/s)'], ans: 2, hints: ['Frequency = cycles per second.', 'The unit is named after a German physicist.', 'Hz = s⁻¹ (cycles per second).'] },
+      { id: 20, topic: 'SHM', q: 'A damped oscillation is characterised by:', opts: ['Increasing amplitude over time', 'Constant amplitude', 'Decreasing amplitude over time', 'Zero frequency'], ans: 2, hints: ['Energy is lost to friction/air resistance.', 'Less energy means smaller oscillations.', 'Amplitude decreases as energy is dissipated.'] },
+    ];
+
+    // ============================================================
+    // FLASHCARD DATA
+    // ============================================================
+    const FLIPCARDS = [
+      { q: 'Define a wave', a: 'A disturbance that transfers energy through a medium or space without transferring matter.' },
+      { q: 'What is a transverse wave?', a: 'A wave where particles move perpendicular (at right angles) to the direction of wave propagation.' },
+      { q: 'What is a longitudinal wave?', a: 'A wave where particles move parallel to the direction of wave propagation, creating compressions and rarefactions.' },
+      { q: 'State the wave equation', a: 'v = f × λ (wave speed = frequency × wavelength)' },
+      { q: 'What is the time period formula?', a: 'T = 1/f (period is the reciprocal of frequency, measured in seconds)' },
+      { q: 'State the formula for a pendulum\'s period', a: 'T = 2π √(L/g), where L = length, g = gravitational acceleration' },
+      { q: 'Define SHM', a: 'Motion where acceleration is directly proportional to displacement from mean position and directed toward it: a = −kx' },
+      { q: 'What is diffraction?', a: 'The bending and spreading of a wave as it passes through an opening or around an obstacle' },
+      { q: 'State the law of reflection', a: 'The angle of incidence equals the angle of reflection (∠i = ∠r), measured from the normal' },
+      { q: 'What is refraction?', a: 'Bending of a wave as it passes from one medium to another with a different speed' },
+      { q: 'Name two differences between EM and mechanical waves', a: '(1) EM waves can travel through vacuum; mechanical waves need a medium. (2) EM waves travel at speed of light; mechanical wave speed depends on medium.' },
+      { q: 'What is amplitude in a transverse wave?', a: 'The maximum displacement of a particle from its equilibrium (rest) position' },
+    ];
+
+    const SR_DATA = [
+      { q: 'What does a wave transfer?', a: 'Energy (not matter). Waves move energy from one point to another without transferring matter.' },
+      { q: 'What is the crest of a transverse wave?', a: 'The highest point of a transverse wave — maximum positive displacement from equilibrium.' },
+      { q: 'What is a compression in a longitudinal wave?', a: 'A region where particles are close together, creating high pressure — maximum particle density.' },
+      { q: 'Why does a simple pendulum exhibit SHM?', a: 'The restoring force (−mg sinθ) is proportional to displacement (for small θ), so acceleration ∝ −displacement, satisfying the SHM condition.' },
+      { q: 'Does the period of a pendulum depend on mass?', a: 'No. T = 2π√(L/g) — only length L and g affect the period, not the mass of the bob.' },
+      { q: 'What is refraction?', a: 'The bending of a wave as it changes speed moving from one medium to another.' },
+      { q: 'What is a rarefaction?', a: 'A region in a longitudinal wave where particles are spread out — low pressure, minimum density.' },
+      { q: 'What is a wavefront?', a: 'An imaginary surface connecting all points in a wave that are in the same phase.' },
+      { q: 'Define damped oscillation', a: 'An oscillation where amplitude decreases over time due to energy being dissipated (e.g. by friction).' },
+      { q: 'What is the wave speed if f=400 Hz and λ=0.85 m?', a: 'v = f × λ = 400 × 0.85 = 340 m/s' },
+      { q: 'Can electromagnetic waves travel through a vacuum?', a: 'Yes — electromagnetic waves do not require a medium. Light from the Sun reaches Earth through the vacuum of space.' },
+      { q: 'In SHM, where is kinetic energy maximum?', a: 'At the mean (equilibrium) position — where the object moves fastest. At the extremes, KE = 0 and PE is maximum.' },
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let practiceScore = 0;
+    let practiceAnswered = 0;
+    let currentQIndex = 0;
+    let shuffledQs = [];
+    let mockInterval = null;
+    let mockTime = 1500;
+    let mockActive = false;
+    let mockAnswers = {};
+    let mockQs = [];
+    let mockCurrentQ = 0;
+    let srIndex = 0;
+    let srData = [];
+    let topicScores = {};
+    let topicTotals = {};
+    let radarChart = null;
+    let threeRenderer = null;
+    let threeAnimId = null;
+    let waveFreq = 1.0;
+    let waveAmp = 1.0;
+    let waveType = 'transverse';
+    let waveTime = 0;
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Curtain fallback
+      setTimeout(() => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }, 3000);
+
+      // Animate curtain fill
+      const fill = document.getElementById('curtain-fill');
+      if (fill) { setTimeout(() => fill.style.width = '100%', 100); }
+      setTimeout(() => {
+        const c = document.getElementById('curtain');
+        if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => c.style.display = 'none', 500); }
+      }, 2200);
+
+      initLenis();
+      initGSAP();
+      initThreeJS();
+      initFlipCards();
+      initPractice();
+      initMockTest();
+      initSR();
+      initRadarChart();
+      initFormulas();
+      initHeroCounters();
+      initFormulaSheet();
+    });
+
+    // ============================================================
+    // LENIS
+    // ============================================================
+    function initLenis() {
+      try {
+        if (typeof Lenis !== 'undefined') {
+          const lenis = new Lenis({ lerp: 0.1, smooth: true });
+          function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+          requestAnimationFrame(raf);
+        }
+      } catch (e) { console.warn('Lenis init failed', e); }
+    }
+
+    // ============================================================
+    // GSAP
+    // ============================================================
+    function initGSAP() {
+      try {
+        if (typeof gsap === 'undefined') return;
+        if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+
+        // Section number counters
+        document.querySelectorAll('.section-num').forEach(el => {
+          try {
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 85%',
+              onEnter: () => gsap.from(el, { opacity: 0, x: -30, duration: 0.6, ease: 'power2.out' })
+            });
+          } catch (e) { }
+        });
+
+        // Theory blocks
+        document.querySelectorAll('.theory-block').forEach((el, i) => {
+          try {
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 88%',
+              onEnter: () => gsap.from(el, { opacity: 0, y: 40, duration: 0.7, delay: i * 0.05, ease: 'power2.out' })
+            });
+          } catch (e) { }
+        });
+
+        // Obj cards
+        document.querySelectorAll('.obj-card').forEach((el, i) => {
+          try {
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 90%',
+              onEnter: () => gsap.from(el, { opacity: 0, y: 30, duration: 0.5, delay: i * 0.06, ease: 'back.out(1.5)' })
+            });
+          } catch (e) { }
+        });
+
+        // Mind map radial expansion
+        const mmNodes = ['#mm-center', '#mm-b1', '#mm-b2', '#mm-b3', '#mm-b4', '#mm-b5', '#mm-b6', '#mm-b7'];
+        try {
+          ScrollTrigger.create({
+            trigger: '#mindmap-svg',
+            start: 'top 80%',
+            onEnter: () => {
+              mmNodes.forEach((sel, i) => {
+                const el = document.querySelector(sel);
+                if (el) gsap.from(el, { opacity: 0, scale: 0.3, transformOrigin: '450px 280px', duration: 0.6, delay: i * 0.12, ease: 'back.out(1.8)' });
+              });
+            }
+          });
+        } catch (e) { }
+
+        // Example cards step-by-step
+        document.querySelectorAll('.example-card').forEach((card, ci) => {
+          try {
+            const steps = card.querySelectorAll('.step-list li');
+            ScrollTrigger.create({
+              trigger: card,
+              start: 'top 85%',
+              onEnter: () => {
+                gsap.from(card, { opacity: 0, y: 50, duration: 0.6, ease: 'power2.out' });
+                steps.forEach((step, si) => {
+                  gsap.from(step, { opacity: 0, x: 40, duration: 0.5, delay: 0.2 + si * 0.15, ease: 'power2.out' });
+                });
+              }
+            });
+          } catch (e) { }
+        });
+
+      } catch (e) { console.warn('GSAP init failed', e); }
+    }
+
+    // ============================================================
+    // HERO COUNTERS
+    // ============================================================
+    function initHeroCounters() {
+      animateCounter('stat-topics', 10);
+      animateCounter('stat-qs', 20);
+      animateCounter('stat-cards', 12);
+      animateCounter('stat-formulas', 8);
+    }
+
+    function animateCounter(id, target) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let current = 0;
+      const step = Math.ceil(target / 40);
+      const interval = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current >= target) clearInterval(interval);
+      }, 30);
+    }
+
+    // ============================================================
+    // FORMULA SHEET
+    // ============================================================
+    function initFormulaSheet() {
+      const sheet = document.getElementById('formula-sheet');
+      const toggle = document.getElementById('fs-toggle');
+      if (!sheet || !toggle) return;
+      toggle.addEventListener('click', () => sheet.classList.toggle('open'));
+    }
+
+    // ============================================================
+    // THREE.JS WAVE VISUALIZER
+    // ============================================================
+    function initThreeJS() {
+      const canvas = document.getElementById('wave-canvas');
+      const fallback = document.getElementById('viz-fallback');
+      if (!canvas || !fallback) return;
+
+      if (typeof THREE === 'undefined') {
+        canvas.style.display = 'none';
+        fallback.style.display = 'flex';
+        return;
+      }
+
+      let supported = false;
+      try {
+        const testCanvas = document.createElement('canvas');
+        const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+        if (gl) supported = true;
+      } catch (e) { }
+
+      if (!supported) {
+        canvas.style.display = 'none';
+        fallback.style.display = 'flex';
+        return;
+      }
+
+      try {
+        const w = canvas.parentElement.clientWidth || 900;
+        const h = 400;
+        canvas.width = w;
+        canvas.height = h;
+
+        threeRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+        threeRenderer.setSize(w, h);
+        threeRenderer.setClearColor(0x0a0a1a, 1);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
+        camera.position.set(0, 8, 20);
+        camera.lookAt(0, 0, 0);
+
+        const ambientLight = new THREE.AmbientLight(0x334466, 2);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xFDCB6E, 1.5);
+        dirLight.position.set(5, 10, 5);
+        scene.add(dirLight);
+        const blueLight = new THREE.PointLight(0x4C6EF5, 2, 50);
+        blueLight.position.set(-10, 5, 5);
+        scene.add(blueLight);
+
+        // Wave particles
+        const COUNT = 60;
+        const sphereGeo = new THREE.SphereGeometry(0.18, 8, 8);
+        const sphereMat = new THREE.MeshStandardMaterial({ color: 0x4C6EF5, metalness: 0.3, roughness: 0.5 });
+        const particles = [];
+
+        for (let i = 0; i < COUNT; i++) {
+          const mesh = new THREE.Mesh(sphereGeo, sphereMat.clone());
+          const x = (i / COUNT) * 24 - 12;
+          mesh.position.set(x, 0, 0);
+          scene.add(mesh);
+          particles.push({ mesh, baseX: x, index: i });
+        }
+
+        // Connection lines
+        const lineGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(COUNT * 3);
+        lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x7a9fff, opacity: 0.6, transparent: true });
+        const line = new THREE.Line(lineGeo, lineMat);
+        scene.add(line);
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(30, 20, 0x222240, 0x1a1a30);
+        gridHelper.position.y = -3;
+        scene.add(gridHelper);
+
+        function updateWave() {
+          const pos = lineGeo.attributes.position.array;
+          particles.forEach((p, i) => {
+            const x = p.baseX;
+            const phase = (x / 4) * Math.PI * 2 - waveTime * waveFreq * 2;
+            if (waveType === 'transverse') {
+              p.mesh.position.y = Math.sin(phase) * waveAmp * 2;
+              p.mesh.position.x = x;
+              p.mesh.material.color.setHex(p.mesh.position.y > 0 ? 0x4C6EF5 : 0xe17055);
+            } else {
+              // longitudinal: displace along x
+              const displacement = Math.sin(phase) * waveAmp * 0.8;
+              p.mesh.position.x = x + displacement;
+              p.mesh.position.y = 0;
+              // colour by density (proximity to neighbours)
+              const density = displacement;
+              p.mesh.material.color.setHex(density > 0 ? 0x4C6EF5 : 0xFDCB6E);
+            }
+            pos[i * 3] = p.mesh.position.x;
+            pos[i * 3 + 1] = p.mesh.position.y;
+            pos[i * 3 + 2] = 0;
+          });
+          lineGeo.attributes.position.needsUpdate = true;
+        }
+
+        function animate() {
+          threeAnimId = requestAnimationFrame(animate);
+          waveTime += 0.016;
+          updateWave();
+          // Rotate camera gently
+          camera.position.x = Math.sin(waveTime * 0.1) * 3;
+          camera.lookAt(0, 0, 0);
+          threeRenderer.render(scene, camera);
+        }
+        animate();
+
+        // Update lambda display
+        setInterval(() => {
+          const lambda = (4 / waveFreq).toFixed(2);
+          const lEl = document.getElementById('viz-lambda');
+          if (lEl) lEl.textContent = lambda + ' units';
+        }, 200);
+
+        // Controls
+        document.getElementById('btn-transverse')?.addEventListener('click', () => {
+          waveType = 'transverse';
+          document.getElementById('viz-wave').textContent = 'Transverse';
+          document.querySelectorAll('.viz-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('btn-transverse').classList.add('active');
+        });
+        document.getElementById('btn-longitudinal')?.addEventListener('click', () => {
+          waveType = 'longitudinal';
+          document.getElementById('viz-wave').textContent = 'Longitudinal';
+          document.querySelectorAll('.viz-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('btn-longitudinal').classList.add('active');
+        });
+        document.getElementById('btn-increase-freq')?.addEventListener('click', () => {
+          waveFreq = Math.min(waveFreq + 0.3, 4.0);
+          document.getElementById('viz-freq').textContent = waveFreq.toFixed(1) + ' Hz';
+        });
+        document.getElementById('btn-decrease-freq')?.addEventListener('click', () => {
+          waveFreq = Math.max(waveFreq - 0.3, 0.3);
+          document.getElementById('viz-freq').textContent = waveFreq.toFixed(1) + ' Hz';
+        });
+        document.getElementById('btn-increase-amp')?.addEventListener('click', () => {
+          waveAmp = Math.min(waveAmp + 0.3, 3.0);
+          document.getElementById('viz-amp').textContent = waveAmp.toFixed(1);
+        });
+        document.getElementById('btn-decrease-amp')?.addEventListener('click', () => {
+          waveAmp = Math.max(waveAmp - 0.3, 0.2);
+          document.getElementById('viz-amp').textContent = waveAmp.toFixed(1);
+        });
+        document.getElementById('btn-reset-viz')?.addEventListener('click', () => {
+          waveFreq = 1.0; waveAmp = 1.0; waveType = 'transverse';
+          document.getElementById('viz-freq').textContent = '1.0 Hz';
+          document.getElementById('viz-amp').textContent = '1.0';
+          document.getElementById('viz-wave').textContent = 'Transverse';
+        });
+        document.getElementById('btn-snapshot')?.addEventListener('click', () => {
+          try {
+            const link = document.createElement('a');
+            link.download = 'wave-snapshot.png';
+            link.href = canvas.toDataURL();
+            link.click();
+          } catch (e) { alert('Snapshot saved!'); }
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+          try {
+            const nw = canvas.parentElement.clientWidth || 900;
+            threeRenderer.setSize(nw, h);
+            canvas.style.width = nw + 'px';
+            canvas.width = nw;
+            camera.aspect = nw / h;
+            camera.updateProjectionMatrix();
+          } catch (e) { }
+        });
+
+      } catch (e) {
+        console.warn('Three.js scene failed', e);
+        if (canvas) canvas.style.display = 'none';
+        if (fallback) fallback.style.display = 'flex';
+      }
+    }
+
+    // ============================================================
+    // FLIP CARDS
+    // ============================================================
+    function initFlipCards() {
+      const grid = document.getElementById('flip-grid');
+      if (!grid) return;
+      FLIPCARDS.forEach((card, i) => {
+        const div = document.createElement('div');
+        div.className = 'flip-card';
+        div.innerHTML = `
+      <div class="flip-card-inner">
+        <div class="flip-front">
+          <div>
+            <span class="flip-icon">❓</span>
+            <h4>${card.q}</h4>
+            <span class="flip-hint">Click to reveal</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div>
+            <p>${card.a}</p>
+          </div>
+        </div>
+      </div>
+    `;
+        div.addEventListener('click', () => {
+          div.classList.toggle('flipped');
+          if (typeof gsap !== 'undefined') {
+            try {
+              if (div.classList.contains('flipped')) {
+                gsap.to(div.querySelector('.flip-card-inner'), { rotateY: 180, duration: 0.6, ease: 'power2.inOut' });
+              } else {
+                gsap.to(div.querySelector('.flip-card-inner'), { rotateY: 0, duration: 0.6, ease: 'power2.inOut' });
+              }
+            } catch (e) { }
+          }
+        });
+        grid.appendChild(div);
+      });
+    }
+
+    // ============================================================
+    // PRACTICE QUESTIONS
+    // ============================================================
+    function initPractice() {
+      shuffledQs = [...QUESTIONS].sort(() => Math.random() - 0.5);
+      currentQIndex = 0;
+      practiceScore = 0;
+      practiceAnswered = 0;
+
+      // Init topic tracking
+      QUESTIONS.forEach(q => {
+        if (!topicTotals[q.topic]) { topicTotals[q.topic] = 0; topicScores[q.topic] = 0; }
+      });
+
+      renderQuestion();
+
+      document.getElementById('btn-new-q')?.addEventListener('click', () => {
+        currentQIndex = (currentQIndex + 1) % shuffledQs.length;
+        renderQuestion();
+      });
+
+      document.getElementById('btn-show-all')?.addEventListener('click', () => {
+        const area = document.getElementById('practice-area');
+        area.innerHTML = '';
+        shuffledQs.forEach((q, i) => renderQuestionCard(q, i, area, false));
+      });
+
+      document.getElementById('btn-restart-practice')?.addEventListener('click', () => {
+        practiceScore = 0; practiceAnswered = 0;
+        shuffledQs = [...QUESTIONS].sort(() => Math.random() - 0.5);
+        currentQIndex = 0;
+        document.getElementById('score-display').classList.remove('visible');
+        document.getElementById('score-tracker').textContent = 'Score: 0 / 0';
+        renderQuestion();
+      });
+    }
+
+    function renderQuestion() {
+      const area = document.getElementById('practice-area');
+      if (!area) return;
+      area.innerHTML = '';
+      const q = shuffledQs[currentQIndex];
+      renderQuestionCard(q, currentQIndex, area, true);
+    }
+
+    function renderQuestionCard(q, idx, container, single) {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.id = `qcard-${q.id}`;
+
+      const optsHTML = q.opts.map((o, oi) => `
+    <li><button class="option-btn" data-qid="${q.id}" data-oi="${oi}" data-correct="${q.ans}">${String.fromCharCode(65 + oi)}. ${o}</button></li>
+  `).join('');
+
+      card.innerHTML = `
+    <div class="q-header">
+      <span class="q-num-badge">Q${q.id}</span>
+      <span class="q-text">${q.q}</span>
+    </div>
+    <ul class="options-list">${optsHTML}</ul>
+    <div class="hint-area">
+      ${q.hints.map((h, hi) => `<button class="hint-btn" data-qid="${q.id}" data-hi="${hi}">💡 Hint ${hi + 1}</button>`).join('')}
+      ${q.hints.map((h, hi) => `<div class="hint-text" id="hint-${q.id}-${hi}">${h}</div>`).join('')}
+    </div>
+  `;
+
+      container.appendChild(card);
+
+      // Option click
+      card.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const qid = parseInt(btn.dataset.qid);
+          const oi = parseInt(btn.dataset.oi);
+          const correct = parseInt(btn.dataset.correct);
+          const allBtns = card.querySelectorAll('.option-btn');
+          allBtns.forEach(b => b.disabled = true);
+
+          const qObj = QUESTIONS.find(x => x.id === qid);
+          if (!topicTotals[qObj.topic]) topicTotals[qObj.topic] = 0;
+          if (!topicScores[qObj.topic]) topicScores[qObj.topic] = 0;
+          topicTotals[qObj.topic]++;
+
+          if (oi === correct) {
+            btn.classList.add('correct');
+            practiceScore++;
+            topicScores[qObj.topic]++;
+            saveStats();
+            if (typeof gsap !== 'undefined') {
+              try { gsap.from(btn, { scale: 0.95, duration: 0.3, ease: 'back.out(2)' }); } catch (e) { }
+            }
+          } else {
+            btn.classList.add('wrong');
+            allBtns[correct].classList.add('correct');
+          }
+          practiceAnswered++;
+          document.getElementById('score-tracker').textContent = `Score: ${practiceScore} / ${practiceAnswered}`;
+          updateRadarChart();
+        });
+      });
+
+      // Hint clicks
+      card.querySelectorAll('.hint-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const qid = btn.dataset.qid;
+          const hi = btn.dataset.hi;
+          const hintEl = document.getElementById(`hint-${qid}-${hi}`);
+          if (hintEl) hintEl.classList.toggle('visible');
+        });
+      });
+    }
+
+    // ============================================================
+    // MOCK TEST
+    // ============================================================
+    function initMockTest() {
+      document.getElementById('btn-start-mock')?.addEventListener('click', startMock);
+      document.getElementById('btn-submit-mock')?.addEventListener('click', submitMock);
+      document.getElementById('btn-retake-mock')?.addEventListener('click', retakeMock);
+    }
+
+    function startMock() {
+      document.getElementById('mock-start-screen').style.display = 'none';
+      document.getElementById('mock-test-area').style.display = 'block';
+      document.getElementById('mock-results').style.display = 'none';
+
+      mockQs = [...QUESTIONS].sort(() => Math.random() - 0.5);
+      mockAnswers = {};
+      mockCurrentQ = 0;
+      mockTime = 1500;
+      mockActive = true;
+
+      renderMockQuestion();
+      startMockTimer();
+    }
+
+    function renderMockQuestion() {
+      const container = document.getElementById('mock-question-container');
+      if (!container) return;
+
+      // Save/nav buttons
+      const nav = `
+    <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
+      ${mockCurrentQ > 0 ? `<button class="btn btn-secondary" onclick="mockNav(-1)">← Previous</button>` : ''}
+      ${mockCurrentQ < mockQs.length - 1 ? `<button class="btn btn-primary" onclick="mockNav(1)">Next →</button>` : '<button class="btn btn-accent" onclick="submitMock()">Submit Test</button>'}
+    </div>
+  `;
+
+      const q = mockQs[mockCurrentQ];
+      const savedAns = mockAnswers[mockCurrentQ];
+
+      const optsHTML = q.opts.map((o, oi) => {
+        const selected = savedAns === oi ? 'style="border-color:var(--amber);background:rgba(253,203,110,0.1)"' : '';
+        return `<li><button class="option-btn" onclick="mockSelectAnswer(${oi})" data-oi="${oi}" ${selected}>${String.fromCharCode(65 + oi)}. ${o}</button></li>`;
+      }).join('');
+
+      container.innerHTML = `
+    <div class="question-card">
+      <div class="q-header">
+        <span class="q-num-badge">Q${mockCurrentQ + 1} / ${mockQs.length}</span>
+        <span class="q-text">${q.q}</span>
+      </div>
+      <ul class="options-list">${optsHTML}</ul>
+      ${nav}
+    </div>
+  `;
+
+      document.getElementById('mock-q-num').textContent = mockCurrentQ + 1;
+      document.getElementById('mock-progress').style.width = ((mockCurrentQ + 1) / mockQs.length * 100) + '%';
+    }
+
+    function mockSelectAnswer(oi) {
+      mockAnswers[mockCurrentQ] = oi;
+      renderMockQuestion();
+    }
+
+    function mockNav(dir) {
+      mockCurrentQ = Math.max(0, Math.min(mockQs.length - 1, mockCurrentQ + dir));
+      renderMockQuestion();
+    }
+
+    function startMockTimer() {
+      if (mockInterval) clearInterval(mockInterval);
+      mockInterval = setInterval(() => {
+        mockTime--;
+        const m = Math.floor(mockTime / 60);
+        const s = mockTime % 60;
+        const el = document.getElementById('mock-timer');
+        if (el) el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        if (mockTime <= 0) { clearInterval(mockInterval); submitMock(); }
+        if (mockTime <= 120) { if (el) el.style.color = '#e17055'; }
+      }, 1000);
+    }
+
+    function submitMock() {
+      if (mockInterval) clearInterval(mockInterval);
+      mockActive = false;
+
+      let score = 0;
+      const topicRight = {};
+      const topicCount = {};
+
+      mockQs.forEach((q, i) => {
+        const topic = q.topic;
+        if (!topicRight[topic]) { topicRight[topic] = 0; topicCount[topic] = 0; }
+        topicCount[topic]++;
+        if (mockAnswers[i] === q.ans) {
+          score++;
+          topicRight[topic]++;
+          if (!topicScores[topic]) topicScores[topic] = 0;
+          if (!topicTotals[topic]) topicTotals[topic] = 0;
+          topicScores[topic]++;
+        }
+        if (!topicTotals[topic]) topicTotals[topic] = 0;
+        topicTotals[topic]++;
+      });
+
+      document.getElementById('mock-test-area').style.display = 'none';
+      document.getElementById('mock-results').style.display = 'block';
+      document.getElementById('mock-final-score').textContent = `${score} / ${mockQs.length}`;
+
+      const pct = Math.round(score / mockQs.length * 100);
+      let feedback = pct >= 80 ? '🎉 Excellent! You are well-prepared for the board exam.' :
+        pct >= 60 ? '👍 Good work! Review weaker topics and try again.' :
+          pct >= 40 ? '📚 Keep practising. Focus on the theory blocks above.' :
+            '🔄 Review all topics carefully. Use the revision cards to help.';
+      document.getElementById('mock-feedback').textContent = feedback;
+
+      // Breakdown
+      const breakdown = document.getElementById('mock-breakdown');
+      let html = '<h3 style="font-family:Bricolage Grotesque,sans-serif;color:var(--white);margin-bottom:20px">Topic Breakdown</h3>';
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">';
+      Object.keys(topicCount).forEach(topic => {
+        const r = topicRight[topic] || 0;
+        const t = topicCount[topic];
+        const p = Math.round(r / t * 100);
+        const colour = p >= 80 ? 'var(--success)' : p >= 50 ? 'var(--amber)' : 'var(--danger)';
+        html += `<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:16px">
+      <div style="font-size:15px;color:#9090b0;margin-bottom:8px">${topic}</div>
+      <div style="font-size:1.4rem;font-family:Fira Code,monospace;color:${colour}">${r}/${t}</div>
+      <div style="height:4px;background:#3a3a5c;border-radius:4px;margin-top:8px;overflow:hidden">
+        <div style="height:100%;width:${p}%;background:${colour};border-radius:4px"></div>
+      </div>
+    </div>`;
+      });
+      html += '</div>';
+      breakdown.innerHTML = html;
+
+      saveStats();
+      updateRadarChart();
+    }
+
+    function retakeMock() {
+      document.getElementById('mock-results').style.display = 'none';
+      document.getElementById('mock-start-screen').style.display = 'block';
+      document.getElementById('mock-timer').style.color = 'var(--amber)';
+    }
+
+    // ============================================================
+    // SPACED REPETITION
+    // ============================================================
+    function initSR() {
+      srData = SR_DATA.map((item, i) => {
+        const saved = localStorage.getItem(`sr_${i}`);
+        return { ...item, score: saved ? parseInt(saved) : 0, idx: i };
+      });
+      srData.sort(() => Math.random() - 0.5);
+      srIndex = 0;
+      loadSRCard();
+    }
+
+    function loadSRCard() {
+      if (srData.length === 0) return;
+      // Sort by score ascending (harder cards first)
+      const sorted = [...srData].sort((a, b) => a.score - b.score);
+      const card = sorted[srIndex % sorted.length];
+
+      const qEl = document.getElementById('sr-question');
+      const aEl = document.getElementById('sr-answer');
+      const counter = document.getElementById('sr-counter');
+
+      if (qEl) qEl.textContent = card.q;
+      if (aEl) { aEl.textContent = card.a; aEl.classList.remove('show'); }
+      if (counter) counter.textContent = `Card ${(srIndex % srData.length) + 1} of ${srData.length} | Score: ${card.score}`;
+    }
+
+    function srReveal() {
+      const aEl = document.getElementById('sr-answer');
+      if (aEl) aEl.classList.toggle('show');
+    }
+
+    function srRate(rating) {
+      const sorted = [...srData].sort((a, b) => a.score - b.score);
+      const card = sorted[srIndex % sorted.length];
+      if (rating === 'easy') {
+        card.score = Math.min(card.score + 1, 10);
+      } else {
+        card.score = Math.max(card.score - 1, 0);
+      }
+      localStorage.setItem(`sr_${card.idx}`, card.score.toString());
+      srIndex++;
+      loadSRCard();
+    }
+
+    // ============================================================
+    // RADAR CHART
+    // ============================================================
+    function initRadarChart() {
+      try {
+        if (typeof Chart === 'undefined') return;
+        const canvas = document.getElementById('radar-chart');
+        if (!canvas) return;
+
+        const topics = ['Wave Basics', 'Wave Types', 'EM vs Mechanical', 'Wave Characteristics', 'Reflection', 'Refraction', 'Diffraction', 'SHM', 'Simple Pendulum'];
+        const scores = topics.map(t => {
+          if (topicTotals[t] && topicTotals[t] > 0) {
+            return Math.round(topicScores[t] / topicTotals[t] * 100);
+          }
+          return 0;
+        });
+
+        radarChart = new Chart(canvas, {
+          type: 'radar',
+          data: {
+            labels: topics,
+            datasets: [{
+              label: 'Your Score (%)',
+              data: scores,
+              backgroundColor: 'rgba(76,110,245,0.2)',
+              borderColor: '#4C6EF5',
+              pointBackgroundColor: '#FDCB6E',
+              pointBorderColor: '#FDCB6E',
+              pointRadius: 5,
+              borderWidth: 2,
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { color: '#9090b0', font: { size: 12 }, stepSize: 20 },
+                grid: { color: '#3a3a5c' },
+                pointLabels: { color: '#c0c0e0', font: { size: 13 } },
+                angleLines: { color: '#3a3a5c' }
+              }
+            },
+            plugins: {
+              legend: { labels: { color: '#c0c0e0', font: { size: 14 } } }
+            }
+          }
+        });
+      } catch (e) { console.warn('Chart init failed', e); }
+    }
+
+    function updateRadarChart() {
+      try {
+        if (!radarChart) return;
+        const topics = ['Wave Basics', 'Wave Types', 'EM vs Mechanical', 'Wave Characteristics', 'Reflection', 'Refraction', 'Diffraction', 'SHM', 'Simple Pendulum'];
+        radarChart.data.datasets[0].data = topics.map(t => {
+          if (topicTotals[t] && topicTotals[t] > 0) {
+            return Math.round(topicScores[t] / topicTotals[t] * 100);
+          }
+          return 0;
+        });
+        radarChart.update();
+      } catch (e) { }
+    }
+
+    // ============================================================
+    // STATS PERSISTENCE
+    // ============================================================
+    function saveStats() {
+      try {
+        localStorage.setItem('wave_topic_scores', JSON.stringify(topicScores));
+        localStorage.setItem('wave_topic_totals', JSON.stringify(topicTotals));
+      } catch (e) { }
+    }
+
+    function loadStats() {
+      try {
+        const s = localStorage.getItem('wave_topic_scores');
+        const t = localStorage.getItem('wave_topic_totals');
+        if (s) topicScores = JSON.parse(s);
+        if (t) topicTotals = JSON.parse(t);
+      } catch (e) { }
+    }
+
+    document.getElementById('btn-reset-stats')?.addEventListener('click', () => {
+      topicScores = {}; topicTotals = {};
+      localStorage.removeItem('wave_topic_scores');
+      localStorage.removeItem('wave_topic_totals');
+      updateRadarChart();
+    });
+
+    // Load stats on init
+    loadStats();
+
+    function initFormulas() {
+      // Already static, nothing needed here
+    }
+  </script>
+</body>
+
+</html>

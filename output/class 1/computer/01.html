@@ -1,0 +1,1659 @@
+<!-- CLASS: 1 | SUBJECT: computer | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 - What Is A Computer? | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #e0f7fa;
+  }
+
+  body {
+    background: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 30%, #f1f8e9 70%, #dcedc8 100%);
+    min-height: 100vh;
+  }
+
+  /* Animated background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.7;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+
+  @keyframes floatCloud {
+    from { transform: translateX(-300px); }
+    to { transform: translateX(110vw); }
+  }
+
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100vw;
+    background: linear-gradient(135deg, #00897B 0%, #26C6DA 100%);
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%;
+    height: 60px;
+    background: #e1f5fe;
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: #FFD93D;
+    color: #333;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 22px;
+    padding: 8px 28px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+    border: 4px solid #FF6B6B;
+    animation: bounce 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+  }
+
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(36px, 8vw, 72px);
+    color: #FFFFFF;
+    text-shadow: 3px 4px 0px rgba(0,0,0,0.15);
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .hero-emoji {
+    font-size: clamp(60px, 12vw, 120px);
+    display: block;
+    margin: 10px auto;
+    animation: spinBounce 3s ease-in-out infinite;
+  }
+
+  @keyframes spinBounce {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+  }
+
+  /* FUN CARDS */
+  .fun-card {
+    width: 100%;
+    max-width: 100%;
+    background: #FFFFFF;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    padding: 40px;
+    margin: 40px 0;
+    position: relative;
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    transition: box-shadow 0.3s;
+  }
+
+  .fun-card:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+  }
+
+  .card-red { border-color: #FF6B6B; }
+  .card-blue { border-color: #6BCB77; }
+  .card-yellow { border-color: #FFD93D; }
+  .card-purple { border-color: #b39ddb; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-icon {
+    font-size: 44px;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(28px, 5vw, 48px);
+    color: #00897B;
+    line-height: 1.1;
+  }
+
+  .section-title.red { color: #FF6B6B; }
+  .section-title.blue { color: #1565C0; }
+  .section-title.yellow { color: #F57F17; }
+
+  .card-text {
+    font-size: clamp(18px, 2.5vw, 24px);
+    color: #333;
+    line-height: 1.7;
+    font-weight: 700;
+  }
+
+  /* OBJECTIVES */
+  .objectives-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .objectives-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(90deg, #fff9c4, #fff);
+    border-radius: 20px;
+    padding: 16px 20px;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 700;
+    color: #333;
+    border: 3px solid #FFD93D;
+  }
+
+  .obj-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  /* COMPUTER DEFINITION */
+  .definition-box {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border-radius: 24px;
+    padding: 30px;
+    border: 4px solid #6BCB77;
+    margin-top: 20px;
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 900;
+    color: #2e7d32;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* 3D CANVAS */
+  .three-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px 0;
+    min-height: 220px;
+  }
+
+  #three-canvas {
+    border-radius: 24px;
+    border: 4px solid #FFD93D;
+    display: block;
+  }
+
+  .three-fallback {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    height: 220px;
+    background: #fff9c4;
+    border-radius: 24px;
+    border: 4px solid #FFD93D;
+    font-size: 100px;
+    text-align: center;
+    min-height: 200px;
+  }
+
+  /* TYPES OF COMPUTERS */
+  .computers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .computer-card {
+    background: linear-gradient(135deg, #e3f2fd, #fff);
+    border-radius: 24px;
+    border: 4px solid #6BCB77;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .computer-card:active { transform: scale(0.96); }
+
+  .computer-emoji {
+    font-size: clamp(48px, 8vw, 80px);
+    display: block;
+    transition: transform 0.3s;
+  }
+
+  .computer-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(18px, 2.5vw, 26px);
+    color: #1565C0;
+    font-weight: 400;
+  }
+
+  .computer-card.card-desktop { border-color: #FF6B6B; background: linear-gradient(135deg, #fce4ec, #fff); }
+  .computer-card.card-laptop { border-color: #6BCB77; background: linear-gradient(135deg, #e8f5e9, #fff); }
+  .computer-card.card-tablet { border-color: #FFD93D; background: linear-gradient(135deg, #fffde7, #fff); }
+  .computer-card.card-smartphone { border-color: #b39ddb; background: linear-gradient(135deg, #ede7f6, #fff); }
+
+  /* DRAG AND DROP */
+  .drag-section {
+    margin-top: 16px;
+  }
+
+  .drag-instructions {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(20px, 3vw, 30px);
+    color: #FF6B6B;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .drag-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 600px) {
+    .drag-area { grid-template-columns: 1fr; }
+  }
+
+  .drag-words-pool {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    background: #fff9c4;
+    border-radius: 24px;
+    border: 4px dashed #FFD93D;
+    min-height: 200px;
+  }
+
+  .drag-word {
+    background: #FF6B6B;
+    color: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(18px, 2.5vw, 24px);
+    padding: 14px 20px;
+    border-radius: 20px;
+    cursor: grab;
+    text-align: center;
+    border: 3px solid #c62828;
+    user-select: none;
+    touch-action: none;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .drag-word:active { cursor: grabbing; opacity: 0.7; }
+  .drag-word.dragging { opacity: 0.4; }
+  .drag-word.matched { background: #6BCB77; border-color: #2e7d32; cursor: default; }
+
+  .drop-targets {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .drop-target {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 24px;
+    border: 4px dashed #ccc;
+    padding: 12px 16px;
+    min-height: 80px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .drop-target.drag-over {
+    background: #e8f5e9;
+    border-color: #6BCB77;
+  }
+
+  .drop-target.correct {
+    background: #e8f5e9;
+    border-color: #6BCB77;
+    border-style: solid;
+  }
+
+  .drop-target.wrong {
+    background: #ffebee;
+    border-color: #FF6B6B;
+  }
+
+  .drop-emoji {
+    font-size: clamp(36px, 5vw, 56px);
+    flex-shrink: 0;
+  }
+
+  .drop-label-slot {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(18px, 2.5vw, 24px);
+    color: #555;
+    min-width: 80px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #f5f5f5;
+    text-align: center;
+    flex: 1;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drop-label-slot.filled {
+    background: #6BCB77;
+    color: white;
+  }
+
+  /* QUIZ */
+  .quiz-container {
+    margin-top: 16px;
+  }
+
+  .quiz-question {
+    display: none;
+  }
+
+  .quiz-question.active {
+    display: block;
+  }
+
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(22px, 4vw, 36px);
+    color: #1565C0;
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  .quiz-q-image {
+    font-size: clamp(60px, 12vw, 100px);
+    text-align: center;
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .quiz-option {
+    background: white;
+    border: 4px solid #6BCB77;
+    border-radius: 24px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 140px;
+    min-height: 160px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: #333;
+    transition: transform 0.15s, box-shadow 0.15s;
+    flex: 1;
+    max-width: 220px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .quiz-option:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .quiz-option-emoji {
+    font-size: clamp(48px, 8vw, 72px);
+  }
+
+  .quiz-option.correct-ans {
+    background: #e8f5e9;
+    border-color: #6BCB77;
+    pointer-events: none;
+  }
+
+  .quiz-option.wrong-ans {
+    background: #ffebee;
+    border-color: #FF6B6B;
+  }
+
+  .quiz-progress {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .quiz-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 3px solid #bbb;
+    transition: background 0.3s;
+  }
+
+  .quiz-dot.active { background: #FFD93D; border-color: #F57F17; }
+  .quiz-dot.done { background: #6BCB77; border-color: #2e7d32; }
+
+  .quiz-feedback {
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(22px, 4vw, 36px);
+    margin-top: 20px;
+    min-height: 50px;
+    transition: opacity 0.3s;
+  }
+
+  .quiz-feedback.correct { color: #2e7d32; }
+  .quiz-feedback.wrong { color: #FF6B6B; }
+
+  .quiz-next-btn {
+    display: none;
+    margin: 20px auto 0;
+    background: #FFD93D;
+    color: #333;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(20px, 3vw, 28px);
+    border: 4px solid #F57F17;
+    border-radius: 50px;
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    min-height: 56px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .quiz-next-btn:hover { transform: scale(1.05); }
+  .quiz-complete {
+    text-align: center;
+    display: none;
+  }
+
+  .quiz-complete h2 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(30px, 6vw, 56px);
+    color: #2e7d32;
+    margin-bottom: 10px;
+  }
+
+  .quiz-complete p {
+    font-size: clamp(20px, 3vw, 28px);
+    color: #555;
+    font-weight: 700;
+  }
+
+  /* FUN FACT */
+  .fun-fact-box {
+    background: linear-gradient(135deg, #fffde7, #fff9c4);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 28px 32px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 700;
+    color: #F57F17;
+    line-height: 1.6;
+  }
+
+  .fun-fact-box .fact-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* FILL MISSING LETTERS */
+  .word-puzzle {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .puzzle-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .puzzle-cell {
+    width: 48px;
+    height: 56px;
+    border-radius: 12px;
+    border: 3px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 24px;
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .puzzle-cell.given {
+    background: #00897B;
+    color: white;
+    border-color: #00695C;
+  }
+
+  .puzzle-cell.blank {
+    background: #fff;
+    border-color: #FF6B6B;
+    border-style: dashed;
+  }
+
+  .puzzle-cell input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 22px;
+    color: #FF6B6B;
+    outline: none;
+    text-transform: uppercase;
+  }
+
+  .puzzle-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(16px, 2vw, 22px);
+    color: #555;
+    margin-left: 8px;
+  }
+
+  /* RESET BUTTON */
+  .reset-btn {
+    background: #FF6B6B;
+    color: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(18px, 2.5vw, 24px);
+    border: 4px solid #c62828;
+    border-radius: 50px;
+    padding: 12px 36px;
+    cursor: pointer;
+    margin-top: 20px;
+    min-height: 56px;
+    display: block;
+    transition: transform 0.15s;
+  }
+
+  .reset-btn:hover { transform: scale(1.05); }
+
+  /* FOOTER */
+  .page-footer {
+    background: #00897B;
+    color: white;
+    text-align: center;
+    padding: 32px 20px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 22px;
+    margin-top: 60px;
+  }
+
+  .stars-row {
+    font-size: 36px;
+    letter-spacing: 8px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .content-container { padding: 0 16px; }
+    .fun-card { padding: 24px 18px; }
+    .drag-area { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .quiz-option { min-width: 120px; max-width: 160px; }
+    .puzzle-cell { width: 38px; height: 48px; font-size: 18px; }
+    .puzzle-cell input { font-size: 18px; }
+  }
+
+  /* Tap ripple */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,215,0,0.5);
+    transform: scale(0);
+    animation: rippleAnim 0.5s linear;
+    pointer-events: none;
+  }
+
+  @keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* Dragging ghost */
+  .drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.85;
+    transform: scale(1.1);
+    background: #FF6B6B;
+    color: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 22px;
+    padding: 12px 20px;
+    border-radius: 20px;
+    border: 3px solid #c62828;
+    white-space: nowrap;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="sky-bg" id="skyBg"></div>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">⭐ Unit 1 ⭐</div>
+    <h1>What Is A Computer? 💻</h1>
+    <span class="hero-emoji">🖥️</span>
+  </header>
+
+  <div class="content-container">
+
+    <!-- LEARNING OBJECTIVES -->
+    <div class="fun-card card-yellow" id="card-objectives">
+      <div class="section-header">
+        <span class="section-icon">🎯</span>
+        <h2 class="section-title yellow">Learning Objectives</h2>
+      </div>
+      <ul class="objectives-list">
+        <li><span class="obj-icon">📖</span> Define computer.</li>
+        <li><span class="obj-icon">🖥️</span> Know different types of a computer.</li>
+        <li><span class="obj-icon">🌍</span> Know the places where computers are used.</li>
+      </ul>
+    </div>
+
+    <!-- WHAT IS A COMPUTER -->
+    <div class="fun-card card-blue" id="card-definition">
+      <div class="section-header">
+        <span class="section-icon">💡</span>
+        <h2 class="section-title">What Is A Computer?</h2>
+      </div>
+
+      <!-- Three.js scene -->
+      <div class="three-container">
+        <canvas id="three-canvas" width="280" height="220"></canvas>
+        <div class="three-fallback" id="three-fallback">🖥️</div>
+      </div>
+
+      <p class="card-text">
+        In our daily life, we use machines to make our work faster and easier,
+        like fans 🌀, bicycles 🚲, and washing machines 🫧.<br><br>
+        A <strong>computer</strong> is a <strong>smart electronic machine</strong>
+        that helps us do many tasks and solve problems! 🧩
+      </p>
+
+      <div class="definition-box">
+        🖥️ Computer = Smart Electronic Machine that Helps Us! 🤖
+      </div>
+    </div>
+
+    <!-- TYPES OF COMPUTERS -->
+    <div class="fun-card card-red" id="card-types">
+      <div class="section-header">
+        <span class="section-icon">🖥️</span>
+        <h2 class="section-title red">Types of Computers</h2>
+      </div>
+      <p class="card-text" style="margin-bottom:10px;">
+        Tap on each computer to learn about it! 👇
+      </p>
+      <div class="computers-grid">
+        <div class="computer-card card-desktop" data-info="A Desktop Computer sits on a desk! It has a big screen 🖥️ and a keyboard!" onclick="revealInfo(this)">
+          <span class="computer-emoji">🖥️</span>
+          <span class="computer-label">Desktop Computer</span>
+        </div>
+        <div class="computer-card card-laptop" data-info="A Laptop is a computer you can carry! It folds open like a book 📚!" onclick="revealInfo(this)">
+          <span class="computer-emoji">💻</span>
+          <span class="computer-label">Laptop</span>
+        </div>
+        <div class="computer-card card-tablet" data-info="A Tablet is flat and light! You can draw on it with a special pen ✏️!" onclick="revealInfo(this)">
+          <span class="computer-emoji">📱</span>
+          <span class="computer-label">Tablet</span>
+        </div>
+        <div class="computer-card card-smartphone" data-info="A Smartphone fits in your pocket! You can call and play on it 📞!" onclick="revealInfo(this)">
+          <span class="computer-emoji">📳</span>
+          <span class="computer-label">Smartphone</span>
+        </div>
+      </div>
+      <div id="type-info-box" style="display:none; margin-top:24px; background:#fffde7; border:4px solid #FFD93D; border-radius:24px; padding:20px; font-size:clamp(18px,2.5vw,24px); font-weight:700; color:#F57F17; text-align:center;">
+      </div>
+    </div>
+
+    <!-- DRAG AND DROP MATCHING -->
+    <div class="fun-card card-purple" id="card-matching">
+      <div class="section-header">
+        <span class="section-icon">🎮</span>
+        <h2 class="section-title" style="color:#7b1fa2;">Match the Computers!</h2>
+      </div>
+      <div class="drag-section">
+        <p class="drag-instructions">🖱️ Drag the word to the right picture!</p>
+        <div class="drag-area">
+          <div class="drag-words-pool" id="wordsPool">
+            <div class="drag-word" draggable="true" data-word="Desktop Computer" id="dw-desktop" touch-data="Desktop Computer">🖥️ Desktop Computer</div>
+            <div class="drag-word" draggable="true" data-word="Laptop" id="dw-laptop" touch-data="Laptop">💻 Laptop</div>
+            <div class="drag-word" draggable="true" data-word="Tablet" id="dw-tablet" touch-data="Tablet">📱 Tablet</div>
+            <div class="drag-word" draggable="true" data-word="Smartphone" id="dw-smartphone" touch-data="Smartphone">📳 Smartphone</div>
+          </div>
+          <div class="drop-targets">
+            <div class="drop-target" data-answer="Laptop">
+              <span class="drop-emoji">💻</span>
+              <div class="drop-label-slot" data-slot="Laptop">?</div>
+            </div>
+            <div class="drop-target" data-answer="Desktop Computer">
+              <span class="drop-emoji">🖥️</span>
+              <div class="drop-label-slot" data-slot="Desktop Computer">?</div>
+            </div>
+            <div class="drop-target" data-answer="Smartphone">
+              <span class="drop-emoji">📳</span>
+              <div class="drop-label-slot" data-slot="Smartphone">?</div>
+            </div>
+            <div class="drop-target" data-answer="Tablet">
+              <span class="drop-emoji">📱</span>
+              <div class="drop-label-slot" data-slot="Tablet">?</div>
+            </div>
+          </div>
+        </div>
+        <button class="reset-btn" onclick="resetDragDrop()">🔄 Reset Game</button>
+      </div>
+    </div>
+
+    <!-- FILL IN MISSING LETTERS -->
+    <div class="fun-card card-yellow" id="card-puzzle">
+      <div class="section-header">
+        <span class="section-icon">✏️</span>
+        <h2 class="section-title yellow">Fill In The Missing Letters!</h2>
+      </div>
+      <p class="card-text" style="margin-bottom:16px;">Can you complete the words? Type the missing letters! 🔤</p>
+      <div class="word-puzzle" id="wordPuzzle">
+        <!-- SMARTPHONE -->
+        <div class="puzzle-row" id="puzzle-smartphone">
+          <div class="puzzle-cell given">S</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="M" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="A" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">R</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="T" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">P</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="H" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">O</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="N" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">E</div>
+          <span class="puzzle-label">= 📳 Smartphone</span>
+        </div>
+        <!-- ELECTRONIC -->
+        <div class="puzzle-row" id="puzzle-electronic">
+          <div class="puzzle-cell given">E</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="L" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="E" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">C</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="T" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">R</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="O" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">N</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="I" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">C</div>
+          <span class="puzzle-label">= ⚡ Electronic</span>
+        </div>
+        <!-- MACHINE -->
+        <div class="puzzle-row" id="puzzle-machine">
+          <div class="puzzle-cell given">M</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="A" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">C</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="H" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">I</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="N" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="E" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <span class="puzzle-label">= ⚙️ Machine</span>
+        </div>
+        <!-- DESKTOP -->
+        <div class="puzzle-row" id="puzzle-desktop">
+          <div class="puzzle-cell given">D</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="E" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="S" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">K</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="T" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">O</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="P" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <span class="puzzle-label">= 🖥️ Desktop</span>
+        </div>
+        <!-- COMPUTER -->
+        <div class="puzzle-row" id="puzzle-computer">
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="C" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">O</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="M" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="P" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">U</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="T" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">E</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="R" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <span class="puzzle-label">= 💻 Computer</span>
+        </div>
+        <!-- LAPTOP -->
+        <div class="puzzle-row" id="puzzle-laptop">
+          <div class="puzzle-cell given">L</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="A" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">P</div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="T" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell blank"><input maxlength="1" data-answer="O" placeholder="_" oninput="checkPuzzleLetter(this)"></div>
+          <div class="puzzle-cell given">P</div>
+          <span class="puzzle-label">= 💻 Laptop</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="fun-card card-red" id="card-quiz">
+      <div class="section-header">
+        <span class="section-icon">🧠</span>
+        <h2 class="section-title red">Quiz Time! 🎉</h2>
+      </div>
+
+      <div class="quiz-container" id="quizContainer">
+        <div class="quiz-progress" id="quizProgress"></div>
+
+        <!-- Q1 -->
+        <div class="quiz-question active" data-q="0">
+          <p class="quiz-q-text">Which one is a Desktop Computer? 🤔</p>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="true" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🖥️</span>
+              <span>Desktop</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🚲</span>
+              <span>Bicycle</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🌀</span>
+              <span>Fan</span>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="qf0"></div>
+          <button class="quiz-next-btn" id="qn0" onclick="nextQuestion(1)">Next ➡️</button>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question" data-q="1">
+          <p class="quiz-q-text">Which one can you carry in a bag? 🎒</p>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🖥️</span>
+              <span>Desktop</span>
+            </div>
+            <div class="quiz-option" data-correct="true" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">💻</span>
+              <span>Laptop</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🫧</span>
+              <span>Washing Machine</span>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="qf1"></div>
+          <button class="quiz-next-btn" id="qn1" onclick="nextQuestion(2)">Next ➡️</button>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question" data-q="2">
+          <p class="quiz-q-text">A computer is a smart ______ machine! 💡</p>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🍎</span>
+              <span>Fruit</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🧸</span>
+              <span>Toy</span>
+            </div>
+            <div class="quiz-option" data-correct="true" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">⚡</span>
+              <span>Electronic</span>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="qf2"></div>
+          <button class="quiz-next-btn" id="qn2" onclick="nextQuestion(3)">Next ➡️</button>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question" data-q="3">
+          <p class="quiz-q-text">Which one is a Smartphone? 📱</p>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="true" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">📳</span>
+              <span>Smartphone</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">📺</span>
+              <span>Television</span>
+            </div>
+            <div class="quiz-option" onclick="handleQuizAnswer(this)">
+              <span class="quiz-option-emoji">🖨️</span>
+              <span>Printer</span>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="qf3"></div>
+          <button class="quiz-next-btn" id="qn3" onclick="nextQuestion(4)">Finish 🏁</button>
+        </div>
+
+        <!-- Complete -->
+        <div class="quiz-complete" id="quizComplete">
+          <h2>🌟 Amazing! 🌟</h2>
+          <p>You finished the quiz! You are a Computer Star! ⭐</p>
+          <div style="font-size:80px; margin:20px 0;">🎉🤖🎊</div>
+          <button class="reset-btn" style="margin:0 auto; display:block;" onclick="resetQuiz()">🔄 Play Again!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUN FACT -->
+    <div class="fun-card card-blue" id="card-funfact">
+      <div class="section-header">
+        <span class="section-icon">🌟</span>
+        <h2 class="section-title">Fun Fact!</h2>
+      </div>
+      <div class="fun-fact-box">
+        <span class="fact-icon">🧠</span>
+        A computer is like a <strong>super-fast brain</strong>. It can think and solve
+        problems much faster than humans! 🚀
+      </div>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="fun-card card-yellow" id="card-activity">
+      <div class="section-header">
+        <span class="section-icon">🎨</span>
+        <h2 class="section-title yellow">Activity Time!</h2>
+      </div>
+      <ul class="objectives-list">
+        <li>
+          <span class="obj-icon">🏪</span>
+          When you go out with your family, make a note of all the places where computers are being used!
+        </li>
+        <li>
+          <span class="obj-icon">🖼️</span>
+          Collect pictures of different kinds of computers and their parts. Paste them on a sheet and put it on the soft board in your class!
+        </li>
+      </ul>
+    </div>
+
+  </div><!-- /content-container -->
+
+  <footer class="page-footer">
+    <span class="stars-row">⭐⭐⭐⭐⭐</span>
+    Digital School — Unit 1: What Is A Computer? | Class 1
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- Drag ghost element -->
+<div class="drag-ghost" id="dragGhost"></div>
+
+<script>
+// =============================================
+// MAIN INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  try { initSky(); } catch(e) { console.warn('Sky init failed', e); }
+  try { initThreeJS(); } catch(e) { console.warn('Three.js init failed', e); showThreeFallback(); }
+  try { initGSAP(); } catch(e) { console.warn('GSAP init failed', e); }
+  try { initLenis(); } catch(e) { console.warn('Lenis init failed', e); }
+  initDragDrop();
+  initQuizProgress();
+  initComputerCardTap();
+});
+
+// =============================================
+// SKY BACKGROUND
+// =============================================
+function initSky() {
+  const sky = document.getElementById('skyBg');
+  if (!sky) return;
+  const cloudData = [
+    { w: 120, h: 40, top: 8, dur: 22, delay: 0 },
+    { w: 180, h: 55, top: 15, dur: 30, delay: -8 },
+    { w: 90, h: 30, top: 5, dur: 18, delay: -5 },
+    { w: 150, h: 50, top: 25, dur: 26, delay: -12 },
+    { w: 100, h: 35, top: 40, dur: 35, delay: -20 },
+  ];
+  cloudData.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'cloud';
+    el.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.top}%;animation-duration:${c.dur}s;animation-delay:${c.delay}s;`;
+    sky.appendChild(el);
+  });
+}
+
+// =============================================
+// THREE.JS
+// =============================================
+function showThreeFallback() {
+  const canvas = document.getElementById('three-canvas');
+  const fallback = document.getElementById('three-fallback');
+  if (canvas) canvas.style.display = 'none';
+  if (fallback) fallback.style.display = 'flex';
+}
+
+function initThreeJS() {
+  if (typeof THREE === 'undefined') { showThreeFallback(); return; }
+
+  const canvas = document.getElementById('three-canvas');
+  if (!canvas) { showThreeFallback(); return; }
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  } catch(e) { showThreeFallback(); return; }
+
+  if (!renderer) { showThreeFallback(); return; }
+
+  const W = Math.min(280, window.innerWidth - 80);
+  const H = 220;
+  renderer.setSize(W, H);
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  renderer.setClearColor(0xE3F2FD, 1);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.set(0, 0, 5);
+
+  // Monitor body
+  const monitorGeom = new THREE.BoxGeometry(3, 2, 0.2);
+  const monitorMat = new THREE.MeshPhongMaterial({ color: 0x00897B });
+  const monitor = new THREE.Mesh(monitorGeom, monitorMat);
+  scene.add(monitor);
+
+  // Screen
+  const screenGeom = new THREE.BoxGeometry(2.5, 1.6, 0.05);
+  const screenMat = new THREE.MeshPhongMaterial({ color: 0x4DD0E1 });
+  const screen = new THREE.Mesh(screenGeom, screenMat);
+  screen.position.z = 0.13;
+  scene.add(screen);
+
+  // Stand
+  const standGeom = new THREE.BoxGeometry(0.3, 0.8, 0.2);
+  const standMat = new THREE.MeshPhongMaterial({ color: 0x00695C });
+  const stand = new THREE.Mesh(standGeom, standMat);
+  stand.position.y = -1.4;
+  scene.add(stand);
+
+  // Base
+  const baseGeom = new THREE.BoxGeometry(1.2, 0.15, 0.4);
+  const base = new THREE.Mesh(baseGeom, standMat);
+  base.position.y = -1.85;
+  scene.add(base);
+
+  // Lights
+  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambient);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(3, 3, 5);
+  scene.add(dirLight);
+
+  const group = new THREE.Group();
+  group.add(monitor);
+  group.add(screen);
+  group.add(stand);
+  group.add(base);
+  scene.add(group);
+  // Remove individual meshes from scene since they're in group
+  scene.remove(monitor);
+  scene.remove(screen);
+  scene.remove(stand);
+  scene.remove(base);
+
+  let animRunning = true;
+  function animate() {
+    if (!animRunning) return;
+    requestAnimationFrame(animate);
+    group.rotation.y += 0.012;
+    group.rotation.x = Math.sin(Date.now() * 0.001) * 0.08;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Cleanup on visibility change
+  document.addEventListener('visibilitychange', () => {
+    animRunning = !document.hidden;
+    if (!document.hidden) animate();
+  });
+}
+
+// =============================================
+// GSAP ANIMATIONS
+// =============================================
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  const cards = document.querySelectorAll('.fun-card');
+  if (!cards.length) return;
+
+  // Initial bounce on first visible cards
+  const heroCards = Array.from(cards).slice(0, 2);
+  gsap.from(heroCards, {
+    y: 40,
+    scale: 0.9,
+    opacity: 0,
+    duration: 0.5,
+    stagger: 0.12,
+    ease: 'back.out(1.7)',
+    clearProps: 'all'
+  });
+
+  // ScrollTrigger for rest
+  if (typeof ScrollTrigger !== 'undefined') {
+    Array.from(cards).slice(2).forEach(card => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+          once: true
+        },
+        y: 50,
+        scale: 0.85,
+        opacity: 0,
+        duration: 0.5,
+        ease: 'back.out(1.5)',
+        clearProps: 'all'
+      });
+    });
+  }
+}
+
+// =============================================
+// LENIS SMOOTH SCROLL
+// =============================================
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  // Disable on low-memory mobile
+  if (navigator.deviceMemory !== undefined && navigator.deviceMemory < 2) return;
+
+  let lenis;
+  try {
+    lenis = new Lenis({ lerp: 0.08, smooth: true });
+  } catch(e) { return; }
+
+  if (typeof gsap !== 'undefined') {
+    gsap.ticker.add((time) => {
+      try { lenis.raf(time * 1000); } catch(e) {}
+    });
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    function raf(time) {
+      try { lenis.raf(time); } catch(e) {}
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+}
+
+// =============================================
+// CONFETTI
+// =============================================
+function fireConfetti() {
+  if (typeof confetti === 'undefined') return;
+  try {
+    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#4DD0E1','#b39ddb'] });
+  } catch(e) {}
+}
+
+// =============================================
+// GSAP SHAKE
+// =============================================
+function shakeElement(el) {
+  if (!el) return;
+  if (typeof gsap !== 'undefined') {
+    gsap.to(el, { x: -10, duration: 0.06, yoyo: true, repeat: 5, ease: 'none', clearProps: 'x' });
+  } else {
+    el.style.transition = 'transform 0.06s';
+    let count = 0;
+    const vals = [-10, 10, -10, 10, 0];
+    const iv = setInterval(() => {
+      if (count >= vals.length) { clearInterval(iv); el.style.transform = ''; return; }
+      el.style.transform = `translateX(${vals[count]}px)`;
+      count++;
+    }, 60);
+  }
+}
+
+// =============================================
+// COMPUTER CARD TAP / REVEAL
+// =============================================
+function initComputerCardTap() {
+  // already using onclick, but add tap animation
+}
+
+function revealInfo(card) {
+  if (!card) return;
+  const info = card.getAttribute('data-info');
+  const box = document.getElementById('type-info-box');
+  const emoji = card.querySelector('.computer-emoji');
+
+  if (emoji && typeof gsap !== 'undefined') {
+    gsap.to(emoji, { scale: 1.4, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
+  }
+
+  if (box) {
+    box.style.display = 'block';
+    box.textContent = info;
+    if (typeof gsap !== 'undefined') {
+      gsap.from(box, { scale: 0.8, opacity: 0, duration: 0.3, ease: 'back.out(2)' });
+    }
+  }
+
+  // Ripple
+  addRipple(card);
+}
+
+function addRipple(el) {
+  if (!el) return;
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  const size = Math.max(el.offsetWidth, el.offsetHeight);
+  r.style.cssText = `width:${size}px;height:${size}px;left:50%;top:50%;margin-left:-${size/2}px;margin-top:-${size/2}px;`;
+  el.style.position = 'relative';
+  el.style.overflow = 'hidden';
+  el.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+
+// =============================================
+// DRAG AND DROP
+// =============================================
+let currentDragWord = null;
+let touchDragEl = null;
+let touchGhost = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+function initDragDrop() {
+  const words = document.querySelectorAll('.drag-word');
+  const targets = document.querySelectorAll('.drop-target');
+  if (!words.length || !targets.length) return;
+
+  const ghost = document.getElementById('dragGhost');
+
+  words.forEach(word => {
+    // Desktop drag
+    word.addEventListener('dragstart', (e) => {
+      currentDragWord = word;
+      word.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', word.getAttribute('data-word'));
+    });
+    word.addEventListener('dragend', () => {
+      word.classList.remove('dragging');
+      currentDragWord = null;
+    });
+
+    // Touch drag
+    word.addEventListener('touchstart', (e) => {
+      if (word.classList.contains('matched')) return;
+      touchDragEl = word;
+      word.classList.add('dragging');
+      const touch = e.touches[0];
+      const rect = word.getBoundingClientRect();
+      touchOffsetX = touch.clientX - rect.left;
+      touchOffsetY = touch.clientY - rect.top;
+
+      if (ghost) {
+        ghost.textContent = word.textContent;
+        ghost.style.display = 'block';
+        ghost.style.left = (touch.clientX - touchOffsetX) + 'px';
+        ghost.style.top = (touch.clientY - touchOffsetY) + 'px';
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    word.addEventListener('touchmove', (e) => {
+      if (!touchDragEl) return;
+      const touch = e.touches[0];
+      if (ghost) {
+        ghost.style.left = (touch.clientX - touchOffsetX) + 'px';
+        ghost.style.top = (touch.clientY - touchOffsetY) + 'px';
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    word.addEventListener('touchend', (e) => {
+      if (!touchDragEl) return;
+      const touch = e.changedTouches[0];
+      if (ghost) ghost.style.display = 'none';
+      touchDragEl.classList.remove('dragging');
+
+      // Find drop target under finger
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      let dropTarget = el ? el.closest('.drop-target') : null;
+      if (dropTarget) {
+        handleDrop(dropTarget, touchDragEl.getAttribute('data-word'));
+      }
+      touchDragEl = null;
+      e.preventDefault();
+    }, { passive: false });
+  });
+
+  targets.forEach(target => {
+    target.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      target.classList.add('drag-over');
+    });
+    target.addEventListener('dragleave', () => {
+      target.classList.remove('drag-over');
+    });
+    target.addEventListener('drop', (e) => {
+      e.preventDefault();
+      target.classList.remove('drag-over');
+      const word = e.dataTransfer.getData('text/plain');
+      if (currentDragWord) handleDrop(target, word, currentDragWord);
+    });
+  });
+}
+
+function handleDrop(target, wordText, wordEl) {
+  if (!target) return;
+  const answer = target.getAttribute('data-answer');
+  const slot = target.querySelector('.drop-label-slot');
+
+  // If already correctly filled, ignore
+  if (target.classList.contains('correct')) return;
+
+  // Find word element if not provided
+  if (!wordEl) {
+    const allWords = document.querySelectorAll('.drag-word');
+    allWords.forEach(w => { if (w.getAttribute('data-word') === wordText) wordEl = w; });
+  }
+
+  if (wordText === answer) {
+    // Correct
+    target.classList.add('correct');
+    target.classList.remove('wrong');
+    if (slot) {
+      slot.textContent = wordText;
+      slot.classList.add('filled');
+    }
+    if (wordEl) {
+      wordEl.classList.add('matched');
+      wordEl.setAttribute('draggable', 'false');
+      wordEl.style.opacity = '0.4';
+    }
+    fireConfetti();
+    if (typeof gsap !== 'undefined') {
+      gsap.from(slot, { scale: 0.5, duration: 0.3, ease: 'back.out(2)' });
+    }
+    checkAllMatched();
+  } else {
+    // Wrong
+    target.classList.add('wrong');
+    setTimeout(() => target.classList.remove('wrong'), 800);
+    shakeElement(target);
+  }
+}
+
+function checkAllMatched() {
+  const targets = document.querySelectorAll('.drop-target');
+  let allDone = true;
+  targets.forEach(t => { if (!t.classList.contains('correct')) allDone = false; });
+  if (allDone) {
+    setTimeout(() => {
+      fireConfetti();
+      setTimeout(fireConfetti, 400);
+    }, 200);
+  }
+}
+
+function resetDragDrop() {
+  const words = document.querySelectorAll('.drag-word');
+  const targets = document.querySelectorAll('.drop-target');
+  const slots = document.querySelectorAll('.drop-label-slot');
+
+  words.forEach(w => {
+    w.classList.remove('matched', 'dragging');
+    w.setAttribute('draggable', 'true');
+    w.style.opacity = '';
+  });
+
+  targets.forEach(t => {
+    t.classList.remove('correct', 'wrong', 'drag-over');
+  });
+
+  slots.forEach(s => {
+    s.textContent = '?';
+    s.classList.remove('filled');
+  });
+}
+
+// =============================================
+// QUIZ
+// =============================================
+let currentQuestion = 0;
+const totalQuestions = 4;
+
+function initQuizProgress() {
+  const prog = document.getElementById('quizProgress');
+  if (!prog) return;
+  prog.innerHTML = '';
+  for (let i = 0; i < totalQuestions; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-dot' + (i === 0 ? ' active' : '');
+    dot.id = 'qdot' + i;
+    prog.appendChild(dot);
+  }
+}
+
+function handleQuizAnswer(btn) {
+  if (!btn) return;
+  const qEl = btn.closest('.quiz-question');
+  if (!qEl) return;
+  const qi = parseInt(qEl.getAttribute('data-q'));
+  const fb = document.getElementById('qf' + qi);
+  const nb = document.getElementById('qn' + qi);
+  const opts = qEl.querySelectorAll('.quiz-option');
+
+  // Disable all options
+  opts.forEach(o => { o.style.pointerEvents = 'none'; });
+
+  if (btn.getAttribute('data-correct') === 'true') {
+    btn.classList.add('correct-ans');
+    if (fb) { fb.textContent = '🎉 Correct! Amazing!'; fb.className = 'quiz-feedback correct'; }
+    fireConfetti();
+    if (nb) nb.style.display = 'block';
+    const dot = document.getElementById('qdot' + qi);
+    if (dot) { dot.classList.remove('active'); dot.classList.add('done'); }
+  } else {
+    btn.classList.add('wrong-ans');
+    if (fb) { fb.textContent = '😊 Try again! You can do it!'; fb.className = 'quiz-feedback wrong'; }
+    shakeElement(btn);
+    // Re-enable after shake
+    setTimeout(() => {
+      opts.forEach(o => { o.style.pointerEvents = ''; });
+      btn.classList.remove('wrong-ans');
+      if (fb) fb.textContent = '';
+    }, 1000);
+  }
+}
+
+function nextQuestion(nextIdx) {
+  const allQ = document.querySelectorAll('.quiz-question');
+  allQ.forEach(q => q.classList.remove('active'));
+
+  if (nextIdx >= totalQuestions) {
+    const complete = document.getElementById('quizComplete');
+    if (complete) {
+      complete.style.display = 'block';
+      if (typeof gsap !== 'undefined') {
+        gsap.from(complete, { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(2)' });
+      }
+      setTimeout(() => { fireConfetti(); setTimeout(fireConfetti, 300); }, 100);
+    }
+    return;
+  }
+
+  const nextQ = document.querySelector(`.quiz-question[data-q="${nextIdx}"]`);
+  if (nextQ) {
+    nextQ.classList.add('active');
+    if (typeof gsap !== 'undefined') {
+      gsap.from(nextQ, { x: 60, opacity: 0, duration: 0.3, ease: 'power2.out' });
+    }
+    const dot = document.getElementById('qdot' + nextIdx);
+    if (dot) dot.classList.add('active');
+  }
+  currentQuestion = nextIdx;
+}
+
+function resetQuiz() {
+  currentQuestion = 0;
+  const allQ = document.querySelectorAll('.quiz-question');
+  allQ.forEach((q, i) => {
+    q.classList.remove('active');
+    const opts = q.querySelectorAll('.quiz-option');
+    opts.forEach(o => {
+      o.classList.remove('correct-ans', 'wrong-ans');
+      o.style.pointerEvents = '';
+    });
+    const qi = parseInt(q.getAttribute('data-q'));
+    const fb = document.getElementById('qf' + qi);
+    const nb = document.getElementById('qn' + qi);
+    if (fb) { fb.textContent = ''; fb.className = 'quiz-feedback'; }
+    if (nb) nb.style.display = 'none';
+  });
+
+  const first = document.querySelector('.quiz-question[data-q="0"]');
+  if (first) first.classList.add('active');
+
+  const complete = document.getElementById('quizComplete');
+  if (complete) complete.style.display = 'none';
+
+  // Reset progress dots
+  for (let i = 0; i < totalQuestions; i++) {
+    const dot = document.getElementById('qdot' + i);
+    if (dot) { dot.classList.remove('active', 'done'); if (i === 0) dot.classList.add('active'); }
+  }
+}
+
+// =============================================
+// PUZZLE LETTERS
+// =============================================
+function checkPuzzleLetter(input) {
+  if (!input) return;
+  const answer = input.getAttribute('data-answer');
+  const val = input.value.toUpperCase().trim();
+  const cell = input.closest('.puzzle-cell');
+  if (!cell) return;
+
+  if (val === '') {
+    cell.style.background = '';
+    input.style.color = '#FF6B6B';
+    return;
+  }
+
+  if (val === answer) {
+    cell.style.background = '#6BCB77';
+    cell.style.borderColor = '#2e7d32';
+    input.style.color = 'white';
+    if (typeof gsap !== 'undefined') {
+      gsap.from(cell, { scale: 0.7, duration: 0.25, ease: 'back.out(3)' });
+    }
+    input.blur();
+  } else {
+    cell.style.background = '#ffebee';
+    cell.style.borderColor = '#FF6B6B';
+    input.style.color = '#FF6B6B';
+    shakeElement(cell);
+  }
+}
+</script>
+</body>
+</html>

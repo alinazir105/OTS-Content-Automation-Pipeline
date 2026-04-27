@@ -1,0 +1,1190 @@
+<!-- CLASS: 1 | SUBJECT: computer | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 – Functions and Uses of a Computer | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;font-family:'Nunito',sans-serif;font-size:20px;background:#fff}
+body{background:linear-gradient(180deg,#e0f7ff 0%,#fffde0 40%,#e8ffe8 100%);min-height:100vh}
+
+/* SKY BACKGROUND */
+.sky-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+.cloud{position:absolute;background:#fff;border-radius:50px;opacity:0.85}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.c1{width:120px;height:40px;top:8%;left:5%;animation:floatCloud 18s linear infinite}
+.c1::before{width:60px;height:60px;top:-30px;left:15px}
+.c1::after{width:40px;height:40px;top:-20px;left:55px}
+.c2{width:90px;height:30px;top:15%;left:60%;animation:floatCloud 24s linear infinite 4s}
+.c2::before{width:50px;height:50px;top:-25px;left:10px}
+.c2::after{width:35px;height:35px;top:-15px;left:42px}
+.c3{width:110px;height:36px;top:5%;left:80%;animation:floatCloud 20s linear infinite 8s}
+.c3::before{width:55px;height:55px;top:-28px;left:12px}
+.c3::after{width:38px;height:38px;top:-18px;left:50px}
+@keyframes floatCloud{0%{transform:translateX(0)}50%{transform:translateX(30px)}100%{transform:translateX(0)}}
+
+/* GRASS */
+.grass-bar{position:fixed;bottom:0;left:0;width:100%;height:60px;z-index:0;pointer-events:none}
+
+/* PAGE WRAPPER */
+.page-wrap{position:relative;z-index:1;width:100%;padding:0}
+.content-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* HERO */
+.hero{width:100vw;background:linear-gradient(135deg,#6BCB77 0%,#FFD93D 100%);padding:60px 40px 80px;text-align:center;position:relative;overflow:hidden;border-bottom:6px solid #FF6B6B}
+.hero h1{font-family:'Bubblegum Sans',cursive;font-size:clamp(42px,8vw,90px);color:#fff;text-shadow:4px 4px 0 #FF6B6B;line-height:1.1;margin-bottom:16px}
+.hero .subtitle{font-family:'Bubblegum Sans',cursive;font-size:clamp(22px,4vw,40px);color:#fff;text-shadow:2px 2px 0 #6BCB77;margin-bottom:30px}
+.hero-badge{display:inline-block;background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:24px;padding:12px 32px;border-radius:50px;border:4px solid #fff;box-shadow:0 6px 0 #c0392b}
+.hero-emoji{font-size:80px;display:block;margin-bottom:20px;filter:drop-shadow(4px 4px 0 rgba(0,0,0,0.15))}
+
+/* THREE.JS CANVAS CONTAINER */
+.threejs-wrap{width:100%;display:flex;justify-content:center;align-items:center;padding:20px 0;min-height:220px}
+#three-canvas{border-radius:24px;border:6px solid #FFD93D;box-shadow:0 8px 30px rgba(0,0,0,0.15);display:block}
+.three-fallback{display:none;font-size:100px;text-align:center;min-height:200px;align-items:center;justify-content:center;background:linear-gradient(135deg,#FFD93D,#FF6B6B);border-radius:24px;border:6px solid #fff;padding:20px}
+
+/* FUN CARDS */
+.fun-card{width:100%;background:#fff;border-radius:32px;border:5px solid #FFD93D;box-shadow:0 10px 40px rgba(0,0,0,0.10);padding:40px;margin-bottom:40px;opacity:1;transform:none;position:relative;overflow:hidden}
+.fun-card.blue-border{border-color:#6BCB77}
+.fun-card.red-border{border-color:#FF6B6B}
+.fun-card.yellow-border{border-color:#FFD93D}
+.fun-card.purple-border{border-color:#a29bfe}
+.card-icon{font-size:56px;display:block;text-align:center;margin-bottom:12px}
+.card-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(32px,5vw,56px);color:#FF6B6B;text-align:center;margin-bottom:24px;line-height:1.1}
+.card-title.blue{color:#0984e3}
+.card-title.green{color:#00b894}
+.card-title.purple{color:#6c5ce7}
+
+/* PLACES GRID */
+.places-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:24px}
+.place-card{background:linear-gradient(135deg,#FFD93D,#FF6B6B);border-radius:24px;border:4px solid #fff;padding:28px 16px;text-align:center;cursor:pointer;transition:transform 0.2s;box-shadow:0 6px 20px rgba(0,0,0,0.10)}
+.place-card:hover{transform:scale(1.06)}
+.place-card .place-emoji{font-size:60px;display:block;margin-bottom:10px}
+.place-card .place-label{font-family:'Bubblegum Sans',cursive;font-size:26px;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,0.15)}
+
+/* PURPOSE SECTIONS */
+.purpose-section{margin-bottom:16px}
+.purpose-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(28px,4vw,46px);margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.purpose-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.purpose-item{background:linear-gradient(135deg,#e0f7ff,#fff);border-radius:24px;border:4px solid #6BCB77;padding:24px 16px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.purpose-item:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.12)}
+.purpose-item .pi-emoji{font-size:56px;display:block;margin-bottom:10px}
+.purpose-item .pi-label{font-family:'Bubblegum Sans',cursive;font-size:22px;color:#0984e3}
+
+/* DRAG AND DROP */
+.dnd-section{margin-top:24px}
+.dnd-title{font-family:'Bubblegum Sans',cursive;font-size:30px;color:#6c5ce7;text-align:center;margin-bottom:20px}
+.dnd-container{display:flex;flex-wrap:wrap;gap:30px;justify-content:center;align-items:flex-start}
+.dnd-words{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:20px;background:#fffde0;border-radius:24px;border:4px dashed #FFD93D;min-height:80px;flex:1;min-width:200px}
+.dnd-targets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;flex:2;min-width:200px}
+.drag-word{background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:22px;padding:14px 22px;border-radius:50px;border:4px solid #fff;cursor:grab;user-select:none;box-shadow:0 4px 12px rgba(0,0,0,0.12);transition:transform 0.15s,box-shadow 0.15s;touch-action:none;display:inline-flex;align-items:center;gap:8px}
+.drag-word:active{cursor:grabbing;transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,0.18)}
+.drag-word.dragging{opacity:0.5}
+.drop-target{background:#e8f5e9;border:4px dashed #6BCB77;border-radius:24px;padding:20px 12px;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:background 0.2s,border-color 0.2s}
+.drop-target.drag-over{background:#b9f6ca;border-color:#00c853;border-style:solid}
+.drop-target.matched{background:#b9f6ca;border-color:#00c853;border-style:solid}
+.drop-target .target-emoji{font-size:52px}
+.drop-target .target-label{font-family:'Bubblegum Sans',cursive;font-size:16px;color:#555}
+.drop-target .placed-word{font-family:'Bubblegum Sans',cursive;font-size:18px;color:#00b894;background:#fff;padding:8px 14px;border-radius:50px;border:3px solid #6BCB77;margin-top:4px}
+.dnd-result{text-align:center;margin-top:20px;font-family:'Bubblegum Sans',cursive;font-size:28px;color:#6BCB77;display:none}
+
+/* QUIZ */
+.quiz-wrap{margin-top:24px}
+.quiz-question{margin-bottom:40px;opacity:1}
+.q-text{font-family:'Bubblegum Sans',cursive;font-size:clamp(24px,3.5vw,38px);color:#333;margin-bottom:20px;text-align:center}
+.q-image{width:100%;max-width:300px;height:220px;object-fit:contain;border-radius:24px;border:5px solid #FFD93D;display:block;margin:0 auto 24px;background:#fffde0}
+.q-image-emoji{width:100%;max-width:300px;height:220px;background:linear-gradient(135deg,#FFD93D,#FF6B6B);border-radius:24px;border:5px solid #fff;display:flex;align-items:center;justify-content:center;font-size:100px;margin:0 auto 24px}
+.answer-options{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+.answer-btn{background:#fff;border:5px solid #6BCB77;border-radius:24px;padding:20px;min-width:160px;min-height:130px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform 0.15s,box-shadow 0.15s;font-family:'Bubblegum Sans',cursive;font-size:22px;color:#333;box-shadow:0 4px 16px rgba(0,0,0,0.08);touch-action:manipulation}
+.answer-btn:hover{transform:scale(1.05);box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+.answer-btn .btn-emoji{font-size:56px}
+.answer-btn.correct-flash{background:#b9f6ca;border-color:#00c853}
+.answer-btn.wrong-flash{background:#ffcdd2;border-color:#e53935}
+.quiz-feedback{text-align:center;font-family:'Bubblegum Sans',cursive;font-size:32px;min-height:50px;margin-top:16px}
+.quiz-score{text-align:center;background:linear-gradient(135deg,#6BCB77,#FFD93D);border-radius:24px;border:5px solid #fff;padding:30px;font-family:'Bubblegum Sans',cursive;font-size:36px;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,0.1);display:none;margin-top:30px}
+
+/* EXERCISE 1 FILL BLANKS */
+.fill-blank-list{list-style:none;display:flex;flex-direction:column;gap:20px;margin-top:20px}
+.fill-blank-item{background:#fffde0;border-radius:20px;border:4px solid #FFD93D;padding:20px 24px;font-size:22px;color:#333;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.blank-input{font-family:'Bubblegum Sans',cursive;font-size:22px;border:3px solid #6BCB77;border-radius:12px;padding:8px 16px;outline:none;background:#fff;color:#333;min-width:160px;max-width:240px;text-align:center}
+.blank-input.correct{background:#b9f6ca;border-color:#00c853}
+.blank-input.wrong{background:#ffcdd2;border-color:#e53935}
+.check-blanks-btn{display:block;margin:24px auto 0;background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:28px;padding:16px 40px;border-radius:50px;border:5px solid #fff;cursor:pointer;box-shadow:0 6px 0 #c0392b;transition:transform 0.15s}
+.check-blanks-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #c0392b}
+
+/* TRUE / FALSE */
+.tf-list{list-style:none;display:flex;flex-direction:column;gap:20px;margin-top:20px}
+.tf-item{background:#e8f5e9;border-radius:20px;border:4px solid #6BCB77;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.tf-text{font-size:20px;color:#333;flex:1;min-width:200px}
+.tf-buttons{display:flex;gap:12px}
+.tf-btn{font-family:'Bubblegum Sans',cursive;font-size:22px;padding:12px 24px;border-radius:50px;border:4px solid #fff;cursor:pointer;min-height:56px;min-width:90px;transition:transform 0.15s}
+.tf-btn.true-btn{background:#6BCB77;color:#fff;box-shadow:0 4px 0 #27ae60}
+.tf-btn.false-btn{background:#FF6B6B;color:#fff;box-shadow:0 4px 0 #c0392b}
+.tf-btn:active{transform:translateY(3px)}
+.tf-btn.selected-correct{background:#00c853;transform:scale(1.08)}
+.tf-btn.selected-wrong{background:#e53935;transform:scale(0.95)}
+
+/* JUMBLED WORDS */
+.jumble-list{list-style:none;display:flex;flex-direction:column;gap:20px;margin-top:20px}
+.jumble-item{display:flex;align-items:center;flex-wrap:wrap;gap:16px;background:#ffe8f0;border-radius:20px;border:4px solid #FF6B6B;padding:20px 24px}
+.jumble-clue{background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:24px;padding:10px 20px;border-radius:50px;min-width:140px;text-align:center}
+.jumble-arrow{font-size:28px}
+.jumble-input{font-family:'Bubblegum Sans',cursive;font-size:22px;border:3px solid #6BCB77;border-radius:12px;padding:8px 16px;outline:none;background:#fff;color:#333;min-width:160px;max-width:220px;text-align:center}
+.jumble-input.correct{background:#b9f6ca;border-color:#00c853}
+.jumble-input.wrong{background:#ffcdd2;border-color:#e53935}
+.check-jumble-btn{display:block;margin:24px auto 0;background:#6c5ce7;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:28px;padding:16px 40px;border-radius:50px;border:5px solid #fff;cursor:pointer;box-shadow:0 6px 0 #4834d4;transition:transform 0.15s}
+.check-jumble-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #4834d4}
+
+/* PROGRESS BAR */
+.progress-bar-wrap{background:#ffe082;border-radius:50px;height:20px;border:3px solid #FFD93D;overflow:hidden;margin-bottom:40px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#6BCB77,#00b894);border-radius:50px;transition:width 0.6s ease;width:0%}
+
+/* SECTION DIVIDER */
+.section-divider{text-align:center;font-size:40px;margin:10px 0 30px;letter-spacing:8px}
+
+/* REWARD BANNER */
+.reward-banner{display:none;background:linear-gradient(135deg,#FFD93D,#FF6B6B);border-radius:32px;border:6px solid #fff;padding:40px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.15);margin-top:40px}
+.reward-banner .reward-emoji{font-size:100px;display:block;margin-bottom:16px}
+.reward-banner h2{font-family:'Bubblegum Sans',cursive;font-size:48px;color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,0.1)}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .content-inner{padding:0 16px}
+  .fun-card{padding:24px 16px}
+  .dnd-container{flex-direction:column}
+  .answer-btn{min-width:130px;min-height:110px}
+}
+</style>
+</head>
+<body>
+
+<!-- SKY BACKGROUND -->
+<div class="sky-bg" aria-hidden="true">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+</div>
+<svg class="grass-bar" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M0,60 L0,30 Q60,0 120,30 Q180,60 240,30 Q300,0 360,30 Q420,60 480,30 Q540,0 600,30 Q660,60 720,30 Q780,0 840,30 Q900,60 960,30 Q1020,0 1080,30 Q1140,60 1200,30 Q1260,0 1320,30 Q1380,60 1440,30 L1440,60 Z" fill="#6BCB77"/>
+</svg>
+
+<div class="page-wrap">
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div style="max-width:1500px;margin:0 auto">
+    <span class="hero-emoji">💻</span>
+    <h1>Functions and Uses of a Computer</h1>
+    <p class="subtitle">Unit 2 – Let's Explore! 🌟</p>
+    <span class="hero-badge">⭐ Class 1 ⭐</span>
+  </div>
+</header>
+
+<div class="content-inner">
+
+  <!-- PROGRESS BAR -->
+  <div style="margin-top:40px;margin-bottom:0">
+    <div style="font-family:'Bubblegum Sans',cursive;font-size:22px;color:#555;margin-bottom:8px;text-align:center">📚 Your Progress</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- THREE.JS SECTION -->
+  <div class="threejs-wrap fun-card yellow-border" id="threeCard" style="flex-direction:column;text-align:center">
+    <span class="card-icon">🖥️</span>
+    <div class="card-title">Look at this cool computer! 🎉</div>
+    <div id="three-container" style="display:flex;justify-content:center;align-items:center;min-height:220px">
+      <canvas id="three-canvas" width="300" height="300" style="width:300px;height:300px;display:block"></canvas>
+    </div>
+    <div class="three-fallback" id="three-fallback" style="display:none;font-size:100px;min-height:200px;align-items:center;justify-content:center;background:linear-gradient(135deg,#FFD93D,#FF6B6B);border-radius:24px;border:6px solid #fff;padding:20px;margin:0 auto;max-width:300px">💻</div>
+    <p style="font-family:'Bubblegum Sans',cursive;font-size:22px;color:#6c5ce7;margin-top:16px">Spin! Spin! A magical computer! 🌀</p>
+  </div>
+
+  <!-- SECTION: WHERE DO WE USE COMPUTERS -->
+  <div class="fun-card blue-border" id="card1">
+    <span class="card-icon">🏠</span>
+    <div class="card-title green">Where Do We Use Computers?</div>
+    <p style="text-align:center;font-size:22px;color:#444;margin-bottom:24px">We use computers <strong>every day</strong> in many places! Tap each one! 👇</p>
+    <div class="places-grid">
+      <div class="place-card tap-reveal" data-msg="We use computers at home to watch videos and play games! 🎮">
+        <span class="place-emoji">🏠</span>
+        <span class="place-label">At Home</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#6BCB77,#0984e3)" data-msg="At the airport, computers help check flights! ✈️">
+        <span class="place-emoji">✈️</span>
+        <span class="place-label">At Airport</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)" data-msg="Doctors use computers at the hospital! 🏥">
+        <span class="place-emoji">🏥</span>
+        <span class="place-label">At Hospital</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#00b894,#55efc4)" data-msg="Banks use computers to keep your money safe! 🏦">
+        <span class="place-emoji">🏦</span>
+        <span class="place-label">At Bank</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#fd79a8,#e84393)" data-msg="Supermarkets scan your shopping with computers! 🛒">
+        <span class="place-emoji">🛒</span>
+        <span class="place-label">Supermarket</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#fdcb6e,#e17055)" data-msg="You use computers at school to learn! 🏫">
+        <span class="place-emoji">🏫</span>
+        <span class="place-label">At School</span>
+      </div>
+      <div class="place-card tap-reveal" style="background:linear-gradient(135deg,#74b9ff,#0984e3)" data-msg="Offices use computers for work every day! 💼">
+        <span class="place-emoji">💼</span>
+        <span class="place-label">At Office</span>
+      </div>
+    </div>
+    <div id="tapMsg" style="display:none;margin-top:24px;background:#fffde0;border-radius:20px;border:4px solid #FFD93D;padding:18px;font-family:'Bubblegum Sans',cursive;font-size:26px;color:#FF6B6B;text-align:center"></div>
+  </div>
+
+  <div class="section-divider">⭐ 🎈 ⭐ 🎈 ⭐</div>
+
+  <!-- SECTION: COMMUNICATION -->
+  <div class="fun-card red-border" id="card2">
+    <span class="card-icon">📱</span>
+    <div class="card-title">Communication 📬</div>
+    <p style="text-align:center;font-size:22px;color:#444;margin-bottom:24px">Computers help us talk to friends and family far away! Tap each picture! 👇</p>
+    <div class="purpose-items">
+      <div class="purpose-item tap-reveal" data-msg="We can send messages to our friends! 💬">
+        <span class="pi-emoji">💬</span>
+        <span class="pi-label">Sending Messages</span>
+      </div>
+      <div class="purpose-item tap-reveal" data-msg="We can send important emails! 📧">
+        <span class="pi-emoji">📧</span>
+        <span class="pi-label">Sending Emails</span>
+      </div>
+      <div class="purpose-item tap-reveal" data-msg="We can see and talk to people far away using video calls! 📹">
+        <span class="pi-emoji">📹</span>
+        <span class="pi-label">Video Calls</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: ENTERTAINMENT -->
+  <div class="fun-card yellow-border" id="card3">
+    <span class="card-icon">🎮</span>
+    <div class="card-title">Entertainment 🎉</div>
+    <p style="text-align:center;font-size:22px;color:#444;margin-bottom:24px">Computers are so much fun! Tap to explore! 🌟</p>
+    <div class="purpose-items">
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#fff9e0,#fff)" data-msg="We can play fun games on a computer! 🕹️">
+        <span class="pi-emoji">🕹️</span>
+        <span class="pi-label">Playing Games</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#ffe0f0,#fff)" data-msg="We can listen to our favourite music! 🎵">
+        <span class="pi-emoji">🎵</span>
+        <span class="pi-label">Listening to Music</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#e0fff4,#fff)" data-msg="We can watch fun videos on a computer! 🎬">
+        <span class="pi-emoji">🎬</span>
+        <span class="pi-label">Watching Videos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: EDUCATION -->
+  <div class="fun-card blue-border" id="card4">
+    <span class="card-icon">📚</span>
+    <div class="card-title blue">Education 🎓</div>
+    <p style="text-align:center;font-size:22px;color:#444;margin-bottom:24px">We can learn so many new things with computers! 🌈</p>
+    <div class="purpose-items">
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#e0f7ff,#fff);border-color:#0984e3" data-msg="We can read e-books to learn new things! 📖">
+        <span class="pi-emoji">📖</span>
+        <span class="pi-label">Reading E-Books</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#ffe0ff,#fff);border-color:#a29bfe" data-msg="We can attend virtual lessons from home! 🏠">
+        <span class="pi-emoji">🖥️</span>
+        <span class="pi-label">Virtual Lessons</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#e0ffe8,#fff);border-color:#6BCB77" data-msg="We can join online meetings with our teachers! 👩‍🏫">
+        <span class="pi-emoji">🤝</span>
+        <span class="pi-label">Online Meetings</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#fff9e0,#fff);border-color:#FFD93D" data-msg="We can watch educational videos! 🎥">
+        <span class="pi-emoji">🎥</span>
+        <span class="pi-label">Educational Videos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: WORD PROCESSING -->
+  <div class="fun-card purple-border" id="card5">
+    <span class="card-icon">✏️</span>
+    <div class="card-title purple">Word Processing ✍️</div>
+    <p style="text-align:center;font-size:22px;color:#444;margin-bottom:24px">We can write and edit words on a computer! 📝</p>
+    <div class="purpose-items">
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#f0e6ff,#fff);border-color:#a29bfe" data-msg="We can type and edit text in a document! 📄">
+        <span class="pi-emoji">📄</span>
+        <span class="pi-label">Text Editing</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#ffe6f0,#fff);border-color:#fd79a8" data-msg="We can write letters and stories on a computer! 📝">
+        <span class="pi-emoji">📝</span>
+        <span class="pi-label">Writing Documents</span>
+      </div>
+      <div class="purpose-item tap-reveal" style="background:linear-gradient(135deg,#e6fff0,#fff);border-color:#6BCB77" data-msg="We can save our work and share it with others! 💾">
+        <span class="pi-emoji">💾</span>
+        <span class="pi-label">Saving Work</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">🌟 ⭐ 🌟 ⭐ 🌟</div>
+
+  <!-- EXERCISE 1: FILL IN THE BLANKS -->
+  <div class="fun-card yellow-border" id="card6">
+    <span class="card-icon">✏️</span>
+    <div class="card-title" style="color:#FF6B6B">Exercise 1: Fill in the Blanks! 📝</div>
+    <p style="text-align:center;font-size:20px;color:#555;margin-bottom:16px">Choose the right word for each sentence!</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:24px">
+      <span style="background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:20px;padding:8px 20px;border-radius:50px;border:3px solid #fff">💬 messages</span>
+      <span style="background:#6BCB77;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:20px;padding:8px 20px;border-radius:50px;border:3px solid #fff">🏠 homes</span>
+      <span style="background:#a29bfe;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:20px;padding:8px 20px;border-radius:50px;border:3px solid #fff">📖 e-books</span>
+      <span style="background:#FFD93D;color:#333;font-family:'Bubblegum Sans',cursive;font-size:20px;padding:8px 20px;border-radius:50px;border:3px solid #fff">📹 video</span>
+      <span style="background:#fd79a8;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:20px;padding:8px 20px;border-radius:50px;border:3px solid #fff">🕹️ games</span>
+    </div>
+    <ul class="fill-blank-list">
+      <li class="fill-blank-item">1. 💬 Computers help us send <input class="blank-input" data-answer="messages" placeholder="????"> to our friends and family.</li>
+      <li class="fill-blank-item">2. 🕹️ We can play <input class="blank-input" data-answer="games" placeholder="????"> on a computer.</li>
+      <li class="fill-blank-item">3. 🏠 Computers are used in places like <input class="blank-input" data-answer="homes" placeholder="????"> and schools.</li>
+      <li class="fill-blank-item">4. 📖 We can read <input class="blank-input" data-answer="e-books" placeholder="????"> on a computer to learn new things.</li>
+      <li class="fill-blank-item">5. 📹 We can make <input class="blank-input" data-answer="video" placeholder="????"> calls using a computer.</li>
+    </ul>
+    <button class="check-blanks-btn" id="checkBlanksBtn">Check My Answers! ✅</button>
+    <div id="blanksResult" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:28px;margin-top:16px;display:none"></div>
+  </div>
+
+  <!-- EXERCISE 2: TRUE OR FALSE -->
+  <div class="fun-card blue-border" id="card7">
+    <span class="card-icon">✅</span>
+    <div class="card-title blue">Exercise 2: True or False? 🤔</div>
+    <p style="text-align:center;font-size:20px;color:#555;margin-bottom:16px">Tap <strong>TRUE ✅</strong> or <strong>FALSE ❌</strong> for each sentence!</p>
+    <ul class="tf-list" id="tfList">
+      <li class="tf-item" data-answer="false">
+        <span class="tf-text">🖥️ Computers can only be used in offices.</span>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn" data-choice="true">✅ True</button>
+          <button class="tf-btn false-btn" data-choice="false">❌ False</button>
+        </div>
+      </li>
+      <li class="tf-item" data-answer="true">
+        <span class="tf-text">📧 We can send emails using a computer.</span>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn" data-choice="true">✅ True</button>
+          <button class="tf-btn false-btn" data-choice="false">❌ False</button>
+        </div>
+      </li>
+      <li class="tf-item" data-answer="false">
+        <span class="tf-text">📚 Computers are not helpful in learning new things.</span>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn" data-choice="true">✅ True</button>
+          <button class="tf-btn false-btn" data-choice="false">❌ False</button>
+        </div>
+      </li>
+      <li class="tf-item" data-answer="false">
+        <span class="tf-text">🎵 Computers cannot play music and videos.</span>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn" data-choice="true">✅ True</button>
+          <button class="tf-btn false-btn" data-choice="false">❌ False</button>
+        </div>
+      </li>
+      <li class="tf-item" data-answer="true">
+        <span class="tf-text">✏️ We can edit text on a computer.</span>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn" data-choice="true">✅ True</button>
+          <button class="tf-btn false-btn" data-choice="false">❌ False</button>
+        </div>
+      </li>
+    </ul>
+    <div id="tfResult" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:28px;margin-top:20px"></div>
+  </div>
+
+  <!-- DRAG AND DROP ACTIVITY -->
+  <div class="fun-card red-border" id="card8">
+    <span class="card-icon">🖱️</span>
+    <div class="card-title">Drag and Drop! 🎯</div>
+    <p style="text-align:center;font-size:20px;color:#555;margin-bottom:16px">Drag the word to match the right picture! 🌟</p>
+    <div class="dnd-section">
+      <div class="dnd-container">
+        <div class="dnd-words" id="dndWords">
+          <div class="drag-word" draggable="true" id="dw-games" data-id="games">🕹️ Games</div>
+          <div class="drag-word" draggable="true" id="dw-email" data-id="email" style="background:#6BCB77">📧 Email</div>
+          <div class="drag-word" draggable="true" id="dw-book" data-id="book" style="background:#a29bfe">📖 E-Book</div>
+          <div class="drag-word" draggable="true" id="dw-music" data-id="music" style="background:#FFD93D;color:#333">🎵 Music</div>
+          <div class="drag-word" draggable="true" id="dw-video" data-id="video" style="background:#fd79a8">📹 Video Call</div>
+        </div>
+        <div class="dnd-targets" id="dndTargets">
+          <div class="drop-target" data-accepts="games">
+            <span class="target-emoji">🎮</span>
+            <span class="target-label">Entertainment</span>
+          </div>
+          <div class="drop-target" data-accepts="email">
+            <span class="target-emoji">✉️</span>
+            <span class="target-label">Communication</span>
+          </div>
+          <div class="drop-target" data-accepts="book">
+            <span class="target-emoji">🏫</span>
+            <span class="target-label">Education</span>
+          </div>
+          <div class="drop-target" data-accepts="music">
+            <span class="target-emoji">🎧</span>
+            <span class="target-label">Music</span>
+          </div>
+          <div class="drop-target" data-accepts="video">
+            <span class="target-emoji">📱</span>
+            <span class="target-label">Video Call</span>
+          </div>
+        </div>
+      </div>
+      <div class="dnd-result" id="dndResult">🎉 Excellent! All matched! 🎉</div>
+    </div>
+  </div>
+
+  <!-- EXERCISE 4: JUMBLED WORDS -->
+  <div class="fun-card purple-border" id="card9">
+    <span class="card-icon">🔀</span>
+    <div class="card-title purple">Exercise 4: Jumbled Words! 🔤</div>
+    <p style="text-align:center;font-size:20px;color:#555;margin-bottom:16px">Unscramble the letters to make a word! 💡</p>
+    <ul class="jumble-list">
+      <li class="jumble-item">
+        <span class="jumble-clue">tnemdcuo</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="document" placeholder="????">
+      </li>
+      <li class="jumble-item">
+        <span class="jumble-clue">extt</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="text" placeholder="????">
+      </li>
+      <li class="jumble-item">
+        <span class="jumble-clue">ngisde</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="design" placeholder="????">
+      </li>
+      <li class="jumble-item">
+        <span class="jumble-clue">tra</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="art" placeholder="????">
+      </li>
+      <li class="jumble-item">
+        <span class="jumble-clue">meial</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="email" placeholder="????">
+      </li>
+      <li class="jumble-item">
+        <span class="jumble-clue">idvose</span>
+        <span class="jumble-arrow">➡️</span>
+        <input class="jumble-input" data-answer="videos" placeholder="????">
+      </li>
+    </ul>
+    <button class="check-jumble-btn" id="checkJumbleBtn">Check Words! 🔍</button>
+    <div id="jumbleResult" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:28px;margin-top:16px;display:none"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="fun-card blue-border" id="card10">
+    <span class="card-icon">🧠</span>
+    <div class="card-title blue">Final Quiz! 🏆</div>
+    <p style="text-align:center;font-size:20px;color:#555;margin-bottom:24px">Tap the right picture to answer! You can do it! 💪</p>
+    <div class="quiz-wrap" id="quizWrap">
+
+      <!-- Q1 -->
+      <div class="quiz-question" id="qq1">
+        <div class="q-text">1. 💬 Which picture shows COMMUNICATION?</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-correct="true" data-q="1">
+            <span class="btn-emoji">📱</span>
+            <span>Sending a Message</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="1">
+            <span class="btn-emoji">🕹️</span>
+            <span>Playing Games</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="1">
+            <span class="btn-emoji">📖</span>
+            <span>Reading Book</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="qf1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" id="qq2">
+        <div class="q-text">2. 🎮 Which picture shows ENTERTAINMENT?</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-correct="false" data-q="2">
+            <span class="btn-emoji">📧</span>
+            <span>Sending Email</span>
+          </button>
+          <button class="answer-btn" data-correct="true" data-q="2">
+            <span class="btn-emoji">🎮</span>
+            <span>Playing Games</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="2">
+            <span class="btn-emoji">🏫</span>
+            <span>At School</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="qf2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" id="qq3">
+        <div class="q-text">3. 📚 Which picture shows EDUCATION?</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-correct="false" data-q="3">
+            <span class="btn-emoji">🎵</span>
+            <span>Listening to Music</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="3">
+            <span class="btn-emoji">🏦</span>
+            <span>At Bank</span>
+          </button>
+          <button class="answer-btn" data-correct="true" data-q="3">
+            <span class="btn-emoji">📖</span>
+            <span>Reading E-Book</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="qf3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question" id="qq4">
+        <div class="q-text">4. ✏️ What do we do in WORD PROCESSING?</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-correct="true" data-q="4">
+            <span class="btn-emoji">📄</span>
+            <span>Edit Text</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="4">
+            <span class="btn-emoji">🎬</span>
+            <span>Watch Videos</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="qf4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question" id="qq5">
+        <div class="q-text">5. 🏠 Where do we use computers?</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-correct="false" data-q="5">
+            <span class="btn-emoji">🌊</span>
+            <span>In the Sea</span>
+          </button>
+          <button class="answer-btn" data-correct="true" data-q="5">
+            <span class="btn-emoji">🏥</span>
+            <span>At Hospital</span>
+          </button>
+          <button class="answer-btn" data-correct="false" data-q="5">
+            <span class="btn-emoji">🌋</span>
+            <span>On a Volcano</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="qf5"></div>
+      </div>
+
+    </div>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+
+  <!-- REWARD BANNER -->
+  <div class="reward-banner" id="rewardBanner">
+    <span class="reward-emoji">🏆</span>
+    <h2>Amazing Job! You're a Computer Star! ⭐</h2>
+    <p style="font-family:'Nunito',sans-serif;font-size:22px;color:#fff;margin-top:12px">You finished Unit 2! Keep learning! 🚀</p>
+  </div>
+
+  <div style="height:100px"></div>
+</div><!-- end content-inner -->
+</div><!-- end page-wrap -->
+
+<script>
+(function(){
+'use strict';
+
+// =====================
+// UTILITIES
+// =====================
+function safeQuery(sel, ctx){
+  try{ return (ctx||document).querySelector(sel); }catch(e){ return null; }
+}
+function safeQueryAll(sel, ctx){
+  try{ return Array.from((ctx||document).querySelectorAll(sel)); }catch(e){ return []; }
+}
+
+// =====================
+// PROGRESS TRACKING
+// =====================
+var totalTasks = 5;
+var completedTasks = 0;
+function updateProgress(){
+  var pct = Math.min(100, Math.round((completedTasks/totalTasks)*100));
+  var fill = safeQuery('#progressFill');
+  if(fill) fill.style.width = pct + '%';
+}
+
+// =====================
+// CONFETTI HELPER
+// =====================
+function fireConfetti(){
+  try{
+    if(typeof confetti !== 'undefined'){
+      confetti({particleCount:120,spread:80,origin:{y:0.6},colors:['#FF6B6B','#FFD93D','#6BCB77','#a29bfe','#fd79a8']});
+    }
+  }catch(e){}
+}
+
+// =====================
+// GSAP SHAKE
+// =====================
+function shakeEl(el){
+  try{
+    if(typeof gsap !== 'undefined'){
+      gsap.to(el,{duration:0.4,x:[-10,10,-10,10,0],ease:'power2.inOut'});
+    } else {
+      el.style.transition='transform 0.1s';
+      var steps=['-10px','10px','-10px','10px','0px'],i=0;
+      var iv=setInterval(function(){
+        if(i<steps.length){el.style.transform='translateX('+steps[i]+')';i++;}
+        else{clearInterval(iv);el.style.transform='';}
+      },80);
+    }
+  }catch(e){}
+}
+
+// =====================
+// TAP TO REVEAL
+// =====================
+function initTapReveal(){
+  var msg = safeQuery('#tapMsg');
+  safeQueryAll('.tap-reveal').forEach(function(el){
+    el.addEventListener('click',function(){
+      var txt = el.getAttribute('data-msg');
+      if(msg){
+        msg.textContent = txt;
+        msg.style.display='block';
+        try{
+          if(typeof gsap!=='undefined'){
+            gsap.fromTo(msg,{scale:0.8,opacity:0},{scale:1,opacity:1,duration:0.4,ease:'back.out(1.7)'});
+          }
+        }catch(e){}
+      }
+      try{
+        if(typeof gsap!=='undefined'){
+          gsap.to(el,{scale:1.15,duration:0.2,yoyo:true,repeat:1});
+        }
+      }catch(e){}
+    });
+    // touch
+    el.addEventListener('touchstart',function(e){
+      e.preventDefault();
+      el.click();
+    },{passive:false});
+  });
+}
+
+// =====================
+// THREE.JS
+// =====================
+function initThree(){
+  var canvas = safeQuery('#three-canvas');
+  var fallback = safeQuery('#three-fallback');
+  if(!canvas){return;}
+  if(typeof THREE==='undefined'){
+    canvas.style.display='none';
+    if(fallback){fallback.style.display='flex';}
+    return;
+  }
+  var webglOk = false;
+  try{
+    var testCanvas = document.createElement('canvas');
+    var ctx = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+    if(ctx) webglOk = true;
+  }catch(e){}
+  if(!webglOk){
+    canvas.style.display='none';
+    if(fallback){fallback.style.display='flex';}
+    return;
+  }
+  try{
+    var w=300,h=300;
+    var renderer = new THREE.WebGLRenderer({canvas:canvas,antialias:true});
+    renderer.setSize(w,h);
+    renderer.setClearColor(0xffeaa7,1);
+    canvas.width=w;canvas.height=h;
+    canvas.style.width=w+'px';canvas.style.height=h+'px';
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45,w/h,0.1,100);
+    camera.position.set(0,0,4);
+
+    // Computer monitor geometry
+    var monGeom = new THREE.BoxGeometry(2.2,1.5,0.15);
+    var monMat = new THREE.MeshPhongMaterial({color:0x2d3436});
+    var monitor = new THREE.Mesh(monGeom,monMat);
+    scene.add(monitor);
+
+    // Screen
+    var screenGeom = new THREE.PlaneGeometry(1.9,1.2);
+    var screenMat = new THREE.MeshPhongMaterial({color:0x74b9ff});
+    var screen = new THREE.Mesh(screenGeom,screenMat);
+    screen.position.z=0.09;
+    monitor.add(screen);
+
+    // Stand
+    var standGeom = new THREE.BoxGeometry(0.25,0.5,0.1);
+    var standMat = new THREE.MeshPhongMaterial({color:0x636e72});
+    var stand = new THREE.Mesh(standGeom,standMat);
+    stand.position.set(0,-1.1,0);
+    scene.add(stand);
+
+    // Base
+    var baseGeom = new THREE.BoxGeometry(1.0,0.12,0.4);
+    var base = new THREE.Mesh(baseGeom,standMat);
+    base.position.set(0,-1.35,0);
+    scene.add(base);
+
+    // Keyboard
+    var kbGeom = new THREE.BoxGeometry(1.8,0.08,0.8);
+    var kbMat = new THREE.MeshPhongMaterial({color:0xdfe6e9});
+    var kb = new THREE.Mesh(kbGeom,kbMat);
+    kb.position.set(0,-0.9,1.2);
+    scene.add(kb);
+
+    // Lights
+    var ambient = new THREE.AmbientLight(0xffffff,0.7);
+    scene.add(ambient);
+    var dirLight = new THREE.DirectionalLight(0xffffff,0.8);
+    dirLight.position.set(3,5,5);
+    scene.add(dirLight);
+
+    var group = new THREE.Group();
+    group.add(monitor);
+    group.add(stand);
+    group.add(base);
+    group.add(kb);
+    scene.add(group);
+
+    var animating = true;
+    function animate(){
+      if(!animating) return;
+      requestAnimationFrame(animate);
+      group.rotation.y += 0.012;
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload',function(){ animating=false; });
+  }catch(e){
+    if(canvas) canvas.style.display='none';
+    if(fallback){fallback.style.display='flex';}
+  }
+}
+
+// =====================
+// LENIS SMOOTH SCROLL
+// =====================
+function initLenis(){
+  try{
+    if(typeof Lenis==='undefined') return;
+    var lowMem = (typeof navigator.deviceMemory!=='undefined' && navigator.deviceMemory<2);
+    if(lowMem) return;
+    var lenis = new Lenis({lerp:0.08,smoothWheel:true});
+    if(typeof gsap!=='undefined' && typeof ScrollTrigger!=='undefined'){
+      gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  }catch(e){}
+}
+
+// =====================
+// GSAP ANIMATIONS
+// =====================
+function initGSAP(){
+  try{
+    if(typeof gsap==='undefined') return;
+    if(typeof ScrollTrigger!=='undefined'){
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    // Hero entrance
+    var heroEl = safeQuery('#hero');
+    if(heroEl){
+      gsap.from(heroEl,{y:-40,opacity:0,duration:0.6,ease:'back.out(1.4)'});
+    }
+    // Cards stagger on load
+    var cards = safeQueryAll('.fun-card');
+    if(cards.length && typeof ScrollTrigger!=='undefined'){
+      cards.forEach(function(card){
+        gsap.fromTo(card,
+          {y:50,scale:0.85,opacity:0.7},
+          {y:0,scale:1,opacity:1,duration:0.5,ease:'back.out(1.3)',
+           scrollTrigger:{trigger:card,start:'top 90%',toggleActions:'play none none none'}}
+        );
+      });
+    } else if(cards.length){
+      gsap.from(cards,{y:40,opacity:0.7,scale:0.9,duration:0.5,stagger:0.1,ease:'back.out(1.3)'});
+    }
+  }catch(e){}
+}
+
+// =====================
+// EXERCISE 1: FILL BLANKS
+// =====================
+function initFillBlanks(){
+  var btn = safeQuery('#checkBlanksBtn');
+  var resultDiv = safeQuery('#blanksResult');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    var inputs = safeQueryAll('.blank-input');
+    var correct=0;
+    inputs.forEach(function(inp){
+      var val = inp.value.trim().toLowerCase();
+      var ans = (inp.getAttribute('data-answer')||'').toLowerCase();
+      inp.classList.remove('correct','wrong');
+      if(val===ans){
+        inp.classList.add('correct');
+        correct++;
+      } else {
+        inp.classList.add('wrong');
+        shakeEl(inp);
+      }
+    });
+    if(resultDiv){
+      resultDiv.style.display='block';
+      if(correct===inputs.length){
+        resultDiv.textContent='🎉 Perfect! '+correct+'/'+inputs.length+' correct!';
+        resultDiv.style.color='#00b894';
+        fireConfetti();
+        completedTasks++;updateProgress();
+      } else {
+        resultDiv.textContent='😊 '+correct+'/'+inputs.length+' correct! Try again!';
+        resultDiv.style.color='#FF6B6B';
+      }
+    }
+  });
+}
+
+// =====================
+// EXERCISE 2: TRUE/FALSE
+// =====================
+function initTrueFalse(){
+  var tfItems = safeQueryAll('#tfList .tf-item');
+  var tfResult = safeQuery('#tfResult');
+  var score=0,answered=0;
+  tfItems.forEach(function(item){
+    var btns = safeQueryAll('.tf-btn',item);
+    var correctAns = item.getAttribute('data-answer');
+    var done=false;
+    btns.forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(done) return;
+        done=true;
+        var choice = btn.getAttribute('data-choice');
+        answered++;
+        if(choice===correctAns){
+          btn.classList.add('selected-correct');
+          score++;
+          fireConfetti();
+        } else {
+          btn.classList.add('selected-wrong');
+          shakeEl(btn);
+          // highlight correct
+          btns.forEach(function(b){
+            if(b.getAttribute('data-choice')===correctAns) b.classList.add('selected-correct');
+          });
+        }
+        if(answered===tfItems.length && tfResult){
+          tfResult.textContent='🏅 You got '+score+'/'+tfItems.length+'!';
+          if(score>=4){ fireConfetti(); completedTasks++;updateProgress(); }
+        }
+      });
+    });
+  });
+}
+
+// =====================
+// DRAG AND DROP
+// =====================
+function initDragDrop(){
+  var words = safeQueryAll('#dndWords .drag-word');
+  var targets = safeQueryAll('#dndTargets .drop-target');
+  var resultDiv = safeQuery('#dndResult');
+  var matched=0;
+  var dragId=null;
+
+  // Desktop drag
+  words.forEach(function(word){
+    word.addEventListener('dragstart',function(e){
+      dragId = word.getAttribute('data-id');
+      word.classList.add('dragging');
+      e.dataTransfer.setData('text/plain',dragId);
+    });
+    word.addEventListener('dragend',function(){
+      word.classList.remove('dragging');
+    });
+  });
+
+  targets.forEach(function(target){
+    target.addEventListener('dragover',function(e){
+      e.preventDefault();
+      target.classList.add('drag-over');
+    });
+    target.addEventListener('dragleave',function(){
+      target.classList.remove('drag-over');
+    });
+    target.addEventListener('drop',function(e){
+      e.preventDefault();
+      target.classList.remove('drag-over');
+      var id = e.dataTransfer.getData('text/plain');
+      handleDrop(target,id);
+    });
+  });
+
+  // Touch drag
+  var touchWord=null, touchClone=null, startX=0, startY=0;
+  words.forEach(function(word){
+    word.addEventListener('touchstart',function(e){
+      touchWord=word;
+      dragId=word.getAttribute('data-id');
+      var touch=e.touches[0];
+      startX=touch.clientX;startY=touch.clientY;
+      var rect=word.getBoundingClientRect();
+      touchClone=word.cloneNode(true);
+      touchClone.style.position='fixed';
+      touchClone.style.left=(rect.left)+'px';
+      touchClone.style.top=(rect.top)+'px';
+      touchClone.style.width=rect.width+'px';
+      touchClone.style.zIndex='9999';
+      touchClone.style.opacity='0.85';
+      touchClone.style.pointerEvents='none';
+      document.body.appendChild(touchClone);
+      word.classList.add('dragging');
+      e.preventDefault();
+    },{passive:false});
+    word.addEventListener('touchmove',function(e){
+      if(!touchClone) return;
+      var touch=e.touches[0];
+      var dx=touch.clientX-startX, dy=touch.clientY-startY;
+      var rect=word.getBoundingClientRect();
+      touchClone.style.left=(rect.left+dx)+'px';
+      touchClone.style.top=(rect.top+dy)+'px';
+      targets.forEach(function(t){ t.classList.remove('drag-over'); });
+      var el=document.elementFromPoint(touch.clientX,touch.clientY);
+      if(el){
+        var closest=el.closest?el.closest('.drop-target'):null;
+        if(closest) closest.classList.add('drag-over');
+      }
+      e.preventDefault();
+    },{passive:false});
+    word.addEventListener('touchend',function(e){
+      if(!touchClone){touchWord=null;return;}
+      var touch=e.changedTouches[0];
+      if(touchClone){document.body.removeChild(touchClone);touchClone=null;}
+      word.classList.remove('dragging');
+      targets.forEach(function(t){ t.classList.remove('drag-over'); });
+      var el=document.elementFromPoint(touch.clientX,touch.clientY);
+      if(el){
+        var closest=el.closest?el.closest('.drop-target'):null;
+        if(closest) handleDrop(closest,dragId);
+      }
+      touchWord=null;
+    });
+  });
+
+  function handleDrop(target,id){
+    if(target.classList.contains('matched')) return;
+    var accepts=target.getAttribute('data-accepts');
+    if(accepts===id){
+      target.classList.add('matched');
+      var wordEl=safeQuery('#dw-'+id);
+      if(wordEl){
+        var placed=document.createElement('div');
+        placed.className='placed-word';
+        placed.textContent=wordEl.textContent;
+        target.appendChild(placed);
+        wordEl.style.opacity='0.3';
+        wordEl.draggable=false;
+        try{
+          if(typeof gsap!=='undefined'){
+            gsap.from(placed,{scale:0,duration:0.3,ease:'back.out(1.7)'});
+          }
+        }catch(e){}
+        fireConfetti();
+        matched++;
+        if(matched===targets.length && resultDiv){
+          resultDiv.style.display='block';
+          try{
+            if(typeof gsap!=='undefined'){
+              gsap.from(resultDiv,{scale:0.5,opacity:0,duration:0.5,ease:'back.out(1.7)'});
+            }
+          }catch(e){}
+          fireConfetti();
+          completedTasks++;updateProgress();
+        }
+      }
+    } else {
+      // wrong
+      shakeEl(target);
+    }
+  }
+}
+
+// =====================
+// JUMBLED WORDS
+// =====================
+function initJumble(){
+  var btn = safeQuery('#checkJumbleBtn');
+  var resultDiv = safeQuery('#jumbleResult');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    var inputs = safeQueryAll('.jumble-input');
+    var correct=0;
+    inputs.forEach(function(inp){
+      var val=inp.value.trim().toLowerCase();
+      var ans=(inp.getAttribute('data-answer')||'').toLowerCase();
+      inp.classList.remove('correct','wrong');
+      if(val===ans){
+        inp.classList.add('correct');
+        correct++;
+      } else {
+        inp.classList.add('wrong');
+        shakeEl(inp);
+      }
+    });
+    if(resultDiv){
+      resultDiv.style.display='block';
+      if(correct===inputs.length){
+        resultDiv.textContent='🎉 All '+correct+' words correct!';
+        resultDiv.style.color='#00b894';
+        fireConfetti();
+        completedTasks++;updateProgress();
+      } else {
+        resultDiv.textContent='😊 '+correct+'/'+inputs.length+' correct! Keep trying!';
+        resultDiv.style.color='#FF6B6B';
+      }
+    }
+  });
+}
+
+// =====================
+// QUIZ
+// =====================
+function initQuiz(){
+  var answerBtns = safeQueryAll('.answer-btn');
+  var scoreDiv = safeQuery('#quizScore');
+  var quizAnswered={};
+  var quizTotal=5;
+  var quizCorrect=0;
+
+  answerBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var q=btn.getAttribute('data-q');
+      if(quizAnswered[q]) return;
+      quizAnswered[q]=true;
+      var isCorrect=(btn.getAttribute('data-correct')==='true');
+      var fb=safeQuery('#qf'+q);
+      if(isCorrect){
+        btn.classList.add('correct-flash');
+        if(fb){fb.textContent='🎉 Correct! Well done!';}
+        fireConfetti();
+        quizCorrect++;
+      } else {
+        btn.classList.add('wrong-flash');
+        shakeEl(btn);
+        if(fb){fb.textContent='😊 Not quite! Try to remember!';}
+        // show correct
+        var siblings=safeQueryAll('[data-q="'+q+'"]');
+        siblings.forEach(function(s){
+          if(s.getAttribute('data-correct')==='true') s.classList.add('correct-flash');
+        });
+      }
+      // disable all in this question
+      var siblings2=safeQueryAll('[data-q="'+q+'"]');
+      siblings2.forEach(function(s){ s.style.pointerEvents='none'; });
+
+      if(Object.keys(quizAnswered).length===quizTotal && scoreDiv){
+        scoreDiv.style.display='block';
+        scoreDiv.textContent='🏆 You scored '+quizCorrect+'/'+quizTotal+'! ';
+        if(quizCorrect>=4){
+          scoreDiv.textContent+=' Amazing! ⭐⭐⭐';
+          fireConfetti();
+          completedTasks++;updateProgress();
+          var reward=safeQuery('#rewardBanner');
+          if(reward){
+            reward.style.display='block';
+            try{
+              if(typeof gsap!=='undefined'){
+                gsap.from(reward,{scale:0.5,opacity:0,duration:0.6,ease:'back.out(1.7)'});
+              }
+            }catch(e){}
+            fireConfetti();
+          }
+        } else if(quizCorrect>=2){
+          scoreDiv.textContent+=' Good job! ⭐⭐';
+        } else {
+          scoreDiv.textContent+=' Keep practising! ⭐';
+        }
+        try{
+          if(typeof gsap!=='undefined'){
+            gsap.from(scoreDiv,{scale:0.7,opacity:0,duration:0.5,ease:'back.out(1.7)'});
+          }
+        }catch(e){}
+      }
+    });
+  });
+}
+
+// =====================
+// INTERSECTION OBSERVER FALLBACK
+// =====================
+function initIntersectionObserver(){
+  if(typeof IntersectionObserver==='undefined') return;
+  var cards=safeQueryAll('.fun-card');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        try{
+          if(typeof gsap==='undefined'){
+            entry.target.style.transition='transform 0.5s,opacity 0.5s';
+            entry.target.style.opacity='1';
+            entry.target.style.transform='none';
+          }
+        }catch(e){}
+        obs.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.05});
+  cards.forEach(function(c){ obs.observe(c); });
+}
+
+// =====================
+// INIT
+// =====================
+document.addEventListener('DOMContentLoaded',function(){
+  try{ initThree(); }catch(e){}
+  try{ initLenis(); }catch(e){}
+  try{ initGSAP(); }catch(e){}
+  try{ initTapReveal(); }catch(e){}
+  try{ initFillBlanks(); }catch(e){}
+  try{ initTrueFalse(); }catch(e){}
+  try{ initDragDrop(); }catch(e){}
+  try{ initJumble(); }catch(e){}
+  try{ initQuiz(); }catch(e){}
+  try{ initIntersectionObserver(); }catch(e){}
+  updateProgress();
+});
+
+})();
+</script>
+</body>
+</html>
