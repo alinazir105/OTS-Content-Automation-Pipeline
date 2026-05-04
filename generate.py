@@ -61,6 +61,19 @@ RETRY_DELAY_SEC    = 5
 #  Sourced from: EdTech_Cursor_Prompts.pdf
 #  Each prompt tells Claude exactly how to design the HTML for that class level.
 # ════════════════════════════════════════════════════════════════════════════════
+SUBJECT_HINTS = {
+    "maths":     "3D is appropriate ONLY for geometry topics (3D shapes, vectors). For algebra, fractions, arithmetic — use SVG diagrams and interactive calculators instead.",
+    "physics":   "3D is appropriate for mechanics, wave motion, orbital mechanics. Use Three.js for these. For theory/equations — use animated SVG diagrams.",
+    "chemistry": "3D is highly appropriate — use it for molecular models, atomic structure, crystal lattices. Always include Three.js for chemistry.",
+    "biology":   "3D only for cell structure or organ systems if genuinely helpful. Otherwise use detailed labeled SVG diagrams.",
+    "english":   "Do NOT use Three.js. Use clean typography, animated text, SVG illustrations, and interactive text-based activities.",
+    "urdu":      "Do NOT use Three.js. Use RTL layout (direction: rtl), Noto Nastaliq Urdu font, and calligraphic SVG decorations instead.",
+    "islamiat":  "Do NOT use Three.js. Use elegant Islamic geometric SVG patterns, Arabic text with transliteration, and clean structured layout.",
+    "computer":  "3D is optional — use only for hardware visualization. For programming topics use animated code blocks and flowcharts.",
+    "science":   "3D is appropriate for earth/space topics. For plants, animals, environment — use illustrated SVG diagrams.",
+    "pakistan studies": "Do NOT use Three.js. Use SVG maps of Pakistan, illustrated timelines, and province/geography diagrams.",
+    "social":    "Do NOT use Three.js. Use SVG maps, timelines, and illustrated historical scenes.",
+}
 
 CLASS_PROMPTS = {
 
@@ -94,9 +107,12 @@ SMOOTH SCROLLING (Lenis Required):
 - Sync with GSAP: gsap.ticker.add(time => lenis.raf(time * 1000))
 - Disable on mobile if navigator.deviceMemory < 2
 
-THREE.JS (Required):
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Add one simple rotating 3D object relevant to the lesson topic.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: geometric solids (maths shapes), planetary systems (science/space), simple molecular models (science).
+- DO NOT use for: English, Urdu, Islamiat, history, reading comprehension, vocabulary, social studies, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with a high-quality SVG illustration or animated Canvas 2D diagram instead.
 - WebGL canvas max 300x300px on mobile.
 - Always include a fallback static illustration if WebGL unsupported.
 - OrbitControls disabled for Class 1.
@@ -110,7 +126,6 @@ INTERACTIVITY:
 
 PERFORMANCE:
 - Lazy-load images with loading="lazy".
-- Defer all scripts.
 - Use IntersectionObserver for animating only visible elements.
 
 MOBILE:
@@ -153,11 +168,13 @@ SMOOTH SCROLLING (Lenis Required):
 - Load Lenis from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1. Sync with GSAP ticker.
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Add one 3D scene per major concept.
-- Allow OrbitControls on desktop only.
-- Mobile: static render after first frame.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: geometric solids (maths), simple science models (planets, animals in 3D habitat).
+- DO NOT use for: English, Urdu, Islamiat, history, reading comprehension, vocabulary, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with a high-quality SVG illustration or animated Canvas 2D diagram instead.
+- Allow OrbitControls on desktop only. Mobile: static render after first frame.
 
 INTERACTIVITY:
 - Fill-in-the-blank: click on a blank, word-bank appears.
@@ -197,11 +214,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1, duration: 1.2
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Geometry scene for math/science concepts.
-- Click-to-rotate via OrbitControls.
-- Fallback: 2D SVG diagram.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: 3D geometric shapes (maths), science models (atoms, planets, ecosystems).
+- DO NOT use for: English, Urdu, Islamiat, history, reading comprehension, social studies, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with a detailed labeled SVG diagram or interactive Canvas 2D animation instead.
+- Click-to-rotate via OrbitControls. Fallback: 2D SVG diagram.
 
 INTERACTIVITY:
 - Drag-and-drop labeling (drag labels onto diagram).
@@ -237,11 +256,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.12
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- One 3D scene per lesson for a major concept.
-- ScrollTrigger controls 3D rotation.
-- Mobile: reduce geometry complexity.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: 3D geometry (maths), science models (cell structure, planetary orbits, physical forces).
+- DO NOT use for: English, Urdu, Islamiat, history, social studies, reading comprehension, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with a detailed labeled SVG diagram or interactive Canvas 2D chart instead.
+- ScrollTrigger controls 3D rotation on scroll. Mobile: reduce geometry complexity.
 
 INTERACTIVITY:
 - Guided worked example with "Next Step" button.
@@ -276,11 +297,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1, wheelMultiplier: 0.8
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- 3D data visualization or concept model.
-- Click a 3D object to show a modal with details.
-- Mobile: canvas pauses when off-screen.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: 3D data visualization (maths/science), solar system (science), molecular models (science/chemistry).
+- DO NOT use for: English, Urdu, Islamiat, history, social studies, geography descriptions, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with animated SVG charts, interactive diagrams, or Canvas 2D visualizations instead.
+- Click a 3D object to show a modal with details. Mobile: canvas pauses when off-screen.
 
 INTERACTIVITY:
 - Drag-and-drop classification (2-3 categories).
@@ -315,11 +338,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1, smoothWheel: true
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Immersive 3D model as lesson centerpiece.
-- Raycasting: click objects to open info panel.
-- Responsive canvas: full-width on desktop.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: molecular models (chemistry/science), 3D geometric solids (maths), Earth/planetary models (geography/science), physical simulations (physics).
+- DO NOT use for: English grammar, Urdu, Islamiat, history, social studies, economics, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with an interactive SVG concept map, animated diagrams, or Canvas 2D visualizations instead.
+- Raycasting: click objects to open info panel. Responsive canvas: full-width on desktop.
 
 INTERACTIVITY:
 - Interactive concept map (click nodes, draw connections).
@@ -354,11 +379,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.08
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Full-screen WebGL hero scene.
-- Particle system background (THREE.Points).
-- Mobile: particles disabled, lower poly models.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: molecular/atomic models (chemistry/science), force and motion diagrams (physics), 3D geometric concepts (maths), ecosystems or biological structures (biology).
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, social studies, economics, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with a particle system background using CSS/Canvas, animated SVG diagrams, or D3-style data visualizations instead.
+- Mobile: reduce to lower-poly models. Always include WebGL fallback.
 
 INTERACTIVITY:
 - Hypothesis builder: choose variables → prediction → mini simulation.
@@ -392,11 +419,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Physics-inspired simulation scene.
-- Play/Pause controls. Real-time parameter sliders.
-- Mobile: simplified static scene.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: physics simulations (projectile motion, pendulum, waves), molecular/atomic structure (chemistry), biological 3D models (cell organelles, body systems), geometric proofs (maths).
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, economics, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with interactive Chart.js data visualizations, animated SVG diagrams, or Canvas 2D physics simulations instead.
+- Play/Pause controls. Real-time parameter sliders. Mobile: simplified static scene.
 
 INTERACTIVITY:
 - Data analysis task: view dataset → answer questions.
@@ -430,11 +459,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.08, touchMultiplier: 1.5
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Full conceptual 3D exploration model.
-- OrbitControls with zoom and pan.
-- Screenshot capture button.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: electromagnetic fields (physics), crystal lattice / molecular orbital (chemistry), 3D vector spaces (maths), biological structures (biology).
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, economics, geography descriptions, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with interactive SVG diagrams, animated proof steps, or Canvas 2D simulations instead.
+- OrbitControls with zoom and pan. Screenshot capture button.
 
 INTERACTIVITY:
 - Student margin annotations saved to localStorage.
@@ -470,9 +501,12 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.1
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Advanced 3D visualization for a key concept.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: advanced physics simulations (optics, electromagnetism, mechanics), chemical bonding and molecular geometry (chemistry), 3D geometric proofs (maths), biological systems (biology).
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, economics, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with Chart.js performance tracking visualizations, interactive SVG mind maps, or animated formula derivations instead.
 - Measurement tool. Reset button. Snapshot export.
 
 INTERACTIVITY:
@@ -510,10 +544,13 @@ SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.07
 
-THREE.JS:
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Advanced 3D simulation with real-time parameter sliders.
-- Camera auto-tour on load, then user takes over.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses: quantum orbital visualization (chemistry/physics), 3D calculus surface plots (maths), electrostatic/magnetic field lines (physics), molecular dynamics (chemistry), biological macromolecule structures (biology).
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, economics, or any topic where 3D adds no educational value.
+- If 3D is not used, replace with an interactive D3-style knowledge graph, Canvas 2D concept network, or animated theorem proofs instead.
+- Advanced 3D simulation with real-time parameter sliders. Camera auto-tour on load, then user takes over.
 
 INTERACTIVITY:
 - Prerequisite quiz: 5 quick questions, unlock lesson on pass.
@@ -542,19 +579,19 @@ ANIMATIONS (GSAP Required):
 - Load ScrollTrigger from: https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js
 - Cinematic page load: GSAP timeline orchestrates hero reveal with precision.
 - Derivation steps: ScrollTrigger scrub — each step reveals as user scrolls.
-- Background: Three.js particle field behind hero.
+- Background: use Three.js particle field for STEM subjects; use CSS animated gradient for humanities.
 
 SMOOTH SCROLLING (Lenis):
 - Load from: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js
 - lerp: 0.07
 
-THREE.JS (Maximum sophistication):
+THREE.JS (Only if conceptually justified):
 - Load from: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
-- Full custom WebGL experience relevant to the subject.
-- Instanced mesh for complex systems.
-- GUI controls for real-time parameter adjustment.
-- Export rendered frame as PNG.
-- Mobile: reduce complexity, single-pass rendering.
+- ONLY include Three.js if the subject/topic genuinely benefits from 3D visualization.
+- GOOD uses (STEM only): quantum wavefunction visualization, 4D projections, Fourier transform surfaces, relativistic simulations, advanced molecular dynamics, complex geometric manifolds.
+- DO NOT use for: English, Urdu, Islamiat, history, Pakistan Studies, economics, or any humanities/social science topic.
+- If 3D is not used, replace with a sophisticated CSS-animated hero, Canvas 2D physics engine, or D3-based interactive data visualization instead.
+- Full custom WebGL experience. Instanced mesh for complex systems. GUI controls for real-time parameter adjustment. Export rendered frame as PNG. Mobile: reduce complexity, single-pass rendering.
 
 INTERACTIVITY:
 - Full annotation system: highlight text, attach notes.
@@ -572,9 +609,7 @@ OUTPUT: Single HTML file, dark mode default, fully self-contained.
 Comment: <!-- CLASS: 12 | SUBJECT: {subject} | VERSION: 1.0 -->
 Add a CHANGELOG comment block at the bottom.""",
 
-
 }
-
 
 UNIVERSAL_SCRIPT_RULES = """
 
@@ -651,6 +686,32 @@ MOBILE RESPONSIVENESS (mandatory for ALL classes):
 - Test mentally at 375px width (iPhone SE) — if anything would overflow or be unreadable, fix it.
 - The bottom nav bar on mobile must have: position:fixed, bottom:0, left:0, right:0, overflow-x:auto, with flex items that are touch-friendly.
 - Add padding-bottom: 80px to the main content on mobile to prevent the bottom nav from covering content.
+
+DIAGRAMS & ILLUSTRATIONS:
+- NEVER write raw SVG coordinate-based diagrams (no hand-coded cx, cy, x1, y1 paths).
+- For ALL concept diagrams, flowcharts, and biological illustrations use one of:
+  1. Mermaid.js (from CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js) — for flowcharts, hierarchy trees, concept maps. Initialize with: mermaid.initialize({startOnLoad:true, theme:'default'})
+  2. D3.js (from CDN: https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js) — for force graphs and network diagrams
+- Wrap Mermaid diagrams in: <div class="mermaid">...</div>
+- Example hierarchy: graph TD; A[Biology] --> B[Zoology]; A --> C[Botany]; A --> D[Microbiology]
+- Example flow: graph LR; Atom --> Molecule --> Cell --> Tissue --> Organ
+- NEVER use raw SVG with hardcoded pixel coordinates for diagrams.
+
+THREE.JS SIZING:
+- NEVER read offsetWidth at DOMContentLoaded to size the canvas — the element may not be laid out yet.
+- Always use this pattern instead:
+  const observer = new ResizeObserver(entries => {
+    const w = entries[0].contentRect.width;
+    const h = Math.min(500, w * 0.56);
+    renderer.setSize(w, h);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+  observer.observe(wrap);
+  observer.unobserve(wrap); // after first measurement
+- The Three.js scene must fill the FULL width of its container — never appear in a corner.
 """
 
 # Fallback for any unrecognised class number
@@ -658,9 +719,10 @@ DEFAULT_PROMPT = CLASS_PROMPTS[6]
 
 
 def get_class_prompt(class_num: int, subject: str) -> str:
-    """Return the design prompt for this class, with subject injected."""
     template = CLASS_PROMPTS.get(class_num, DEFAULT_PROMPT)
-    return template.replace("{subject}", subject) + UNIVERSAL_SCRIPT_RULES
+    hint = SUBJECT_HINTS.get(subject.lower().strip(), "")
+    subject_line = f"\nSUBJECT-SPECIFIC GUIDANCE for {subject}:\n{hint}\n" if hint else ""
+    return template.replace("{subject}", subject) + subject_line + UNIVERSAL_SCRIPT_RULES
 
 
 # ════════════════════════════════════════════════════════════════════════════════
@@ -750,21 +812,20 @@ def generate_html(client: anthropic.Anthropic, pdf_info: dict) -> str:
     design_prompt = get_class_prompt(pdf_info["class_num"], pdf_info["subject"])
 
     prompt = f"""{design_prompt}
-
 ---
-
 The PDF attached is the lesson content. Read it thoroughly and build the complete, 
 fully interactive HTML page following every design and technical requirement above.
-
 The page must be entirely self-contained — all CSS, JavaScript, and content inline 
 in a single .html file. Do not use placeholder content; extract everything from the PDF.
-
 Return ONLY the raw HTML. No explanation, no markdown fences, no commentary."""
 
     last_err = None
     for attempt in range(1, RETRY_ATTEMPTS + 1):
         try:
             html_chunks = []
+            input_tokens = 0
+            output_tokens = 0
+
             with client.messages.stream(
                 model=CLAUDE_MODEL,
                 max_tokens=MAX_TOKENS,
@@ -789,13 +850,22 @@ Return ONLY the raw HTML. No explanation, no markdown fences, no commentary."""
                 for text in stream.text_stream:
                     html_chunks.append(text)
 
+                # Get final usage from stream
+                final_msg = stream.get_final_message()
+                input_tokens  = final_msg.usage.input_tokens
+                output_tokens = final_msg.usage.output_tokens
+
             html = "".join(html_chunks).strip()
 
             if html.startswith("```"):
                 lines = html.split("\n")
                 html  = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
 
-            return html
+            # Log token usage and cost
+            input_cost  = (input_tokens  / 1_000_000) * 3.00
+            output_cost = (output_tokens / 1_000_000) * 15.00
+            total_cost  = input_cost + output_cost
+            return html, input_tokens, output_tokens, total_cost
 
         except Exception as e:
             last_err = e
@@ -816,10 +886,11 @@ def process_pdf(client, pdf_info, output_dir, cache, cache_path, log_path, dry_r
 
     try:
         log(f"   🤖 Sending to Claude ({CLAUDE_MODEL})…", log_path)
-        html = generate_html(client, pdf_info)
+        html, in_tok, out_tok, cost = generate_html(client, pdf_info)
 
         output_file.write_text(html, encoding="utf-8")
         log(f"   ✅ Saved → {output_file}", log_path)
+        log(f"   📊 Tokens: {in_tok:,} in / {out_tok:,} out | Cost: ${cost:.4f}", log_path)
 
         cache[cache_key] = h
         save_cache(cache_path, cache)

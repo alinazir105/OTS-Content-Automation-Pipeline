@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 10 | SUBJECT: physics | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 11: Sound | Class 10 Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:#FDCB6E;
+  --dark:#1E1E2E;
+  --accent:#4C6EF5;
+  --white:#FFFFFF;
+  --surface:#252535;
+  --surface2:#2E2E42;
+  --text-primary:#F0F0F8;
+  --text-secondary:#A8A8C0;
+  --border:#3A3A55;
+  --success:#51CF66;
+  --danger:#FF6B6B;
+  --warn:#FFD43B;
+}
+html{scroll-behavior:smooth;width:100%}
+body{font-family:'Inter',sans-serif;font-size:18px;line-height:1.75;background:var(--dark);color:var(--text-primary);width:100%;margin:0;padding:0;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif;line-height:1.2}
+h1{font-size:clamp(2.8rem,6vw,4.5rem)}
+h2{font-size:clamp(2.2rem,4vw,3rem)}
+h3{font-size:clamp(1.5rem,2.5vw,1.9rem)}
+h4{font-size:clamp(1.2rem,2vw,1.5rem)}
+p{font-size:18px;line-height:1.75}
+code,.formula{font-family:'Fira Code',monospace;font-size:17px}
+
+/* LOADING CURTAIN */
+#curtain{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#curtain .loader-text{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--amber)}
+#curtain .loader-bar{width:200px;height:4px;background:var(--surface2);border-radius:4px;overflow:hidden}
+#curtain .loader-fill{width:0%;height:100%;background:var(--amber);border-radius:4px;transition:width 0.3s}
+
+/* SIDEBAR NAV */
+#sidebar{position:fixed;left:0;top:0;height:100vh;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:100;padding:20px 0;overflow-y:auto;transition:transform 0.3s}
+#sidebar .logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:10px}
+#sidebar .logo span{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;color:var(--amber);font-weight:700}
+#sidebar .logo p{font-size:13px;color:var(--text-secondary);margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-secondary);text-decoration:none;font-size:15px;font-weight:500;transition:all 0.2s;cursor:pointer;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover,.nav-item.active{color:var(--amber);background:rgba(253,203,110,0.08);border-left:3px solid var(--amber)}
+.nav-item .nav-num{font-family:'Fira Code',monospace;font-size:13px;color:var(--accent);min-width:22px}
+
+/* MAIN LAYOUT */
+#main{margin-left:240px;width:calc(100% - 240px);min-height:100vh}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* HERO */
+#hero{width:100%;min-height:100vh;background:linear-gradient(135deg,var(--dark) 0%,#1a1a3e 50%,var(--dark) 100%);display:flex;align-items:center;position:relative;overflow:hidden;padding:80px 0}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(76,110,245,0.15) 0%,transparent 60%)}
+#hero .hero-badge{display:inline-block;background:rgba(253,203,110,0.15);border:1px solid var(--amber);color:var(--amber);padding:6px 16px;border-radius:20px;font-size:14px;font-weight:600;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
+#hero .hero-subtitle{font-size:clamp(1rem,2vw,1.3rem);color:var(--text-secondary);max-width:600px;margin:20px 0 40px}
+#hero .hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;border:none;font-family:'Inter',sans-serif;min-height:48px}
+.btn-primary{background:var(--amber);color:var(--dark)}
+.btn-primary:hover{background:#f0bb5a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(253,203,110,0.3)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.hero-wave{position:absolute;bottom:0;left:0;width:100%;height:80px;background:linear-gradient(transparent,var(--dark))}
+.three-canvas-wrap{position:absolute;right:0;top:0;width:50%;height:100%;opacity:0.6}
+#three-fallback{display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:80px}
+
+/* SECTIONS */
+.section{padding:80px 0;opacity:1;transform:none}
+.section-header{margin-bottom:48px}
+.section-num{font-family:'Fira Code',monospace;font-size:clamp(3rem,5vw,4rem);color:rgba(76,110,245,0.15);font-weight:700;line-height:1;margin-bottom:-10px}
+.section-title{color:var(--text-primary)}
+.section-line{width:60px;height:3px;background:var(--amber);margin-top:16px}
+
+/* OBJECTIVES */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.obj-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;transition:transform 0.2s,border-color 0.2s;opacity:1;transform:none}
+.obj-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.obj-icon{font-size:2rem;margin-bottom:12px}
+.obj-card h4{color:var(--amber);margin-bottom:8px;font-size:clamp(1rem,1.5vw,1.2rem)}
+.obj-card p{font-size:16px;color:var(--text-secondary)}
+
+/* THEORY CARDS */
+.theory-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:28px;opacity:1;transform:none}
+.theory-block h3{color:var(--amber);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.theory-block p{color:var(--text-primary);margin-bottom:12px;font-size:18px}
+.theory-block ul,.theory-block ol{padding-left:24px;color:var(--text-primary);font-size:18px}
+.theory-block li{margin-bottom:8px}
+
+/* FORMULA BOX */
+.formula-box{background:rgba(76,110,245,0.1);border:1px solid rgba(76,110,245,0.4);border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.formula-box .formula{font-size:clamp(1rem,2vw,1.4rem);color:var(--amber)}
+.formula-box .formula-label{font-size:15px;color:var(--text-secondary);margin-top:8px}
+.formula-vars{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;justify-content:center}
+.var-tag{background:var(--surface2);border:1px solid var(--border);padding:4px 12px;border-radius:20px;font-size:14px;color:var(--text-secondary)}
+.var-tag code{color:var(--amber);font-size:14px}
+
+/* EXAMINER TIP */
+.tip-box{background:rgba(253,203,110,0.08);border-left:4px solid var(--amber);border-radius:0 12px 12px 0;padding:20px 24px;margin:20px 0;display:flex;gap:16px;align-items:flex-start}
+.tip-icon{font-size:1.5rem;flex-shrink:0}
+.tip-content strong{color:var(--amber);font-size:16px;display:block;margin-bottom:6px}
+.tip-content p{font-size:17px;color:var(--text-secondary);margin:0}
+
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:20px}
+.info-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;opacity:1}
+.info-card .ic-title{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.info-card p{font-size:17px;color:var(--text-primary)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-top:20px}
+table{width:100%;border-collapse:collapse;min-width:400px}
+thead tr{background:rgba(76,110,245,0.15)}
+th{padding:14px 20px;text-align:left;font-size:16px;font-weight:700;color:var(--amber);white-space:nowrap}
+td{padding:12px 20px;font-size:16px;color:var(--text-primary);border-top:1px solid var(--border)}
+tr:hover td{background:rgba(255,255,255,0.03)}
+
+/* WORKED EXAMPLES */
+.example-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:28px;opacity:1}
+.example-header{background:rgba(76,110,245,0.15);padding:20px 28px;display:flex;align-items:center;gap:16px;cursor:pointer;user-select:none}
+.example-num{background:var(--accent);color:var(--white);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.example-title{font-size:18px;font-weight:600;color:var(--text-primary)}
+.example-toggle{margin-left:auto;font-size:1.2rem;transition:transform 0.3s;color:var(--text-secondary)}
+.example-body{padding:28px;display:none}
+.example-body.open{display:block}
+.step{display:flex;gap:16px;margin-bottom:20px;opacity:1;transform:none}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;margin-top:3px}
+.step-content{flex:1}
+.step-content strong{color:var(--amber);display:block;margin-bottom:4px;font-size:17px}
+.step-content p{font-size:17px;color:var(--text-primary)}
+.answer-box{background:rgba(81,207,102,0.1);border:1px solid rgba(81,207,102,0.4);border-radius:10px;padding:16px 20px;margin-top:16px}
+.answer-box strong{color:var(--success);font-size:17px}
+
+/* PRACTICE */
+#practice{background:var(--surface)}
+.practice-controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;align-items:center}
+.q-counter{font-size:16px;color:var(--text-secondary);margin-left:auto}
+.question-card{background:var(--dark);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;opacity:1}
+.q-meta{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.q-badge{padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600}
+.q-badge.easy{background:rgba(81,207,102,0.15);color:var(--success)}
+.q-badge.medium{background:rgba(253,203,110,0.15);color:var(--amber)}
+.q-badge.hard{background:rgba(255,107,107,0.15);color:var(--danger)}
+.q-topic{font-size:13px;color:var(--text-secondary)}
+.q-text{font-size:18px;color:var(--text-primary);margin-bottom:20px;font-weight:500}
+.options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:20px}
+.option{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;cursor:pointer;transition:all 0.2s;font-size:17px;color:var(--text-primary);text-align:left;min-height:48px;font-family:'Inter',sans-serif}
+.option:hover{border-color:var(--accent);background:rgba(76,110,245,0.1)}
+.option.correct{border-color:var(--success);background:rgba(81,207,102,0.1);color:var(--success)}
+.option.wrong{border-color:var(--danger);background:rgba(255,107,107,0.1);color:var(--danger)}
+.option.reveal{border-color:var(--success);background:rgba(81,207,102,0.06)}
+.hint-panel{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px;display:none}
+.hint-panel.show{display:block}
+.hint-level{padding:8px 0;border-bottom:1px solid var(--border);font-size:16px;color:var(--text-secondary)}
+.hint-level:last-child{border-bottom:none}
+.hint-level strong{color:var(--amber)}
+.q-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn-sm{padding:8px 16px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;min-height:40px;transition:all 0.2s}
+.btn-hint{background:rgba(253,203,110,0.15);color:var(--amber)}
+.btn-hint:hover{background:rgba(253,203,110,0.25)}
+.btn-submit{background:var(--accent);color:white}
+.btn-submit:hover{background:#3a5ce4}
+.btn-next{background:var(--surface2);color:var(--text-primary);border:1px solid var(--border)}
+.btn-next:hover{border-color:var(--accent);color:var(--accent)}
+.feedback{font-size:16px;margin-left:auto;font-weight:600}
+.feedback.correct{color:var(--success)}
+.feedback.wrong{color:var(--danger)}
+
+/* MOCK TEST */
+.mock-header{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.timer-display{font-family:'Fira Code',monospace;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--amber);font-weight:700}
+.timer-label{font-size:15px;color:var(--text-secondary)}
+.mock-progress{flex:1;min-width:200px}
+.progress-bar{width:100%;height:8px;background:var(--surface);border-radius:4px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s}
+.mock-score{background:rgba(253,203,110,0.1);border:1px solid var(--amber);border-radius:12px;padding:20px;text-align:center;display:none}
+.mock-score.show{display:block}
+.score-num{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--amber)}
+
+/* MIND MAP */
+#mind-map{background:var(--surface)}
+.mermaid-wrap{background:var(--dark);border:1px solid var(--border);border-radius:16px;padding:28px;overflow-x:auto}
+.mermaid{font-size:16px}
+
+/* FLIP CARDS */
+.flip-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:32px}
+.flip-card{height:200px;perspective:1000px;cursor:pointer;opacity:1}
+.flip-card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.6s}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flip-front{background:var(--surface);border:2px solid var(--border)}
+.flip-front .card-icon{font-size:2rem;margin-bottom:12px}
+.flip-front .card-q{font-size:17px;font-weight:600;color:var(--text-primary)}
+.flip-back{background:linear-gradient(135deg,rgba(76,110,245,0.2),rgba(76,110,245,0.05));border:2px solid var(--accent);transform:rotateY(180deg)}
+.flip-back .card-a{font-size:16px;color:var(--text-primary);line-height:1.6}
+.flip-hint{font-size:13px;color:var(--text-secondary);margin-top:12px}
+
+/* FORMULA SHEET */
+#formula-sheet{position:fixed;right:20px;top:50%;transform:translateY(-50%);width:300px;background:var(--surface);border:1px solid var(--border);border-radius:16px;z-index:200;transition:all 0.3s;max-height:80vh;overflow-y:auto}
+#formula-sheet.collapsed{width:48px;height:48px;overflow:hidden;border-radius:50%;top:auto;bottom:80px;right:20px;transform:none}
+#formula-sheet-toggle{position:absolute;top:12px;right:12px;background:var(--amber);color:var(--dark);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2}
+.fs-content{padding:20px}
+.fs-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1rem;color:var(--amber);margin-bottom:16px;padding-right:30px}
+.fs-formula{background:var(--dark);border-radius:8px;padding:10px 14px;margin-bottom:10px}
+.fs-formula code{color:var(--amber);font-size:15px;display:block}
+.fs-formula span{font-size:13px;color:var(--text-secondary);display:block;margin-top:4px}
+#formula-sheet.collapsed .fs-content{display:none}
+#formula-sheet.collapsed #formula-sheet-toggle{top:50%;right:50%;transform:translate(50%,-50%);position:absolute}
+
+/* PERFORMANCE */
+.perf-wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.chart-container{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;max-height:400px}
+.perf-stats{display:flex;flex-direction:column;gap:16px}
+.stat-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.stat-label{font-size:17px;color:var(--text-secondary)}
+.stat-val{font-family:'Fira Code',monospace;font-size:1.4rem;color:var(--amber);font-weight:700}
+
+/* THREE.JS WAVE SECTION */
+#wave-viz{padding:60px 0;background:var(--surface)}
+#wave-canvas-wrap{width:100%;border-radius:16px;overflow:hidden;border:1px solid var(--border);min-height:300px;position:relative}
+#wave-fallback{display:none;width:100%;height:300px;align-items:center;justify-content:center;font-size:80px;background:var(--surface2);border-radius:16px}
+
+/* MOBILE BOTTOM NAV */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:150;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch}
+#mobile-nav .mnav-inner{display:flex;gap:4px;padding:0 12px;min-width:max-content}
+.mnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;color:var(--text-secondary);text-decoration:none;font-size:12px;border-radius:10px;transition:all 0.2s;min-height:56px;justify-content:center;cursor:pointer;border:none;background:none;font-family:'Inter',sans-serif}
+.mnav-item.active{color:var(--amber);background:rgba(253,203,110,0.1)}
+.mnav-item .mni{font-size:1.2rem}
+
+/* EXPERIMENT STEPS */
+.exp-steps{counter-reset:exp;list-style:none;padding:0}
+.exp-step{counter-increment:exp;display:flex;gap:16px;margin-bottom:16px;opacity:1}
+.exp-step::before{content:counter(exp);min-width:32px;height:32px;background:var(--accent);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;margin-top:3px}
+.exp-step p{font-size:17px;color:var(--text-primary)}
+
+/* NOISE TABLE */
+.noise-highlight{background:rgba(255,107,107,0.1)!important}
+.noise-medium{background:rgba(253,203,110,0.06)!important}
+
+/* FREQUENCY TABLE */
+.freq-human td:nth-child(1){font-weight:700;color:var(--amber)}
+
+/* COMPREHENSION CHECK */
+.comp-check{background:rgba(76,110,245,0.05);border:1px solid rgba(76,110,245,0.2);border-radius:12px;padding:20px;margin-top:20px}
+.comp-check h4{color:var(--accent);margin-bottom:12px;font-size:17px}
+.comp-check ul{padding-left:20px}
+.comp-check li{font-size:17px;color:var(--text-secondary);margin-bottom:6px}
+
+/* WAVE PROPERTIES BADGE */
+.wave-prop{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 16px;margin:4px;font-size:16px}
+.wave-prop .wp-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.wave-prop .wp-dot.blue{background:var(--accent)}
+.wave-prop .wp-dot.amber{background:var(--amber)}
+.wave-prop .wp-dot.green{background:var(--success)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);color:var(--text-primary);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #sidebar{display:none}
+  #main{margin-left:0;width:100%}
+  #mobile-nav{display:block}
+  body{padding-bottom:80px}
+  .container{padding:0 16px}
+  .section{padding:48px 0}
+  #hero{min-height:60vh;padding:60px 0 40px}
+  .three-canvas-wrap{display:none}
+  .perf-wrap{grid-template-columns:1fr}
+  .options-grid{grid-template-columns:1fr}
+  #formula-sheet{display:none}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{width:100%;justify-content:center}
+  .mock-header{flex-direction:column;align-items:flex-start}
+  .flip-cards-grid{grid-template-columns:1fr 1fr}
+  table{font-size:14px}
+  th,td{padding:10px 12px;font-size:14px}
+}
+@media(max-width:480px){
+  .flip-cards-grid{grid-template-columns:1fr}
+  .obj-grid{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+}
+
+/* GSAP ANIMATION HELPERS */
+.animate-in{opacity:1;transform:none}
+.section-number-display{font-family:'Fira Code',monospace;font-size:clamp(2.5rem,4vw,3.5rem);color:rgba(76,110,245,0.12);font-weight:700;line-height:1;display:block}
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="loader-text">🔊 Unit 11: Sound</div>
+  <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+</div>
+
+<!-- FORMULA SHEET PANEL -->
+<div id="formula-sheet">
+  <button id="formula-sheet-toggle" title="Toggle Formula Sheet">⚗</button>
+  <div class="fs-content">
+    <div class="fs-title">📋 Formula Sheet — Sound</div>
+    <div class="fs-formula"><code>v = d/t</code><span>Speed = Distance ÷ Time</span></div>
+    <div class="fs-formula"><code>vg = √(γP/ρ)</code><span>Speed in gas</span></div>
+    <div class="fs-formula"><code>vl = √(K/ρ)</code><span>Speed in liquid</span></div>
+    <div class="fs-formula"><code>vs = √(E/ρ)</code><span>Speed in solid</span></div>
+    <div class="fs-formula"><code>vg = √(γRT/M)</code><span>Speed vs Temperature</span></div>
+    <div class="fs-formula"><code>va = 331.5√(1+T/273.15)</code><span>Speed in air</span></div>
+    <div class="fs-formula"><code>d = (v/2)t</code><span>Echo distance</span></div>
+    <div class="fs-formula"><code>v = 2d/t</code><span>Speed from echo</span></div>
+    <div class="fs-formula"><code>f: 20 Hz – 20,000 Hz</code><span>Human audible range</span></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="logo">
+    <span>⚡ Physics</span>
+    <p>Class 10 | Unit 11</p>
+  </div>
+  <button class="nav-item" onclick="scrollToSection('hero')"><span class="nav-num">00</span> Overview</button>
+  <button class="nav-item" onclick="scrollToSection('objectives')"><span class="nav-num">01</span> Objectives</button>
+  <button class="nav-item" onclick="scrollToSection('theory')"><span class="nav-num">02</span> Theory</button>
+  <button class="nav-item" onclick="scrollToSection('wave-viz')"><span class="nav-num">03</span> Wave Viz</button>
+  <button class="nav-item" onclick="scrollToSection('worked')"><span class="nav-num">04</span> Examples</button>
+  <button class="nav-item" onclick="scrollToSection('practice')"><span class="nav-num">05</span> Practice</button>
+  <button class="nav-item" onclick="scrollToSection('mock')"><span class="nav-num">06</span> Mock Test</button>
+  <button class="nav-item" onclick="scrollToSection('mindmap')"><span class="nav-num">07</span> Mind Map</button>
+  <button class="nav-item" onclick="scrollToSection('revision')"><span class="nav-num">08</span> Revision</button>
+  <button class="nav-item" onclick="scrollToSection('performance')"><span class="nav-num">09</span> Tracker</button>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <div class="mnav-inner">
+    <button class="mnav-item" onclick="scrollToSection('hero')"><span class="mni">🏠</span>Home</button>
+    <button class="mnav-item" onclick="scrollToSection('objectives')"><span class="mni">🎯</span>Goals</button>
+    <button class="mnav-item" onclick="scrollToSection('theory')"><span class="mni">📖</span>Theory</button>
+    <button class="mnav-item" onclick="scrollToSection('wave-viz')"><span class="mni">〰️</span>Waves</button>
+    <button class="mnav-item" onclick="scrollToSection('worked')"><span class="mni">✏️</span>Examples</button>
+    <button class="mnav-item" onclick="scrollToSection('practice')"><span class="mni">🧪</span>Practice</button>
+    <button class="mnav-item" onclick="scrollToSection('mock')"><span class="mni">⏱️</span>Mock</button>
+    <button class="mnav-item" onclick="scrollToSection('mindmap')"><span class="mni">🗺️</span>Map</button>
+    <button class="mnav-item" onclick="scrollToSection('revision')"><span class="mni">🔄</span>Cards</button>
+    <button class="mnav-item" onclick="scrollToSection('performance')"><span class="mni">📊</span>Stats</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container" style="position:relative;z-index:2">
+      <div class="hero-badge">Unit 11 · Class 10 Physics</div>
+      <h1 style="color:var(--white)">Sound <span style="color:var(--amber)">Waves</span></h1>
+      <p class="hero-subtitle">Master the physics of sound — from longitudinal wave propagation and the speed of sound to ultrasound applications and echo calculations. Board-exam ready.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="scrollToSection('theory')">📖 Start Learning</button>
+        <button class="btn btn-outline" onclick="scrollToSection('mock')">⏱️ Take Mock Test</button>
+        <button class="btn btn-outline" onclick="scrollToSection('practice')">🧪 Practice Questions</button>
+      </div>
+      <div style="display:flex;gap:32px;margin-top:48px;flex-wrap:wrap">
+        <div><div style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--amber);font-family:'Bricolage Grotesque',sans-serif">9</div><div style="font-size:15px;color:var(--text-secondary)">Key Topics</div></div>
+        <div><div style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--amber);font-family:'Bricolage Grotesque',sans-serif">20</div><div style="font-size:15px;color:var(--text-secondary)">Practice Questions</div></div>
+        <div><div style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--amber);font-family:'Bricolage Grotesque',sans-serif">8</div><div style="font-size:15px;color:var(--text-secondary)">Formulae</div></div>
+        <div><div style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--amber);font-family:'Bricolage Grotesque',sans-serif">5</div><div style="font-size:15px;color:var(--text-secondary)">Worked Examples</div></div>
+      </div>
+    </div>
+    <div class="three-canvas-wrap" id="three-hero-wrap">
+      <div id="three-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:80px">🔊</div>
+      <canvas id="three-hero-canvas"></canvas>
+    </div>
+    <div class="hero-wave"></div>
+  </section>
+
+  <!-- OBJECTIVES -->
+  <section id="objectives" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="1">01</span>
+        <h2 class="section-title">Learning Objectives</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="obj-grid">
+        <div class="obj-card"><div class="obj-icon">〰️</div><h4>Sound Waves</h4><p>Understand how sound waves are produced, their longitudinal nature, compressions and rarefactions.</p></div>
+        <div class="obj-card"><div class="obj-icon">🔬</div><h4>Bell Jar Experiment</h4><p>Explain why sound cannot travel through a vacuum using the electric bell jar experiment.</p></div>
+        <div class="obj-card"><div class="obj-icon">⚡</div><h4>Speed of Sound</h4><p>Calculate speed of sound in solids, liquids, and gases using appropriate formulae.</p></div>
+        <div class="obj-card"><div class="obj-icon">🌡️</div><h4>Temperature Effect</h4><p>Analyse how temperature and humidity affect the speed of sound in air.</p></div>
+        <div class="obj-card"><div class="obj-icon">📻</div><h4>Sound Properties</h4><p>Describe quality, loudness, pitch, and sound intensity and relate them to wave properties.</p></div>
+        <div class="obj-card"><div class="obj-icon">🔁</div><h4>Echo & Reflection</h4><p>Apply echo formulae to determine distance to reflecting surfaces and speed of sound.</p></div>
+        <div class="obj-card"><div class="obj-icon">🦇</div><h4>Ultrasound & Infrasound</h4><p>Compare audible, ultrasonic, and infrasonic frequency ranges across species.</p></div>
+        <div class="obj-card"><div class="obj-icon">🏥</div><h4>Applications</h4><p>Evaluate industrial and medical applications of ultrasound including SONAR and ultrasonography.</p></div>
+        <div class="obj-card"><div class="obj-icon">🔇</div><h4>Noise Pollution</h4><p>Understand decibel levels and the health impacts of noise pollution in the environment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section id="theory" class="section" style="background:var(--surface)">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="2">02</span>
+        <h2 class="section-title">Core Theory</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Sound Waves -->
+      <div class="theory-block">
+        <h3>🔊 2.1 Sound Waves</h3>
+        <p>Sound waves are vibrations of air particles that travel through a medium, such as air, and can be detected by our ears. These waves carry sound energy and enable us to hear sounds in our surroundings.</p>
+        <p>Sound waves are <strong style="color:var(--amber)">longitudinal waves</strong>, which means that the particles in the medium vibrate <em>parallel</em> to the direction of wave propagation — unlike transverse waves where particles vibrate perpendicularly.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">Compressions</div>
+            <p>Regions where air particles are densely packed together, leading to <strong>higher air pressure</strong>.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">Rarefactions</div>
+            <p>Regions where air particles are spread apart, resulting in <strong>lower air pressure</strong> compared to surrounding areas.</p>
+          </div>
+        </div>
+        <div class="tip-box" style="margin-top:20px">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content"><strong>Examiner's Tip</strong><p>Always state that sound is a longitudinal wave. In exam answers, mention that particles vibrate <em>parallel</em> to the direction of propagation. Diagrams should clearly show regions of compression and rarefaction.</p></div>
+        </div>
+      </div>
+
+      <!-- Production of Sound -->
+      <div class="theory-block">
+        <h3>🎵 2.2 Production of Sound by Vibrating Sources</h3>
+        <p>When an object vibrates, it causes the air particles around it to vibrate as well. These vibrations create pressure variations in the air, which then propagate as sound waves.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">Frequency → Pitch</div>
+            <p>The <strong>frequency</strong> of the vibrations determines the <strong>pitch</strong> of the sound. Higher frequency = higher pitch.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">Amplitude → Loudness</div>
+            <p>The <strong>amplitude</strong> of the vibrations affects the <strong>loudness</strong> of the sound. Greater amplitude = louder sound.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bell Jar Experiment -->
+      <div class="theory-block">
+        <h3>🔬 2.3 Electric Bell Jar Experiment</h3>
+        <p>The electric bell jar experiment demonstrates that <strong style="color:var(--amber)">sound cannot travel through a vacuum</strong>, as sound requires a medium to propagate, such as air, water, or solids.</p>
+        <ol class="exp-steps">
+          <li class="exp-step"><p>Set up an electric bell and a vacuum bell jar apparatus. The electric bell consists of a vibrating clapper that strikes the bell when electric current passes through it.</p></li>
+          <li class="exp-step"><p>Connect the electric bell to a power source and ensure it is working correctly, producing audible sound in the surrounding air.</p></li>
+          <li class="exp-step"><p>Place the electric bell apparatus inside the vacuum bell jar and seal it airtight.</p></li>
+          <li class="exp-step"><p>Gradually pump out the air from the vacuum bell jar using a vacuum pump until a near-vacuum condition is achieved.</p></li>
+          <li class="exp-step"><p>Observe that as the air is removed from the jar and the pressure decreases, the sound produced by the electric bell becomes fainter and eventually cannot be heard at all.</p></li>
+          <li class="exp-step"><p>This confirms that sound requires a medium, such as air, to travel. In the absence of air (vacuum), the sound waves have no particles to propagate through, resulting in silence.</p></li>
+        </ol>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content"><strong>Examiner's Tip</strong><p>The bell jar experiment is a common exam question. Key conclusion: <em>"Sound cannot travel through a vacuum because it is a mechanical wave requiring a medium."</em> Note that you can still see the bell clapper move — it's just the sound that disappears!</p></div>
+        </div>
+      </div>
+
+      <!-- Speed of Sound -->
+      <div class="theory-block">
+        <h3>⚡ 2.4 Speed of Sound</h3>
+        <p>The speed of sound varies depending on the medium through which it travels. It is generally <strong style="color:var(--success)">fastest in solids</strong>, followed by liquids, and <strong style="color:var(--danger)">slowest in gases</strong>.</p>
+        
+        <h4 style="color:var(--accent);margin:20px 0 12px">Method 1: Measuring Sound Between Two Points</h4>
+        <p>An observer measures the time taken for sound to travel between two points at a known distance apart. By dividing the distance by the time taken, the speed of sound can be calculated.</p>
+        <div class="formula-box">
+          <div class="formula">v = d / t</div>
+          <div class="formula-label">Speed of Sound (Direct Method)</div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 12px">Method 2: Using Echoes</h4>
+        <p>A loud sound is produced and the time taken for the echo to return after reflecting off a distant surface is measured. The distance to the surface can then be calculated.</p>
+        <div class="formula-box">
+          <div class="formula">d = (v/2) × t</div>
+          <div class="formula-label">Distance to Reflecting Surface (Echo Method)</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>d</code> = distance (m)</span>
+            <span class="var-tag"><code>v</code> = speed of sound (m/s)</span>
+            <span class="var-tag"><code>t</code> = total time for echo (s)</span>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 12px">Speed in Solids</h4>
+        <p>In solids, particles are closely packed with strong intermolecular forces, leading to high elasticity. Speed of sound is highest in solids.</p>
+        <div class="formula-box">
+          <div class="formula">vs = √(E / ρ)</div>
+          <div class="formula-label">Speed of Sound in Solids</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>vs</code> = speed in solid (m/s)</span>
+            <span class="var-tag"><code>E</code> = Young's modulus (Pa)</span>
+            <span class="var-tag"><code>ρ</code> = density (kg/m³)</span>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 12px">Speed in Liquids</h4>
+        <div class="formula-box">
+          <div class="formula">vl = √(K / ρ)</div>
+          <div class="formula-label">Speed of Sound in Liquids</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>vl</code> = speed in liquid (m/s)</span>
+            <span class="var-tag"><code>K</code> = Bulk modulus (Pa)</span>
+            <span class="var-tag"><code>ρ</code> = density (kg/m³)</span>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 12px">Speed in Gases</h4>
+        <div class="formula-box">
+          <div class="formula">vg = √(γP / ρ)</div>
+          <div class="formula-label">Speed of Sound in Gases</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>vg</code> = speed in gas (m/s)</span>
+            <span class="var-tag"><code>γ</code> = adiabatic index (Cp/Cv)</span>
+            <span class="var-tag"><code>P</code> = pressure (Pa)</span>
+            <span class="var-tag"><code>ρ</code> = density (kg/m³)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factors Affecting Speed -->
+      <div class="theory-block">
+        <h3>📊 2.5 Factors Affecting Speed of Sound</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">1. Elasticity</div>
+            <p>Speed is <strong>directly proportional</strong> to elasticity. More elastic media (solids) allow sound to travel faster.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">2. Density</div>
+            <p>Speed is <strong>inversely proportional</strong> to density. Denser materials allow sound to propagate faster due to stronger forces.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">3. Temperature</div>
+            <p>Speed <strong>increases with temperature</strong>. Warmer temperatures cause particles to vibrate more rapidly, facilitating faster transmission.</p>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:24px 0 12px">Effect of Temperature — Ideal Gas Formula</h4>
+        <div class="formula-box">
+          <div class="formula">vg = √(γRT / M)</div>
+          <div class="formula-label">Speed of Sound vs Temperature (Ideal Gas)</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>R</code> = Gas constant</span>
+            <span class="var-tag"><code>T</code> = Temperature (Kelvin)</span>
+            <span class="var-tag"><code>M</code> = Molar mass of gas</span>
+          </div>
+        </div>
+        <p>This shows that speed is <strong>directly proportional to the square root of temperature</strong>. As temperature increases, molecular kinetic energy increases, resulting in higher sound speed.</p>
+
+        <h4 style="color:var(--accent);margin:24px 0 12px">Speed of Sound in Air at Temperature T°C</h4>
+        <div class="formula-box">
+          <div class="formula">va = 331.5 × √(1 + T/273.15)</div>
+          <div class="formula-label">Speed in Air (m/s) where T is in °C</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>331.5 m/s</code> = speed at 0°C</span>
+            <span class="var-tag"><code>T</code> = temperature in °C</span>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:24px 0 12px">Effect of Humidity</h4>
+        <p>Higher humidity levels lead to a <strong style="color:var(--danger)">decrease in the speed of sound</strong> in air due to the presence of water vapor molecules, which influence the air's density and compressibility.</p>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content"><strong>Examiner's Tip</strong><p>Students often confuse humidity's effect: humid air is actually less dense than dry air (water vapour is lighter than N₂/O₂), so sound travels slightly faster in humid air. However, this formula reflects standard conditions. Always check your board's expected answer.</p></div>
+        </div>
+      </div>
+
+      <!-- Seeing Sounds / Properties -->
+      <div class="theory-block">
+        <h3>👁️ 2.6 Characteristics of Sound (Seeing Sounds)</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">1. Quality (Timbre)</div>
+            <p>The <strong>timbre or tonal color</strong> of a sound. Allows us to distinguish between different sources — e.g., a violin vs a piano playing the same note.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">2. Loudness</div>
+            <p>Corresponds to the <strong>amplitude or intensity</strong> of a sound wave. Determines how soft or loud a sound appears to our ears.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">3. Pitch</div>
+            <p>Related to the <strong>frequency</strong> of a sound wave. Defines how high or low a sound is perceived. Higher frequency = higher pitch.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">4. Sound Intensity</div>
+            <p>Measures the <strong>amount of sound energy</strong> that passes through a unit area. Affects how "strong" a sound is perceived by our ears.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noise Pollution -->
+      <div class="theory-block">
+        <h3>🔇 2.7 Noise Pollution</h3>
+        <p>Noise pollution refers to excessive and harmful levels of noise in the environment that can disrupt natural soundscape, cause health issues, and interfere with communication and daily activities.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Source</th><th>Noise Level (dB)</th><th>Risk Level</th></tr></thead>
+            <tbody>
+              <tr><td>Normal Conversation</td><td>60 – 70 dB</td><td style="color:var(--success)">Safe</td></tr>
+              <tr class="noise-medium"><td>City Traffic</td><td>70 – 85 dB</td><td style="color:var(--amber)">Moderate</td></tr>
+              <tr class="noise-medium"><td>Vacuum Cleaner</td><td>70 – 80 dB</td><td style="color:var(--amber)">Moderate</td></tr>
+              <tr class="noise-highlight"><td>Loud Music (concerts)</td><td>100 – 120 dB</td><td style="color:var(--danger)">Dangerous</td></tr>
+              <tr class="noise-highlight"><td>Chainsaw</td><td>100 – 110 dB</td><td style="color:var(--danger)">Dangerous</td></tr>
+              <tr class="noise-highlight"><td>Jet Engine (take-off)</td><td>120 – 140 dB</td><td style="color:var(--danger)">Extremely Dangerous</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reflection / Echo -->
+      <div class="theory-block">
+        <h3>🔁 2.8 Reflection of Sound (Echo)</h3>
+        <p>An echo occurs when sound waves encounter a surface and <strong>bounce back towards the source</strong>. The time delay depends on:</p>
+        <ul>
+          <li>The distance between the sound source and the reflecting surface</li>
+          <li>The speed of sound in the medium</li>
+          <li>The time taken for the sound to travel to the surface and back</li>
+        </ul>
+        <div class="formula-box">
+          <div class="formula">d = (v × t) / 2 &nbsp;&nbsp;&nbsp; v = 2d / t</div>
+          <div class="formula-label">Echo Formulae</div>
+          <div class="formula-vars">
+            <span class="var-tag"><code>d</code> = distance to surface (m)</span>
+            <span class="var-tag"><code>v</code> = speed of sound (m/s)</span>
+            <span class="var-tag"><code>t</code> = total time for echo (s)</span>
+          </div>
+        </div>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content"><strong>Examiner's Tip</strong><p>Always divide by 2 in echo problems! The sound travels to the surface AND back. The most common mistake is forgetting this and using the full travel time.</p></div>
+        </div>
+      </div>
+
+      <!-- Ultrasound / Infrasound -->
+      <div class="theory-block">
+        <h3>🦇 2.9 Ultrasound, Infrasound & Audible Range</h3>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">Infrasonic</div>
+            <p>Below <strong>20 Hz</strong>. Humans cannot hear. Used by elephants and whales for communication.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">Audible Range</div>
+            <p><strong>20 Hz to 20,000 Hz</strong>. The range detectable by the human ear.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">Ultrasound</div>
+            <p>Above <strong>20,000 Hz</strong>. Used in medicine, industry, and SONAR navigation.</p>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:24px 0 12px">Audible Frequency Ranges by Species</h4>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Species</th><th>Lower Limit (Hz)</th><th>Upper Limit (Hz)</th></tr></thead>
+            <tbody class="freq-human">
+              <tr><td>Humans</td><td>20</td><td>20,000</td></tr>
+              <tr><td>Dogs</td><td>40</td><td>60,000</td></tr>
+              <tr><td>Cats</td><td>48</td><td>85,000</td></tr>
+              <tr><td>Bats</td><td>1,000</td><td>150,000</td></tr>
+              <tr><td>Dolphins</td><td>7,000</td><td>160,000</td></tr>
+              <tr><td>Elephants</td><td>14</td><td>12,000</td></tr>
+              <tr><td>Whales (Blue Whale)</td><td>10</td><td>20,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color:var(--accent);margin:24px 0 12px">Applications of Ultrasound</h4>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">1. Cleansing</div>
+            <p>Generates tiny bubbles that collapse and create pressure waves, removing contaminants without damage.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">2. Quality Control</div>
+            <p>Detects defects or flaws in materials by analyzing sound wave responses through materials.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">3. SONAR</div>
+            <p>Sound Navigation and Ranging — used for underwater navigation, mapping, and locating submarines.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">4. Echocardiography</div>
+            <p>Creates real-time images of the heart's structure and function for cardiac diagnosis.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">5. Ultrasonography</div>
+            <p>Non-invasive imaging using high-frequency sound waves. Used for pregnancy monitoring, abdominal scans, and vascular diseases.</p>
+          </div>
+        </div>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content"><strong>Examiner's Tip</strong><p>Ultrasonography does NOT use ionizing radiation (unlike X-rays). This makes it safe for pregnant patients. Mention the transducer device in exam answers — it both emits and receives sound waves.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE.JS WAVE VISUALIZATION -->
+  <section id="wave-viz">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:28px">
+        <span class="section-number-display" data-count="3">03</span>
+        <h2 class="section-title">3D Wave Visualization</h2>
+        <div class="section-line"></div>
+        <p style="color:var(--text-secondary);margin-top:12px;font-size:17px">Interactive 3D representation of a longitudinal sound wave showing compressions and rarefactions.</p>
+      </div>
+      <div id="wave-canvas-wrap">
+        <div id="wave-fallback" style="display:none;align-items:center;justify-content:center;font-size:80px;height:300px;background:var(--surface2);border-radius:16px">🔊〰️🔊</div>
+        <canvas id="wave-canvas"></canvas>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;justify-content:center">
+        <span class="wave-prop"><span class="wp-dot blue"></span> Compression (high pressure)</span>
+        <span class="wave-prop"><span class="wp-dot amber"></span> Rarefaction (low pressure)</span>
+        <span class="wave-prop"><span class="wp-dot green"></span> Wave propagation direction →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKED EXAMPLES -->
+  <section id="worked" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="4">04</span>
+        <h2 class="section-title">Worked Exam Examples</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Example 1 -->
+      <div class="example-card">
+        <div class="example-header" onclick="toggleExample(this)">
+          <div class="example-num">1</div>
+          <div class="example-title">Echo Problem — Finding Distance to a Cliff</div>
+          <div class="example-toggle">▼</div>
+        </div>
+        <div class="example-body">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;font-size:17px">
+            <strong style="color:var(--amber)">Question:</strong> A person standing near a cliff claps their hands and hears the echo after 2.4 seconds. If the speed of sound in air is 340 m/s, calculate the distance from the person to the cliff.
+          </div>
+          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Identify Given Information</strong><p>Speed of sound, v = 340 m/s | Time for echo, t = 2.4 s</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select the Correct Formula</strong><p>For echo problems: <code>d = (v × t) / 2</code><br>We divide by 2 because the sound travels to the cliff AND back.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute Values</strong><p><code>d = (340 × 2.4) / 2 = 816 / 2 = 408 m</code></p></div></div>
+          <div class="answer-box"><strong>✅ Answer: d = 408 metres</strong></div>
+        </div>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="example-card">
+        <div class="example-header" onclick="toggleExample(this)">
+          <div class="example-num">2</div>
+          <div class="example-title">Speed of Sound — Finding Speed from Echo Timing</div>
+          <div class="example-toggle">▼</div>
+        </div>
+        <div class="example-body">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;font-size:17px">
+            <strong style="color:var(--amber)">Question:</strong> A SONAR pulse is sent from a ship and returns after 0.6 seconds. The ocean floor is 450 m below the ship. Calculate the speed of sound in sea water.
+          </div>
+          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Identify Given Information</strong><p>Distance to ocean floor, d = 450 m | Total time, t = 0.6 s</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Formula</strong><p><code>v = 2d / t</code> (rearranged echo formula)</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute and Calculate</strong><p><code>v = (2 × 450) / 0.6 = 900 / 0.6 = 1500 m/s</code></p></div></div>
+          <div class="answer-box"><strong>✅ Answer: v = 1500 m/s</strong></div>
+        </div>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="example-card">
+        <div class="example-header" onclick="toggleExample(this)">
+          <div class="example-num">3</div>
+          <div class="example-title">Speed of Sound in Air at Given Temperature</div>
+          <div class="example-toggle">▼</div>
+        </div>
+        <div class="example-body">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;font-size:17px">
+            <strong style="color:var(--amber)">Question:</strong> Calculate the speed of sound in air at a temperature of 25°C.
+          </div>
+          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Formula for Speed in Air</strong><p><code>va = 331.5 × √(1 + T/273.15)</code></p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Substitute T = 25°C</strong><p><code>va = 331.5 × √(1 + 25/273.15)</code><br><code>va = 331.5 × √(1 + 0.09155)</code><br><code>va = 331.5 × √(1.09155)</code></p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate</strong><p><code>va = 331.5 × 1.04477</code><br><code>va ≈ 346.3 m/s</code></p></div></div>
+          <div class="answer-box"><strong>✅ Answer: va ≈ 346.3 m/s</strong></div>
+        </div>
+      </div>
+
+      <!-- Example 4 -->
+      <div class="example-card">
+        <div class="example-header" onclick="toggleExample(this)">
+          <div class="example-num">4</div>
+          <div class="example-title">Direct Method — Measuring Speed of Sound</div>
+          <div class="example-toggle">▼</div>
+        </div>
+        <div class="example-body">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;font-size:17px">
+            <strong style="color:var(--amber)">Question:</strong> An observer sees a lightning flash and hears thunder 3 seconds later. The lightning struck 1020 m away. Calculate the speed of sound in air.
+          </div>
+          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Given</strong><p>Distance d = 1020 m | Time t = 3 s | (Light travels almost instantly)</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Formula</strong><p><code>v = d / t</code></p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate</strong><p><code>v = 1020 / 3 = 340 m/s</code></p></div></div>
+          <div class="answer-box"><strong>✅ Answer: v = 340 m/s</strong></div>
+        </div>
+      </div>
+
+      <!-- Example 5 -->
+      <div class="example-card">
+        <div class="example-header" onclick="toggleExample(this)">
+          <div class="example-num">5</div>
+          <div class="example-title">Ultrasound — Medical Imaging Depth Calculation</div>
+          <div class="example-toggle">▼</div>
+        </div>
+        <div class="example-body">
+          <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;font-size:17px">
+            <strong style="color:var(--amber)">Question:</strong> An ultrasound pulse sent into human tissue reflects from an organ and returns in 0.00008 s. If the speed of ultrasound in tissue is 1540 m/s, find the depth of the organ.
+          </div>
+          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Given</strong><p>v = 1540 m/s | t = 0.00008 s = 8 × 10⁻⁵ s</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Formula</strong><p><code>d = (v × t) / 2</code></p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate</strong><p><code>d = (1540 × 8×10⁻⁵) / 2 = 0.1232 / 2 = 0.0616 m</code><br><code>d = 6.16 cm</code></p></div></div>
+          <div class="answer-box"><strong>✅ Answer: Depth = 6.16 cm</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="5">05</span>
+        <h2 class="section-title">Practice Questions</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="practice-controls">
+        <button class="btn btn-primary" onclick="loadPractice()">🔀 Shuffle Questions</button>
+        <button class="btn btn-outline" onclick="resetPractice()">↺ Reset All</button>
+        <div class="q-counter" id="q-counter">Score: 0/0</div>
+      </div>
+      <div id="practice-container"></div>
+    </div>
+  </section>
+
+  <!-- MOCK TEST -->
+  <section id="mock" class="section" style="background:var(--surface)">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="6">06</span>
+        <h2 class="section-title">Mock Test</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="mock-header">
+        <div>
+          <div class="timer-label">Time Remaining</div>
+          <div class="timer-display" id="mock-timer">20:00</div>
+        </div>
+        <div class="mock-progress">
+          <div style="font-size:15px;color:var(--text-secondary)">Questions Answered: <span id="mock-answered">0</span>/20</div>
+          <div class="progress-bar"><div class="progress-fill" id="mock-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="startMockTest()" id="mock-start-btn">▶ Start Test</button>
+          <button class="btn btn-outline" onclick="submitMockTest()" id="mock-submit-btn" style="display:none">Submit Test</button>
+          <button class="btn btn-outline" onclick="resetMockTest()" id="mock-reset-btn" style="display:none">↺ Reset</button>
+        </div>
+      </div>
+      <div class="mock-score" id="mock-score-panel">
+        <div class="score-num" id="mock-score-num">0/20</div>
+        <div style="font-size:18px;color:var(--text-secondary);margin-top:8px" id="mock-score-msg"></div>
+        <div id="mock-topic-breakdown" style="margin-top:16px;text-align:left"></div>
+      </div>
+      <div id="mock-container"></div>
+    </div>
+  </section>
+
+  <!-- MIND MAP -->
+  <section id="mindmap" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="7">07</span>
+        <h2 class="section-title">Mind Map</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph TD
+    A["🔊 SOUND"] --> B["Wave Types"]
+    A --> C["Speed of Sound"]
+    A --> D["Properties"]
+    A --> E["Applications"]
+    A --> F["Frequency Ranges"]
+    B --> B1["Longitudinal Wave"]
+    B --> B2["Compressions"]
+    B --> B3["Rarefactions"]
+    B --> B4["Needs a Medium"]
+    C --> C1["Faster in Solids"]
+    C --> C2["Medium in Liquids"]
+    C --> C3["Slowest in Gases"]
+    C --> C4["Increases with Temp"]
+    C --> C5["Echo Method"]
+    D --> D1["Pitch - Frequency"]
+    D --> D2["Loudness - Amplitude"]
+    D --> D3["Quality - Timbre"]
+    D --> D4["Intensity"]
+    E --> E1["SONAR Navigation"]
+    E --> E2["Ultrasonography"]
+    E --> E3["Echocardiography"]
+    E --> E4["Industrial Cleaning"]
+    E --> E5["Quality Control"]
+    F --> F1["Infrasonic - below 20Hz"]
+    F --> F2["Audible - 20 to 20000 Hz"]
+    F --> F3["Ultrasonic - above 20000Hz"]
+    style A fill:#4C6EF5,color:#fff,stroke:#4C6EF5
+    style B fill:#FDCB6E,color:#1E1E2E,stroke:#FDCB6E
+    style C fill:#FDCB6E,color:#1E1E2E,stroke:#FDCB6E
+    style D fill:#FDCB6E,color:#1E1E2E,stroke:#FDCB6E
+    style E fill:#FDCB6E,color:#1E1E2E,stroke:#FDCB6E
+    style F fill:#FDCB6E,color:#1E1E2E,stroke:#FDCB6E
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK REVISION FLIP CARDS -->
+  <section id="revision" class="section" style="background:var(--surface)">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="8">08</span>
+        <h2 class="section-title">Quick Revision Flashcards</h2>
+        <div class="section-line"></div>
+        <p style="color:var(--text-secondary);margin-top:12px;font-size:17px">Click any card to flip and reveal the answer. Perfect for last-minute revision!</p>
+      </div>
+      <div class="flip-cards-grid" id="flashcards-grid"></div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE TRACKER -->
+  <section id="performance" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number-display" data-count="9">09</span>
+        <h2 class="section-title">Performance Tracker</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="perf-wrap">
+        <div class="chart-container">
+          <canvas id="radarChart" style="max-height:350px"></canvas>
+        </div>
+        <div class="perf-stats">
+          <div class="stat-row"><span class="stat-label">Total Questions Attempted</span><span class="stat-val" id="stat-attempted">0</span></div>
+          <div class="stat-row"><span class="stat-label">Correct Answers</span><span class="stat-val" id="stat-correct" style="color:var(--success)">0</span></div>
+          <div class="stat-row"><span class="stat-label">Accuracy Rate</span><span class="stat-val" id="stat-accuracy">0%</span></div>
+          <div class="stat-row"><span class="stat-label">Mock Tests Taken</span><span class="stat-val" id="stat-mocks">0</span></div>
+          <button class="btn btn-outline" onclick="resetPerformance()" style="margin-top:8px">🗑️ Clear Data</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:var(--surface);border-top:1px solid var(--border);padding:32px 0;text-align:center">
+    <div class="container">
+      <p style="color:var(--text-secondary);font-size:16px">Unit 11: Sound · Class 10 Physics · Digital School Board Exam Preparation</p>
+      <p style="color:var(--border);font-size:14px;margin-top:8px">© 2024 Digital School. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ==================== ALL JS AT BOTTOM ====================
+document.addEventListener('DOMContentLoaded', () => {
+
+// CURTAIN GUARANTEED FALLBACK
+setTimeout(() => {
+  const c = document.getElementById('curtain');
+  if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => c.style.display = 'none', 500); }
+}, 3000);
+
+// Animate loader bar
+const fill = document.getElementById('loader-fill');
+if (fill) {
+  let w = 0;
+  const iv = setInterval(() => { w += Math.random()*15+5; if(w>=100){w=100;clearInterval(iv);setTimeout(()=>{const c=document.getElementById('curtain');if(c){c.style.opacity='0';c.style.transition='opacity 0.5s';setTimeout(()=>c.style.display='none',500);}},200);} fill.style.width=w+'%'; }, 200);
+}
+
+// ==================== LENIS SMOOTH SCROLL ====================
+try {
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.1, smooth: true });
+    function rafLenis(time) { lenis.raf(time); requestAnimationFrame(rafLenis); }
+    requestAnimationFrame(rafLenis);
+  }
+} catch(e) { console.warn('Lenis init failed:', e); }
+
+// ==================== MERMAID ====================
+try {
+  if (typeof mermaid !== 'undefined') {
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { primaryColor: '#4C6EF5', primaryTextColor: '#F0F0F8', primaryBorderColor: '#3A3A55', lineColor: '#FDCB6E', secondaryColor: '#252535', tertiaryColor: '#2E2E42', background: '#1E1E2E', mainBkg: '#252535', nodeBorder: '#3A3A55', clusterBkg: '#2E2E42', titleColor: '#F0F0F8', edgeLabelBackground: '#252535', attributeBackgroundColorEven: '#252535', attributeBackgroundColorOdd: '#2E2E42' } });
+  }
+} catch(e) { console.warn('Mermaid init failed:', e); }
+
+// ==================== SCROLL TO SECTION ====================
+window.scrollToSection = function(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+// ==================== THREE.JS HERO ====================
+try {
+  if (typeof THREE !== 'undefined') {
+    const wrap = document.getElementById('three-hero-wrap');
+    const canvas = document.getElementById('three-hero-canvas');
+    let renderer, scene, camera, particles, animId;
+    
+    let webglOk = false;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setClearColor(0x000000, 0);
+      webglOk = true;
+    } catch(err) { webglOk = false; }
+    
+    if (!webglOk) throw new Error('WebGL not supported');
+    
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
+    camera.position.z = 5;
+    
+    // Create sound wave particle system
+    const geo = new THREE.BufferGeometry();
+    const N = 300;
+    const pos = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      pos[i*3] = (Math.random()-0.5)*10;
+      pos[i*3+1] = (Math.random()-0.5)*4;
+      pos[i*3+2] = (Math.random()-0.5)*4;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x4C6EF5, size: 0.06, transparent: true, opacity: 0.7 });
+    particles = new THREE.Points(geo, mat);
+    scene.add(particles);
+    
+    // Sine wave mesh
+    const waveGeo = new THREE.BufferGeometry();
+    const waveN = 100;
+    const wavePos = new Float32Array(waveN * 3);
+    for (let i = 0; i < waveN; i++) {
+      wavePos[i*3] = (i/waveN)*10 - 5;
+      wavePos[i*3+1] = Math.sin(i/waveN * Math.PI * 4) * 0.8;
+      wavePos[i*3+2] = 0;
+    }
+    waveGeo.setAttribute('position', new THREE.BufferAttribute(wavePos, 3));
+    const waveMat = new THREE.LineBasicMaterial({ color: 0xFDCB6E, linewidth: 2 });
+    const waveLine = new THREE.Line(waveGeo, waveMat);
+    scene.add(waveLine);
+    
+    let t = 0;
+    function animHero() {
+      animId = requestAnimationFrame(animHero);
+      t += 0.02;
+      const wPos = waveGeo.attributes.position.array;
+      for (let i = 0; i < waveN; i++) {
+        wPos[i*3+1] = Math.sin(i/waveN * Math.PI * 4 + t) * 0.8;
+      }
+      waveGeo.attributes.position.needsUpdate = true;
+      particles.rotation.y = t * 0.1;
+      renderer.render(scene, camera);
+    }
+    animHero();
+    
+    const obs = new ResizeObserver(entries => {
+      if (!entries[0]) return;
+      const w = entries[0].contentRect.width;
+      const h = entries[0].contentRect.height || 500;
+      renderer.setSize(w, h);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    });
+    obs.observe(wrap);
+  }
+} catch(e) {
+  console.warn('Three.js Hero failed:', e);
+  const fb = document.getElementById('three-fallback');
+  const cv = document.getElementById('three-hero-canvas');
+  if (fb) { fb.style.display = 'flex'; }
+  if (cv) cv.style.display = 'none';
+}
+
+// ==================== THREE.JS WAVE VIZ ====================
+try {
+  if (typeof THREE !== 'undefined') {
+    const wrap2 = document.getElementById('wave-canvas-wrap');
+    const canvas2 = document.getElementById('wave-canvas');
+    let r2, s2, c2, animId2;
+    
+    let ok2 = false;
+    try { r2 = new THREE.WebGLRenderer({ canvas: canvas2, antialias: true }); r2.setClearColor(0x1E1E2E, 1); ok2 = true; } catch(e) { ok2 = false; }
+    if (!ok2) throw new Error('WebGL not supported for wave viz');
+    
+    s2 = new THREE.Scene();
+    c2 = new THREE.PerspectiveCamera(50, 2, 0.1, 100);
+    c2.position.set(0, 2, 10);
+    c2.lookAt(0, 0, 0);
+    
+    // Ambient light
+    s2.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const pLight = new THREE.PointLight(0xFDCB6E, 1, 20);
+    pLight.position.set(0, 3, 5);
+    s2.add(pLight);
+    
+    // Create spheres representing air particles
+    const sphereGeo = new THREE.SphereGeometry(0.12, 8, 8);
+    const spheres = [];
+    const nCols = 30;
+    const nRows = 3;
+    const basePositions = [];
+    
+    for (let row = 0; row < nRows; row++) {
+      for (let col = 0; col < nCols; col++) {
+        const mat = new THREE.MeshPhongMaterial({ color: 0x4C6EF5, transparent: true, opacity: 0.85 });
+        const mesh = new THREE.Mesh(sphereGeo, mat);
+        const bx = (col / nCols) * 16 - 8;
+        const by = (row - 1) * 1.2;
+        mesh.position.set(bx, by, 0);
+        basePositions.push({ bx, by });
+        s2.add(mesh);
+        spheres.push({ mesh, mat, bx, by, col, row });
+      }
+    }
+    
+    let t2 = 0;
+    function animWave() {
+      animId2 = requestAnimationFrame(animWave);
+      t2 += 0.025;
+      spheres.forEach(({ mesh, mat, bx, by, col }) => {
+        const phase = (col / nCols) * Math.PI * 6;
+        const disp = Math.sin(phase - t2) * 0.4;
+        mesh.position.x = bx + disp;
+        const density = (Math.sin(phase - t2) + 1) / 2;
+        mat.color.setRGB(density * 0.5 + 0.2, density * 0.5, 1 - density * 0.5);
+      });
+      r2.render(s2, c2);
+    }
+    animWave();
+    
+    const obs2 = new ResizeObserver(entries => {
+      if (!entries[0]) return;
+      const w = entries[0].contentRect.width;
+      const h = Math.max(300, Math.min(500, w * 0.4));
+      r2.setSize(w, h);
+      canvas2.style.width = w + 'px';
+      canvas2.style.height = h + 'px';
+      c2.aspect = w / h;
+      c2.updateProjectionMatrix();
+    });
+    obs2.observe(wrap2);
+  }
+} catch(e) {
+  console.warn('Three.js Wave failed:', e);
+  const fb2 = document.getElementById('wave-fallback');
+  const cv2 = document.getElementById('wave-canvas');
+  if (fb2) { fb2.style.display = 'flex'; }
+  if (cv2) cv2.style.display = 'none';
+}
+
+// ==================== GSAP ANIMATIONS ====================
+try {
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Section number count-up
+    document.querySelectorAll('.section-number-display[data-count]').forEach(el => {
+      const target = parseInt(el.getAttribute('data-count'));
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          gsap.from(el, { textContent: 0, duration: 1, snap: { textContent: 1 }, ease: 'power2.out',
+            onUpdate: function() { el.textContent = String(Math.round(this.targets()[0]._gsap?.textContent || 0)).padStart(2,'0'); }
+          });
+        }
+      });
+    });
+    
+    // Theory blocks stagger in
+    gsap.utils.toArray('.theory-block').forEach((el, i) => {
+      ScrollTrigger.create({
+        trigger: el, start: 'top 85%', once: true,
+        onEnter: () => gsap.from(el, { y: 30, opacity: 0, duration: 0.6, delay: i * 0.05, ease: 'power2.out' })
+      });
+    });
+    
+    // Obj cards
+    gsap.utils.toArray('.obj-card').forEach((el, i) => {
+      ScrollTrigger.create({
+        trigger: el, start: 'top 90%', once: true,
+        onEnter: () => gsap.from(el, { scale: 0.9, opacity: 0, duration: 0.4, delay: (i%4)*0.08, ease: 'back.out(1.5)' })
+      });
+    });
+  }
+} catch(e) { console.warn('GSAP init failed:', e); }
+
+// ==================== FLIP CARDS ====================
+const flashcardData = [
+  { q: 'What type of wave is a sound wave?', a: 'Longitudinal wave — particles vibrate parallel to the direction of propagation.' },
+  { q: 'What are compressions?', a: 'Regions where air particles are densely packed, causing higher air pressure.' },
+  { q: 'What are rarefactions?', a: 'Regions where air particles are spread apart, causing lower air pressure.' },
+  { q: 'What does the Bell Jar experiment prove?', a: 'Sound cannot travel through a vacuum. It needs a medium (air, water, solid) to propagate.' },
+  { q: 'In which medium does sound travel fastest?', a: 'Solids — particles are closely packed with strong intermolecular forces and high elasticity.' },
+  { q: 'Echo formula for distance', a: 'd = (v × t) / 2 — divide by 2 because sound travels TO the surface and BACK.' },
+  { q: 'How does temperature affect speed of sound?', a: 'Speed increases with temperature. va = 331.5√(1 + T/273.15) in air.' },
+  { q: 'What is the audible range for humans?', a: '20 Hz to 20,000 Hz (20 kHz). Below = infrasonic. Above = ultrasonic.' },
+  { q: 'What is SONAR?', a: 'Sound Navigation and Ranging — uses ultrasound for underwater navigation and mapping.' },
+  { q: 'What determines pitch of sound?', a: 'Frequency. Higher frequency = higher pitch. Lower frequency = lower pitch.' },
+  { q: 'What determines loudness of sound?', a: 'Amplitude of vibration. Greater amplitude = louder sound.' },
+  { q: 'What is ultrasonography?', a: 'Non-invasive medical imaging using high-frequency sound waves. Uses a transducer. No ionizing radiation.' },
+  { q: 'Formula for speed of sound in solids', a: 'vs = √(E/ρ) where E = Young\'s modulus, ρ = density.' },
+  { q: 'What is infrasound?', a: 'Sound waves below 20 Hz. Inaudible to humans. Used by elephants and whales for communication.' },
+  { q: 'What is the effect of humidity on sound speed?', a: 'Higher humidity decreases speed of sound due to water vapour affecting air density and compressibility.' },
+  { q: 'Noise level of a jet engine at take-off?', a: '120–140 dB — extremely dangerous to hearing.' },
+];
+
+function buildFlashcards() {
+  const grid = document.getElementById('flashcards-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  flashcardData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'flip-card';
+    card.innerHTML = `
+      <div class="flip-card-inner">
+        <div class="flip-front">
+          <div class="card-icon">❓</div>
+          <div class="card-q">${item.q}</div>
+          <div class="flip-hint">Click to reveal</div>
+        </div>
+        <div class="flip-back">
+          <div class="card-a">${item.a}</div>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => {
+      const wasFlipped = card.classList.contains('flipped');
+      card.classList.toggle('flipped');
+      try {
+        if (typeof gsap !== 'undefined') {
+          if (!wasFlipped) {
+            gsap.to(card.querySelector('.flip-card-inner'), { rotateY: 180, duration: 0.5, ease: 'power2.inOut', overwrite: true });
+          } else {
+            gsap.to(card.querySelector('.flip-card-inner'), { rotateY: 0, duration: 0.5, ease: 'power2.inOut', overwrite: true });
+          }
+        }
+      } catch(e) {}
+      // Save to localStorage for spaced repetition
+      const sr = JSON.parse(localStorage.getItem('sr_sound') || '{}');
+      sr[i] = (sr[i] || 0) + 1;
+      localStorage.setItem('sr_sound', JSON.stringify(sr));
+    });
+    grid.appendChild(card);
+  });
+}
+buildFlashcards();
+
+// ==================== TOGGLE EXAMPLES ====================
+window.toggleExample = function(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.example-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  if (toggle) toggle.textContent = isOpen ? '▼' : '▲';
+  if (!isOpen) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        const steps = body.querySelectorAll('.step');
+        gsap.from(steps, { y: 20, opacity: 0, duration: 0.3, stagger: 0.08, ease: 'power2.out' });
+      }
+    } catch(e) {}
+  }
+};
+
+// ==================== PRACTICE QUESTIONS DATA ====================
+const questionBank = [
+  { id:1, text:'Sound waves are classified as _____ waves.', options:['Transverse','Longitudinal','Electromagnetic','Mechanical transverse'], correct:1, topic:'Wave Types', difficulty:'easy', hints:['Think about particle motion direction.','Particles move parallel or perpendicular?','Sound particles move parallel to wave direction.'] },
+  { id:2, text:'In the electric bell jar experiment, sound becomes inaudible when:', options:['The bell stops vibrating','Air is removed from the jar','The jar is sealed','The power source is switched off'], correct:1, topic:'Bell Jar Experiment', difficulty:'easy', hints:['What medium is required for sound?','Sound needs particles to propagate.','When air is removed, there are no particles.'] },
+  { id:3, text:'If an echo returns in 3 seconds and sound travels at 340 m/s, the distance to the reflecting wall is:', options:['1020 m','510 m','680 m','340 m'], correct:1, topic:'Echo', difficulty:'medium', hints:['d = v×t/2','Total time is 3s (there and back)','d = 340×3÷2 = 510 m'] },
+  { id:4, text:'The speed of sound at 0°C in air is approximately:', options:['340 m/s','300 m/s','331.5 m/s','280 m/s'], correct:2, topic:'Speed of Sound', difficulty:'easy', hints:['This is a standard constant to memorize.','Hint: it is between 330 and 335.','The formula gives 331.5 m/s at T=0°C.'] },
+  { id:5, text:'The formula for speed of sound in liquids is:', options:['vs = √(E/ρ)','vl = √(K/ρ)','vg = √(γP/ρ)','v = d/t'], correct:1, topic:'Speed of Sound', difficulty:'medium', hints:['E = Young\'s modulus is for solids.','Liquids use Bulk modulus K.','vl = √(K/ρ) — K is compressibility measure.'] },
+  { id:6, text:'Pitch of a sound is determined by its:', options:['Amplitude','Frequency','Wavelength','Intensity'], correct:1, topic:'Sound Properties', difficulty:'easy', hints:['Louder sound is related to amplitude.','Higher notes have higher _____?','Frequency determines pitch.'] },
+  { id:7, text:'Ultrasound frequencies are:', options:['Below 20 Hz','20 Hz – 20,000 Hz','Above 20,000 Hz','Between 200 – 2000 Hz'], correct:2, topic:'Frequency Ranges', difficulty:'easy', hints:['Ultra means above/beyond.','Human hearing tops out at 20,000 Hz.','Ultrasound is above 20,000 Hz.'] },
+  { id:8, text:'Which animal has the widest audible frequency range?', options:['Humans','Elephants','Dolphins','Bats'], correct:2, topic:'Frequency Ranges', difficulty:'medium', hints:['Check the frequency table.','Dolphins: 7,000 – 160,000 Hz.','Dolphins have upper limit of 160,000 Hz.'] },
+  { id:9, text:'In SONAR, the pulse travel time to a submarine is 0.4 s and speed of sound in water is 1500 m/s. The distance is:', options:['600 m','300 m','150 m','750 m'], correct:1, topic:'Echo', difficulty:'medium', hints:['Use d = v×t/2.','d = 1500 × 0.4 ÷ 2','d = 600/2 = 300 m'] },
+  { id:10, text:'Loudness of a sound corresponds to which property of the wave?', options:['Frequency','Speed','Amplitude','Wavelength'], correct:2, topic:'Sound Properties', difficulty:'easy', hints:['Pitch ↔ Frequency. Loudness ↔ ?','Bigger vibrations = louder sound.','Amplitude determines loudness.'] },
+  { id:11, text:'What is the speed of sound in air at 25°C? (use va = 331.5√(1+T/273.15))', options:['340 m/s','346 m/s','356 m/s','331.5 m/s'], correct:1, topic:'Temperature Effect', difficulty:'hard', hints:['Plug T=25 into the formula.','1 + 25/273.15 = 1.0916','√1.0916 ≈ 1.0448, × 331.5 ≈ 346.3'] },
+  { id:12, text:'Compressions in a sound wave are regions of:', options:['Low pressure','High pressure','Zero pressure','Negative pressure'], correct:1, topic:'Wave Types', difficulty:'easy', hints:['Particles are packed together.','More particles = more or less pressure?','Compressions = high pressure.'] },
+  { id:13, text:'A noise level of 130 dB is produced by:', options:['Normal conversation','City traffic','Jet engine at take-off','Vacuum cleaner'], correct:2, topic:'Noise Pollution', difficulty:'easy', hints:['Normal conversation = 60-70 dB.','City traffic = 70-85 dB.','Jet engine = 120-140 dB.'] },
+  { id:14, text:'The transducer in ultrasonography:', options:['Only emits sound waves','Only receives sound waves','Both emits and receives sound waves','Converts sound to light'], correct:2, topic:'Ultrasound Applications', difficulty:'medium', hints:['Think about how ultrasound imaging works.','It needs to send AND detect reflected waves.','The transducer both emits and receives.'] },
+  { id:15, text:'Echocardiography is used to image:', options:['The brain','The liver','The heart','The kidneys'], correct:2, topic:'Ultrasound Applications', difficulty:'easy', hints:['Echo = reflection, cardio = ?','Cardio relates to which organ?','Echocardiography images the heart.'] },
+  { id:16, text:'The speed of sound is SLOWEST in:', options:['Iron','Water','Air','Steel'], correct:2, topic:'Speed of Sound', difficulty:'easy', hints:['Compare media: solid, liquid, gas.','Gas molecules are far apart.','Sound is slowest in gases like air.'] },
+  { id:17, text:'Infrasonic waves have frequencies:', options:['Above 20,000 Hz','Between 20–20,000 Hz','Below 20 Hz','Exactly 20 Hz'], correct:2, topic:'Frequency Ranges', difficulty:'easy', hints:['Infra = below.','Human lower limit is 20 Hz.','Below 20 Hz = infrasonic.'] },
+  { id:18, text:'Which factor does NOT affect the speed of sound?', options:['Temperature of medium','Elasticity of medium','Colour of medium','Density of medium'], correct:2, topic:'Speed of Sound', difficulty:'easy', hints:['Think about physical properties.','Color has no effect on sound.','Colour of medium does not affect sound speed.'] },
+  { id:19, text:'Speed of sound in an ideal gas is directly proportional to:', options:['Temperature T','√T (square root of T)','T² (T squared)','1/T'], correct:1, topic:'Temperature Effect', difficulty:'medium', hints:['The formula is vg = √(γRT/M)','What is the relationship with T in this formula?','Speed ∝ √T (square root of absolute temperature).'] },
+  { id:20, text:'Quality (timbre) of sound helps us distinguish between:', options:['Loud and soft sounds','High and low pitched sounds','Different sources of sound','Near and far sounds'], correct:2, topic:'Sound Properties', difficulty:'easy', hints:['Quality relates to tone/texture of sound.','It lets us tell a violin from a flute.','Quality distinguishes different sources.'] }
+];
+
+// ==================== PRACTICE ENGINE ====================
+let practiceState = { questions: [], answered: {}, score: 0, total: 0 };
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+window.loadPractice = function() {
+  practiceState.questions = shuffleArray(questionBank);
+  practiceState.answered = {};
+  practiceState.score = 0;
+  practiceState.total = 0;
+  renderPractice();
+};
+
+window.resetPractice = function() {
+  practiceState.answered = {};
+  practiceState.score = 0;
+  practiceState.total = 0;
+  updateQCounter();
+  document.querySelectorAll('.option').forEach(o => { o.classList.remove('correct','wrong','reveal'); o.disabled = false; });
+  document.querySelectorAll('.hint-panel').forEach(h => { h.classList.remove('show'); });
+  document.querySelectorAll('.feedback').forEach(f => f.remove());
+};
+
+function renderPractice() {
+  const container = document.getElementById('practice-container');
+  if (!container) return;
+  container.innerHTML = '';
+  practiceState.questions.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q-${q.id}`;
+    const diffClass = q.difficulty;
+    const optionsHtml = q.options.map((opt, i) => `<button class="option" data-qi="${q.id}" data-oi="${i}" onclick="selectOption(this,${q.id},${i},${q.correct})">${String.fromCharCode(65+i)}. ${opt}</button>`).join('');
+    const hintsHtml = q.hints.map((h,i) => `<div class="hint-level"><strong>Hint ${i+1}:</strong> ${h}</div>`).join('');
+    card.innerHTML = `
+      <div class="q-meta">
+        <span class="q-badge ${diffClass}">${q.difficulty.toUpperCase()}</span>
+        <span class="q-topic">📌 ${q.topic}</span>
+      </div>
+      <div class="q-text">Q${idx+1}. ${q.text}</div>
+      <div class="options-grid">${optionsHtml}</div>
+      <div class="hint-panel" id="hint-${q.id}">${hintsHtml}</div>
+      <div class="q-actions">
+        <button class="btn-sm btn-hint" onclick="toggleHint(${q.id})">💡 Show Hint</button>
+        <button class="btn-sm btn-submit" onclick="submitAnswer(${q.id},${q.correct})" id="submit-${q.id}">Check Answer</button>
+        <button class="btn-sm btn-next" style="display:none" id="next-${q.id}" onclick="scrollNextQ(${idx})">Next →</button>
+      </div>`;
+    container.appendChild(card);
+  });
+  updateQCounter();
+}
+
+window.selectOption = function(btn, qid, oi, correct) {
+  if (practiceState.answered[qid]) return;
+  const card = document.getElementById(`q-${qid}`);
+  card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  btn.style.borderColor = 'var(--accent)';
+  btn.dataset.selected = 'true';
+  card.dataset.selected = oi;
+};
+
+window.submitAnswer = function(qid, correct) {
+  const card = document.getElementById(`q-${qid}`);
+  if (practiceState.answered[qid]) return;
+  const selected = parseInt(card.dataset.selected);
+  if (isNaN(selected)) { return; }
+  practiceState.answered[qid] = true;
+  practiceState.total++;
+  const opts = card.querySelectorAll('.option');
+  opts.forEach((o, i) => {
+    o.disabled = true;
+    if (i === correct) o.classList.add('correct');
+    if (i === selected && selected !== correct) o.classList.add('wrong');
+  });
+  const isCorrect = selected === correct;
+  if (isCorrect) practiceState.score++;
+  const actions = card.querySelector('.q-actions');
+  const fb = document.createElement('span');
+  fb.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+  fb.textContent = isCorrect ? '✅ Correct!' : '❌ Incorrect';
+  actions.appendChild(fb);
+  const nextBtn = document.getElementById(`next-${qid}`);
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
+  const submitBtn = document.getElementById(`submit-${qid}`);
+  if (submitBtn) submitBtn.style.display = 'none';
+  updateQCounter();
+  savePerformance();
+};
+
+window.toggleHint = function(qid) {
+  const panel = document.getElementById(`hint-${qid}`);
+  if (panel) panel.classList.toggle('show');
+};
+
+window.scrollNextQ = function(idx) {
+  const next = document.querySelectorAll('.question-card')[idx+1];
+  if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+function updateQCounter() {
+  const el = document.getElementById('q-counter');
+  if (el) el.textContent = `Score: ${practiceState.score}/${practiceState.total}`;
+}
+
+loadPractice();
+
+// ==================== MOCK TEST ENGINE ====================
+let mockState = { active: false, timer: null, timeLeft: 1200, questions: [], answered: {}, score: 0 };
+
+window.startMockTest = function() {
+  mockState.questions = shuffleArray(questionBank);
+  mockState.answered = {};
+  mockState.score = 0;
+  mockState.timeLeft = 1200;
+  mockState.active = true;
+  document.getElementById('mock-start-btn').style.display = 'none';
+  document.getElementById('mock-submit-btn').style.display = 'inline-flex';
+  document.getElementById('mock-reset-btn').style.display = 'inline-flex';
+  document.getElementById('mock-score-panel').classList.remove('show');
+  renderMockTest();
+  startMockTimer();
+};
+
+function renderMockTest() {
+  const container = document.getElementById('mock-container');
+  if (!container) return;
+  container.innerHTML = '';
+  mockState.questions.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `mq-${q.id}`;
+    const optHtml = q.options.map((opt,i) => `<button class="option" onclick="mockSelectOption(this,${q.id},${i},${q.correct})">${String.fromCharCode(65+i)}. ${opt}</button>`).join('');
+    card.innerHTML = `
+      <div class="q-meta">
+        <span class="q-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>
+        <span class="q-topic">Q${idx+1}/20 · ${q.topic}</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="options-grid">${optHtml}</div>`;
+    container.appendChild(card);
+  });
+}
+
+window.mockSelectOption = function(btn, qid, oi, correct) {
+  if (!mockState.active) return;
+  const card = document.getElementById(`mq-${qid}`);
+  card.querySelectorAll('.option').forEach(o => { o.style.borderColor = ''; o.classList.remove('selected'); });
+  btn.style.borderColor = 'var(--accent)';
+  card.dataset.selected = oi;
+  if (!mockState.answered[qid]) {
+    mockState.answered[qid] = oi;
+    const answered = Object.keys(mockState.answered).length;
+    document.getElementById('mock-answered').textContent = answered;
+    const pct = (answered/20)*100;
+    document.getElementById('mock-progress-fill').style.width = pct + '%';
+  }
+};
+
+function startMockTimer() {
+  if (mockState.timer) clearInterval(mockState.timer);
+  mockState.timer = setInterval(() => {
+    mockState.timeLeft--;
+    const m = Math.floor(mockState.timeLeft/60);
+    const s = mockState.timeLeft%60;
+    document.getElementById('mock-timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (mockState.timeLeft <= 0) { clearInterval(mockState.timer); submitMockTest(); }
+  }, 1000);
+}
+
+window.submitMockTest = function() {
+  if (mockState.timer) clearInterval(mockState.timer);
+  mockState.active = false;
+  let sc = 0;
+  const topicScores = {};
+  mockState.questions.forEach(q => {
+    const sel = mockState.answered[q.id];
+    if (!topicScores[q.topic]) topicScores[q.topic] = {correct:0,total:0};
+    topicScores[q.topic].total++;
+    if (sel !== undefined && parseInt(sel) === q.correct) {
+      sc++;
+      topicScores[q.topic].correct++;
+    }
+  });
+  mockState.score = sc;
+  const pct = Math.round((sc/20)*100);
+  let msg = pct >= 80 ? '🌟 Excellent! Exam-ready performance!' : pct >= 60 ? '👍 Good work! Review weak areas.' : '📖 Keep revising — you can do it!';
+  document.getElementById('mock-score-num').textContent = `${sc}/20 (${pct}%)`;
+  document.getElementById('mock-score-msg').textContent = msg;
+  let breakdown = '<div style="font-size:16px;color:var(--text-secondary)"><strong style="color:var(--amber);display:block;margin-bottom:8px">Topic Breakdown:</strong>';
+  Object.entries(topicScores).forEach(([t,v]) => {
+    const tp = Math.round((v.correct/v.total)*100);
+    const col = tp>=70?'var(--success)':tp>=40?'var(--amber)':'var(--danger)';
+    breakdown += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>${t}</span><span style="color:${col};font-weight:700">${v.correct}/${v.total}</span></div>`;
+  });
+  breakdown += '</div>';
+  document.getElementById('mock-topic-breakdown').innerHTML = breakdown;
+  document.getElementById('mock-score-panel').classList.add('show');
+  document.getElementById('mock-submit-btn').style.display = 'none';
+  // Mark correct/wrong
+  mockState.questions.forEach(q => {
+    const card = document.getElementById(`mq-${q.id}`);
+    if (!card) return;
+    card.querySelectorAll('.option').forEach((o, i) => {
+      o.disabled = true;
+      if (i === q.correct) o.classList.add('correct');
+      const sel = mockState.answered[q.id];
+      if (sel !== undefined && parseInt(sel) === i && i !== q.correct) o.classList.add('wrong');
+    });
+  });
+  // Save mock stats
+  const mocks = parseInt(localStorage.getItem('stat_mocks') || '0') + 1;
+  localStorage.setItem('stat_mocks', mocks);
+  document.getElementById('stat-mocks').textContent = mocks;
+  // Update radar
+  updateRadarChart(topicScores);
+};
+
+window.resetMockTest = function() {
+  if (mockState.timer) clearInterval(mockState.timer);
+  mockState = { active:false, timer:null, timeLeft:1200, questions:[], answered:{}, score:0 };
+  document.getElementById('mock-container').innerHTML = '';
+  document.getElementById('mock-timer').textContent = '20:00';
+  document.getElementById('mock-answered').textContent = '0';
+  document.getElementById('mock-progress-fill').style.width = '0%';
+  document.getElementById('mock-score-panel').classList.remove('show');
+  document.getElementById('mock-start-btn').style.display = 'inline-flex';
+  document.getElementById('mock-submit-btn').style.display = 'none';
+  document.getElementById('mock-reset-btn').style.display = 'none';
+};
+
+// ==================== PERFORMANCE / CHART ====================
+let radarChart;
+const topics = ['Wave Types','Bell Jar Experiment','Speed of Sound','Temperature Effect','Sound Properties','Echo','Frequency Ranges','Noise Pollution','Ultrasound Applications'];
+
+function initRadarChart() {
+  try {
+    if (typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return;
+    const stored = JSON.parse(localStorage.getItem('topic_scores') || '{}');
+    const data = topics.map(t => stored[t] ? Math.round((stored[t].correct/stored[t].total)*100) : 0);
+    radarChart = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: topics.map(t => t.length > 15 ? t.substring(0,12)+'...' : t),
+        datasets: [{ label: 'Accuracy %', data: data, backgroundColor: 'rgba(76,110,245,0.2)', borderColor: '#4C6EF5', pointBackgroundColor: '#FDCB6E', pointBorderColor: '#FDCB6E', pointRadius: 4 }]
+      },
+      options: {
+        responsive: true,
+        scales: { r: { beginAtZero: true, max: 100, ticks: { color: '#A8A8C0', font:{size:11}, stepSize:20 }, grid: { color: '#3A3A55' }, pointLabels: { color: '#F0F0F8', font:{size:11} }, angleLines: { color: '#3A3A55' } } },
+        plugins: { legend: { labels: { color: '#F0F0F8', font:{size:13} } } }
+      }
+    });
+  } catch(e) { console.warn('Chart init failed:', e); }
+}
+
+function updateRadarChart(topicScores) {
+  try {
+    const stored = JSON.parse(localStorage.getItem('topic_scores') || '{}');
+    Object.entries(topicScores).forEach(([t,v]) => {
+      if (!stored[t]) stored[t] = {correct:0,total:0};
+      stored[t].correct += v.correct;
+      stored[t].total += v.total;
+    });
+    localStorage.setItem('topic_scores', JSON.stringify(stored));
+    if (radarChart) {
+      radarChart.data.datasets[0].data = topics.map(t => stored[t] ? Math.round((stored[t].correct/stored[t].total)*100) : 0);
+      radarChart.update();
+    }
+  } catch(e) {}
+}
+
+function savePerformance() {
+  localStorage.setItem('stat_attempted', practiceState.total);
+  localStorage.setItem('stat_correct', practiceState.score);
+  document.getElementById('stat-attempted').textContent = practiceState.total;
+  document.getElementById('stat-correct').textContent = practiceState.score;
+  const acc = practiceState.total > 0 ? Math.round((practiceState.score/practiceState.total)*100) : 0;
+  document.getElementById('stat-accuracy').textContent = acc + '%';
+}
+
+window.resetPerformance = function() {
+  localStorage.removeItem('topic_scores');
+  localStorage.removeItem('stat_attempted');
+  localStorage.removeItem('stat_correct');
+  localStorage.removeItem('stat_mocks');
+  localStorage.removeItem('sr_sound');
+  document.getElementById('stat-attempted').textContent = '0';
+  document.getElementById('stat-correct').textContent = '0';
+  document.getElementById('stat-accuracy').textContent = '0%';
+  document.getElementById('stat-mocks').textContent = '0';
+  if (radarChart) { radarChart.data.datasets[0].data = topics.map(()=>0); radarChart.update(); }
+};
+
+// Load saved stats
+try {
+  const sa = localStorage.getItem('stat_attempted');
+  const sc = localStorage.getItem('stat_correct');
+  const sm = localStorage.getItem('stat_mocks');
+  if (sa) document.getElementById('stat-attempted').textContent = sa;
+  if (sc) document.getElementById('stat-correct').textContent = sc;
+  if (sm) document.getElementById('stat-mocks').textContent = sm;
+  if (sa && sc && parseInt(sa) > 0) document.getElementById('stat-accuracy').textContent = Math.round((parseInt(sc)/parseInt(sa))*100) + '%';
+} catch(e) {}
+
+initRadarChart();
+
+// ==================== FORMULA SHEET TOGGLE ====================
+const fsToggle = document.getElementById('formula-sheet-toggle');
+const fs = document.getElementById('formula-sheet');
+if (fsToggle && fs) {
+  fsToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fs.classList.toggle('collapsed');
+    fsToggle.textContent = fs.classList.contains('collapsed') ? '⚗' : '✕';
+  });
+}
+
+// ==================== MODAL ====================
+window.closeModal = function(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('show');
+  }
+};
+
+// ==================== ACTIVE NAV HIGHLIGHT ====================
+function updateActiveNav() {
+  const sections = ['hero','objectives','theory','wave-viz','worked','practice','mock','mindmap','revision','performance'];
+  let currentSection = 'hero';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 200) currentSection = id;
+  });
+  document.querySelectorAll('.nav-item, .mnav-item').forEach((el, i) => {
+    el.classList.remove('active');
+    const sectionIds = ['hero','objectives','theory','wave-viz','worked','practice','mock','mindmap','revision','performance'];
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(currentSection)) el.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+}); // END DOMContentLoaded
+</script>
+</body>
+</html>
