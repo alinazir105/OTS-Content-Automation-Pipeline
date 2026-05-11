@@ -1,0 +1,1139 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money - Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #fff;
+  }
+
+  body {
+    background: linear-gradient(160deg, #fff9e6 0%, #e8f8ff 50%, #fff0f5 100%);
+    min-height: 100vh;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  #curtain .curtain-emoji { font-size: 80px; animation: bounce 0.6s infinite alternate; }
+  #curtain h2 { font-family: 'Bubblegum Sans', cursive; font-size: clamp(2rem,5vw,3.5rem); color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,0.15); }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+
+  /* ANIMATED BG */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50px;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+  }
+  @keyframes floatCloud {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
+
+  /* PAGE WRAPPER */
+  #page-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-bottom: 100px;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100vw;
+    min-height: 70vh;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 50%, #6BCB77 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(160deg, #fff9e6 0%, #e8f8ff 100%);
+    clip-path: ellipse(60% 100% at 50% 100%);
+  }
+  .hero-emoji { font-size: clamp(60px,12vw,120px); margin-bottom: 16px; filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.15)); animation: heroFloat 3s ease-in-out infinite; }
+  @keyframes heroFloat { 0%,100%{transform:translateY(0) rotate(-5deg);} 50%{transform:translateY(-18px) rotate(5deg);} }
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(3rem,8vw,6rem);
+    color: #fff;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+    line-height: 1.1;
+  }
+  .hero p {
+    font-size: clamp(1.2rem,3vw,1.8rem);
+    color: #fff;
+    font-weight: 700;
+    margin-top: 16px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  }
+  .hero-coins { font-size: clamp(30px,6vw,60px); margin-top: 20px; letter-spacing: 8px; animation: spin 4s linear infinite; display: inline-block; }
+  @keyframes spin { 0%{letter-spacing:8px;} 50%{letter-spacing:20px;} 100%{letter-spacing:8px;} }
+
+  /* CONTENT */
+  .content-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* FUN CARD */
+  .fun-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 32px;
+    padding: 50px 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+    border: 4px solid #FFD93D;
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #FF6B6B);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:0% 0%;} 100%{background-position:200% 0%;} }
+  .fun-card:nth-child(2) { border-color: #FF6B6B; }
+  .fun-card:nth-child(3) { border-color: #6BCB77; }
+  .fun-card:nth-child(4) { border-color: #FF6B6B; }
+  .fun-card:nth-child(5) { border-color: #6BCB77; }
+
+  .section-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem,4vw,3rem);
+    color: #FF6B6B;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .section-title .icon { font-size: 2.5rem; }
+
+  /* MONEY GRID */
+  .money-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 20px;
+  }
+  .money-item {
+    background: linear-gradient(135deg, #fffde7, #fff9c4);
+    border-radius: 24px;
+    border: 4px solid #FFD93D;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    user-select: none;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .money-item:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 12px 30px rgba(0,0,0,0.13); }
+  .money-emoji { font-size: clamp(3rem,7vw,5rem); }
+  .money-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem,2.5vw,1.8rem);
+    color: #e65100;
+    background: #FFD93D;
+    border-radius: 16px;
+    padding: 6px 18px;
+    font-weight: 700;
+  }
+  .money-item.coin { background: linear-gradient(135deg, #fff9e6, #fdebd0); border-color: #FF6B6B; }
+  .money-item.note { background: linear-gradient(135deg, #e8f8ff, #d4efdf); border-color: #6BCB77; }
+
+  /* MATCHING ACTIVITY */
+  .match-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 16px; }
+  .match-col-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem,3vw,2rem);
+    color: #fff;
+    background: #FF6B6B;
+    border-radius: 16px;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .match-col-title.right { background: #6BCB77; }
+  .drag-item {
+    background: #fff;
+    border: 4px solid #FFD93D;
+    border-radius: 20px;
+    padding: 16px 14px;
+    text-align: center;
+    cursor: grab;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem,2.5vw,1.6rem);
+    color: #333;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .drag-item:active { cursor: grabbing; transform: scale(1.08); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .drag-item.dragging { opacity: 0.5; }
+  .drop-zone {
+    background: #f0fff4;
+    border: 4px dashed #6BCB77;
+    border-radius: 20px;
+    padding: 16px 14px;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem,2vw,1.4rem);
+    color: #aaa;
+    transition: background 0.2s, border-color 0.2s;
+    text-align: center;
+    gap: 10px;
+  }
+  .drop-zone.over { background: #d4efdf; border-color: #2ecc71; color: #27ae60; }
+  .drop-zone.correct { background: #d4efdf; border-color: #27ae60; color: #27ae60; }
+  .drop-zone.wrong { background: #ffe0e0; border-color: #FF6B6B; color: #FF6B6B; }
+
+  /* CAN BUY ACTIVITY */
+  .buy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .buy-card {
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 28px;
+    padding: 28px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-height: 280px;
+  }
+  .buy-item-emoji { font-size: clamp(3rem,6vw,4.5rem); }
+  .buy-price {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem,3vw,2rem);
+    color: #e65100;
+    background: #FFD93D;
+    border-radius: 16px;
+    padding: 8px 22px;
+  }
+  .buy-money-emoji { font-size: clamp(1.8rem,4vw,2.8rem); }
+  .buy-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .yes-btn, .no-btn {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem,2.5vw,1.6rem);
+    border: none;
+    border-radius: 16px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 56px;
+    font-weight: 700;
+  }
+  .yes-btn { background: #6BCB77; color: #fff; border: 3px solid #27ae60; }
+  .yes-btn:hover { transform: scale(1.08); }
+  .no-btn { background: #FF6B6B; color: #fff; border: 3px solid #c0392b; }
+  .no-btn:hover { transform: scale(1.08); }
+  .buy-result {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem,2vw,1.5rem);
+    min-height: 36px;
+    padding: 4px 0;
+  }
+
+  /* COUNT ACTIVITY */
+  .count-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .count-card {
+    background: linear-gradient(135deg, #fff9e6, #e8f8ff);
+    border: 4px solid #FFD93D;
+    border-radius: 28px;
+    padding: 32px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .count-money-display { font-size: clamp(2.5rem,6vw,4rem); letter-spacing: 8px; }
+  .count-answer-area {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .count-btn {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem,3vw,1.8rem);
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 16px;
+    padding: 14px 26px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    min-height: 60px;
+    min-width: 80px;
+  }
+  .count-btn:hover { transform: scale(1.1); background: #d4efdf; }
+  .count-btn.selected-correct { background: #6BCB77; color: #fff; border-color: #27ae60; }
+  .count-btn.selected-wrong { background: #FF6B6B; color: #fff; border-color: #c0392b; }
+  .count-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem,2vw,1.4rem);
+    color: #888;
+    min-height: 32px;
+  }
+
+  /* QUIZ */
+  .quiz-question {
+    background: linear-gradient(135deg, #fff9e6, #fff0f5);
+    border: 4px solid #FF6B6B;
+    border-radius: 28px;
+    padding: 36px 28px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem,3vw,2.2rem);
+    color: #333;
+    margin-bottom: 28px;
+  }
+  .quiz-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .quiz-opt {
+    background: #fff;
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 20px 28px;
+    cursor: pointer;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem,3vw,2rem);
+    min-width: 130px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex-direction: column;
+  }
+  .quiz-opt:hover { transform: scale(1.07); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .quiz-opt.correct { background: #d4efdf; border-color: #27ae60; }
+  .quiz-opt.wrong { background: #ffe0e0; border-color: #FF6B6B; }
+  .quiz-opt .opt-emoji { font-size: clamp(2rem,5vw,3.5rem); }
+  .quiz-feedback {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem,2.5vw,2rem);
+    min-height: 48px;
+    margin-top: 20px;
+    padding: 10px;
+  }
+  .quiz-progress {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem,2vw,1.6rem);
+    color: #888;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .quiz-score-display {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem,4vw,2.8rem);
+    color: #FF6B6B;
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #fff9e6, #e8f8ff);
+    border-radius: 24px;
+    border: 4px solid #FFD93D;
+    margin-top: 24px;
+  }
+  .restart-btn {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem,2.5vw,1.8rem);
+    background: #FF6B6B;
+    color: #fff;
+    border: 4px solid #c0392b;
+    border-radius: 20px;
+    padding: 16px 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s;
+    min-height: 60px;
+    display: inline-block;
+  }
+  .restart-btn:hover { transform: scale(1.07); }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 4px solid #FFD93D;
+    z-index: 1000;
+    overflow-x: auto;
+    padding: 8px 12px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-bottom-nav a {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 13px;
+    color: #FF6B6B;
+    text-decoration: none;
+    background: #fff9e6;
+    border: 3px solid #FFD93D;
+    border-radius: 14px;
+    padding: 8px 14px;
+    white-space: nowrap;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .content-container { padding: 0 16px; }
+    .fun-card { padding: 30px 18px; margin-bottom: 30px; }
+    .hero { min-height: 60vh; padding: 40px 16px 60px; }
+    .match-area { grid-template-columns: 1fr; }
+    .mobile-bottom-nav { display: flex; }
+    #page-wrapper { padding-bottom: 90px; }
+    .money-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+    .buy-grid { grid-template-columns: 1fr 1fr; }
+    .count-grid { grid-template-columns: 1fr; }
+    .quiz-options { flex-direction: column; align-items: center; }
+    .quiz-opt { width: 100%; max-width: 320px; }
+  }
+  @media (max-width: 400px) {
+    .buy-grid { grid-template-columns: 1fr; }
+    .fun-card { padding: 22px 12px; }
+  }
+
+  /* STARS DECO */
+  .star-deco { position: absolute; font-size: 2rem; opacity: 0.15; pointer-events: none; }
+
+  /* INSTRUCTION BADGE */
+  .instruction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    color: #fff;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem,2.5vw,1.6rem);
+    border-radius: 20px;
+    padding: 14px 26px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  /* TOUCH FEEDBACK */
+  .money-item:active { transform: scale(0.95); }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">💰</div>
+  <h2>Let's Learn Money!</h2>
+</div>
+
+<!-- ANIMATED SKY BACKGROUND -->
+<div class="sky-bg" id="skyBg"></div>
+
+<div id="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-emoji">💵</div>
+    <h1>Money! 💰</h1>
+    <p>Let's learn about coins and notes!</p>
+    <div class="hero-coins">🪙🪙🪙</div>
+  </section>
+
+  <div class="content-container">
+
+    <!-- SECTION 1: COINS & NOTES -->
+    <section class="fun-card" id="sec-learn">
+      <span class="star-deco" style="top:20px;right:30px;">⭐</span>
+      <span class="star-deco" style="bottom:20px;left:30px;">🌟</span>
+      <h2 class="section-title"><span class="icon">🪙</span> Coins &amp; Notes</h2>
+      <div class="instruction-badge">👆 Tap each one to see it dance!</div>
+
+      <div class="money-grid">
+        <!-- COINS -->
+        <div class="money-item coin" onclick="tapMoney(this,'1 Rupee Coin! 🪙')">
+          <div class="money-emoji">🪙</div>
+          <div class="money-label">1 Rupee Coin</div>
+        </div>
+        <div class="money-item coin" onclick="tapMoney(this,'2 Rupees Coin! 🪙🪙')">
+          <div class="money-emoji">🪙🪙</div>
+          <div class="money-label">2 Rupee Coin</div>
+        </div>
+        <div class="money-item coin" onclick="tapMoney(this,'5 Rupees Coin! 🪙🪙🪙🪙🪙')">
+          <div class="money-emoji">🪙</div>
+          <div class="money-label">5 Rupee Coin</div>
+        </div>
+        <!-- NOTES -->
+        <div class="money-item note" onclick="tapMoney(this,'10 Rupees Note! 💵')">
+          <div class="money-emoji">💵</div>
+          <div class="money-label">10 Rupee Note</div>
+        </div>
+        <div class="money-item note" onclick="tapMoney(this,'20 Rupees Note! 💵💵')">
+          <div class="money-emoji">💵</div>
+          <div class="money-label">20 Rupee Note</div>
+        </div>
+        <div class="money-item note" onclick="tapMoney(this,'50 Rupees Note! 💵💵💵💵💵')">
+          <div class="money-emoji">💵</div>
+          <div class="money-label">50 Rupee Note</div>
+        </div>
+        <div class="money-item note" onclick="tapMoney(this,'100 Rupees Note! 💰')">
+          <div class="money-emoji">💰</div>
+          <div class="money-label">100 Rupee Note</div>
+        </div>
+      </div>
+
+      <div id="tap-msg" style="text-align:center;margin-top:28px;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.3rem,3vw,2rem);color:#FF6B6B;min-height:48px;"></div>
+    </section>
+
+    <!-- SECTION 2: MATCH EQUAL AMOUNTS -->
+    <section class="fun-card" id="sec-match">
+      <span class="star-deco" style="top:20px;right:50px;">⭐</span>
+      <h2 class="section-title"><span class="icon">🎯</span> Match Equal Amounts!</h2>
+      <div class="instruction-badge">👆 Drag the money on the left to match it on the right!</div>
+
+      <div class="match-area" id="matchArea">
+        <div class="match-col">
+          <div class="match-col-title">Drag Me! 👈</div>
+          <div class="drag-item" draggable="true" data-value="10" id="drag-10" onclick="mobileDrag(this)">🪙🪙 = 10 Rs</div>
+          <div class="drag-item" draggable="true" data-value="20" id="drag-20" onclick="mobileDrag(this)">💵 = 20 Rs</div>
+          <div class="drag-item" draggable="true" data-value="5" id="drag-5" onclick="mobileDrag(this)">🪙🪙🪙🪙🪙 = 5 Rs</div>
+          <div class="drag-item" draggable="true" data-value="100" id="drag-100" onclick="mobileDrag(this)">💰 = 100 Rs</div>
+        </div>
+        <div class="match-col">
+          <div class="match-col-title right">Drop Here! 👉</div>
+          <div class="drop-zone" data-accept="5" id="drop-5">5 Rupees 🪙</div>
+          <div class="drop-zone" data-accept="10" id="drop-10">10 Rupees 💵</div>
+          <div class="drop-zone" data-accept="100" id="drop-100">100 Rupees 💰</div>
+          <div class="drop-zone" data-accept="20" id="drop-20">20 Rupees 💵</div>
+        </div>
+      </div>
+      <div id="match-feedback" style="text-align:center;margin-top:24px;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.3rem,3vw,2rem);min-height:44px;color:#6BCB77;"></div>
+    </section>
+
+    <!-- SECTION 3: CAN YOU BUY IT? -->
+    <section class="fun-card" id="sec-buy">
+      <span class="star-deco" style="top:20px;left:50px;">🌟</span>
+      <h2 class="section-title"><span class="icon">🛍️</span> Can You Buy It?</h2>
+      <div class="instruction-badge">💡 Look at the price! Can you buy it with the money shown?</div>
+
+      <div class="buy-grid" id="buyGrid">
+        <!-- Item 1: Candy Rs 20, money shown: two 10-rupee notes = Rs 20 → YES -->
+        <div class="buy-card">
+          <div class="buy-item-emoji">🍬</div>
+          <div class="buy-price">Price: Rs. 20</div>
+          <div class="buy-money-emoji">💵💵<br><small style="font-size:0.6em;color:#666;">10+10 = 20</small></div>
+          <div class="buy-btns">
+            <button class="yes-btn" onclick="buyAnswer(this,true,0)">✅ YES!</button>
+            <button class="no-btn" onclick="buyAnswer(this,false,0)">❌ NO!</button>
+          </div>
+          <div class="buy-result" id="buy-res-0"></div>
+        </div>
+
+        <!-- Item 2: Cricket bat Rs 70, money shown: one 20-rupee note = Rs 20 → NO -->
+        <div class="buy-card">
+          <div class="buy-item-emoji">🏏</div>
+          <div class="buy-price">Price: Rs. 70</div>
+          <div class="buy-money-emoji">💵<br><small style="font-size:0.6em;color:#666;">20 Rs</small></div>
+          <div class="buy-btns">
+            <button class="yes-btn" onclick="buyAnswer(this,false,1)">✅ YES!</button>
+            <button class="no-btn" onclick="buyAnswer(this,true,1)">❌ NO!</button>
+          </div>
+          <div class="buy-result" id="buy-res-1"></div>
+        </div>
+
+        <!-- Item 3: Basket Rs 30, money shown: two 5-rupee coins = Rs 10 → NO -->
+        <div class="buy-card">
+          <div class="buy-item-emoji">🧺</div>
+          <div class="buy-price">Price: Rs. 30</div>
+          <div class="buy-money-emoji">🪙🪙<br><small style="font-size:0.6em;color:#666;">5+5 = 10</small></div>
+          <div class="buy-btns">
+            <button class="yes-btn" onclick="buyAnswer(this,false,2)">✅ YES!</button>
+            <button class="no-btn" onclick="buyAnswer(this,true,2)">❌ NO!</button>
+          </div>
+          <div class="buy-result" id="buy-res-2"></div>
+        </div>
+
+        <!-- Item 4: Football Rs 50, money shown: one 50-rupee note → YES -->
+        <div class="buy-card">
+          <div class="buy-item-emoji">⚽</div>
+          <div class="buy-price">Price: Rs. 50</div>
+          <div class="buy-money-emoji">💵<br><small style="font-size:0.6em;color:#666;">50 Rs</small></div>
+          <div class="buy-btns">
+            <button class="yes-btn" onclick="buyAnswer(this,true,3)">✅ YES!</button>
+            <button class="no-btn" onclick="buyAnswer(this,false,3)">❌ NO!</button>
+          </div>
+          <div class="buy-result" id="buy-res-3"></div>
+        </div>
+
+        <!-- Item 5: Clock Rs 100, one 100-rupee note → YES -->
+        <div class="buy-card">
+          <div class="buy-item-emoji">🕐</div>
+          <div class="buy-price">Price: Rs. 100</div>
+          <div class="buy-money-emoji">💰<br><small style="font-size:0.6em;color:#666;">100 Rs</small></div>
+          <div class="buy-btns">
+            <button class="yes-btn" onclick="buyAnswer(this,true,4)">✅ YES!</button>
+            <button class="no-btn" onclick="buyAnswer(this,false,4)">❌ NO!</button>
+          </div>
+          <div class="buy-result" id="buy-res-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: COUNT AND WRITE -->
+    <section class="fun-card" id="sec-count">
+      <h2 class="section-title"><span class="icon">🔢</span> Count the Money!</h2>
+      <div class="instruction-badge">🤔 Look at the coins and notes! Pick the right total!</div>
+
+      <div class="count-grid">
+        <!-- Q1: 20-rupee note + 5-rupee coin + 1-rupee coin = 26 -->
+        <div class="count-card">
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.6rem);color:#666;">How much is this?</div>
+          <div class="count-money-display">💵🪙🪙</div>
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2vw,1.4rem);color:#999;">20 + 5 + 1 = ?</div>
+          <div class="count-answer-area">
+            <button class="count-btn" onclick="countAnswer(this,false,'c1')">25</button>
+            <button class="count-btn" onclick="countAnswer(this,true,'c1')">26</button>
+            <button class="count-btn" onclick="countAnswer(this,false,'c1')">21</button>
+          </div>
+          <div class="count-label" id="count-lbl-c1"></div>
+        </div>
+
+        <!-- Q2: 10-rupee note + 5-rupee coin = 15 -->
+        <div class="count-card">
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.6rem);color:#666;">How much is this?</div>
+          <div class="count-money-display">💵🪙</div>
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2vw,1.4rem);color:#999;">10 + 5 = ?</div>
+          <div class="count-answer-area">
+            <button class="count-btn" onclick="countAnswer(this,false,'c2')">10</button>
+            <button class="count-btn" onclick="countAnswer(this,true,'c2')">15</button>
+            <button class="count-btn" onclick="countAnswer(this,false,'c2')">20</button>
+          </div>
+          <div class="count-label" id="count-lbl-c2"></div>
+        </div>
+
+        <!-- Q3: two 10-rupee notes = 20 -->
+        <div class="count-card">
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.6rem);color:#666;">How much is this?</div>
+          <div class="count-money-display">💵💵</div>
+          <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2vw,1.4rem);color:#999;">10 + 10 = ?</div>
+          <div class="count-answer-area">
+            <button class="count-btn" onclick="countAnswer(this,false,'c3')">10</button>
+            <button class="count-btn" onclick="countAnswer(this,false,'c3')">30</button>
+            <button class="count-btn" onclick="countAnswer(this,true,'c3')">20</button>
+          </div>
+          <div class="count-label" id="count-lbl-c3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: QUIZ -->
+    <section class="fun-card" id="sec-quiz">
+      <h2 class="section-title"><span class="icon">🎉</span> Fun Quiz Time!</h2>
+      <div class="instruction-badge">🎯 Pick the right answer! Pictures will help you!</div>
+
+      <div class="quiz-progress" id="quizProgress">Question 1 of 5</div>
+      <div id="quizContainer"></div>
+    </section>
+
+  </div><!-- end content-container -->
+</div><!-- end page-wrapper -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" id="mobileNav">
+  <a href="#sec-learn">🪙 Learn</a>
+  <a href="#sec-match">🎯 Match</a>
+  <a href="#sec-buy">🛍️ Buy</a>
+  <a href="#sec-count">🔢 Count</a>
+  <a href="#sec-quiz">🎉 Quiz</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // === CURTAIN FALLBACK (FIRST THING) ===
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // ANIMATED CLOUDS
+  // =====================
+  const skyBg = document.getElementById('skyBg');
+  if (skyBg) {
+    for (let i = 0; i < 6; i++) {
+      const cloud = document.createElement('div');
+      cloud.className = 'cloud';
+      const w = 80 + Math.random() * 120;
+      const h = w * 0.4;
+      cloud.style.cssText = `width:${w}px;height:${h}px;top:${Math.random()*60}%;left:-200px;animation-duration:${20+Math.random()*20}s;animation-delay:-${Math.random()*20}s;`;
+      cloud.style.before = '';
+      skyBg.appendChild(cloud);
+    }
+  }
+
+  // =====================
+  // LENIS SMOOTH SCROLL
+  // =====================
+  let lenis;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const mem = navigator.deviceMemory || 4;
+      if (mem >= 2) {
+        lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => lenis.raf(time * 1000));
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function rafLenis(t) { lenis.raf(t); requestAnimationFrame(rafLenis); }
+          requestAnimationFrame(rafLenis);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // =====================
+  // GSAP ANIMATIONS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Cards bounce in on scroll
+      gsap.utils.toArray('.fun-card').forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 60, scale: 0.85 },
+          {
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.55,
+            delay: i * 0.08,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+      });
+
+      // Hero entrance
+      gsap.from('.hero h1', { y: -40, opacity: 0, duration: 0.5, ease: 'power2.out' });
+      gsap.from('.hero p', { y: 20, opacity: 0, duration: 0.5, delay: 0.15, ease: 'power2.out' });
+
+      // Curtain exit
+      const curtain = document.getElementById('curtain');
+      if (curtain) {
+        gsap.to(curtain, { opacity: 0, duration: 0.5, delay: 1.2, onComplete: () => { curtain.style.display = 'none'; } });
+      }
+
+    } else {
+      // CSS fallback: hide curtain
+      const curtain = document.getElementById('curtain');
+      if (curtain) setTimeout(() => { curtain.style.display = 'none'; }, 1500);
+    }
+  } catch(e) {
+    console.warn('GSAP init failed', e);
+    const curtain = document.getElementById('curtain');
+    if (curtain) curtain.style.display = 'none';
+  }
+
+  // =====================
+  // MONEY TAP
+  // =====================
+  window.tapMoney = function(el, msg) {
+    const msgEl = document.getElementById('tap-msg');
+    if (msgEl) msgEl.textContent = msg;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.timeline()
+          .to(el, { scale: 1.2, rotation: 10, duration: 0.15, ease: 'power1.out' })
+          .to(el, { scale: 1, rotation: -5, duration: 0.1 })
+          .to(el, { rotation: 0, duration: 0.1 });
+      }
+    } catch(e) {}
+  };
+
+  // =====================
+  // CONFETTI
+  // =====================
+  function fireConfetti(x, y) {
+    try {
+      if (typeof confetti !== 'undefined') {
+        const rect = { x: (x || window.innerWidth/2) / window.innerWidth, y: (y || window.innerHeight/2) / window.innerHeight };
+        confetti({ particleCount: 80, spread: 70, origin: rect, colors: ['#FF6B6B','#FFD93D','#6BCB77','#fff'] });
+      }
+    } catch(e) {}
+  }
+
+  // =====================
+  // SHAKE ANIMATION
+  // =====================
+  function shakeElement(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { x: -10, duration: 0.05, onComplete: () =>
+          gsap.to(el, { x: 10, duration: 0.05, onComplete: () =>
+          gsap.to(el, { x: -8, duration: 0.05, onComplete: () =>
+          gsap.to(el, { x: 8, duration: 0.05, onComplete: () =>
+          gsap.to(el, { x: 0, duration: 0.05 })
+        })})})});
+      } else {
+        el.style.transition = 'transform 0.05s';
+        el.style.transform = 'translateX(-10px)';
+        setTimeout(() => el.style.transform = 'translateX(10px)', 60);
+        setTimeout(() => el.style.transform = 'translateX(-8px)', 120);
+        setTimeout(() => el.style.transform = 'translateX(8px)', 180);
+        setTimeout(() => el.style.transform = 'translateX(0)', 240);
+      }
+    } catch(e) {}
+  }
+
+  // =====================
+  // DRAG & DROP MATCH
+  // =====================
+  let selectedDrag = null;
+  let matchScore = 0;
+  const matchFeedback = document.getElementById('match-feedback');
+
+  // Mobile tap-based drag
+  window.mobileDrag = function(el) {
+    if (window.innerWidth > 768) return; // handled by D&D on desktop
+    document.querySelectorAll('.drag-item').forEach(d => d.style.border = '4px solid #FFD93D');
+    el.style.border = '4px solid #FF6B6B';
+    selectedDrag = el;
+    // Highlight drop zones
+    document.querySelectorAll('.drop-zone').forEach(dz => {
+      dz.style.border = '4px dashed #FF6B6B';
+      dz.onclick = function() {
+        if (!selectedDrag) return;
+        handleDrop(dz, selectedDrag.dataset.value);
+        selectedDrag.style.border = '4px solid #FFD93D';
+        document.querySelectorAll('.drop-zone').forEach(z => {
+          z.style.border = '4px dashed #6BCB77';
+          z.onclick = null;
+        });
+        selectedDrag = null;
+      };
+    });
+  };
+
+  function handleDrop(dropZone, value) {
+    if (dropZone.dataset.done) return;
+    if (dropZone.dataset.accept === value) {
+      dropZone.classList.add('correct');
+      dropZone.dataset.done = '1';
+      matchScore++;
+      fireConfetti();
+      const dragEl = document.getElementById('drag-' + value);
+      if (dragEl) { dragEl.style.opacity = '0.4'; dragEl.draggable = false; }
+      if (matchFeedback) matchFeedback.textContent = '⭐ Great match!';
+      if (matchScore === 4 && matchFeedback) {
+        matchFeedback.textContent = '🎉 Amazing! You matched them all!';
+        fireConfetti();
+        setTimeout(fireConfetti, 400);
+      }
+    } else {
+      dropZone.classList.add('wrong');
+      shakeElement(dropZone);
+      if (matchFeedback) matchFeedback.textContent = '❌ Try again!';
+      setTimeout(() => dropZone.classList.remove('wrong'), 600);
+    }
+  }
+
+  // Desktop drag events
+  document.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.dataset.value);
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+  });
+
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      const val = e.dataTransfer.getData('text/plain');
+      handleDrop(zone, val);
+    });
+  });
+
+  // =====================
+  // CAN YOU BUY IT?
+  // =====================
+  window.buyAnswer = function(btn, isCorrect, idx) {
+    const resEl = document.getElementById('buy-res-' + idx);
+    const card = btn.closest('.buy-card');
+    // Disable both buttons
+    const btns = card.querySelectorAll('button');
+    btns.forEach(b => b.disabled = true);
+    if (isCorrect) {
+      if (resEl) resEl.textContent = '✅ Correct! Great job!';
+      if (resEl) resEl.style.color = '#27ae60';
+      fireConfetti(btn.getBoundingClientRect().left + 40, btn.getBoundingClientRect().top);
+      try { if (typeof gsap !== 'undefined') gsap.fromTo(card, {scale:1},{scale:1.04,duration:0.2,yoyo:true,repeat:1}); } catch(e){}
+    } else {
+      if (resEl) resEl.textContent = '❌ Oops! Try again!';
+      if (resEl) resEl.style.color = '#FF6B6B';
+      shakeElement(card);
+      btns.forEach(b => b.disabled = false);
+    }
+  };
+
+  // =====================
+  // COUNT MONEY
+  // =====================
+  const countAnswered = {};
+  window.countAnswer = function(btn, isCorrect, id) {
+    if (countAnswered[id]) return;
+    const lbl = document.getElementById('count-lbl-' + id);
+    if (isCorrect) {
+      countAnswered[id] = true;
+      btn.classList.add('selected-correct');
+      if (lbl) lbl.textContent = '🌟 Yes! That\'s right!';
+      fireConfetti(btn.getBoundingClientRect().left + 40, btn.getBoundingClientRect().top);
+    } else {
+      btn.classList.add('selected-wrong');
+      if (lbl) lbl.textContent = '❌ Not quite! Try again!';
+      shakeElement(btn);
+      setTimeout(() => { btn.classList.remove('selected-wrong'); if(lbl) lbl.textContent = ''; }, 700);
+    }
+  };
+
+  // =====================
+  // QUIZ
+  // =====================
+  const quizData = [
+    {
+      question: 'Which one is a COIN? 🤔',
+      options: [
+        { emoji: '🪙', label: 'Coin', correct: true },
+        { emoji: '💵', label: 'Note', correct: false },
+        { emoji: '👜', label: 'Bag', correct: false }
+      ]
+    },
+    {
+      question: 'Which note is Rs. 50? 💵',
+      options: [
+        { emoji: '💵\n10', label: 'Rs. 10', correct: false },
+        { emoji: '💵\n50', label: 'Rs. 50', correct: true },
+        { emoji: '💰\n100', label: 'Rs. 100', correct: false }
+      ]
+    },
+    {
+      question: '2 coins of Rs. 5 = how much? 🤔',
+      options: [
+        { emoji: '5️⃣', label: 'Rs. 5', correct: false },
+        { emoji: '🔟', label: 'Rs. 10', correct: true },
+        { emoji: '2️⃣', label: 'Rs. 2', correct: false }
+      ]
+    },
+    {
+      question: 'A toy costs Rs. 20. Which note do you use? 🧸',
+      options: [
+        { emoji: '💵', label: 'Rs. 10', correct: false },
+        { emoji: '💰', label: 'Rs. 100', correct: false },
+        { emoji: '💵', label: 'Rs. 20', correct: true }
+      ]
+    },
+    {
+      question: 'Rs. 10 + Rs. 10 = ?',
+      options: [
+        { emoji: '🔟', label: 'Rs. 10', correct: false },
+        { emoji: '2️⃣0️⃣', label: 'Rs. 20', correct: true },
+        { emoji: '3️⃣0️⃣', label: 'Rs. 30', correct: false }
+      ]
+    }
+  ];
+
+  let currentQ = 0;
+  let quizScore = 0;
+  const quizContainer = document.getElementById('quizContainer');
+  const quizProgress = document.getElementById('quizProgress');
+
+  function renderQuiz() {
+    if (!quizContainer) return;
+    if (currentQ >= quizData.length) {
+      quizProgress && (quizProgress.textContent = 'All done! 🎉');
+      quizContainer.innerHTML = `
+        <div class="quiz-score-display">
+          <div style="font-size:clamp(3rem,8vw,5rem);">${quizScore >= 4 ? '🏆' : quizScore >= 3 ? '⭐' : '😊'}</div>
+          <div>You got ${quizScore} out of ${quizData.length}!</div>
+          ${quizScore === quizData.length ? '<div>Perfect score! Amazing! 🎉🎉🎉</div>' : '<div>Keep practising! You can do it! 💪</div>'}
+          <button class="restart-btn" onclick="restartQuiz()">🔄 Play Again!</button>
+        </div>
+      `;
+      if (quizScore >= 4) { fireConfetti(); setTimeout(fireConfetti, 300); setTimeout(fireConfetti, 600); }
+      return;
+    }
+
+    const q = quizData[currentQ];
+    quizProgress && (quizProgress.textContent = `Question ${currentQ + 1} of ${quizData.length}`);
+
+    quizContainer.innerHTML = `
+      <div class="quiz-question" id="qBox">
+        <div class="quiz-q-text">${q.question}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `
+            <button class="quiz-opt" onclick="quizAnswer(this, ${opt.correct}, ${i})">
+              <div class="opt-emoji">${opt.emoji}</div>
+              <div style="font-size:clamp(1rem,2vw,1.4rem);">${opt.label}</div>
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+      </div>
+    `;
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo('#qBox', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+      }
+    } catch(e) {}
+  }
+
+  window.quizAnswer = function(btn, isCorrect, idx) {
+    const allBtns = document.querySelectorAll('.quiz-opt');
+    allBtns.forEach(b => b.disabled = true);
+    const feedback = document.getElementById('quizFeedback');
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      if (feedback) feedback.textContent = '🌟 Correct! Awesome!';
+      quizScore++;
+      fireConfetti(btn.getBoundingClientRect().left + 60, btn.getBoundingClientRect().top);
+      setTimeout(() => { currentQ++; renderQuiz(); }, 1200);
+    } else {
+      btn.classList.add('wrong');
+      shakeElement(btn);
+      if (feedback) feedback.textContent = '❌ Oops! Try again!';
+      allBtns.forEach(b => b.disabled = false);
+      btn.disabled = true;
+    }
+  };
+
+  window.restartQuiz = function() {
+    currentQ = 0;
+    quizScore = 0;
+    renderQuiz();
+  };
+
+  renderQuiz();
+
+  // =====================
+  // SMOOTH SCROLL FOR NAV
+  // =====================
+  document.querySelectorAll('#mobileNav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        if (lenis) lenis.scrollTo(target, { offset: -20 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+});
+</script>
+</body>
+</html>

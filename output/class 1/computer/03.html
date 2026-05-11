@@ -1,1821 +1,1588 @@
+<!-- CLASS: 1 | SUBJECT: computer | VERSION: 1.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>The Computer System – computer class 1</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: The Computer System | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
-/* ── RESET & ROOT ─────────────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --p:#008080; --p-dk:#FF8C00; --a:#32CD32; --a2:#F49040;
-  --bg-s:#0a1628; --bg-e:#0d2b3e;
-  --card:rgba(255,255,255,0.08); --txt:#e0f7fa;
-  --radius:16px; --radius-sm:10px;
-  --shadow:0 8px 32px rgba(0,0,0,0.35);
-  --font-hero:'Orbitron', 'Segoe UI', sans-serif; --font-body:'Exo 2', 'Segoe UI', sans-serif;
-  --correct:#22c55e; --incorrect:#ef4444;
-  /* Typography scale (bigger + consistent across sections) */
-  --fs:clamp(17px, 0.45vw + 15px, 21px);      /* base */
-  --fs-sm:clamp(15px, 0.25vw + 14px, 18px);   /* small labels */
-  --fs-lg:clamp(18px, 0.65vw + 15px, 24px);   /* section titles */
-  --fs-xl:clamp(22px, 1.1vw + 16px, 34px);    /* hero title */
-}
-html{scroll-behavior:smooth}
-body{
-  background:linear-gradient(135deg,var(--bg-s) 0%,var(--bg-e) 100%);
-  color:var(--txt); font-family:var(--font-body);
-  min-height:100vh; padding:0; line-height:1.65;
-  font-size:var(--fs);
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── PARTICLES CANVAS ────────────────────────────────────── */
-#particlesBg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
-.page-wrap{
-  position:relative;z-index:1;
-  width:100%;
-  max-width:none;
-  margin:0 auto;
-  padding:clamp(12px, 2vw, 28px);
-}
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #e0f7fa;
+    overflow-x: hidden;
+  }
 
-/* ── HEADER ──────────────────────────────────────────────── */
-.hero{
-  background:linear-gradient(135deg, #008080 0%, #FF8C00 100%);
-  border-radius:var(--radius);padding:2.5rem 1.5rem 2rem;
-  text-align:center;margin-bottom:1.25rem;
-  box-shadow:var(--shadow);position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-.hero-badge{
-  display:inline-block;background:rgba(255,255,255,.15);
-  padding:.35rem 1rem;border-radius:50px;font-size:.85rem;
-  margin-bottom:.75rem;letter-spacing:.05em;text-transform:uppercase;
-}
-.hero h1{
-  font-family:var(--font-hero);
-  font-size:var(--fs-xl);
-  line-height:1.15;margin-bottom:.5rem;color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,.4);
-}
-.hero-tagline{font-size:clamp(1.05rem, .55vw + .95rem, 1.35rem);opacity:.9;max-width:680px;margin:0 auto .75rem;}
-.hero-meta{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.9rem;opacity:.8;}
-.hero-meta span{display:flex;align-items:center;gap:.4rem;}
+  body {
+    padding-bottom: 100px;
+  }
 
-/* ── PROGRESS BAR ────────────────────────────────────────── */
-.progress-bar-wrap{
-  background:var(--card);backdrop-filter:blur(8px);
-  border-radius:var(--radius);padding:.9rem 1.25rem;
-  margin-bottom:1.25rem;
-  border:1px solid rgba(255,255,255,.08);
-}
-.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-weight:600;font-size:.9rem;}
-.prog-track{height:10px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .6s ease;border-radius:5px;}
-.sound-btn{
-  width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
-  background:rgba(255,255,255,.1);color:var(--txt);cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;transition:all .2s;
-}
-.sound-btn:hover{background:rgba(255,255,255,.2);}
+  /* Animated background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 40%, #c8e6c9 75%, #a5d6a7 100%);
+    overflow: hidden;
+  }
 
-/* ── CARDS ───────────────────────────────────────────────── */
-.section-card{
-  background:var(--card);backdrop-filter:blur(12px);
-  border-radius:var(--radius);padding:1.5rem;
-  margin-bottom:1.25rem;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:var(--shadow);
-}
-.section-title{
-  display:flex;align-items:center;gap:10px;
-  color:var(--a);font-size:var(--fs-lg);font-weight:800;
-  padding-bottom:.6rem;margin-bottom:1rem;
-  border-bottom:2px solid rgba(255,255,255,.08);
-}
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.85;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  .cloud1 { width: 120px; height: 40px; top: 8%; left: -150px; animation-duration: 28s; }
+  .cloud1::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+  .cloud1::after { width: 45px; height: 45px; top: -20px; left: 55px; }
+  .cloud2 { width: 90px; height: 30px; top: 18%; left: -120px; animation-duration: 38s; animation-delay: -10s; }
+  .cloud2::before { width: 45px; height: 45px; top: -22px; left: 15px; }
+  .cloud2::after { width: 35px; height: 35px; top: -15px; left: 40px; }
+  .cloud3 { width: 150px; height: 50px; top: 5%; left: -200px; animation-duration: 45s; animation-delay: -20s; }
+  .cloud3::before { width: 70px; height: 70px; top: -35px; left: 25px; }
+  .cloud3::after { width: 55px; height: 55px; top: -25px; left: 70px; }
 
-/* ── OBJECTIVES ──────────────────────────────────────────── */
-.objectives-list{list-style:none;display:grid;gap:.5rem;}
-.objectives-list li{display:flex;align-items:center;gap:.65rem;padding:.75rem 1rem;background:rgba(255,255,255,.05);border-radius:var(--radius-sm);font-size:1.02rem;}
-.objectives-list li i{color:var(--a);flex-shrink:0;}
+  @keyframes floatCloud {
+    from { left: -200px; }
+    to { left: 110%; }
+  }
 
-/* ── CONCEPTS ────────────────────────────────────────────── */
-.concepts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
-.concept-card{
-  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:var(--radius);padding:1.25rem;
-  text-align:center;transition:transform .3s,box-shadow .3s;
-  cursor:default;
-}
-.concept-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
-.concept-emoji{font-size:2.5rem;margin-bottom:.6rem;}
-.concept-term{font-size:1.18rem;font-weight:800;color:var(--a);margin-bottom:.45rem;}
-.concept-def{font-size:1.02rem;opacity:.92;margin-bottom:.85rem;}
-.concept-examples{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;}
-.example-tag{background:rgba(255,255,255,.1);padding:.28rem .7rem;border-radius:50px;font-size:var(--fs-sm);}
+  /* Grass decoration */
+  .grass {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 80px;
+    background: linear-gradient(180deg, #81c784 0%, #4caf50 100%);
+    z-index: -1;
+    border-radius: 60% 60% 0 0 / 20px 20px 0 0;
+  }
 
-/* ── FUN FACTS ───────────────────────────────────────────── */
-.fun-facts-wrap{display:grid;gap:.75rem;}
-.fun-fact{
-  background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border-left:4px solid var(--a2);border-radius:var(--radius-sm);
-  padding:1rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;font-size:1.05rem;
-}
-.fun-fact i{color:var(--a2);flex-shrink:0;margin-top:.15rem;}
+  /* Page wrapper */
+  .page-wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
 
-/* ── ENRICHMENT SECTIONS (tiered) ─────────────────────────── */
-.enrich-text{opacity:.92;line-height:1.8;font-size:1.05rem;}
-.enrich-list{display:grid;gap:.55rem;margin-left:1.1rem;}
-.enrich-list li{margin-left:.2rem;}
-.qa-wrap{display:grid;gap:.75rem;}
-.qa-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:1rem;}
-.qa-q{font-weight:800;color:var(--a);margin-bottom:.35rem;}
-.qa-a{opacity:.92;}
-.glossary{display:grid;gap:.65rem;}
-.gloss-row{display:grid;grid-template-columns:minmax(140px, 220px) 1fr;gap:.8rem;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.85rem 1rem;}
-.gloss-term{font-weight:900;color:#fff;}
-.gloss-def{opacity:.9;}
-.enrich-acc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.7rem 1rem;}
-.enrich-acc + .enrich-acc{margin-top:.6rem;}
-.enrich-acc summary{cursor:pointer;font-weight:800;color:#fff;}
-.enrich-body{padding:.75rem 0 0;opacity:.94;}
-.steps{margin-left:1.2rem;display:grid;gap:.4rem;}
-.final,.why,.answer,.kp{margin-top:.6rem;}
+  /* Header / Hero */
+  .hero {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+    padding: 40px 20px 50px;
+    text-align: center;
+    border-radius: 0 0 48px 48px;
+    box-shadow: 0 8px 32px rgba(255,107,107,0.25);
+    position: relative;
+    overflow: hidden;
+  }
 
-/* ── 3D SCENE ────────────────────────────────────────────── */
-.scene-wrap{
-  position:relative;border-radius:var(--radius);overflow:hidden;
-  height:360px;background:#000;
-  border:1px solid rgba(255,255,255,.1);
-}
-#scene3dCanvas{display:block;width:100%!important;height:100%!important;}
-.scene-hud{
-  position:absolute;top:12px;left:12px;
-  display:flex;flex-direction:column;gap:.45rem;
-  z-index:10;max-width:min(420px, calc(100% - 24px));
-}
-.hud-pill{
-  background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);
-  color:#fff;border-radius:999px;padding:.45rem .8rem;
-  font-size:var(--fs-sm);backdrop-filter:blur(8px);
-  display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;
-}
-.hud-pill b{color:var(--a);}
-.hud-modal{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.55);z-index:50;padding:1rem;
-}
-.hud-modal.hidden{display:none!important}
-.hud-card{
-  width:min(560px,100%);background:linear-gradient(135deg,rgba(10,10,16,.92),rgba(10,10,16,.82));
-  border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:1.25rem 1.1rem;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-}
-.hud-card h3{font-size:1.2rem;margin-bottom:.4rem;}
-.hud-card p{opacity:.92;margin:.35rem 0;line-height:1.65;}
-.hud-opts{display:grid;gap:.6rem;margin-top:.85rem;}
-.hud-opt{text-align:left}
-.hud3d-fb{margin-top:.75rem;opacity:.9;font-weight:800;}
-.hud3d-fb.fb-success{color:#86efac}
-.hud3d-fb.fb-error{color:#fca5a5}
-.hud-complete{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(0,0,0,.55));
-  border:1px solid rgba(34,197,94,.35);
-  padding:.55rem 1rem;border-radius:999px;color:#dcfce7;
-  font-weight:900;z-index:12;backdrop-filter:blur(8px);
-}
-.hud-complete.hidden{display:none!important}
-.scene-controls{
-  position:absolute;bottom:14px;right:14px;
-  display:flex;flex-direction:column;gap:.4rem;z-index:5;
-}
-.scene-btn{
-  width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
-  background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:1rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;backdrop-filter:blur(6px);
-}
-.scene-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1);}
-.scene-hint{
-  position:absolute;top:12px;left:50%;transform:translateX(-50%);
-  background:rgba(0,0,0,.6);padding:.4rem 1rem;border-radius:50px;
-  font-size:var(--fs-sm);color:rgba(255,255,255,.88);backdrop-filter:blur(6px);
-  animation:fadePulse 3s infinite;white-space:nowrap;z-index:5;
-}
-@keyframes fadePulse{0%,100%{opacity:.7}50%{opacity:1}}
-.scene-desc{
-  position:absolute;bottom:14px;left:14px;
-  background:rgba(0,0,0,.7);padding:.6rem 1rem;border-radius:var(--radius-sm);
-  font-size:clamp(.95rem, .25vw + .9rem, 1.05rem);color:rgba(255,255,255,.88);max-width:260px;
-  backdrop-filter:blur(6px);line-height:1.4;z-index:5;
-}
+  .hero-stars {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+  }
 
-/* ── TABS ────────────────────────────────────────────────── */
-.tabs-wrap{margin-bottom:1.25rem;}
-.tabs-header{
-  display:flex;overflow-x:auto;scrollbar-width:none;
-  background:rgba(0,0,0,.3);border-radius:var(--radius) var(--radius) 0 0;
-  border:1px solid rgba(255,255,255,.08);border-bottom:none;
-}
-.tabs-header::-webkit-scrollbar{display:none}
-.tab-btn{
-  flex:1;min-width:90px;padding:.85rem .75rem;border:none;background:transparent;
-  color:rgba(255,255,255,.6);cursor:pointer;font-family:var(--font-body);font-weight:600;
-  font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);display:flex;align-items:center;justify-content:center;gap:6px;
-  white-space:nowrap;transition:all .25s;position:relative;
-}
-.tab-btn::after{
-  content:'';position:absolute;bottom:0;left:50%;width:0;height:3px;
-  background:var(--a);transition:all .25s;transform:translateX(-50%);
-  border-radius:3px 3px 0 0;
-}
-.tab-btn:hover{color:#fff;background:rgba(255,255,255,.05);}
-.tab-btn.active{
-  background:linear-gradient(135deg, #008080, #FF8C00);color:#fff;
-  box-shadow:0 4px 15px rgba(0,0,0,.3);
-}
-.tab-btn.active::after{width:70%;}
-.tab-content{
-  background:rgba(0,0,0,.25);backdrop-filter:blur(8px);
-  border-radius:0 0 var(--radius) var(--radius);
-  border:1px solid rgba(255,255,255,.08);border-top:none;
-  padding:1.5rem;
-}
+  .hero-star {
+    position: absolute;
+    font-size: 28px;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
 
-/* ── BUTTONS ─────────────────────────────────────────────── */
-.btn{
-  padding:.8rem 1.4rem;border:none;border-radius:var(--radius);
-  font-family:var(--font-body);font-weight:700;cursor:pointer;
-  transition:all .25s;display:inline-flex;align-items:center;
-  justify-content:center;gap:8px;min-height:46px;font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);
-}
-.btn-primary{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.35);}
-.btn-outline{background:transparent;color:var(--a);border:2px solid var(--a);}
-.btn-outline:hover{background:var(--a);color:#000;}
-.btn-row{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:1.25rem;}
+  @keyframes twinkle {
+    from { opacity: 0.4; transform: scale(0.8) rotate(-10deg); }
+    to { opacity: 1; transform: scale(1.2) rotate(10deg); }
+  }
 
-/* ── GAME ELEMENTS ───────────────────────────────────────── */
-.game-section{animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.game-instruction{margin-bottom:1rem;opacity:.9;display:flex;align-items:center;gap:.5rem;font-size:1.05rem;}
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    color: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    padding: 8px 24px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+    border: 3px solid rgba(255,255,255,0.6);
+  }
 
-/* Sort */
-.sort-zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem;}
-.sort-zone{
-  min-height:140px;border:2.5px dashed var(--cat-color,var(--a));
-  border-radius:var(--radius);padding:.75rem;
-  background:rgba(255,255,255,.03);transition:all .25s;
-}
-.sort-zone.drag-over{background:rgba(255,255,255,.1);transform:scale(1.02);}
-.sort-zone h4{color:var(--cat-color,var(--a));margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;font-size:1.05rem;}
-.sort-items-drop{min-height:60px;display:flex;flex-wrap:wrap;gap:.4rem;align-content:flex-start;}
-.item-pool{
-  display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;
-  background:rgba(255,255,255,.05);border-radius:var(--radius);
-}
-.sort-item{
-  background:rgba(255,255,255,.12);padding:.45rem .9rem;border-radius:50px;
-  cursor:grab;font-weight:600;font-size:1.02rem;transition:all .2s;
-  border:1.5px solid rgba(255,255,255,.15);user-select:none;
-}
-.sort-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.2);}
-.sort-item.correct{background:rgba(34,197,94,.2);border-color:var(--correct);}
-.sort-item.incorrect{background:rgba(239,68,68,.2);border-color:var(--incorrect);}
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: white;
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
 
-/* Quiz & TF */
-.quiz-header{
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;
-  background:rgba(255,255,255,.05);border-radius:var(--radius-sm);
-}
-.quiz-title{font-weight:700;display:flex;align-items:center;gap:.5rem;color:var(--a);}
-.quiz-prog-wrap{flex:1;min-width:140px;}
-.quiz-prog-bar{height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden;}
-.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .4s;}
-.quiz-prog-text{font-size:var(--fs-sm);margin-top:.3rem;opacity:.8;}
-.quiz-card{background:rgba(255,255,255,.05);border-radius:var(--radius);padding:1.25rem;border:1px solid rgba(255,255,255,.08);}
-.slide-in{animation:slideIn .25s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.quiz-q{font-size:clamp(1.15rem, .35vw + 1.05rem, 1.35rem);font-weight:800;margin-bottom:1rem;line-height:1.4;}
-.q-num{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(255,255,255,.12);margin-right:6px;font-size:.85rem;
-}
-.quiz-options{display:grid;gap:.6rem;}
-.quiz-opt{
-  width:100%;text-align:left;padding:.85rem 1rem;
-  background:rgba(255,255,255,.07);border:2px solid transparent;
-  border-radius:var(--radius-sm);color:var(--txt);font-family:var(--font-body);
-  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.75rem;
-  font-size:1.05rem;font-weight:600;
-}
-.quiz-opt:hover{border-color:var(--p);background:rgba(255,255,255,.12);}
-.quiz-opt.selected{border-color:var(--p);}
-.quiz-opt.correct{background:rgba(34,197,94,.15);border-color:var(--correct);}
-.quiz-opt.incorrect{background:rgba(239,68,68,.15);border-color:var(--incorrect);}
-.opt-letter{
-  width:26px;height:26px;border-radius:50%;background:var(--p);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:.95rem;flex-shrink:0;
-}
-.quiz-feedback{
-  margin-top:.85rem;padding:.85rem 1rem;border-radius:var(--radius-sm);
-  display:flex;align-items:flex-start;gap:.65rem;font-size:1.02rem;
-}
-.quiz-feedback.hidden{display:none!important}
-.fb-success{background:rgba(34,197,94,.15);border:1px solid var(--correct);color:#86efac;}
-.fb-error{background:rgba(239,68,68,.15);border:1px solid var(--incorrect);color:#fca5a5;}
-.quiz-nav{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.25rem;}
+  .hero-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: rgba(255,255,255,0.95);
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
 
-/* TF buttons */
-.tf-choices{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0;}
-.tf-btn{
-  padding:1.1rem;border-radius:var(--radius);font-weight:800;font-size:1.05rem;
-  cursor:pointer;border:2px solid;transition:all .25s;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-}
-.tf-true{border-color:var(--correct);background:rgba(34,197,94,.1);color:#86efac;}
-.tf-false{border-color:var(--incorrect);background:rgba(239,68,68,.1);color:#fca5a5;}
-.tf-btn.selected,.tf-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);}
-.tf-true.selected,.tf-true:hover{background:rgba(34,197,94,.25);}
-.tf-false.selected,.tf-false:hover{background:rgba(239,68,68,.25);}
-.tf-true.correct{background:rgba(34,197,94,.35)!important;}
-.tf-false.correct{background:rgba(239,68,68,.35)!important;}
+  .hero-computer-emoji {
+    font-size: clamp(5rem, 12vw, 8rem);
+    display: block;
+    margin: 0 auto 10px;
+    animation: bounce 1.5s ease-in-out infinite alternate;
+  }
 
-/* Results overlay */
-.results-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);
-  display:flex;align-items:center;justify-content:center;
-  padding:1rem;z-index:2000;
-}
-.results-overlay.hidden{display:none!important}
-.results-card{
-  background:linear-gradient(135deg,var(--bg-s),var(--bg-e));
-  border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);
-  padding:2rem;width:min(480px,100%);text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-.results-icon{
-  width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(135deg,var(--p),var(--a));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;margin:0 auto .75rem;
-}
-.results-card h3{font-size:1.4rem;margin-bottom:.4rem;}
-.results-card p{opacity:.85;margin-bottom:.6rem;}
-.stars-row{display:flex;gap:.3rem;justify-content:center;color:#fbbf24;font-size:1.2rem;margin:.5rem 0;}
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-18px); }
+  }
 
-/* Memory */
-.memory-score-row{display:flex;gap:2rem;margin-bottom:.75rem;font-size:.95rem;opacity:.85;}
-.memory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;}
-.mem-card{height:80px;cursor:pointer;perspective:800px;}
-.mem-card-inner{
-  width:100%;height:100%;position:relative;transition:transform .5s;
-  transform-style:preserve-3d;
-}
-.mem-card.flipped .mem-card-inner{transform:rotateY(180deg);}
-.mem-card.matched .mem-card-inner{transform:rotateY(180deg);}
-.mem-card-front,.mem-card-back{
-  position:absolute;inset:0;border-radius:var(--radius-sm);
-  display:flex;align-items:center;justify-content:center;
-  backface-visibility:hidden;font-size:.85rem;font-weight:600;
-  text-align:center;padding:.4rem;
-}
-.mem-card-front{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;font-size:1.4rem;}
-.mem-card-back{background:linear-gradient(135deg,var(--a),var(--p));color:#000;transform:rotateY(180deg);}
-.mem-card.matched .mem-card-back{background:linear-gradient(135deg,var(--correct),#16a34a);}
+  /* Section spacing */
+  .sections-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
 
-/* Fill blanks / scramble */
-.blanks-container{display:grid;gap:.85rem;}
-.blank-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
-.blank-sentence{font-size:1rem;line-height:1.8;margin-bottom:.4rem;}
-.blank-input{
-  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);
-  border-radius:8px;padding:.4rem .75rem;color:var(--txt);
-  font-family:var(--font-body);font-size:.95rem;
-  outline:none;transition:border .2s;width:auto;max-width:180px;
-}
-.blank-input:focus{border-color:var(--a);}
-.blank-hint{font-size:.82rem;opacity:.65;margin:.35rem 0;display:flex;align-items:center;gap:.4rem;}
-.blank-hint i{color:var(--a2);}
-.blank-result{padding:.35rem .75rem;border-radius:6px;font-size:.85rem;font-weight:600;margin-top:.35rem;}
-.blank-result.hidden{display:none!important}
-.scramble-letters{
-  font-size:1.4rem;letter-spacing:.2rem;font-weight:800;
-  color:var(--a);margin-bottom:.5rem;
-}
-.scramble-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
-.game-feedback{padding:.85rem 1rem;border-radius:var(--radius-sm);margin-top:1rem;display:flex;align-items:center;gap:.6rem;}
-.game-feedback.hidden{display:none!important}
-.hidden{display:none!important}
+  /* Fun Card */
+  .fun-card {
+    width: 100%;
+    background: white;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    padding: 36px 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
 
-/* ── RESPONSIVE ───────────────────────────────────────────── */
-@media(max-width:600px){
-  .scene-wrap{height:280px}
-  .sort-zones{grid-template-columns:1fr}
-  .tf-choices{grid-template-columns:1fr}
-  .memory-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
-  .btn{min-height:44px;padding:.7rem 1rem;font-size:.88rem}
-  .hero h1{font-size:1.5rem}
-  .concepts-grid{grid-template-columns:1fr}
-  .scene-desc{display:none}
-  .scene-hud{top:10px;left:10px}
-  .gloss-row{grid-template-columns:1fr}
-}
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #4ecdc4);
+    border-radius: 32px 32px 0 0;
+  }
+
+  .fun-card.blue-border { border-color: #6BCB77; }
+  .fun-card.red-border { border-color: #FF6B6B; }
+  .fun-card.purple-border { border-color: #c084fc; }
+
+  /* Card header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    color: #333;
+    line-height: 1.1;
+  }
+
+  /* Parts grid */
+  .parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 20px;
+  }
+
+  .part-item {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff 100%);
+    border-radius: 24px;
+    border: 4px solid #FFD93D;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .part-item:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(255,217,61,0.35);
+  }
+
+  .part-emoji {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 12px;
+    transition: transform 0.3s;
+  }
+
+  .part-item:hover .part-emoji { transform: scale(1.2) rotate(-5deg); }
+
+  .part-name {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: #FF6B6B;
+  }
+
+  /* Functions list */
+  .functions-section {
+    margin-top: 12px;
+  }
+
+  .function-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: linear-gradient(135deg, #f0fff4 0%, #fff 100%);
+    border-radius: 20px;
+    border: 3px solid #6BCB77;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-weight: 600;
+    color: #333;
+  }
+
+  .function-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Detail card for each part */
+  .detail-card {
+    background: white;
+    border-radius: 28px;
+    border: 4px solid #6BCB77;
+    padding: 32px 36px;
+    box-shadow: 0 6px 24px rgba(107,203,119,0.2);
+  }
+
+  .detail-card.yellow { border-color: #FFD93D; }
+  .detail-card.red { border-color: #FF6B6B; }
+  .detail-card.purple { border-color: #c084fc; }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .detail-big-emoji {
+    font-size: 5rem;
+    animation: wiggle 3s ease-in-out infinite;
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+  }
+
+  .detail-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: #333;
+  }
+
+  /* Drag and drop */
+  .drag-section {
+    margin-top: 20px;
+  }
+
+  .drag-instruction {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #FF6B6B;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .drag-items-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .drag-word {
+    background: linear-gradient(135deg, #FFD93D, #ffb800);
+    border-radius: 20px;
+    border: 4px solid #e6a800;
+    padding: 14px 28px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    box-shadow: 0 4px 12px rgba(230,168,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .drag-word:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(230,168,0,0.4); }
+  .drag-word.dragging { opacity: 0.5; transform: scale(1.1); }
+  .drag-word.matched { background: linear-gradient(135deg, #6BCB77, #4caf50); border-color: #388e3c; cursor: default; }
+
+  .drop-targets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .drop-target {
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+    border-radius: 24px;
+    border: 4px dashed #aaa;
+    padding: 20px;
+    text-align: center;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .drop-target.over {
+    border-color: #6BCB77;
+    background: #f0fff4;
+  }
+
+  .drop-target.correct {
+    border-color: #6BCB77;
+    background: linear-gradient(135deg, #e8f5e9 0%, #f0fff4 100%);
+    border-style: solid;
+  }
+
+  .drop-target.wrong {
+    border-color: #FF6B6B;
+    background: #fff0f0;
+    border-style: solid;
+  }
+
+  .drop-emoji {
+    font-size: 3.5rem;
+    display: block;
+  }
+
+  .drop-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #888;
+    min-height: 36px;
+  }
+
+  .drop-target.correct .drop-label { color: #388e3c; font-weight: 800; }
+
+  /* Quiz section */
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .quiz-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    color: #FF6B6B;
+  }
+
+  .quiz-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    color: #555;
+    margin-top: 8px;
+  }
+
+  .quiz-question-card {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff 100%);
+    border-radius: 28px;
+    border: 4px solid #FFD93D;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    opacity: 1;
+  }
+
+  .quiz-question-card.hidden { display: none; }
+
+  .q-number {
+    display: inline-block;
+    background: #FF6B6B;
+    color: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.3rem;
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+  }
+
+  .q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: #333;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  .q-image-prompt {
+    font-size: 6rem;
+    text-align: center;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .q-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .q-option {
+    background: white;
+    border-radius: 24px;
+    border: 4px solid #6BCB77;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #333;
+    position: relative;
+  }
+
+  .q-option:hover { transform: scale(1.06); box-shadow: 0 8px 24px rgba(107,203,119,0.3); }
+  .q-option.correct-ans { border-color: #6BCB77; background: #e8f5e9; }
+  .q-option.wrong-ans { border-color: #FF6B6B; background: #fff0f0; }
+  .q-option-emoji { font-size: 3.5rem; display: block; }
+
+  .feedback-text {
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin-top: 20px;
+    min-height: 44px;
+    color: #333;
+    display: none;
+  }
+
+  .feedback-text.show { display: block; }
+
+  /* Score */
+  .score-display {
+    text-align: center;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    border-radius: 28px;
+    padding: 32px;
+    color: white;
+    display: none;
+  }
+  .score-display.show { display: block; }
+  .score-display h2 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 12px;
+  }
+  .score-display p {
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+  }
+  .score-big {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(3rem, 7vw, 5rem);
+    display: block;
+    margin: 16px 0;
+  }
+
+  /* Retry button */
+  .retry-btn {
+    display: inline-block;
+    background: white;
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: 4px solid #FF6B6B;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s;
+  }
+  .retry-btn:hover { transform: scale(1.05); }
+
+  /* Objective pills */
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .objective-pill {
+    background: linear-gradient(135deg, #fff9e6, #fff);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 700;
+    color: #333;
+  }
+
+  .obj-emoji { font-size: 2.2rem; flex-shrink: 0; }
+
+  /* Bottom nav mobile */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 4px solid #FFD93D;
+    overflow-x: auto;
+    z-index: 999;
+    padding: 6px 8px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+
+  .bottom-nav-inner {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+    padding: 4px 4px;
+  }
+
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    border-radius: 16px;
+    background: #fff9e6;
+    border: 3px solid #FFD93D;
+    cursor: pointer;
+    min-height: 56px;
+    min-width: 64px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .bottom-nav-item:hover { background: #FFD93D; }
+  .bottom-nav-item span:first-child { font-size: 1.5rem; }
+
+  /* Tap reveal overlay */
+  .tap-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,217,61,0.9);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #333;
+    cursor: pointer;
+    z-index: 2;
+    transition: opacity 0.3s;
+  }
+
+  .tap-overlay.hidden { opacity: 0; pointer-events: none; }
+
+  /* Word bank exercise */
+  .exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .word-bank-item {
+    background: linear-gradient(135deg, #e3f2fd 0%, #fff 100%);
+    border-radius: 20px;
+    border: 4px solid #42a5f5;
+    padding: 16px;
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #1565c0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .word-bank-item .wb-emoji { font-size: 2.8rem; }
+
+  .fill-blank-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fill-blank-list li {
+    background: white;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    padding: 18px 24px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 700;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  .fill-blank-list li strong {
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  }
+
+  /* True/False exercise */
+  .tf-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .tf-item {
+    background: white;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tf-statement {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 700;
+    color: #333;
+  }
+
+  .tf-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .tf-btn {
+    padding: 10px 28px;
+    border-radius: 50px;
+    border: 4px solid #aaa;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    min-height: 48px;
+    min-width: 90px;
+  }
+
+  .tf-btn.true-btn { background: #e8f5e9; border-color: #6BCB77; color: #2e7d32; }
+  .tf-btn.false-btn { background: #fff0f0; border-color: #FF6B6B; color: #c62828; }
+  .tf-btn.selected-correct { background: #6BCB77; color: white; transform: scale(1.1); }
+  .tf-btn.selected-wrong { background: #FF6B6B; color: white; }
+  .tf-btn:hover { transform: scale(1.06); }
+
+  /* Section separator */
+  .section-sep {
+    text-align: center;
+    font-size: 2rem;
+    margin: 8px 0;
+    color: #FFD93D;
+    letter-spacing: 8px;
+  }
+
+  /* Loading curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .curtain-emoji { font-size: 7rem; animation: bounce 0.8s ease-in-out infinite alternate; }
+  .curtain-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: white;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page-wrapper { padding: 0 16px; }
+    body { padding-bottom: 90px; }
+    .hero { padding: 28px 16px 36px; }
+    .fun-card { padding: 24px 18px; }
+    .detail-card { padding: 20px 16px; }
+    .quiz-question-card { padding: 20px 16px; }
+    .bottom-nav { display: flex; }
+    .parts-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .drop-targets { grid-template-columns: repeat(2, 1fr); }
+    .q-options { grid-template-columns: repeat(2, 1fr); }
+    .objectives-grid { grid-template-columns: 1fr; }
+    .sections-container { gap: 24px; margin-top: 28px; }
+    .exercise-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 480px) {
+    .parts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .drag-items-row { gap: 10px; }
+    .drag-word { padding: 10px 18px; }
+    .drop-targets { grid-template-columns: 1fr 1fr; }
+    .q-options { grid-template-columns: 1fr 1fr; }
+  }
 </style>
 </head>
 <body>
-<canvas id="particlesBg"></canvas>
-<div class="page-wrap">
 
-  <!-- HEADER -->
-  <header class="hero">
-    <div class="hero-badge"><i class="fas fa-microchip"></i> computer · class 1</div>
-    <h1>The Computer System</h1>
-    <p class="hero-tagline">Get ready to explore the amazing parts of a computer and discover what each one does!</p>
-    <div class="hero-meta">
-      <span><i class="fas fa-layer-group"></i> Unit Unit 3</span>
-      <span><i class="fas fa-gamepad"></i> 5 Activities</span>
-      <span><i class="fas fa-star"></i> Interactive</span>
-    </div>
-  </header>
+<!-- Loading Curtain -->
+<div id="curtain">
+  <span class="curtain-emoji">💻</span>
+  <span class="curtain-text">Getting Ready... 🌟</span>
+</div>
 
-  <!-- PROGRESS -->
-  <div class="progress-bar-wrap">
-    <div class="prog-top">
-      <span><i class="fas fa-trophy"></i> Your Progress</span>
-      <span style="display:flex;align-items:center;gap:.6rem">
-        <span id="progPct">0%</span>
-        <button class="sound-btn" id="soundBtn"><i class="fas fa-volume-up"></i></button>
-      </span>
-    </div>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+<!-- Animated Background -->
+<div class="sky-bg">
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+</div>
+<div class="grass"></div>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-stars">
+    <span class="hero-star" style="top:10%;left:5%;animation-delay:0s;">⭐</span>
+    <span class="hero-star" style="top:20%;left:88%;animation-delay:0.4s;">🌟</span>
+    <span class="hero-star" style="top:60%;left:3%;animation-delay:0.8s;">⭐</span>
+    <span class="hero-star" style="top:70%;left:92%;animation-delay:0.2s;">🌟</span>
+    <span class="hero-star" style="top:40%;left:95%;animation-delay:0.6s;">⭐</span>
   </div>
+  <div class="hero-badge">🏆 Unit 3 · Digital School · Class 1</div>
+  <span class="hero-computer-emoji">🖥️</span>
+  <h1>The Computer System</h1>
+  <p class="hero-subtitle">Let's learn all about computers! 🚀</p>
+</header>
 
-  <!-- LEARNING OBJECTIVES -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-bullseye"></i> Learning Objectives</h2>
-    <ul class="objectives-list"><li><i class="fas fa-check-circle"></i> Identify the mouse and know its functions.</li><li><i class="fas fa-check-circle"></i> Identify the monitor and know its functions.</li><li><i class="fas fa-check-circle"></i> Identify the keyboard and know its functions.</li><li><i class="fas fa-check-circle"></i> Identify the system unit and know its functions.</li></ul>
-  </div>
+<!-- Main Content -->
+<div class="page-wrapper">
+  <div class="sections-container">
 
-  <!-- KEY CONCEPTS -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-lightbulb"></i> Key Concepts</h2>
-    <div class="concepts-grid">
-    <div class="concept-card">
-      <div class="concept-emoji">🖥️</div>
-      <h3 class="concept-term">Monitor</h3>
-      <p class="concept-def">A monitor is like a TV screen for your computer. It shows you pictures, videos, and everything you do on the computer, helping you see and edit your work.</p>
-      <div class="concept-examples"><span class="example-tag">Watching cartoons</span><span class="example-tag">Seeing photos</span><span class="example-tag">Playing games</span><span class="example-tag">Typing words</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">⌨️</div>
-      <h3 class="concept-term">Keyboard</h3>
-      <p class="concept-def">A keyboard is a tool with many buttons, called keys, that lets you type letters, numbers, and symbols into the computer. It helps you write and communicate.</p>
-      <div class="concept-examples"><span class="example-tag">Typing your name</span><span class="example-tag">Writing a story</span><span class="example-tag">Sending messages</span><span class="example-tag">Entering numbers</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🖱️</div>
-      <h3 class="concept-term">Mouse</h3>
-      <p class="concept-def">A mouse is a small device that fits in your hand and helps you move a pointer on the screen. You can click on things, select items, and play games with it.</p>
-      <div class="concept-examples"><span class="example-tag">Clicking on an app</span><span class="example-tag">Dragging a picture</span><span class="example-tag">Selecting text</span><span class="example-tag">Playing a game</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🧠</div>
-      <h3 class="concept-term">CPU (System Unit)</h3>
-      <p class="concept-def">The CPU, or System Unit, is like the brain of the computer. It thinks, processes data, performs calculations, and runs all the programs to solve problems.</p>
-      <div class="concept-examples"><span class="example-tag">Making the computer think</span><span class="example-tag">Running a drawing program</span><span class="example-tag">Calculating sums</span><span class="example-tag">Opening a video</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">💻</div>
-      <h3 class="concept-term">Computer System</h3>
-      <p class="concept-def">A computer system is a group of parts like the monitor, keyboard, mouse, and CPU that work together to help you do many tasks, from playing to learning.</p>
-      <div class="concept-examples"><span class="example-tag">Doing homework</span><span class="example-tag">Watching movies</span><span class="example-tag">Drawing pictures</span><span class="example-tag">Browsing the internet</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">✨</div>
-      <h3 class="concept-term">Functions</h3>
-      <p class="concept-def">Functions are the specific jobs or tasks that each part of the computer system performs. Knowing their functions helps us understand how to use them.</p>
-      <div class="concept-examples"><span class="example-tag">Monitor shows pictures</span><span class="example-tag">Keyboard types</span><span class="example-tag">Mouse clicks</span><span class="example-tag">CPU thinks</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">👆</div>
-      <h3 class="concept-term">Pointer</h3>
-      <p class="concept-def">The pointer is a small arrow or icon that moves on the computer screen when you move the mouse. It helps you select and interact with items.</p>
-      <div class="concept-examples"><span class="example-tag">Clicking an icon</span><span class="example-tag">Selecting a menu item</span><span class="example-tag">Dragging a window</span></div>
-    </div></div>
-  </div>
-
-  <!-- 3D EXPLORER -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-cube"></i> 3D Explorer · <em style="font-size:.85rem;opacity:.7;font-style:normal">A vibrant and friendly computer desk scene with a rotating c</em></h2>
-    <div class="scene-wrap">
-      <canvas id="scene3dCanvas"></canvas>
-      <div class="scene-hud">
-        <div class="hud-pill"><i class="fas fa-bullseye"></i> <b>3D Hunt</b> · Left: <span id="hud3dLeft">0</span> · Score: <span id="hud3dScore">0</span></div>
-        <div class="hud-pill"><i class="fas fa-lightbulb"></i> Hint: <span id="hud3dHint">Click the correct object</span></div>
-        <div class="hud-pill"><i class="fas fa-crosshairs"></i> Target: <span id="hud3dTarget">Find the next object</span></div>
+    <!-- Learning Objectives -->
+    <section class="fun-card blue-border" id="section-objectives">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <h2 class="card-title">What We Will Learn!</h2>
       </div>
-      <div class="hud-complete hidden" id="hud3dComplete"><i class="fas fa-trophy"></i> 3D Hunt Complete!</div>
-      <div class="hud-modal hidden" id="hud3dModal">
-        <div class="hud-card">
-          <h3 id="hud3dModalTitle">Found!</h3>
-          <p id="hud3dModalFact"></p>
-          <p style="margin-top:.6rem;font-weight:900;color:var(--a)" id="hud3dModalQ"></p>
-          <div class="hud-opts">
-            <button class="btn btn-primary hud-opt" id="hud3dOpt0">Option A</button>
-            <button class="btn btn-outline hud-opt" id="hud3dOpt1">Option B</button>
+      <div class="objectives-grid">
+        <div class="objective-pill"><span class="obj-emoji">🖱️</span><span>Identify the mouse and know its functions</span></div>
+        <div class="objective-pill"><span class="obj-emoji">🖥️</span><span>Identify the monitor and know its functions</span></div>
+        <div class="objective-pill"><span class="obj-emoji">⌨️</span><span>Identify the keyboard and know its functions</span></div>
+        <div class="objective-pill"><span class="obj-emoji">🖨️</span><span>Identify the system unit and know its functions</span></div>
+      </div>
+    </section>
+
+    <!-- Parts of a Computer -->
+    <section class="fun-card" id="section-parts">
+      <div class="card-header">
+        <span class="card-icon">🔍</span>
+        <h2 class="card-title">Parts of a Computer</h2>
+      </div>
+      <p style="font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;color:#555;margin-bottom:24px;">A computer has different parts. Let's look at each one! 👀</p>
+      <div class="parts-grid">
+        <div class="part-item" onclick="tapReveal(this,'monitor')">
+          <span class="part-emoji">🖥️</span>
+          <div class="part-name">Monitor</div>
+          <div class="tap-overlay" id="tap-monitor">👆 Tap me!</div>
+        </div>
+        <div class="part-item" onclick="tapReveal(this,'keyboard')">
+          <span class="part-emoji">⌨️</span>
+          <div class="part-name">Keyboard</div>
+          <div class="tap-overlay" id="tap-keyboard">👆 Tap me!</div>
+        </div>
+        <div class="part-item" onclick="tapReveal(this,'mouse')">
+          <span class="part-emoji">🖱️</span>
+          <div class="part-name">Mouse</div>
+          <div class="tap-overlay" id="tap-mouse">👆 Tap me!</div>
+        </div>
+        <div class="part-item" onclick="tapReveal(this,'cpu')">
+          <span class="part-emoji">🖨️</span>
+          <div class="part-name">CPU</div>
+          <div class="tap-overlay" id="tap-cpu">👆 Tap me!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monitor -->
+    <section class="fun-card" id="section-monitor">
+      <div class="card-header">
+        <span class="card-icon">🖥️</span>
+        <h2 class="card-title">Monitor</h2>
+      </div>
+      <div class="detail-card yellow">
+        <div class="detail-header">
+          <span class="detail-big-emoji">🖥️</span>
+          <div>
+            <div class="detail-title">What is a Monitor?</div>
+            <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-top:8px;">The monitor is like a TV screen for your computer!</p>
           </div>
-          <div class="hud3d-fb" id="hud3dModalFb"></div>
-          <div class="btn-row" style="justify-content:flex-end">
-            <button class="btn btn-outline" id="hud3dClose"><i class="fas fa-xmark"></i> Close</button>
+        </div>
+        <div class="functions-section">
+          <div class="function-item"><span class="function-icon">📸</span><span>It <strong>shows pictures</strong> on the screen.</span></div>
+          <div class="function-item"><span class="function-icon">📺</span><span>It <strong>turns on and off</strong> like a TV.</span></div>
+          <div class="function-item"><span class="function-icon">🎬</span><span>It helps us <strong>see and edit photos and videos</strong>.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CPU -->
+    <section class="fun-card red-border" id="section-cpu">
+      <div class="card-header">
+        <span class="card-icon">🧠</span>
+        <h2 class="card-title">CPU – The Brain! 🧠</h2>
+      </div>
+      <div class="detail-card red">
+        <div class="detail-header">
+          <span class="detail-big-emoji">🖨️</span>
+          <div>
+            <div class="detail-title">What is the CPU?</div>
+            <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-top:8px;">CPU stands for <strong>Central Processing Unit</strong>. It is the brain of the computer!</p>
+          </div>
+        </div>
+        <div class="functions-section">
+          <div class="function-item"><span class="function-icon">🧠</span><span>It is the <strong>brain of the computer</strong> that solves many problems.</span></div>
+          <div class="function-item"><span class="function-icon">💡</span><span>It helps the computer <strong>think, process data</strong> and perform calculations.</span></div>
+          <div class="function-item"><span class="function-icon">▶️</span><span>It <strong>runs programs</strong> on the computer.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keyboard -->
+    <section class="fun-card blue-border" id="section-keyboard">
+      <div class="card-header">
+        <span class="card-icon">⌨️</span>
+        <h2 class="card-title">Keyboard</h2>
+      </div>
+      <div class="detail-card">
+        <div class="detail-header">
+          <span class="detail-big-emoji">⌨️</span>
+          <div>
+            <div class="detail-title">What is a Keyboard?</div>
+            <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-top:8px;">We use a keyboard to type letters, words and numbers!</p>
+          </div>
+        </div>
+        <div class="functions-section">
+          <div class="function-item"><span class="function-icon">✍️</span><span>It <strong>types letters and words</strong> into the computer.</span></div>
+          <div class="function-item"><span class="function-icon">💬</span><span>It helps us <strong>write and communicate</strong> with the computer.</span></div>
+          <div class="function-item"><span class="function-icon">🔤</span><span>We use <strong>alphabet keys</strong> to type letters and <strong>numeric keys</strong> to type numbers.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mouse -->
+    <section class="fun-card purple-border" id="section-mouse">
+      <div class="card-header">
+        <span class="card-icon">🖱️</span>
+        <h2 class="card-title">Mouse</h2>
+      </div>
+      <div class="detail-card purple">
+        <div class="detail-header">
+          <span class="detail-big-emoji">🖱️</span>
+          <div>
+            <div class="detail-title">What is a Mouse?</div>
+            <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-top:8px;">The mouse helps you point and click on things on the screen!</p>
+          </div>
+        </div>
+        <div class="functions-section">
+          <div class="function-item"><span class="function-icon">👆</span><span>It <strong>moves the pointer</strong> on the screen to click on things.</span></div>
+          <div class="function-item"><span class="function-icon">🔲</span><span>It helps us <strong>select and move items</strong> on the computer.</span></div>
+          <div class="function-item"><span class="function-icon">🎮</span><span>It <strong>controls the arrow</strong> on the screen to play games and click buttons.</span></div>
+          <div class="function-item"><span class="function-icon">🖐️</span><span>It also helps us <strong>drag and drop</strong> objects.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 1 – Drag and Drop Matching -->
+    <section class="fun-card" id="section-ex1">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Exercise 1 — Match It! 🎯</h2>
+      </div>
+      <div class="drag-section">
+        <p class="drag-instruction">👆 Drag the word to the right picture!</p>
+        <div class="drag-items-row" id="drag-words">
+          <div class="drag-word" draggable="true" data-word="Monitor" id="dw-monitor" 
+               ontouchstart="touchDragStart(event,this)" ontouchmove="touchDragMove(event)" ontouchend="touchDragEnd(event)">🖥️ Monitor</div>
+          <div class="drag-word" draggable="true" data-word="Keyboard" id="dw-keyboard"
+               ontouchstart="touchDragStart(event,this)" ontouchmove="touchDragMove(event)" ontouchend="touchDragEnd(event)">⌨️ Keyboard</div>
+          <div class="drag-word" draggable="true" data-word="Mouse" id="dw-mouse"
+               ontouchstart="touchDragStart(event,this)" ontouchmove="touchDragMove(event)" ontouchend="touchDragEnd(event)">🖱️ Mouse</div>
+          <div class="drag-word" draggable="true" data-word="CPU" id="dw-cpu"
+               ontouchstart="touchDragStart(event,this)" ontouchmove="touchDragMove(event)" ontouchend="touchDragEnd(event)">🧠 CPU</div>
+        </div>
+        <div class="drop-targets">
+          <div class="drop-target" data-answer="Monitor" 
+               ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropItem(event,this)">
+            <span class="drop-emoji">🖥️</span>
+            <div class="drop-label">Drop here!</div>
+          </div>
+          <div class="drop-target" data-answer="Keyboard"
+               ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropItem(event,this)">
+            <span class="drop-emoji">⌨️</span>
+            <div class="drop-label">Drop here!</div>
+          </div>
+          <div class="drop-target" data-answer="Mouse"
+               ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropItem(event,this)">
+            <span class="drop-emoji">🖱️</span>
+            <div class="drop-label">Drop here!</div>
+          </div>
+          <div class="drop-target" data-answer="CPU"
+               ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropItem(event,this)">
+            <span class="drop-emoji">🧠</span>
+            <div class="drop-label">Drop here!</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+          <button class="retry-btn" onclick="resetDragDrop()">🔄 Try Again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 2 – True or False -->
+    <section class="fun-card blue-border" id="section-ex2">
+      <div class="card-header">
+        <span class="card-icon">✅</span>
+        <h2 class="card-title">Exercise 2 — True or False? 🤔</h2>
+      </div>
+      <p style="font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;color:#555;margin-bottom:20px;">Is it TRUE ✅ or FALSE ❌? Tap to answer!</p>
+      <div class="tf-list">
+        <div class="tf-item">
+          <div class="tf-statement">🖥️ The monitor shows pictures on the screen.</div>
+          <div class="tf-btns">
+            <button class="tf-btn true-btn" onclick="checkTF(this, true, true)">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this, false, true)">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item">
+          <div class="tf-statement">🧠 The CPU is known as the brain of the computer.</div>
+          <div class="tf-btns">
+            <button class="tf-btn true-btn" onclick="checkTF(this, true, true)">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this, false, true)">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item">
+          <div class="tf-statement">🖱️ The mouse helps us type letters and words into the computer.</div>
+          <div class="tf-btns">
+            <button class="tf-btn true-btn" onclick="checkTF(this, true, false)">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this, false, false)">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item">
+          <div class="tf-statement">⌨️ The keyboard is used to move the pointer on the screen.</div>
+          <div class="tf-btns">
+            <button class="tf-btn true-btn" onclick="checkTF(this, true, false)">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this, false, false)">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item">
+          <div class="tf-statement">🖱️ The mouse shows pictures on the screen.</div>
+          <div class="tf-btns">
+            <button class="tf-btn true-btn" onclick="checkTF(this, true, false)">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this, false, false)">❌ False</button>
           </div>
         </div>
       </div>
-      <div class="scene-hint"><i class="fas fa-hand-paper"></i> Drag to rotate · Scroll/pinch to zoom</div>
-      <div class="scene-controls">
-        <button class="scene-btn" id="btn3dZoomIn"  title="Zoom in"><i class="fas fa-plus"></i></button>
-        <button class="scene-btn" id="btn3dZoomOut" title="Zoom out"><i class="fas fa-minus"></i></button>
-        <button class="scene-btn" id="btn3dReset"   title="Reset view"><i class="fas fa-sync-alt"></i></button>
-      </div>
-      <div class="scene-desc">A vibrant and friendly computer desk scene with a rotating computer system. The </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- FUN FACTS -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-star"></i> Fun Facts</h2>
-    <div class="fun-facts-wrap"><div class="fun-fact"><i class="fas fa-star"></i> The first computer mouse was made of wood!</div><div class="fun-fact"><i class="fas fa-star"></i> Keyboards have been around for over 150 years, starting as typewriters.</div><div class="fun-fact"><i class="fas fa-star"></i> The CPU can do billions of calculations every second, making it super fast!</div></div>
-  </div>
+    <!-- Exercise 3 – Fill in the blanks (shown as word bank) -->
+    <section class="fun-card red-border" id="section-ex3">
+      <div class="card-header">
+        <span class="card-icon">📝</span>
+        <h2 class="card-title">Exercise 3 — Fill the Blanks! 📝</h2>
+      </div>
+      <p style="font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;color:#555;margin-bottom:20px;">Use the word bank to fill in the blanks! 👇</p>
+      <div class="exercise-grid">
+        <div class="word-bank-item"><span class="wb-emoji">🖱️</span><span>mouse</span></div>
+        <div class="word-bank-item"><span class="wb-emoji">🖥️</span><span>screen</span></div>
+        <div class="word-bank-item"><span class="wb-emoji">🖥️</span><span>monitor</span></div>
+        <div class="word-bank-item"><span class="wb-emoji">⌨️</span><span>keyboard</span></div>
+        <div class="word-bank-item"><span class="wb-emoji">🧠</span><span>CPU</span></div>
+      </div>
+      <ul class="fill-blank-list">
+        <li>1. The <strong>monitor</strong> shows pictures on the <strong>screen</strong>. 🖥️</li>
+        <li>2. The <strong>CPU</strong> is the brain of the computer that helps it think and solve problems. 🧠</li>
+        <li>3. The <strong>keyboard</strong> is used to type letters and numbers into the computer. ⌨️</li>
+        <li>4. The <strong>mouse</strong> moves the pointer on the screen and helps us select things. 🖱️</li>
+      </ul>
+    </section>
 
-  
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-book"></i> Story Explanation</h2>
-    <div class="enrich-text">Once upon a time, there was a friendly computer named Chip. Chip had a big family of parts that loved to work together! His shiny Monitor was like his eyes, showing all the colorful pictures. His busy Keyboard was like his fingers, typing out exciting stories. His quick Mouse was like his pointing finger, helping him click on adventures. And deep inside, his clever CPU was like his brain, thinking super fast to make everything happen. Together, they were the best computer system, ready for any task!</div>
-  </div>
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Common Mistakes</h2>
-    <ul class='enrich-list'><li>Confusing the monitor with the CPU.</li><li>Thinking the mouse types words instead of the keyboard.</li><li>Believing the keyboard moves the pointer on the screen.</li></ul>
-  </div>
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-bolt"></i> Quick Check</h2>
-    <div class='qa-wrap'><div class='qa-item'><div class='qa-q'>What is the main job of the monitor?</div><div class='qa-a'>To show pictures and videos.</div></div><div class='qa-item'><div class='qa-q'>What do you use to type letters?</div><div class='qa-a'>The keyboard.</div></div><div class='qa-item'><div class='qa-q'>Which part is the \'brain\' of the computer?</div><div class='qa-a'>The CPU (or System Unit).</div></div><div class='qa-item'><div class='qa-q'>How do you move the arrow on the screen?</div><div class='qa-a'>With the mouse.</div></div><div class='qa-item'><div class='qa-q'>What is a computer system?</div><div class='qa-a'>All the computer parts working together.</div></div></div>
-  </div>
+    <!-- Fun Quiz -->
+    <section class="fun-card" id="section-quiz">
+      <div class="quiz-header">
+        <div class="card-header" style="justify-content:center;">
+          <span class="card-icon">🎮</span>
+          <h2 class="card-title">Fun Quiz Time! 🌟</h2>
+        </div>
+        <p class="quiz-subtitle">Look at the picture and pick the right answer! 🎯</p>
+      </div>
 
-  <!-- GAMES TABS -->
-  <div class="tabs-wrap">
-    <div class="tabs-header">
-      <button class="tab-btn active" data-tab="sort"><i class="fas fa-layer-group"></i> Sort</button>
-      <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
-      <button class="tab-btn" data-tab="tf"><i class="fas fa-check-double"></i> True/False</button>
-      <button class="tab-btn" data-tab="extra"><i class="fas fa-pencil-alt"></i> Fill Blank</button>
-    </div>
-    <div class="tab-content">
-      
-<div class="game-section" id="tab-sort">
-  <p class="game-instruction"><i class="fas fa-hand-point-up"></i> Drag each item to the computer part it belongs to!</p>
-  <div class="sort-zones">
-      <div class="sort-zone" data-category="Input Devices"
-           style="--cat-color:#FFDDC1">
-        <h4><i class="fas fa-keyboard"></i> Input Devices</h4>
-        <div class="sort-items-drop"></div>
+      <!-- Q1 -->
+      <div class="quiz-question-card" id="qq1">
+        <span class="q-number">Question 1 of 5</span>
+        <span class="q-image-prompt">🖥️</span>
+        <div class="q-text">Which part of the computer SHOWS pictures on the screen?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkQuiz(this,'correct','qq1')"><span class="q-option-emoji">🖥️</span>Monitor</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq1')"><span class="q-option-emoji">⌨️</span>Keyboard</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq1')"><span class="q-option-emoji">🖱️</span>Mouse</button>
+        </div>
+        <div class="feedback-text" id="fb1"></div>
       </div>
-      <div class="sort-zone" data-category="Output Devices"
-           style="--cat-color:#D1FFC1">
-        <h4><i class="fas fa-desktop"></i> Output Devices</h4>
-        <div class="sort-items-drop"></div>
-      </div>
-      <div class="sort-zone" data-category="Processing Unit"
-           style="--cat-color:#C1D1FF">
-        <h4><i class="fas fa-microchip"></i> Processing Unit</h4>
-        <div class="sort-items-drop"></div>
-      </div></div>
-  <div class="item-pool" id="sortPool">
-      <div class="sort-item" draggable="true"
-           data-answer="Processing Unit">
-        🧠 CPU
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Input Devices">
-        ⌨️ Keyboard
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Output Devices">
-        🖥️ Monitor
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Input Devices">
-        🖱️ Mouse
-      </div></div>
-  <div class="game-feedback hidden" id="sortFeedback"></div>
-  <div class="btn-row">
-    <button class="btn btn-primary" id="checkSort"><i class="fas fa-check"></i> Check</button>
-    <button class="btn btn-outline" id="resetSort"><i class="fas fa-redo"></i> Reset</button>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-quiz">
-  <div class="quiz-header">
-    <span class="quiz-title"><i class="fas fa-question-circle"></i> Knowledge Quiz</span>
-    <div class="quiz-prog-wrap">
-      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quizProgFill"></div></div>
-      <span class="quiz-prog-text" id="quizProgText">Q 1 / 8</span>
-    </div>
-  </div>
-  <div class="quiz-card" id="quizCard">
-    <div class="quiz-q" id="quizQ"></div>
-    <div class="quiz-options" id="quizOpts"></div>
-    <div class="quiz-feedback hidden" id="quizFb"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-outline" id="quizPrev"><i class="fas fa-arrow-left"></i> Back</button>
-      <button class="btn btn-primary" id="quizNext">Next <i class="fas fa-arrow-right"></i></button>
-    </div>
-  </div>
-  <div class="results-overlay hidden" id="quizResults">
-    <div class="results-card">
-      <div class="results-icon"><i class="fas fa-star"></i></div>
-      <h3 id="quizResultTitle"></h3>
-      <p id="quizResultScore"></p>
-      <div class="stars-row" id="quizStars"></div>
-      <p id="quizResultTip"></p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="quizRetry"><i class="fas fa-redo"></i> Try Again</button>
-        <button class="btn btn-outline" id="quizClose"><i class="fas fa-times"></i> Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-tf">
-  <div class="quiz-header">
-    <span class="quiz-title"><i class="fas fa-check-double"></i> True or False?</span>
-    <div class="quiz-prog-wrap">
-      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="tfProgFill"></div></div>
-      <span class="quiz-prog-text" id="tfProgText">1 / 8</span>
-    </div>
-  </div>
-  <div class="quiz-card" id="tfCard">
-    <div class="quiz-q" id="tfQ"></div>
-    <div class="tf-choices">
-      <button class="tf-btn tf-true"  id="tfTrue" ><i class="fas fa-check"></i> True</button>
-      <button class="tf-btn tf-false" id="tfFalse"><i class="fas fa-times"></i> False</button>
-    </div>
-    <div class="quiz-feedback hidden" id="tfFb"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-outline" id="tfPrev"><i class="fas fa-arrow-left"></i> Back</button>
-      <button class="btn btn-primary"  id="tfNext">Next <i class="fas fa-arrow-right"></i></button>
-    </div>
-  </div>
-  <div class="results-overlay hidden" id="tfResults">
-    <div class="results-card">
-      <div class="results-icon"><i class="fas fa-award"></i></div>
-      <h3 id="tfResultTitle"></h3>
-      <p id="tfResultScore"></p>
-      <div class="stars-row" id="tfStars"></div>
-      <p id="tfResultTip"></p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="tfRetry"><i class="fas fa-redo"></i> Try Again</button>
-        <button class="btn btn-outline" id="tfClose"><i class="fas fa-times"></i> Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-extra">
-  <p class="game-instruction"><i class="fas fa-pencil-alt"></i> Fill in the missing word in each sentence!</p>
-  <div class="blanks-container">
-  <div class="blank-item" id="blankItem0">
-    <div class="blank-sentence">The <input class="blank-input" data-idx="0" data-answer="monitor" placeholder="???" autocomplete="off"> shows pictures on the screen.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It's like a TV.</div>
-    <div class="blank-result hidden" id="blankResult0"></div>
-  </div>
-  <div class="blank-item" id="blankItem1">
-    <div class="blank-sentence">The <input class="blank-input" data-idx="1" data-answer="CPU" placeholder="???" autocomplete="off"> is the brain of the computer.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It helps the computer think.</div>
-    <div class="blank-result hidden" id="blankResult1"></div>
-  </div>
-  <div class="blank-item" id="blankItem2">
-    <div class="blank-sentence">The <input class="blank-input" data-idx="2" data-answer="keyboard" placeholder="???" autocomplete="off"> is used to type letters and numbers.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It has many keys.</div>
-    <div class="blank-result hidden" id="blankResult2"></div>
-  </div>
-  <div class="blank-item" id="blankItem3">
-    <div class="blank-sentence">The <input class="blank-input" data-idx="3" data-answer="mouse" placeholder="???" autocomplete="off"> moves the pointer on the screen.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> You hold it in your hand.</div>
-    <div class="blank-result hidden" id="blankResult3"></div>
-  </div>
-  <div class="blank-item" id="blankItem4">
-    <div class="blank-sentence">A computer <input class="blank-input" data-idx="4" data-answer="system" placeholder="???" autocomplete="off"> has many parts working together.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It's a group of devices.</div>
-    <div class="blank-result hidden" id="blankResult4"></div>
-  </div></div>
-  <div class="btn-row" style="margin-top:1rem">
-    <button class="btn btn-primary" id="checkBlanks"><i class="fas fa-check"></i> Check All</button>
-    <button class="btn btn-outline" id="resetBlanks"><i class="fas fa-redo"></i> Reset</button>
-  </div>
-  <div class="game-feedback hidden" id="blanksFeedback"></div>
-</div>
-    </div>
-  </div>
 
-</div><!-- /page-wrap -->
+      <!-- Q2 -->
+      <div class="quiz-question-card" id="qq2">
+        <span class="q-number">Question 2 of 5</span>
+        <span class="q-image-prompt">🧠</span>
+        <div class="q-text">Which part is the BRAIN of the computer?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq2')"><span class="q-option-emoji">🖥️</span>Monitor</button>
+          <button class="q-option" onclick="checkQuiz(this,'correct','qq2')"><span class="q-option-emoji">🖨️</span>CPU</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq2')"><span class="q-option-emoji">🖱️</span>Mouse</button>
+        </div>
+        <div class="feedback-text" id="fb2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question-card" id="qq3">
+        <span class="q-number">Question 3 of 5</span>
+        <span class="q-image-prompt">⌨️</span>
+        <div class="q-text">Which part do we use to TYPE letters and numbers?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq3')"><span class="q-option-emoji">🖱️</span>Mouse</button>
+          <button class="q-option" onclick="checkQuiz(this,'correct','qq3')"><span class="q-option-emoji">⌨️</span>Keyboard</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq3')"><span class="q-option-emoji">🖥️</span>Monitor</button>
+        </div>
+        <div class="feedback-text" id="fb3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question-card" id="qq4">
+        <span class="q-number">Question 4 of 5</span>
+        <span class="q-image-prompt">🖱️</span>
+        <div class="q-text">Which part MOVES the pointer on the screen?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkQuiz(this,'correct','qq4')"><span class="q-option-emoji">🖱️</span>Mouse</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq4')"><span class="q-option-emoji">⌨️</span>Keyboard</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq4')"><span class="q-option-emoji">🖨️</span>CPU</button>
+        </div>
+        <div class="feedback-text" id="fb4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question-card" id="qq5">
+        <span class="q-number">Question 5 of 5</span>
+        <span class="q-image-prompt">💡</span>
+        <div class="q-text">The CPU helps the computer THINK and PROCESS data. Is this TRUE?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkQuiz(this,'correct','qq5')"><span class="q-option-emoji">✅</span>Yes, TRUE!</button>
+          <button class="q-option" onclick="checkQuiz(this,'wrong','qq5')"><span class="q-option-emoji">❌</span>No, FALSE!</button>
+        </div>
+        <div class="feedback-text" id="fb5"></div>
+      </div>
+
+      <!-- Score -->
+      <div class="score-display" id="score-display">
+        <h2>🎉 Great Job! You finished! 🎉</h2>
+        <span class="score-big" id="score-emoji">🌟</span>
+        <p id="score-text">You got all questions right!</p>
+        <button class="retry-btn" onclick="resetQuiz()">🔄 Play Again!</button>
+      </div>
+    </section>
+
+    <!-- Activity -->
+    <section class="fun-card blue-border" id="section-activity">
+      <div class="card-header">
+        <span class="card-icon">🎨</span>
+        <h2 class="card-title">Fun Activity! 🎨</h2>
+      </div>
+      <div style="background:linear-gradient(135deg,#e3f2fd,#fff);border:4px solid #42a5f5;border-radius:24px;padding:28px 24px;font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;color:#333;line-height:1.8;">
+        <p>🖼️ Use <strong>hard covers of old books</strong>, scissors, glue/tape, and crayons to make your own computer parts!</p>
+        <br>
+        <p>📰 You can make <strong>wires using old newspapers</strong> as well.</p>
+        <br>
+        <p>👩‍🏫 Put them all together with the help of your teacher!</p>
+        <br>
+        <div style="text-align:center;font-size:4rem;margin-top:10px;">🖥️ ⌨️ 🖱️ 🖨️</div>
+      </div>
+    </section>
+
+  </div><!-- end sections-container -->
+</div><!-- end page-wrapper -->
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a class="bottom-nav-item" href="#section-objectives"><span>🎯</span><span>Goals</span></a>
+    <a class="bottom-nav-item" href="#section-parts"><span>🔍</span><span>Parts</span></a>
+    <a class="bottom-nav-item" href="#section-monitor"><span>🖥️</span><span>Monitor</span></a>
+    <a class="bottom-nav-item" href="#section-cpu"><span>🧠</span><span>CPU</span></a>
+    <a class="bottom-nav-item" href="#section-keyboard"><span>⌨️</span><span>Keyboard</span></a>
+    <a class="bottom-nav-item" href="#section-mouse"><span>🖱️</span><span>Mouse</span></a>
+    <a class="bottom-nav-item" href="#section-ex1"><span>🎯</span><span>Match</span></a>
+    <a class="bottom-nav-item" href="#section-quiz"><span>🎮</span><span>Quiz</span></a>
+  </div>
+</nav>
 
 <script>
-// ── PROGRESS ──────────────────────────────────────────────────
-const PROGRESS = (function(){
-  const done={scene:false,sort:false,quiz:false,tf:false,extra:false};
-  function mark(k){
-    done[k]=true;
-    const n=Object.values(done).filter(Boolean).length;
-    const pct=Math.round(n/5*100);
-    document.getElementById('progFill').style.width=pct+'%';
-    document.getElementById('progPct').textContent=pct+'%';
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Curtain dismiss - guaranteed fallback
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // === LENIS SMOOTH SCROLL ===
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const shouldUseLenis = !(navigator.deviceMemory && navigator.deviceMemory < 2);
+      if (shouldUseLenis) {
+        const lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        } else {
+          function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+          requestAnimationFrame(raf);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // === GSAP ANIMATIONS ===
+  try {
+    if (typeof gsap !== 'undefined') {
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Dismiss curtain with GSAP
+      const curtain = document.getElementById('curtain');
+      if (curtain) {
+        gsap.to(curtain, {
+          opacity: 0,
+          duration: 0.5,
+          delay: 1.2,
+          onComplete: () => { curtain.style.display = 'none'; }
+        });
+      }
+
+      // Hero entrance
+      gsap.from('.hero-computer-emoji', { y: -60, opacity: 0, duration: 0.6, ease: 'bounce.out', delay: 0.3 });
+      gsap.from('.hero h1', { y: 30, opacity: 0, duration: 0.5, delay: 0.5 });
+      gsap.from('.hero-subtitle', { y: 20, opacity: 0, duration: 0.4, delay: 0.7 });
+
+      // Cards stagger entrance + ScrollTrigger
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        if (typeof ScrollTrigger !== 'undefined') {
+          gsap.fromTo(card,
+            { y: 40, scale: 0.92, opacity: 0.7 },
+            {
+              y: 0, scale: 1, opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+              }
+            }
+          );
+        } else {
+          gsap.from(card, {
+            y: 40, scale: 0.92,
+            duration: 0.5,
+            delay: 0.1 + i * 0.08,
+            ease: 'power2.out'
+          });
+        }
+      });
+
+    } else {
+      // Fallback: hide curtain without GSAP
+      const c = document.getElementById('curtain');
+      if (c) setTimeout(() => { c.style.display = 'none'; }, 1500);
+    }
+  } catch(e) {
+    console.warn('GSAP init failed:', e);
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
   }
-  return {mark};
-})();
 
-// ── SOUND ─────────────────────────────────────────────────────
-const SFX = (function(){
-  const AC=window.AudioContext||window.webkitAudioContext;
-  let ctx=null, master=null, on=true;
-  const btn=document.getElementById('soundBtn');
-
-  function ensureCtx(){
-    if(!on||!AC) return null;
-    if(!ctx){ ctx=new AC(); master=ctx.createGain(); master.gain.value=1.2; master.connect(ctx.destination); }
-    if(ctx.state==='suspended') ctx.resume().catch(()=>{});
-    return ctx;
-  }
-
-  function tone(freq,dur,type='sine',gain=0.07,when=0,endFreq=null){
-    const c=ensureCtx(); if(!c) return;
-    const t0=c.currentTime+when;
-    const osc=c.createOscillator(); const g=c.createGain();
-    osc.type=type; osc.frequency.setValueAtTime(freq,t0);
-    if(endFreq!==null) osc.frequency.linearRampToValueAtTime(endFreq,t0+dur);
-    g.gain.setValueAtTime(0.001,t0); g.gain.exponentialRampToValueAtTime(Math.min(gain,0.12),t0+0.01);
-    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
-    osc.connect(g); g.connect(master||c.destination);
-    osc.start(t0); osc.stop(t0+dur+0.05);
-  }
-
-  function play(name){
-    if(name==='click')  { tone(500,0.06,'triangle',0.06); return; }
-    if(name==='correct'){ tone(520,0.14,'sine',0.08,0,880); return; }
-    if(name==='wrong')  { tone(300,0.18,'triangle',0.08,0,150); return; }
-    if(name==='complete'){ tone(523,0.12,'sine',0.08,0,784); tone(659,0.12,'sine',0.08,.12,988); tone(784,0.14,'sine',0.07,.24,1046); return; }
-  }
-
-  function toggle(){ on=!on; btn.innerHTML=on?'<i class="fas fa-volume-up"></i>':'<i class="fas fa-volume-mute"></i>'; if(on)play('click'); }
-  btn.addEventListener('click',toggle);
-  ['pointerdown','keydown'].forEach(ev=>window.addEventListener(ev,()=>ensureCtx(),{once:true,passive:true}));
-  return {play};
-})();
-
-// ── TABS ──────────────────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    SFX.play('click');
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.game-section').forEach(s=>s.classList.add('hidden'));
-    btn.classList.add('active');
-    document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+  // Smooth scroll for bottom nav links
+  document.querySelectorAll('.bottom-nav-item').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
+
 });
 
-// ── BACKGROUND PARTICLES ─────────────────────────────────────
-(function(){
-  const cv=document.getElementById('particlesBg');
-  const ctx=cv.getContext('2d');
-  const COLORS=["#00E5CC", "#1F6A75", "#F49040"];
-  let W,H,particles=[];
-
-  function resize(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
-  window.addEventListener('resize',resize); resize();
-
-  for(let i=0;i<55;i++) particles.push({
-    x:Math.random()*W, y:Math.random()*H,
-    r:1+Math.random()*2.5, vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
-    c:COLORS[Math.floor(Math.random()*COLORS.length)], o:0.1+Math.random()*0.4
-  });
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W) p.vx*=-1;
-      if(p.y<0||p.y>H) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.c; ctx.globalAlpha=p.o; ctx.fill(); ctx.globalAlpha=1;
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ── 3D SCENE ─────────────────────────────────────────────────
-
-// ── 3D SCENE SETUP ──────────────────────────────────────────────
-const scene3d      = new THREE.Scene();
-const clock        = new THREE.Clock();
-const sceneObjects = [];
-const labelSprites = [];
-scene3d.background = new THREE.Color('#ecf0f1');
-scene3d.fog        = new THREE.FogExp2('#ecf0f1', 0.04);
-
-const ambLight = new THREE.AmbientLight(0xffffff, 0.55);
-scene3d.add(ambLight);
-const ptLight1 = new THREE.PointLight(0x32CD32, 1.5, 30);
-ptLight1.position.set(5, 5, 5);
-scene3d.add(ptLight1);
-const ptLight2 = new THREE.PointLight(0xffffff, 0.8, 20);
-ptLight2.position.set(-5, -5, 8);
-scene3d.add(ptLight2);
-
-// Starfield background
-(function() {
-  const starGeo = new THREE.BufferGeometry();
-  const starVerts = [];
-  for (let i = 0; i < 600; i++) {
-    starVerts.push((Math.random()-0.5)*80, (Math.random()-0.5)*80, (Math.random()-0.5)*80);
-  }
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.08, transparent: true, opacity: 0.7 });
-  scene3d.add(new THREE.Points(starGeo, starMat));
-})();
-
-// Ground grid
-const gridHelper = new THREE.GridHelper(20, 20, 0x008080, 0xFF8C00);
-gridHelper.position.y = -2.5;
-gridHelper.material.opacity = 0.3;
-gridHelper.material.transparent = true;
-scene3d.add(gridHelper);
-
-// Create content objects
-
-  {
-    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x3498db,
-      shininess: 90,
-      emissive: 0x3498db,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle0 = (Math.PI * 2 / 8) * 0;
-    mesh.position.set(
-      2.5 * Math.cos(angle0),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle0)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 0 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'float';
-    mesh.userData.label   = 'Monitor';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Monitor', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x2ecc71,
-      shininess: 90,
-      emissive: 0x2ecc71,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle1 = (Math.PI * 2 / 8) * 1;
-    mesh.position.set(
-      2.5 * Math.cos(angle1),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle1)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 1 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'pulse';
-    mesh.userData.label   = 'Keyboard';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Keyboard', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.IcosahedronGeometry(0.7, 1);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0xe74c3c,
-      shininess: 90,
-      emissive: 0xe74c3c,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle2 = (Math.PI * 2 / 8) * 2;
-    mesh.position.set(
-      2.5 * Math.cos(angle2),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle2)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 2 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'bounce';
-    mesh.userData.label   = 'Mouse';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Mouse', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0xf39c12,
-      shininess: 90,
-      emissive: 0xf39c12,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle3 = (Math.PI * 2 / 8) * 3;
-    mesh.position.set(
-      2.5 * Math.cos(angle3),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle3)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 3 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'rotate';
-    mesh.userData.label   = 'CPU';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('CPU', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x8B4513,
-      shininess: 90,
-      emissive: 0x8B4513,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle4 = (Math.PI * 2 / 8) * 4;
-    mesh.position.set(
-      2.5 * Math.cos(angle4),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle4)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 4 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'none';
-    mesh.userData.label   = 'Desk';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Desk', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.CylinderGeometry(0.5, 0.5, 1.4, 32);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x7f8c8d,
-      shininess: 90,
-      emissive: 0x7f8c8d,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle5 = (Math.PI * 2 / 8) * 5;
-    mesh.position.set(
-      2.5 * Math.cos(angle5),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle5)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 5 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'orbit';
-    mesh.userData.label   = 'Wires';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Wires', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.CylinderGeometry(0.5, 0.5, 1.4, 32);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x7f8c8d,
-      shininess: 90,
-      emissive: 0x7f8c8d,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle6 = (Math.PI * 2 / 8) * 6;
-    mesh.position.set(
-      2.5 * Math.cos(angle6),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle6)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 6 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'orbit';
-    mesh.userData.label   = 'Wires';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Wires', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.CylinderGeometry(0.5, 0.5, 1.4, 32);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x7f8c8d,
-      shininess: 90,
-      emissive: 0x7f8c8d,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle7 = (Math.PI * 2 / 8) * 7;
-    mesh.position.set(
-      2.5 * Math.cos(angle7),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle7)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 7 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'orbit';
-    mesh.userData.label   = 'Wires';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Wires', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-
-// ── 3D HUNT GAME DATA ───────────────────────────────────────────
-const GAME3D = {"mode": "hunt", "instruction": "Find and click on the different parts of the computer system to learn more about them!", "targets": [{"object_label": "Monitor", "hint": "It's where you see all the pictures!", "fact": "The monitor displays everything you do on the computer, just like a TV.", "question": "What does the monitor show?", "options": ["Pictures and videos", "Sounds and music"], "correct_index": 0}, {"object_label": "Keyboard", "hint": "It has many buttons for typing.", "fact": "You use the keyboard to type letters, numbers, and words into the computer.", "question": "What do you use the keyboard for?", "options": ["Typing words", "Moving the pointer"], "correct_index": 0}, {"object_label": "Mouse", "hint": "It helps you click and move things.", "fact": "The mouse helps you control the arrow on the screen and click on different items.", "question": "What does the mouse help you move?", "options": ["The pointer", "The computer screen"], "correct_index": 0}, {"object_label": "CPU", "hint": "This is the brain of the computer!", "fact": "The CPU, or system unit, is where the computer does all its thinking and processing.", "question": "What is the CPU known as?", "options": ["The computer's brain", "The computer's eyes"], "correct_index": 0}, {"object_label": "Wires", "hint": "They connect all the parts together.", "fact": "Wires are important because they carry information and power between all the different computer parts, making them work as a team.", "question": "What do wires do for computer parts?", "options": ["Connect them", "Decorate them"], "correct_index": 0}]};
-const GAME3D_STATE = {
-  idx: 0,
-  found: new Set(),
-  score: 0,
-  locked: false,
+// ============================================================
+// TAP REVEAL
+// ============================================================
+const tapMessages = {
+  monitor: '🖥️ I show pictures on the screen! Tap again to hide.',
+  keyboard: '⌨️ I help you type letters and numbers! Tap again to hide.',
+  mouse: '🖱️ I move the pointer! Click to select things! Tap again to hide.',
+  cpu: '🧠 I am the brain of the computer! Tap again to hide.'
 };
 
-function setHud(textHint='', textTarget='') {
-  const hintEl = document.getElementById('hud3dHint');
-  const tgtEl = document.getElementById('hud3dTarget');
-  const leftEl = document.getElementById('hud3dLeft');
-  const scoreEl = document.getElementById('hud3dScore');
-  if (hintEl) hintEl.textContent = textHint || '';
-  if (tgtEl) tgtEl.textContent = textTarget || '';
-  if (leftEl && GAME3D?.targets?.length) leftEl.textContent = String(Math.max(0, GAME3D.targets.length - GAME3D_STATE.found.size));
-  if (scoreEl) scoreEl.textContent = String(GAME3D_STATE.score);
-}
+const tapState = {};
 
-function currentTarget() {
-  if (!GAME3D || !Array.isArray(GAME3D.targets) || GAME3D.targets.length === 0) return null;
-  for (let i = 0; i < GAME3D.targets.length; i++) {
-    const t = GAME3D.targets[i];
-    if (!GAME3D_STATE.found.has(t.object_label)) return t;
-  }
-  return null;
-}
+function tapReveal(el, key) {
+  const overlay = el.querySelector('.tap-overlay');
+  if (!overlay) return;
 
-function open3dModal(target, isCorrect=null, chosenIndex=null) {
-  const modal = document.getElementById('hud3dModal');
-  if (!modal) return;
-  modal.classList.remove('hidden');
-  const title = document.getElementById('hud3dModalTitle');
-  const fact = document.getElementById('hud3dModalFact');
-  const q = document.getElementById('hud3dModalQ');
-  const opt0 = document.getElementById('hud3dOpt0');
-  const opt1 = document.getElementById('hud3dOpt1');
-  const fb = document.getElementById('hud3dModalFb');
-
-  if (title) title.textContent = `Found: ${target.object_label}`;
-  if (fact) fact.textContent = target.fact || '';
-  if (q) q.textContent = target.question || '';
-
-  const opts = Array.isArray(target.options) ? target.options : [];
-  if (opt0) opt0.textContent = opts[0] ?? 'Option A';
-  if (opt1) opt1.textContent = opts[1] ?? 'Option B';
-
-  if (fb) {
-    if (isCorrect === true) {
-      fb.className = 'hud3d-fb fb-success';
-      fb.textContent = 'Correct! +2 points';
-    } else if (isCorrect === false) {
-      fb.className = 'hud3d-fb fb-error';
-      fb.textContent = 'Not quite. +0 points';
-    } else {
-      fb.className = 'hud3d-fb';
-      fb.textContent = '';
+  if (!tapState[key]) {
+    tapState[key] = true;
+    overlay.classList.add('hidden');
+    // Bounce emoji
+    const emoji = el.querySelector('.part-emoji');
+    if (emoji) {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.timeline()
+            .to(emoji, { scale: 1.4, duration: 0.2, ease: 'power2.out' })
+            .to(emoji, { scale: 1, duration: 0.3, ease: 'bounce.out' });
+        }
+      } catch(e) {}
     }
-  }
-
-  const btnClose = document.getElementById('hud3dClose');
-  if (btnClose) btnClose.onclick = () => close3dModal();
-
-  function choose(idx) {
-    if (GAME3D_STATE.locked) return;
-    GAME3D_STATE.locked = true;
-    const ok = (idx === target.correct_index);
-    if (ok) { GAME3D_STATE.score += 2; if (window.SFX) SFX.play('correct'); }
-    else { if (window.SFX) SFX.play('wrong'); }
-    setHud();
-    open3dModal(target, ok, idx);
-    setTimeout(()=>{ close3dModal(); GAME3D_STATE.locked = false; check3dComplete(); }, 900);
-  }
-
-  if (opt0) opt0.onclick = () => choose(0);
-  if (opt1) opt1.onclick = () => choose(1);
-}
-
-function close3dModal() {
-  const modal = document.getElementById('hud3dModal');
-  if (modal) modal.classList.add('hidden');
-}
-
-function check3dComplete() {
-  const done = currentTarget() === null;
-  if (done) {
-    const banner = document.getElementById('hud3dComplete');
-    if (banner) banner.classList.remove('hidden');
-    if (window.PROGRESS) PROGRESS.mark('scene');
-    if (window.SFX) SFX.play('complete');
-  }
-}
-
-// ── CAMERA + RENDERER ─────────────────────────────────────────────
-const canvas3dEl = document.getElementById('scene3dCanvas');
-const cam3d = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
-cam3d.position.set(0, 1.5, 7);
-let targetCamZ3d = 7;
-
-const renderer3d = new THREE.WebGLRenderer({ canvas: canvas3dEl, antialias: true, alpha: false });
-renderer3d.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-// Resize handler
-function resize3d() {
-  const cont = canvas3dEl.parentElement;
-  const w = cont.clientWidth, h = cont.clientHeight || 400;
-  renderer3d.setSize(w, h, false);
-  cam3d.aspect = w / h;
-  cam3d.updateProjectionMatrix();
-}
-resize3d();
-window.addEventListener('resize', resize3d);
-
-// ── CONTROLS (drag + pinch-zoom) ──────────────────────────────────
-let isDrag3d = false, prevMouse3d = {x:0,y:0};
-let rotX3d = 0, rotY3d = 0.3;
-let autoRot3d = true;
-
-canvas3dEl.addEventListener('mousedown', e => { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.clientX,y:e.clientY}; });
-canvas3dEl.addEventListener('mousemove', e => {
-  if (!isDrag3d) return;
-  rotY3d += (e.clientX - prevMouse3d.x) * 0.01;
-  rotX3d += (e.clientY - prevMouse3d.y) * 0.01;
-  rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
-  prevMouse3d = {x:e.clientX, y:e.clientY};
-});
-canvas3dEl.addEventListener('mouseup',   () => isDrag3d = false);
-canvas3dEl.addEventListener('mouseleave',() => isDrag3d = false);
-canvas3dEl.addEventListener('wheel', e => {
-  e.preventDefault();
-  targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d + e.deltaY * 0.02));
-}, {passive:false});
-
-let initPinch3d = 0;
-canvas3dEl.addEventListener('touchstart', e => {
-  if (e.touches.length===1) { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.touches[0].clientX,y:e.touches[0].clientY}; }
-  if (e.touches.length===2) { const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; initPinch3d=Math.hypot(dx,dy); }
-}, {passive:true});
-canvas3dEl.addEventListener('touchmove', e => {
-  if (e.touches.length===1 && isDrag3d) {
-    rotY3d += (e.touches[0].clientX - prevMouse3d.x) * 0.012;
-    rotX3d += (e.touches[0].clientY - prevMouse3d.y) * 0.012;
-    rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
-    prevMouse3d = {x:e.touches[0].clientX,y:e.touches[0].clientY};
-  }
-  if (e.touches.length===2 && initPinch3d>0) {
-    const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
-    const d=Math.hypot(dx,dy);
-    targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d*(initPinch3d/d)));
-    initPinch3d=d;
-  }
-}, {passive:true});
-canvas3dEl.addEventListener('touchend', () => isDrag3d=false);
-
-document.getElementById('btn3dZoomIn').addEventListener('click',  () => targetCamZ3d = Math.max(3,  targetCamZ3d - 1.5));
-document.getElementById('btn3dZoomOut').addEventListener('click', () => targetCamZ3d = Math.min(15, targetCamZ3d + 1.5));
-document.getElementById('btn3dReset').addEventListener('click',   () => { targetCamZ3d=7; rotX3d=0; rotY3d=0.3; autoRot3d=true; });
-
-// ── CLICK / TAP PICKING (HUNT GAME) ───────────────────────────────
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2();
-
-function normPointer(clientX, clientY) {
-  const rect = canvas3dEl.getBoundingClientRect();
-  pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-  pointer.y = -(((clientY - rect.top) / rect.height) * 2 - 1);
-}
-
-function handlePick(clientX, clientY) {
-  if (!GAME3D || GAME3D.mode !== 'hunt' || !Array.isArray(GAME3D.targets)) return;
-  const target = currentTarget();
-  if (!target) return;
-  normPointer(clientX, clientY);
-  raycaster.setFromCamera(pointer, cam3d);
-  const hits = raycaster.intersectObjects(sceneObjects, false);
-  if (!hits || hits.length === 0) return;
-  const picked = hits[0].object;
-  const label = picked?.userData?.label || '';
-  if (label && label === target.object_label && !GAME3D_STATE.found.has(label)) {
-    GAME3D_STATE.found.add(label);
-    // Visual feedback: brighten and pulse once
-    if (picked.material) {
-      picked.material.emissiveIntensity = 0.45;
-      setTimeout(()=>{ try{ picked.material.emissiveIntensity = 0.15; }catch(e){} }, 900);
-    }
-    GAME3D_STATE.score += 1;
-    setHud(target.hint || '', `Next: ${target.object_label}`);
-    open3dModal(target);
-    check3dComplete();
   } else {
-    // Wrong pick feedback
-    if (window.SFX) SFX.play('click');
+    tapState[key] = false;
+    overlay.classList.remove('hidden');
+    overlay.textContent = '👆 Tap me!';
   }
 }
 
-canvas3dEl.addEventListener('click', (e)=> handlePick(e.clientX, e.clientY));
-canvas3dEl.addEventListener('touchend', (e)=>{
-  if (!e.changedTouches || e.changedTouches.length===0) return;
-  const t=e.changedTouches[0];
-  handlePick(t.clientX, t.clientY);
-}, {passive:true});
+// ============================================================
+// DRAG AND DROP
+// ============================================================
+let draggedWord = null;
+let touchDragElement = null;
+let touchClone = null;
+let touchTarget = null;
 
-// ── ANIMATION LOOP ────────────────────────────────────────────────
-function loop3d() {
-  requestAnimationFrame(loop3d);
-  const t = clock.getElapsedTime();
-  if (autoRot3d) rotY3d += 0.004;
-  scene3d.rotation.y = rotY3d;
-  scene3d.rotation.x = rotX3d;
-  cam3d.position.z += (targetCamZ3d - cam3d.position.z) * 0.08;
-  // Animate each object
-  
-  // Object 0: Monitor
-  if (sceneObjects[0]) {
-    const mesh = sceneObjects[0];
-    const t = clock.getElapsedTime();
-    mesh.position.y = mesh.userData.baseY + Math.sin(t * 2 + mesh.userData.offset) * 0.3;
-    // Update label sprite position
-    if (labelSprites[0]) {
-      labelSprites[0].sprite.position.copy(mesh.position);
-      labelSprites[0].sprite.position.y += 1.2;
-    }
-  }
-  // Object 1: Keyboard
-  if (sceneObjects[1]) {
-    const mesh = sceneObjects[1];
-    const t = clock.getElapsedTime();
-    const s = 1 + Math.sin(t * 3 + mesh.userData.offset) * 0.08; mesh.scale.setScalar(s);
-    // Update label sprite position
-    if (labelSprites[1]) {
-      labelSprites[1].sprite.position.copy(mesh.position);
-      labelSprites[1].sprite.position.y += 1.2;
-    }
-  }
-  // Object 2: Mouse
-  if (sceneObjects[2]) {
-    const mesh = sceneObjects[2];
-    const t = clock.getElapsedTime();
-    mesh.position.y = mesh.userData.baseY + Math.abs(Math.sin(t * 2.5 + mesh.userData.offset)) * 0.5;
-    // Update label sprite position
-    if (labelSprites[2]) {
-      labelSprites[2].sprite.position.copy(mesh.position);
-      labelSprites[2].sprite.position.y += 1.2;
-    }
-  }
-  // Object 3: CPU
-  if (sceneObjects[3]) {
-    const mesh = sceneObjects[3];
-    const t = clock.getElapsedTime();
-    mesh.rotation.y += 0.012; mesh.rotation.x += 0.005;
-    // Update label sprite position
-    if (labelSprites[3]) {
-      labelSprites[3].sprite.position.copy(mesh.position);
-      labelSprites[3].sprite.position.y += 1.2;
-    }
-  }
-  // Object 4: Desk
-  if (sceneObjects[4]) {
-    const mesh = sceneObjects[4];
-    const t = clock.getElapsedTime();
-    mesh.position.y = mesh.userData.baseY + Math.sin(t * 2 + mesh.userData.offset) * 0.3;
-    // Update label sprite position
-    if (labelSprites[4]) {
-      labelSprites[4].sprite.position.copy(mesh.position);
-      labelSprites[4].sprite.position.y += 1.2;
-    }
-  }
-  // Object 5: Wires
-  if (sceneObjects[5]) {
-    const mesh = sceneObjects[5];
-    const t = clock.getElapsedTime();
-    mesh.position.x = mesh.userData.orbitR * Math.cos(t + mesh.userData.offset); mesh.position.z = mesh.userData.orbitR * Math.sin(t + mesh.userData.offset);
-    // Update label sprite position
-    if (labelSprites[5]) {
-      labelSprites[5].sprite.position.copy(mesh.position);
-      labelSprites[5].sprite.position.y += 1.2;
-    }
-  }
-  // Object 6: Wires
-  if (sceneObjects[6]) {
-    const mesh = sceneObjects[6];
-    const t = clock.getElapsedTime();
-    mesh.position.x = mesh.userData.orbitR * Math.cos(t + mesh.userData.offset); mesh.position.z = mesh.userData.orbitR * Math.sin(t + mesh.userData.offset);
-    // Update label sprite position
-    if (labelSprites[6]) {
-      labelSprites[6].sprite.position.copy(mesh.position);
-      labelSprites[6].sprite.position.y += 1.2;
-    }
-  }
-  // Object 7: Wires
-  if (sceneObjects[7]) {
-    const mesh = sceneObjects[7];
-    const t = clock.getElapsedTime();
-    mesh.position.x = mesh.userData.orbitR * Math.cos(t + mesh.userData.offset); mesh.position.z = mesh.userData.orbitR * Math.sin(t + mesh.userData.offset);
-    // Update label sprite position
-    if (labelSprites[7]) {
-      labelSprites[7].sprite.position.copy(mesh.position);
-      labelSprites[7].sprite.position.y += 1.2;
-    }
-  }
-  renderer3d.render(scene3d, cam3d);
-}
-loop3d();
-
-
-// ── GAMES ─────────────────────────────────────────────────────
-
-// ── SORT GAME ───────────────────────────────────────────────────
-(function() {
-  const pool = document.getElementById('sortPool');
-  const zones = document.querySelectorAll('.sort-zone');
-  let dragged = null;
-
-  // ── Desktop drag ──────────────────────────────────────────────
-  document.querySelectorAll('.sort-item').forEach(item => {
-    item.addEventListener('dragstart', () => { dragged=item; item.style.opacity='0.4'; SFX.play('click'); });
-    item.addEventListener('dragend',   () => { item.style.opacity='1'; dragged=null; });
-  });
-
-  zones.forEach(zone => {
-    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', ()  => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault(); zone.classList.remove('drag-over');
-      if (dragged) zone.querySelector('.sort-items-drop').appendChild(dragged);
+// Mouse drag
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.drag-word').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      draggedWord = el;
+      el.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', el.dataset.word);
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
     });
   });
+});
 
-  // ── Touch drag ────────────────────────────────────────────────
-  let ghost=null, touchItem=null, touchOrigin=null, touchNext=null, activeZone=null;
+function dragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('over');
+}
 
-  function getZoneAt(x,y){
-    const el=document.elementFromPoint(x,y);
-    return el?el.closest('.sort-zone'):null;
+function dragLeave(e) {
+  e.currentTarget.classList.remove('over');
+}
+
+function dropItem(e, target) {
+  e.preventDefault();
+  target.classList.remove('over');
+  const word = e.dataTransfer ? e.dataTransfer.getData('text/plain') : (touchDragElement ? touchDragElement.dataset.word : null);
+  if (!word) return;
+  processDropOnTarget(target, word);
+}
+
+function processDropOnTarget(target, word) {
+  if (target.dataset.answer === word) {
+    // Correct
+    target.classList.add('correct');
+    target.classList.remove('wrong');
+    target.querySelector('.drop-label').textContent = word + ' ✅';
+    // Hide matched word
+    const wordEl = document.getElementById('dw-' + word.toLowerCase());
+    if (wordEl) {
+      wordEl.classList.add('matched');
+      wordEl.setAttribute('draggable','false');
+    }
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, colors: ['#FFD93D','#6BCB77','#FF6B6B'] });
+      }
+      if (typeof gsap !== 'undefined') {
+        gsap.from(target, { scale: 0.8, duration: 0.4, ease: 'bounce.out' });
+      }
+    } catch(e) {}
+  } else {
+    // Wrong
+    target.classList.add('wrong');
+    setTimeout(() => target.classList.remove('wrong'), 1200);
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(target, { x: [-10,10,-10,10,0], duration: 0.4, ease: 'power1.inOut' });
+      }
+    } catch(e) {}
+  }
+}
+
+// Touch drag support
+function touchDragStart(e, el) {
+  touchDragElement = el;
+  el.classList.add('dragging');
+  const touch = e.touches[0];
+  touchClone = el.cloneNode(true);
+  touchClone.style.position = 'fixed';
+  touchClone.style.zIndex = '9999';
+  touchClone.style.opacity = '0.85';
+  touchClone.style.pointerEvents = 'none';
+  touchClone.style.transform = 'scale(1.1)';
+  touchClone.style.left = (touch.clientX - 60) + 'px';
+  touchClone.style.top = (touch.clientY - 30) + 'px';
+  document.body.appendChild(touchClone);
+}
+
+function touchDragMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const touch = e.touches[0];
+  touchClone.style.left = (touch.clientX - 60) + 'px';
+  touchClone.style.top = (touch.clientY - 30) + 'px';
+
+  // Highlight drop target under finger
+  document.querySelectorAll('.drop-target').forEach(t => t.classList.remove('over'));
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (el) {
+    const dt = el.closest('.drop-target');
+    if (dt) { dt.classList.add('over'); touchTarget = dt; }
+    else touchTarget = null;
+  }
+}
+
+function touchDragEnd(e) {
+  if (touchDragElement) touchDragElement.classList.remove('dragging');
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  document.querySelectorAll('.drop-target').forEach(t => t.classList.remove('over'));
+  if (touchTarget && touchDragElement) {
+    processDropOnTarget(touchTarget, touchDragElement.dataset.word);
+  }
+  touchDragElement = null;
+  touchTarget = null;
+}
+
+function resetDragDrop() {
+  document.querySelectorAll('.drag-word').forEach(el => {
+    el.classList.remove('matched', 'dragging');
+    el.setAttribute('draggable','true');
+  });
+  document.querySelectorAll('.drop-target').forEach(el => {
+    el.classList.remove('correct','wrong','over');
+    el.querySelector('.drop-label').textContent = 'Drop here!';
+  });
+}
+
+// ============================================================
+// TRUE / FALSE
+// ============================================================
+function checkTF(btn, selectedTrue, correctIsTrue) {
+  const container = btn.closest('.tf-item');
+  if (!container || container.dataset.answered) return;
+  container.dataset.answered = 'true';
+
+  const isCorrect = (selectedTrue === correctIsTrue);
+  const allBtns = container.querySelectorAll('.tf-btn');
+  allBtns.forEach(b => { b.style.pointerEvents = 'none'; });
+
+  if (isCorrect) {
+    btn.classList.add('selected-correct');
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 40, spread: 60, origin: { y: 0.6 }, colors: ['#6BCB77','#FFD93D'] });
+      }
+      if (typeof gsap !== 'undefined') {
+        gsap.from(btn, { scale: 0.8, duration: 0.3, ease: 'bounce.out' });
+      }
+    } catch(e) {}
+  } else {
+    btn.classList.add('selected-wrong');
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(btn, { x: [-8,8,-8,8,0], duration: 0.4 });
+      }
+    } catch(e) {}
+    // Show correct answer
+    allBtns.forEach(b => {
+      const isTrue = b.classList.contains('true-btn');
+      if (isTrue === correctIsTrue) b.classList.add('selected-correct');
+    });
+  }
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+let quizScore = 0;
+let quizAnswered = {};
+
+function checkQuiz(btn, result, qId) {
+  if (quizAnswered[qId]) return;
+  quizAnswered[qId] = true;
+
+  const qCard = document.getElementById(qId);
+  const fbId = 'fb' + qId.replace('qq','');
+  const feedback = document.getElementById(fbId);
+  const allOpts = qCard ? qCard.querySelectorAll('.q-option') : [];
+
+  allOpts.forEach(o => { o.style.pointerEvents = 'none'; });
+
+  if (result === 'correct') {
+    quizScore++;
+    btn.classList.add('correct-ans');
+    if (feedback) { feedback.textContent = '🎉 Amazing! That\'s correct!'; feedback.classList.add('show'); feedback.style.color = '#2e7d32'; }
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 80, spread: 90, origin: { y: 0.6 }, colors: ['#FFD93D','#6BCB77','#FF6B6B','#4ecdc4'] });
+      }
+      if (typeof gsap !== 'undefined') {
+        gsap.timeline()
+          .to(btn, { scale: 1.15, duration: 0.2 })
+          .to(btn, { scale: 1, duration: 0.3, ease: 'bounce.out' });
+      }
+    } catch(e) {}
+  } else {
+    btn.classList.add('wrong-ans');
+    if (feedback) { feedback.textContent = '😊 Oops! Try to remember next time!'; feedback.classList.add('show'); feedback.style.color = '#c62828'; }
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(btn, { x: [-10,10,-10,10,0], duration: 0.4 });
+      }
+    } catch(e) {}
   }
 
-  document.querySelectorAll('.sort-item').forEach(item=>{
-    item.addEventListener('touchstart', e=>{
-      if(e.touches.length!==1) return;
-      if(e.cancelable)e.preventDefault();
-      touchItem=item; touchOrigin=item.parentElement; touchNext=item.nextElementSibling;
-      item.style.opacity='0.4';
-      ghost=item.cloneNode(true);
-      ghost.style.cssText='position:fixed;z-index:9999;pointer-events:none;opacity:0.9;transform:translate(-50%,-50%)';
-      document.body.appendChild(ghost);
-      const t=e.touches[0];
-      ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
-      SFX.play('click');
-    },{passive:false});
-  });
+  // Check if all answered
+  setTimeout(() => {
+    const totalQs = 5;
+    if (Object.keys(quizAnswered).length >= totalQs) {
+      showScore();
+    }
+  }, 800);
+}
 
-  document.addEventListener('touchmove', e=>{
-    if(!touchItem||!ghost) return;
-    if(e.cancelable)e.preventDefault();
-    const t=e.touches[0];
-    ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
-    const z=getZoneAt(t.clientX,t.clientY);
-    if(activeZone!==z){ zones.forEach(z2=>z2.classList.remove('drag-over')); if(z)z.classList.add('drag-over'); activeZone=z; }
-  },{passive:false});
+function showScore() {
+  const display = document.getElementById('score-display');
+  const scoreText = document.getElementById('score-text');
+  const scoreEmoji = document.getElementById('score-emoji');
+  if (!display) return;
 
-  document.addEventListener('touchend', e=>{
-    if(!touchItem) return;
-    zones.forEach(z=>z.classList.remove('drag-over'));
-    const t=e.changedTouches[0];
-    const z=getZoneAt(t.clientX,t.clientY);
-    if(z) z.querySelector('.sort-items-drop').appendChild(touchItem);
-    else { if(touchNext&&touchNext.parentElement===touchOrigin) touchOrigin.insertBefore(touchItem,touchNext); else touchOrigin.appendChild(touchItem); }
-    touchItem.style.opacity='1';
-    if(ghost&&ghost.parentNode) ghost.parentNode.removeChild(ghost);
-    ghost=null; touchItem=null; touchOrigin=null; touchNext=null; activeZone=null;
-  });
+  display.classList.add('show');
+  const pct = quizScore / 5;
+  if (pct === 1) {
+    scoreEmoji.textContent = '🏆🌟🎉';
+    scoreText.textContent = 'You got ALL 5 correct! You are a Computer Star! ⭐';
+  } else if (pct >= 0.6) {
+    scoreEmoji.textContent = '😊👍';
+    scoreText.textContent = `You got ${quizScore} out of 5! Great job! Keep practicing!`;
+  } else {
+    scoreEmoji.textContent = '💪🌱';
+    scoreText.textContent = `You got ${quizScore} out of 5! Keep trying, you can do it!`;
+  }
 
-  // ── Check / Reset ─────────────────────────────────────────────
-  document.getElementById('checkSort').addEventListener('click', ()=>{
-    SFX.play('click');
-    let correct=0, total=0;
-    zones.forEach(zone=>{
-      zone.querySelectorAll('.sort-item').forEach(item=>{
-        total++;
-        const ok = item.dataset.answer === zone.dataset.category;
-        item.classList.toggle('correct',ok);
-        item.classList.toggle('incorrect',!ok);
-        if(ok) correct++;
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(display, { scale: 0.7, opacity: 0, duration: 0.5, ease: 'back.out(1.5)' });
+    }
+    if (typeof confetti !== 'undefined') {
+      setTimeout(() => {
+        confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#fff'] });
+      }, 300);
+    }
+  } catch(e) {}
+
+  display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetQuiz() {
+  quizScore = 0;
+  quizAnswered = {};
+  const display = document.getElementById('score-display');
+  if (display) display.classList.remove('show');
+
+  for (let i = 1; i <= 5; i++) {
+    const fb = document.getElementById('fb' + i);
+    if (fb) { fb.classList.remove('show'); fb.textContent = ''; }
+    const qCard = document.getElementById('qq' + i);
+    if (qCard) {
+      qCard.querySelectorAll('.q-option').forEach(opt => {
+        opt.classList.remove('correct-ans','wrong-ans');
+        opt.style.pointerEvents = '';
       });
-    });
-    const fb=document.getElementById('sortFeedback');
-    fb.classList.remove('hidden');
-    if(correct===total){
-      fb.className='game-feedback fb-success';
-      fb.innerHTML='<i class="fas fa-trophy"></i> Perfect! All items sorted correctly!';
-      SFX.play('complete'); PROGRESS.mark('sort');
-    } else {
-      fb.className='game-feedback fb-error';
-      fb.innerHTML=`<i class="fas fa-times-circle"></i> ${correct} / ${total} correct. Keep trying!`;
-      SFX.play('wrong');
     }
-  });
-
-  document.getElementById('resetSort').addEventListener('click', ()=>{
-    SFX.play('click');
-    document.querySelectorAll('.sort-item').forEach(item=>{
-      item.classList.remove('correct','incorrect');
-      pool.appendChild(item);
-    });
-    document.getElementById('sortFeedback').classList.add('hidden');
-  });
-})();
-
-
-// ── QUIZ ────────────────────────────────────────────────────────
-(function() {
-  const QS = [{"question": "What part of the computer shows pictures on the screen?", "options": ["Monitor", "Keyboard"], "correct_index": 0, "explanation": "The monitor is like a TV and displays all the visuals."}, {"question": "Which part is known as the brain of the computer?", "options": ["Mouse", "CPU"], "correct_index": 1, "explanation": "The CPU does all the thinking and processing for the computer."}, {"question": "What do we use to type letters and numbers into the computer?", "options": ["Keyboard", "Monitor"], "correct_index": 0, "explanation": "The keyboard has keys for typing letters, numbers, and symbols."}, {"question": "Which part helps us move the pointer on the screen?", "options": ["Mouse", "CPU"], "correct_index": 0, "explanation": "The mouse is used to control the pointer and click on things."}, {"question": "Can the monitor help us see and edit photos?", "options": ["Yes", "No"], "correct_index": 0, "explanation": "Yes, the monitor displays photos and videos, allowing us to view and edit them."}, {"question": "Does the keyboard help us write and communicate with the computer?", "options": ["Yes", "No"], "correct_index": 0, "explanation": "Yes, by typing words and letters, the keyboard helps us communicate with the computer."}, {"question": "What is one function of the mouse?", "options": ["To type words", "To click on things"], "correct_index": 1, "explanation": "The mouse is primarily used to move the pointer and click on items."}, {"question": "Does the CPU run programs on the computer?", "options": ["Yes", "No"], "correct_index": 0, "explanation": "Yes, the CPU is responsible for running all the programs and applications."}];
-  let idx=0, answers=Array(QS.length).fill(null);
-
-  function render(anim=true) {
-    const q=QS[idx];
-    document.getElementById('quizQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${q.question}`;
-    const optsEl=document.getElementById('quizOpts');
-    optsEl.innerHTML='';
-    q.options.forEach((opt,i)=>{
-      const btn=document.createElement('button');
-      btn.className='quiz-opt';
-      btn.dataset.i=i;
-      btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+i)}</span> ${opt}`;
-      btn.addEventListener('click',()=>selectQ(i));
-      if(answers[idx]===i) btn.classList.add('selected');
-      optsEl.appendChild(btn);
-    });
-    if(answers[idx]!==null) revealQ();
-    document.getElementById('quizNext').disabled = answers[idx]===null;
-    document.getElementById('quizPrev').disabled = idx===0;
-    document.getElementById('quizNext').innerHTML = idx===QS.length-1 ?
-      'Finish <i class="fas fa-flag-checkered"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
-    const pct=Math.round(answers.filter(a=>a!==null).length/QS.length*100);
-    document.getElementById('quizProgFill').style.width=pct+'%';
-    document.getElementById('quizProgText').textContent=`Q ${idx+1} / ${QS.length}`;
-    if(anim){ const card=document.getElementById('quizCard'); card.classList.remove('slide-in'); void card.offsetWidth; card.classList.add('slide-in'); }
   }
 
-  function selectQ(i) {
-    answers[idx]=i;
-    const correct=i===QS[idx].correct_index;
-    SFX.play(correct?'correct':'wrong');
-    revealQ();
-    document.getElementById('quizNext').disabled=false;
-  }
-
-  function revealQ() {
-    const q=QS[idx]; const sel=answers[idx];
-    document.querySelectorAll('.quiz-opt').forEach(btn=>{
-      const i=parseInt(btn.dataset.i);
-      btn.classList.remove('selected','correct','incorrect');
-      if(i===q.correct_index) btn.classList.add('correct');
-      if(i===sel && sel!==q.correct_index) btn.classList.add('incorrect');
-      if(i===sel) btn.classList.add('selected');
-    });
-    const fb=document.getElementById('quizFb');
-    const ok=sel===q.correct_index;
-    fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
-    fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${q.explanation}</strong>`;
-  }
-
-  document.getElementById('quizPrev').addEventListener('click',()=>{ SFX.play('click'); if(idx>0){idx--;render();} });
-  document.getElementById('quizNext').addEventListener('click',()=>{
-    if(answers[idx]===null){ SFX.play('wrong'); return; }
-    SFX.play('click');
-    if(idx<QS.length-1){idx++;render();}
-    else showResults();
-  });
-
-  function calcScore(){ return answers.reduce((a,v,i)=>a+(v===QS[i].correct_index?1:0),0); }
-
-  function showResults(){
-    const sc=calcScore(), total=QS.length;
-    SFX.play(sc===total?'complete':'click');
-    document.getElementById('quizResultScore').textContent=`You scored ${sc} / ${total}`;
-    const stars=Math.round(sc/total*5);
-    document.getElementById('quizStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
-    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
-    document.getElementById('quizResultTitle').textContent=titles[Math.min(stars,4)];
-    document.getElementById('quizResultTip').textContent=sc===total?'Amazing! You got everything right!':'Review the lesson and try again!';
-    document.getElementById('quizResults').classList.remove('hidden');
-    if(sc===total){ PROGRESS.mark('quiz'); }
-  }
-
-  function restart(){ SFX.play('click'); idx=0; answers=Array(QS.length).fill(null); document.getElementById('quizResults').classList.add('hidden'); render(); }
-
-  document.getElementById('quizRetry').addEventListener('click', restart);
-  document.getElementById('quizClose').addEventListener('click',()=>{ SFX.play('click'); document.getElementById('quizResults').classList.add('hidden'); });
-  document.getElementById('quizResults').addEventListener('click',e=>{ if(e.target===document.getElementById('quizResults')) document.getElementById('quizResults').classList.add('hidden'); });
-
-  render(false);
-})();
-
-
-// ── TRUE/FALSE ───────────────────────────────────────────────────
-(function() {
-  const ITEMS = [{"text": "The monitor shows pictures on the screen.", "correct": true, "explanation": "This is a primary function of the monitor, displaying visual output."}, {"text": "The CPU is known as the brain of the computer.", "correct": true, "explanation": "The CPU performs all the processing and calculations, just like a brain."}, {"text": "The mouse helps us type letters and words into the computer.", "correct": false, "explanation": "The keyboard is used for typing letters and words, not the mouse."}, {"text": "The keyboard is used to move the pointer on the screen.", "correct": false, "explanation": "The mouse is used to move the pointer on the screen."}, {"text": "The mouse shows pictures on the screen.", "correct": false, "explanation": "The monitor shows pictures, the mouse helps interact with them."}, {"text": "The monitor turns on and off like a TV.", "correct": true, "explanation": "Monitors have power buttons and function similarly to televisions."}, {"text": "The system unit helps the computer think.", "correct": true, "explanation": "The system unit (CPU) is where the computer processes information and 'thinks'."}, {"text": "The keyboard helps us drag and drop objects.", "correct": false, "explanation": "The mouse is used for dragging and dropping objects on the screen."}];
-  let idx=0, answers=Array(ITEMS.length).fill(null);
-
-  function render(anim=true) {
-    const item=ITEMS[idx];
-    document.getElementById('tfQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${item.text}`;
-    [['tfTrue',true],['tfFalse',false]].forEach(([id,val])=>{
-      const btn=document.getElementById(id);
-      btn.classList.remove('selected','correct','incorrect');
-      if(answers[idx]===val){btn.classList.add('selected'); if(val===item.correct)btn.classList.add('correct'); else btn.classList.add('incorrect');}
-    });
-    if(answers[idx]!==null){
-      const correctBtn=document.getElementById(item.correct?'tfTrue':'tfFalse');
-      correctBtn.classList.add('correct');
-    }
-    const fb=document.getElementById('tfFb');
-    if(answers[idx]!==null){
-      const ok=answers[idx]===item.correct;
-      fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
-      fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${item.explanation}</strong>`;
-    } else { fb.className='quiz-feedback hidden'; fb.innerHTML=''; }
-    document.getElementById('tfNext').disabled=answers[idx]===null;
-    document.getElementById('tfPrev').disabled=idx===0;
-    document.getElementById('tfNext').innerHTML=idx===ITEMS.length-1?'Finish <i class="fas fa-flag-checkered"></i>':'Next <i class="fas fa-arrow-right"></i>';
-    const pct=Math.round(answers.filter(a=>a!==null).length/ITEMS.length*100);
-    document.getElementById('tfProgFill').style.width=pct+'%';
-    document.getElementById('tfProgText').textContent=`${idx+1} / ${ITEMS.length}`;
-    if(anim){const card=document.getElementById('tfCard');card.classList.remove('slide-in');void card.offsetWidth;card.classList.add('slide-in');}
-  }
-
-  function choose(val){
-    answers[idx]=val;
-    const ok=val===ITEMS[idx].correct;
-    SFX.play(ok?'correct':'wrong');
-    render(false);
-    document.getElementById('tfNext').disabled=false;
-  }
-
-  document.getElementById('tfTrue').addEventListener('click',()=>choose(true));
-  document.getElementById('tfFalse').addEventListener('click',()=>choose(false));
-  document.getElementById('tfPrev').addEventListener('click',()=>{SFX.play('click');if(idx>0){idx--;render();}  });
-  document.getElementById('tfNext').addEventListener('click',()=>{
-    if(answers[idx]===null){SFX.play('wrong');return;}
-    SFX.play('click');
-    if(idx<ITEMS.length-1){idx++;render();}
-    else showResults();
-  });
-
-  function calcScore(){return answers.reduce((a,v,i)=>a+(v===ITEMS[i].correct?1:0),0);}
-
-  function showResults(){
-    const sc=calcScore(),total=ITEMS.length;
-    SFX.play(sc===total?'complete':'click');
-    document.getElementById('tfResultScore').textContent=`You scored ${sc} / ${total}`;
-    const stars=Math.round(sc/total*5);
-    document.getElementById('tfStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
-    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
-    document.getElementById('tfResultTitle').textContent=titles[Math.min(stars,4)];
-    document.getElementById('tfResultTip').textContent=sc===total?'Excellent! You aced it!':'Review and try again!';
-    document.getElementById('tfResults').classList.remove('hidden');
-    if(sc===total) PROGRESS.mark('tf');
-  }
-
-  function restart(){SFX.play('click');idx=0;answers=Array(ITEMS.length).fill(null);document.getElementById('tfResults').classList.add('hidden');render();}
-  document.getElementById('tfRetry').addEventListener('click',restart);
-  document.getElementById('tfClose').addEventListener('click',()=>{SFX.play('click');document.getElementById('tfResults').classList.add('hidden');});
-  document.getElementById('tfResults').addEventListener('click',e=>{if(e.target===document.getElementById('tfResults'))document.getElementById('tfResults').classList.add('hidden');});
-
-  render(false);
-})();
-
-
-// ── FILL IN THE BLANKS ──────────────────────────────────────────
-(function() {
-  document.getElementById('checkBlanks').addEventListener('click', ()=>{
-    SFX.play('click');
-    let correct=0, total=0;
-    document.querySelectorAll('.blank-input').forEach(inp=>{
-      total++;
-      const ok=inp.value.trim().toLowerCase()===inp.dataset.answer.toLowerCase();
-      if(ok) correct++;
-      const i=inp.dataset.idx;
-      const res=document.getElementById('blankResult'+i);
-      res.classList.remove('hidden');
-      if(ok){ res.className='blank-result fb-success'; res.innerHTML='<i class="fas fa-check"></i> '+inp.dataset.answer; inp.style.borderColor='#22c55e'; }
-      else { res.className='blank-result fb-error'; res.innerHTML='<i class="fas fa-times"></i> Answer: '+inp.dataset.answer; inp.style.borderColor='#ef4444'; }
-    });
-    const fb=document.getElementById('blanksFeedback');
-    fb.classList.remove('hidden');
-    if(correct===total){ fb.className='game-feedback fb-success'; fb.innerHTML='<i class="fas fa-trophy"></i> All correct!'; SFX.play('complete'); PROGRESS.mark('extra'); }
-    else { fb.className='game-feedback fb-error'; fb.innerHTML=`<i class="fas fa-times-circle"></i> ${correct}/${total} correct.`; SFX.play('wrong'); }
-  });
-
-  document.getElementById('resetBlanks').addEventListener('click', ()=>{
-    SFX.play('click');
-    document.querySelectorAll('.blank-input').forEach(inp=>{ inp.value=''; inp.style.borderColor=''; });
-    document.querySelectorAll('.blank-result').forEach(r=>r.classList.add('hidden'));
-    document.getElementById('blanksFeedback').classList.add('hidden');
-  });
-})();
-
+  const firstQ = document.getElementById('qq1');
+  if (firstQ) firstQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 </script>
 </body>

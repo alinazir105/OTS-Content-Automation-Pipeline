@@ -1,0 +1,1810 @@
+<!-- CLASS: 1 | SUBJECT: urdu | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جشن آزادی مبارک - اردو سبق</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #FF6B6B;
+    --yellow: #FFD93D;
+    --green: #6BCB77;
+    --blue: #4D96FF;
+    --white: #FFFFFF;
+    --pink: #FF9FF3;
+    --orange: #FFA947;
+    --purple: #A29BFE;
+    --bg1: #FFF9E6;
+    --bg2: #E8F5E9;
+  }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    background: var(--bg1);
+    direction: rtl;
+  }
+
+  /* Loading curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 50%, #6BCB77 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+  #curtain .loader-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    animation: pulse 0.8s ease-in-out infinite alternate;
+  }
+  #curtain .loader-emoji {
+    font-size: 80px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* Animated background */
+  .page-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, #87CEEB 0%, #B8F0B8 60%, #98D663 100%);
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.8;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  @keyframes floatCloud {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
+  .grass-strip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, #6BCB77 0%, #4CAF50 100%);
+    z-index: -1;
+    border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+  }
+
+  /* Page wrapper */
+  .page-wrapper {
+    width: 100%;
+    padding: 0 0 120px 0;
+  }
+
+  /* Hero */
+  .hero {
+    width: 100vw;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,215,61,0.4) 0%, rgba(107,203,119,0.4) 50%, rgba(77,150,255,0.4) 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
+  }
+  .hero-flags {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 60px;
+    animation: wave 2s ease-in-out infinite alternate;
+  }
+  @keyframes wave { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+  .hero h1 {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: #FF6B6B;
+    text-shadow: 3px 3px 0px #FFD93D, 6px 6px 0px rgba(0,0,0,0.1);
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-sub {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: #2d5a27;
+    background: rgba(255,255,255,0.8);
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: 3px solid var(--green);
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-date-badge {
+    background: var(--red);
+    color: white;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: 4px solid #FFD93D;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(255,107,107,0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Content area */
+  .content-area {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Fun cards */
+  .fun-card {
+    width: 100%;
+    background: white;
+    border-radius: 32px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    border: 4px solid var(--yellow);
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,217,61,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .fun-card.green-card { border-color: var(--green); }
+  .fun-card.blue-card { border-color: var(--blue); }
+  .fun-card.red-card { border-color: var(--red); }
+  .fun-card.purple-card { border-color: var(--purple); }
+  .fun-card.orange-card { border-color: var(--orange); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  .card-icon {
+    font-size: 48px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    color: #333;
+    line-height: 1.5;
+  }
+  .card-title.red { color: var(--red); }
+  .card-title.green { color: #2d7a35; }
+  .card-title.blue { color: #1a5fb4; }
+  .card-title.orange { color: #c55a00; }
+
+  /* Story text */
+  .story-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    line-height: 2.4;
+    color: #333;
+    text-align: right;
+    direction: rtl;
+    background: linear-gradient(135deg, #fffde7 0%, #f1f8e9 100%);
+    padding: 30px;
+    border-radius: 20px;
+    border-right: 6px solid var(--yellow);
+  }
+
+  /* Song card */
+  .song-box {
+    background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+    border: 3px dashed var(--green);
+  }
+  .song-line {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--red);
+    line-height: 2;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  .song-line:nth-child(even) { color: var(--green); }
+
+  /* Vocabulary table */
+  .vocab-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    direction: rtl;
+  }
+  .vocab-table th {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    padding: 16px 24px;
+    background: var(--green);
+    color: white;
+    text-align: center;
+  }
+  .vocab-table th:first-child { border-radius: 0 16px 16px 0; }
+  .vocab-table th:last-child { border-radius: 16px 0 0 16px; }
+  .vocab-table td {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    padding: 16px 24px;
+    background: #f9f9f9;
+    text-align: center;
+    border: 2px solid #e0e0e0;
+  }
+  .vocab-table tr:nth-child(even) td { background: #fff8e1; }
+  .vocab-table td:first-child { border-radius: 0 12px 12px 0; }
+  .vocab-table td:last-child { border-radius: 12px 0 0 12px; }
+
+  /* True/False activity */
+  .tf-list { list-style: none; padding: 0; }
+  .tf-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f8f8;
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    border: 3px solid #e0e0e0;
+    gap: 16px;
+    flex-wrap: wrap;
+    cursor: default;
+    transition: all 0.3s;
+  }
+  .tf-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #333;
+    flex: 1;
+    text-align: right;
+    direction: rtl;
+    min-width: 200px;
+  }
+  .tf-buttons {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .tf-btn {
+    min-height: 56px;
+    min-width: 80px;
+    border-radius: 16px;
+    border: 3px solid;
+    font-size: 1.1rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 8px 20px;
+  }
+  .tf-btn.correct-btn { background: #e8f5e9; border-color: var(--green); color: #2d7a35; }
+  .tf-btn.wrong-btn { background: #ffebee; border-color: var(--red); color: #c62828; }
+  .tf-btn:hover { transform: scale(1.05); }
+  .tf-item.answered-correct { background: #e8f5e9; border-color: var(--green); }
+  .tf-item.answered-wrong { background: #ffebee; border-color: var(--red); }
+
+  /* Word builder activity */
+  .word-builder-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .word-builder-item {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff3e0 100%);
+    border-radius: 20px;
+    padding: 24px;
+    border: 3px solid var(--yellow);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    direction: rtl;
+  }
+  .word-num {
+    background: var(--red);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    flex-shrink: 0;
+  }
+  .letter-pieces {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    direction: rtl;
+  }
+  .letter-tile {
+    background: white;
+    border: 3px solid var(--blue);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: #1a5fb4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .arrow-icon {
+    font-size: 1.5rem;
+    color: #999;
+    flex-shrink: 0;
+  }
+  .word-result {
+    background: var(--green);
+    color: white;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(107,203,119,0.4);
+  }
+
+  /* Singular-plural table */
+  .sp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    direction: rtl;
+  }
+  .sp-header {
+    background: var(--blue);
+    color: white;
+    border-radius: 16px 16px 0 0;
+    padding: 16px;
+    text-align: center;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+  }
+  .sp-cell {
+    background: #f0f8ff;
+    border: 2px solid #b3d9ff;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #1a3a5c;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sp-cell.reveal {
+    background: var(--yellow);
+    border-color: var(--orange);
+    color: #5a3000;
+    transform: scale(1.05);
+  }
+  .sp-cell:nth-child(odd) { background: #fff8e1; border-color: #ffe082; }
+  .sp-cell:nth-child(odd).reveal { background: var(--green); border-color: #388e3c; color: white; }
+
+  /* Quiz section */
+  .quiz-question {
+    background: white;
+    border-radius: 28px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 4px solid var(--blue);
+    box-shadow: 0 8px 24px rgba(77,150,255,0.2);
+  }
+  .quiz-q-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: #1a3a6c;
+    text-align: center;
+    margin-bottom: 24px;
+    direction: rtl;
+    line-height: 2;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+  .quiz-opt {
+    min-height: 80px;
+    border-radius: 20px;
+    border: 4px solid var(--yellow);
+    background: linear-gradient(135deg, #fffde7 0%, #fff8e1 100%);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    transition: all 0.2s;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #333;
+    text-align: center;
+    direction: rtl;
+  }
+  .quiz-opt .opt-emoji { font-size: 2rem; }
+  .quiz-opt:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+  .quiz-opt.correct { background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); border-color: var(--green); pointer-events: none; }
+  .quiz-opt.wrong { background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%); border-color: var(--red); pointer-events: none; }
+  .quiz-opt.disabled { pointer-events: none; opacity: 0.5; }
+  .quiz-feedback {
+    text-align: center;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    margin-top: 16px;
+    min-height: 40px;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .quiz-q-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--blue);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 12px;
+  }
+
+  /* Calligraphic decoration SVG */
+  .calli-deco {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0.6;
+  }
+
+  /* Pakistan flag illustration */
+  .flag-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .pak-flag {
+    width: min(300px, 80vw);
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    border: 4px solid white;
+  }
+
+  /* Provinces display */
+  .provinces-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    direction: rtl;
+  }
+  .province-card {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border: 3px solid var(--green);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .province-card:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(107,203,119,0.4); }
+  .province-emoji { font-size: 2.5rem; margin-bottom: 8px; }
+  .province-name {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #1b5e20;
+    font-weight: 700;
+  }
+
+  /* Drag and drop */
+  .drag-area {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e8eaf6 100%);
+    border-radius: 24px;
+    padding: 30px;
+    border: 3px dashed var(--purple);
+  }
+  .drag-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 30px;
+    direction: rtl;
+  }
+  .drag-word {
+    background: white;
+    border: 3px solid var(--purple);
+    border-radius: 16px;
+    padding: 12px 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #4a148c;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+    touch-action: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .drag-word:active { cursor: grabbing; transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  .drag-word.dragging { opacity: 0.5; }
+  .drag-word.used { opacity: 0.3; pointer-events: none; }
+  .drop-targets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    direction: rtl;
+  }
+  .drop-zone {
+    background: white;
+    border: 3px dashed #ccc;
+    border-radius: 16px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  .drop-zone.drag-over { border-color: var(--purple); background: #f3e5f5; transform: scale(1.02); }
+  .drop-zone.correct-drop { border-color: var(--green); background: #e8f5e9; border-style: solid; }
+  .drop-zone.wrong-drop { border-color: var(--red); background: #ffebee; border-style: solid; }
+  .drop-label {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: #666;
+    direction: rtl;
+  }
+  .drop-emoji { font-size: 2rem; margin-bottom: 4px; }
+  .drop-answer {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #1b5e20;
+    font-weight: 700;
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    background: #e0e0e0;
+    border-radius: 50px;
+    height: 16px;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--yellow));
+    border-radius: 50px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Stars */
+  .stars-display {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .star {
+    font-size: 2rem;
+    transition: all 0.3s;
+    opacity: 0.3;
+  }
+  .star.lit { opacity: 1; animation: starPop 0.4s ease; }
+  @keyframes starPop { 0% { transform: scale(0); } 60% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+  /* Tap to reveal */
+  .tap-reveal {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--yellow);
+    border: 3px solid var(--orange);
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #5a3000;
+    margin-top: 16px;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .tap-reveal:hover { transform: scale(1.03); }
+  .reveal-content {
+    display: none;
+    margin-top: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-radius: 16px;
+    border: 3px solid var(--orange);
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #4a2000;
+    text-align: center;
+    direction: rtl;
+  }
+  .reveal-content.shown { display: block; animation: revealAnim 0.4s ease; }
+  @keyframes revealAnim { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  /* Section divider */
+  .section-divider {
+    text-align: center;
+    font-size: 2rem;
+    margin: 20px 0;
+    opacity: 0.5;
+    letter-spacing: 10px;
+  }
+
+  /* Mobile nav */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 3px solid var(--yellow);
+    z-index: 1000;
+    padding: 8px 0;
+    overflow-x: auto;
+  }
+  .mobile-nav-inner {
+    display: flex;
+    gap: 0;
+    min-width: max-content;
+    padding: 0 8px;
+  }
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #333;
+    min-width: 56px;
+    min-height: 56px;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .mobile-nav-item span {
+    font-size: 0.65rem;
+    font-family: 'Nunito', sans-serif;
+    color: #555;
+    margin-top: 2px;
+  }
+  .mobile-nav-item:hover { background: #fff9c4; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-area { padding: 0 16px; }
+    .fun-card { padding: 24px 20px; }
+    .hero { min-height: 60vh; padding: 30px 16px; }
+    .mobile-nav { display: flex; }
+    body { padding-bottom: 80px; }
+    .provinces-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .drop-targets { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: repeat(2, 1fr); }
+    .sp-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .quiz-options { grid-template-columns: 1fr 1fr; }
+    .provinces-grid { grid-template-columns: 1fr 1fr; }
+    .drag-words { gap: 8px; }
+  }
+  @media (max-width: 320px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .provinces-grid { grid-template-columns: 1fr; }
+    .sp-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Shake animation class */
+  .shake {
+    animation: shakeAnim 0.5s ease;
+  }
+  @keyframes shakeAnim {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+  }
+
+  /* Bounce animation */
+  @keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Fun highlight */
+  .highlight-green { color: #2d7a35; font-weight: 700; }
+  .highlight-red { color: var(--red); font-weight: 700; }
+
+  /* Score display */
+  .score-box {
+    background: linear-gradient(135deg, #fff9c4 0%, #fffde7 100%);
+    border: 4px solid var(--yellow);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .score-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: #5a3000;
+    direction: rtl;
+  }
+  .score-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--red);
+    display: block;
+    margin: 10px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="loader-emoji">🇵🇰</div>
+  <div class="loader-text">جشن آزادی مبارک!</div>
+</div>
+
+<!-- Animated Background -->
+<div class="page-bg" id="pageBg">
+  <div class="grass-strip"></div>
+</div>
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="sec-hero">
+    <div class="hero-flags">🎉 🇵🇰 🌟 🇵🇰 🎉</div>
+    <h1>جشن آزادی مبارک</h1>
+    <div class="hero-sub">اردو سبق نمبر ۱۵ — کلاس اول</div>
+    <div class="hero-date-badge">📅 ۱۴ اگست ۱۹۴۷ء</div>
+  </section>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area">
+
+    <!-- SECTION: MAQASID (Objectives) -->
+    <div class="fun-card green-card" id="sec-maqasid">
+      <div class="card-header">
+        <div class="card-icon">🎯</div>
+        <h2 class="card-title green">مقاصد</h2>
+      </div>
+      <div style="display:grid; gap:16px; direction:rtl;">
+        <div style="display:flex; align-items:center; gap:12px; background:#e8f5e9; border-radius:16px; padding:16px 20px; border:2px solid #a5d6a7;">
+          <span style="font-size:1.8rem;">🏠</span>
+          <span style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.5vw,1.3rem); color:#1b5e20;">اپنے وطن پاکستان کی اہمیت جان سکیں گے۔</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; background:#e3f2fd; border-radius:16px; padding:16px 20px; border:2px solid #90caf9;">
+          <span style="font-size:1.8rem;">📖</span>
+          <span style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.5vw,1.3rem); color:#0d47a1;">سبق کے دلچسپ یاغیر دل چسپ ہونے پر اپنی رائے دے سکیں گے۔</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; background:#fff3e0; border-radius:16px; padding:16px 20px; border:2px solid #ffcc80;">
+          <span style="font-size:1.8rem;">✏️</span>
+          <span style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.5vw,1.3rem); color:#e65100;">''تھا'' اور ''تھے'' کا جملوں میں استعمال سمجھ سکیں گے۔</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: STORY -->
+    <div class="fun-card" id="sec-kahani">
+      <div class="card-header">
+        <div class="card-icon">📚</div>
+        <h2 class="card-title red">کہانی پڑھیں</h2>
+      </div>
+
+      <!-- Pakistan Flag Illustration -->
+      <div class="flag-container">
+        <svg class="pak-flag" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="75" height="200" fill="white"/>
+          <rect x="75" width="225" height="200" fill="#01411C"/>
+          <circle cx="160" cy="100" r="52" fill="white"/>
+          <circle cx="175" cy="100" r="42" fill="#01411C"/>
+          <polygon points="185,72 190,88 206,88 193,97 198,113 185,104 172,113 177,97 164,88 180,88" fill="white"/>
+        </svg>
+      </div>
+
+      <div class="story-text">
+        <p>آج <span class="highlight-red">۱۴ اگست</span> ہے۔ احمد اور حرا بہت خوش ہیں۔ اِٹّی نے دونوں کو ہرے اور سفید رنگ کے کپڑے پہنائے ہیں۔</p>
+        <br>
+        <p>دونوں بہن بھائی <span class="highlight-green">پاکستان کا جھنڈا</span> لیے اپنے ساتھ اسکول گئے ہیں۔ اُن کا اسکول ہری، سفید جھنڈیوں اور غباروں سے سجا ہوا ہے۔</p>
+        <br>
+        <p>احمد اور حرا کے دوست بھی ہرے اور سفید رنگ کے کپڑے پہن کر اسکول آئے ہیں۔ سب کے ہاتھوں میں پاکستان کے جھنڈے ہیں۔</p>
+        <br>
+        <p>جماعت میں سب سے پہلے بچوں نے کھڑے ہو کر <span class="highlight-red">قومی ترانہ</span> پڑھا۔ اس کے بعد مس نے تمام بچوں کو جشنِ آزادی مبارک کہا۔</p>
+        <br>
+        <p>مس نے بتایا کہ <span class="highlight-green">پاکستان ۱۴ اگست ۱۹۴۷ء</span> کو بنا تھا۔ اس کے بانی <span class="highlight-red">قائدِاعظم محمد علی جناح</span> ہیں۔ ہمارے ملک کے چار صوبے ہیں۔</p>
+
+        <div class="tap-reveal" onclick="toggleReveal('rev1')">
+          👆 صوبوں کے نام جانیں
+          <span>🔽</span>
+        </div>
+        <div class="reveal-content" id="rev1">
+          سندھ، پنجاب، بلوچستان اور خیبر پختونخوا — یہ پاکستان کے چار صوبے ہیں! 🗺️
+        </div>
+        <br>
+        <p>مس نے حرا سے پوچھا — پاکستان کا جھنڈا کس رنگ کا ہے؟ حرا نے جواب دیا: <span class="highlight-green">رنگ ہرا اور سفید ہے۔ اس پر چاند اور تارا بھی ہے۔</span></p>
+        <br>
+        <p>مس نے آصف سے پوچھا: <span class="highlight-red">پاکستان کا قومی کھیل کون سا ہے؟</span></p>
+
+        <div class="tap-reveal" onclick="toggleReveal('rev2')">
+          👆 جواب جانیں!
+          <span>🔽</span>
+        </div>
+        <div class="reveal-content" id="rev2">
+          🏑 پاکستان کا قومی کھیل ہاکی ہے!
+        </div>
+        <br>
+        <p>مس نے تمام بچوں میں <span class="highlight-green">کیک بانٹا</span> اور پاکستان کے جھنڈے کا بیچ بھی لگایا۔ اُنھوں نے سمجھایا: <span class="highlight-red">بچو! ہمیشہ پاکستان کے جھنڈے کا احترام کرنا چاہیے۔ ۱۴ اگست کے بعد جھنڈوں کو اُتار کر الماری میں رکھ دینا چاہیے۔</span></p>
+        <br>
+        <p>آخر میں سب نے مل کر مس کے ساتھ گیت گایا۔</p>
+      </div>
+    </div>
+
+    <!-- SECTION: SONG -->
+    <div class="fun-card blue-card" id="sec-geet">
+      <div class="card-header">
+        <div class="card-icon">🎵</div>
+        <h2 class="card-title blue">قومی گیت</h2>
+      </div>
+      <div class="song-box">
+        <p class="song-line">دل دل پاکستان</p>
+        <p class="song-line">جاں جاں پاکستان</p>
+        <p class="song-line">دل دل پاکستان</p>
+        <p class="song-line">جاں جاں پاکستان</p>
+        <div style="margin-top:20px; font-size:3rem; animation:wave 1.5s infinite alternate;">🇵🇰 🌟 🇵🇰</div>
+      </div>
+    </div>
+
+    <!-- SECTION: VOCABULARY -->
+    <div class="fun-card orange-card" id="sec-vocab">
+      <div class="card-header">
+        <div class="card-icon">📝</div>
+        <h2 class="card-title orange">الفاظ اور معنی</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="vocab-table">
+          <thead>
+            <tr>
+              <th>لفظ</th>
+              <th>معنی</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>جھنڈا</td>
+              <td>پرچم 🚩</td>
+            </tr>
+            <tr>
+              <td>بانی</td>
+              <td>بنانے والا 🏗️</td>
+            </tr>
+            <tr>
+              <td>چنبیلی</td>
+              <td>پھول کا نام جس میں پانچ پتیاں ہوتی ہیں 🌸</td>
+            </tr>
+            <tr>
+              <td>حفاظت</td>
+              <td>سلامتی 🛡️</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION: PROVINCES -->
+    <div class="fun-card green-card" id="sec-provinces">
+      <div class="card-header">
+        <div class="card-icon">🗺️</div>
+        <h2 class="card-title green">پاکستان کے چار صوبے</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2vw,1.3rem); color:#555; text-align:center; margin-bottom:20px; direction:rtl;">کسی بھی صوبے پر ٹَیپ کریں! 👆</p>
+      <div class="provinces-grid">
+        <div class="province-card" onclick="provinceClick(this, 'پنجاب کا دارالحکومت لاہور ہے 🦁')">
+          <div class="province-emoji">🌾</div>
+          <div class="province-name">پنجاب</div>
+        </div>
+        <div class="province-card" onclick="provinceClick(this, 'سندھ کا دارالحکومت کراچی ہے 🌊')">
+          <div class="province-emoji">🌊</div>
+          <div class="province-name">سندھ</div>
+        </div>
+        <div class="province-card" onclick="provinceClick(this, 'بلوچستان پاکستان کا سب سے بڑا صوبہ ہے 🏔️')">
+          <div class="province-emoji">🏔️</div>
+          <div class="province-name">بلوچستان</div>
+        </div>
+        <div class="province-card" onclick="provinceClick(this, 'خیبر پختونخوا کا دارالحکومت پشاور ہے 🌲')">
+          <div class="province-emoji">🌲</div>
+          <div class="province-name">خیبر پختونخوا</div>
+        </div>
+      </div>
+      <div id="province-info" style="display:none; margin-top:20px; background:#e8f5e9; border-radius:16px; padding:16px; text-align:center; font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.5vw,1.4rem); color:#1b5e20; border:2px solid var(--green); direction:rtl;"></div>
+    </div>
+
+    <!-- SECTION: WORD BUILDER -->
+    <div class="fun-card purple-card" id="sec-words">
+      <div class="card-header">
+        <div class="card-icon">🔡</div>
+        <h2 class="card-title" style="color:#4a148c;">الفاظ سازی — حروف ملا کر الفاظ بنائیں</h2>
+      </div>
+      <div class="word-builder-grid">
+        <div class="word-builder-item">
+          <div class="word-num">۱</div>
+          <div class="letter-pieces">
+            <div class="letter-tile">ج</div>
+            <div class="letter-tile">ش</div>
+            <div class="letter-tile">ن</div>
+          </div>
+          <div class="arrow-icon">←</div>
+          <div class="word-result">جشن</div>
+        </div>
+        <div class="word-builder-item">
+          <div class="word-num">۲</div>
+          <div class="letter-pieces">
+            <div class="letter-tile">م</div>
+            <div class="letter-tile">ب</div>
+            <div class="letter-tile">ا</div>
+            <div class="letter-tile">ر</div>
+            <div class="letter-tile">ک</div>
+          </div>
+          <div class="arrow-icon">←</div>
+          <div class="word-result">مبارک</div>
+        </div>
+        <div class="word-builder-item">
+          <div class="word-num">۳</div>
+          <div class="letter-pieces">
+            <div class="letter-tile">خ</div>
+            <div class="letter-tile">و</div>
+            <div class="letter-tile">ش</div>
+          </div>
+          <div class="arrow-icon">←</div>
+          <div class="word-result">خوش</div>
+        </div>
+        <div class="word-builder-item">
+          <div class="word-num">۴</div>
+          <div class="letter-pieces">
+            <div class="letter-tile">پ</div>
+            <div class="letter-tile">ا</div>
+            <div class="letter-tile">ک</div>
+            <div class="letter-tile">س</div>
+            <div class="letter-tile">ت</div>
+            <div class="letter-tile">ا</div>
+            <div class="letter-tile">ن</div>
+          </div>
+          <div class="arrow-icon">←</div>
+          <div class="word-result">پاکستان</div>
+        </div>
+        <div class="word-builder-item">
+          <div class="word-num">۵</div>
+          <div class="letter-pieces">
+            <div class="letter-tile">ج</div>
+            <div class="letter-tile">ھ</div>
+            <div class="letter-tile">ن</div>
+            <div class="letter-tile">ڈ</div>
+            <div class="letter-tile">ا</div>
+          </div>
+          <div class="arrow-icon">←</div>
+          <div class="word-result">جھنڈا</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: TRUE/FALSE -->
+    <div class="fun-card red-card" id="sec-tf">
+      <div class="card-header">
+        <div class="card-icon">✅</div>
+        <h2 class="card-title red">صحیح ✅ یا غلط ❌</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(0.95rem,2vw,1.2rem); color:#666; text-align:center; margin-bottom:20px; direction:rtl;">جملے پڑھیں اور بتائیں صحیح ہے یا غلط؟</p>
+      <ul class="tf-list">
+        <li class="tf-item" id="tf1">
+          <div class="tf-text">حرا اور احمد ہرے اور سفید کپڑے پہن کر اسکول گئے تھے۔</div>
+          <div class="tf-buttons">
+            <button class="tf-btn correct-btn" onclick="tfAnswer(1, true)">✅ صحیح</button>
+            <button class="tf-btn wrong-btn" onclick="tfAnswer(1, false)">❌ غلط</button>
+          </div>
+        </li>
+        <li class="tf-item" id="tf2">
+          <div class="tf-text">پاکستان ۱۰ اگست کو آزاد ہوا۔</div>
+          <div class="tf-buttons">
+            <button class="tf-btn correct-btn" onclick="tfAnswer(2, true)">✅ صحیح</button>
+            <button class="tf-btn wrong-btn" onclick="tfAnswer(2, false)">❌ غلط</button>
+          </div>
+        </li>
+        <li class="tf-item" id="tf3">
+          <div class="tf-text">پاکستان کے جھنڈے پر چاند اور تارا ہے۔</div>
+          <div class="tf-buttons">
+            <button class="tf-btn correct-btn" onclick="tfAnswer(3, true)">✅ صحیح</button>
+            <button class="tf-btn wrong-btn" onclick="tfAnswer(3, false)">❌ غلط</button>
+          </div>
+        </li>
+        <li class="tf-item" id="tf4">
+          <div class="tf-text">پاکستان کا قومی پھول گلاب ہے۔</div>
+          <div class="tf-buttons">
+            <button class="tf-btn correct-btn" onclick="tfAnswer(4, true)">✅ صحیح</button>
+            <button class="tf-btn wrong-btn" onclick="tfAnswer(4, false)">❌ غلط</button>
+          </div>
+        </li>
+        <li class="tf-item" id="tf5">
+          <div class="tf-text">ہمیں اپنے جھنڈے کا احترام کرنا چاہیے۔</div>
+          <div class="tf-buttons">
+            <button class="tf-btn correct-btn" onclick="tfAnswer(5, true)">✅ صحیح</button>
+            <button class="tf-btn wrong-btn" onclick="tfAnswer(5, false)">❌ غلط</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- SECTION: DRAG AND DROP (واحد جمع) -->
+    <div class="fun-card" style="border-color:var(--purple);" id="sec-drag">
+      <div class="card-header">
+        <div class="card-icon">🐾</div>
+        <h2 class="card-title" style="color:#4a148c;">واحد سے جمع بنائیں — ملائیں!</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(0.95rem,2vw,1.2rem); color:#666; text-align:center; margin-bottom:20px; direction:rtl;">نیچے دی گئی جمع کو صحیح واحد سے ملائیں 👇</p>
+      <div class="drag-area">
+        <div class="drag-words" id="dragWords">
+          <div class="drag-word" draggable="true" data-word="تِتلیاں" id="dw1" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">تِتلیاں</div>
+          <div class="drag-word" draggable="true" data-word="مکھیاں" id="dw2" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">مکھیاں</div>
+          <div class="drag-word" draggable="true" data-word="مرغیاں" id="dw3" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">مرغیاں</div>
+          <div class="drag-word" draggable="true" data-word="بکریاں" id="dw4" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">بکریاں</div>
+          <div class="drag-word" draggable="true" data-word="مچھلیاں" id="dw5" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd(event)">مچھلیاں</div>
+        </div>
+        <div class="drop-targets">
+          <div class="drop-zone" id="dz1" data-answer="تِتلیاں" ondragover="dragOver(event)" ondrop="dropItem(event)" ondragleave="dragLeave(event)">
+            <div class="drop-emoji">🦋</div>
+            <div class="drop-label">تِتلی ← ؟</div>
+          </div>
+          <div class="drop-zone" id="dz2" data-answer="مکھیاں" ondragover="dragOver(event)" ondrop="dropItem(event)" ondragleave="dragLeave(event)">
+            <div class="drop-emoji">🐝</div>
+            <div class="drop-label">مکھی ← ؟</div>
+          </div>
+          <div class="drop-zone" id="dz3" data-answer="مرغیاں" ondragover="dragOver(event)" ondrop="dropItem(event)" ondragleave="dragLeave(event)">
+            <div class="drop-emoji">🐔</div>
+            <div class="drop-label">مرغی ← ؟</div>
+          </div>
+          <div class="drop-zone" id="dz4" data-answer="بکریاں" ondragover="dragOver(event)" ondrop="dropItem(event)" ondragleave="dragLeave(event)">
+            <div class="drop-emoji">🐐</div>
+            <div class="drop-label">بکری ← ؟</div>
+          </div>
+          <div class="drop-zone" id="dz5" data-answer="مچھلیاں" ondragover="dragOver(event)" ondrop="dropItem(event)" ondragleave="dragLeave(event)">
+            <div class="drop-emoji">🐟</div>
+            <div class="drop-label">مچھلی ← ؟</div>
+          </div>
+        </div>
+        <div id="drag-score" style="display:none; text-align:center; margin-top:20px; font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1.1rem,2.5vw,1.5rem); color:#1b5e20; padding:16px; background:#e8f5e9; border-radius:16px; border:2px solid var(--green); direction:rtl;"></div>
+      </div>
+    </div>
+
+    <!-- SECTION: QUIZ -->
+    <div class="fun-card blue-card" id="sec-quiz">
+      <div class="card-header">
+        <div class="card-icon">🌟</div>
+        <h2 class="card-title blue">سوال و جواب — کوئز</h2>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="quizProgress"></div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="quiz-question" id="qq1">
+        <div style="text-align:center;"><div class="quiz-q-num">۱</div></div>
+        <div class="quiz-q-text">حرا اور احمد کے ہاتھوں میں کیا تھا؟</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkQuiz('qq1', this, false)">
+            <span class="opt-emoji">📚</span>
+            <span>کتاب</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq1', this, true)">
+            <span class="opt-emoji">🚩</span>
+            <span>جھنڈا</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq1', this, false)">
+            <span class="opt-emoji">🎈</span>
+            <span>غبارہ</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" id="qq2">
+        <div style="text-align:center;"><div class="quiz-q-num">۲</div></div>
+        <div class="quiz-q-text">پاکستان کا قومی کھیل کون سا ہے؟</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkQuiz('qq2', this, false)">
+            <span class="opt-emoji">⚽</span>
+            <span>فٹبال</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq2', this, true)">
+            <span class="opt-emoji">🏑</span>
+            <span>ہاکی</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq2', this, false)">
+            <span class="opt-emoji">🏏</span>
+            <span>کرکٹ</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" id="qq3">
+        <div style="text-align:center;"><div class="quiz-q-num">۳</div></div>
+        <div class="quiz-q-text">پاکستان کے بانی کون ہیں؟</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkQuiz('qq3', this, false)">
+            <span class="opt-emoji">👨‍💼</span>
+            <span>علامہ اقبال</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq3', this, true)">
+            <span class="opt-emoji">⭐</span>
+            <span>قائداعظم محمد علی جناح</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq3', this, false)">
+            <span class="opt-emoji">👨‍🎓</span>
+            <span>لیاقت علی خان</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question" id="qq4">
+        <div style="text-align:center;"><div class="quiz-q-num">۴</div></div>
+        <div class="quiz-q-text">پاکستان کے کتنے صوبے ہیں؟</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkQuiz('qq4', this, false)">
+            <span class="opt-emoji">3️⃣</span>
+            <span>تین</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq4', this, true)">
+            <span class="opt-emoji">4️⃣</span>
+            <span>چار</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq4', this, false)">
+            <span class="opt-emoji">5️⃣</span>
+            <span>پانچ</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question" id="qq5">
+        <div style="text-align:center;"><div class="quiz-q-num">۵</div></div>
+        <div class="quiz-q-text">پاکستان کا یومِ آزادی کب ہے؟</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="checkQuiz('qq5', this, false)">
+            <span class="opt-emoji">📅</span>
+            <span>۲۳ مارچ</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq5', this, true)">
+            <span class="opt-emoji">🎉</span>
+            <span>۱۴ اگست</span>
+          </button>
+          <button class="quiz-opt" onclick="checkQuiz('qq5', this, false)">
+            <span class="opt-emoji">🗓️</span>
+            <span>۱ جنوری</span>
+          </button>
+        </div>
+        <div class="quiz-feedback" id="fb5"></div>
+      </div>
+
+      <!-- Score display -->
+      <div class="score-box" id="scoreBox" style="display:none;">
+        <div class="score-text">آپ کا اسکور</div>
+        <span class="score-num" id="finalScore">0/5</span>
+        <div class="stars-display" id="starsDisplay">
+          <span class="star" id="s1">⭐</span>
+          <span class="star" id="s2">⭐</span>
+          <span class="star" id="s3">⭐</span>
+          <span class="star" id="s4">⭐</span>
+          <span class="star" id="s5">⭐</span>
+        </div>
+        <div class="score-text" style="margin-top:16px; font-size:clamp(1rem,2vw,1.3rem);" id="scoreMsg"></div>
+      </div>
+    </div>
+
+    <!-- SECTION: Calligraphy end decoration -->
+    <div class="fun-card" style="border-color:var(--green); background:linear-gradient(135deg,#e8f5e9 0%,#fff9c4 100%); text-align:center;">
+      <div style="font-size:4rem; margin-bottom:16px;">🇵🇰 🌟 🇵🇰</div>
+      <div style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1.5rem,4vw,2.5rem); color:#1b5e20; line-height:2; direction:rtl;">
+        پاکستان زندہ باد! 🎉
+      </div>
+      <div style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.5vw,1.4rem); color:#5a3000; margin-top:12px; direction:rtl;">
+        شاباش! آپ نے سبق مکمل کر لیا ⭐
+      </div>
+    </div>
+
+  </div><!-- end content-area -->
+</div><!-- end page-wrapper -->
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a class="mobile-nav-item" href="#sec-hero">🏠<span>گھر</span></a>
+    <a class="mobile-nav-item" href="#sec-maqasid">🎯<span>مقاصد</span></a>
+    <a class="mobile-nav-item" href="#sec-kahani">📚<span>کہانی</span></a>
+    <a class="mobile-nav-item" href="#sec-geet">🎵<span>گیت</span></a>
+    <a class="mobile-nav-item" href="#sec-vocab">📝<span>الفاظ</span></a>
+    <a class="mobile-nav-item" href="#sec-tf">✅<span>صحیح/غلط</span></a>
+    <a class="mobile-nav-item" href="#sec-drag">🐾<span>ملائیں</span></a>
+    <a class="mobile-nav-item" href="#sec-quiz">🌟<span>کوئز</span></a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ---- CURTAIN FALLBACK (MUST BE FIRST) ----
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ---- GENERATE CLOUDS ----
+  try {
+    const bg = document.getElementById('pageBg');
+    if (bg) {
+      for (let i = 0; i < 5; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        const size = 60 + Math.random() * 80;
+        cloud.style.cssText = `
+          width:${size}px; height:${size*0.5}px;
+          top:${Math.random()*40}%;
+          left:-200px;
+          animation-duration:${20+Math.random()*20}s;
+          animation-delay:${Math.random()*15}s;
+        `;
+        const b1 = document.createElement('div');
+        b1.style.cssText = `width:${size*0.6}px;height:${size*0.6}px;top:-${size*0.25}px;right:${size*0.15}px;`;
+        const b2 = document.createElement('div');
+        b2.style.cssText = `width:${size*0.45}px;height:${size*0.45}px;top:-${size*0.15}px;right:${size*0.45}px;`;
+        cloud.appendChild(b1);
+        cloud.appendChild(b2);
+        bg.appendChild(cloud);
+      }
+    }
+  } catch(e) { console.warn('Cloud gen failed', e); }
+
+  // ---- LENIS SMOOTH SCROLL ----
+  let lenis = null;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const useLenis = !navigator.deviceMemory || navigator.deviceMemory >= 2;
+      if (useLenis) {
+        lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        } else {
+          function lenisRaf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(lenisRaf);
+          }
+          requestAnimationFrame(lenisRaf);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // ---- GSAP ANIMATIONS ----
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero entrance
+      const heroEl = document.querySelector('.hero');
+      if (heroEl) {
+        gsap.from(heroEl.children, {
+          y: -40,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: 'back.out(1.7)'
+        });
+      }
+
+      // Cards scroll animation
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          },
+          y: 50,
+          scale: 0.92,
+          opacity: 0,
+          duration: 0.55,
+          ease: 'back.out(1.4)'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // ---- DISMISS CURTAIN ----
+  try {
+    const curtain = document.getElementById('curtain');
+    if (curtain) {
+      const removeCurtain = () => {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(curtain, {
+            opacity: 0,
+            scale: 1.1,
+            duration: 0.5,
+            ease: 'power2.in',
+            onComplete: () => { curtain.style.display = 'none'; }
+          });
+        } else {
+          curtain.style.transition = 'opacity 0.5s';
+          curtain.style.opacity = '0';
+          setTimeout(() => { curtain.style.display = 'none'; }, 500);
+        }
+      };
+      setTimeout(removeCurtain, 1200);
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // ---- DRAG AND DROP SETUP ----
+  let draggedWord = null;
+  let draggedEl = null;
+  let dragCorrect = 0;
+
+  const dragWords = document.querySelectorAll('.drag-word');
+  dragWords.forEach(dw => {
+    dw.addEventListener('dragstart', (e) => {
+      draggedWord = dw.dataset.word;
+      draggedEl = dw;
+      dw.classList.add('dragging');
+      if (e.dataTransfer) e.dataTransfer.setData('text/plain', dw.dataset.word);
+    });
+    dw.addEventListener('dragend', () => {
+      dw.classList.remove('dragging');
+    });
+  });
+
+});
+
+// ---- GLOBAL FUNCTIONS ----
+
+function toggleReveal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.classList.contains('shown')) {
+    el.classList.remove('shown');
+  } else {
+    el.classList.add('shown');
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(el, { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  }
+}
+
+function provinceClick(el, info) {
+  const infoBox = document.getElementById('province-info');
+  if (!infoBox) return;
+  infoBox.textContent = info;
+  infoBox.style.display = 'block';
+  document.querySelectorAll('.province-card').forEach(c => c.style.background = '');
+  el.style.background = 'linear-gradient(135deg,#a5d6a7 0%,#c8e6c9 100%)';
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(infoBox, { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(1.7)' });
+      gsap.from(el, { scale: 0.9, duration: 0.3, ease: 'back.out(2)' });
+    }
+  } catch(e) {}
+}
+
+// True/False answers: tf1=true, tf2=false, tf3=true, tf4=false, tf5=true
+const tfAnswers = { 1: true, 2: false, 3: true, 4: false, 5: true };
+
+function tfAnswer(num, chosen) {
+  const item = document.getElementById('tf' + num);
+  if (!item || item.classList.contains('answered-correct') || item.classList.contains('answered-wrong')) return;
+
+  const isCorrect = tfAnswers[num] === chosen;
+  if (isCorrect) {
+    item.classList.add('answered-correct');
+    item.querySelector('.tf-text').insertAdjacentHTML('afterend', '<span style="font-size:1.5rem;margin-right:8px;">✅</span>');
+    launchConfetti();
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(item, { scale: 0.95, duration: 0.3, ease: 'back.out(2)' });
+      }
+    } catch(e) {}
+  } else {
+    item.classList.add('answered-wrong');
+    item.querySelector('.tf-text').insertAdjacentHTML('afterend', '<span style="font-size:1.5rem;margin-right:8px;">❌</span>');
+    shakeEl(item);
+  }
+  // Disable buttons
+  item.querySelectorAll('.tf-btn').forEach(b => {
+    b.disabled = true;
+    b.style.opacity = '0.5';
+  });
+}
+
+// Quiz
+let quizScore = 0;
+let quizAnswered = 0;
+const totalQs = 5;
+
+function checkQuiz(qId, btn, isCorrect) {
+  const qEl = document.getElementById(qId);
+  if (!qEl) return;
+  if (qEl.dataset.answered) return;
+  qEl.dataset.answered = '1';
+
+  const allOpts = qEl.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.classList.add('disabled'));
+
+  const fbId = 'fb' + qId.replace('qq', '');
+  const fb = document.getElementById(fbId);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    quizScore++;
+    if (fb) { fb.style.color = '#1b5e20'; fb.textContent = '🎉 شاباش! بالکل صحیح!'; }
+    launchConfetti();
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(btn, { scale: 0.9, duration: 0.3, ease: 'back.out(2)' });
+      }
+    } catch(e) {}
+  } else {
+    btn.classList.add('wrong');
+    if (fb) { fb.style.color = '#c62828'; fb.textContent = '❌ کوشش کریں! غلط جواب۔'; }
+    shakeEl(btn);
+    // Highlight correct
+    allOpts.forEach(o => {
+      if (o.getAttribute('onclick').includes('true')) {
+        o.classList.remove('disabled');
+        o.classList.add('correct');
+      }
+    });
+  }
+
+  quizAnswered++;
+  updateProgress();
+
+  if (quizAnswered === totalQs) {
+    setTimeout(showScore, 800);
+  }
+}
+
+function updateProgress() {
+  const bar = document.getElementById('quizProgress');
+  if (bar) {
+    bar.style.width = ((quizAnswered / totalQs) * 100) + '%';
+  }
+}
+
+function showScore() {
+  const box = document.getElementById('scoreBox');
+  const scoreNum = document.getElementById('finalScore');
+  const scoreMsg = document.getElementById('scoreMsg');
+  if (!box) return;
+
+  box.style.display = 'block';
+  if (scoreNum) scoreNum.textContent = quizScore + '/' + totalQs;
+
+  const stars = Math.round((quizScore / totalQs) * 5);
+  for (let i = 1; i <= stars; i++) {
+    setTimeout(() => {
+      const s = document.getElementById('s' + i);
+      if (s) s.classList.add('lit');
+    }, i * 200);
+  }
+
+  const msgs = ['کوشش جاری رکھیں! 💪', 'بہت اچھے! تھوڑی اور کوشش 😊', 'شاباش! 🌟', 'بہت خوب! 🎉', 'کمال! آپ بہترین ہیں! 🏆'];
+  if (scoreMsg) scoreMsg.textContent = msgs[Math.min(stars - 1, 4)] || msgs[0];
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(box, { scale: 0.7, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+    }
+  } catch(e) {}
+
+  if (quizScore >= 4) launchConfetti();
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function launchConfetti() {
+  try {
+    if (typeof confetti !== 'undefined') {
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#FF9FF3']
+      });
+    }
+  } catch(e) {}
+}
+
+function shakeEl(el) {
+  if (!el) return;
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+  setTimeout(() => el.classList.remove('shake'), 600);
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to(el, {
+        x: [-10, 10, -10, 10, 0],
+        duration: 0.5,
+        ease: 'power1.inOut'
+      });
+    }
+  } catch(e) {}
+}
+
+// ---- DRAG AND DROP ----
+let draggedWord = null;
+let draggedEl = null;
+let dragCorrectCount = 0;
+let dragTotal = 5;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dws = document.querySelectorAll('.drag-word');
+  dws.forEach(dw => {
+    dw.addEventListener('dragstart', (e) => {
+      draggedWord = dw.dataset.word;
+      draggedEl = dw;
+      dw.classList.add('dragging');
+      if (e.dataTransfer) e.dataTransfer.setData('text/plain', dw.dataset.word);
+    });
+    dw.addEventListener('dragend', () => {
+      if (draggedEl) draggedEl.classList.remove('dragging');
+    });
+  });
+});
+
+function dragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+function dragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function dropItem(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('drag-over');
+  if (zone.dataset.filled) return;
+
+  const word = draggedWord || (e.dataTransfer ? e.dataTransfer.getData('text/plain') : '');
+  const answer = zone.dataset.answer;
+
+  if (word === answer) {
+    zone.classList.add('correct-drop');
+    zone.dataset.filled = '1';
+    const ansDiv = document.createElement('div');
+    ansDiv.className = 'drop-answer';
+    ansDiv.textContent = word + ' ✅';
+    zone.appendChild(ansDiv);
+    if (draggedEl) draggedEl.classList.add('used');
+    dragCorrectCount++;
+    launchConfetti();
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(ansDiv, { scale: 0, duration: 0.4, ease: 'back.out(2)' });
+      }
+    } catch(e2) {}
+    if (dragCorrectCount === dragTotal) {
+      const sc = document.getElementById('drag-score');
+      if (sc) {
+        sc.style.display = 'block';
+        sc.textContent = '🎉 شاباش! آپ نے سب صحیح ملائے! ';
+        launchConfetti();
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.from(sc, { scale: 0.7, opacity: 0, duration: 0.4, ease: 'back.out(1.7)' });
+          }
+        } catch(e2) {}
+      }
+    }
+  } else {
+    zone.classList.add('wrong-drop');
+    shakeEl(zone);
+    setTimeout(() => zone.classList.remove('wrong-drop'), 800);
+  }
+
+  draggedWord = null;
+  draggedEl = null;
+}
+
+// ---- TOUCH DRAG AND DROP ----
+let touchDragEl = null;
+let touchClone = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+function touchStart(e) {
+  const el = e.currentTarget;
+  if (el.classList.contains('used')) return;
+  touchDragEl = el;
+  draggedWord = el.dataset.word;
+  draggedEl = el;
+
+  const rect = el.getBoundingClientRect();
+  const touch = e.touches[0];
+  touchOffsetX = touch.clientX - rect.left;
+  touchOffsetY = touch.clientY - rect.top;
+
+  touchClone = el.cloneNode(true);
+  touchClone.style.cssText = `
+    position:fixed; z-index:9999; pointer-events:none;
+    left:${rect.left}px; top:${rect.top}px;
+    width:${rect.width}px; opacity:0.85;
+    transform:scale(1.1);
+  `;
+  document.body.appendChild(touchClone);
+  el.classList.add('dragging');
+}
+
+function touchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const touch = e.touches[0];
+  touchClone.style.left = (touch.clientX - touchOffsetX) + 'px';
+  touchClone.style.top = (touch.clientY - touchOffsetY) + 'px';
+}
+
+function touchEnd(e) {
+  if (!touchClone) return;
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+
+  touchClone.remove();
+  touchClone = null;
+  if (touchDragEl) touchDragEl.classList.remove('dragging');
+
+  let zone = el;
+  while (zone && !zone.classList.contains('drop-zone')) {
+    zone = zone.parentElement;
+  }
+
+  if (zone && zone.classList.contains('drop-zone')) {
+    if (!zone.dataset.filled) {
+      const answer = zone.dataset.answer;
+      if (draggedWord === answer) {
+        zone.classList.add('correct-drop');
+        zone.dataset.filled = '1';
+        const ansDiv = document.createElement('div');
+        ansDiv.className = 'drop-answer';
+        ansDiv.textContent = draggedWord + ' ✅';
+        zone.appendChild(ansDiv);
+        if (draggedEl) draggedEl.classList.add('used');
+        dragCorrectCount++;
+        launchConfetti();
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.from(ansDiv, { scale: 0, duration: 0.4, ease: 'back.out(2)' });
+          }
+        } catch(e2) {}
+        if (dragCorrectCount === dragTotal) {
+          const sc = document.getElementById('drag-score');
+          if (sc) {
+            sc.style.display = 'block';
+            sc.textContent = '🎉 شاباش! آپ نے سب صحیح ملائے!';
+            launchConfetti();
+          }
+        }
+      } else {
+        zone.classList.add('wrong-drop');
+        shakeEl(zone);
+        setTimeout(() => zone.classList.remove('wrong-drop'), 800);
+      }
+    }
+  }
+
+  draggedWord = null;
+  draggedEl = null;
+  touchDragEl = null;
+}
+
+// ---- SMOOTH ANCHOR SCROLL ----
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

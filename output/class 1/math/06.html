@@ -1,0 +1,931 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Even & Odd Numbers | Class 1 | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;font-family:'Nunito',sans-serif;font-size:20px;background:#fff}
+body{padding-bottom:80px}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#FFD93D,#FF6B6B);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+#curtain .c-emoji{font-size:80px;animation:bounce 0.6s infinite alternate}
+#curtain .c-text{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.8rem,5vw,3rem);color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,0.15)}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-20px)}}
+
+/* BACKGROUND */
+.page-bg{width:100%;min-height:100vh;background:linear-gradient(180deg,#e0f7fa 0%,#fffde7 40%,#e8f5e9 100%);position:relative}
+.clouds{position:fixed;top:0;left:0;width:100%;pointer-events:none;z-index:0}
+.cloud{position:absolute;background:#fff;border-radius:50px;opacity:0.75}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.cloud1{width:120px;height:40px;top:30px;left:5%;animation:drift 20s linear infinite}
+.cloud2{width:90px;height:30px;top:60px;left:40%;animation:drift 25s linear infinite reverse}
+.cloud3{width:150px;height:50px;top:20px;left:70%;animation:drift 18s linear infinite}
+@keyframes drift{0%{transform:translateX(0)}50%{transform:translateX(30px)}100%{transform:translateX(0)}}
+
+/* WRAPPER */
+.page-wrapper{width:100%;max-width:100%;position:relative;z-index:1}
+.content-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* HERO */
+.hero-section{width:100vw;min-height:70vh;background:linear-gradient(135deg,#FF6B6B 0%,#FFD93D 50%,#6BCB77 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;position:relative;overflow:hidden}
+.hero-section::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:80px;background:#e0f7fa;clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(2.8rem,8vw,5rem);color:#fff;text-shadow:4px 4px 0 rgba(0,0,0,0.15);line-height:1.1}
+.hero-subtitle{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,3vw,2rem);color:#fff;margin-top:16px;text-shadow:2px 2px 0 rgba(0,0,0,0.1)}
+.hero-emoji{font-size:clamp(4rem,10vw,7rem);display:block;margin-bottom:20px;animation:heroFloat 3s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+.chapter-badge{display:inline-block;background:#fff;color:#FF6B6B;font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2.5vw,1.5rem);padding:8px 24px;border-radius:50px;margin-bottom:20px;border:4px solid rgba(255,255,255,0.5);box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+
+/* FUN CARDS */
+.fun-card{width:100%;background:#fff;border-radius:28px;border:4px solid #FFD93D;padding:40px;margin-bottom:40px;box-shadow:0 8px 30px rgba(0,0,0,0.08);opacity:1;transform:none;position:relative;overflow:hidden}
+.fun-card.red-card{border-color:#FF6B6B}
+.fun-card.green-card{border-color:#6BCB77}
+.fun-card.blue-card{border-color:#6bcbcb}
+.fun-card.purple-card{border-color:#c084fc}
+.card-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.card-icon{font-size:clamp(2rem,5vw,3rem);flex-shrink:0}
+.card-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.8rem,4vw,2.6rem);color:#FF6B6B}
+.fun-card.red-card .card-title{color:#FF6B6B}
+.fun-card.green-card .card-title{color:#3a9954}
+.fun-card.blue-card .card-title{color:#2196f3}
+.fun-card.purple-card .card-title{color:#9333ea}
+
+/* NUMBER INTRO */
+.number-intro{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:20px 0}
+.big-num-box{width:140px;height:140px;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:5px solid;cursor:pointer;transition:transform 0.2s;user-select:none;flex-shrink:0}
+.big-num-box:hover{transform:scale(1.08)}
+.big-num-box .num{font-family:'Bubblegum Sans',cursive;font-size:clamp(2.5rem,6vw,4rem)}
+.big-num-box .label{font-size:clamp(0.85rem,1.5vw,1rem);font-weight:800;margin-top:4px;font-family:'Nunito',sans-serif}
+.even-box{background:#fff9c4;border-color:#FFD93D;color:#e67e00}
+.odd-box{background:#fce4ec;border-color:#FF6B6B;color:#c62828}
+
+/* COUNTERS */
+.counter-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0}
+.counter-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform 0.15s}
+.counter-item:hover{transform:scale(1.12)}
+.counter-circle{width:64px;height:64px;border-radius:50%;border:4px solid;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:1.6rem;font-weight:bold;transition:transform 0.2s}
+.even-circle{background:#fff9c4;border-color:#FFD93D;color:#e67e00}
+.odd-circle{background:#fce4ec;border-color:#FF6B6B;color:#c62828}
+.counter-label{font-size:0.85rem;font-weight:800;color:#555}
+
+/* EXPLANATION BOXES */
+.explain-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:20px 0}
+.explain-box{flex:1;min-width:260px;max-width:480px;border-radius:24px;padding:28px;border:5px solid;text-align:center}
+.explain-box.even{background:#fff9c4;border-color:#FFD93D}
+.explain-box.odd{background:#fce4ec;border-color:#FF6B6B}
+.explain-box .eb-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.6rem,3.5vw,2.2rem);margin-bottom:12px}
+.explain-box.even .eb-title{color:#e67e00}
+.explain-box.odd .eb-title{color:#c62828}
+.explain-box .eb-desc{font-size:clamp(1rem,2vw,1.2rem);color:#555;line-height:1.6}
+.explain-box .big-example{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,5vw,3.5rem);margin:12px 0}
+.explain-box.even .big-example{color:#e67e00}
+.explain-box.odd .big-example{color:#c62828}
+
+/* NUMBER GRID */
+.num-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;margin:20px 0}
+.ng-cell{border-radius:14px;border:3px solid;padding:10px 0;text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2vw,1.4rem);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;min-height:56px;display:flex;align-items:center;justify-content:center}
+.ng-cell:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,0.12)}
+.ng-cell.even-cell{background:#fff9c4;border-color:#FFD93D;color:#e67e00}
+.ng-cell.odd-cell{background:#fce4ec;border-color:#FF6B6B;color:#c62828}
+.grid-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:clamp(1rem,2vw,1.2rem);font-weight:700}
+.legend-dot{width:24px;height:24px;border-radius:8px;border:3px solid}
+.legend-dot.even{background:#fff9c4;border-color:#FFD93D}
+.legend-dot.odd{background:#fce4ec;border-color:#FF6B6B}
+
+/* WRITING ACTIVITY */
+.write-section{margin:20px 0}
+.write-subtitle{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.3rem,3vw,1.8rem);color:#555;margin-bottom:16px;text-align:center}
+.write-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.write-cell{border:4px solid #ccc;border-radius:18px;min-height:70px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,2.5vw,1.8rem);background:#fff;cursor:text;transition:border-color 0.2s,box-shadow 0.2s;padding:8px;position:relative}
+.write-cell:focus,.write-cell.focused{outline:none;border-color:#6BCB77;box-shadow:0 0 0 4px rgba(107,203,119,0.25)}
+.write-cell.prefilled{background:#f0fdf4;border-color:#6BCB77;cursor:default;color:#3a9954;font-weight:800}
+.write-cell.prefilled-yellow{background:#fffde7;border-color:#FFD93D;cursor:default;color:#e67e00;font-weight:800}
+.write-cell.correct-input{background:#e8f5e9;border-color:#6BCB77;color:#2e7d32}
+.write-cell.wrong-input{background:#ffebee;border-color:#FF6B6B;color:#c62828}
+
+/* DRAG & DROP */
+.dnd-area{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:20px 0}
+.dnd-targets{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.dnd-target{min-width:120px;min-height:80px;border-radius:18px;border:4px dashed #ccc;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:1.6rem;transition:border-color 0.2s,background 0.2s;padding:12px;text-align:center}
+.dnd-target.drag-over{border-color:#6BCB77;background:#f0fdf4}
+.dnd-target.correct-drop{border-color:#6BCB77;background:#e8f5e9;border-style:solid}
+.dnd-target.wrong-drop{border-color:#FF6B6B;background:#ffebee;border-style:solid}
+.dnd-items{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px}
+.drag-item{padding:14px 24px;border-radius:18px;border:4px solid;font-family:'Bubblegum Sans',cursive;font-size:1.5rem;cursor:grab;user-select:none;transition:transform 0.15s,box-shadow 0.15s;min-height:56px;display:flex;align-items:center}
+.drag-item:active{cursor:grabbing;transform:scale(1.05);box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+.drag-even{background:#fff9c4;border-color:#FFD93D;color:#e67e00}
+.drag-odd{background:#fce4ec;border-color:#FF6B6B;color:#c62828}
+.dnd-label{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.5rem);color:#555;text-align:center;margin-bottom:8px}
+
+/* QUIZ */
+.quiz-q{margin-bottom:40px;padding:28px;border-radius:24px;border:4px solid #6BCB77;background:#f0fdf4}
+.quiz-q-num{font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2vw,1.3rem);color:#6BCB77;margin-bottom:8px}
+.quiz-q-text{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,3.5vw,2rem);color:#333;margin-bottom:20px;text-align:center}
+.quiz-big-num{font-family:'Bubblegum Sans',cursive;font-size:clamp(3rem,8vw,5rem);text-align:center;margin:16px 0;line-height:1}
+.quiz-options{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.quiz-btn{min-width:140px;min-height:80px;border-radius:24px;border:5px solid;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.3rem,3vw,1.8rem);cursor:pointer;transition:transform 0.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 20px}
+.quiz-btn:hover{transform:scale(1.05)}
+.quiz-btn.btn-even{background:#fff9c4;border-color:#FFD93D;color:#e67e00}
+.quiz-btn.btn-odd{background:#fce4ec;border-color:#FF6B6B;color:#c62828}
+.quiz-btn.btn-correct{background:#e8f5e9!important;border-color:#6BCB77!important;color:#2e7d32!important}
+.quiz-btn.btn-wrong{background:#ffebee!important;border-color:#FF6B6B!important;color:#c62828!important}
+.quiz-feedback{text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);margin-top:14px;min-height:36px}
+.quiz-feedback.correct{color:#2e7d32}
+.quiz-feedback.wrong{color:#c62828}
+.quiz-score{text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.8rem,5vw,3rem);color:#FF6B6B;margin:20px 0;display:none}
+.restart-btn{display:block;margin:0 auto;padding:18px 48px;border-radius:50px;border:5px solid #FF6B6B;background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.6rem);cursor:pointer;transition:transform 0.15s;display:none}
+.restart-btn:hover{transform:scale(1.05)}
+
+/* COUNTING VISUAL */
+.count-visual{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+.cv-group{border-radius:20px;border:4px solid;padding:20px;text-align:center;min-width:140px;flex:1;max-width:200px}
+.cv-group.even{background:#fff9c4;border-color:#FFD93D}
+.cv-group.odd{background:#fce4ec;border-color:#FF6B6B}
+.cv-apples{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.4;word-break:break-all}
+.cv-num{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,5vw,3rem);margin-top:8px}
+.cv-group.even .cv-num{color:#e67e00}
+.cv-group.odd .cv-num{color:#c62828}
+.cv-tag{font-size:clamp(0.9rem,1.5vw,1.1rem);font-weight:800;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.cv-group.even .cv-tag{color:#e67e00}
+.cv-group.odd .cv-tag{color:#c62828}
+
+/* PAIRS VISUAL */
+.pairs-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0}
+.pair-block{border-radius:18px;border:4px solid;padding:16px 20px;text-align:center;background:#fff}
+.pair-block.even{border-color:#6BCB77;background:#f0fdf4}
+.pair-block.odd{border-color:#FF6B6B;background:#fce4ec}
+.pair-emojis{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.5}
+.pair-num{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.8rem,4vw,2.5rem)}
+.pair-block.even .pair-num{color:#3a9954}
+.pair-block.odd .pair-num{color:#c62828}
+.pair-note{font-size:clamp(0.85rem,1.5vw,1rem);font-weight:800;color:#888;margin-top:4px}
+
+/* SECTION DIVIDER */
+.section-divider{text-align:center;font-size:2.5rem;margin:20px 0;letter-spacing:8px}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:4px solid #FFD93D;z-index:1000;overflow-x:auto;padding:8px 0}
+.bottom-nav-inner{display:flex;gap:0;min-width:max-content;padding:0 8px}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 14px;min-width:70px;min-height:56px;cursor:pointer;text-decoration:none;color:#555;font-size:13px;font-weight:700;border-radius:12px;transition:background 0.15s;justify-content:center}
+.bnav-item:hover,.bnav-item.active{background:#fff9c4;color:#e67e00}
+.bnav-item .bnav-icon{font-size:1.5rem}
+
+/* PROGRESS BAR */
+.progress-wrap{background:#f5f5f5;border-radius:50px;height:18px;margin:16px 0;border:3px solid #ccc;overflow:hidden}
+.progress-bar{height:100%;border-radius:50px;background:linear-gradient(90deg,#6BCB77,#FFD93D);transition:width 0.5s ease;width:0%}
+
+/* TROPHY */
+.trophy-section{text-align:center;padding:40px 20px;display:none}
+.trophy-emoji{font-size:clamp(4rem,10vw,7rem);display:block;animation:spin 2s ease infinite}
+@keyframes spin{0%,100%{transform:rotate(-10deg) scale(1)}50%{transform:rotate(10deg) scale(1.1)}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .content-inner{padding:0 16px}
+  .fun-card{padding:24px 16px;margin-bottom:24px}
+  .hero-section{min-height:60vh;padding:40px 16px}
+  .num-grid{grid-template-columns:repeat(5,1fr)}
+  .write-grid{grid-template-columns:repeat(5,1fr)}
+  .bottom-nav{display:block}
+  .big-num-box{width:110px;height:110px}
+  .quiz-btn{min-width:110px;min-height:70px}
+  body{padding-bottom:80px}
+}
+@media(max-width:480px){
+  .num-grid{grid-template-columns:repeat(5,1fr);gap:5px}
+  .ng-cell{font-size:1rem;min-height:48px;border-radius:10px}
+  .write-grid{grid-template-columns:repeat(5,1fr);gap:6px}
+  .write-cell{min-height:56px;font-size:1.1rem}
+  .big-num-box{width:90px;height:90px}
+  .explain-box{min-width:100%;padding:20px}
+  .content-inner{padding:0 10px}
+}
+@media(max-width:320px){
+  .num-grid{grid-template-columns:repeat(5,1fr);gap:3px}
+  .ng-cell{font-size:0.85rem;min-height:44px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <span class="c-emoji">🔢</span>
+  <div class="c-text">Loading Fun Numbers! 🎉</div>
+</div>
+
+<!-- CLOUD BG -->
+<div class="clouds" aria-hidden="true">
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+</div>
+
+<div class="page-bg">
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero-section" id="hero">
+    <div style="position:relative;z-index:2;text-align:center">
+      <div class="chapter-badge">📖 Chapter 6</div>
+      <span class="hero-emoji">🔢</span>
+      <h1 class="hero-title">Even & Odd Numbers!</h1>
+      <p class="hero-subtitle">Let's learn about even and odd numbers! 🌟</p>
+    </div>
+  </section>
+
+  <div class="content-inner">
+
+    <!-- CARD 1: WHAT ARE EVEN NUMBERS -->
+    <div class="fun-card" id="card-even" style="margin-top:60px">
+      <div class="card-header">
+        <span class="card-icon">🟡</span>
+        <h2 class="card-title">What are Even Numbers?</h2>
+      </div>
+      <div class="explain-row">
+        <div class="explain-box even">
+          <div class="eb-title">⭐ Even Numbers!</div>
+          <div class="big-example">2, 4, 6, 8, 10...</div>
+          <div class="eb-desc">Even numbers can be <strong>divided into 2 equal groups</strong> with nothing left over! They end in <strong>0, 2, 4, 6, or 8</strong> 🎉</div>
+        </div>
+      </div>
+      <div class="count-visual">
+        <div class="cv-group even">
+          <div class="cv-apples">🍎🍎</div>
+          <div class="cv-num">2</div>
+          <div class="cv-tag">✅ Even</div>
+        </div>
+        <div class="cv-group even">
+          <div class="cv-apples">🍎🍎🍎🍎</div>
+          <div class="cv-num">4</div>
+          <div class="cv-tag">✅ Even</div>
+        </div>
+        <div class="cv-group even">
+          <div class="cv-apples">🍎🍎🍎🍎🍎🍎</div>
+          <div class="cv-num">6</div>
+          <div class="cv-tag">✅ Even</div>
+        </div>
+        <div class="cv-group even">
+          <div class="cv-apples">🍎🍎🍎🍎🍎🍎🍎🍎</div>
+          <div class="cv-num">8</div>
+          <div class="cv-tag">✅ Even</div>
+        </div>
+        <div class="cv-group even">
+          <div class="cv-apples">🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎</div>
+          <div class="cv-num">10</div>
+          <div class="cv-tag">✅ Even</div>
+        </div>
+      </div>
+      <div class="section-divider">🌟✨🌟✨🌟</div>
+      <p style="text-align:center;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#555">👆 <strong>Tap any number below to see it!</strong></p>
+      <div class="number-intro" id="even-intro">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- CARD 2: WHAT ARE ODD NUMBERS -->
+    <div class="fun-card red-card" id="card-odd">
+      <div class="card-header">
+        <span class="card-icon">🔴</span>
+        <h2 class="card-title">What are Odd Numbers?</h2>
+      </div>
+      <div class="explain-row">
+        <div class="explain-box odd">
+          <div class="eb-title">⭐ Odd Numbers!</div>
+          <div class="big-example">1, 3, 5, 7, 9...</div>
+          <div class="eb-desc">Odd numbers always have <strong>one left over</strong> when you try to make pairs! They end in <strong>1, 3, 5, 7, or 9</strong> 🎈</div>
+        </div>
+      </div>
+      <div class="count-visual">
+        <div class="cv-group odd">
+          <div class="cv-apples">⭐</div>
+          <div class="cv-num">1</div>
+          <div class="cv-tag">🔴 Odd</div>
+        </div>
+        <div class="cv-group odd">
+          <div class="cv-apples">⭐⭐⭐</div>
+          <div class="cv-num">3</div>
+          <div class="cv-tag">🔴 Odd</div>
+        </div>
+        <div class="cv-group odd">
+          <div class="cv-apples">⭐⭐⭐⭐⭐</div>
+          <div class="cv-num">5</div>
+          <div class="cv-tag">🔴 Odd</div>
+        </div>
+        <div class="cv-group odd">
+          <div class="cv-apples">⭐⭐⭐⭐⭐⭐⭐</div>
+          <div class="cv-num">7</div>
+          <div class="cv-tag">🔴 Odd</div>
+        </div>
+        <div class="cv-group odd">
+          <div class="cv-apples">⭐⭐⭐⭐⭐⭐⭐⭐⭐</div>
+          <div class="cv-num">9</div>
+          <div class="cv-tag">🔴 Odd</div>
+        </div>
+      </div>
+      <div class="section-divider">❤️🧡❤️🧡❤️</div>
+      <div class="number-intro" id="odd-intro">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- CARD 3: PAIRS CONCEPT -->
+    <div class="fun-card green-card" id="card-pairs">
+      <div class="card-header">
+        <span class="card-icon">🐾</span>
+        <h2 class="card-title">Pairs Help Us Understand!</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:16px">Can we make <strong>pairs</strong> (2 friends together)? If yes = Even! If one is left alone = Odd! 🐾🐾</p>
+      <div class="pairs-row" id="pairs-row">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- CARD 4: NUMBER GRID 1-100 -->
+    <div class="fun-card blue-card" id="card-grid">
+      <div class="card-header">
+        <span class="card-icon">🎨</span>
+        <h2 class="card-title">Numbers 1 to 100 Colour Chart!</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:16px">👆 Tap any number! <strong style="color:#e67e00">Yellow = Even</strong> • <strong style="color:#c62828">Red = Odd</strong></p>
+      <div class="num-grid" id="num-grid">
+        <!-- filled by JS -->
+      </div>
+      <div class="grid-legend">
+        <div class="legend-item"><div class="legend-dot even"></div> Even Numbers</div>
+        <div class="legend-item"><div class="legend-dot odd"></div> Odd Numbers</div>
+      </div>
+    </div>
+
+    <!-- CARD 5: ODD NUMBERS WRITING (1-99) -->
+    <div class="fun-card red-card" id="card-write-odd">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Write Odd Numbers 1 to 99!</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:16px">Fill in the missing odd numbers! 🔴</p>
+      <div class="progress-wrap"><div class="progress-bar" id="odd-progress"></div></div>
+      <div class="write-grid" id="write-odd-grid">
+        <!-- filled by JS -->
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button onclick="checkOddNumbers()" style="padding:16px 40px;border-radius:50px;border:5px solid #FF6B6B;background:#FF6B6B;color:#fff;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.5rem);cursor:pointer;min-height:56px">✅ Check My Answers!</button>
+      </div>
+      <div id="odd-result" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);margin-top:16px;min-height:40px"></div>
+    </div>
+
+    <!-- CARD 6: EVEN NUMBERS WRITING (2-100) -->
+    <div class="fun-card" id="card-write-even">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Write Even Numbers 2 to 100!</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:16px">Fill in the missing even numbers! 🟡</p>
+      <div class="progress-wrap"><div class="progress-bar" id="even-progress"></div></div>
+      <div class="write-grid" id="write-even-grid">
+        <!-- filled by JS -->
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button onclick="checkEvenNumbers()" style="padding:16px 40px;border-radius:50px;border:5px solid #FFD93D;background:#FFD93D;color:#e67e00;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.5rem);cursor:pointer;min-height:56px">✅ Check My Answers!</button>
+      </div>
+      <div id="even-result" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);margin-top:16px;min-height:40px"></div>
+    </div>
+
+    <!-- CARD 7: DRAG & DROP -->
+    <div class="fun-card purple-card" id="card-dnd">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <h2 class="card-title">Sort the Numbers! Drag & Drop</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:16px">Drag each number to the correct box! 🎉</p>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:20px 0">
+        <div style="flex:1;min-width:220px">
+          <div class="dnd-label">🟡 Even Numbers</div>
+          <div class="dnd-target" id="dnd-even" ondragover="allowDrop(event)" ondrop="dropItem(event,'even')" ontouchend="touchDrop(event,'even')">Drop here!</div>
+          <div id="dnd-even-dropped" style="display:flex;flex-wrap:wrap;gap:8px;min-height:40px;margin-top:8px;justify-content:center"></div>
+        </div>
+        <div style="flex:1;min-width:220px">
+          <div class="dnd-label">🔴 Odd Numbers</div>
+          <div class="dnd-target" id="dnd-odd" ondragover="allowDrop(event)" ondrop="dropItem(event,'odd')" ontouchend="touchDrop(event,'odd')">Drop here!</div>
+          <div id="dnd-odd-dropped" style="display:flex;flex-wrap:wrap;gap:8px;min-height:40px;margin-top:8px;justify-content:center"></div>
+        </div>
+      </div>
+      <div class="dnd-items" id="dnd-items">
+        <!-- filled by JS -->
+      </div>
+      <div id="dnd-feedback" style="text-align:center;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);margin-top:16px;min-height:40px"></div>
+    </div>
+
+    <!-- CARD 8: QUIZ -->
+    <div class="fun-card green-card" id="card-quiz">
+      <div class="card-header">
+        <span class="card-icon">🏆</span>
+        <h2 class="card-title">Fun Quiz Time! 🎊</h2>
+      </div>
+      <p style="text-align:center;font-size:clamp(1rem,2.5vw,1.3rem);color:#555;margin-bottom:24px">Is the number <strong>Even</strong> or <strong>Odd</strong>? Pick the right answer! 🌟</p>
+      <div id="quiz-container">
+        <!-- filled by JS -->
+      </div>
+      <div class="quiz-score" id="quiz-score">🏆 Great job! You got <span id="score-val">0</span> out of 8! 🌟</div>
+      <button class="restart-btn" id="restart-btn" onclick="restartQuiz()">🔄 Play Again!</button>
+    </div>
+
+    <!-- TROPHY -->
+    <div class="trophy-section" id="trophy">
+      <span class="trophy-emoji">🏆</span>
+      <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,5vw,3rem);color:#FF6B6B;margin-top:16px">Amazing Work!</div>
+      <div style="font-size:clamp(1rem,2.5vw,1.4rem);color:#555;margin-top:8px">You learned Even & Odd Numbers! 🎉🌟🎊</div>
+    </div>
+
+  </div><!-- /content-inner -->
+</div><!-- /page-wrapper -->
+</div><!-- /page-bg -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a class="bnav-item" href="#hero"><span class="bnav-icon">🏠</span>Home</a>
+    <a class="bnav-item" href="#card-even"><span class="bnav-icon">🟡</span>Even</a>
+    <a class="bnav-item" href="#card-odd"><span class="bnav-icon">🔴</span>Odd</a>
+    <a class="bnav-item" href="#card-pairs"><span class="bnav-icon">🐾</span>Pairs</a>
+    <a class="bnav-item" href="#card-grid"><span class="bnav-icon">🎨</span>Chart</a>
+    <a class="bnav-item" href="#card-write-odd"><span class="bnav-icon">✏️</span>Write</a>
+    <a class="bnav-item" href="#card-dnd"><span class="bnav-icon">🎯</span>Sort</a>
+    <a class="bnav-item" href="#card-quiz"><span class="bnav-icon">🏆</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ─── DATA ────────────────────────────────────────────────
+  const oddNumbers  = Array.from({length:50}, (_,i) => 2*i+1);   // 1,3,5...99
+  const evenNumbers = Array.from({length:50}, (_,i) => 2*(i+1)); // 2,4,6...100
+
+  // ─── LENIS ───────────────────────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.08 });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add(t => lenis.raf(t * 1000));
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // ─── GSAP SCROLL ─────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      document.querySelectorAll('.fun-card').forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0.6, y: 40, scale: 0.92 },
+          {
+            opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.4)',
+            scrollTrigger: { trigger: card, start: 'top 88%', once: true },
+            delay: (i % 3) * 0.08
+          }
+        );
+      });
+    }
+  } catch(e) { console.warn('GSAP scroll failed', e); }
+
+  // ─── CONFETTI ────────────────────────────────────────────
+  function launchConfetti() {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 },
+          colors: ['#FF6B6B','#FFD93D','#6BCB77','#fff','#c084fc'] });
+      }
+    } catch(e) {}
+  }
+
+  // ─── SHAKE ───────────────────────────────────────────────
+  function shakeEl(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { keyframes:{ x:[-10,10,-10,10,0] }, duration:0.4, ease:'power1.inOut' });
+      } else {
+        el.style.animation = 'none';
+        el.style.transform = 'translateX(0)';
+        let t=0; const frames=[-10,10,-10,10,0];
+        frames.forEach((v,i) => setTimeout(()=>{ el.style.transform=`translateX(${v}px)`; if(i===frames.length-1) el.style.transform=''; },i*60));
+      }
+    } catch(e) {}
+  }
+
+  // ─── BOUNCE CARD IN ──────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.fun-card', { y: 30, opacity: 0.5, stagger: 0.1, duration: 0.5, ease: 'back.out(1.2)', delay: 0.3 });
+    }
+  } catch(e) {}
+
+  // ─── EVEN INTRO BOXES ────────────────────────────────────
+  const evenIntro = document.getElementById('even-intro');
+  if (evenIntro) {
+    [2,4,6,8,10,12,14,16,18,20].forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'big-num-box even-box';
+      div.innerHTML = `<span class="num">${n}</span><span class="label">🟡 Even</span>`;
+      div.addEventListener('click', () => {
+        div.style.transform = 'scale(1.2) rotate(5deg)';
+        launchConfetti();
+        setTimeout(() => div.style.transform = '', 400);
+      });
+      evenIntro.appendChild(div);
+    });
+  }
+
+  // ─── ODD INTRO BOXES ─────────────────────────────────────
+  const oddIntro = document.getElementById('odd-intro');
+  if (oddIntro) {
+    [1,3,5,7,9,11,13,15,17,19].forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'big-num-box odd-box';
+      div.innerHTML = `<span class="num">${n}</span><span class="label">🔴 Odd</span>`;
+      div.addEventListener('click', () => {
+        div.style.transform = 'scale(1.2) rotate(-5deg)';
+        setTimeout(() => div.style.transform = '', 400);
+      });
+      oddIntro.appendChild(div);
+    });
+  }
+
+  // ─── PAIRS ROW ───────────────────────────────────────────
+  const pairsRow = document.getElementById('pairs-row');
+  if (pairsRow) {
+    const pairData = [
+      {n:1,e:'🐶',t:'odd'},
+      {n:2,e:'🐶🐶',t:'even'},
+      {n:3,e:'🐱🐱🐱',t:'odd'},
+      {n:4,e:'🐱🐱🐱🐱',t:'even'},
+      {n:5,e:'🐸🐸🐸🐸🐸',t:'odd'},
+      {n:6,e:'🐸🐸🐸🐸🐸🐸',t:'even'},
+      {n:7,e:'🦋🦋🦋🦋🦋🦋🦋',t:'odd'},
+      {n:8,e:'🦋🦋🦋🦋🦋🦋🦋🦋',t:'even'},
+    ];
+    pairData.forEach(p => {
+      const div = document.createElement('div');
+      div.className = `pair-block ${p.t}`;
+      div.innerHTML = `<div class="pair-emojis">${p.e}</div><div class="pair-num">${p.n}</div><div class="pair-note">${p.t==='even'?'✅ Even (pairs!)':'🔴 Odd (one left!)'}</div>`;
+      div.style.cursor = 'pointer';
+      div.addEventListener('click', () => {
+        if(p.t==='even') launchConfetti();
+        try { if(typeof gsap!=='undefined') gsap.to(div,{scale:1.12,duration:0.15,yoyo:true,repeat:1}); } catch(e){}
+      });
+      pairsRow.appendChild(div);
+    });
+  }
+
+  // ─── NUMBER GRID 1-100 ───────────────────────────────────
+  const numGrid = document.getElementById('num-grid');
+  if (numGrid) {
+    for (let i = 1; i <= 100; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'ng-cell ' + (i % 2 === 0 ? 'even-cell' : 'odd-cell');
+      cell.textContent = i;
+      cell.title = i % 2 === 0 ? `${i} is EVEN!` : `${i} is ODD!`;
+      cell.addEventListener('click', () => {
+        if (i % 2 === 0) {
+          launchConfetti();
+          try { if(typeof gsap!=='undefined') gsap.to(cell,{scale:1.3,duration:0.15,yoyo:true,repeat:1}); } catch(e){}
+        } else {
+          try { if(typeof gsap!=='undefined') gsap.to(cell,{scale:1.3,rotate:15,duration:0.15,yoyo:true,repeat:1,ease:'power2.inOut'}); } catch(e){}
+        }
+      });
+      numGrid.appendChild(cell);
+    }
+  }
+
+  // ─── WRITE ODD (1-99) ────────────────────────────────────
+  const writeOddGrid = document.getElementById('write-odd-grid');
+  if (writeOddGrid) {
+    oddNumbers.forEach((n, idx) => {
+      const cell = document.createElement('div');
+      const isPreFill = (n === 1 || n === 19 || n === 99 || idx % 7 === 3);
+      cell.className = 'write-cell ' + (isPreFill ? 'prefilled' : 'focusable');
+      cell.setAttribute('data-answer', n);
+      if (isPreFill) {
+        cell.textContent = n;
+        cell.setAttribute('data-prefilled', '1');
+      } else {
+        cell.contentEditable = 'true';
+        cell.setAttribute('inputmode', 'numeric');
+        cell.addEventListener('focus', () => cell.classList.add('focused'));
+        cell.addEventListener('blur', () => cell.classList.remove('focused'));
+        cell.addEventListener('input', () => updateOddProgress());
+      }
+      writeOddGrid.appendChild(cell);
+    });
+  }
+
+  function updateOddProgress() {
+    const cells = document.querySelectorAll('#write-odd-grid .write-cell:not([data-prefilled])');
+    const filled = [...cells].filter(c => c.textContent.trim() !== '').length;
+    const pct = Math.round(filled / cells.length * 100);
+    const bar = document.getElementById('odd-progress');
+    if (bar) bar.style.width = pct + '%';
+  }
+
+  window.checkOddNumbers = function() {
+    const cells = document.querySelectorAll('#write-odd-grid .write-cell:not([data-prefilled])');
+    let correct = 0, total = cells.length;
+    cells.forEach(cell => {
+      const ans = parseInt(cell.getAttribute('data-answer'));
+      const val = parseInt(cell.textContent.trim());
+      cell.classList.remove('correct-input','wrong-input');
+      if (val === ans) {
+        cell.classList.add('correct-input');
+        correct++;
+      } else {
+        cell.classList.add('wrong-input');
+        shakeEl(cell);
+      }
+    });
+    const res = document.getElementById('odd-result');
+    if (res) {
+      if (correct === total) {
+        res.textContent = '🎉 Perfect! All correct!';
+        res.style.color = '#2e7d32';
+        launchConfetti();
+      } else {
+        res.textContent = `✨ You got ${correct} out of ${total}! Keep trying! 💪`;
+        res.style.color = '#e67e00';
+      }
+    }
+  };
+
+  // ─── WRITE EVEN (2-100) ──────────────────────────────────
+  const writeEvenGrid = document.getElementById('write-even-grid');
+  if (writeEvenGrid) {
+    evenNumbers.forEach((n, idx) => {
+      const cell = document.createElement('div');
+      const isPreFill = (n === 2 || n === 20 || n === 100 || idx % 7 === 4);
+      cell.className = 'write-cell ' + (isPreFill ? 'prefilled-yellow' : 'focusable');
+      cell.setAttribute('data-answer', n);
+      if (isPreFill) {
+        cell.textContent = n;
+        cell.setAttribute('data-prefilled', '1');
+      } else {
+        cell.contentEditable = 'true';
+        cell.setAttribute('inputmode', 'numeric');
+        cell.addEventListener('focus', () => cell.classList.add('focused'));
+        cell.addEventListener('blur', () => cell.classList.remove('focused'));
+        cell.addEventListener('input', () => updateEvenProgress());
+      }
+      writeEvenGrid.appendChild(cell);
+    });
+  }
+
+  function updateEvenProgress() {
+    const cells = document.querySelectorAll('#write-even-grid .write-cell:not([data-prefilled])');
+    const filled = [...cells].filter(c => c.textContent.trim() !== '').length;
+    const pct = Math.round(filled / cells.length * 100);
+    const bar = document.getElementById('even-progress');
+    if (bar) bar.style.width = pct + '%';
+  }
+
+  window.checkEvenNumbers = function() {
+    const cells = document.querySelectorAll('#write-even-grid .write-cell:not([data-prefilled])');
+    let correct = 0, total = cells.length;
+    cells.forEach(cell => {
+      const ans = parseInt(cell.getAttribute('data-answer'));
+      const val = parseInt(cell.textContent.trim());
+      cell.classList.remove('correct-input','wrong-input');
+      if (val === ans) {
+        cell.classList.add('correct-input');
+        correct++;
+      } else {
+        cell.classList.add('wrong-input');
+        shakeEl(cell);
+      }
+    });
+    const res = document.getElementById('even-result');
+    if (res) {
+      if (correct === total) {
+        res.textContent = '🎉 Perfect! All correct!';
+        res.style.color = '#2e7d32';
+        launchConfetti();
+      } else {
+        res.textContent = `✨ You got ${correct} out of ${total}! Keep trying! 💪`;
+        res.style.color = '#e67e00';
+      }
+    }
+  };
+
+  // ─── DRAG & DROP ─────────────────────────────────────────
+  const dndNumbers = [4, 7, 12, 5, 18, 3, 22, 9, 16, 11];
+  let currentDragItem = null;
+  let touchDragItem = null;
+
+  const dndItemsEl = document.getElementById('dnd-items');
+  if (dndItemsEl) {
+    dndNumbers.forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'drag-item ' + (n % 2 === 0 ? 'drag-even' : 'drag-odd');
+      div.textContent = n;
+      div.draggable = true;
+      div.setAttribute('data-num', n);
+      div.setAttribute('data-type', n % 2 === 0 ? 'even' : 'odd');
+      div.addEventListener('dragstart', e => {
+        currentDragItem = div;
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      // Touch support
+      div.addEventListener('touchstart', e => {
+        touchDragItem = div;
+        div.style.opacity = '0.7';
+      }, {passive:true});
+      div.addEventListener('touchend', () => { div.style.opacity = ''; });
+      dndItemsEl.appendChild(div);
+    });
+  }
+
+  window.allowDrop = function(e) { e.preventDefault(); };
+
+  window.dropItem = function(e, zone) {
+    e.preventDefault();
+    if (!currentDragItem) return;
+    handleDrop(currentDragItem, zone);
+    currentDragItem = null;
+  };
+
+  window.touchDrop = function(e, zone) {
+    if (!touchDragItem) return;
+    handleDrop(touchDragItem, zone);
+    touchDragItem = null;
+  };
+
+  function handleDrop(item, zone) {
+    const type = item.getAttribute('data-type');
+    const num  = item.getAttribute('data-num');
+    const targetEl = document.getElementById(`dnd-${zone}`);
+    const droppedEl = document.getElementById(`dnd-${zone}-dropped`);
+    const feedbackEl = document.getElementById('dnd-feedback');
+
+    if (type === zone) {
+      // Correct!
+      item.style.display = 'none';
+      const badge = document.createElement('div');
+      badge.className = 'drag-item ' + (zone==='even' ? 'drag-even':'drag-odd');
+      badge.textContent = num;
+      badge.style.cursor='default';
+      if (droppedEl) droppedEl.appendChild(badge);
+      if (targetEl) { targetEl.classList.add('correct-drop'); setTimeout(()=>targetEl.classList.remove('correct-drop'),600); }
+      launchConfetti();
+      if (feedbackEl) { feedbackEl.textContent = `🎉 Yes! ${num} is ${zone}!`; feedbackEl.style.color='#2e7d32'; }
+      try { if(typeof gsap!=='undefined') gsap.from(badge,{scale:0,duration:0.3,ease:'back.out(2)'}); } catch(err){}
+      // Check if all done
+      const remaining = document.querySelectorAll('#dnd-items .drag-item:not([style*="display: none"])');
+      if (remaining.length === 0) {
+        if (feedbackEl) { feedbackEl.textContent = '🏆 Brilliant! You sorted all the numbers!'; feedbackEl.style.color='#9333ea'; }
+        launchConfetti();
+      }
+    } else {
+      // Wrong
+      if (targetEl) shakeEl(targetEl);
+      if (feedbackEl) { feedbackEl.textContent = `😅 Oops! Try again! Is ${num} ${zone}?`; feedbackEl.style.color='#c62828'; }
+    }
+  }
+
+  // Drag over highlight
+  ['dnd-even','dnd-odd'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('dragover', () => el.classList.add('drag-over'));
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', () => el.classList.remove('drag-over'));
+  });
+
+  // ─── QUIZ ─────────────────────────────────────────────────
+  const quizData = [
+    { num: 4,  emoji:'🍎🍎🍎🍎',              answer:'even' },
+    { num: 7,  emoji:'⭐⭐⭐⭐⭐⭐⭐',         answer:'odd'  },
+    { num: 12, emoji:'🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈', answer:'even' },
+    { num: 3,  emoji:'🐶🐶🐶',               answer:'odd'  },
+    { num: 10, emoji:'🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸',  answer:'even' },
+    { num: 9,  emoji:'🦋🦋🦋🦋🦋🦋🦋🦋🦋',   answer:'odd'  },
+    { num: 6,  emoji:'🐱🐱🐱🐱🐱🐱',         answer:'even' },
+    { num: 5,  emoji:'🍭🍭🍭🍭🍭',            answer:'odd'  },
+  ];
+
+  let quizScore = 0;
+  let quizAnswered = 0;
+
+  function buildQuiz() {
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+    container.innerHTML = '';
+    quizScore = 0;
+    quizAnswered = 0;
+
+    quizData.forEach((q, idx) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'quiz-q';
+      qDiv.id = `quiz-q-${idx}`;
+      qDiv.innerHTML = `
+        <div class="quiz-q-num">Question ${idx+1} of ${quizData.length} 🌟</div>
+        <div class="quiz-q-text">Is this number <strong>Even</strong> or <strong>Odd</strong>?</div>
+        <div class="quiz-big-num" style="color:${q.answer==='even'?'#e67e00':'#c62828'}">${q.num}</div>
+        <div style="text-align:center;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:16px">${q.emoji}</div>
+        <div class="quiz-options">
+          <button class="quiz-btn btn-even" onclick="answerQuiz(${idx},'even',this)">🟡 Even</button>
+          <button class="quiz-btn btn-odd"  onclick="answerQuiz(${idx},'odd',this)">🔴 Odd</button>
+        </div>
+        <div class="quiz-feedback" id="qf-${idx}"></div>
+      `;
+      container.appendChild(qDiv);
+    });
+
+    const scoreEl = document.getElementById('quiz-score');
+    const restartEl = document.getElementById('restart-btn');
+    if (scoreEl) scoreEl.style.display = 'none';
+    if (restartEl) restartEl.style.display = 'none';
+  }
+
+  window.answerQuiz = function(idx, answer, btn) {
+    const q = quizData[idx];
+    const qDiv = document.getElementById(`quiz-q-${idx}`);
+    const fb = document.getElementById(`qf-${idx}`);
+    if (!qDiv || qDiv.getAttribute('data-answered')) return;
+
+    qDiv.setAttribute('data-answered', '1');
+    const btns = qDiv.querySelectorAll('.quiz-btn');
+    btns.forEach(b => b.disabled = true);
+
+    if (answer === q.answer) {
+      btn.classList.add('btn-correct');
+      if (fb) { fb.textContent = '🎉 Correct! Brilliant!'; fb.className = 'quiz-feedback correct'; }
+      quizScore++;
+      launchConfetti();
+    } else {
+      btn.classList.add('btn-wrong');
+      shakeEl(btn);
+      if (fb) { fb.textContent = `❌ Oops! ${q.num} is ${q.answer}! Try next one! 💪`; fb.className = 'quiz-feedback wrong'; }
+      // Highlight correct
+      btns.forEach(b => {
+        if (b.textContent.toLowerCase().includes(q.answer)) b.classList.add('btn-correct');
+      });
+    }
+
+    quizAnswered++;
+    if (quizAnswered === quizData.length) {
+      setTimeout(() => {
+        const scoreEl = document.getElementById('quiz-score');
+        const restartEl = document.getElementById('restart-btn');
+        const scoreVal = document.getElementById('score-val');
+        if (scoreVal) scoreVal.textContent = quizScore;
+        if (scoreEl) scoreEl.style.display = 'block';
+        if (restartEl) restartEl.style.display = 'block';
+        if (quizScore >= 6) {
+          const trophy = document.getElementById('trophy');
+          if (trophy) { trophy.style.display = 'block'; launchConfetti(); }
+        }
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.from(scoreEl, { scale:0, duration:0.4, ease:'back.out(2)' });
+          }
+        } catch(e) {}
+      }, 800);
+    }
+  };
+
+  window.restartQuiz = function() {
+    buildQuiz();
+    const trophy = document.getElementById('trophy');
+    if (trophy) trophy.style.display = 'none';
+  };
+
+  buildQuiz();
+
+  // ─── DISMISS CURTAIN ─────────────────────────────────────
+  const curtain = document.getElementById('curtain');
+  if (curtain) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(curtain, { opacity:0, duration:0.5, delay:1.2, onComplete:()=>{ curtain.style.display='none'; } });
+      } else {
+        setTimeout(() => { curtain.style.opacity='0'; curtain.style.transition='opacity 0.5s'; setTimeout(()=>curtain.style.display='none',500); }, 1200);
+      }
+    } catch(e) { curtain.style.display = 'none'; }
+  }
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

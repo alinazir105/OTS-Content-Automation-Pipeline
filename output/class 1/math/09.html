@@ -1,0 +1,1318 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparison - Digital School | Class 1 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #e0f7fa;
+  }
+
+  body {
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* Animated background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #b3e5fc 0%, #e0f7fa 60%, #c8e6c9 100%);
+    z-index: -2;
+  }
+
+  .cloud {
+    position: fixed;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.85);
+    z-index: -1;
+    animation: floatCloud linear infinite;
+  }
+  .cloud:nth-child(1) { width: 180px; height: 60px; top: 10%; left: -200px; animation-duration: 25s; }
+  .cloud:nth-child(2) { width: 130px; height: 45px; top: 25%; left: -160px; animation-duration: 35s; animation-delay: -10s; }
+  .cloud:nth-child(3) { width: 220px; height: 70px; top: 5%; left: -250px; animation-duration: 30s; animation-delay: -5s; }
+  @keyframes floatCloud {
+    from { transform: translateX(-300px); }
+    to { transform: translateX(110vw); }
+  }
+
+  /* Page wrapper */
+  .page-wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Hero */
+  .hero {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+    padding: 60px 40px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero .chapter-badge {
+    display: inline-block;
+    background: #fff;
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    padding: 10px 28px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    border: 4px solid #FF6B6B;
+  }
+
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    color: #fff;
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .hero p {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #fff;
+    font-weight: 700;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-animals {
+    font-size: clamp(3rem, 8vw, 5rem);
+    margin-top: 20px;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* Fun cards */
+  .fun-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    padding: 40px;
+    margin-bottom: 40px;
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77);
+    border-radius: 32px 32px 0 0;
+  }
+
+  .fun-card.blue-border { border-color: #6BCB77; }
+  .fun-card.red-border { border-color: #FF6B6B; }
+  .fun-card.purple-border { border-color: #a78bfa; }
+
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #FF6B6B;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card-title.blue { color: #0288d1; }
+  .card-title.green { color: #388e3c; }
+
+  /* Symbols intro */
+  .symbols-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .symbol-card {
+    background: linear-gradient(135deg, #fff9c4, #fff);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 28px 16px;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+
+  .symbol-card:hover { transform: scale(1.05); }
+  .symbol-card:nth-child(2) { border-color: #6BCB77; background: linear-gradient(135deg, #dcedc8, #fff); }
+  .symbol-card:nth-child(3) { border-color: #FF6B6B; background: linear-gradient(135deg, #ffccbc, #fff); }
+
+  .symbol-big {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-family: 'Bubblegum Sans', cursive;
+    display: block;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .symbol-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: #333;
+  }
+
+  .symbol-croc {
+    font-size: clamp(2rem, 5vw, 3rem);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* Comparison activity */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #f3f4f6, #fff);
+    border: 3px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 16px 12px;
+    min-height: 80px;
+  }
+
+  .compare-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: #1a1a2e;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .compare-symbol-box {
+    min-width: 56px;
+    min-height: 56px;
+    border: 3px dashed #ccc;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    background: #fff;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .compare-symbol-box.filled-gt { border-color: #6BCB77; background: #dcedc8; color: #388e3c; }
+  .compare-symbol-box.filled-lt { border-color: #FF6B6B; background: #ffccbc; color: #bf360c; }
+  .compare-symbol-box.filled-eq { border-color: #FFD93D; background: #fff9c4; color: #f57f17; }
+
+  /* Symbol chooser buttons */
+  .symbol-chooser {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin: 24px 0 8px;
+    flex-wrap: wrap;
+  }
+
+  .sym-btn {
+    background: #FFD93D;
+    border: 4px solid #f0a500;
+    border-radius: 18px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    width: 72px;
+    height: 72px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+  }
+
+  .sym-btn:hover { transform: scale(1.12); }
+  .sym-btn.gt-btn { background: #6BCB77; border-color: #388e3c; color: #fff; }
+  .sym-btn.lt-btn { background: #FF6B6B; border-color: #c0392b; color: #fff; }
+  .sym-btn.eq-btn { background: #FFD93D; border-color: #f0a500; color: #333; }
+
+  .sym-btn.selected { box-shadow: 0 0 0 4px #1a1a2e; transform: scale(1.15); }
+
+  /* Progress */
+  .progress-bar-wrap {
+    background: #e5e7eb;
+    border-radius: 50px;
+    height: 16px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6BCB77, #FFD93D);
+    border-radius: 50px;
+    transition: width 0.5s ease;
+  }
+
+  .score-display {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: #388e3c;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* Quiz section */
+  .quiz-question {
+    background: linear-gradient(135deg, #fff9c4, #fff);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .quiz-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .quiz-num-box {
+    background: #e3f2fd;
+    border: 4px solid #0288d1;
+    border-radius: 20px;
+    padding: 16px 28px;
+    color: #0288d1;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .quiz-options {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .quiz-option-btn {
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    padding: 16px 32px;
+    min-height: 72px;
+    min-width: 100px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    color: #333;
+  }
+
+  .quiz-option-btn:hover { transform: scale(1.08); background: #dcedc8; }
+  .quiz-option-btn.correct-ans { background: #6BCB77; border-color: #388e3c; color: #fff; }
+  .quiz-option-btn.wrong-ans { background: #FF6B6B; border-color: #c0392b; color: #fff; }
+
+  .quiz-feedback {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin-top: 16px;
+    min-height: 40px;
+    transition: all 0.3s;
+  }
+
+  .quiz-feedback.correct-fb { color: #388e3c; }
+  .quiz-feedback.wrong-fb { color: #c0392b; }
+
+  /* Nav dots */
+  .quiz-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .q-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    border: 2px solid #ccc;
+    transition: background 0.3s;
+  }
+
+  .q-dot.done { background: #6BCB77; border-color: #388e3c; }
+  .q-dot.active { background: #FFD93D; border-color: #f0a500; }
+
+  /* Next button */
+  .next-btn {
+    background: linear-gradient(135deg, #6BCB77, #4caf50);
+    border: 4px solid #388e3c;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    padding: 16px 40px;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    margin: 16px auto 0;
+    transition: transform 0.15s;
+  }
+
+  .next-btn:hover { transform: scale(1.05); }
+  .next-btn.visible { display: block; }
+
+  /* Check button */
+  .check-btn {
+    background: linear-gradient(135deg, #FF6B6B, #e53935);
+    border: 4px solid #c0392b;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    padding: 16px 48px;
+    color: #fff;
+    cursor: pointer;
+    margin: 24px auto 0;
+    display: block;
+    transition: transform 0.15s;
+  }
+
+  .check-btn:hover { transform: scale(1.05); }
+
+  /* Result card */
+  .result-card {
+    text-align: center;
+    padding: 40px;
+    display: none;
+  }
+
+  .result-card.show { display: block; }
+  .result-emoji { font-size: clamp(3rem, 10vw, 6rem); margin-bottom: 16px; }
+  .result-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: #FF6B6B;
+    margin-bottom: 12px;
+  }
+
+  .result-score {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: #388e3c;
+    margin-bottom: 20px;
+  }
+
+  .retry-btn {
+    background: linear-gradient(135deg, #FFD93D, #f0a500);
+    border: 4px solid #f0a500;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    padding: 16px 40px;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .retry-btn:hover { transform: scale(1.05); }
+
+  /* Stars display */
+  .stars-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  /* Practice activity 2 (3-digit numbers) */
+  .p2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  /* Helpful tip box */
+  .tip-box {
+    background: linear-gradient(135deg, #e8f5e9, #fff);
+    border: 4px solid #6BCB77;
+    border-radius: 24px;
+    padding: 24px 28px;
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .tip-icon { font-size: clamp(2rem, 5vw, 3rem); flex-shrink: 0; }
+  .tip-text {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #2e7d32;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  /* Mobile bottom nav */
+  @media (max-width: 768px) {
+    .page-wrapper { padding: 0 16px; }
+    .hero { padding: 40px 16px 60px; }
+    .fun-card { padding: 24px 16px; }
+    .symbols-grid { grid-template-columns: 1fr; gap: 16px; }
+    .compare-grid { grid-template-columns: 1fr; gap: 14px; }
+    .p2-grid { grid-template-columns: 1fr; gap: 14px; }
+    body { padding-bottom: 90px; }
+    .compare-row { padding: 12px 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .quiz-num-box { padding: 12px 16px; min-width: 60px; }
+    .quiz-option-btn { padding: 14px 20px; min-width: 80px; }
+    .sym-btn { width: 60px; height: 60px; font-size: 1.4rem; }
+  }
+
+  /* Bottom mobile nav */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 4px solid #FFD93D;
+    padding: 10px 16px;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-nav-inner {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+  }
+
+  .mobile-nav-btn {
+    background: #FFD93D;
+    border: 3px solid #f0a500;
+    border-radius: 14px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 13px;
+    padding: 10px 14px;
+    min-height: 48px;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-nav { display: block; }
+  }
+
+  /* Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .curtain-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #fff;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  }
+
+  .curtain-emoji { font-size: clamp(3rem, 10vw, 6rem); animation: bounce 0.8s ease-in-out infinite; }
+
+  /* Correct check mark overlay */
+  .answered-label {
+    font-size: 1.2rem;
+    font-family: 'Bubblegum Sans', cursive;
+    padding: 4px 10px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  .answered-label.gt { background: #dcedc8; color: #388e3c; }
+  .answered-label.lt { background: #ffccbc; color: #bf360c; }
+  .answered-label.eq { background: #fff9c4; color: #f57f17; }
+
+  /* Activity headings */
+  .activity-intro {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #555;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Selected state for compare rows */
+  .compare-row.answered {
+    border-color: #6BCB77;
+    background: linear-gradient(135deg, #f1f8e9, #fff);
+  }
+</style>
+</head>
+<body>
+
+<!-- Curtain -->
+<div id="curtain">
+  <div class="curtain-emoji">🐊</div>
+  <div class="curtain-text">Getting Ready...</div>
+</div>
+
+<!-- Animated BG -->
+<div class="sky-bg"></div>
+<div class="cloud"></div>
+<div class="cloud"></div>
+<div class="cloud"></div>
+
+<!-- Hero -->
+<header class="hero" id="section-top">
+  <div class="chapter-badge">📚 Chapter 9</div>
+  <h1>Comparison!</h1>
+  <p>Learn Greater Than, Less Than & Equal To!</p>
+  <div class="hero-animals">🐊 🐊 🐊</div>
+</header>
+
+<div class="page-wrapper">
+
+  <!-- Section 1: The Three Symbols -->
+  <section id="section-symbols" style="margin-top: 48px;">
+    <div class="fun-card">
+      <div class="card-title">🌟 The Magic Symbols!</div>
+      <p class="activity-intro">The crocodile always wants to eat the BIGGER number! 🐊<br>Look at these 3 special symbols:</p>
+      <div class="symbols-grid">
+        <div class="symbol-card" onclick="playSymbolAnim(this, '>')">
+          <span class="symbol-croc">🐊➡️</span>
+          <span class="symbol-big" style="color:#388e3c;">&gt;</span>
+          <span class="symbol-label">Greater Than</span>
+          <div style="margin-top:8px;font-size:1rem;color:#555;font-weight:700;">Big number FIRST!</div>
+        </div>
+        <div class="symbol-card" onclick="playSymbolAnim(this, '=')">
+          <span class="symbol-croc">🐊😐</span>
+          <span class="symbol-big" style="color:#f57f17;">=</span>
+          <span class="symbol-label">Equal To</span>
+          <div style="margin-top:8px;font-size:1rem;color:#555;font-weight:700;">Both the SAME!</div>
+        </div>
+        <div class="symbol-card" onclick="playSymbolAnim(this, '<')">
+          <span class="symbol-croc">⬅️🐊</span>
+          <span class="symbol-big" style="color:#c0392b;">&lt;</span>
+          <span class="symbol-label">Less Than</span>
+          <div style="margin-top:8px;font-size:1rem;color:#555;font-weight:700;">Big number LAST!</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <span class="tip-text">Remember: The open mouth 🐊 always faces the BIGGER number! If you see 5 &gt; 3, the mouth opens toward 5 because 5 is bigger!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Practice with 2-digit numbers -->
+  <section id="section-practice1">
+    <div class="fun-card blue-border">
+      <div class="card-title blue">🎯 Practice Time! (2-Digit Numbers)</div>
+      <p class="activity-intro">Tap a symbol, then tap the box to fill it in! Choose <strong>&gt;</strong>, <strong>=</strong>, or <strong>&lt;</strong> for each pair.</p>
+
+      <div class="symbol-chooser" id="chooser1">
+        <button class="sym-btn gt-btn" onclick="selectSymbol('chooser1','>')">&gt;</button>
+        <button class="sym-btn eq-btn" onclick="selectSymbol('chooser1','=')">=</button>
+        <button class="sym-btn lt-btn" onclick="selectSymbol('chooser1','<')">&lt;</button>
+      </div>
+
+      <div class="compare-grid" id="practice1-grid">
+        <!-- Row 1: 40 < 45 (given example) -->
+        <div class="compare-row answered" data-left="40" data-right="45" data-correct="<">
+          <span class="compare-num">40</span>
+          <div class="compare-symbol-box filled-lt">&lt;</div>
+          <span class="compare-num">45</span>
+          <span class="answered-label lt">✓</span>
+        </div>
+        <!-- Row 2: 15 _ 23 -->
+        <div class="compare-row" data-left="15" data-right="23" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">15</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">23</span>
+        </div>
+        <!-- Row 3: 78 > 12 (given) -->
+        <div class="compare-row answered" data-left="78" data-right="12" data-correct=">">
+          <span class="compare-num">78</span>
+          <div class="compare-symbol-box filled-gt">&gt;</div>
+          <span class="compare-num">12</span>
+          <span class="answered-label gt">✓</span>
+        </div>
+        <!-- Row 4: 50 _ 50 -->
+        <div class="compare-row" data-left="50" data-right="50" data-correct="=" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">50</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">50</span>
+        </div>
+        <!-- Row 5: 90 _ 98 -->
+        <div class="compare-row" data-left="90" data-right="98" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">90</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">98</span>
+        </div>
+        <!-- Row 6: 34 = 34 (given) -->
+        <div class="compare-row answered" data-left="34" data-right="34" data-correct="=">
+          <span class="compare-num">34</span>
+          <div class="compare-symbol-box filled-eq">=</div>
+          <span class="compare-num">34</span>
+          <span class="answered-label eq">✓</span>
+        </div>
+        <!-- Row 7: 48 _ 50 -->
+        <div class="compare-row" data-left="48" data-right="50" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">48</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">50</span>
+        </div>
+        <!-- Row 8: 50 _ 68 -->
+        <div class="compare-row" data-left="50" data-right="68" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">50</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">68</span>
+        </div>
+        <!-- Row 9: 28 _ 82 -->
+        <div class="compare-row" data-left="28" data-right="82" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">28</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">82</span>
+        </div>
+        <!-- Row 10: 24 _ 24 -->
+        <div class="compare-row" data-left="24" data-right="24" data-correct="=" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">24</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">24</span>
+        </div>
+        <!-- Row 11: 84 _ 51 -->
+        <div class="compare-row" data-left="84" data-right="51" data-correct=">" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">84</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">51</span>
+        </div>
+        <!-- Row 12: 12 _ 67 -->
+        <div class="compare-row" data-left="12" data-right="67" data-correct="<" onclick="fillBox(this,'chooser1')">
+          <span class="compare-num">12</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">67</span>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkActivity1()">✅ Check My Answers!</button>
+      <div id="activity1-feedback" style="text-align:center;margin-top:16px;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);min-height:40px;"></div>
+    </div>
+  </section>
+
+  <!-- Section 3: Practice with 3-digit numbers -->
+  <section id="section-practice2">
+    <div class="fun-card red-border">
+      <div class="card-title" style="color:#e65100;">🚀 Level Up! (3-Digit Numbers)</div>
+      <p class="activity-intro">These are bigger numbers! Can you still compare them? Tap a symbol, then tap the box!</p>
+
+      <div class="symbol-chooser" id="chooser2">
+        <button class="sym-btn gt-btn" onclick="selectSymbol('chooser2','>')">&gt;</button>
+        <button class="sym-btn eq-btn" onclick="selectSymbol('chooser2','=')">=</button>
+        <button class="sym-btn lt-btn" onclick="selectSymbol('chooser2','<')">&lt;</button>
+      </div>
+
+      <div class="p2-grid" id="practice2-grid">
+        <!-- 74 _ 47 -->
+        <div class="compare-row" data-left="74" data-right="47" data-correct=">" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">74</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">47</span>
+        </div>
+        <!-- 172 _ 195 -->
+        <div class="compare-row" data-left="172" data-right="195" data-correct="<" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">172</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">195</span>
+        </div>
+        <!-- 187 _ 123 -->
+        <div class="compare-row" data-left="187" data-right="123" data-correct=">" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">187</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">123</span>
+        </div>
+        <!-- 276 _ 142 -->
+        <div class="compare-row" data-left="276" data-right="142" data-correct=">" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">276</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">142</span>
+        </div>
+        <!-- 398 _ 373 -->
+        <div class="compare-row" data-left="398" data-right="373" data-correct=">" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">398</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">373</span>
+        </div>
+        <!-- 462 _ 462 -->
+        <div class="compare-row" data-left="462" data-right="462" data-correct="=" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">462</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">462</span>
+        </div>
+        <!-- 392 _ 392 -->
+        <div class="compare-row" data-left="392" data-right="392" data-correct="=" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">392</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">392</span>
+        </div>
+        <!-- 454 _ 405 -->
+        <div class="compare-row" data-left="454" data-right="405" data-correct=">" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">454</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">405</span>
+        </div>
+        <!-- 234 _ 287 -->
+        <div class="compare-row" data-left="234" data-right="287" data-correct="<" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">234</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">287</span>
+        </div>
+        <!-- 500 _ 500 -->
+        <div class="compare-row" data-left="500" data-right="500" data-correct="=" onclick="fillBox(this,'chooser2')">
+          <span class="compare-num">500</span>
+          <div class="compare-symbol-box"></div>
+          <span class="compare-num">500</span>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkActivity2()">✅ Check My Answers!</button>
+      <div id="activity2-feedback" style="text-align:center;margin-top:16px;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);min-height:40px;"></div>
+    </div>
+  </section>
+
+  <!-- Section 4: Quiz -->
+  <section id="section-quiz">
+    <div class="fun-card purple-border">
+      <div class="card-title" style="color:#7c3aed;">🏆 Quiz Time!</div>
+      <p class="activity-intro">Pick the right symbol for each pair of numbers! Tap your answer!</p>
+
+      <div class="quiz-nav" id="quiz-nav"></div>
+      <div class="score-display" id="quiz-score">⭐ Score: 0 / 8</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="quiz-progress" style="width:0%"></div>
+      </div>
+
+      <div id="quiz-container"></div>
+
+      <div class="result-card" id="quiz-result">
+        <div class="result-emoji" id="result-emoji">🎉</div>
+        <div class="result-title" id="result-title">Amazing Job!</div>
+        <div class="stars-row" id="result-stars"></div>
+        <div class="result-score" id="result-score"></div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn" onclick="scrollToSection('section-top')">🏠 Home</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('section-symbols')">🌟 Symbols</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('section-practice1')">🎯 Practice 1</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('section-practice2')">🚀 Practice 2</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('section-quiz')">🏆 Quiz</button>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ── CURTAIN FALLBACK ──────────────────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ── LENIS ─────────────────────────────────────────────────────────
+  let lenis;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lowMem = navigator.deviceMemory !== undefined && navigator.deviceMemory < 2;
+      if (!lowMem) {
+        lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function rafLoop(t) { lenis.raf(t); requestAnimationFrame(rafLoop); }
+          requestAnimationFrame(rafLoop);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // ── GSAP SCROLLTRIGGER ────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      if (lenis) {
+        lenis.on('scroll', ScrollTrigger.update);
+        ScrollTrigger.scrollerProxy(document.body, {
+          scrollTop(value) {
+            if (arguments.length) { lenis.scrollTo(value); }
+            return window.scrollY;
+          },
+          getBoundingClientRect() {
+            return { top:0, left:0, width: window.innerWidth, height: window.innerHeight };
+          }
+        });
+      }
+
+      // Animate all fun-cards on scroll
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 50, scale: 0.92 },
+          {
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.5,
+            delay: i * 0.05,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+      });
+
+      // Hero animation
+      const heroEl = document.querySelector('.hero');
+      if (heroEl) {
+        gsap.fromTo(heroEl.querySelector('h1'),
+          { opacity: 0, y: -30 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+        );
+      }
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // ── CURTAIN DISMISS ───────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 0.8, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    } else {
+      setTimeout(() => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }, 1200);
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // ── BUILD QUIZ ─────────────────────────────────────────────────────
+  buildQuiz();
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// SYMBOL SELECTOR STATE
+// ─────────────────────────────────────────────────────────────────────────
+const selectedSymbols = {};
+
+function selectSymbol(chooserId, sym) {
+  selectedSymbols[chooserId] = sym;
+  const chooser = document.getElementById(chooserId);
+  if (!chooser) return;
+  chooser.querySelectorAll('.sym-btn').forEach(btn => btn.classList.remove('selected'));
+  chooser.querySelectorAll('.sym-btn').forEach(btn => {
+    if (btn.textContent.trim() === sym) btn.classList.add('selected');
+  });
+}
+
+function fillBox(row, chooserId) {
+  if (row.classList.contains('answered')) return;
+  const sym = selectedSymbols[chooserId];
+  if (!sym) {
+    // shake to indicate: pick a symbol first
+    shakeThem([row]);
+    return;
+  }
+  const box = row.querySelector('.compare-symbol-box');
+  if (!box) return;
+  box.textContent = sym;
+  box.className = 'compare-symbol-box';
+  if (sym === '>') { box.classList.add('filled-gt'); }
+  else if (sym === '<') { box.classList.add('filled-lt'); }
+  else if (sym === '=') { box.classList.add('filled-eq'); }
+  row.dataset.filled = sym;
+
+  // Tiny bounce feedback
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(box, { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(2)' });
+    }
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// CHECK ACTIVITY 1
+// ─────────────────────────────────────────────────────────────────────────
+function checkActivity1() {
+  const grid = document.getElementById('practice1-grid');
+  if (!grid) return;
+  const rows = grid.querySelectorAll('.compare-row:not(.answered)');
+  let correct = 0; let total = 0;
+  rows.forEach(row => {
+    const correct_sym = row.dataset.correct;
+    const filled = row.dataset.filled;
+    total++;
+    if (!filled) return;
+    if (filled === correct_sym) {
+      correct++;
+      row.classList.add('answered');
+      const lbl = document.createElement('span');
+      lbl.className = 'answered-label ' + (correct_sym === '>' ? 'gt' : correct_sym === '<' ? 'lt' : 'eq');
+      lbl.textContent = '✓';
+      row.appendChild(lbl);
+    } else {
+      shakeThem([row]);
+    }
+  });
+  const fb = document.getElementById('activity1-feedback');
+  if (!fb) return;
+  const allDone = grid.querySelectorAll('.compare-row:not(.answered)').length === 0;
+  if (allDone) {
+    fb.textContent = '🎉 All done! Great job!';
+    fb.style.color = '#388e3c';
+    fireConfetti();
+  } else {
+    fb.textContent = `✅ ${correct} correct! Keep going!`;
+    fb.style.color = correct > 0 ? '#388e3c' : '#c0392b';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// CHECK ACTIVITY 2
+// ─────────────────────────────────────────────────────────────────────────
+function checkActivity2() {
+  const grid = document.getElementById('practice2-grid');
+  if (!grid) return;
+  const rows = grid.querySelectorAll('.compare-row:not(.answered)');
+  let correct = 0;
+  rows.forEach(row => {
+    const correct_sym = row.dataset.correct;
+    const filled = row.dataset.filled;
+    if (!filled) return;
+    if (filled === correct_sym) {
+      correct++;
+      row.classList.add('answered');
+      const lbl = document.createElement('span');
+      lbl.className = 'answered-label ' + (correct_sym === '>' ? 'gt' : correct_sym === '<' ? 'lt' : 'eq');
+      lbl.textContent = '✓';
+      row.appendChild(lbl);
+    } else {
+      shakeThem([row]);
+    }
+  });
+  const fb = document.getElementById('activity2-feedback');
+  if (!fb) return;
+  const allDone = grid.querySelectorAll('.compare-row:not(.answered)').length === 0;
+  if (allDone) {
+    fb.textContent = '🚀 Superstar! All correct!';
+    fb.style.color = '#388e3c';
+    fireConfetti();
+  } else {
+    fb.textContent = `✅ ${correct} correct! Try the rest!`;
+    fb.style.color = correct > 0 ? '#388e3c' : '#c0392b';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// SYMBOL TAP ANIMATION
+// ─────────────────────────────────────────────────────────────────────────
+function playSymbolAnim(card, sym) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(card, { scale: 0.95 }, { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+    }
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// QUIZ DATA
+// ─────────────────────────────────────────────────────────────────────────
+const quizData = [
+  { left: 5,   right: 9,   correct: '<', q: 'Which symbol goes here?' },
+  { left: 12,  right: 7,   correct: '>', q: 'Which symbol goes here?' },
+  { left: 20,  right: 20,  correct: '=', q: 'Which symbol goes here?' },
+  { left: 33,  right: 50,  correct: '<', q: 'Which symbol goes here?' },
+  { left: 85,  right: 42,  correct: '>', q: 'Which symbol goes here?' },
+  { left: 64,  right: 64,  correct: '=', q: 'Which symbol goes here?' },
+  { left: 100, right: 99,  correct: '>', q: 'Which symbol goes here?' },
+  { left: 77,  right: 88,  correct: '<', q: 'Which symbol goes here?' },
+];
+
+let quizScore = 0;
+let currentQ = 0;
+let quizAnswered = [];
+
+function buildQuiz() {
+  quizScore = 0;
+  currentQ = 0;
+  quizAnswered = new Array(quizData.length).fill(false);
+
+  const nav = document.getElementById('quiz-nav');
+  if (!nav) return;
+  nav.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot' + (i === 0 ? ' active' : '');
+    dot.id = 'qdot-' + i;
+    nav.appendChild(dot);
+  });
+
+  renderQuestion(0);
+  updateScoreDisplay();
+}
+
+function renderQuestion(index) {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  const resultCard = document.getElementById('quiz-result');
+  if (resultCard) resultCard.classList.remove('show');
+
+  if (index >= quizData.length) {
+    container.innerHTML = '';
+    showResult();
+    return;
+  }
+
+  const q = quizData[index];
+  container.innerHTML = `
+    <div class="quiz-question" id="quiz-q-${index}">
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-numbers">
+        <div class="quiz-num-box">${q.left}</div>
+        <div style="font-size:clamp(2rem,6vw,3.5rem);color:#aaa;">?</div>
+        <div class="quiz-num-box">${q.right}</div>
+      </div>
+      <div class="quiz-options">
+        <button class="quiz-option-btn" onclick="answerQuiz(this,'>')">&gt;</button>
+        <button class="quiz-option-btn" onclick="answerQuiz(this,'=')">=</button>
+        <button class="quiz-option-btn" onclick="answerQuiz(this,'<')">&lt;</button>
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+      <button class="next-btn" id="quiz-next-btn" onclick="nextQuestion()">Next ➡️</button>
+    </div>
+  `;
+
+  // Animate question in
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(`#quiz-q-${index}`,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+      );
+    }
+  } catch(e) {}
+}
+
+function answerQuiz(btn, chosen) {
+  if (quizAnswered[currentQ]) return;
+  quizAnswered[currentQ] = true;
+
+  const q = quizData[currentQ];
+  const feedback = document.getElementById('quiz-feedback');
+  const nextBtn = document.getElementById('quiz-next-btn');
+  const allBtns = document.querySelectorAll('.quiz-option-btn');
+
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+  if (chosen === q.correct) {
+    btn.classList.add('correct-ans');
+    quizScore++;
+    if (feedback) { feedback.textContent = '🎉 Correct! Amazing!'; feedback.className = 'quiz-feedback correct-fb'; }
+    fireConfetti();
+    // Mark dot
+    const dot = document.getElementById('qdot-' + currentQ);
+    if (dot) dot.classList.add('done');
+  } else {
+    btn.classList.add('wrong-ans');
+    // Show correct
+    allBtns.forEach(b => { if (b.textContent.trim() === q.correct) b.classList.add('correct-ans'); });
+    if (feedback) { feedback.textContent = '😊 The answer is ' + q.correct + '. Try next!'; feedback.className = 'quiz-feedback wrong-fb'; }
+    shakeThem([btn]);
+    const dot = document.getElementById('qdot-' + currentQ);
+    if (dot) dot.style.background = '#FF6B6B';
+  }
+
+  updateScoreDisplay();
+  if (nextBtn) nextBtn.classList.add('visible');
+}
+
+function nextQuestion() {
+  currentQ++;
+  // Update dots
+  const oldDot = document.getElementById('qdot-' + (currentQ - 1));
+  if (oldDot) oldDot.classList.remove('active');
+  const newDot = document.getElementById('qdot-' + currentQ);
+  if (newDot) newDot.classList.add('active');
+
+  if (currentQ >= quizData.length) {
+    showResult();
+  } else {
+    renderQuestion(currentQ);
+  }
+}
+
+function updateScoreDisplay() {
+  const scoreEl = document.getElementById('quiz-score');
+  if (scoreEl) scoreEl.textContent = '⭐ Score: ' + quizScore + ' / ' + quizData.length;
+  const prog = document.getElementById('quiz-progress');
+  if (prog) prog.style.width = ((currentQ / quizData.length) * 100) + '%';
+}
+
+function showResult() {
+  const container = document.getElementById('quiz-container');
+  if (container) container.innerHTML = '';
+  const resultCard = document.getElementById('quiz-result');
+  if (!resultCard) return;
+  resultCard.classList.add('show');
+
+  const pct = quizScore / quizData.length;
+  const emojiEl = document.getElementById('result-emoji');
+  const titleEl = document.getElementById('result-title');
+  const starsEl = document.getElementById('result-stars');
+  const scoreEl = document.getElementById('result-score');
+
+  let emoji = '🌟'; let title = 'Great Job!'; let stars = 3;
+  if (pct === 1) { emoji = '🏆'; title = 'PERFECT! Amazing!'; stars = 5; fireConfetti(); fireConfetti(); }
+  else if (pct >= 0.75) { emoji = '🎉'; title = 'Well Done!'; stars = 4; fireConfetti(); }
+  else if (pct >= 0.5) { emoji = '😊'; title = 'Good Try!'; stars = 3; }
+  else { emoji = '💪'; title = 'Keep Practicing!'; stars = 2; }
+
+  if (emojiEl) emojiEl.textContent = emoji;
+  if (titleEl) titleEl.textContent = title;
+  if (starsEl) starsEl.innerHTML = '⭐'.repeat(stars) + '🌑'.repeat(5 - stars);
+  if (scoreEl) scoreEl.textContent = 'You got ' + quizScore + ' out of ' + quizData.length + '!';
+
+  const prog = document.getElementById('quiz-progress');
+  if (prog) prog.style.width = '100%';
+}
+
+function restartQuiz() {
+  buildQuiz();
+  const resultCard = document.getElementById('quiz-result');
+  if (resultCard) resultCard.classList.remove('show');
+  scrollToSection('section-quiz');
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────
+function shakeThem(elements) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      elements.forEach(el => {
+        gsap.fromTo(el,
+          { x: 0 },
+          { x: -10, duration: 0.06, ease: 'none', repeat: 5, yoyo: true, onComplete: () => gsap.set(el, { x: 0 }) }
+        );
+      });
+    } else {
+      elements.forEach(el => {
+        el.style.transition = 'transform 0.1s';
+        let count = 0;
+        const iv = setInterval(() => {
+          el.style.transform = count % 2 === 0 ? 'translateX(-8px)' : 'translateX(8px)';
+          count++;
+          if (count > 5) { clearInterval(iv); el.style.transform = 'none'; }
+        }, 70);
+      });
+    }
+  } catch(e) {}
+}
+
+function fireConfetti() {
+  try {
+    if (typeof confetti !== 'undefined') {
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.5 },
+        colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#ffffff', '#a78bfa']
+      });
+    }
+  } catch(e) {}
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

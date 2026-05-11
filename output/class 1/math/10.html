@@ -1,0 +1,1448 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addition - Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #fff;
+  }
+
+  body {
+    background: linear-gradient(160deg, #fff9e6 0%, #e8f8ff 50%, #f0ffe8 100%);
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  #curtain .curtain-emoji { font-size: 80px; animation: spin 1s linear infinite; }
+  #curtain h2 { font-family: 'Bubblegum Sans', cursive; font-size: clamp(2rem, 5vw, 3rem); color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* PAGE WRAPPER */
+  .page-wrapper { width: 100%; padding: 0; }
+
+  /* HERO */
+  .hero {
+    width: 100vw;
+    min-height: 70vh;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 60%, #FF8E53 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(160deg, #fff9e6 0%, #e8f8ff 50%, #f0ffe8 100%);
+    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+  }
+  .hero-badge {
+    background: #fff;
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    padding: 8px 28px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    display: inline-block;
+    border: 4px solid #FF6B6B;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: #fff;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .hero-sub {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 30px;
+    opacity: 0.95;
+  }
+  .hero-emojis { font-size: clamp(3rem, 8vw, 5rem); margin-top: 10px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ANIMATED APPLES ILLUSTRATION */
+  .apple-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .apple-group {
+    background: rgba(255,255,255,0.25);
+    border: 4px solid rgba(255,255,255,0.6);
+    border-radius: 24px;
+    padding: 16px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 220px;
+    justify-content: center;
+  }
+  .apple-group .apple { font-size: 2.8rem; display: inline-block; animation: wobble 2s ease-in-out infinite; }
+  .apple-group .apple:nth-child(2) { animation-delay: 0.2s; }
+  .apple-group .apple:nth-child(3) { animation-delay: 0.4s; }
+  .apple-group .apple:nth-child(4) { animation-delay: 0.6s; }
+  .apple-group .apple:nth-child(5) { animation-delay: 0.8s; }
+  .apple-group .apple:nth-child(6) { animation-delay: 1s; }
+  @keyframes wobble { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .plus-sign { font-family: 'Bubblegum Sans', cursive; font-size: 3rem; color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+  .equals-result {
+    background: rgba(255,255,255,0.9);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 16px 32px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 3rem;
+    color: #FF6B6B;
+  }
+
+  /* CONTENT AREA */
+  .content-area {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 40px 120px;
+  }
+
+  /* FUN CARD */
+  .fun-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 32px;
+    border: 5px solid #FFD93D;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #FF6B6B);
+    border-radius: 32px 32px 0 0;
+  }
+  .fun-card.blue-border { border-color: #6BCB77; }
+  .fun-card.red-border { border-color: #FF6B6B; }
+  .fun-card.purple-border { border-color: #a78bfa; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .card-icon { font-size: 3rem; }
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #FF6B6B;
+  }
+  .fun-card.blue-border .card-title { color: #2d9e4e; }
+  .fun-card.purple-border .card-title { color: #7c3aed; }
+
+  /* SIMPLE ADDITION TABLE */
+  .addition-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .addition-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .num-box {
+    background: #FFD93D;
+    border: 4px solid #FF6B6B;
+    border-radius: 16px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    color: #333;
+    flex-shrink: 0;
+  }
+  .op-sign {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.2rem;
+    color: #FF6B6B;
+    min-width: 30px;
+    text-align: center;
+  }
+  .answer-box {
+    background: #f0ffe8;
+    border: 4px dashed #6BCB77;
+    border-radius: 16px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    color: #2d9e4e;
+  }
+
+  /* FINGER COUNTING SECTION */
+  .finger-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .finger-card {
+    background: linear-gradient(135deg, #fff9e6, #fff);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+  }
+  .finger-emojis {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .finger-equation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .finger-box {
+    background: #FFD93D;
+    border: 3px solid #FF6B6B;
+    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.6rem;
+    color: #333;
+  }
+  .finger-box.answer { background: #6BCB77; border-color: #2d9e4e; color: #fff; }
+
+  /* DICE SECTION */
+  .dice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .dice-card {
+    background: linear-gradient(135deg, #e8f8ff, #fff);
+    border: 4px solid #6BCB77;
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+  }
+  .dice-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .dice {
+    width: 80px;
+    height: 80px;
+    border: 4px solid #333;
+    border-radius: 16px;
+    background: #fff;
+    display: grid;
+    padding: 10px;
+    gap: 4px;
+  }
+  .dice-1 { grid-template-columns: 1fr; align-items: center; justify-items: center; }
+  .dice-2 { grid-template-columns: 1fr 1fr; align-items: center; justify-items: center; }
+  .dice-3 { grid-template-columns: 1fr 1fr; align-items: center; justify-items: center; }
+  .dot { width: 14px; height: 14px; background: #333; border-radius: 50%; }
+  .dice-equation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .d-box {
+    background: #FFD93D;
+    border: 3px solid #FF6B6B;
+    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.6rem;
+    color: #333;
+  }
+  .d-box.answer { background: #6BCB77; border-color: #2d9e4e; color: #fff; }
+
+  /* VERTICAL ADDITION */
+  .vert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+  }
+  .vert-card {
+    background: #fff;
+    border: 4px solid #FF6B6B;
+    border-radius: 24px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .vert-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.2rem;
+    color: #333;
+    line-height: 1.2;
+  }
+  .vert-line {
+    width: 80%;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    margin: 6px 0;
+  }
+  .vert-answer {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.2rem;
+    color: #FF6B6B;
+  }
+
+  /* TWO-DIGIT ADDITION */
+  .two-digit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 20px;
+  }
+  .two-digit-card {
+    background: #fff;
+    border: 4px solid #a78bfa;
+    border-radius: 24px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .to-header {
+    display: flex;
+    gap: 16px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.4rem;
+    color: #7c3aed;
+    margin-bottom: 4px;
+  }
+  .to-header span { min-width: 36px; text-align: center; }
+  .to-row {
+    display: flex;
+    gap: 16px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    color: #333;
+  }
+  .to-row span { min-width: 36px; text-align: center; }
+  .to-row.op-row { color: #FF6B6B; }
+  .to-answer {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.2rem;
+    color: #7c3aed;
+  }
+
+  /* INTERACTIVE QUIZ */
+  .quiz-section { }
+  .quiz-question {
+    background: linear-gradient(135deg, #fff9e6, #fff);
+    border: 5px solid #FFD93D;
+    border-radius: 32px;
+    padding: 32px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .quiz-question h3 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #FF6B6B;
+    margin-bottom: 20px;
+  }
+  .quiz-visual {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin: 16px 0;
+    line-height: 1.4;
+  }
+  .quiz-options {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .quiz-btn {
+    background: #6BCB77;
+    border: 4px solid #2d9e4e;
+    border-radius: 24px;
+    padding: 16px 32px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: #fff;
+    cursor: pointer;
+    min-width: 90px;
+    min-height: 70px;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .quiz-btn:hover { transform: scale(1.06); }
+  .quiz-btn .btn-emoji { font-size: 2rem; }
+  .quiz-btn.correct { background: #6BCB77; border-color: #2d9e4e; }
+  .quiz-btn.wrong { background: #FF6B6B; border-color: #c0392b; }
+  .quiz-feedback {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    margin-top: 16px;
+    min-height: 40px;
+    display: block;
+  }
+  .quiz-feedback.good { color: #2d9e4e; }
+  .quiz-feedback.bad { color: #FF6B6B; }
+  .quiz-progress {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .progress-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 3px solid #bbb;
+    transition: background 0.3s;
+  }
+  .progress-dot.done { background: #FFD93D; border-color: #e6a800; }
+  .progress-dot.current { background: #FF6B6B; border-color: #c0392b; animation: pulse 0.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+  /* WORD PROBLEMS */
+  .word-problem {
+    background: linear-gradient(135deg, #e8f8ff, #fff);
+    border: 5px solid #6BCB77;
+    border-radius: 32px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .word-problem h3 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: #2d9e4e;
+    margin-bottom: 16px;
+  }
+  .word-problem p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+  .word-visual {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-align: center;
+    margin: 16px 0;
+  }
+  .word-answer-box {
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .word-answer-box .to-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    color: #333;
+  }
+  .word-answer-box .to-block .op { color: #FF6B6B; }
+  .word-answer-box .to-block .ans { color: #7c3aed; font-size: 2.4rem; }
+
+  /* BOTTOM NAV MOBILE */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 4px solid #FFD93D;
+    z-index: 1000;
+    overflow-x: auto;
+    padding: 8px 12px;
+  }
+  .bottom-nav-inner {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: max-content;
+  }
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 56px;
+    min-width: 56px;
+    padding: 6px 10px;
+    border-radius: 16px;
+    border: 3px solid transparent;
+    transition: background 0.2s;
+    justify-content: center;
+  }
+  .bottom-nav a:hover, .bottom-nav a:focus { background: #fff9e6; border-color: #FFD93D; }
+  .bottom-nav a .nav-emoji { font-size: 1.8rem; }
+
+  /* SCORE BADGE */
+  .score-display {
+    text-align: center;
+    margin-top: 32px;
+    display: none;
+  }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    color: #fff;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    padding: 20px 40px;
+    border-radius: 50px;
+    border: 5px solid #fff;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 10px 0;
+    opacity: 0.5;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .content-area { padding: 20px 16px 100px; }
+    .fun-card { padding: 24px 16px; border-radius: 24px; }
+    .hero { min-height: 60vh; padding: 40px 16px 60px; }
+    .vert-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    .two-digit-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .bottom-nav { display: flex; }
+    body { padding-bottom: 80px; }
+    .num-box, .answer-box { width: 60px; height: 60px; font-size: 1.8rem; }
+    .op-sign { font-size: 2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .finger-grid { grid-template-columns: 1fr; }
+    .dice-grid { grid-template-columns: 1fr; }
+    .addition-row { justify-content: center; }
+    .vert-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">🍎</div>
+  <h2>Loading Addition! 🎉</h2>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">📚 Chapter 10 · Class 1 Maths</div>
+    <h1>ADDITION ➕</h1>
+    <p class="hero-sub">Let's learn to add numbers together! 🎊</p>
+    <div class="apple-illustration">
+      <div class="apple-group">
+        <span class="apple">🍏</span>
+        <span class="apple">🍏</span>
+        <span class="apple">🍏</span>
+        <span class="apple">🍏</span>
+        <span class="apple">🍏</span>
+        <span class="apple">🍏</span>
+      </div>
+      <span class="plus-sign">➕</span>
+      <div class="apple-group" style="border-color:rgba(255,100,100,0.5); background:rgba(255,100,100,0.15);">
+        <span class="apple">🍎</span>
+        <span class="apple">🍎</span>
+        <span class="apple">🍎</span>
+        <span class="apple">🍎</span>
+      </div>
+      <span class="equals-result">= 10 🎉</span>
+    </div>
+  </section>
+
+  <div class="content-area">
+
+    <!-- SECTION 1: SIMPLE ADDITION -->
+    <div class="fun-card" id="section-add" data-card>
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Add the Numbers!</h2>
+      </div>
+      <div class="addition-grid">
+        <div class="addition-row">
+          <div class="num-box">1</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">1</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">2</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🌟</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">1</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">2</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">3</div>
+          <span style="font-size:1.8rem; margin-left:8px;">⭐</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">2</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">2</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">4</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🌈</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">1</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">3</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">4</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🦋</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">2</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">3</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">5</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🐝</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">3</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">3</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">6</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🌸</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">4</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">1</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">5</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🍭</span>
+        </div>
+        <div class="addition-row">
+          <div class="num-box">8</div>
+          <div class="op-sign">+</div>
+          <div class="num-box">7</div>
+          <div class="op-sign">=</div>
+          <div class="answer-box">15</div>
+          <span style="font-size:1.8rem; margin-left:8px;">🎉</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: FINGER COUNTING -->
+    <div class="fun-card blue-border" id="section-fingers" data-card>
+      <div class="card-header">
+        <span class="card-icon">🖐️</span>
+        <h2 class="card-title">Count the Fingers!</h2>
+      </div>
+      <div class="finger-grid">
+
+        <div class="finger-card">
+          <div class="finger-emojis">☝️ <span class="op-sign">+</span> 🖐️</div>
+          <div class="finger-equation">
+            <div class="finger-box">1</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">4</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">5</div>
+          </div>
+        </div>
+
+        <div class="finger-card">
+          <div class="finger-emojis">✌️ <span class="op-sign">+</span> ✌️</div>
+          <div class="finger-equation">
+            <div class="finger-box">2</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">2</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">4</div>
+          </div>
+        </div>
+
+        <div class="finger-card">
+          <div class="finger-emojis">🖐️ <span class="op-sign">+</span> 🖐️</div>
+          <div class="finger-equation">
+            <div class="finger-box">5</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">5</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">10</div>
+          </div>
+        </div>
+
+        <div class="finger-card">
+          <div class="finger-emojis">🖐️ <span class="op-sign">+</span> 🤟</div>
+          <div class="finger-equation">
+            <div class="finger-box">5</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">3</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">8</div>
+          </div>
+        </div>
+
+        <div class="finger-card">
+          <div class="finger-emojis">🤟 <span class="op-sign">+</span> ✌️</div>
+          <div class="finger-equation">
+            <div class="finger-box">3</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">2</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">5</div>
+          </div>
+        </div>
+
+        <div class="finger-card">
+          <div class="finger-emojis">🖖 <span class="op-sign">+</span> 🖖</div>
+          <div class="finger-equation">
+            <div class="finger-box">4</div>
+            <div class="op-sign">+</div>
+            <div class="finger-box">4</div>
+            <div class="op-sign">=</div>
+            <div class="finger-box answer">8</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3: DICE COUNTING -->
+    <div class="fun-card red-border" id="section-dice" data-card>
+      <div class="card-header">
+        <span class="card-icon">🎲</span>
+        <h2 class="card-title">Count the Dice Dots!</h2>
+      </div>
+      <div class="dice-grid">
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 5 -->
+            <div class="dice" style="grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; display:grid; align-items:center; justify-items:center; padding:10px; gap:4px;">
+              <div class="dot"></div><div class="dot"></div>
+              <div></div><div class="dot" style="margin:auto;"></div>
+              <div class="dot"></div><div class="dot"></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 1 -->
+            <div class="dice" style="display:flex; align-items:center; justify-content:center;">
+              <div class="dot" style="width:20px;height:20px;"></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">5</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">1</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">6</div>
+          </div>
+        </div>
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 6 -->
+            <div class="dice" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; align-items:center; justify-items:center; padding:10px; gap:4px;">
+              <div class="dot"></div><div class="dot"></div>
+              <div class="dot"></div><div class="dot"></div>
+              <div class="dot"></div><div class="dot"></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 1 -->
+            <div class="dice" style="display:flex; align-items:center; justify-content:center;">
+              <div class="dot" style="width:20px;height:20px;"></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">6</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">1</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">7</div>
+          </div>
+        </div>
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 3 -->
+            <div class="dice" style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:10px;">
+              <div style="align-self:flex-start;"><div class="dot"></div></div>
+              <div><div class="dot"></div></div>
+              <div style="align-self:flex-end;"><div class="dot"></div></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 3 -->
+            <div class="dice" style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:10px;">
+              <div style="align-self:flex-start;"><div class="dot"></div></div>
+              <div><div class="dot"></div></div>
+              <div style="align-self:flex-end;"><div class="dot"></div></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">3</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">3</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">6</div>
+          </div>
+        </div>
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 1 -->
+            <div class="dice" style="display:flex; align-items:center; justify-content:center;">
+              <div class="dot" style="width:20px;height:20px;"></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 1 -->
+            <div class="dice" style="display:flex; align-items:center; justify-content:center;">
+              <div class="dot" style="width:20px;height:20px;"></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">1</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">1</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">2</div>
+          </div>
+        </div>
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 5 -->
+            <div class="dice" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; align-items:center; justify-items:center; padding:10px; gap:4px;">
+              <div class="dot"></div><div class="dot"></div>
+              <div></div><div class="dot" style="margin:auto;"></div>
+              <div class="dot"></div><div class="dot"></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 4 -->
+            <div class="dice" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; align-items:center; justify-items:center; padding:10px; gap:6px;">
+              <div class="dot"></div><div class="dot"></div>
+              <div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">5</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">4</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">9</div>
+          </div>
+        </div>
+
+        <div class="dice-card">
+          <div class="dice-display">
+            <!-- dice 3 -->
+            <div class="dice" style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:10px;">
+              <div style="align-self:flex-start;"><div class="dot"></div></div>
+              <div><div class="dot"></div></div>
+              <div style="align-self:flex-end;"><div class="dot"></div></div>
+            </div>
+            <span class="op-sign">+</span>
+            <!-- dice 3 -->
+            <div class="dice" style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:10px;">
+              <div style="align-self:flex-start;"><div class="dot"></div></div>
+              <div><div class="dot"></div></div>
+              <div style="align-self:flex-end;"><div class="dot"></div></div>
+            </div>
+          </div>
+          <div class="dice-equation">
+            <div class="d-box">3</div>
+            <div class="op-sign">+</div>
+            <div class="d-box">3</div>
+            <div class="op-sign">=</div>
+            <div class="d-box answer">6</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 4: VERTICAL SINGLE DIGIT ADDITION -->
+    <div class="fun-card" id="section-vert" data-card>
+      <div class="card-header">
+        <span class="card-icon">🔢</span>
+        <h2 class="card-title">Add Up! Single Digits</h2>
+      </div>
+      <div class="vert-grid">
+        <!-- Row 1: 1+5, 2+6, 4+5, 3+3 -->
+        <div class="vert-card"><div class="vert-num">1</div><div class="vert-num">+ 5</div><div class="vert-line"></div><div class="vert-answer">6</div></div>
+        <div class="vert-card"><div class="vert-num">2</div><div class="vert-num">+ 6</div><div class="vert-line"></div><div class="vert-answer">8</div></div>
+        <div class="vert-card"><div class="vert-num">4</div><div class="vert-num">+ 5</div><div class="vert-line"></div><div class="vert-answer">9</div></div>
+        <div class="vert-card"><div class="vert-num">3</div><div class="vert-num">+ 3</div><div class="vert-line"></div><div class="vert-answer">6</div></div>
+        <!-- Row 2: 2+1, 2+4, 7+2, 9+1 -->
+        <div class="vert-card"><div class="vert-num">2</div><div class="vert-num">+ 1</div><div class="vert-line"></div><div class="vert-answer">3</div></div>
+        <div class="vert-card"><div class="vert-num">2</div><div class="vert-num">+ 4</div><div class="vert-line"></div><div class="vert-answer">6</div></div>
+        <div class="vert-card"><div class="vert-num">7</div><div class="vert-num">+ 2</div><div class="vert-line"></div><div class="vert-answer">9</div></div>
+        <div class="vert-card"><div class="vert-num">9</div><div class="vert-num">+ 1</div><div class="vert-line"></div><div class="vert-answer">10</div></div>
+        <!-- Row 3 -->
+        <div class="vert-card"><div class="vert-num">6</div><div class="vert-num">+ 5</div><div class="vert-line"></div><div class="vert-answer">11</div></div>
+        <div class="vert-card"><div class="vert-num">8</div><div class="vert-num">+ 4</div><div class="vert-line"></div><div class="vert-answer">12</div></div>
+        <div class="vert-card"><div class="vert-num">3</div><div class="vert-num">+ 9</div><div class="vert-line"></div><div class="vert-answer">12</div></div>
+        <div class="vert-card"><div class="vert-num">5</div><div class="vert-num">+ 9</div><div class="vert-line"></div><div class="vert-answer">14</div></div>
+        <!-- Row 4 -->
+        <div class="vert-card"><div class="vert-num">5</div><div class="vert-num">+ 5</div><div class="vert-line"></div><div class="vert-answer">10</div></div>
+        <div class="vert-card"><div class="vert-num">9</div><div class="vert-num">+ 4</div><div class="vert-line"></div><div class="vert-answer">13</div></div>
+        <div class="vert-card"><div class="vert-num">6</div><div class="vert-num">+ 9</div><div class="vert-line"></div><div class="vert-answer">15</div></div>
+        <div class="vert-card"><div class="vert-num">5</div><div class="vert-num">+ 8</div><div class="vert-line"></div><div class="vert-answer">13</div></div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: TWO-DIGIT ADDITION (T O) -->
+    <div class="fun-card purple-border" id="section-two-digit" data-card>
+      <div class="card-header">
+        <span class="card-icon">🔟</span>
+        <h2 class="card-title">Two-Digit Addition (T O)</h2>
+      </div>
+      <div class="two-digit-grid">
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>4</span><span>5</span></div><div class="to-row op-row"><span>+2</span><span>7</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">72</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>6</span><span>3</span></div><div class="to-row op-row"><span>+2</span><span>9</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">92</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>4</span><span>3</span></div><div class="to-row op-row"><span>+9</span><span>5</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">138</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>6</span><span>4</span></div><div class="to-row op-row"><span>+1</span><span>9</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">83</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>3</span><span>0</span></div><div class="to-row op-row"><span>+4</span><span>9</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">79</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>2</span><span>8</span></div><div class="to-row op-row"><span>+7</span><span>6</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">104</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>5</span><span>4</span></div><div class="to-row op-row"><span>+2</span><span>7</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">81</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>9</span><span>1</span></div><div class="to-row op-row"><span>+2</span><span>7</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">118</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>3</span><span>6</span></div><div class="to-row op-row"><span>+2</span><span>8</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">64</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>9</span><span>1</span></div><div class="to-row op-row"><span>+3</span><span>5</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">126</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>1</span><span>2</span></div><div class="to-row op-row"><span>+0</span><span>8</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">20</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>4</span><span>3</span></div><div class="to-row op-row"><span>+2</span><span>7</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">70</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>4</span><span>0</span></div><div class="to-row op-row"><span>+2</span><span>8</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">68</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>2</span><span>1</span></div><div class="to-row op-row"><span>+2</span><span>5</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">46</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>1</span><span>5</span></div><div class="to-row op-row"><span>+0</span><span>5</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">20</div></div>
+        <div class="two-digit-card"><div class="to-header"><span>T</span><span>O</span></div><div class="to-row"><span>5</span><span>2</span></div><div class="to-row op-row"><span>+2</span><span>8</span></div><div class="vert-line" style="width:90%;"></div><div class="to-answer">80</div></div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: WORD PROBLEMS -->
+    <div class="fun-card blue-border" id="section-word" data-card>
+      <div class="card-header">
+        <span class="card-icon">📖</span>
+        <h2 class="card-title">Word Problems! 🌟</h2>
+      </div>
+
+      <div class="word-problem">
+        <h3>Q1) 🍊 Maham's Oranges</h3>
+        <p>Maham has <strong>5 oranges</strong> 🍊🍊🍊🍊🍊 and she gets <strong>4 more</strong> 🍊🍊🍊🍊. How many oranges does she have altogether?</p>
+        <div class="word-visual">🍊🍊🍊🍊🍊 ➕ 🍊🍊🍊🍊 = ❓</div>
+        <div class="word-answer-box">
+          <div class="to-block">
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#333;"><span>T</span><span>O</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#333;"><span>&nbsp;</span><span>5</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#FF6B6B;"><span>+</span><span>4</span></div>
+            <div style="width:100%;height:4px;background:#333;border-radius:2px;margin:4px 0;"></div>
+            <div class="ans">9 🍊</div>
+          </div>
+          <p style="font-family:'Bubblegum Sans',cursive;font-size:1.4rem;color:#2d9e4e;margin-top:12px;">Maham has <strong>9 oranges</strong> altogether! 🎉</p>
+        </div>
+      </div>
+
+      <div class="word-problem">
+        <h3>Q2) 🐦 Birds on a Tree</h3>
+        <p>There are <strong>18 birds</strong> on a tree 🌳 and <strong>12 more birds</strong> join them. How many birds are there on the tree now?</p>
+        <div class="word-visual">🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦 ➕ 🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦🐦 = ❓</div>
+        <div class="word-answer-box">
+          <div class="to-block">
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#333;"><span>T</span><span>O</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#333;"><span>1</span><span>8</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#FF6B6B;"><span>+1</span><span>2</span></div>
+            <div style="width:100%;height:4px;background:#333;border-radius:2px;margin:4px 0;"></div>
+            <div class="ans">30 🐦</div>
+          </div>
+          <p style="font-family:'Bubblegum Sans',cursive;font-size:1.4rem;color:#2d9e4e;margin-top:12px;">There are <strong>30 birds</strong> on the tree! 🌳</p>
+        </div>
+      </div>
+
+      <div class="word-problem">
+        <h3>Q3) 📚 Books!</h3>
+        <p>There are <strong>23 books</strong> on a bookshelf 📚 and <strong>5 more books</strong> on the floor. How many books are there in total?</p>
+        <div class="word-visual">📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚 ➕ 📖📖📖📖📖 = ❓</div>
+        <div class="word-answer-box">
+          <div class="to-block">
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#333;"><span>T</span><span>O</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#333;"><span>2</span><span>3</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#FF6B6B;"><span>+</span><span>5</span></div>
+            <div style="width:100%;height:4px;background:#333;border-radius:2px;margin:4px 0;"></div>
+            <div class="ans">28 📚</div>
+          </div>
+          <p style="font-family:'Bubblegum Sans',cursive;font-size:1.4rem;color:#2d9e4e;margin-top:12px;">There are <strong>28 books</strong> in total! 🎉</p>
+        </div>
+      </div>
+
+      <div class="word-problem">
+        <h3>Q4) 🐟 Fishes in a Tank</h3>
+        <p>There are <strong>14 fishes</strong> 🐟 in a water tank. Sana adds <strong>23 more fishes</strong>. How many fishes are there in the tank now?</p>
+        <div class="word-visual">🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 ➕ 🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠🐠 = ❓</div>
+        <div class="word-answer-box">
+          <div class="to-block">
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#333;"><span>T</span><span>O</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#333;"><span>1</span><span>4</span></div>
+            <div style="display:flex;gap:20px;font-family:'Bubblegum Sans',cursive;font-size:2.2rem;color:#FF6B6B;"><span>+2</span><span>3</span></div>
+            <div style="width:100%;height:4px;background:#333;border-radius:2px;margin:4px 0;"></div>
+            <div class="ans">37 🐟</div>
+          </div>
+          <p style="font-family:'Bubblegum Sans',cursive;font-size:1.4rem;color:#2d9e4e;margin-top:12px;">There are <strong>37 fishes</strong> in the tank! 🐠</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: INTERACTIVE QUIZ -->
+    <div class="fun-card" id="section-quiz" data-card style="border-color:#FF6B6B;">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <h2 class="card-title" style="color:#FF6B6B;">Quiz Time! 🏆</h2>
+      </div>
+      <div class="quiz-progress" id="quiz-progress"></div>
+      <div id="quiz-container" class="quiz-section"></div>
+      <div class="score-display" id="score-display">
+        <div class="score-badge" id="score-badge">🏆 You got 0 / 0! 🎉</div>
+        <div style="margin-top:20px;">
+          <button onclick="restartQuiz()" style="background:#FFD93D;border:4px solid #FF6B6B;border-radius:24px;padding:16px 40px;font-family:'Bubblegum Sans',cursive;font-size:1.6rem;cursor:pointer;color:#333;">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+</div><!-- /page-wrapper -->
+
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav" aria-label="Section navigation">
+  <div class="bottom-nav-inner">
+    <a href="#hero"><span class="nav-emoji">🏠</span>Home</a>
+    <a href="#section-add"><span class="nav-emoji">✏️</span>Add</a>
+    <a href="#section-fingers"><span class="nav-emoji">🖐️</span>Fingers</a>
+    <a href="#section-dice"><span class="nav-emoji">🎲</span>Dice</a>
+    <a href="#section-vert"><span class="nav-emoji">🔢</span>Sums</a>
+    <a href="#section-two-digit"><span class="nav-emoji">🔟</span>T-O</a>
+    <a href="#section-word"><span class="nav-emoji">📖</span>Words</a>
+    <a href="#section-quiz"><span class="nav-emoji">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+// ===================================================
+// QUIZ DATA
+// ===================================================
+const quizData = [
+  {
+    question: "How many apples are there altogether?",
+    visual: "🍎🍎🍎 ➕ 🍎🍎 = ❓",
+    options: [
+      { label: "4", emoji: "🍎🍎🍎🍎", value: 4 },
+      { label: "5", emoji: "🍎🍎🍎🍎🍎", value: 5 },
+      { label: "6", emoji: "🍎🍎🍎🍎🍎🍎", value: 6 }
+    ],
+    answer: 5
+  },
+  {
+    question: "How many balls altogether?",
+    visual: "⚽⚽ ➕ ⚽⚽⚽ = ❓",
+    options: [
+      { label: "4", emoji: "⚽⚽⚽⚽", value: 4 },
+      { label: "5", emoji: "⚽⚽⚽⚽⚽", value: 5 },
+      { label: "3", emoji: "⚽⚽⚽", value: 3 }
+    ],
+    answer: 5
+  },
+  {
+    question: "Count the stars!",
+    visual: "⭐⭐⭐⭐ ➕ ⭐⭐ = ❓",
+    options: [
+      { label: "5", emoji: "⭐⭐⭐⭐⭐", value: 5 },
+      { label: "7", emoji: "⭐⭐⭐⭐⭐⭐⭐", value: 7 },
+      { label: "6", emoji: "⭐⭐⭐⭐⭐⭐", value: 6 }
+    ],
+    answer: 6
+  },
+  {
+    question: "How many flowers in total?",
+    visual: "🌸🌸🌸 ➕ 🌸🌸🌸🌸 = ❓",
+    options: [
+      { label: "6", emoji: "🌸🌸🌸🌸🌸🌸", value: 6 },
+      { label: "8", emoji: "🌸🌸🌸🌸🌸🌸🌸🌸", value: 8 },
+      { label: "7", emoji: "🌸🌸🌸🌸🌸🌸🌸", value: 7 }
+    ],
+    answer: 7
+  },
+  {
+    question: "How many ducks altogether?",
+    visual: "🦆🦆🦆🦆🦆 ➕ 🦆🦆🦆 = ❓",
+    options: [
+      { label: "7", emoji: "🦆🦆🦆🦆🦆🦆🦆", value: 7 },
+      { label: "9", emoji: "🦆🦆🦆🦆🦆🦆🦆🦆🦆", value: 9 },
+      { label: "8", emoji: "🦆🦆🦆🦆🦆🦆🦆🦆", value: 8 }
+    ],
+    answer: 8
+  },
+  {
+    question: "How many cookies in total?",
+    visual: "🍪🍪 ➕ 🍪🍪🍪🍪 = ❓",
+    options: [
+      { label: "5", emoji: "🍪🍪🍪🍪🍪", value: 5 },
+      { label: "6", emoji: "🍪🍪🍪🍪🍪🍪", value: 6 },
+      { label: "7", emoji: "🍪🍪🍪🍪🍪🍪🍪", value: 7 }
+    ],
+    answer: 6
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function buildProgressDots() {
+  const pg = document.getElementById('quiz-progress');
+  if (!pg) return;
+  pg.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i === 0 ? ' current' : '');
+    d.id = 'dot-' + i;
+    pg.appendChild(d);
+  });
+}
+
+function renderQuestion(idx) {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  const q = quizData[idx];
+  answered = false;
+
+  container.innerHTML = `
+    <div class="quiz-question" id="qblock-${idx}">
+      <h3>${q.question}</h3>
+      <div class="quiz-visual">${q.visual}</div>
+      <div class="quiz-options">
+        ${q.options.map((opt, oi) => `
+          <button class="quiz-btn" id="qbtn-${idx}-${oi}" onclick="checkAnswer(${idx}, ${opt.value}, ${oi})">
+            <span class="btn-emoji">${opt.emoji}</span>
+            <span>${opt.label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <span class="quiz-feedback" id="feedback-${idx}"></span>
+    </div>
+  `;
+
+  // Update dots
+  document.querySelectorAll('.progress-dot').forEach((d, i) => {
+    d.classList.remove('current');
+    if (i < idx) d.classList.add('done');
+    if (i === idx) d.classList.add('current');
+  });
+}
+
+function checkAnswer(qIdx, val, btnIdx) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizData[qIdx];
+  const isCorrect = val === q.answer;
+  const btnId = `qbtn-${qIdx}-${btnIdx}`;
+  const btn = document.getElementById(btnId);
+  const feedback = document.getElementById(`feedback-${qIdx}`);
+
+  if (isCorrect) {
+    score++;
+    if (btn) btn.classList.add('correct');
+    if (feedback) {
+      feedback.textContent = '🎉 Brilliant! Well done! ⭐';
+      feedback.className = 'quiz-feedback good';
+    }
+    // Confetti
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#FFD93D','#FF6B6B','#6BCB77','#fff'] });
+      }
+    } catch(e) {}
+    // GSAP bounce
+    try {
+      if (typeof gsap !== 'undefined' && btn) {
+        gsap.fromTo(btn, { scale: 1 }, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 2, ease: 'back.out' });
+      }
+    } catch(e) {}
+  } else {
+    if (btn) btn.classList.add('wrong');
+    if (feedback) {
+      feedback.textContent = '😅 Oops! Try again next time! 💪';
+      feedback.className = 'quiz-feedback bad';
+    }
+    // GSAP shake
+    try {
+      if (typeof gsap !== 'undefined' && btn) {
+        gsap.to(btn, { x: -10, duration: 0.05, yoyo: true, repeat: 5, ease: 'power1.inOut', onComplete: () => gsap.set(btn, { x: 0 }) });
+      }
+    } catch(e) {}
+  }
+
+  // Next question after delay
+  setTimeout(() => {
+    const nextIdx = qIdx + 1;
+    if (nextIdx < quizData.length) {
+      renderQuestion(nextIdx);
+      currentQ = nextIdx;
+    } else {
+      showScore();
+    }
+  }, 1500);
+}
+
+function showScore() {
+  const container = document.getElementById('quiz-container');
+  const scoreDisp = document.getElementById('score-display');
+  const scoreBadge = document.getElementById('score-badge');
+
+  if (container) container.innerHTML = '';
+  if (scoreDisp) scoreDisp.style.display = 'block';
+  if (scoreBadge) scoreBadge.textContent = `🏆 You got ${score} / ${quizData.length}! 🎉`;
+
+  // Big confetti for high score
+  try {
+    if (typeof confetti !== 'undefined' && score >= quizData.length * 0.6) {
+      confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#FFD93D','#FF6B6B','#6BCB77','#a78bfa'] });
+    }
+  } catch(e) {}
+
+  document.querySelectorAll('.progress-dot').forEach(d => d.classList.add('done'));
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  const scoreDisp = document.getElementById('score-display');
+  if (scoreDisp) scoreDisp.style.display = 'none';
+  buildProgressDots();
+  renderQuestion(0);
+}
+
+// ===================================================
+// MAIN INIT
+// ===================================================
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK — always fire after 3s
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // QUIZ INIT
+  buildProgressDots();
+  renderQuestion(0);
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+          requestAnimationFrame(raf);
+        }
+      } catch(e) {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      // Register ScrollTrigger
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero entrance
+      const heroEl = document.querySelector('.hero');
+      if (heroEl) {
+        gsap.from(heroEl, { opacity: 0, y: -40, duration: 0.6, ease: 'back.out(1.4)' });
+      }
+
+      // Cards stagger bounce on load (first visible)
+      const cards = document.querySelectorAll('[data-card]');
+      if (cards.length > 0) {
+        // Entrance for cards in viewport at load
+        gsap.from(Array.from(cards).slice(0, 2), {
+          opacity: 0,
+          y: 60,
+          scale: 0.9,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.4)'
+        });
+
+        // ScrollTrigger for rest
+        if (typeof ScrollTrigger !== 'undefined') {
+          Array.from(cards).forEach((card, i) => {
+            if (i < 2) return;
+            gsap.from(card, {
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+              },
+              opacity: 0,
+              y: 60,
+              scale: 0.85,
+              duration: 0.5,
+              ease: 'back.out(1.4)'
+            });
+          });
+        }
+      }
+
+      // Dismiss curtain with GSAP
+      const curtain = document.getElementById('curtain');
+      if (curtain) {
+        gsap.to(curtain, { opacity: 0, duration: 0.5, delay: 1.2, ease: 'power2.in', onComplete: () => { curtain.style.display = 'none'; } });
+      }
+
+    } else {
+      // Fallback: just hide curtain
+      const curtain = document.getElementById('curtain');
+      if (curtain) curtain.style.display = 'none';
+    }
+  } catch(e) {
+    console.warn('GSAP failed:', e);
+    const curtain = document.getElementById('curtain');
+    if (curtain) curtain.style.display = 'none';
+  }
+
+  // Apple wobble on click (tap-to-reveal for hero)
+  document.querySelectorAll('.apple').forEach(apple => {
+    apple.addEventListener('click', () => {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(apple, { scale: 1, rotate: 0 }, { scale: 1.4, rotate: 20, duration: 0.2, yoyo: true, repeat: 3, ease: 'elastic.out' });
+        }
+      } catch(e) {}
+      try {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 30, spread: 60, origin: { y: 0.4 }, colors: ['#6BCB77','#FFD93D'] });
+        }
+      } catch(e) {}
+    });
+  });
+
+  // Vertical card tap celebration
+  document.querySelectorAll('.vert-card, .two-digit-card, .finger-card, .dice-card').forEach(card => {
+    card.addEventListener('click', () => {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(card, { scale: 1 }, { scale: 1.06, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out' });
+        }
+      } catch(e) {}
+    });
+  });
+
+});
+</script>
+</body>
+</html>

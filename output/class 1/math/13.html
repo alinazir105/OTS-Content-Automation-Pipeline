@@ -1,0 +1,739 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time - Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;font-family:'Nunito',sans-serif;font-size:20px;background:#fff;}
+body{background:linear-gradient(180deg,#e0f7ff 0%,#fff9e6 40%,#e8ffe8 100%);padding-bottom:100px;}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#FFD93D,#FF6B6B);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
+#curtain h1{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,8vw,4rem);color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,0.15);}
+#curtain .clock-spin{font-size:80px;animation:spinClock 1s linear infinite;}
+@keyframes spinClock{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* HEADER */
+.hero{width:100%;background:linear-gradient(135deg,#FF6B6B 0%,#FFD93D 50%,#6BCB77 100%);padding:60px 20px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='20' cy='20' r='15' fill='rgba(255,255,255,0.1)'/%3E%3Ccircle cx='70' cy='60' r='25' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='50' cy='80' r='10' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E") repeat;animation:bgMove 8s linear infinite;}
+@keyframes bgMove{from{background-position:0 0}to{background-position:100px 100px}}
+.hero-inner{position:relative;z-index:1;}
+.hero h1{font-family:'Bubblegum Sans',cursive;font-size:clamp(2.8rem,8vw,5rem);color:#fff;text-shadow:4px 4px 0 rgba(0,0,0,0.15);margin-bottom:16px;}
+.hero p{font-size:clamp(1.1rem,3vw,1.6rem);color:#fff;font-weight:700;text-shadow:2px 2px 0 rgba(0,0,0,0.1);}
+.hero-emoji{font-size:clamp(4rem,12vw,8rem);display:block;margin-bottom:20px;animation:bounce 2s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+/* MAIN CONTENT */
+.main-wrap{width:100%;max-width:1500px;margin:0 auto;padding:0 40px;}
+.section-gap{height:40px;}
+
+/* FUN CARDS */
+.fun-card{width:100%;background:#fff;border-radius:32px;padding:40px;border:4px solid #FFD93D;box-shadow:0 8px 32px rgba(0,0,0,0.1);opacity:1;transform:none;margin-bottom:40px;}
+.fun-card.blue-card{border-color:#6BCB77;}
+.fun-card.red-card{border-color:#FF6B6B;}
+.fun-card.purple-card{border-color:#a78bfa;}
+
+.card-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.8rem,4vw,2.8rem);color:#FF6B6B;margin-bottom:24px;display:flex;align-items:center;gap:12px;}
+.card-title.blue{color:#6BCB77;}
+.card-title.purple{color:#a78bfa;}
+
+/* CLOCK DIAGRAM */
+.clock-concept{display:flex;flex-wrap:wrap;gap:40px;align-items:center;justify-content:center;}
+.big-clock-wrap{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.clock-labels-wrap{flex:1 1 280px;display:flex;flex-direction:column;gap:16px;}
+.label-item{display:flex;align-items:center;gap:16px;background:#fff9e6;border:3px solid #FFD93D;border-radius:20px;padding:16px 20px;font-size:1.2rem;font-weight:700;color:#333;}
+.label-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;}
+
+/* SVG CLOCK */
+.svg-clock-container{position:relative;width:280px;height:280px;}
+.svg-clock-container svg{width:100%;height:100%;}
+
+/* INTERACTIVE CLOCK READER */
+.clock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media(max-width:768px){.clock-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.clock-grid{grid-template-columns:1fr;}}
+
+.clock-item{display:flex;flex-direction:column;align-items:center;gap:12px;background:#fff;border:4px solid #6BCB77;border-radius:28px;padding:20px;cursor:pointer;transition:transform 0.2s;}
+.clock-item:hover{transform:scale(1.04);}
+.clock-item.answered-correct{border-color:#6BCB77;background:#e8ffe8;}
+.clock-item.answered-wrong{border-color:#FF6B6B;background:#ffe8e8;}
+
+.clock-item svg{width:130px;height:130px;}
+.time-input-box{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.time-display{font-family:'Bubblegum Sans',cursive;font-size:1.8rem;color:#6BCB77;background:#e8ffe8;border:3px solid #6BCB77;border-radius:16px;padding:8px 20px;min-width:100px;text-align:center;cursor:pointer;}
+.time-display.revealed{color:#FF6B6B;background:#fff0f0;border-color:#FF6B6B;}
+
+/* DRAW CLOCK ACTIVITY */
+.draw-clock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media(max-width:768px){.draw-clock-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.draw-clock-grid{grid-template-columns:1fr;}}
+
+.draw-clock-item{display:flex;flex-direction:column;align-items:center;gap:12px;background:#fff;border:4px solid #FF6B6B;border-radius:28px;padding:20px;cursor:pointer;transition:transform 0.2s;}
+.draw-clock-item:hover{transform:scale(1.04);}
+.draw-clock-item svg{width:130px;height:130px;}
+.time-label{font-family:'Bubblegum Sans',cursive;font-size:1.6rem;color:#FF6B6B;background:#fff0f0;border:3px solid #FF6B6B;border-radius:16px;padding:8px 20px;}
+.reveal-btn{background:#FFD93D;border:3px solid #FF6B6B;border-radius:16px;padding:10px 20px;font-family:'Bubblegum Sans',cursive;font-size:1.2rem;cursor:pointer;color:#333;transition:transform 0.2s;}
+.reveal-btn:hover{transform:scale(1.05);}
+
+/* CLOCK TRACING */
+.trace-clock-wrap{display:flex;justify-content:center;padding:20px;}
+.trace-clock-wrap svg{width:min(400px,90vw);height:min(400px,90vw);}
+
+/* QUIZ */
+.quiz-question{margin-bottom:40px;background:#fff9e6;border:4px solid #FFD93D;border-radius:28px;padding:32px;}
+.quiz-q-title{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,3vw,2rem);color:#333;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.quiz-options{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
+.quiz-opt{flex:0 0 auto;min-width:140px;background:#fff;border:4px solid #6BCB77;border-radius:24px;padding:16px 24px;cursor:pointer;text-align:center;font-family:'Bubblegum Sans',cursive;font-size:1.6rem;color:#333;transition:transform 0.2s;min-height:56px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.quiz-opt:hover{transform:scale(1.06);background:#e8ffe8;}
+.quiz-opt.correct{background:#6BCB77;border-color:#3d9955;color:#fff;}
+.quiz-opt.wrong{background:#FF6B6B;border-color:#cc3333;color:#fff;}
+.quiz-feedback{font-size:1.4rem;font-weight:700;text-align:center;margin-top:16px;min-height:32px;font-family:'Bubblegum Sans',cursive;}
+.quiz-feedback.good{color:#6BCB77;}
+.quiz-feedback.bad{color:#FF6B6B;}
+
+/* DRAG DROP */
+.drag-drop-area{display:flex;flex-wrap:wrap;gap:32px;justify-content:center;align-items:flex-start;}
+.drag-words{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.drag-word{background:#FFD93D;border:3px solid #FF6B6B;border-radius:20px;padding:12px 24px;font-family:'Bubblegum Sans',cursive;font-size:1.4rem;cursor:grab;user-select:none;transition:transform 0.2s;touch-action:none;}
+.drag-word:active{cursor:grabbing;transform:scale(1.1);}
+.drop-targets{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
+.drop-target{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.drop-zone{width:160px;min-height:60px;border:4px dashed #6BCB77;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#aaa;font-family:'Bubblegum Sans',cursive;transition:background 0.2s;}
+.drop-zone.drag-over{background:#e8ffe8;border-color:#3d9955;}
+.drop-zone.filled{border-style:solid;background:#e8ffe8;border-color:#3d9955;color:#333;}
+.drop-label{font-family:'Bubblegum Sans',cursive;font-size:1.3rem;color:#333;}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#FFD93D;border-top:4px solid #FF6B6B;z-index:100;padding:8px 4px;overflow-x:auto;}
+.bottom-nav-inner{display:flex;gap:4px;min-width:max-content;padding:0 8px;}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;border-radius:16px;text-decoration:none;color:#333;font-size:13px;font-weight:700;min-height:56px;justify-content:center;white-space:nowrap;}
+.bottom-nav a:hover{background:rgba(255,255,255,0.5);}
+
+/* PROGRESS BAR */
+.progress-wrap{width:100%;background:#ffe0a0;border-radius:20px;height:20px;margin:20px 0;border:3px solid #FFD93D;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D);border-radius:20px;width:0%;transition:width 0.5s ease;}
+
+/* STAR COUNTER */
+.star-counter{display:flex;align-items:center;gap:8px;font-family:'Bubblegum Sans',cursive;font-size:1.6rem;color:#FF6B6B;background:#fff9e6;border:3px solid #FFD93D;border-radius:20px;padding:10px 20px;margin:16px 0;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .main-wrap{padding:0 16px;}
+  .fun-card{padding:24px 16px;}
+  .hero{padding:40px 16px 60px;}
+  .bottom-nav{display:block;}
+  body{padding-bottom:80px;}
+  .clock-concept{flex-direction:column;}
+}
+@media(max-width:480px){
+  .main-wrap{padding:0 8px;}
+  .fun-card{padding:16px 10px;}
+}
+
+/* Utility */
+.text-center{text-align:center;}
+.mt-20{margin-top:20px;}
+.flex-center{display:flex;align-items:center;justify-content:center;}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <span class="clock-spin">🕐</span>
+  <h1>Learning Time!</h1>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-emoji">🕐</span>
+    <h1>TIME</h1>
+    <p>Chapter 13 — Let's learn to read a clock! ⭐</p>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main-wrap">
+
+  <!-- PROGRESS -->
+  <div style="padding:20px 0;">
+    <div class="star-counter" id="starCounter">⭐ Stars: <span id="starCount">0</span></div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  </div>
+
+  <!-- SECTION 1: What is a Clock? -->
+  <div class="fun-card" id="card1">
+    <div class="card-title">🕐 What is a Clock?</div>
+    <div class="clock-concept">
+      <div class="big-clock-wrap">
+        <!-- Animated SVG Clock -->
+        <svg viewBox="0 0 280 280" width="280" height="280" id="mainClockSVG">
+          <!-- Clock face -->
+          <circle cx="140" cy="140" r="130" fill="#FFF9E6" stroke="#FFD93D" stroke-width="10"/>
+          <circle cx="140" cy="140" r="125" fill="none" stroke="#FF6B6B" stroke-width="4"/>
+          <!-- Hour numbers -->
+          <text x="140" y="30" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="22" fill="#333" font-weight="bold">12</text>
+          <text x="240" y="150" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="22" fill="#333" font-weight="bold">3</text>
+          <text x="140" y="268" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="22" fill="#333" font-weight="bold">6</text>
+          <text x="38" y="150" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="22" fill="#333" font-weight="bold">9</text>
+          <text x="196" y="60" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">1</text>
+          <text x="230" y="95" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">2</text>
+          <text x="230" y="198" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">4</text>
+          <text x="196" y="234" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">5</text>
+          <text x="84" y="234" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">7</text>
+          <text x="50" y="198" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">8</text>
+          <text x="50" y="95" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">10</text>
+          <text x="84" y="60" text-anchor="middle" font-family="Bubblegum Sans,cursive" font-size="18" fill="#555">11</text>
+          <!-- Tick marks -->
+          <g id="ticks"></g>
+          <!-- Hour hand -->
+          <line id="mainHour" x1="140" y1="140" x2="140" y2="80" stroke="#333" stroke-width="8" stroke-linecap="round"/>
+          <!-- Minute hand -->
+          <line id="mainMin" x1="140" y1="140" x2="140" y2="50" stroke="#FF6B6B" stroke-width="5" stroke-linecap="round"/>
+          <!-- Center dot -->
+          <circle cx="140" cy="140" r="8" fill="#333"/>
+          <!-- Labels -->
+          <text x="178" y="145" font-family="Bubblegum Sans,cursive" font-size="13" fill="#6BCB77" font-weight="bold">Quarter past</text>
+          <text x="50" y="145" font-family="Bubblegum Sans,cursive" font-size="13" fill="#6BCB77" font-weight="bold">Quarter to</text>
+          <text x="108" y="220" font-family="Bubblegum Sans,cursive" font-size="13" fill="#FF6B6B" font-weight="bold">Half past</text>
+          <text x="116" y="42" font-family="Bubblegum Sans,cursive" font-size="13" fill="#FFD93D" font-weight="bold">O'clock</text>
+        </svg>
+        <p style="font-size:1rem;color:#888;font-weight:600;">Live clock! Watch it tick! 🎉</p>
+      </div>
+      <div class="clock-labels-wrap">
+        <div class="label-item">
+          <div class="label-dot" style="background:#333"></div>
+          <div>
+            <div style="font-size:1.3rem;color:#333;font-family:'Bubblegum Sans',cursive;">Hour Hand</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Short and thick ✋</div>
+          </div>
+        </div>
+        <div class="label-item">
+          <div class="label-dot" style="background:#FF6B6B"></div>
+          <div>
+            <div style="font-size:1.3rem;color:#FF6B6B;font-family:'Bubblegum Sans',cursive;">Minute Hand</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Long and thin 👆</div>
+          </div>
+        </div>
+        <div class="label-item" style="background:#fff0f0;border-color:#FF6B6B;">
+          <span style="font-size:2rem;">🕛</span>
+          <div>
+            <div style="font-size:1.3rem;color:#333;font-family:'Bubblegum Sans',cursive;">O'Clock</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Minute hand points to 12</div>
+          </div>
+        </div>
+        <div class="label-item" style="background:#f0fff0;border-color:#6BCB77;">
+          <span style="font-size:2rem;">🕧</span>
+          <div>
+            <div style="font-size:1.3rem;color:#333;font-family:'Bubblegum Sans',cursive;">Half Past</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Minute hand points to 6</div>
+          </div>
+        </div>
+        <div class="label-item" style="background:#f0f0ff;border-color:#a78bfa;">
+          <span style="font-size:2rem;">🕒</span>
+          <div>
+            <div style="font-size:1.3rem;color:#333;font-family:'Bubblegum Sans',cursive;">Quarter Past</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Minute hand points to 3</div>
+          </div>
+        </div>
+        <div class="label-item" style="background:#fff9e0;border-color:#FFD93D;">
+          <span style="font-size:2rem;">🕘</span>
+          <div>
+            <div style="font-size:1.3rem;color:#333;font-family:'Bubblegum Sans',cursive;">Quarter To</div>
+            <div style="font-size:1rem;color:#666;font-weight:600;">Minute hand points to 9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Read the Clock -->
+  <div class="fun-card blue-card" id="card2">
+    <div class="card-title blue">📖 Read the Clock! Tap to see the time 👇</div>
+    <p style="font-size:1.1rem;color:#555;margin-bottom:24px;font-weight:600;">Tap each clock to reveal what time it shows!</p>
+    <div class="clock-grid" id="readClockGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- SECTION 3: Draw Clock Hands -->
+  <div class="fun-card red-card" id="card3">
+    <div class="card-title" style="color:#FF6B6B;">✏️ Draw the Clock Hands! Tap to see!</div>
+    <p style="font-size:1.1rem;color:#555;margin-bottom:24px;font-weight:600;">Tap each clock to see where the hands should go!</p>
+    <div class="draw-clock-grid" id="drawClockGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- SECTION 4: Trace Clock Activity -->
+  <div class="fun-card purple-card" id="card4">
+    <div class="card-title purple">🖊️ Label the Clock!</div>
+    <p style="font-size:1.1rem;color:#555;margin-bottom:24px;font-weight:600;">Can you find where each number goes? Tap a number to place it!</p>
+    <div id="traceClockArea" style="display:flex;flex-direction:column;align-items:center;gap:24px;">
+      <svg viewBox="0 0 360 360" width="min(360px,90vw)" height="min(360px,90vw)" id="traceClock">
+        <circle cx="180" cy="180" r="165" fill="#FFF9E6" stroke="#a78bfa" stroke-width="8"/>
+        <circle cx="180" cy="180" r="6" fill="#333"/>
+        <!-- Spots for numbers -->
+        <circle id="ts12" cx="180" cy="28" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts1" cx="253" cy="50" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts2" cx="308" cy="107" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts3" cx="332" cy="180" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts4" cx="308" cy="253" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts5" cx="253" cy="308" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts6" cx="180" cy="332" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts7" cx="107" cy="308" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts8" cx="50" cy="253" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts9" cx="28" cy="180" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts10" cx="50" cy="107" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <circle id="ts11" cx="107" cy="50" r="22" fill="#e8e0ff" stroke="#a78bfa" stroke-width="3" style="cursor:pointer"/>
+        <!-- Labels (initially hidden, shown on tap) -->
+        <text id="tl12" x="180" y="34" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">12</text>
+        <text id="tl1" x="253" y="56" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">1</text>
+        <text id="tl2" x="308" y="113" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">2</text>
+        <text id="tl3" x="332" y="186" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">3</text>
+        <text id="tl4" x="308" y="259" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">4</text>
+        <text id="tl5" x="253" y="314" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">5</text>
+        <text id="tl6" x="180" y="338" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">6</text>
+        <text id="tl7" x="107" y="314" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">7</text>
+        <text id="tl8" x="50" y="259" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">8</text>
+        <text id="tl9" x="28" y="186" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">9</text>
+        <text id="tl10" x="50" y="113" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">10</text>
+        <text id="tl11" x="107" y="56" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="20" fill="#a78bfa" opacity="0">11</text>
+        <!-- Hour and minute hand at 12 and 6 -->
+        <line x1="180" y1="180" x2="180" y2="60" stroke="#333" stroke-width="6" stroke-linecap="round"/>
+        <line x1="180" y1="180" x2="180" y2="310" stroke="#FF6B6B" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <p style="font-family:'Bubblegum Sans',cursive;font-size:1.4rem;color:#a78bfa;">Tap the circles to reveal each number! <span id="traceProgress">0/12</span></p>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Fun Quiz -->
+  <div class="fun-card" id="card5">
+    <div class="card-title">🌟 Fun Quiz Time!</div>
+    <p style="font-size:1.1rem;color:#555;margin-bottom:24px;font-weight:600;">Look at each clock and pick the right time! You can do it! 💪</p>
+    <div id="quizContainer">
+      <!-- Filled by JS -->
+    </div>
+    <div id="quizFinalMsg" style="display:none;text-align:center;padding:32px;font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#FF6B6B;"></div>
+  </div>
+
+</main>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="#card1">🕐 Clock</a>
+    <a href="#card2">📖 Read</a>
+    <a href="#card3">✏️ Draw</a>
+    <a href="#card4">🖊️ Trace</a>
+    <a href="#card5">⭐ Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ---- CURTAIN DISMISS (guaranteed) ----
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 2000);
+
+  // ---- LENIS SMOOTH SCROLL ----
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lowMem = navigator.deviceMemory !== undefined && navigator.deviceMemory < 2;
+      if (!lowMem) {
+        const lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => lenis.raf(time * 1000));
+        } else {
+          function rafLoop(t) { lenis.raf(t); requestAnimationFrame(rafLoop); }
+          requestAnimationFrame(rafLoop);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis failed', e); }
+
+  // ---- LIVE CLOCK ----
+  function updateLiveClock() {
+    const now = new Date();
+    const h = now.getHours() % 12;
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    const hourAngle = (h * 30) + (m * 0.5) - 90;
+    const minAngle = (m * 6) + (s * 0.1) - 90;
+    const hourRad = hourAngle * Math.PI / 180;
+    const minRad = minAngle * Math.PI / 180;
+    const cx = 140, cy = 140;
+    const hourLen = 55, minLen = 80;
+    const hourEl = document.getElementById('mainHour');
+    const minEl = document.getElementById('mainMin');
+    if (hourEl) {
+      hourEl.setAttribute('x2', cx + hourLen * Math.cos(hourRad));
+      hourEl.setAttribute('y2', cy + hourLen * Math.sin(hourRad));
+    }
+    if (minEl) {
+      minEl.setAttribute('x2', cx + minLen * Math.cos(minRad));
+      minEl.setAttribute('y2', cy + minLen * Math.sin(minRad));
+    }
+  }
+  setInterval(updateLiveClock, 1000);
+  updateLiveClock();
+
+  // ---- GSAP ANIMATIONS ----
+  function initGSAP() {
+    if (typeof gsap === 'undefined') return;
+    try {
+      if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        if (typeof ScrollTrigger !== 'undefined') {
+          gsap.fromTo(card, { opacity: 0.7, y: 40, scale: 0.95 }, {
+            opacity: 1, y: 0, scale: 1, duration: 0.5,
+            scrollTrigger: { trigger: card, start: 'top 90%', once: true }
+          });
+        }
+      });
+      // Stagger on load
+      gsap.from('.fun-card', { opacity: 0, y: 30, scale: 0.9, duration: 0.5, stagger: 0.1, delay: 0.3 });
+      // Curtain dismiss
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 1.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    } catch(e) { console.warn('GSAP init error', e); }
+  }
+  initGSAP();
+
+  // ---- HELPER: Create clock SVG ----
+  function createClockSVG(hours, minutes, size=130) {
+    const cx = size/2, cy = size/2, r = size/2 - 6;
+    const hourAngle = ((hours % 12) * 30 + minutes * 0.5 - 90) * Math.PI / 180;
+    const minAngle = (minutes * 6 - 90) * Math.PI / 180;
+    const hourLen = r * 0.5, minLen = r * 0.72;
+    const hx2 = cx + hourLen * Math.cos(hourAngle);
+    const hy2 = cy + hourLen * Math.sin(hourAngle);
+    const mx2 = cx + minLen * Math.cos(minAngle);
+    const my2 = cy + minLen * Math.sin(minAngle);
+    const numPositions = [
+      [cx, cy - r + 14], // 12
+      [cx + (r-14)*Math.sin(30*Math.PI/180), cy - (r-14)*Math.cos(30*Math.PI/180)], // 1
+      [cx + (r-14)*Math.sin(60*Math.PI/180), cy - (r-14)*Math.cos(60*Math.PI/180)], // 2
+      [cx + r - 14, cy], // 3
+      [cx + (r-14)*Math.sin(60*Math.PI/180), cy + (r-14)*Math.cos(60*Math.PI/180)], // 4
+      [cx + (r-14)*Math.sin(30*Math.PI/180), cy + (r-14)*Math.cos(30*Math.PI/180)], // 5
+      [cx, cy + r - 14], // 6
+      [cx - (r-14)*Math.sin(30*Math.PI/180), cy + (r-14)*Math.cos(30*Math.PI/180)], // 7
+      [cx - (r-14)*Math.sin(60*Math.PI/180), cy + (r-14)*Math.cos(60*Math.PI/180)], // 8
+      [cx - r + 14, cy], // 9
+      [cx - (r-14)*Math.sin(60*Math.PI/180), cy - (r-14)*Math.cos(60*Math.PI/180)], // 10
+      [cx - (r-14)*Math.sin(30*Math.PI/180), cy - (r-14)*Math.cos(30*Math.PI/180)], // 11
+    ];
+    const nums = [12,1,2,3,4,5,6,7,8,9,10,11];
+    let numTexts = nums.map((n,i) => `<text x="${numPositions[i][0]}" y="${numPositions[i][1]}" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="${size*0.12}" fill="#333">${n}</text>`).join('');
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="#FFF9E6" stroke="#FFD93D" stroke-width="5"/>
+      ${numTexts}
+      <line x1="${cx}" y1="${cy}" x2="${hx2}" y2="${hy2}" stroke="#333" stroke-width="${size*0.055}" stroke-linecap="round"/>
+      <line x1="${cx}" y1="${cy}" x2="${mx2}" y2="${my2}" stroke="#FF6B6B" stroke-width="${size*0.035}" stroke-linecap="round"/>
+      <circle cx="${cx}" cy="${cy}" r="${size*0.045}" fill="#333"/>
+    </svg>`;
+  }
+
+  // ---- SECTION 2: Read the Clock ----
+  const readClocks = [
+    { hours: 9, minutes: 0, label: '9 : 00', desc: '9 O\'Clock' },
+    { hours: 3, minutes: 30, label: '3 : 30', desc: 'Half past 3' },
+    { hours: 10, minutes: 0, label: '10 : 00', desc: '10 O\'Clock' },
+    { hours: 7, minutes: 0, label: '7 : 00', desc: '7 O\'Clock' },
+    { hours: 12, minutes: 30, label: '12 : 30', desc: 'Half past 12' },
+    { hours: 6, minutes: 0, label: '6 : 00', desc: '6 O\'Clock' },
+    { hours: 2, minutes: 0, label: '2 : 00', desc: '2 O\'Clock' },
+    { hours: 8, minutes: 30, label: '8 : 30', desc: 'Half past 8' },
+    { hours: 4, minutes: 0, label: '4 : 00', desc: '4 O\'Clock' },
+  ];
+
+  const readGrid = document.getElementById('readClockGrid');
+  if (readGrid) {
+    readClocks.forEach((clk, i) => {
+      const item = document.createElement('div');
+      item.className = 'clock-item';
+      item.dataset.revealed = 'false';
+      item.innerHTML = `
+        <div>${createClockSVG(clk.hours, clk.minutes, 130)}</div>
+        <div class="time-display" id="readTime${i}">Tap me! 👆</div>
+      `;
+      item.addEventListener('click', () => {
+        const disp = document.getElementById(`readTime${i}`);
+        if (item.dataset.revealed === 'false') {
+          if (disp) {
+            disp.textContent = clk.label;
+            disp.classList.add('revealed');
+          }
+          item.dataset.revealed = 'true';
+          addStar();
+          try {
+            if (typeof gsap !== 'undefined') gsap.fromTo(item, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: 'back.out(2)' });
+          } catch(e) {}
+          if (typeof confetti !== 'undefined') confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 } });
+        }
+      });
+      readGrid.appendChild(item);
+    });
+  }
+
+  // ---- SECTION 3: Draw Clock Hands ----
+  const drawClocks = [
+    { hours: 6, minutes: 0, label: '06:00', desc: '6 O\'Clock' },
+    { hours: 3, minutes: 30, label: '03:30', desc: 'Half past 3' },
+    { hours: 4, minutes: 30, label: '04:30', desc: 'Half past 4' },
+    { hours: 5, minutes: 0, label: '05:00', desc: '5 O\'Clock' },
+    { hours: 12, minutes: 30, label: '12:30', desc: 'Half past 12' },
+    { hours: 9, minutes: 0, label: '09:00', desc: '9 O\'Clock' },
+    { hours: 4, minutes: 0, label: '04:00', desc: '4 O\'Clock' },
+    { hours: 7, minutes: 30, label: '07:30', desc: 'Half past 7' },
+    { hours: 8, minutes: 0, label: '08:00', desc: '8 O\'Clock' },
+  ];
+
+  function createEmptyClockSVG(size=130) {
+    const cx = size/2, cy = size/2, r = size/2 - 6;
+    const numPositions = [
+      [cx, cy - r + 14],
+      [cx + (r-14)*Math.sin(30*Math.PI/180), cy - (r-14)*Math.cos(30*Math.PI/180)],
+      [cx + (r-14)*Math.sin(60*Math.PI/180), cy - (r-14)*Math.cos(60*Math.PI/180)],
+      [cx + r - 14, cy],
+      [cx + (r-14)*Math.sin(60*Math.PI/180), cy + (r-14)*Math.cos(60*Math.PI/180)],
+      [cx + (r-14)*Math.sin(30*Math.PI/180), cy + (r-14)*Math.cos(30*Math.PI/180)],
+      [cx, cy + r - 14],
+      [cx - (r-14)*Math.sin(30*Math.PI/180), cy + (r-14)*Math.cos(30*Math.PI/180)],
+      [cx - (r-14)*Math.sin(60*Math.PI/180), cy + (r-14)*Math.cos(60*Math.PI/180)],
+      [cx - r + 14, cy],
+      [cx - (r-14)*Math.sin(60*Math.PI/180), cy - (r-14)*Math.cos(60*Math.PI/180)],
+      [cx - (r-14)*Math.sin(30*Math.PI/180), cy - (r-14)*Math.cos(30*Math.PI/180)],
+    ];
+    const nums = [12,1,2,3,4,5,6,7,8,9,10,11];
+    let numTexts = nums.map((n,i) => `<text x="${numPositions[i][0]}" y="${numPositions[i][1]}" text-anchor="middle" dominant-baseline="middle" font-family="Bubblegum Sans,cursive" font-size="${size*0.12}" fill="#333">${n}</text>`).join('');
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="#FFF9E6" stroke="#FFD93D" stroke-width="5"/>
+      ${numTexts}
+      <circle cx="${cx}" cy="${cy}" r="${size*0.045}" fill="#aaa"/>
+    </svg>`;
+  }
+
+  const drawGrid = document.getElementById('drawClockGrid');
+  if (drawGrid) {
+    drawClocks.forEach((clk, i) => {
+      const item = document.createElement('div');
+      item.className = 'draw-clock-item';
+      item.dataset.revealed = 'false';
+      const emptySVG = createEmptyClockSVG(130);
+      const fullSVG = createClockSVG(clk.hours, clk.minutes, 130);
+      item.innerHTML = `
+        <div id="drawClockSVG${i}">${emptySVG}</div>
+        <div class="time-label">${clk.label}</div>
+        <button class="reveal-btn" id="drawBtn${i}">👁️ Show Hands!</button>
+      `;
+      const btn = item.querySelector(`#drawBtn${i}`);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (item.dataset.revealed === 'false') {
+          const svgWrap = document.getElementById(`drawClockSVG${i}`);
+          if (svgWrap) svgWrap.innerHTML = fullSVG;
+          btn.textContent = '✅ Done!';
+          btn.disabled = true;
+          item.dataset.revealed = 'true';
+          addStar();
+          try {
+            if (typeof gsap !== 'undefined') gsap.fromTo(svgWrap, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' });
+          } catch(e) {}
+        }
+      });
+      drawGrid.appendChild(item);
+    });
+  }
+
+  // ---- SECTION 4: Trace Clock ----
+  const traceNums = [12,1,2,3,4,5,6,7,8,9,10,11];
+  let traceCount = 0;
+  traceNums.forEach(n => {
+    const spot = document.getElementById(`ts${n}`);
+    const lbl = document.getElementById(`tl${n}`);
+    if (spot && lbl) {
+      spot.addEventListener('click', () => {
+        if (lbl.getAttribute('opacity') === '0') {
+          lbl.setAttribute('opacity', '1');
+          spot.setAttribute('fill', '#c4b5fd');
+          traceCount++;
+          document.getElementById('traceProgress').textContent = `${traceCount}/12`;
+          try {
+            if (typeof gsap !== 'undefined') {
+              gsap.fromTo(lbl, { attr: { 'font-size': 10 } }, { attr: { 'font-size': 20 }, duration: 0.3, ease: 'back.out(2)' });
+            }
+          } catch(e) {}
+          if (traceCount === 12) {
+            setTimeout(() => {
+              if (typeof confetti !== 'undefined') confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+            }, 200);
+            addStar(3);
+          } else {
+            addStar();
+          }
+        }
+      });
+    }
+  });
+
+  // ---- STAR COUNTER ----
+  let stars = 0;
+  let totalActivities = 9 + 9 + 12 + 5;
+  function addStar(n=1) {
+    stars += n;
+    const sc = document.getElementById('starCount');
+    if (sc) sc.textContent = stars;
+    const pct = Math.min(100, (stars / (totalActivities * 0.5)) * 100);
+    const pb = document.getElementById('progressBar');
+    if (pb) pb.style.width = pct + '%';
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo('#starCounter', { scale: 1.15 }, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.5)' });
+      }
+    } catch(e) {}
+  }
+
+  // ---- QUIZ ----
+  const quizData = [
+    {
+      question: 'What time does this clock show? 🕘',
+      clockH: 9, clockM: 0,
+      options: ['9:00', '6:00', '3:00'],
+      correct: 0,
+      emoji: ['🕘','🕕','🕒']
+    },
+    {
+      question: 'What time does this clock show? 🕧',
+      clockH: 3, clockM: 30,
+      options: ['6:30', '3:30', '9:30'],
+      correct: 1,
+      emoji: ['🕡','🕞','🕤']
+    },
+    {
+      question: 'What time does this clock show? 🕛',
+      clockH: 12, clockM: 0,
+      options: ['6:00', '12:00', '9:00'],
+      correct: 1,
+      emoji: ['🕕','🕛','🕘']
+    },
+    {
+      question: 'What time does this clock show? 🕔',
+      clockH: 4, clockM: 0,
+      options: ['4:00', '8:00', '2:00'],
+      correct: 0,
+      emoji: ['🕓','🕗','🕑']
+    },
+    {
+      question: 'What time does this clock show? 🕢',
+      clockH: 7, clockM: 30,
+      options: ['12:30', '3:30', '7:30'],
+      correct: 2,
+      emoji: ['🕧','🕞','🕢']
+    },
+  ];
+
+  let quizScore = 0;
+  let quizAnswered = 0;
+  const quizContainer = document.getElementById('quizContainer');
+
+  if (quizContainer) {
+    quizData.forEach((q, qi) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'quiz-question';
+      qDiv.id = `quiz${qi}`;
+      const clockHTML = createClockSVG(q.clockH, q.clockM, 140);
+      const optsHTML = q.options.map((opt, oi) => `
+        <button class="quiz-opt" id="qopt_${qi}_${oi}" data-qi="${qi}" data-oi="${oi}" data-correct="${q.correct === oi}">
+          <span style="font-size:1.8rem">${q.emoji[oi]}</span> ${opt}
+        </button>
+      `).join('');
+      qDiv.innerHTML = `
+        <div class="quiz-q-title">${q.question}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:center;margin-bottom:20px;">
+          <div>${clockHTML}</div>
+          <div class="quiz-options">${optsHTML}</div>
+        </div>
+        <div class="quiz-feedback" id="qfb${qi}"></div>
+      `;
+      quizContainer.appendChild(qDiv);
+    });
+
+    quizContainer.addEventListener('click', e => {
+      const btn = e.target.closest('.quiz-opt');
+      if (!btn) return;
+      const qi = parseInt(btn.dataset.qi);
+      const oi = parseInt(btn.dataset.oi);
+      const correct = btn.dataset.correct === 'true';
+      const qDiv = document.getElementById(`quiz${qi}`);
+      if (qDiv && qDiv.dataset.answered) return;
+      if (qDiv) qDiv.dataset.answered = 'true';
+      const fb = document.getElementById(`qfb${qi}`);
+      // Disable all options for this question
+      const opts = quizContainer.querySelectorAll(`[data-qi="${qi}"]`);
+      opts.forEach(o => {
+        o.disabled = true;
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+      });
+      if (correct) {
+        btn.classList.add('correct');
+        if (fb) { fb.textContent = '🎉 Amazing! That\'s right!'; fb.className = 'quiz-feedback good'; }
+        quizScore++;
+        addStar(2);
+        try {
+          if (typeof confetti !== 'undefined') confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+        } catch(e) {}
+        try {
+          if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 });
+        } catch(e) {}
+      } else {
+        btn.classList.add('wrong');
+        if (fb) { fb.textContent = '😊 Not quite! Try to look at the hands!'; fb.className = 'quiz-feedback bad'; }
+        try {
+          if (typeof gsap !== 'undefined') gsap.to(btn, { x: [-10,10,-10,10,0], duration: 0.4 });
+        } catch(e) {}
+      }
+      quizAnswered++;
+      if (quizAnswered === quizData.length) {
+        setTimeout(() => {
+          const finalMsg = document.getElementById('quizFinalMsg');
+          if (finalMsg) {
+            finalMsg.style.display = 'block';
+            const pct = Math.round((quizScore / quizData.length) * 100);
+            finalMsg.innerHTML = `
+              <div style="font-size:3rem;margin-bottom:16px;">${pct >= 80 ? '🏆' : pct >= 60 ? '🌟' : '😊'}</div>
+              <div>You got ${quizScore} out of ${quizData.length}!</div>
+              <div style="font-size:1.4rem;color:#6BCB77;margin-top:8px;">${pct >= 80 ? 'Excellent! You\'re a clock expert!' : pct >= 60 ? 'Great job! Keep practicing!' : 'Good try! Practice more!'}</div>
+            `;
+            if (pct >= 60 && typeof confetti !== 'undefined') {
+              confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+            }
+          }
+        }, 600);
+      }
+    });
+  }
+
+  // ---- CURTAIN DISMISS via GSAP ----
+  // (already handled by guaranteed setTimeout above)
+
+});
+</script>
+</body>
+</html>

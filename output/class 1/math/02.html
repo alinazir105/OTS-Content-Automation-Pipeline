@@ -1,0 +1,1245 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backward Counting | Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #fff;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: linear-gradient(180deg, #e0f7ff 0%, #fffde7 40%, #e8f5e9 100%);
+    min-height: 100vh;
+  }
+
+  /* Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D, #6BCB77);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  #curtain .curtain-emoji { font-size: 80px; animation: bounce 0.6s infinite alternate; }
+  #curtain .curtain-text { font-family: 'Bubblegum Sans', cursive; font-size: clamp(2rem, 5vw, 3rem); color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+
+  /* Page wrapper */
+  .page-wrapper { width: 100%; padding-bottom: 100px; }
+
+  /* Hero */
+  .hero {
+    width: 100vw;
+    min-height: 70vh;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 50%, #6BCB77 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, #e0f7ff 0%, #e0f7ff 100%);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-badge {
+    background: #fff;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.5rem;
+    color: #FF6B6B;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: #fff;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+    max-width: 600px;
+  }
+  .hero-numbers {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-num {
+    background: #fff;
+    border-radius: 20px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.8rem;
+    color: #FF6B6B;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border: 4px solid #fff;
+  }
+
+  /* Section container */
+  .section-container { width: 100%; max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* Fun card */
+  .fun-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    padding: 40px;
+    margin-bottom: 40px;
+    opacity: 1;
+    transform: none;
+  }
+  .fun-card.blue-border { border-color: #6BCB77; }
+  .fun-card.red-border { border-color: #FF6B6B; }
+
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #FF6B6B;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-title .icon { font-size: 2.4rem; }
+  .card-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #555;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  /* Counting grid */
+  .counting-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  .count-cell {
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .count-cell.given {
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    color: #fff;
+    border-color: #FF6B6B;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    cursor: default;
+  }
+  .count-cell.filled {
+    background: linear-gradient(135deg, #6BCB77, #4CAF50);
+    color: #fff;
+    border-color: #4CAF50;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .count-cell.empty-hint {
+    background: #f8f8f8;
+    border-style: dashed;
+    border-color: #ccc;
+    color: #ccc;
+    font-size: 1.4rem;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .count-cell:not(.given):not(.filled):hover {
+    background: #fffde7;
+    transform: scale(1.05);
+  }
+
+  /* Number showcase */
+  .number-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 30px 0;
+  }
+  .num-bubble {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 4px solid #fff;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  .num-bubble:hover { transform: scale(1.1) rotate(-5deg); }
+  .num-bubble.blue { background: linear-gradient(135deg, #6BCB77, #4CAF50); }
+  .num-bubble.yellow { background: linear-gradient(135deg, #FFD93D, #FF9800); }
+
+  /* Interactive fill grid */
+  .fill-grid-section { margin: 20px 0; }
+  .fill-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .fill-cell {
+    background: #fff;
+    border: 4px solid #6BCB77;
+    border-radius: 20px;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .fill-cell.revealed {
+    background: linear-gradient(135deg, #6BCB77, #4CAF50);
+    color: #fff;
+    border-color: #388E3C;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .fill-cell.hint-cell {
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    color: #fff;
+    border-color: #e65100;
+    cursor: default;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+  }
+  .fill-cell:not(.hint-cell):not(.revealed)::after {
+    content: '?';
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: #ccc;
+  }
+  .fill-cell:not(.hint-cell):not(.revealed):hover {
+    background: #fffde7;
+    border-color: #FFD93D;
+    transform: scale(1.05);
+  }
+
+  /* Tap button */
+  .tap-all-btn {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto 0;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    border: none;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,107,107,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    border: 4px solid #fff;
+  }
+  .tap-all-btn:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(255,107,107,0.5); }
+  .tap-all-btn:active { transform: scale(0.97); }
+
+  /* Quiz section */
+  .quiz-question {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .quiz-emoji-display {
+    font-size: 5rem;
+    margin: 20px 0;
+    display: block;
+  }
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #333;
+    margin: 10px 0 20px;
+  }
+  .quiz-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .quiz-opt-btn {
+    min-width: 100px;
+    min-height: 80px;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, #6BCB77, #4CAF50);
+    border: 4px solid #388E3C;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-opt-btn:hover { transform: scale(1.08); }
+  .quiz-opt-btn .opt-emoji { font-size: 2rem; }
+  .quiz-opt-btn.wrong-opt { background: linear-gradient(135deg, #FF6B6B, #e53935); border-color: #b71c1c; }
+  .quiz-opt-btn.correct-opt { background: linear-gradient(135deg, #FFD93D, #FF9800); border-color: #e65100; }
+
+  .quiz-feedback {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    text-align: center;
+    margin-top: 20px;
+    min-height: 50px;
+    transition: all 0.3s;
+  }
+  .quiz-feedback.correct { color: #388E3C; }
+  .quiz-feedback.wrong { color: #e53935; }
+
+  .quiz-progress {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .q-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 3px solid #ccc;
+    transition: all 0.3s;
+  }
+  .q-dot.done { background: #6BCB77; border-color: #388E3C; }
+  .q-dot.active { background: #FFD93D; border-color: #FF9800; transform: scale(1.3); }
+
+  /* Next question btn */
+  .next-q-btn {
+    display: none;
+    margin: 20px auto 0;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #6BCB77, #4CAF50);
+    border: 4px solid #388E3C;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(76,175,80,0.3);
+    transition: transform 0.2s;
+  }
+  .next-q-btn:hover { transform: scale(1.05); }
+  .next-q-btn.visible { display: block; }
+
+  /* Score display */
+  .score-display {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+  .score-display.show { display: block; }
+  .score-emoji { font-size: 6rem; margin-bottom: 16px; display: block; }
+  .score-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: #FF6B6B;
+    margin-bottom: 12px;
+  }
+  .score-stars { font-size: 3rem; letter-spacing: 8px; }
+
+  /* Number line */
+  .number-line-wrapper {
+    overflow-x: auto;
+    padding: 20px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .number-line {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: max-content;
+    padding: 10px 20px;
+  }
+  .nl-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.4rem;
+    color: #fff;
+    flex-shrink: 0;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .nl-num:hover { transform: scale(1.2) translateY(-5px); }
+  .nl-num.highlighted { background: linear-gradient(135deg, #6BCB77, #4CAF50); }
+  .nl-arrow {
+    width: 30px;
+    height: 4px;
+    background: #FFD93D;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .nl-arrow::after {
+    content: '←';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: #FF6B6B;
+    background: transparent;
+  }
+
+  /* Fun facts */
+  .fun-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .fact-bubble {
+    flex: 1;
+    min-width: 200px;
+    background: linear-gradient(135deg, #fffde7, #fff8e1);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 700;
+    color: #555;
+  }
+  .fact-bubble .fact-emoji { font-size: 3rem; display: block; margin-bottom: 10px; }
+
+  /* Section spacer */
+  .spacer { height: 40px; }
+
+  /* Stars background decoration */
+  .stars-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,217,61,0.4);
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.2; transform: scale(0.8); } to { opacity: 0.8; transform: scale(1.2); } }
+
+  /* Mobile bottom nav */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 4px solid #FFD93D;
+    z-index: 1000;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 0;
+  }
+  .bottom-nav-inner {
+    display: flex;
+    gap: 0;
+    min-width: max-content;
+    padding: 0 8px;
+  }
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #555;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    min-height: 56px;
+    min-width: 64px;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+  .bottom-nav a span { font-size: 1.6rem; }
+  .bottom-nav a:hover { color: #FF6B6B; }
+
+  /* Animations classes */
+  .shake { animation: shake 0.5s forwards; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .section-container { padding: 0 16px; }
+    .fun-card { padding: 24px 16px; margin-bottom: 28px; }
+    .hero { min-height: 60vh; padding: 40px 16px; }
+    .counting-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .count-cell { min-height: 56px; font-size: 1.1rem; border-radius: 14px; border-width: 3px; }
+    .fill-row { gap: 8px; }
+    .fill-cell { min-height: 56px; border-radius: 14px; border-width: 3px; }
+    .bottom-nav { display: block; }
+    body { padding-bottom: 80px; }
+    .quiz-opt-btn { min-width: 80px; min-height: 72px; padding: 12px 20px; }
+    .nl-num { width: 48px; height: 48px; font-size: 1.2rem; }
+  }
+  @media (max-width: 480px) {
+    .counting-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .count-cell { min-height: 48px; font-size: 1rem; border-radius: 12px; }
+    .fill-cell { min-height: 48px; }
+    .hero-num { width: 52px; height: 52px; font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Stars bg -->
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- Loading curtain -->
+<div id="curtain">
+  <div class="curtain-emoji">🔢</div>
+  <div class="curtain-text">Getting Ready...</div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">2</div>
+    <h1>Backward<br>Counting! 🔢</h1>
+    <p>Count backwards from 100 to 1 — Let's go! 🚀</p>
+    <div class="hero-numbers">
+      <div class="hero-num">10</div>
+      <div class="hero-num">9</div>
+      <div class="hero-num">8</div>
+      <div class="hero-num">7</div>
+      <div class="hero-num">6</div>
+      <div class="hero-num">5</div>
+      <div class="hero-num">4</div>
+      <div class="hero-num">3</div>
+      <div class="hero-num">2</div>
+      <div class="hero-num">1</div>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+
+  <!-- Main content -->
+  <div class="section-container">
+
+    <!-- What is Backward Counting -->
+    <div class="fun-card blue-border" id="card-intro">
+      <div class="card-title"><span class="icon">⬅️</span> What is Backward Counting?</div>
+      <div class="card-subtitle">We count DOWN — from a big number to a small number!</div>
+      <div class="fun-facts">
+        <div class="fact-bubble">
+          <span class="fact-emoji">🚀</span>
+          Backward counting means going from BIG to SMALL!
+        </div>
+        <div class="fact-bubble">
+          <span class="fact-emoji">🎈</span>
+          Like a rocket launch: 5, 4, 3, 2, 1... Blast Off!
+        </div>
+        <div class="fact-bubble">
+          <span class="fact-emoji">⭐</span>
+          Each number is ONE LESS than the one before it!
+        </div>
+      </div>
+      <!-- Number line 10 to 1 -->
+      <div class="card-subtitle" style="margin-top:24px;">🎯 Tap the numbers to see them light up!</div>
+      <div class="number-line-wrapper">
+        <div class="number-line" id="numLine">
+          <!-- generated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Backward counting 100 to 51 -->
+    <div class="fun-card" id="card-100-51">
+      <div class="card-title"><span class="icon">💯</span> Count from 100 to 51!</div>
+      <div class="card-subtitle">Tap each box to reveal the number! Start from 100 and go down! 👇</div>
+      <div class="fill-grid-section" id="grid100to51">
+        <!-- Rows generated by JS -->
+      </div>
+      <button class="tap-all-btn" id="revealAll100">✨ Reveal All Numbers!</button>
+    </div>
+
+    <!-- Backward counting 50 to 1 -->
+    <div class="fun-card red-border" id="card-50-1">
+      <div class="card-title"><span class="icon">🌟</span> Count from 50 to 1!</div>
+      <div class="card-subtitle">Tap each box to reveal the number! Count all the way down to 1! 🎉</div>
+      <div class="fill-grid-section" id="grid50to1">
+        <!-- Rows generated by JS -->
+      </div>
+      <button class="tap-all-btn" id="revealAll50" style="background: linear-gradient(135deg, #6BCB77, #4CAF50); border-color: #388E3C; box-shadow: 0 4px 16px rgba(76,175,80,0.4);">✨ Reveal All Numbers!</button>
+    </div>
+
+    <!-- Fun practice -->
+    <div class="fun-card blue-border" id="card-practice">
+      <div class="card-title"><span class="icon">🎯</span> What Comes Before?</div>
+      <div class="card-subtitle">Tap the mystery number boxes to find what comes next when counting backwards! 🔍</div>
+      <div id="beforeGrid" class="fill-grid-section">
+        <!-- generated by JS -->
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="fun-card" id="card-quiz">
+      <div class="card-title"><span class="icon">🧠</span> Quiz Time!</div>
+      <div class="card-subtitle">Answer these fun questions! No reading needed — just look! 👀</div>
+
+      <div class="quiz-progress" id="quizProgress"></div>
+
+      <div id="quizArea">
+        <div class="quiz-question" id="quizQuestion">
+          <!-- filled by JS -->
+        </div>
+        <div class="quiz-options" id="quizOptions">
+          <!-- filled by JS -->
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()">Next ➡️</button>
+      </div>
+
+      <div class="score-display" id="scoreDisplay">
+        <span class="score-emoji" id="scoreEmoji">🏆</span>
+        <div class="score-text" id="scoreText">Amazing!</div>
+        <div class="score-stars" id="scoreStars">⭐⭐⭐</div>
+        <button class="tap-all-btn" style="margin-top:24px;" onclick="restartQuiz()">🔄 Play Again!</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Mobile bottom nav -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="#hero"><span>🏠</span>Home</a>
+    <a href="#card-intro"><span>⬅️</span>Intro</a>
+    <a href="#card-100-51"><span>💯</span>100-51</a>
+    <a href="#card-50-1"><span>🌟</span>50-1</a>
+    <a href="#card-practice"><span>🎯</span>Practice</a>
+    <a href="#card-quiz"><span>🧠</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== CURTAIN FALLBACK =====
+  const curtain = document.getElementById('curtain');
+  const curtainTimeout = setTimeout(() => {
+    if (curtain) curtain.style.display = 'none';
+  }, 3000);
+
+  // ===== STARS BACKGROUND =====
+  try {
+    const starsBg = document.getElementById('starsBg');
+    if (starsBg) {
+      for (let i = 0; i < 30; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 2 + 's';
+        star.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        star.style.width = (4 + Math.random() * 8) + 'px';
+        star.style.height = star.style.width;
+        starsBg.appendChild(star);
+      }
+    }
+  } catch(e) {}
+
+  // ===== NUMBER LINE (10 to 1) =====
+  try {
+    const numLine = document.getElementById('numLine');
+    if (numLine) {
+      for (let n = 10; n >= 1; n--) {
+        const div = document.createElement('div');
+        div.className = 'nl-num';
+        div.textContent = n;
+        div.addEventListener('click', () => {
+          div.classList.toggle('highlighted');
+          playNumberSound(n);
+        });
+        numLine.appendChild(div);
+        if (n > 1) {
+          const arrow = document.createElement('div');
+          arrow.className = 'nl-arrow';
+          numLine.appendChild(arrow);
+        }
+      }
+    }
+  } catch(e) {}
+
+  // ===== GENERATE GRID 100 to 51 =====
+  try {
+    const grid100 = document.getElementById('grid100to51');
+    if (grid100) {
+      const numbers100 = [];
+      for (let n = 100; n >= 51; n--) numbers100.push(n);
+      // Hint numbers
+      const hints100 = new Set([100, 91, 51]);
+      buildFillGrid(grid100, numbers100, hints100, 'grid100');
+    }
+  } catch(e) { console.log(e); }
+
+  // Reveal all 100-51
+  const revealAll100Btn = document.getElementById('revealAll100');
+  if (revealAll100Btn) {
+    revealAll100Btn.addEventListener('click', () => {
+      revealAllInGrid('grid100');
+      fireCelebration();
+    });
+  }
+
+  // ===== GENERATE GRID 50 to 1 =====
+  try {
+    const grid50 = document.getElementById('grid50to1');
+    if (grid50) {
+      const numbers50 = [];
+      for (let n = 50; n >= 1; n--) numbers50.push(n);
+      const hints50 = new Set([50, 41, 1]);
+      buildFillGrid(grid50, numbers50, hints50, 'grid50');
+    }
+  } catch(e) { console.log(e); }
+
+  const revealAll50Btn = document.getElementById('revealAll50');
+  if (revealAll50Btn) {
+    revealAll50Btn.addEventListener('click', () => {
+      revealAllInGrid('grid50');
+      fireCelebration();
+    });
+  }
+
+  // ===== BEFORE GRID (What comes before?) =====
+  try {
+    buildBeforeGrid();
+  } catch(e) { console.log(e); }
+
+  // ===== QUIZ =====
+  try {
+    initQuiz();
+  } catch(e) { console.log(e); }
+
+  // ===== LENIS smooth scroll =====
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const shouldUseLenis = !(navigator.deviceMemory && navigator.deviceMemory < 2);
+      if (shouldUseLenis) {
+        const lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => lenis.raf(time * 1000));
+        } else {
+          function rafLoop(time) {
+            lenis.raf(time);
+            requestAnimationFrame(rafLoop);
+          }
+          requestAnimationFrame(rafLoop);
+        }
+      }
+    }
+  } catch(e) {}
+
+  // ===== GSAP ANIMATIONS =====
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero entrance
+      gsap.from('.hero h1', { duration: 0.6, y: -40, opacity: 0, ease: 'back.out(1.7)' });
+      gsap.from('.hero p', { duration: 0.5, y: 20, opacity: 0, delay: 0.2, ease: 'power2.out' });
+      gsap.from('.hero-num', { duration: 0.4, scale: 0, opacity: 0, stagger: 0.05, delay: 0.3, ease: 'back.out(2)' });
+
+      // Cards scroll animation
+      const cards = document.querySelectorAll('.fun-card');
+      if (cards.length && typeof ScrollTrigger !== 'undefined') {
+        cards.forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 90%', once: true },
+            duration: 0.5,
+            y: 40,
+            scale: 0.92,
+            opacity: 0,
+            ease: 'back.out(1.4)',
+            delay: i * 0.05
+          });
+        });
+      }
+    }
+  } catch(e) {}
+
+  // ===== DISMISS CURTAIN =====
+  setTimeout(() => {
+    if (curtain) {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(curtain, { duration: 0.5, opacity: 0, onComplete: () => { curtain.style.display = 'none'; } });
+        } else {
+          curtain.style.opacity = '0';
+          curtain.style.transition = 'opacity 0.5s';
+          setTimeout(() => { curtain.style.display = 'none'; }, 500);
+        }
+      } catch(e) {
+        curtain.style.display = 'none';
+      }
+    }
+    clearTimeout(curtainTimeout);
+  }, 1200);
+
+}); // end DOMContentLoaded
+
+// ===== BUILD FILL GRID =====
+function buildFillGrid(container, numbers, hints, gridId) {
+  container.innerHTML = '';
+  const chunkSize = 5;
+  for (let r = 0; r < numbers.length; r += chunkSize) {
+    const row = document.createElement('div');
+    row.className = 'fill-row';
+    const chunk = numbers.slice(r, r + chunkSize);
+    chunk.forEach(num => {
+      const cell = document.createElement('div');
+      cell.className = 'fill-cell';
+      cell.dataset.num = num;
+      cell.dataset.gridId = gridId;
+      if (hints.has(num)) {
+        cell.classList.add('hint-cell');
+        cell.textContent = num;
+      } else {
+        cell.addEventListener('click', onFillCellClick);
+      }
+      row.appendChild(cell);
+    });
+    container.appendChild(row);
+  }
+}
+
+function onFillCellClick(e) {
+  const cell = e.currentTarget;
+  if (cell.classList.contains('revealed') || cell.classList.contains('hint-cell')) return;
+  cell.classList.add('revealed');
+  cell.textContent = cell.dataset.num;
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(cell, { duration: 0.35, scale: 0.5, ease: 'back.out(2)' });
+    }
+  } catch(ex) {}
+  playPopSound();
+}
+
+function revealAllInGrid(gridId) {
+  const cells = document.querySelectorAll(`.fill-cell[data-grid-id="${gridId}"]`);
+  cells.forEach((cell, i) => {
+    if (!cell.classList.contains('hint-cell') && !cell.classList.contains('revealed')) {
+      setTimeout(() => {
+        cell.classList.add('revealed');
+        cell.textContent = cell.dataset.num;
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.from(cell, { duration: 0.3, scale: 0.5, ease: 'back.out(2)' });
+          }
+        } catch(ex) {}
+      }, i * 30);
+    }
+  });
+}
+
+// ===== BUILD BEFORE GRID =====
+function buildBeforeGrid() {
+  const container = document.getElementById('beforeGrid');
+  if (!container) return;
+  container.innerHTML = '';
+
+  // Sets of 5 numbers with some hidden (every 2nd or 3rd hidden)
+  const sequences = [
+    [20, 19, 18, 17, 16],
+    [35, 34, 33, 32, 31],
+    [50, 49, 48, 47, 46],
+    [75, 74, 73, 72, 71],
+    [100, 99, 98, 97, 96]
+  ];
+  // Hide indices: 1, 3 in each row
+  const hideIdx = new Set([1, 3]);
+
+  sequences.forEach((seq, si) => {
+    const row = document.createElement('div');
+    row.className = 'fill-row';
+    seq.forEach((num, ni) => {
+      const cell = document.createElement('div');
+      cell.className = 'fill-cell';
+      cell.dataset.num = num;
+      cell.dataset.gridId = 'before' + si;
+      if (hideIdx.has(ni)) {
+        cell.addEventListener('click', onFillCellClick);
+      } else {
+        cell.classList.add('hint-cell');
+        cell.textContent = num;
+      }
+      row.appendChild(cell);
+    });
+    container.appendChild(row);
+  });
+}
+
+// ===== QUIZ =====
+const quizData = [
+  {
+    question: "Which number comes BEFORE 10?",
+    emoji: "🔟",
+    sequence: [10, 9, 8],
+    answer: 9,
+    options: [9, 11, 7],
+    optEmojis: ['9️⃣', '1️⃣1️⃣', '7️⃣']
+  },
+  {
+    question: "What is ONE LESS than 20?",
+    emoji: "2️⃣0️⃣",
+    answer: 19,
+    options: [21, 19, 18],
+    optEmojis: ['2️⃣1️⃣', '1️⃣9️⃣', '1️⃣8️⃣']
+  },
+  {
+    question: "Count BACK from 5! What comes after 5?",
+    emoji: "5️⃣",
+    answer: 4,
+    options: [6, 3, 4],
+    optEmojis: ['6️⃣', '3️⃣', '4️⃣']
+  },
+  {
+    question: "What is missing? 50, 49, __, 47",
+    emoji: "❓",
+    answer: 48,
+    options: [46, 48, 51],
+    optEmojis: ['4️⃣6️⃣', '4️⃣8️⃣', '5️⃣1️⃣']
+  },
+  {
+    question: "Which number comes BEFORE 100?",
+    emoji: "💯",
+    answer: 99,
+    options: [101, 98, 99],
+    optEmojis: ['1️⃣0️⃣1️⃣', '9️⃣8️⃣', '9️⃣9️⃣']
+  },
+  {
+    question: "What is missing? 30, __, 28, 27",
+    emoji: "❓",
+    answer: 29,
+    options: [31, 26, 29],
+    optEmojis: ['3️⃣1️⃣', '2️⃣6️⃣', '2️⃣9️⃣']
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function initQuiz() {
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  buildProgressDots();
+  showQuestion(currentQ);
+}
+
+function buildProgressDots() {
+  const prog = document.getElementById('quizProgress');
+  if (!prog) return;
+  prog.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot' + (i === 0 ? ' active' : '');
+    dot.id = 'dot' + i;
+    prog.appendChild(dot);
+  });
+}
+
+function updateProgressDots(qIdx, correct) {
+  for (let i = 0; i < quizData.length; i++) {
+    const dot = document.getElementById('dot' + i);
+    if (!dot) continue;
+    dot.className = 'q-dot';
+    if (i < qIdx) dot.classList.add('done');
+    else if (i === qIdx) dot.classList.add('active');
+  }
+}
+
+function showQuestion(idx) {
+  if (idx >= quizData.length) {
+    showScore();
+    return;
+  }
+  answered = false;
+  const q = quizData[idx];
+  const qArea = document.getElementById('quizQuestion');
+  const optArea = document.getElementById('quizOptions');
+  const fb = document.getElementById('quizFeedback');
+  const nextBtn = document.getElementById('nextQBtn');
+  const scoreDisp = document.getElementById('scoreDisplay');
+
+  if (scoreDisp) scoreDisp.classList.remove('show');
+  if (fb) { fb.textContent = ''; fb.className = 'quiz-feedback'; }
+  if (nextBtn) nextBtn.classList.remove('visible');
+
+  if (qArea) {
+    qArea.innerHTML = `
+      <span class="quiz-emoji-display">${q.emoji}</span>
+      <div class="quiz-q-text">${q.question}</div>
+    `;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(qArea, { duration: 0.4, y: 20, opacity: 0, ease: 'power2.out' });
+      }
+    } catch(ex) {}
+  }
+
+  if (optArea) {
+    optArea.innerHTML = '';
+    q.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt-btn';
+      btn.innerHTML = `<span class="opt-emoji">${q.optEmojis[oi]}</span>${opt}`;
+      btn.dataset.val = opt;
+      btn.addEventListener('click', () => handleAnswer(opt, btn));
+      optArea.appendChild(btn);
+    });
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from('.quiz-opt-btn', { duration: 0.4, scale: 0.8, opacity: 0, stagger: 0.08, ease: 'back.out(1.7)' });
+      }
+    } catch(ex) {}
+  }
+
+  updateProgressDots(idx, null);
+}
+
+function handleAnswer(val, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[currentQ];
+  const fb = document.getElementById('quizFeedback');
+  const nextBtn = document.getElementById('nextQBtn');
+  const optBtns = document.querySelectorAll('.quiz-opt-btn');
+
+  if (parseInt(val) === q.answer) {
+    score++;
+    btn.classList.add('correct-opt');
+    if (fb) { fb.textContent = '🎉 Amazing! You got it!'; fb.className = 'quiz-feedback correct'; }
+    fireCelebration();
+    // Mark dot
+    const dot = document.getElementById('dot' + currentQ);
+    if (dot) dot.classList.add('done');
+  } else {
+    btn.classList.add('wrong-opt');
+    if (fb) { fb.textContent = '😊 Oops! Try again next time!'; fb.className = 'quiz-feedback wrong'; }
+    // Shake
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(btn, { duration: 0.5, x: [-10, 10, -10, 10, 0], ease: 'power1.inOut' });
+      } else {
+        btn.classList.add('shake');
+        setTimeout(() => btn.classList.remove('shake'), 600);
+      }
+    } catch(ex) { btn.classList.add('shake'); }
+    // Show correct
+    optBtns.forEach(b => {
+      if (parseInt(b.dataset.val) === q.answer) b.classList.add('correct-opt');
+    });
+  }
+
+  if (nextBtn) {
+    if (currentQ < quizData.length - 1) {
+      nextBtn.classList.add('visible');
+      nextBtn.textContent = 'Next ➡️';
+    } else {
+      nextBtn.classList.add('visible');
+      nextBtn.textContent = '🏆 See Score!';
+    }
+  }
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizData.length) {
+    showScore();
+  } else {
+    showQuestion(currentQ);
+  }
+}
+
+function showScore() {
+  const quizArea = document.getElementById('quizArea');
+  const scoreDisp = document.getElementById('scoreDisplay');
+  const scoreEmoji = document.getElementById('scoreEmoji');
+  const scoreText = document.getElementById('scoreText');
+  const scoreStars = document.getElementById('scoreStars');
+  const prog = document.getElementById('quizProgress');
+
+  if (quizArea) quizArea.style.display = 'none';
+  if (prog) prog.innerHTML = '';
+  if (scoreDisp) scoreDisp.classList.add('show');
+
+  const pct = score / quizData.length;
+  let emoji, text, stars;
+  if (pct === 1) { emoji = '🏆'; text = 'PERFECT! You are a Star!'; stars = '⭐⭐⭐'; }
+  else if (pct >= 0.7) { emoji = '🎉'; text = 'Great Job! Well Done!'; stars = '⭐⭐'; }
+  else { emoji = '😊'; text = 'Good Try! Keep Practising!'; stars = '⭐'; }
+
+  if (scoreEmoji) scoreEmoji.textContent = emoji;
+  if (scoreText) scoreText.textContent = text + ` (${score}/${quizData.length})`;
+  if (scoreStars) scoreStars.textContent = stars;
+
+  fireCelebration();
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('#scoreDisplay', { duration: 0.6, scale: 0.7, opacity: 0, ease: 'back.out(1.7)' });
+    }
+  } catch(ex) {}
+}
+
+function restartQuiz() {
+  const quizArea = document.getElementById('quizArea');
+  const scoreDisp = document.getElementById('scoreDisplay');
+  if (quizArea) quizArea.style.display = '';
+  if (scoreDisp) scoreDisp.classList.remove('show');
+  initQuiz();
+}
+
+// ===== CONFETTI / CELEBRATION =====
+function fireCelebration() {
+  try {
+    if (typeof confetti !== 'undefined') {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#fff'] });
+    }
+  } catch(e) {}
+}
+
+// ===== SOUND HELPERS (Web Audio fallback) =====
+function playPopSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(520, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+function playNumberSound(n) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    const freq = 200 + n * 20;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.2);
+  } catch(e) {}
+}
+
+// Expose nextQuestion to global scope for inline onclick
+window.nextQuestion = nextQuestion;
+window.restartQuiz = restartQuiz;
+</script>
+</body>
+</html>

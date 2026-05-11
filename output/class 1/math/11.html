@@ -1,0 +1,1037 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Subtraction – Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{width:100%;scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  font-size:20px;
+  background:#fff9f0;
+  width:100%;
+  overflow-x:hidden;
+  padding-bottom:100px;
+}
+h1{font-family:'Bubblegum Sans',cursive;font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1}
+h2{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,4vw,3rem);line-height:1.2}
+h3{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,2.5vw,1.8rem)}
+
+/* ── Background ── */
+.page-bg{
+  position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,#fffde4 0%,#e0f7fa 60%,#c8e6c9 100%);
+}
+.sun{
+  position:fixed;top:20px;right:40px;width:90px;height:90px;
+  background:radial-gradient(circle,#FFD93D 60%,#ffb300 100%);
+  border-radius:50%;box-shadow:0 0 40px #FFD93D88;
+  animation:pulse 3s ease-in-out infinite;z-index:0;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+
+/* ── Curtain ── */
+#curtain{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,#FFD93D,#FF6B6B);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+#curtain h1{color:#fff;text-shadow:3px 3px 0 #ff6b6b}
+#curtain p{color:#fff;font-size:1.4rem;margin-top:12px}
+.spinner{
+  width:60px;height:60px;border:6px solid #fff6;
+  border-top-color:#fff;border-radius:50%;
+  animation:spin 1s linear infinite;margin-top:24px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Page wrapper ── */
+.page-wrap{width:100%;max-width:100%}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* ── Hero ── */
+.hero{
+  width:100%;min-height:60vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  background:linear-gradient(135deg,#FF6B6B 0%,#FFD93D 100%);
+  padding:60px 20px;position:relative;overflow:hidden;
+}
+.hero-inner{position:relative;z-index:1}
+.hero h1{color:#fff;text-shadow:3px 4px 0 rgba(0,0,0,0.15)}
+.hero p{color:#fff;font-size:clamp(1.1rem,2.5vw,1.5rem);margin-top:16px;font-weight:700}
+.hero-emoji{font-size:clamp(3rem,8vw,6rem);display:block;margin-bottom:16px;animation:bounce 1.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.bubble{
+  position:absolute;border-radius:50%;opacity:0.25;
+  background:#fff;
+}
+
+/* ── Fun Cards ── */
+.fun-card{
+  background:#fff;border-radius:28px;
+  border:4px solid #FFD93D;
+  box-shadow:0 8px 32px rgba(0,0,0,0.10);
+  padding:40px 36px;
+  margin:40px 0;
+  width:100%;opacity:1;transform:none;
+}
+.fun-card.red{border-color:#FF6B6B}
+.fun-card.blue{border-color:#6BCB77}
+.fun-card.purple{border-color:#b388ff}
+.card-title{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.card-title span.icon{font-size:2.2rem}
+.card-title h2{margin:0}
+.section-label{
+  display:inline-block;background:#FFD93D;color:#333;
+  font-family:'Bubblegum Sans',cursive;font-size:1rem;
+  padding:4px 16px;border-radius:40px;margin-bottom:16px;
+  letter-spacing:.5px;
+}
+
+/* ── Picture Counting ── */
+.pic-rows{display:flex;flex-direction:column;gap:28px}
+.pic-row{
+  background:#fffde7;border-radius:20px;border:3px solid #FFD93D;
+  padding:24px 20px;
+}
+.pic-row-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:2rem;margin-bottom:16px}
+.pic-row-top .minus{font-size:2.5rem;color:#FF6B6B;font-weight:900;margin:0 8px}
+.pic-row-top .equals{font-size:2.5rem;color:#6BCB77;font-weight:900;margin:0 8px}
+.answer-badge{
+  background:#6BCB77;color:#fff;font-family:'Bubblegum Sans',cursive;
+  font-size:1.8rem;padding:4px 20px;border-radius:40px;
+  min-width:56px;text-align:center;display:inline-block;
+}
+.pic-row-sentence{font-size:1.1rem;color:#555;margin-top:4px}
+.pic-row-sentence strong{color:#FF6B6B}
+
+/* ── Finger Counting ── */
+.finger-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+.finger-card{
+  background:#f3e5f5;border-radius:20px;border:3px solid #b388ff;
+  padding:24px;text-align:center;
+}
+.finger-card .hands{font-size:3.5rem;margin-bottom:12px}
+.finger-eq{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  flex-wrap:wrap;margin-top:8px;
+}
+.finger-box{
+  width:64px;height:56px;border:3px solid #b388ff;border-radius:12px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;font-size:1.6rem;color:#333;
+}
+.finger-op{font-size:1.8rem;font-weight:900;color:#FF6B6B}
+
+/* ── Subtract Boxes ── */
+.subtract-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+.sub-card{
+  background:#e8f5e9;border-radius:20px;border:3px solid #6BCB77;
+  padding:20px;text-align:center;
+}
+.sub-nums{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:'Bubblegum Sans',cursive;font-size:2rem;margin-bottom:10px;
+}
+.sub-op{color:#FF6B6B;font-size:2.2rem}
+.sub-eq{color:#6BCB77;font-size:2.2rem}
+.sub-answer{
+  width:70px;height:56px;border:3px solid #6BCB77;border-radius:14px;
+  background:#fff;font-family:'Bubblegum Sans',cursive;font-size:1.8rem;
+  text-align:center;outline:none;color:#333;display:inline-block;
+  line-height:56px;
+}
+
+/* ── Column Subtraction ── */
+.col-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+.col-card{
+  background:#fff3e0;border-radius:20px;border:3px solid #FF6B6B;
+  padding:20px;text-align:center;
+}
+.col-inner{display:inline-flex;flex-direction:column;align-items:flex-end;gap:4px}
+.col-row{font-family:'Bubblegum Sans',cursive;font-size:2rem;display:flex;gap:8px;justify-content:flex-end}
+.col-op-row{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.col-divider{width:100%;height:3px;background:#FF6B6B;border-radius:4px;margin:4px 0}
+.col-answer{
+  width:72px;height:54px;border:3px solid #FF6B6B;border-radius:12px;
+  background:#fff;font-family:'Bubblegum Sans',cursive;font-size:1.8rem;
+  text-align:center;outline:none;color:#333;
+}
+.col-label{font-size:.85rem;color:#999;font-weight:700;margin-bottom:2px}
+
+/* ── TO Grid ── */
+.to-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+.to-card{
+  background:#e3f2fd;border-radius:20px;border:3px solid #64b5f6;
+  padding:20px;text-align:center;
+}
+.to-header{display:flex;gap:24px;justify-content:center;margin-bottom:4px}
+.to-label{font-size:.9rem;font-weight:800;color:#1976d2}
+.to-numrow{display:flex;gap:24px;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:2rem}
+.to-oprow{display:flex;gap:24px;justify-content:center;align-items:center;font-family:'Bubblegum Sans',cursive;font-size:2rem}
+.to-divider{height:3px;background:#64b5f6;border-radius:3px;margin:6px 0}
+.to-answer{
+  width:80px;height:54px;border:3px solid #64b5f6;border-radius:12px;
+  background:#fff;font-family:'Bubblegum Sans',cursive;font-size:1.8rem;
+  text-align:center;outline:none;color:#333;
+}
+
+/* ── Word Problems ── */
+.wp-card{
+  background:#fce4ec;border-radius:20px;border:3px solid #FF6B6B;
+  padding:28px;margin-bottom:24px;
+}
+.wp-q{font-size:1.25rem;font-weight:700;color:#333;margin-bottom:16px}
+.wp-to{
+  display:inline-flex;flex-direction:column;align-items:center;
+  background:#fff;border-radius:16px;border:3px solid #FF6B6B;
+  padding:16px 24px;margin-bottom:12px;
+}
+.wp-to .to-header{margin-bottom:4px}
+.wp-sentence{
+  font-size:1.1rem;color:#555;margin-top:8px;
+  background:#fff;border-radius:12px;padding:10px 16px;
+  border:2px dashed #FF6B6B;
+}
+
+/* ── Quiz ── */
+.quiz-wrap{display:flex;flex-direction:column;gap:32px}
+.quiz-q{
+  background:#fff;border-radius:24px;border:4px solid #FFD93D;
+  padding:32px;text-align:center;
+}
+.quiz-q .q-text{font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:700;margin-bottom:24px;color:#333}
+.q-visual{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:20px}
+.quiz-options{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.quiz-btn{
+  font-family:'Bubblegum Sans',cursive;font-size:2rem;
+  background:#FFD93D;color:#333;
+  border:4px solid #333;border-radius:20px;
+  padding:16px 36px;cursor:pointer;
+  min-height:72px;min-width:100px;
+  transition:background .2s,transform .1s;
+  touch-action:manipulation;
+}
+.quiz-btn:hover{background:#FF6B6B;color:#fff}
+.quiz-btn.correct{background:#6BCB77!important;color:#fff!important;border-color:#388e3c!important}
+.quiz-btn.wrong{background:#FF6B6B!important;color:#fff!important;border-color:#c62828!important}
+.quiz-feedback{
+  margin-top:16px;font-size:1.4rem;font-weight:800;min-height:32px;
+  color:#333;
+}
+
+/* ── Drag & Drop ── */
+.drag-area{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:24px}
+.draggable{
+  font-family:'Bubblegum Sans',cursive;font-size:1.8rem;
+  background:#FFD93D;border:3px solid #333;border-radius:16px;
+  padding:10px 22px;cursor:grab;user-select:none;
+  touch-action:none;
+}
+.draggable:active{cursor:grabbing}
+.drop-targets{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+.drop-target{
+  background:#f9f9f9;border:4px dashed #aaa;border-radius:20px;
+  min-width:120px;min-height:80px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;padding:12px;
+}
+.drop-target .target-label{font-size:2rem}
+.drop-target .target-eq{font-size:1.1rem;color:#555;font-weight:700}
+.drop-target.over{border-color:#6BCB77;background:#e8f5e9}
+.drop-target.matched{border-color:#6BCB77;background:#c8e6c9;border-style:solid}
+
+/* ── Scroll nav ── */
+.side-nav{display:none}
+
+/* ── Mobile bottom nav ── */
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:#FF6B6B;z-index:1000;padding:8px 0;
+  overflow-x:auto;
+}
+.bottom-nav ul{
+  display:flex;list-style:none;gap:4px;padding:0 8px;
+  white-space:nowrap;min-width:max-content;margin:0 auto;
+}
+.bottom-nav ul li a{
+  display:block;padding:10px 14px;color:#fff;text-decoration:none;
+  font-family:'Bubblegum Sans',cursive;font-size:1rem;
+  border-radius:12px;min-height:48px;line-height:28px;
+}
+.bottom-nav ul li a:hover{background:#c62828}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .container{padding:0 16px}
+  .fun-card{padding:24px 16px}
+  .bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .hero{min-height:50vh;padding:40px 16px}
+  .finger-grid{grid-template-columns:1fr 1fr}
+  .subtract-grid{grid-template-columns:1fr 1fr}
+  .col-grid{grid-template-columns:1fr 1fr}
+  .to-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .finger-grid{grid-template-columns:1fr}
+  .subtract-grid{grid-template-columns:1fr}
+  .col-grid{grid-template-columns:1fr}
+  .to-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Backgrounds -->
+<div class="page-bg"></div>
+<div class="sun"></div>
+
+<!-- Curtain -->
+<div id="curtain">
+  <span style="font-size:4rem">➖</span>
+  <h1>Subtraction!</h1>
+  <p>Chapter 11 · Class 1 Math</p>
+  <div class="spinner"></div>
+</div>
+
+<!-- Bottom Nav (mobile) -->
+<nav class="bottom-nav" aria-label="Sections">
+  <ul>
+    <li><a href="#hero">🏠 Home</a></li>
+    <li><a href="#sec-pictures">🧁 Pictures</a></li>
+    <li><a href="#sec-fingers">✋ Fingers</a></li>
+    <li><a href="#sec-subtract">🔢 Subtract</a></li>
+    <li><a href="#sec-column">📊 Columns</a></li>
+    <li><a href="#sec-to">🗃️ T&amp;O</a></li>
+    <li><a href="#sec-word">📖 Word</a></li>
+    <li><a href="#sec-drag">🎯 Match</a></li>
+    <li><a href="#sec-quiz">⭐ Quiz</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <span class="hero-emoji">➖</span>
+    <h1>Subtraction</h1>
+    <p>Chapter 11 · Let's take away and count what's left! 🎉</p>
+    <p style="margin-top:12px;font-size:1.3rem">58 − 51 = 7 🍩</p>
+  </div>
+  <!-- Decorative bubbles -->
+  <div class="bubble" style="width:120px;height:120px;top:-30px;left:-30px"></div>
+  <div class="bubble" style="width:80px;height:80px;bottom:20px;left:80px"></div>
+  <div class="bubble" style="width:60px;height:60px;top:40px;left:40%"></div>
+</section>
+
+<div class="container">
+
+<!-- ═══════════════════ SECTION 1: Count Pictures ═══════════════════ -->
+<section id="sec-pictures">
+  <div class="fun-card" data-card>
+    <div class="card-title">
+      <span class="icon">🧁</span>
+      <h2>Count the Pictures!</h2>
+    </div>
+    <div class="section-label">Look & Count</div>
+    <div class="pic-rows">
+
+      <!-- Cupcakes: 7 - 4 = 3 -->
+      <div class="pic-row">
+        <div class="pic-row-top">
+          🧁🧁🧁🧁🧁🧁🧁
+          <span class="minus">−</span>
+          🧁🧁🧁🧁
+          <span class="equals">=</span>
+          <span class="answer-badge">3</span>
+        </div>
+        <div class="pic-row-sentence">
+          <strong>7</strong> cupcakes minus <strong>4</strong> cupcakes equals <strong>3</strong> cupcakes.
+        </div>
+      </div>
+
+      <!-- Pizza: 5 - 2 = 3 (approx from PDF showing 4 slices - 2) -->
+      <div class="pic-row">
+        <div class="pic-row-top">
+          🍕🍕🍕🍕🍕
+          <span class="minus">−</span>
+          🍕🍕
+          <span class="equals">=</span>
+          <span class="answer-badge">3</span>
+        </div>
+        <div class="pic-row-sentence">
+          <strong>5</strong> slices minus <strong>2</strong> slices equals <strong>3</strong> slices of pizza.
+        </div>
+      </div>
+
+      <!-- Burgers: 6 - 2 = 4 -->
+      <div class="pic-row">
+        <div class="pic-row-top">
+          🍔🍔🍔🍔🍔🍔
+          <span class="minus">−</span>
+          🍔🍔
+          <span class="equals">=</span>
+          <span class="answer-badge">4</span>
+        </div>
+        <div class="pic-row-sentence">
+          <strong>6</strong> burgers minus <strong>2</strong> burgers equals <strong>4</strong> burgers.
+        </div>
+      </div>
+
+      <!-- Cookies: 5 - 2 = 3 -->
+      <div class="pic-row">
+        <div class="pic-row-top">
+          🍪🍪🍪🍪🍪
+          <span class="minus">−</span>
+          🍪🍪
+          <span class="equals">=</span>
+          <span class="answer-badge">3</span>
+        </div>
+        <div class="pic-row-sentence">
+          <strong>5</strong> cookies minus <strong>2</strong> cookies equals <strong>3</strong> cookies.
+        </div>
+      </div>
+
+      <!-- Donuts: 7 - 1 = 6 -->
+      <div class="pic-row">
+        <div class="pic-row-top">
+          🍩🍩🍩🍩🍩🍩🍩
+          <span class="minus">−</span>
+          🍩
+          <span class="equals">=</span>
+          <span class="answer-badge">6</span>
+        </div>
+        <div class="pic-row-sentence">
+          <strong>7</strong> donuts minus <strong>1</strong> donut equals <strong>6</strong> donuts.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 2: Count Fingers ═══════════════════ -->
+<section id="sec-fingers">
+  <div class="fun-card red" data-card>
+    <div class="card-title">
+      <span class="icon">✋</span>
+      <h2>Count the Fingers!</h2>
+    </div>
+    <div class="section-label">Tap to see the answer!</div>
+    <div class="finger-grid">
+
+      <div class="finger-card tap-reveal" data-answer="0">
+        <div class="hands">✊ − ✊</div>
+        <p style="font-size:.95rem;color:#777;margin-bottom:8px">Both hands showing same fingers</p>
+        <div class="finger-eq">
+          <div class="finger-box">4</div>
+          <div class="finger-op">−</div>
+          <div class="finger-box">4</div>
+          <div class="finger-op">=</div>
+          <div class="finger-box reveal-box" style="background:#f3e5f5">?</div>
+        </div>
+      </div>
+
+      <div class="finger-card tap-reveal" data-answer="1">
+        <div class="hands">🖐 − 🤙</div>
+        <p style="font-size:.95rem;color:#777;margin-bottom:8px">4 fingers minus 3 fingers</p>
+        <div class="finger-eq">
+          <div class="finger-box">4</div>
+          <div class="finger-op">−</div>
+          <div class="finger-box">3</div>
+          <div class="finger-op">=</div>
+          <div class="finger-box reveal-box" style="background:#f3e5f5">?</div>
+        </div>
+      </div>
+
+      <div class="finger-card tap-reveal" data-answer="2">
+        <div class="hands">🖐 − ✌️</div>
+        <p style="font-size:.95rem;color:#777;margin-bottom:8px">4 fingers minus 2 fingers</p>
+        <div class="finger-eq">
+          <div class="finger-box">4</div>
+          <div class="finger-op">−</div>
+          <div class="finger-box">2</div>
+          <div class="finger-op">=</div>
+          <div class="finger-box reveal-box" style="background:#f3e5f5">?</div>
+        </div>
+      </div>
+
+      <div class="finger-card tap-reveal" data-answer="0">
+        <div class="hands">🖐 − 🖐</div>
+        <p style="font-size:.95rem;color:#777;margin-bottom:8px">4 fingers minus 4 fingers</p>
+        <div class="finger-eq">
+          <div class="finger-box">4</div>
+          <div class="finger-op">−</div>
+          <div class="finger-box">4</div>
+          <div class="finger-op">=</div>
+          <div class="finger-box reveal-box" style="background:#f3e5f5">?</div>
+        </div>
+      </div>
+
+      <div class="finger-card tap-reveal" data-answer="2">
+        <div class="hands">🖐 − ✌️</div>
+        <p style="font-size:.95rem;color:#777;margin-bottom:8px">4 fingers minus 2 fingers</p>
+        <div class="finger-eq">
+          <div class="finger-box">4</div>
+          <div class="finger-op">−</div>
+          <div class="finger-box">2</div>
+          <div class="finger-op">=</div>
+          <div class="finger-box reveal-box" style="background:#f3e5f5">?</div>
+        </div>
+      </div>
+
+    </div>
+    <p style="margin-top:20px;font-size:1rem;color:#777;text-align:center">👆 Tap any card to reveal the answer!</p>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 3: Subtract ═══════════════════ -->
+<section id="sec-subtract">
+  <div class="fun-card blue" data-card>
+    <div class="card-title">
+      <span class="icon">🔢</span>
+      <h2>Subtract the Numbers!</h2>
+    </div>
+    <div class="section-label">Type your answer</div>
+    <div class="subtract-grid" id="subtract-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 4: Column Subtraction (page 68) ═══════════════════ -->
+<section id="sec-column">
+  <div class="fun-card" data-card>
+    <div class="card-title">
+      <span class="icon">📊</span>
+      <h2>Subtract and Fill!</h2>
+    </div>
+    <div class="section-label">Write the answer in the box</div>
+    <div class="col-grid" id="col-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 5: T O subtraction (page 69) ═══════════════════ -->
+<section id="sec-to">
+  <div class="fun-card purple" data-card>
+    <div class="card-title">
+      <span class="icon">🗃️</span>
+      <h2>Tens and Ones!</h2>
+    </div>
+    <div class="section-label">T = Tens · O = Ones</div>
+    <div class="to-grid" id="to-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 6: Word Problems ═══════════════════ -->
+<section id="sec-word">
+  <div class="fun-card red" data-card>
+    <div class="card-title">
+      <span class="icon">📖</span>
+      <h2>Word Problems!</h2>
+    </div>
+    <div class="section-label">Read and Solve</div>
+
+    <div class="wp-card">
+      <div class="wp-q">🐟 Q1) There are <strong>12</strong> fishes and <strong>6</strong> swim away. How many fishes are left?</div>
+      <div class="wp-to">
+        <div class="to-header"><span class="to-label">T</span><span class="to-label">O</span></div>
+        <div class="to-numrow"><span>1</span><span>2</span></div>
+        <div class="to-oprow"><span style="font-size:1.4rem;color:#FF6B6B">−</span><span>0</span><span>6</span></div>
+        <div class="to-divider" style="width:80px"></div>
+        <div class="to-numrow"><span style="font-size:1.4rem;color:#888">Answer:</span><input class="to-answer wp-input" type="number" min="0" max="99" placeholder="?" data-correct="6"/></div>
+      </div>
+      <div class="wp-sentence">12 − 6 = <strong>?</strong></div>
+    </div>
+
+    <div class="wp-card">
+      <div class="wp-q">🍎 Q2) Ali has <strong>18</strong> apples and eats <strong>3</strong> apples. How many apples are left?</div>
+      <div class="wp-to">
+        <div class="to-header"><span class="to-label">T</span><span class="to-label">O</span></div>
+        <div class="to-numrow"><span>1</span><span>8</span></div>
+        <div class="to-oprow"><span style="font-size:1.4rem;color:#FF6B6B">−</span><span>0</span><span>3</span></div>
+        <div class="to-divider" style="width:80px"></div>
+        <div class="to-numrow"><span style="font-size:1.4rem;color:#888">Answer:</span><input class="to-answer wp-input" type="number" min="0" max="99" placeholder="?" data-correct="15"/></div>
+      </div>
+      <div class="wp-sentence">18 − 3 = <strong>?</strong></div>
+    </div>
+
+    <div class="wp-card">
+      <div class="wp-q">🌳 Q3) There are <strong>22</strong> trees in a forest. <strong>18</strong> trees are cut down. How many trees are left?</div>
+      <div class="wp-to">
+        <div class="to-header"><span class="to-label">T</span><span class="to-label">O</span></div>
+        <div class="to-numrow"><span>2</span><span>2</span></div>
+        <div class="to-oprow"><span style="font-size:1.4rem;color:#FF6B6B">−</span><span>1</span><span>8</span></div>
+        <div class="to-divider" style="width:80px"></div>
+        <div class="to-numrow"><span style="font-size:1.4rem;color:#888">Answer:</span><input class="to-answer wp-input" type="number" min="0" max="99" placeholder="?" data-correct="4"/></div>
+      </div>
+      <div class="wp-sentence">22 − 18 = <strong>?</strong></div>
+    </div>
+
+    <div class="wp-card">
+      <div class="wp-q">👧👦 Q4) There are <strong>20</strong> students in a class. <strong>12</strong> are girls. How many boys are there?</div>
+      <div class="wp-to">
+        <div class="to-header"><span class="to-label">T</span><span class="to-label">O</span></div>
+        <div class="to-numrow"><span>2</span><span>0</span></div>
+        <div class="to-oprow"><span style="font-size:1.4rem;color:#FF6B6B">−</span><span>1</span><span>2</span></div>
+        <div class="to-divider" style="width:80px"></div>
+        <div class="to-numrow"><span style="font-size:1.4rem;color:#888">Answer:</span><input class="to-answer wp-input" type="number" min="0" max="99" placeholder="?" data-correct="8"/></div>
+      </div>
+      <div class="wp-sentence">20 − 12 = <strong>?</strong></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 7: Drag & Drop Match ═══════════════════ -->
+<section id="sec-drag">
+  <div class="fun-card blue" data-card>
+    <div class="card-title">
+      <span class="icon">🎯</span>
+      <h2>Match the Answer!</h2>
+    </div>
+    <div class="section-label">Drag the number to the correct picture group!</div>
+
+    <div class="drag-area" id="drag-numbers">
+      <div class="draggable" draggable="true" data-value="3">3</div>
+      <div class="draggable" draggable="true" data-value="5">5</div>
+      <div class="draggable" draggable="true" data-value="2">2</div>
+      <div class="draggable" draggable="true" data-value="1">1</div>
+      <div class="draggable" draggable="true" data-value="4">4</div>
+    </div>
+
+    <div class="drop-targets" id="drop-targets">
+      <div class="drop-target" data-correct="3">
+        <div class="target-label">🍕🍕🍕🍕🍕 − 🍕🍕</div>
+        <div class="target-eq">5 − 2 = ?</div>
+      </div>
+      <div class="drop-target" data-correct="5">
+        <div class="target-label">🧁🧁🧁🧁🧁🧁🧁 − 🧁🧁</div>
+        <div class="target-eq">7 − 2 = ?</div>
+      </div>
+      <div class="drop-target" data-correct="2">
+        <div class="target-label">🍪🍪🍪🍪 − 🍪🍪</div>
+        <div class="target-eq">4 − 2 = ?</div>
+      </div>
+      <div class="drop-target" data-correct="1">
+        <div class="target-label">🍩🍩🍩🍩🍩🍩 − 🍩🍩🍩🍩🍩</div>
+        <div class="target-eq">6 − 5 = ?</div>
+      </div>
+      <div class="drop-target" data-correct="4">
+        <div class="target-label">🍔🍔🍔🍔🍔🍔 − 🍔🍔</div>
+        <div class="target-eq">6 − 2 = ?</div>
+      </div>
+    </div>
+    <p id="drag-feedback" style="text-align:center;margin-top:20px;font-size:1.4rem;font-weight:800;color:#333;min-height:32px"></p>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 8: Quiz ═══════════════════ -->
+<section id="sec-quiz">
+  <div class="fun-card" data-card>
+    <div class="card-title">
+      <span class="icon">⭐</span>
+      <h2>Fun Quiz Time!</h2>
+    </div>
+    <div class="section-label">Pick the right answer!</div>
+    <div class="quiz-wrap" id="quiz-wrap">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+</div><!-- /page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Curtain guaranteed dismiss ── */
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity='0'; c.style.transition='opacity .4s'; setTimeout(()=>{c.style.display='none'},400); }
+  }, 2000);
+
+  /* ── Lenis Smooth Scroll ── */
+  let lenis;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const mem = navigator.deviceMemory || 4;
+      if (mem >= 2) {
+        lenis = new Lenis({ lerp: 0.08 });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(t => lenis.raf(t * 1000));
+          gsap.ticker.lagSmoothing(0);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  /* ── GSAP ScrollTrigger register ── */
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+  } catch(e) {}
+
+  /* ── Build Subtract Grid (page 67) ── */
+  const subtractProblems = [
+    {a:3,b:1},{a:8,b:2},{a:4,b:2},{a:5,b:3},
+    {a:6,b:3},{a:8,b:3},{a:4,b:1},{a:8,b:7}
+  ];
+  const subGrid = document.getElementById('subtract-grid');
+  if (subGrid) {
+    subtractProblems.forEach(p => {
+      const ans = p.a - p.b;
+      const card = document.createElement('div');
+      card.className = 'sub-card';
+      card.innerHTML = `
+        <div class="sub-nums">
+          <span>${p.a}</span>
+          <span class="sub-op">−</span>
+          <span>${p.b}</span>
+          <span class="sub-eq">=</span>
+        </div>
+        <input class="sub-answer answer-input" type="number" min="0" max="20"
+               placeholder="?" data-correct="${ans}" style="width:70px;height:56px;font-size:1.8rem;text-align:center;border:3px solid #6BCB77;border-radius:14px;outline:none"/>
+      `;
+      subGrid.appendChild(card);
+    });
+  }
+
+  /* ── Build Column Grid (page 68) ── */
+  const colProblems = [
+    {a:6,b:3},{a:3,b:2},{a:4,b:3},{a:5,b:1},
+    {a:4,b:4},{a:8,b:5},{a:9,b:4},{a:7,b:3},
+    {a:5,b:2},{a:9,b:7},{a:66,b:8},{a:32,b:4},
+    {a:42,b:3},{a:81,b:2},{a:23,b:6},{a:17,b:8}
+  ];
+  const colGrid = document.getElementById('col-grid');
+  if (colGrid) {
+    colProblems.forEach(p => {
+      const ans = p.a - p.b;
+      const card = document.createElement('div');
+      card.className = 'col-card';
+      card.innerHTML = `
+        <div class="col-inner">
+          <div class="col-row"><span>${p.a}</span></div>
+          <div class="col-op-row">
+            <span style="font-family:'Bubblegum Sans',cursive;font-size:2rem;color:#FF6B6B">−</span>
+            <span style="font-family:'Bubblegum Sans',cursive;font-size:2rem">${p.b}</span>
+          </div>
+          <div class="col-divider"></div>
+          <input class="col-answer answer-input" type="number" min="-10" max="999"
+                 placeholder="?" data-correct="${ans}" />
+        </div>
+      `;
+      colGrid.appendChild(card);
+    });
+  }
+
+  /* ── Build TO Grid (page 69) ── */
+  const toProblems = [
+    {tens1:3,ones1:2,tens2:1,ones2:1},
+    {tens1:6,ones1:5,tens2:4,ones2:3},
+    {tens1:4,ones1:5,tens2:2,ones2:0},
+    {tens1:9,ones1:8,tens2:1,ones2:3},
+    {tens1:6,ones1:9,tens2:4,ones2:2},
+    {tens1:5,ones1:8,tens2:4,ones2:3},
+    {tens1:7,ones1:2,tens2:0,ones2:1},
+    {tens1:7,ones1:7,tens2:2,ones2:4},
+    {tens1:9,ones1:7,tens2:1,ones2:2},
+    {tens1:3,ones1:2,tens2:1,ones2:1},
+    {tens1:6,ones1:9,tens2:1,ones2:0},
+    {tens1:5,ones1:3,tens2:2,ones2:1},
+    {tens1:8,ones1:8,tens2:1,ones2:3},
+    {tens1:4,ones1:2,tens2:1,ones2:2},
+    {tens1:8,ones1:9,tens2:1,ones2:6},
+    {tens1:3,ones1:3,tens2:3,ones2:1}
+  ];
+  const toGrid = document.getElementById('to-grid');
+  if (toGrid) {
+    toProblems.forEach(p => {
+      const numA = p.tens1*10 + p.ones1;
+      const numB = p.tens2*10 + p.ones2;
+      const ans = numA - numB;
+      const card = document.createElement('div');
+      card.className = 'to-card';
+      card.innerHTML = `
+        <div class="to-header"><span class="to-label">T</span><span class="to-label">O</span></div>
+        <div class="to-numrow"><span>${p.tens1}</span><span>${p.ones1}</span></div>
+        <div class="to-oprow">
+          <span style="font-family:'Bubblegum Sans',cursive;font-size:1.6rem;color:#FF6B6B">−</span>
+          <span>${p.tens2}</span><span>${p.ones2}</span>
+        </div>
+        <div class="to-divider"></div>
+        <input class="to-answer answer-input" type="number" min="-99" max="999"
+               placeholder="?" data-correct="${ans}" />
+      `;
+      toGrid.appendChild(card);
+    });
+  }
+
+  /* ── Build Quiz ── */
+  const quizData = [
+    { q:'How many 🍕 are left?\n🍕🍕🍕🍕🍕 minus 🍕🍕', visual:'🍕🍕🍕🍕🍕 ➖ 🍕🍕', options:[3,2,4], correct:3 },
+    { q:'How many 🧁 are left?\n🧁🧁🧁🧁🧁🧁🧁 minus 🧁🧁🧁🧁', visual:'🧁🧁🧁🧁🧁🧁🧁 ➖ 🧁🧁🧁🧁', options:[2,3,4], correct:3 },
+    { q:'What is 8 ➖ 3?', visual:'8️⃣ ➖ 3️⃣', options:[4,5,6], correct:5 },
+    { q:'What is 6 ➖ 3?', visual:'6️⃣ ➖ 3️⃣', options:[2,3,4], correct:3 },
+    { q:'What is 9 ➖ 4?', visual:'9️⃣ ➖ 4️⃣', options:[4,5,6], correct:5 },
+    { q:'How many 🍪 are left?\n🍪🍪🍪🍪🍪 minus 🍪🍪', visual:'🍪🍪🍪🍪🍪 ➖ 🍪🍪', options:[2,3,4], correct:3 },
+  ];
+
+  const quizWrap = document.getElementById('quiz-wrap');
+  if (quizWrap) {
+    quizData.forEach((qd, idx) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-q';
+      div.setAttribute('data-quiz', idx);
+      const optBtns = qd.options.map(o =>
+        `<button class="quiz-btn" data-val="${o}" data-correct="${qd.correct}">${o}</button>`
+      ).join('');
+      div.innerHTML = `
+        <div class="q-text">Q${idx+1}: ${qd.q.replace(/\n/g,'<br>')}</div>
+        <div class="q-visual">${qd.visual}</div>
+        <div class="quiz-options">${optBtns}</div>
+        <div class="quiz-feedback"></div>
+      `;
+      quizWrap.appendChild(div);
+    });
+  }
+
+  /* ── Generic answer-input handler ── */
+  document.addEventListener('change', e => {
+    const el = e.target;
+    if (!el.classList.contains('answer-input') && !el.classList.contains('wp-input') && !el.classList.contains('to-answer')) return;
+    const correct = parseInt(el.dataset.correct);
+    const val = parseInt(el.value);
+    if (val === correct) {
+      el.style.background = '#c8e6c9';
+      el.style.borderColor = '#388e3c';
+      fireConfetti();
+    } else {
+      el.style.background = '#ffcdd2';
+      el.style.borderColor = '#c62828';
+      shakeEl(el);
+    }
+  });
+
+  /* ── Quiz click handler ── */
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.quiz-btn');
+    if (!btn) return;
+    const parent = btn.closest('.quiz-q');
+    if (!parent) return;
+    if (parent.dataset.answered) return;
+
+    const val = parseInt(btn.dataset.val);
+    const correct = parseInt(btn.dataset.correct);
+    const feedback = parent.querySelector('.quiz-feedback');
+    const allBtns = parent.querySelectorAll('.quiz-btn');
+
+    allBtns.forEach(b => b.disabled = true);
+
+    if (val === correct) {
+      btn.classList.add('correct');
+      if (feedback) feedback.textContent = '🎉 Amazing! That\'s correct!';
+      fireConfetti();
+    } else {
+      btn.classList.add('wrong');
+      if (feedback) feedback.textContent = '😊 Try again!';
+      shakeEl(btn);
+      setTimeout(() => {
+        allBtns.forEach(b => {
+          b.disabled = false;
+          b.classList.remove('wrong','correct');
+        });
+        if (feedback) feedback.textContent = '';
+      }, 1200);
+      parent.removeAttribute('data-answered');
+      return;
+    }
+    parent.dataset.answered = '1';
+  });
+
+  /* ── Tap-to-reveal finger cards ── */
+  document.querySelectorAll('.tap-reveal').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const ans = card.dataset.answer;
+      const box = card.querySelector('.reveal-box');
+      if (!box) return;
+      if (box.textContent !== '?') return;
+      box.textContent = ans;
+      box.style.background = '#c8e6c9';
+      box.style.color = '#1b5e20';
+      fireConfetti();
+    });
+  });
+
+  /* ── Drag & Drop ── */
+  let dragVal = null;
+  document.querySelectorAll('.draggable').forEach(el => {
+    el.addEventListener('dragstart', ev => {
+      dragVal = el.dataset.value;
+      ev.dataTransfer.effectAllowed = 'move';
+    });
+  });
+
+  document.querySelectorAll('.drop-target').forEach(target => {
+    target.addEventListener('dragover', ev => {
+      ev.preventDefault();
+      target.classList.add('over');
+    });
+    target.addEventListener('dragleave', () => target.classList.remove('over'));
+    target.addEventListener('drop', ev => {
+      ev.preventDefault();
+      target.classList.remove('over');
+      if (!dragVal) return;
+      const correct = target.dataset.correct;
+      const fb = document.getElementById('drag-feedback');
+      if (parseInt(dragVal) === parseInt(correct)) {
+        target.classList.add('matched');
+        target.innerHTML = `<div style="font-family:'Bubblegum Sans',cursive;font-size:2.5rem;color:#388e3c">${dragVal} ✅</div>`;
+        if (fb) fb.textContent = '🎉 Great job!';
+        fireConfetti();
+        // Remove draggable
+        document.querySelectorAll('.draggable').forEach(d => {
+          if (d.dataset.value === dragVal) d.remove();
+        });
+      } else {
+        if (fb) fb.textContent = '😊 Oops! Try a different number!';
+        shakeEl(target);
+      }
+      dragVal = null;
+    });
+  });
+
+  /* Touch drag for mobile */
+  let touchDrag = null, ghost = null;
+  document.querySelectorAll('.draggable').forEach(el => {
+    el.addEventListener('touchstart', ev => {
+      touchDrag = el;
+      dragVal = el.dataset.value;
+      ghost = el.cloneNode(true);
+      ghost.style.position = 'fixed';
+      ghost.style.opacity = '0.7';
+      ghost.style.zIndex = '9998';
+      ghost.style.pointerEvents = 'none';
+      document.body.appendChild(ghost);
+    }, {passive:true});
+    el.addEventListener('touchmove', ev => {
+      if (!ghost) return;
+      const t = ev.touches[0];
+      ghost.style.left = (t.clientX - 30) + 'px';
+      ghost.style.top = (t.clientY - 30) + 'px';
+    }, {passive:true});
+    el.addEventListener('touchend', ev => {
+      if (ghost) { ghost.remove(); ghost = null; }
+      if (!dragVal) return;
+      const t = ev.changedTouches[0];
+      const targets = document.querySelectorAll('.drop-target');
+      targets.forEach(target => {
+        const rect = target.getBoundingClientRect();
+        if (t.clientX >= rect.left && t.clientX <= rect.right &&
+            t.clientY >= rect.top && t.clientY <= rect.bottom) {
+          const correct = target.dataset.correct;
+          const fb = document.getElementById('drag-feedback');
+          if (parseInt(dragVal) === parseInt(correct)) {
+            target.classList.add('matched');
+            target.innerHTML = `<div style="font-family:'Bubblegum Sans',cursive;font-size:2.5rem;color:#388e3c">${dragVal} ✅</div>`;
+            if (fb) fb.textContent = '🎉 Great job!';
+            fireConfetti();
+            document.querySelectorAll('.draggable').forEach(d => {
+              if (d.dataset.value === dragVal) d.remove();
+            });
+          } else {
+            if (fb) fb.textContent = '😊 Oops! Try a different number!';
+            shakeEl(target);
+          }
+        }
+      });
+      dragVal = null;
+      touchDrag = null;
+    }, {passive:true});
+  });
+
+  /* ── Confetti ── */
+  function fireConfetti() {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      }
+    } catch(e) {}
+  }
+
+  /* ── Shake ── */
+  function shakeEl(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(el, { x: 0 }, { x: -10, duration: 0.07, yoyo: true, repeat: 5, ease: 'none' });
+      } else {
+        el.style.transition = 'transform .07s';
+        let c = 0;
+        const id = setInterval(() => {
+          el.style.transform = c % 2 === 0 ? 'translateX(-10px)' : 'translateX(10px)';
+          c++;
+          if (c > 5) { clearInterval(id); el.style.transform = ''; }
+        }, 70);
+      }
+    } catch(e) {}
+  }
+
+  /* ── GSAP Card Animations ── */
+  try {
+    if (typeof gsap !== 'undefined') {
+      // Dismiss curtain with GSAP
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 1.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+
+      // Hero bounce-in
+      gsap.from('.hero-inner', { y: 40, opacity: 0, duration: 0.6, ease: 'back.out(1.4)' });
+
+      // Cards on scroll
+      if (typeof ScrollTrigger !== 'undefined') {
+        document.querySelectorAll('[data-card]').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%', once: true },
+            y: 40, scale: 0.92, opacity: 0, duration: 0.5,
+            delay: i * 0.08, ease: 'back.out(1.2)'
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP animation failed', e); }
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

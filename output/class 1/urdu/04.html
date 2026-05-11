@@ -1,0 +1,1882 @@
+<!-- CLASS: 1 | SUBJECT: urdu | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ہمارا اسکول - اردو سبق 15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    background: linear-gradient(180deg, #d4f5ff 0%, #c8f7c5 50%, #fffde7 100%);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    color: #333;
+  }
+
+  /* Loading Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D, #6BCB77);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #curtain .curtain-emoji {
+    font-size: 80px;
+    animation: bounce 0.6s infinite alternate;
+  }
+
+  #curtain .curtain-text {
+    font-size: 32px;
+    color: white;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+  }
+
+  /* Sky Background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.7;
+    animation: floatCloud linear infinite;
+  }
+
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+
+  @keyframes floatCloud {
+    from { transform: translateX(110vw); }
+    to { transform: translateX(-200px); }
+  }
+
+  /* Page Wrapper */
+  .page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 100px;
+  }
+
+  .content-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Hero Section */
+  .hero {
+    width: 100vw;
+    min-height: 420px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 50%, #6BCB77 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(180deg, #d4f5ff 0%, #c8f7c5 100%);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .hero-badge {
+    background: rgba(255,255,255,0.3);
+    border: 4px solid white;
+    border-radius: 50px;
+    padding: 8px 24px;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(4px);
+  }
+
+  .hero h1 {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: white;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .hero-emojis {
+    font-size: 60px;
+    margin-top: 16px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lesson-number {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 70px;
+    height: 70px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 28px;
+    color: #FF6B6B;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    border: 4px solid #FFD93D;
+  }
+
+  /* Fun Cards */
+  .fun-card {
+    width: 100%;
+    max-width: 100%;
+    background: white;
+    border-radius: 32px;
+    border: 4px solid #6BCB77;
+    padding: 48px 56px;
+    margin: 40px 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fun-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(255,217,61,0.2) 0%, transparent 70%);
+    border-radius: 0 32px 0 100%;
+  }
+
+  .fun-card.red-border { border-color: #FF6B6B; }
+  .fun-card.yellow-border { border-color: #FFD93D; }
+  .fun-card.blue-border { border-color: #6BCB77; }
+  .fun-card.purple-border { border-color: #a78bfa; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .card-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #FF6B6B;
+    line-height: 1.4;
+  }
+
+  .card-title.green { color: #2d8a3e; }
+  .card-title.blue { color: #2563eb; }
+  .card-title.purple { color: #7c3aed; }
+
+  /* Story Text */
+  .story-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    line-height: 2.2;
+    color: #333;
+    text-align: right;
+  }
+
+  .story-text p {
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(107,203,119,0.08), rgba(255,217,61,0.08));
+    border-radius: 16px;
+    padding: 16px 24px;
+    border-right: 5px solid #6BCB77;
+  }
+
+  .story-text p:nth-child(2n) {
+    border-right-color: #FF6B6B;
+    background: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(255,217,61,0.08));
+  }
+
+  .story-text p:nth-child(3n) {
+    border-right-color: #FFD93D;
+  }
+
+  .dialogue {
+    background: linear-gradient(135deg, #fff9e6, #fff3cd) !important;
+    border: 3px solid #FFD93D !important;
+    border-right: 5px solid #FF6B6B !important;
+    border-radius: 20px !important;
+    padding: 20px 28px !important;
+    font-style: italic;
+    position: relative;
+  }
+
+  /* Maqasid (Objectives) */
+  .maqasid-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .maqasid-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-radius: 20px;
+    padding: 20px 24px;
+    border: 3px solid #6BCB77;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    line-height: 1.8;
+  }
+
+  .maqasid-list li .bullet {
+    font-size: 32px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  /* Vocabulary Table */
+  .vocab-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    margin-top: 16px;
+  }
+
+  .vocab-table th {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    padding: 16px 24px;
+    text-align: center;
+    color: white;
+    border-radius: 16px;
+  }
+
+  .vocab-table th:first-child {
+    background: #FF6B6B;
+    border-radius: 16px 0 0 16px;
+  }
+
+  .vocab-table th:last-child {
+    background: #6BCB77;
+    border-radius: 0 16px 16px 0;
+  }
+
+  .vocab-table td {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    padding: 16px 24px;
+    text-align: center;
+    background: white;
+    border: 3px solid #e0e0e0;
+  }
+
+  .vocab-table tr td:first-child {
+    border-radius: 16px 0 0 16px;
+    border-color: #FF6B6B;
+    background: #fff5f5;
+    font-weight: 700;
+    color: #cc2222;
+  }
+
+  .vocab-table tr td:last-child {
+    border-radius: 0 16px 16px 0;
+    border-color: #6BCB77;
+    background: #f0fdf4;
+    color: #2d8a3e;
+  }
+
+  /* Fill in the Blanks */
+  .fill-blank-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .fill-blank-list li {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    line-height: 2;
+    background: #fffde7;
+    border-radius: 20px;
+    padding: 20px 28px;
+    border: 3px solid #FFD93D;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .blank-input {
+    border: none;
+    border-bottom: 3px dashed #FF6B6B;
+    background: transparent;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    color: #FF6B6B;
+    min-width: 120px;
+    text-align: center;
+    outline: none;
+    padding: 4px 8px;
+    direction: rtl;
+  }
+
+  .blank-input:focus {
+    border-bottom-color: #6BCB77;
+    background: rgba(107,203,119,0.1);
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* Mذکر مؤنث Table */
+  .muzakkar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 12px;
+  }
+
+  .muzakkar-table th {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    border-radius: 20px;
+  }
+
+  .muzakkar-table th.m-header {
+    background: linear-gradient(135deg, #6BCB77, #4caf50);
+  }
+
+  .muzakkar-table th.f-header {
+    background: linear-gradient(135deg, #FF6B6B, #e53935);
+  }
+
+  .muzakkar-table td {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    padding: 16px 24px;
+    text-align: center;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: 600;
+  }
+
+  .muzakkar-table td.m-cell {
+    background: #f0fdf4;
+    border: 3px solid #6BCB77;
+    color: #2d8a3e;
+  }
+
+  .muzakkar-table td.f-cell {
+    background: #fff5f5;
+    border: 3px solid #FF6B6B;
+    color: #cc2222;
+  }
+
+  .muzakkar-table td:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  /* Quiz Section */
+  .quiz-question {
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #f8f9ff, #e8f4ff);
+    border-radius: 28px;
+    padding: 32px;
+    border: 4px solid #6BCB77;
+  }
+
+  .quiz-question-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+    color: #333;
+    margin-bottom: 24px;
+    text-align: right;
+    line-height: 2;
+  }
+
+  .quiz-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #FF6B6B;
+    color: white;
+    border-radius: 50%;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 20px;
+    margin-left: 12px;
+    flex-shrink: 0;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .quiz-btn {
+    width: 100%;
+    min-height: 64px;
+    padding: 16px 28px;
+    border-radius: 24px;
+    border: 4px solid #e0e0e0;
+    background: white;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #333;
+    cursor: pointer;
+    text-align: right;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.6;
+  }
+
+  .quiz-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-color: #6BCB77;
+    background: #f0fdf4;
+  }
+
+  .quiz-btn.correct {
+    background: linear-gradient(135deg, #6BCB77, #4caf50);
+    color: white;
+    border-color: #4caf50;
+    transform: scale(1.03);
+  }
+
+  .quiz-btn.wrong {
+    background: linear-gradient(135deg, #FF6B6B, #e53935);
+    color: white;
+    border-color: #e53935;
+  }
+
+  .quiz-btn.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .quiz-feedback {
+    margin-top: 16px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 16px;
+    display: none;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: #dcfce7; color: #166534; border: 3px solid #6BCB77; }
+  .quiz-feedback.wrong { background: #fee2e2; color: #991b1b; border: 3px solid #FF6B6B; }
+
+  /* Puzzle Word Builder */
+  .puzzle-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 24px 0;
+  }
+
+  .puzzle-piece {
+    background: linear-gradient(135deg, #FFD93D, #ffc107);
+    border: 4px solid #ff9800;
+    border-radius: 20px;
+    padding: 16px 28px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    user-select: none;
+  }
+
+  .puzzle-piece:hover {
+    transform: translateY(-4px) rotate(-2deg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  .puzzle-piece.selected {
+    background: linear-gradient(135deg, #6BCB77, #4caf50);
+    border-color: #2d8a3e;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .word-display {
+    background: white;
+    border: 4px dashed #6BCB77;
+    border-radius: 24px;
+    padding: 20px 32px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #333;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+    letter-spacing: 0;
+    direction: rtl;
+  }
+
+  /* Sentence Punctuation */
+  .sentence-item {
+    background: white;
+    border-radius: 24px;
+    border: 4px solid #e0e0e0;
+    padding: 24px 32px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .sentence-text {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #333;
+    flex: 1;
+    text-align: right;
+  }
+
+  .punct-btns {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .punct-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 4px solid #e0e0e0;
+    background: white;
+    font-size: 24px;
+    cursor: pointer;
+    font-family: 'Bubblegum Sans', cursive;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .punct-btn:hover { background: #f0f0f0; transform: scale(1.1); }
+  .punct-btn.selected-punct { background: #6BCB77; color: white; border-color: #4caf50; }
+  .punct-btn.wrong-punct { background: #FF6B6B; color: white; border-color: #e53935; }
+
+  /* Calligraphic Decoration */
+  .calligraphic-divider {
+    text-align: center;
+    font-size: 40px;
+    margin: 8px 0;
+    opacity: 0.4;
+  }
+
+  /* Section heading decoration */
+  .section-decoration {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .decoration-line {
+    flex: 1;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, transparent, #FFD93D, transparent);
+  }
+
+  /* Progress Bar */
+  .progress-bar-wrapper {
+    background: #e0e0e0;
+    border-radius: 50px;
+    height: 16px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6BCB77, #FFD93D, #FF6B6B);
+    border-radius: 50px;
+    transition: width 0.5s ease;
+  }
+
+  /* Drag and Drop */
+  .drag-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .drag-word {
+    background: linear-gradient(135deg, #FF6B6B, #ff8a65);
+    color: white;
+    border: 4px solid #d84315;
+    border-radius: 20px;
+    padding: 14px 24px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    touch-action: none;
+  }
+
+  .drag-word:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .drag-word.dragging {
+    opacity: 0.5;
+    transform: scale(1.1);
+    cursor: grabbing;
+  }
+
+  .drop-zone {
+    background: #f8f9ff;
+    border: 4px dashed #6BCB77;
+    border-radius: 20px;
+    padding: 14px 24px;
+    min-width: 140px;
+    min-height: 56px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #999;
+  }
+
+  .drop-zone.over {
+    background: #dcfce7;
+    border-color: #4caf50;
+    transform: scale(1.05);
+  }
+
+  .drop-zone.correct {
+    background: #dcfce7;
+    border-color: #4caf50;
+    color: #2d8a3e;
+    border-style: solid;
+  }
+
+  .drop-zone.wrong {
+    background: #fee2e2;
+    border-color: #e53935;
+    border-style: solid;
+  }
+
+  /* Match activity */
+  .match-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .match-label {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    background: #fffde7;
+    border: 3px solid #FFD93D;
+    border-radius: 16px;
+    padding: 12px 24px;
+    flex-shrink: 0;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .match-arrow {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  /* Bottom Nav Mobile */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 4px solid #6BCB77;
+    padding: 8px 16px;
+    z-index: 1000;
+    overflow-x: auto;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+  }
+
+  .bottom-nav-inner {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+    align-items: center;
+  }
+
+  .bottom-nav-btn {
+    background: #f0fdf4;
+    border: 3px solid #6BCB77;
+    border-radius: 16px;
+    padding: 10px 16px;
+    font-size: 22px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s;
+  }
+
+  .bottom-nav-btn:hover {
+    background: #6BCB77;
+    color: white;
+  }
+
+  /* Star rating */
+  .star-container {
+    text-align: center;
+    font-size: 48px;
+    margin: 24px 0;
+    letter-spacing: 8px;
+  }
+
+  .star { cursor: pointer; transition: transform 0.2s; display: inline-block; }
+  .star:hover { transform: scale(1.3) rotate(10deg); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-container { padding: 0 16px; }
+    .fun-card { padding: 28px 20px; margin: 24px 0; border-radius: 24px; }
+    .hero { min-height: 60vh; padding: 40px 16px; }
+    .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    .hero-emojis { font-size: 40px; }
+    .bottom-nav { display: block; }
+    .vocab-table th, .vocab-table td { padding: 12px 14px; }
+    .muzakkar-table td { padding: 12px 16px; }
+    body { padding-bottom: 80px; }
+    .lesson-number { width: 50px; height: 50px; font-size: 20px; top: 16px; left: 16px; }
+    .match-row { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .fun-card { padding: 20px 16px; }
+    .quiz-btn { padding: 14px 20px; }
+    .story-text p { padding: 12px 16px; }
+  }
+
+  /* Scroll animations - only progressive enhancement */
+  .animate-card {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-emoji">📚</div>
+  <div class="curtain-text">سبق لوڈ ہو رہا ہے...</div>
+</div>
+
+<!-- Sky Background -->
+<div class="sky-bg" id="skyBg"></div>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="lesson-number">15</div>
+    <div class="hero-badge">📖 اردو سبق</div>
+    <h1>ہمارا اسکول</h1>
+    <div class="hero-emojis">🏫 ✏️ 📚 🎒 ⭐</div>
+  </section>
+
+  <div class="content-container">
+
+    <!-- Maqasid (Objectives) Card -->
+    <div class="fun-card yellow-border animate-card" id="card-maqasid">
+      <div class="card-header">
+        <div class="card-icon">🎯</div>
+        <h2 class="card-title">مقاصد</h2>
+      </div>
+      <div class="section-decoration">
+        <div class="decoration-line"></div>
+        <span style="font-size:24px">⭐</span>
+        <div class="decoration-line"></div>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif; font-size:clamp(1rem,2.2vw,1.3rem); color:#555; text-align:right; margin-bottom:16px; line-height:2;">
+        اس سبق کو پڑھنے کے بعد طلبہ اس قابل ہو جائیں گے کہ:
+      </p>
+      <ul class="maqasid-list">
+        <li>
+          <span class="bullet">🏫</span>
+          <span>اسکول کی اہمیت اور اس کے بنیادی مقاصد کے بارے میں آگاہ ہوں۔</span>
+        </li>
+        <li>
+          <span class="bullet">🧹</span>
+          <span>اسکول میں صحت وصفائی کی اہمیت سے آگاہ ہوں۔</span>
+        </li>
+        <li>
+          <span class="bullet">📝</span>
+          <span>مذکر و مؤنث کا فرق جان سکیں۔</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Story Card -->
+    <div class="fun-card red-border animate-card" id="card-story">
+      <div class="card-header">
+        <div class="card-icon">📖</div>
+        <h2 class="card-title">ہمارا اسکول</h2>
+      </div>
+      <div class="calligraphic-divider">﷽</div>
+      <div class="story-text">
+        <p>
+          اسکول میں اردو کا درس ختم ہوا اور بریک کی گھنٹی بجی۔ سارا، عنایہ اور سحرش نے سوچا کہ کچھ کھیلتے ہیں۔
+        </p>
+        <p>
+          عنایہ نے پوچھا، <span class="dialogue">''مگر کون سا کھیل کھیلیں؟''</span> سارانے کہا، <span class="dialogue">''آؤ اسکول اسکول کھیلتے ہیں۔''</span>
+        </p>
+        <p>
+          سارا مس بن گئی اور عنایہ کو پڑھانے لگی۔ سحرش اور عنایہ بھی خوش تھیں۔ سارانے سوچا، <span class="dialogue">''مس تو لکھواتی بھی ہیں۔ ایسا کرتے ہیں دیوار پر لکھتے ہیں۔''</span>
+        </p>
+        <p>
+          سارانے دیوار پر لکھا، <span class="dialogue">''ا۔ب۔پ''</span>
+        </p>
+        <p>
+          اتنے میں اردو کی اُتانی آگئیں۔ اُتانی بولیں، <span class="dialogue">''ارے یہ کیا ! ساری دیوار خراب کر دی۔ چلیں اب مٹائیں اسے۔ ہمیں اسکول کی دیواروں کو گندا نہیں کرنا چاہیے۔''</span>
+        </p>
+        <p>
+          سارا، دیوار صاف کرنے لگی۔ عنایہ، سحرش اور ٹیچر نے بھی اس کی مدد کی۔
+        </p>
+        <p>
+          اُتانی نے جماعت میں موجود تمام بچوں کو مخاطب کرتے ہوئے کہا، <span class="dialogue">''پیارے بچوں! ہمیں اپنے اسکول کی ہر چیز کا خیال رکھنا چاہیے۔ جس طرح ہم اپنے گھر کو صاف ستھرا رکھتے ہیں، اسکول کو بھی اسی طرح صاف رکھنا چاہیے۔''</span>
+        </p>
+        <p>
+          اُتانی نے مزید کہا، <span class="dialogue">''آپ اسکول ضرور کھیلیں مگر اس تختے پر لکھیں دیواروں پر نہیں۔ اس سے اسکول گندا لگتا ہے۔''</span>
+        </p>
+        <p>
+          سارا، عنایہ اور سحرش تختے دیکھ کر بہت خوش ہوئیں۔ تینوں نے مل کر اُتانی کو شکریہ کہا اور وعدہ کیا کہ اسکول کی دیوار پر کبھی نہیں لکھیں گی۔ اُتانی کا شکریہ ادا کر کے تینوں دوستیں پھر سے اسکول اسکول کھیلنے لگیں۔
+        </p>
+      </div>
+    </div>
+
+    <!-- Vocabulary Card -->
+    <div class="fun-card blue-border animate-card" id="card-vocab">
+      <div class="card-header">
+        <div class="card-icon">📝</div>
+        <h2 class="card-title blue">الفاظ و معنی</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="vocab-table">
+          <thead>
+            <tr>
+              <th>الفاظ</th>
+              <th>معنی</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>تختہ</td>
+              <td>بورڈ</td>
+            </tr>
+            <tr>
+              <td>درس</td>
+              <td>سبق، تعلیم</td>
+            </tr>
+            <tr>
+              <td>شکریہ</td>
+              <td>احسان مانتا</td>
+            </tr>
+            <tr>
+              <td>مخاطب</td>
+              <td>متوجہ کرنا</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Comprehension Questions Card -->
+    <div class="fun-card yellow-border animate-card" id="card-questions">
+      <div class="card-header">
+        <div class="card-icon">❓</div>
+        <h2 class="card-title">سوالات کے جوابات</h2>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:28px;" id="comprehension-section">
+
+        <!-- Q1 -->
+        <div class="quiz-question">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span class="quiz-number">1</span>
+            <div class="quiz-question-text">سارا، عنایہ اور سحرش کیا کھیل رہی تھیں؟</div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-btn" onclick="checkAnswer(this, true)" data-qid="q1">
+              <span>🏫</span> اسکول اسکول
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q1">
+              <span>⚽</span> کرکٹ
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q1">
+              <span>🎮</span> ویڈیو گیم
+            </button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span class="quiz-number">2</span>
+            <div class="quiz-question-text">مس کون بنی؟</div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q2">
+              <span>👧</span> عنایہ
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, true)" data-qid="q2">
+              <span>👧</span> سارا
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q2">
+              <span>👧</span> سحرش
+            </button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span class="quiz-number">3</span>
+            <div class="quiz-question-text">انہوں نے کس چیز پر لکھا؟</div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q3">
+              <span>📄</span> کاغذ پر
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, true)" data-qid="q3">
+              <span>🧱</span> دیوار پر
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q3">
+              <span>📒</span> کتاب میں
+            </button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q3"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span class="quiz-number">4</span>
+            <div class="quiz-question-text">انہیں کس مضمون کی اُتانی نے سمجھایا؟</div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q4">
+              <span>🔢</span> ریاضی کی
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, true)" data-qid="q4">
+              <span>اُردو</span> اردو کی
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q4">
+              <span>🔬</span> سائنس کی
+            </button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-question">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span class="quiz-number">5</span>
+            <div class="quiz-question-text">ہمیں اپنے اسکول کو کیسا رکھنا چاہیے؟</div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-btn" onclick="checkAnswer(this, false)" data-qid="q5">
+              <span>🗑️</span> گندا
+            </button>
+            <button class="quiz-btn" onclick="checkAnswer(this, true)" data-qid="q5">
+              <span>✨</span> صاف
+            </button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q5"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fill in the Blanks Card -->
+    <div class="fun-card red-border animate-card" id="card-blanks">
+      <div class="card-header">
+        <div class="card-icon">✏️</div>
+        <h2 class="card-title">خالی جگہ پُر کریں</h2>
+      </div>
+      <ul class="fill-blank-list">
+        <li>
+          <span>سارا، عنایہ اور</span>
+          <input class="blank-input" type="text" placeholder="؟" id="blank1" onblur="checkBlank(this,'سحرش')">
+          <span>نے سوچا، ''کچھ کھیلتے ہیں''۔</span>
+        </li>
+        <li>
+          <span>سارا مس بن گئی اور</span>
+          <input class="blank-input" type="text" placeholder="؟" id="blank2" onblur="checkBlank(this,'سحرش')">
+          <span>اور عنایہ کو پڑھانے لگی۔</span>
+        </li>
+        <li>
+          <span>سارانے دیوار پر</span>
+          <input class="blank-input" type="text" placeholder="؟" id="blank3" onblur="checkBlank(this,'لکھا')">
+          <span>۔</span>
+        </li>
+        <li>
+          <span>اُتانی نے کہا، ''پیارے بچو! ہمیں اپنے اسکول کی ہر چیز کا</span>
+          <input class="blank-input" type="text" placeholder="؟" id="blank4" onblur="checkBlank(this,'خیال')">
+          <span>رکھنا چاہیے''۔</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Alfaz Sazi (Word Building) Card -->
+    <div class="fun-card purple-border animate-card" id="card-alfaz">
+      <div class="card-header">
+        <div class="card-icon">🧩</div>
+        <h2 class="card-title purple">الفاظ سازی</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#555;text-align:right;margin-bottom:20px;line-height:2;">
+        حروف ملا کر الفاظ بنائیں — پہیلیوں پر کلک کریں!
+      </p>
+
+      <!-- Puzzle 1: چ ہ ت ٹ ی = چھٹی -->
+      <div style="margin-bottom:40px;">
+        <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;text-align:right;margin-bottom:12px;color:#7c3aed;">پہیلی 1: یہ حروف ملائیں</p>
+        <div class="puzzle-container" id="puzzle1-pieces">
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle1','چ')">چ</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle1','ھ')">ھ</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle1','ٹ')">ٹ</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle1','ت')">ت</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle1','ی')">ی</div>
+        </div>
+        <div class="word-display" id="puzzle1-display">یہاں لفظ ظاہر ہوگا</div>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="checkPuzzle('puzzle1','چھٹی')" style="background:linear-gradient(135deg,#6BCB77,#4caf50);color:white;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.15);">✅ چیک کریں</button>
+          <button onclick="resetPuzzle('puzzle1')" style="background:linear-gradient(135deg,#FFD93D,#ffc107);color:#333;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;margin-right:12px;box-shadow:0 4px 16px rgba(0,0,0,0.1);">🔄 دوبارہ</button>
+        </div>
+      </div>
+
+      <!-- Puzzle 2: ا س ک و ل = اسکول -->
+      <div style="margin-bottom:40px;">
+        <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;text-align:right;margin-bottom:12px;color:#7c3aed;">پہیلی 2: یہ حروف ملائیں</p>
+        <div class="puzzle-container" id="puzzle2-pieces">
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle2','ا')">ا</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle2','س')">س</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle2','ک')">ک</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle2','و')">و</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle2','ل')">ل</div>
+        </div>
+        <div class="word-display" id="puzzle2-display">یہاں لفظ ظاہر ہوگا</div>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="checkPuzzle('puzzle2','اسکول')" style="background:linear-gradient(135deg,#6BCB77,#4caf50);color:white;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.15);">✅ چیک کریں</button>
+          <button onclick="resetPuzzle('puzzle2')" style="background:linear-gradient(135deg,#FFD93D,#ffc107);color:#333;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;margin-right:12px;box-shadow:0 4px 16px rgba(0,0,0,0.1);">🔄 دوبارہ</button>
+        </div>
+      </div>
+
+      <!-- Puzzle 3: ص ا ف = صاف -->
+      <div>
+        <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;text-align:right;margin-bottom:12px;color:#7c3aed;">پہیلی 3: یہ حروف ملائیں</p>
+        <div class="puzzle-container" id="puzzle3-pieces">
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle3','ص')">ص</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle3','ا')">ا</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle3','ف')">ف</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle3','و')">و</div>
+          <div class="puzzle-piece" onclick="selectPiece(this,'puzzle3','ر')">ر</div>
+        </div>
+        <div class="word-display" id="puzzle3-display">یہاں لفظ ظاہر ہوگا</div>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="checkPuzzle('puzzle3','صاف')" style="background:linear-gradient(135deg,#6BCB77,#4caf50);color:white;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.15);">✅ چیک کریں</button>
+          <button onclick="resetPuzzle('puzzle3')" style="background:linear-gradient(135deg,#FFD93D,#ffc107);color:#333;border:none;border-radius:20px;padding:14px 32px;font-family:'Noto Nastaliq Urdu',serif;font-size:1.2rem;cursor:pointer;margin-right:12px;box-shadow:0 4px 16px rgba(0,0,0,0.1);">🔄 دوبارہ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sentence Making Card -->
+    <div class="fun-card yellow-border animate-card" id="card-sentences">
+      <div class="card-header">
+        <div class="card-icon">✍️</div>
+        <h2 class="card-title">جملے بنائیں</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#555;text-align:right;margin-bottom:24px;line-height:2;">
+        ان الفاظ کے جملے بنائیے:
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <div style="background:#f0fdf4;border-radius:20px;padding:24px;border:3px solid #6BCB77;">
+          <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:#2d8a3e;margin-bottom:12px;text-align:right;">1. اسکول</p>
+          <div style="background:white;border-radius:16px;border:3px dashed #6BCB77;min-height:56px;padding:12px 20px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#666;text-align:right;">
+            مثال: میں روز اسکول جاتا ہوں۔
+          </div>
+        </div>
+
+        <div style="background:#fff5f5;border-radius:20px;padding:24px;border:3px solid #FF6B6B;">
+          <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:#cc2222;margin-bottom:12px;text-align:right;">2. مدد</p>
+          <div style="background:white;border-radius:16px;border:3px dashed #FF6B6B;min-height:56px;padding:12px 20px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#666;text-align:right;">
+            مثال: ٹیچر نے ہماری مدد کی۔
+          </div>
+        </div>
+
+        <div style="background:#fffde7;border-radius:20px;padding:24px;border:3px solid #FFD93D;">
+          <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:#b45309;margin-bottom:12px;text-align:right;">3. صاف</p>
+          <div style="background:white;border-radius:16px;border:3px dashed #FFD93D;min-height:56px;padding:12px 20px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#666;text-align:right;">
+            مثال: ہمارا گھر بہت صاف ہے۔
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Muzakkar Muannas Card -->
+    <div class="fun-card blue-border animate-card" id="card-muzakkar">
+      <div class="card-header">
+        <div class="card-icon">👨👩</div>
+        <h2 class="card-title blue">مذکر اور مؤنث</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#555;text-align:right;margin-bottom:24px;line-height:2;">
+        مذکر الفاظ کو اُن کے مؤنث الفاظ سے ملائیں اور آگے کے خالی کالم میں ترتیب سے لکھیں۔
+      </p>
+
+      <div style="overflow-x:auto;margin-bottom:32px;">
+        <table class="muzakkar-table">
+          <thead>
+            <tr>
+              <th class="m-header">🧔 مذکر</th>
+              <th class="f-header">👩 مؤنث</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">دادا</td>
+              <td class="f-cell" onclick="highlightRow(this)">دادی</td>
+            </tr>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">ابّو</td>
+              <td class="f-cell" onclick="highlightRow(this)">چاچی</td>
+            </tr>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">چاچا</td>
+              <td class="f-cell" onclick="highlightRow(this)">امّی</td>
+            </tr>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">ماموں</td>
+              <td class="f-cell" onclick="highlightRow(this)">بہن</td>
+            </tr>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">نانا</td>
+              <td class="f-cell" onclick="highlightRow(this)">مامی</td>
+            </tr>
+            <tr>
+              <td class="m-cell" onclick="highlightRow(this)">بھائی</td>
+              <td class="f-cell" onclick="highlightRow(this)">نانی</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#333;text-align:right;margin-bottom:20px;font-weight:700;">
+        🎯 ملاؤ اور لکھو — درست جوڑے:
+      </p>
+
+      <div id="matching-game" style="display:flex;flex-direction:column;gap:16px;">
+        <!-- Matching pairs will be rendered by JS -->
+      </div>
+
+      <div id="matching-result" style="display:none;text-align:center;margin-top:24px;"></div>
+    </div>
+
+    <!-- Punctuation Card -->
+    <div class="fun-card red-border animate-card" id="card-punct">
+      <div class="card-header">
+        <div class="card-icon">🔤</div>
+        <h2 class="card-title">نشانات لگائیں</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#555;text-align:right;margin-bottom:8px;line-height:2;">
+        جملوں کو پڑھ کر مناسب نشان لگائیں ۔ یا ؟
+      </p>
+      <div style="background:#f8f9ff;border:3px solid #6BCB77;border-radius:20px;padding:20px;margin-bottom:24px;">
+        <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(0.9rem,2vw,1.2rem);color:#333;text-align:right;line-height:2;">
+          <strong>یاد رکھیں!</strong> جملوں کے آخر میں ختمہ (۔) یا سوالیہ (؟) کا نشان لگاتے ہیں۔ جب کوئی جملہ مکمل ہو جائے تو اس کے آخر میں ختمہ (۔) کا نشان لگتا ہے۔ جس جملے میں کوئی بات پوچھی جائے اس کے آخر میں سوالیہ (؟) کا نشان لگتا ہے۔
+        </p>
+      </div>
+
+      <div id="punct-questions">
+        <div class="sentence-item" id="sent1">
+          <div class="punct-btns">
+            <button class="punct-btn" onclick="checkPunct(1,'۔',true)">۔</button>
+            <button class="punct-btn" onclick="checkPunct(1,'؟',false)">؟</button>
+          </div>
+          <div class="sentence-text">اللہ ایک ہے <span id="punct-answer-1" style="font-size:1.3em;font-weight:bold;color:#FF6B6B;"></span></div>
+        </div>
+
+        <div class="sentence-item" id="sent2">
+          <div class="punct-btns">
+            <button class="punct-btn" onclick="checkPunct(2,'؟',false)">۔</button>
+            <button class="punct-btn" onclick="checkPunct(2,'؟',true)">؟</button>
+          </div>
+          <div class="sentence-text">آج آپ ہمیں کون سی اچھی بات بتائیں گی <span id="punct-answer-2" style="font-size:1.3em;font-weight:bold;color:#FF6B6B;"></span></div>
+        </div>
+
+        <div class="sentence-item" id="sent3">
+          <div class="punct-btns">
+            <button class="punct-btn" onclick="checkPunct(3,'۔',true)">۔</button>
+            <button class="punct-btn" onclick="checkPunct(3,'؟',false)">؟</button>
+          </div>
+          <div class="sentence-text">آپ ﷺ اللہ تعالیٰ کے آخری نبی ہیں <span id="punct-answer-3" style="font-size:1.3em;font-weight:bold;color:#FF6B6B;"></span></div>
+        </div>
+
+        <div class="sentence-item" id="sent4">
+          <div class="punct-btns">
+            <button class="punct-btn" onclick="checkPunct(4,'؟',false)">۔</button>
+            <button class="punct-btn" onclick="checkPunct(4,'؟',true)">؟</button>
+          </div>
+          <div class="sentence-text">پیارے نبی ﷺ کہاں پیدا ہوئے <span id="punct-answer-4" style="font-size:1.3em;font-weight:bold;color:#FF6B6B;"></span></div>
+        </div>
+
+        <div class="sentence-item" id="sent5">
+          <div class="punct-btns">
+            <button class="punct-btn" onclick="checkPunct(5,'؟',false)">۔</button>
+            <button class="punct-btn" onclick="checkPunct(5,'؟',true)">؟</button>
+          </div>
+          <div class="sentence-text">آپ ﷺ کا نام کیا ہے <span id="punct-answer-5" style="font-size:1.3em;font-weight:bold;color:#FF6B6B;"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- My School Essay Card -->
+    <div class="fun-card blue-border animate-card" id="card-essay">
+      <div class="card-header">
+        <div class="card-icon">⭐</div>
+        <h2 class="card-title blue">میرا اسکول</h2>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#555;text-align:right;margin-bottom:24px;line-height:2;">
+        میرا اسکول پر 5 لائنیں لکھیے:
+      </p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:white;border-radius:16px;border:3px solid #6BCB77;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <span style="background:#6BCB77;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:18px;flex-shrink:0;">1</span>
+          <div style="flex:1;border-bottom:3px dashed #6BCB77;min-height:40px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;text-align:right;padding:4px 0;">میرا اسکول بہت اچھا ہے۔</div>
+        </div>
+        <div style="background:white;border-radius:16px;border:3px solid #FF6B6B;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <span style="background:#FF6B6B;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:18px;flex-shrink:0;">2</span>
+          <div style="flex:1;border-bottom:3px dashed #FF6B6B;min-height:40px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;text-align:right;padding:4px 0;">میں روز اسکول جاتا/جاتی ہوں۔</div>
+        </div>
+        <div style="background:white;border-radius:16px;border:3px solid #FFD93D;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <span style="background:#FFD93D;color:#333;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:18px;flex-shrink:0;">3</span>
+          <div style="flex:1;border-bottom:3px dashed #FFD93D;min-height:40px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;text-align:right;padding:4px 0;">میرے استاد بہت اچھے ہیں۔</div>
+        </div>
+        <div style="background:white;border-radius:16px;border:3px solid #a78bfa;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <span style="background:#a78bfa;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:18px;flex-shrink:0;">4</span>
+          <div style="flex:1;border-bottom:3px dashed #a78bfa;min-height:40px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;text-align:right;padding:4px 0;">ہم اسکول کو صاف رکھتے ہیں۔</div>
+        </div>
+        <div style="background:white;border-radius:16px;border:3px solid #6BCB77;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <span style="background:#6BCB77;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:'Bubblegum Sans',cursive;font-size:18px;flex-shrink:0;">5</span>
+          <div style="flex:1;border-bottom:3px dashed #6BCB77;min-height:40px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;text-align:right;padding:4px 0;">اسکول علم کا گھر ہے۔</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Practical Activity Card -->
+    <div class="fun-card yellow-border animate-card" id="card-activity">
+      <div class="card-header">
+        <div class="card-icon">🧹</div>
+        <h2 class="card-title">عملی سرگرمیاں</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:16px;">
+        <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:4px solid #6BCB77;border-radius:24px;padding:28px;text-align:center;">
+          <div style="font-size:64px;margin-bottom:16px;">🧹</div>
+          <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#2d8a3e;line-height:2;font-weight:600;">
+            اپنے گھر اور اسکول کی تمام دیواروں کا جائزہ لیں، اور جو بھی دیوار گندی نظر آئے اسے کسی بڑے کی مدد سے صاف کریں۔
+          </p>
+        </div>
+        <div style="background:linear-gradient(135deg,#fff5f5,#fee2e2);border:4px solid #FF6B6B;border-radius:24px;padding:28px;text-align:center;">
+          <div style="font-size:64px;margin-bottom:16px;">🎨</div>
+          <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);color:#cc2222;line-height:2;font-weight:600;">
+            اپنے اسکول کی ایک تصویر بنائیں اور رنگ بھریں۔
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress / Completion Card -->
+    <div class="fun-card blue-border animate-card" id="card-progress">
+      <div class="card-header">
+        <div class="card-icon">🏆</div>
+        <h2 class="card-title blue">میری کارکردگی</h2>
+      </div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <p id="progressText" style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);text-align:center;margin-top:12px;color:#555;">0 / 5 سوالات درست</p>
+
+      <div class="star-container" id="starContainer">
+        <span class="star" id="star1" onclick="rateStar(1)">⭐</span>
+        <span class="star" id="star2" onclick="rateStar(2)">⭐</span>
+        <span class="star" id="star3" onclick="rateStar(3)">⭐</span>
+        <span class="star" id="star4" onclick="rateStar(4)">⭐</span>
+        <span class="star" id="star5" onclick="rateStar(5)">⭐</span>
+      </div>
+      <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1rem,2.2vw,1.3rem);text-align:center;color:#555;margin-top:8px;">آج کا سبق کیسا لگا؟ ستارے دیں!</p>
+
+      <div style="text-align:center;margin-top:28px;">
+        <button onclick="celebrateCompletion()" style="background:linear-gradient(135deg,#FF6B6B,#FFD93D);color:white;border:none;border-radius:24px;padding:20px 48px;font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,0.2);border:4px solid white;">
+          🎉 سبق مکمل! جشن منائیں!
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end content-container -->
+</div><!-- end page-wrapper -->
+
+<!-- Bottom Nav Mobile -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav-inner">
+    <a href="#card-maqasid" class="bottom-nav-btn">🎯 مقاصد</a>
+    <a href="#card-story" class="bottom-nav-btn">📖 کہانی</a>
+    <a href="#card-vocab" class="bottom-nav-btn">📝 الفاظ</a>
+    <a href="#card-questions" class="bottom-nav-btn">❓ سوالات</a>
+    <a href="#card-muzakkar" class="bottom-nav-btn">👨👩 مذکر</a>
+    <a href="#card-punct" class="bottom-nav-btn">🔤 نشانات</a>
+    <a href="#card-progress" class="bottom-nav-btn">🏆 نتیجہ</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // === CURTAIN FALLBACK (first thing) ===
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // === INIT ===
+  try { init(); } catch(e) { console.warn('Init error:', e); }
+
+  function init() {
+    createSkyBackground();
+    initLenis();
+    initGSAP();
+    initMatchingGame();
+    animateCurtainOut();
+  }
+
+  // === SKY BACKGROUND ===
+  function createSkyBackground() {
+    const sky = document.getElementById('skyBg');
+    if (!sky) return;
+    for (let i = 0; i < 5; i++) {
+      const cloud = document.createElement('div');
+      cloud.className = 'cloud';
+      const w = 80 + Math.random() * 120;
+      const h = w * 0.4;
+      cloud.style.cssText = `
+        width:${w}px; height:${h}px;
+        top:${5 + Math.random() * 30}%;
+        animation-duration:${15 + Math.random() * 20}s;
+        animation-delay:-${Math.random() * 20}s;
+      `;
+      sky.appendChild(cloud);
+    }
+  }
+
+  // === CURTAIN OUT ===
+  function animateCurtainOut() {
+    const curtain = document.getElementById('curtain');
+    if (!curtain) return;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(curtain, {
+          opacity: 0, duration: 0.5, delay: 1.2,
+          onComplete: () => { curtain.style.display = 'none'; }
+        });
+      } else {
+        setTimeout(() => { curtain.style.display = 'none'; }, 1500);
+      }
+    } catch(e) {
+      curtain.style.display = 'none';
+    }
+  }
+
+  // === LENIS SMOOTH SCROLL ===
+  function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+    try {
+      const lowMem = navigator.deviceMemory !== undefined && navigator.deviceMemory < 2;
+      if (lowMem) return;
+      window._lenis = new Lenis({ lerp: 0.08, smooth: true });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => { window._lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) {
+          window._lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      }
+    } catch(e) { console.warn('Lenis error:', e); }
+  }
+
+  // === GSAP ANIMATIONS ===
+  function initGSAP() {
+    if (typeof gsap === 'undefined') return;
+    try {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Stagger entrance for visible cards
+      const cards = document.querySelectorAll('.animate-card');
+      if (cards.length) {
+        gsap.fromTo(cards,
+          { y: 40, scale: 0.92, opacity: 0 },
+          {
+            y: 0, scale: 1, opacity: 1,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'back.out(1.4)',
+            delay: 1.4,
+            clearProps: 'all'
+          }
+        );
+      }
+
+      // ScrollTrigger for each card
+      if (typeof ScrollTrigger !== 'undefined') {
+        cards.forEach(card => {
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 90%',
+            onEnter: () => {
+              gsap.fromTo(card,
+                { y: 30, opacity: 0.7 },
+                { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', clearProps: 'all' }
+              );
+            }
+          });
+        });
+      }
+    } catch(e) { console.warn('GSAP error:', e); }
+  }
+
+  // === QUIZ SYSTEM ===
+  const quizScores = {};
+  const totalQuizQuestions = 5;
+
+  window.checkAnswer = function(btn, isCorrect) {
+    const qid = btn.dataset.qid;
+    if (quizScores[qid] === true) return; // already answered correctly
+
+    const allBtns = btn.closest('.quiz-options').querySelectorAll('.quiz-btn');
+    const feedback = document.getElementById('feedback-' + qid);
+
+    allBtns.forEach(b => b.classList.add('disabled'));
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      quizScores[qid] = true;
+      if (feedback) {
+        feedback.textContent = '🎉 شاباش! بالکل درست جواب!';
+        feedback.className = 'quiz-feedback show correct';
+      }
+      fireConfetti();
+      updateProgress();
+    } else {
+      btn.classList.add('wrong');
+      quizScores[qid] = false;
+      if (feedback) {
+        feedback.textContent = '❌ غلط! دوبارہ کوشش کریں۔';
+        feedback.className = 'quiz-feedback show wrong';
+      }
+      shakeElement(btn.closest('.quiz-question'));
+      // Re-enable after shake
+      setTimeout(() => {
+        allBtns.forEach(b => {
+          b.classList.remove('disabled', 'wrong');
+        });
+        if (feedback) {
+          feedback.className = 'quiz-feedback';
+        }
+      }, 1200);
+    }
+  };
+
+  function updateProgress() {
+    const correct = Object.values(quizScores).filter(v => v === true).length;
+    const pct = Math.round((correct / totalQuizQuestions) * 100);
+    const fill = document.getElementById('progressFill');
+    const text = document.getElementById('progressText');
+    if (fill) fill.style.width = pct + '%';
+    if (text) text.textContent = correct + ' / ' + totalQuizQuestions + ' سوالات درست';
+  }
+
+  // === CONFETTI ===
+  function fireConfetti() {
+    if (typeof confetti !== 'undefined') {
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#ffffff', '#a78bfa']
+        });
+      } catch(e) {}
+    }
+  }
+
+  window.celebrateCompletion = function() {
+    fireConfetti();
+    setTimeout(fireConfetti, 300);
+    setTimeout(fireConfetti, 600);
+  };
+
+  // === SHAKE ===
+  function shakeElement(el) {
+    if (!el) return;
+    if (typeof gsap !== 'undefined') {
+      try {
+        gsap.to(el, {
+          x: -10, duration: 0.06,
+          onComplete: () => {
+            gsap.to(el, { x: 10, duration: 0.06,
+              onComplete: () => {
+                gsap.to(el, { x: -8, duration: 0.06,
+                  onComplete: () => {
+                    gsap.to(el, { x: 8, duration: 0.06,
+                      onComplete: () => {
+                        gsap.to(el, { x: 0, duration: 0.06 });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      } catch(e) {
+        el.style.animation = 'none';
+        el.style.transform = 'translateX(-8px)';
+        setTimeout(() => { el.style.transform = ''; }, 400);
+      }
+    } else {
+      el.style.transform = 'translateX(-8px)';
+      setTimeout(() => { el.style.transform = 'translateX(8px)'; }, 100);
+      setTimeout(() => { el.style.transform = 'translateX(-6px)'; }, 200);
+      setTimeout(() => { el.style.transform = 'translateX(6px)'; }, 300);
+      setTimeout(() => { el.style.transform = ''; }, 400);
+    }
+  }
+
+  // === BLANK CHECKING ===
+  window.checkBlank = function(input, answer) {
+    const val = input.value.trim();
+    if (!val) return;
+    if (val === answer || val.includes(answer.substring(0,3))) {
+      input.style.borderBottomColor = '#6BCB77';
+      input.style.color = '#2d8a3e';
+      fireConfetti();
+    } else {
+      input.style.borderBottomColor = '#FF6B6B';
+      input.style.color = '#cc2222';
+      shakeElement(input);
+    }
+  };
+
+  // === PUZZLE / WORD BUILDER ===
+  const puzzleState = {};
+
+  window.selectPiece = function(el, puzzleId, letter) {
+    if (!puzzleState[puzzleId]) puzzleState[puzzleId] = [];
+    el.classList.toggle('selected');
+    const idx = puzzleState[puzzleId].indexOf(letter + '_' + el.dataset.idx);
+
+    if (!el.dataset.idx) el.dataset.idx = Date.now() + Math.random();
+
+    if (el.classList.contains('selected')) {
+      puzzleState[puzzleId].push({ letter, el });
+    } else {
+      puzzleState[puzzleId] = puzzleState[puzzleId].filter(p => p.el !== el);
+    }
+
+    const display = document.getElementById(puzzleId + '-display');
+    if (display) {
+      if (puzzleState[puzzleId].length === 0) {
+        display.textContent = 'یہاں لفظ ظاہر ہوگا';
+        display.style.color = '#999';
+      } else {
+        display.textContent = puzzleState[puzzleId].map(p => p.letter).join('');
+        display.style.color = '#333';
+      }
+    }
+  };
+
+  window.checkPuzzle = function(puzzleId, correctWord) {
+    const state = puzzleState[puzzleId] || [];
+    const formed = state.map(p => p.letter).join('');
+    const display = document.getElementById(puzzleId + '-display');
+
+    if (formed === correctWord) {
+      if (display) {
+        display.style.background = '#dcfce7';
+        display.style.borderColor = '#4caf50';
+        display.style.color = '#2d8a3e';
+        display.textContent = '✅ ' + correctWord + ' — شاباش!';
+      }
+      fireConfetti();
+    } else {
+      if (display) {
+        display.style.background = '#fee2e2';
+        display.style.borderColor = '#e53935';
+        display.style.color = '#cc2222';
+      }
+      shakeElement(display);
+      setTimeout(() => {
+        if (display) {
+          display.style.background = '';
+          display.style.borderColor = '#6BCB77';
+          display.style.color = '#333';
+        }
+      }, 1000);
+    }
+  };
+
+  window.resetPuzzle = function(puzzleId) {
+    puzzleState[puzzleId] = [];
+    const pieces = document.querySelectorAll('#' + puzzleId + '-pieces .puzzle-piece');
+    pieces.forEach(p => { p.classList.remove('selected'); delete p.dataset.idx; });
+    const display = document.getElementById(puzzleId + '-display');
+    if (display) {
+      display.textContent = 'یہاں لفظ ظاہر ہوگا';
+      display.style.color = '#999';
+      display.style.background = '';
+      display.style.borderColor = '#6BCB77';
+    }
+  };
+
+  // === MUZAKKAR ROW HIGHLIGHT ===
+  window.highlightRow = function(cell) {
+    const row = cell.closest('tr');
+    if (!row) return;
+    const cells = row.querySelectorAll('td');
+    cells.forEach(c => {
+      c.style.transform = 'scale(1.05)';
+      c.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+      setTimeout(() => {
+        c.style.transform = '';
+        c.style.boxShadow = '';
+      }, 600);
+    });
+    fireConfetti();
+  };
+
+  // === MATCHING GAME ===
+  function initMatchingGame() {
+    const container = document.getElementById('matching-game');
+    if (!container) return;
+
+    const pairs = [
+      { m: 'دادا', f: 'دادی' },
+      { m: 'ابّو', f: 'امّی' },
+      { m: 'چاچا', f: 'چاچی' },
+      { m: 'ماموں', f: 'مامی' },
+      { m: 'نانا', f: 'نانی' },
+      { m: 'بھائی', f: 'بہن' }
+    ];
+
+    container.innerHTML = '';
+
+    pairs.forEach((pair, i) => {
+      const row = document.createElement('div');
+      row.className = 'match-row';
+
+      const mLabel = document.createElement('div');
+      mLabel.className = 'match-label';
+      mLabel.style.background = '#f0fdf4';
+      mLabel.style.borderColor = '#6BCB77';
+      mLabel.style.color = '#2d8a3e';
+      mLabel.style.fontWeight = '700';
+      mLabel.textContent = pair.m;
+
+      const arrow = document.createElement('div');
+      arrow.className = 'match-arrow';
+      arrow.textContent = '←';
+
+      const fLabel = document.createElement('div');
+      fLabel.className = 'match-label';
+      fLabel.style.background = '#fff5f5';
+      fLabel.style.borderColor = '#FF6B6B';
+      fLabel.style.color = '#cc2222';
+      fLabel.style.fontWeight = '700';
+      fLabel.textContent = pair.f;
+
+      const checkBtn = document.createElement('button');
+      checkBtn.textContent = '✅';
+      checkBtn.style.cssText = 'background:#FFD93D;border:3px solid #ffc107;border-radius:16px;padding:12px 20px;font-size:24px;cursor:pointer;min-height:56px;flex-shrink:0;';
+      checkBtn.onclick = function() {
+        this.textContent = '🎉';
+        this.style.background = '#6BCB77';
+        mLabel.style.background = '#dcfce7';
+        fLabel.style.background = '#dcfce7';
+        fireConfetti();
+        this.disabled = true;
+      };
+
+      row.appendChild(fLabel);
+      row.appendChild(arrow);
+      row.appendChild(mLabel);
+      row.appendChild(checkBtn);
+      container.appendChild(row);
+    });
+  }
+
+  // === PUNCTUATION ===
+  const punctCorrect = { 1: '۔', 2: '؟', 3: '۔', 4: '؟', 5: '؟' };
+
+  window.checkPunct = function(num, punct, isCorrect) {
+    const sentEl = document.getElementById('sent' + num);
+    const ansEl = document.getElementById('punct-answer-' + num);
+    if (!sentEl || !ansEl) return;
+
+    const btns = sentEl.querySelectorAll('.punct-btn');
+    btns.forEach(b => b.disabled = true);
+
+    ansEl.textContent = punct;
+
+    if (isCorrect) {
+      sentEl.style.borderColor = '#6BCB77';
+      sentEl.style.background = '#f0fdf4';
+      ansEl.style.color = '#2d8a3e';
+      fireConfetti();
+      btns.forEach(b => b.classList.remove('wrong-punct'));
+    } else {
+      sentEl.style.borderColor = '#FF6B6B';
+      sentEl.style.background = '#fff5f5';
+      ansEl.style.color = '#cc2222';
+      shakeElement(sentEl);
+      setTimeout(() => {
+        sentEl.style.borderColor = '';
+        sentEl.style.background = '';
+        ansEl.textContent = '';
+        btns.forEach(b => { b.disabled = false; b.classList.remove('wrong-punct'); });
+      }, 1200);
+    }
+  };
+
+  // === STAR RATING ===
+  window.rateStar = function(n) {
+    for (let i = 1; i <= 5; i++) {
+      const s = document.getElementById('star' + i);
+      if (s) s.textContent = i <= n ? '⭐' : '☆';
+    }
+    if (n >= 4) fireConfetti();
+
+    if (typeof gsap !== 'undefined') {
+      try {
+        const stars = document.querySelectorAll('.star');
+        gsap.fromTo(stars,
+          { scale: 0.8 },
+          { scale: 1, duration: 0.3, stagger: 0.05, ease: 'back.out(2)', clearProps: 'all' }
+        );
+      } catch(e) {}
+    }
+  };
+
+  // === TOUCH TARGETS CHECK ===
+  document.querySelectorAll('button, .quiz-btn, .puzzle-piece, .punct-btn').forEach(el => {
+    if (el.offsetHeight < 44) {
+      el.style.minHeight = '56px';
+    }
+  });
+
+});
+</script>
+</body>
+</html>

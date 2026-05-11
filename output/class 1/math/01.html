@@ -1,0 +1,1390 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forward Counting | Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    background: #e0f7fa;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: linear-gradient(180deg, #b3e5fc 0%, #e8f5e9 40%, #fff9c4 100%);
+    min-height: 100vh;
+  }
+
+  /* Animated background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.7;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  @keyframes floatCloud {
+    0% { transform: translateX(-200px); }
+    100% { transform: translateX(110vw); }
+  }
+
+  /* Page wrapper */
+  #page-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-bottom: 100px;
+  }
+
+  /* Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  #curtain .curtain-emoji { font-size: 80px; animation: bounce 0.6s infinite alternate; }
+  #curtain .curtain-text { font-family: 'Bubblegum Sans', cursive; font-size: clamp(2rem,5vw,3.5rem); color: white; text-shadow: 3px 3px 0 rgba(0,0,0,0.15); }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+
+  /* Hero */
+  .hero {
+    width: 100vw;
+    min-height: 60vh;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 60%, #6BCB77 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px 80px;
+    position: relative;
+    overflow: hidden;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  .hero-stars {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star-item {
+    position: absolute;
+    font-size: 28px;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  @keyframes twinkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    color: white;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: white;
+    font-weight: 700;
+    background: rgba(255,255,255,0.25);
+    border-radius: 30px;
+    padding: 10px 28px;
+    margin-bottom: 32px;
+  }
+  .hero-emoji-row { display: flex; gap: 16px; font-size: clamp(2rem,5vw,3.5rem); flex-wrap: wrap; justify-content: center; }
+  .hero-badge {
+    display: inline-block;
+    background: white;
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem,2.5vw,1.4rem);
+    padding: 8px 24px;
+    border-radius: 30px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Content container */
+  .content-wrap {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Fun Cards */
+  .fun-card {
+    width: 100%;
+    background: white;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    padding: 40px 36px;
+    margin-top: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    opacity: 1;
+    transform: none;
+  }
+  .fun-card.card-blue { border-color: #6BCB77; }
+  .fun-card.card-red { border-color: #FF6B6B; }
+  .fun-card.card-purple { border-color: #b39ddb; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .card-icon { font-size: 2.8rem; }
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #FF6B6B;
+  }
+  .card-blue .card-title { color: #388e3c; }
+  .card-red .card-title { color: #d32f2f; }
+  .card-purple .card-title { color: #7b1fa2; }
+
+  /* Number Grid */
+  .number-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .num-cell {
+    background: linear-gradient(135deg, #FFD93D, #FFB300);
+    border: 3px solid #FF8F00;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    padding: 10px 4px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 56px;
+  }
+  .num-cell:hover { transform: scale(1.12); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .num-cell.revealed { background: linear-gradient(135deg, #6BCB77, #43a047); border-color: #2e7d32; }
+  .num-cell.highlight { background: linear-gradient(135deg, #FF6B6B, #e53935); border-color: #b71c1c; }
+
+  /* Counting Range Section */
+  .range-section {
+    margin-bottom: 40px;
+  }
+  .range-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #FF6B6B;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .count-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .count-cell {
+    background: #fff9c4;
+    border: 3px solid #FFD93D;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    color: #555;
+    padding: 14px 8px;
+    min-height: 60px;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .count-cell.filled {
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+    border-color: #2e7d32;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  }
+  .count-cell.anchor {
+    background: linear-gradient(135deg, #FF6B6B, #e53935);
+    border-color: #b71c1c;
+    color: white;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+  }
+  .count-cell.empty-slot {
+    background: #f5f5f5;
+    border: 3px dashed #ccc;
+    color: transparent;
+  }
+
+  /* Fill in activity */
+  .fill-activity {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border-radius: 24px;
+    padding: 28px;
+    margin-top: 24px;
+  }
+  .fill-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: #388e3c;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .fill-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .fill-given {
+    background: linear-gradient(135deg, #FFD93D, #FFB300);
+    border: 3px solid #FF8F00;
+    border-radius: 16px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+    padding: 10px 18px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .fill-box {
+    width: 70px;
+    height: 60px;
+    border: 3px dashed #6BCB77;
+    border-radius: 16px;
+    background: white;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: #388e3c;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .fill-box:focus { border-color: #FF6B6B; border-style: solid; background: #fff9c4; }
+  .fill-box.correct { border-color: #6BCB77; border-style: solid; background: #e8f5e9; }
+  .fill-box.wrong { border-color: #FF6B6B; border-style: solid; background: #ffebee; }
+  .check-btn {
+    display: block;
+    margin: 16px auto 0;
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    padding: 14px 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(67,160,71,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 56px;
+  }
+  .check-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(67,160,71,0.4); }
+
+  /* Quiz */
+  .quiz-card {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border: 4px solid #FF6B6B;
+    border-radius: 32px;
+    padding: 40px 36px;
+    margin-top: 40px;
+    opacity: 1;
+    transform: none;
+  }
+  .quiz-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #FF6B6B;
+    text-align: center;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .quiz-question-box {
+    background: white;
+    border-radius: 24px;
+    border: 3px solid #FFD93D;
+    padding: 28px;
+    margin-bottom: 24px;
+    text-align: center;
+    display: none;
+  }
+  .quiz-question-box.active { display: block; }
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #333;
+    margin-bottom: 24px;
+  }
+  .quiz-number-display {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    color: #FF6B6B;
+    background: linear-gradient(135deg, #fff9c4, #FFD93D30);
+    border-radius: 20px;
+    padding: 16px 32px;
+    display: inline-block;
+    margin-bottom: 24px;
+    border: 3px solid #FFD93D;
+  }
+  .quiz-options {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .quiz-opt {
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+    color: white;
+    border: 4px solid #2e7d32;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    padding: 18px 36px;
+    cursor: pointer;
+    min-width: 100px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .quiz-opt:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+  .quiz-opt.opt-wrong { background: linear-gradient(135deg, #FF6B6B, #e53935); border-color: #b71c1c; }
+  .quiz-opt.opt-correct { background: linear-gradient(135deg, #FFD93D, #FFB300); border-color: #FF8F00; transform: scale(1.1); }
+  .quiz-feedback {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    text-align: center;
+    margin-top: 20px;
+    min-height: 48px;
+  }
+  .quiz-nav {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .quiz-nav-btn {
+    background: linear-gradient(135deg, #FF6B6B, #e53935);
+    color: white;
+    border: 4px solid #b71c1c;
+    border-radius: 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    padding: 12px 32px;
+    cursor: pointer;
+    min-height: 56px;
+    transition: transform 0.2s;
+  }
+  .quiz-nav-btn:hover { transform: scale(1.05); }
+  .quiz-score {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: #388e3c;
+    text-align: center;
+    background: #e8f5e9;
+    border-radius: 20px;
+    padding: 16px;
+    margin-top: 20px;
+    display: none;
+  }
+
+  /* Progress dots */
+  .quiz-progress {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .q-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 2px solid #bbb;
+    transition: background 0.3s;
+  }
+  .q-dot.done { background: #6BCB77; border-color: #2e7d32; }
+  .q-dot.current { background: #FFD93D; border-color: #FF8F00; transform: scale(1.3); }
+
+  /* Animal counting visual */
+  .animal-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .animal-item {
+    font-size: clamp(2rem, 5vw, 3rem);
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .animal-item:hover { transform: scale(1.2) rotate(10deg); }
+  .animal-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: #FF6B6B;
+    font-weight: 800;
+  }
+
+  /* Staircase visual */
+  .staircase {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .stair-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .stair-block {
+    width: clamp(48px, 8vw, 72px);
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+    border: 3px solid #2e7d32;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bubblegum Sans', cursive;
+    color: white;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  .stair-block:hover { transform: scale(1.1); }
+
+  /* Instruction box */
+  .instruction-box {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border: 3px solid #42a5f5;
+    border-radius: 20px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .instruction-icon { font-size: 2.2rem; flex-shrink: 0; }
+  .instruction-text { font-size: clamp(1rem, 2vw, 1.3rem); color: #1565c0; font-weight: 600; line-height: 1.5; }
+
+  /* Mobile nav */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 4px solid #FFD93D;
+    padding: 8px 0;
+    z-index: 1000;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+  .mobile-nav-inner {
+    display: flex;
+    gap: 8px;
+    padding: 0 12px;
+    min-width: max-content;
+  }
+  .mobile-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: #fff9c4;
+    border: 2px solid #FFD93D;
+    border-radius: 14px;
+    padding: 8px 14px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 0.85rem;
+    color: #FF6B6B;
+    cursor: pointer;
+    min-height: 56px;
+    min-width: 70px;
+    justify-content: center;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .mobile-nav-btn:hover { background: #FFD93D; }
+  .mobile-nav-btn .nav-icon { font-size: 1.4rem; }
+
+  /* Tap reveal */
+  .tap-reveal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .tap-card {
+    background: linear-gradient(135deg, #FF6B6B, #ff8a65);
+    border: 4px solid #d84315;
+    border-radius: 24px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tap-card.tapped {
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+    border-color: #2e7d32;
+  }
+  .tap-card .tap-emoji { font-size: clamp(1.8rem, 5vw, 2.8rem); transition: transform 0.3s; }
+  .tap-card.tapped .tap-emoji { transform: rotate(360deg); }
+  .tap-card .tap-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  }
+
+  /* Section divider */
+  .section-divider {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 32px 0 0;
+    opacity: 0.6;
+    letter-spacing: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-wrap { padding: 0 16px; }
+    .fun-card { padding: 24px 18px; margin-top: 28px; }
+    .quiz-card { padding: 24px 18px; margin-top: 28px; }
+    body { padding-bottom: 80px; }
+    .mobile-nav { display: block; }
+    .number-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .count-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .count-cell { padding: 10px 4px; min-height: 50px; }
+    .fill-box { width: 58px; height: 52px; }
+    .fill-given { padding: 8px 12px; }
+    .hero { padding: 40px 16px 60px; }
+    .stair-block { width: 40px; }
+  }
+  @media (max-width: 480px) {
+    .number-grid { grid-template-columns: repeat(5, 1fr); }
+    .count-grid { grid-template-columns: repeat(5, 1fr); }
+    .quiz-opt { padding: 14px 24px; min-width: 80px; }
+    .tap-reveal-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-emoji">🔢</div>
+  <div class="curtain-text">Let's Count! 🌟</div>
+</div>
+
+<!-- Sky Background -->
+<div class="sky-bg" id="skyBg"></div>
+
+<div id="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero" id="hero-section">
+    <div class="hero-stars" id="heroStars"></div>
+    <h1>🔢 Forward Counting! 🌈</h1>
+    <div class="hero-subtitle">Chapter 1 · Class 1 Math</div>
+    <div class="hero-emoji-row">
+      <span>1️⃣</span><span>2️⃣</span><span>3️⃣</span><span>4️⃣</span><span>5️⃣</span>
+    </div>
+    <div class="hero-badge">✏️ Digital School · Let's Count Together!</div>
+  </section>
+
+  <div class="content-wrap">
+
+    <!-- What is Forward Counting -->
+    <div class="fun-card card-blue" id="intro-card">
+      <div class="card-header">
+        <span class="card-icon">⭐</span>
+        <h2 class="card-title">What is Forward Counting?</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">💡</span>
+        <div class="instruction-text">
+          When we count numbers in order from small to big, it is called <strong>Forward Counting!</strong><br>
+          Like climbing stairs — one step at a time! 🪜
+        </div>
+      </div>
+      <!-- Staircase visual -->
+      <div class="staircase" id="staircase">
+      </div>
+      <div style="text-align:center; margin-top:16px;">
+        <span style="font-family:'Bubblegum Sans',cursive; font-size:clamp(1rem,2.5vw,1.4rem); color:#388e3c;">
+          👆 Tap each step to see the number!
+        </span>
+      </div>
+    </div>
+
+    <!-- 1 to 50 Tap to Reveal -->
+    <div class="fun-card" id="card-1-50">
+      <div class="card-header">
+        <span class="card-icon">🐣</span>
+        <h2 class="card-title">Forward Counting: 1 to 50</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Tap each number to reveal it! Count along with the animals! 🐾</div>
+      </div>
+      <!-- Animal row 1-10 -->
+      <div class="animal-row" id="animal-row-1"></div>
+      <!-- Number grid 1-50 -->
+      <div class="number-grid" id="grid-1-50"></div>
+    </div>
+
+    <!-- 51 to 100 -->
+    <div class="fun-card card-blue" id="card-51-100">
+      <div class="card-header">
+        <span class="card-icon">🐸</span>
+        <h2 class="card-title">Forward Counting: 51 to 100</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Keep counting! Tap to reveal! 🎉</div>
+      </div>
+      <div class="number-grid" id="grid-51-100"></div>
+    </div>
+
+    <!-- 101 to 200 -->
+    <div class="fun-card card-red" id="card-101-200">
+      <div class="card-header">
+        <span class="card-icon">🦋</span>
+        <h2 class="card-title">Forward Counting: 101 to 200</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Big numbers! You can do it! 💪 Tap to see them!</div>
+      </div>
+      <div class="number-grid" id="grid-101-200"></div>
+    </div>
+
+    <!-- 201 to 300 -->
+    <div class="fun-card card-purple" id="card-201-300">
+      <div class="card-header">
+        <span class="card-icon">🌸</span>
+        <h2 class="card-title">Forward Counting: 201 to 300</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">You're doing amazing! Keep going! 🌟</div>
+      </div>
+      <div class="number-grid" id="grid-201-300"></div>
+    </div>
+
+    <!-- 301 to 400 -->
+    <div class="fun-card" id="card-301-400">
+      <div class="card-header">
+        <span class="card-icon">🚀</span>
+        <h2 class="card-title">Forward Counting: 301 to 400</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Super counter! Tap and count! 🚀</div>
+      </div>
+      <div class="number-grid" id="grid-301-400"></div>
+    </div>
+
+    <!-- 401 to 500 -->
+    <div class="fun-card card-blue" id="card-401-500">
+      <div class="card-header">
+        <span class="card-icon">🏆</span>
+        <h2 class="card-title">Forward Counting: 401 to 500</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Almost a champion! Tap them all! 🏆</div>
+      </div>
+      <div class="number-grid" id="grid-401-500"></div>
+    </div>
+
+    <div class="section-divider">⭐ ⭐ ⭐</div>
+
+    <!-- Fill in Activity -->
+    <div class="fun-card card-red" id="fill-card">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Fill in the Missing Numbers! ✏️</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">💡</span>
+        <div class="instruction-text">Type the missing numbers in the boxes! Then tap Check! 🎯</div>
+      </div>
+
+      <div class="fill-activity">
+        <div class="fill-title">🌟 What comes next?</div>
+        <div id="fill-exercises"></div>
+        <button class="check-btn" onclick="checkFill()">✅ Check My Answers!</button>
+        <div id="fill-result" style="text-align:center; margin-top:16px; font-family:'Bubblegum Sans',cursive; font-size:clamp(1.2rem,3vw,1.6rem);"></div>
+      </div>
+    </div>
+
+    <!-- Tap to Reveal Fun Section -->
+    <div class="fun-card card-purple" id="tap-card">
+      <div class="card-header">
+        <span class="card-icon">🎪</span>
+        <h2 class="card-title">Tap the Balloons! 🎈</h2>
+      </div>
+      <div class="instruction-box">
+        <span class="instruction-icon">👆</span>
+        <div class="instruction-text">Tap each balloon to pop it and see the number inside! 🎉</div>
+      </div>
+      <div class="tap-reveal-grid" id="tapGrid"></div>
+    </div>
+
+    <div class="section-divider">🌟 🌟 🌟</div>
+
+    <!-- QUIZ -->
+    <div class="quiz-card" id="quiz-section">
+      <div class="quiz-title">🎯 Quiz Time! 🎯</div>
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div id="quiz-container"></div>
+      <div class="quiz-nav">
+        <button class="quiz-nav-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next ➡️</button>
+        <button class="quiz-nav-btn" id="restartBtn" onclick="restartQuiz()" style="display:none; background:linear-gradient(135deg,#6BCB77,#43a047); border-color:#2e7d32;">Play Again 🔄</button>
+      </div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+
+  </div><!-- end content-wrap -->
+</div><!-- end page-wrapper -->
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a class="mobile-nav-btn" href="#hero-section"><span class="nav-icon">🏠</span>Home</a>
+    <a class="mobile-nav-btn" href="#intro-card"><span class="nav-icon">⭐</span>Intro</a>
+    <a class="mobile-nav-btn" href="#card-1-50"><span class="nav-icon">🐣</span>1-50</a>
+    <a class="mobile-nav-btn" href="#card-51-100"><span class="nav-icon">🐸</span>51-100</a>
+    <a class="mobile-nav-btn" href="#card-101-200"><span class="nav-icon">🦋</span>101-200</a>
+    <a class="mobile-nav-btn" href="#card-201-300"><span class="nav-icon">🌸</span>201-300</a>
+    <a class="mobile-nav-btn" href="#card-301-400"><span class="nav-icon">🚀</span>301-400</a>
+    <a class="mobile-nav-btn" href="#card-401-500"><span class="nav-icon">🏆</span>401-500</a>
+    <a class="mobile-nav-btn" href="#fill-card"><span class="nav-icon">✏️</span>Fill In</a>
+    <a class="mobile-nav-btn" href="#quiz-section"><span class="nav-icon">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── CURTAIN FALLBACK (MUST BE FIRST) ──
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ── ANIMATED BACKGROUND ──
+  try {
+    const skyBg = document.getElementById('skyBg');
+    if (skyBg) {
+      const clouds = [
+        { w: 180, h: 60, top: '10%', dur: 28 },
+        { w: 130, h: 44, top: '25%', dur: 22 },
+        { w: 200, h: 68, top: '5%', dur: 35 },
+        { w: 100, h: 36, top: '18%', dur: 18 }
+      ];
+      clouds.forEach((c, i) => {
+        const div = document.createElement('div');
+        div.className = 'cloud';
+        div.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.top};left:-200px;animation-duration:${c.dur}s;animation-delay:${i*4}s;`;
+        div.style.boxShadow = `0 0 0 ${Math.round(c.h*0.45)}px white`;
+        skyBg.appendChild(div);
+      });
+    }
+  } catch(e) {}
+
+  // ── HERO STARS ──
+  try {
+    const heroStars = document.getElementById('heroStars');
+    if (heroStars) {
+      const starEmojis = ['⭐','🌟','✨','💫'];
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement('span');
+        s.className = 'star-item';
+        s.textContent = starEmojis[i % starEmojis.length];
+        s.style.cssText = `left:${Math.random()*90}%;top:${Math.random()*80}%;animation-delay:${Math.random()*2}s;animation-duration:${1.5+Math.random()*1.5}s;`;
+        heroStars.appendChild(s);
+      }
+    }
+  } catch(e) {}
+
+  // ── STAIRCASE ──
+  try {
+    const staircase = document.getElementById('staircase');
+    if (staircase) {
+      const steps = [1,2,3,4,5,6,7,8];
+      steps.forEach((n, i) => {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'stair-step';
+        const blockHeight = 40 + i * 18;
+        const block = document.createElement('div');
+        block.className = 'stair-block';
+        block.style.height = blockHeight + 'px';
+        block.textContent = n;
+        block.addEventListener('click', () => {
+          block.style.background = 'linear-gradient(135deg, #FFD93D, #FFB300)';
+          block.style.borderColor = '#FF8F00';
+          setTimeout(() => {
+            block.style.background = '';
+            block.style.borderColor = '';
+          }, 600);
+          try { if (typeof gsap !== 'undefined') { gsap.fromTo(block, {scale:1},{scale:1.2,duration:0.2,yoyo:true,repeat:1}); } } catch(e) {}
+        });
+        stepDiv.appendChild(block);
+        staircase.appendChild(stepDiv);
+      });
+    }
+  } catch(e) {}
+
+  // ── NUMBER GRIDS ──
+  const animals = ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🦆','🦅','🦉','🦇','🐝','🐛','🦋'];
+
+  function buildAnimalRow() {
+    try {
+      const row = document.getElementById('animal-row-1');
+      if (!row) return;
+      for (let i = 1; i <= 10; i++) {
+        const item = document.createElement('div');
+        item.className = 'animal-item';
+        item.innerHTML = `<span>${animals[(i-1)%animals.length]}</span><span class="animal-num">${i}</span>`;
+        item.addEventListener('click', () => {
+          try { if (typeof gsap !== 'undefined') { gsap.fromTo(item, {rotate:0},{rotate:360,duration:0.5}); } } catch(e) {}
+          triggerConfettiBurst();
+        });
+        row.appendChild(item);
+      }
+    } catch(e) {}
+  }
+
+  function buildNumberGrid(containerId, start, end) {
+    try {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      for (let n = start; n <= end; n++) {
+        const cell = document.createElement('div');
+        cell.className = 'num-cell';
+        cell.textContent = n;
+        cell.dataset.num = n;
+        cell.dataset.revealed = 'false';
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', () => {
+          if (cell.dataset.revealed === 'false') {
+            cell.dataset.revealed = 'true';
+            cell.classList.add('revealed');
+            try {
+              if (typeof gsap !== 'undefined') {
+                gsap.fromTo(cell, {scale:0.7,rotation:-10},{scale:1,rotation:0,duration:0.4,ease:'back.out(1.7)'});
+              }
+            } catch(e) {}
+            // small pop confetti on every 10th number
+            if (n % 10 === 0) { triggerConfettiBurst(); }
+          }
+        });
+        container.appendChild(cell);
+      }
+    } catch(e) {}
+  }
+
+  buildAnimalRow();
+  buildNumberGrid('grid-1-50', 1, 50);
+  buildNumberGrid('grid-51-100', 51, 100);
+  buildNumberGrid('grid-101-200', 101, 200);
+  buildNumberGrid('grid-201-300', 201, 300);
+  buildNumberGrid('grid-301-400', 301, 400);
+  buildNumberGrid('grid-401-500', 401, 500);
+
+  // ── FILL IN EXERCISES ──
+  const fillExercises = [
+    { sequence: [1,2,3,'?','?'], blanks: [3,4], answers: [4,5] },
+    { sequence: [8,'?',10,'?',12], blanks: [1,3], answers: [9,11] },
+    { sequence: [18,19,'?',21,'?'], blanks: [2,4], answers: [20,22] },
+    { sequence: [48,49,'?','?',52], blanks: [2,3], answers: [50,51] },
+    { sequence: [98,'?',100,'?',102], blanks: [1,3], answers: [99,101] },
+    { sequence: [148,'?','?',151,152], blanks: [1,2], answers: [149,150] },
+    { sequence: [198,199,'?','?',202], blanks: [2,3], answers: [200,201] },
+    { sequence: [248,'?',250,'?',252], blanks: [1,3], answers: [249,251] },
+    { sequence: [298,'?',300,'?',302], blanks: [1,3], answers: [299,301] },
+    { sequence: [348,'?',350,'?',352], blanks: [1,3], answers: [349,351] },
+  ];
+
+  try {
+    const fillContainer = document.getElementById('fill-exercises');
+    if (fillContainer) {
+      fillExercises.forEach((ex, exIdx) => {
+        const row = document.createElement('div');
+        row.className = 'fill-row';
+        let blankCount = 0;
+        ex.sequence.forEach((item, itemIdx) => {
+          if (item === '?') {
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.className = 'fill-box';
+            input.placeholder = '?';
+            input.dataset.answer = ex.answers[blankCount];
+            input.dataset.exIdx = exIdx;
+            input.id = `fill_${exIdx}_${blankCount}`;
+            input.setAttribute('inputmode', 'numeric');
+            input.addEventListener('input', () => {
+              input.classList.remove('correct', 'wrong');
+            });
+            blankCount++;
+            row.appendChild(input);
+          } else {
+            const span = document.createElement('div');
+            span.className = 'fill-given';
+            span.textContent = item;
+            row.appendChild(span);
+          }
+          if (itemIdx < ex.sequence.length - 1) {
+            const arrow = document.createElement('span');
+            arrow.textContent = '→';
+            arrow.style.cssText = 'font-size:1.4rem;color:#FFD93D;font-weight:800;';
+            row.appendChild(arrow);
+          }
+        });
+        fillContainer.appendChild(row);
+      });
+    }
+  } catch(e) {}
+
+  window.checkFill = function() {
+    try {
+      let correct = 0, total = 0;
+      const inputs = document.querySelectorAll('.fill-box');
+      inputs.forEach(input => {
+        total++;
+        const userVal = parseInt(input.value);
+        const correctVal = parseInt(input.dataset.answer);
+        if (!isNaN(userVal) && userVal === correctVal) {
+          input.classList.add('correct');
+          input.classList.remove('wrong');
+          correct++;
+        } else {
+          input.classList.add('wrong');
+          input.classList.remove('correct');
+          shakeElement(input);
+        }
+      });
+      const result = document.getElementById('fill-result');
+      if (result) {
+        if (correct === total) {
+          result.textContent = `🎉 Perfect! All ${total} correct! You are a star! ⭐`;
+          result.style.color = '#388e3c';
+          triggerConfettiBurst();
+        } else {
+          result.textContent = `😊 ${correct} out of ${total} correct! Try again! 💪`;
+          result.style.color = '#FF6B6B';
+        }
+      }
+    } catch(e) {}
+  };
+
+  // ── TAP REVEAL BALLOONS ──
+  const balloonEmojis = ['🎈','🎀','🎁','🎊','🎉','⭐','🌟','💫','🦋','🌸','🌈','🍭'];
+  const tapNumbers = [5, 10, 15, 20, 25, 30, 50, 75, 100, 150, 200, 500];
+  try {
+    const tapGrid = document.getElementById('tapGrid');
+    if (tapGrid) {
+      tapNumbers.forEach((num, idx) => {
+        const card = document.createElement('div');
+        card.className = 'tap-card';
+        card.innerHTML = `<span class="tap-emoji">${balloonEmojis[idx % balloonEmojis.length]}</span><span class="tap-num" style="opacity:0">?</span>`;
+        card.addEventListener('click', () => {
+          if (!card.classList.contains('tapped')) {
+            card.classList.add('tapped');
+            const numSpan = card.querySelector('.tap-num');
+            if (numSpan) { numSpan.textContent = num; numSpan.style.opacity = '1'; }
+            try {
+              if (typeof gsap !== 'undefined') {
+                gsap.fromTo(card, {scale:0.9},{scale:1.15,duration:0.3,yoyo:true,repeat:1,ease:'power2.out'});
+              }
+            } catch(e) {}
+            if (idx % 4 === 0) triggerConfettiBurst();
+          }
+        });
+        tapGrid.appendChild(card);
+      });
+    }
+  } catch(e) {}
+
+  // ── QUIZ ──
+  const quizData = [
+    {
+      question: "What number comes after 5?",
+      display: "5 → ?",
+      options: [4, 6, 7],
+      correct: 1
+    },
+    {
+      question: "What number comes after 9?",
+      display: "9 → ?",
+      options: [8, 11, 10],
+      correct: 2
+    },
+    {
+      question: "What number comes after 19?",
+      display: "19 → ?",
+      options: [20, 18, 21],
+      correct: 0
+    },
+    {
+      question: "What number comes after 49?",
+      display: "49 → ?",
+      options: [51, 48, 50],
+      correct: 2
+    },
+    {
+      question: "What number comes after 99?",
+      display: "99 → ?",
+      options: [100, 98, 101],
+      correct: 0
+    },
+    {
+      question: "What number comes after 149?",
+      display: "149 → ?",
+      options: [148, 151, 150],
+      correct: 2
+    },
+    {
+      question: "What number comes after 199?",
+      display: "199 → ?",
+      options: [200, 198, 201],
+      correct: 0
+    },
+    {
+      question: "What number comes after 299?",
+      display: "299 → ?",
+      options: [298, 300, 301],
+      correct: 1
+    },
+    {
+      question: "What comes between 4 and 6?",
+      display: "4 → ? → 6",
+      options: [3, 5, 7],
+      correct: 1
+    },
+    {
+      question: "What comes between 9 and 11?",
+      display: "9 → ? → 11",
+      options: [8, 12, 10],
+      correct: 2
+    }
+  ];
+
+  let currentQ = 0, score = 0, answered = false;
+
+  function buildQuiz() {
+    try {
+      const container = document.getElementById('quiz-container');
+      const progress = document.getElementById('quizProgress');
+      const nextBtn = document.getElementById('nextBtn');
+      const restartBtn = document.getElementById('restartBtn');
+      const scoreDiv = document.getElementById('quizScore');
+      if (!container) return;
+
+      // Build progress dots
+      if (progress) {
+        progress.innerHTML = '';
+        quizData.forEach((_, i) => {
+          const dot = document.createElement('div');
+          dot.className = 'q-dot' + (i === currentQ ? ' current' : '');
+          progress.appendChild(dot);
+        });
+      }
+
+      container.innerHTML = '';
+      const q = quizData[currentQ];
+      const box = document.createElement('div');
+      box.className = 'quiz-question-box active';
+      box.innerHTML = `
+        <div class="quiz-q-text">Question ${currentQ+1} of ${quizData.length}</div>
+        <div class="quiz-number-display">${q.display}</div>
+        <div class="quiz-q-text" style="color:#888; font-size:clamp(1rem,2vw,1.3rem);">Which number comes next?</div>
+        <div class="quiz-options" id="quizOpts"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+      `;
+      container.appendChild(box);
+
+      const opts = document.getElementById('quizOpts');
+      if (opts) {
+        q.options.forEach((opt, oi) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-opt';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => {
+            if (answered) return;
+            answered = true;
+            const fb = document.getElementById('quizFeedback');
+            if (oi === q.correct) {
+              score++;
+              btn.classList.add('opt-correct');
+              if (fb) { fb.textContent = '🎉 Yes! That\'s right!'; fb.style.color = '#388e3c'; }
+              triggerConfettiBurst();
+            } else {
+              btn.classList.add('opt-wrong');
+              shakeElement(btn);
+              if (fb) { fb.textContent = '😊 Not quite! The answer is ' + q.options[q.correct]; fb.style.color = '#FF6B6B'; }
+              // highlight correct
+              const allBtns = opts.querySelectorAll('.quiz-opt');
+              if (allBtns[q.correct]) allBtns[q.correct].classList.add('opt-correct');
+            }
+            if (nextBtn) nextBtn.style.display = 'inline-block';
+          });
+          opts.appendChild(btn);
+        });
+      }
+
+      answered = false;
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (restartBtn) restartBtn.style.display = 'none';
+      if (scoreDiv) scoreDiv.style.display = 'none';
+
+    } catch(e) {}
+  }
+
+  window.nextQuestion = function() {
+    try {
+      currentQ++;
+      const nextBtn = document.getElementById('nextBtn');
+      const restartBtn = document.getElementById('restartBtn');
+      const scoreDiv = document.getElementById('quizScore');
+      if (currentQ < quizData.length) {
+        buildQuiz();
+      } else {
+        const container = document.getElementById('quiz-container');
+        if (container) container.innerHTML = `
+          <div style="text-align:center; padding:40px 20px;">
+            <div style="font-size:clamp(3rem,10vw,6rem);">🏆</div>
+            <div style="font-family:'Bubblegum Sans',cursive; font-size:clamp(1.5rem,4vw,2.5rem); color:#388e3c; margin-top:12px;">
+              You finished! Amazing job!
+            </div>
+          </div>
+        `;
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (restartBtn) restartBtn.style.display = 'inline-block';
+        if (scoreDiv) {
+          const stars = score >= 8 ? '⭐⭐⭐' : score >= 5 ? '⭐⭐' : '⭐';
+          scoreDiv.textContent = `🎯 Your Score: ${score} out of ${quizData.length}! ${stars}`;
+          scoreDiv.style.display = 'block';
+        }
+        if (score >= 8) { triggerConfettiBurst(); setTimeout(triggerConfettiBurst, 500); }
+        const progress = document.getElementById('quizProgress');
+        if (progress) {
+          progress.querySelectorAll('.q-dot').forEach(d => { d.classList.add('done'); d.classList.remove('current'); });
+        }
+      }
+    } catch(e) {}
+  };
+
+  window.restartQuiz = function() {
+    currentQ = 0;
+    score = 0;
+    answered = false;
+    buildQuiz();
+  };
+
+  buildQuiz();
+
+  // ── HELPER: SHAKE ──
+  function shakeElement(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { x: -10, duration: 0.08, repeat: 5, yoyo: true, onComplete: () => gsap.set(el, { x: 0 }) });
+      } else {
+        el.style.animation = 'none';
+        el.style.transition = 'none';
+        let shakes = 0;
+        const interval = setInterval(() => {
+          el.style.transform = shakes % 2 === 0 ? 'translateX(-10px)' : 'translateX(10px)';
+          shakes++;
+          if (shakes > 8) { clearInterval(interval); el.style.transform = ''; }
+        }, 60);
+      }
+    } catch(e) {}
+  }
+
+  // ── HELPER: CONFETTI ──
+  function triggerConfettiBurst() {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#42a5f5','#ce93d8'] });
+      }
+    } catch(e) {}
+  }
+
+  // ── GSAP ANIMATIONS ──
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Dismiss curtain
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 1.2, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+
+      // Hero entrance
+      gsap.from('.hero h1', { y: -40, opacity: 0, duration: 0.5, delay: 1.4 });
+      gsap.from('.hero-subtitle', { y: -20, opacity: 0, duration: 0.5, delay: 1.6 });
+      gsap.from('.hero-emoji-row', { y: -20, opacity: 0, duration: 0.5, delay: 1.8 });
+      gsap.from('.hero-badge', { y: 20, opacity: 0, duration: 0.5, delay: 2.0 });
+
+      // Cards scroll trigger
+      const cards = document.querySelectorAll('.fun-card, .quiz-card');
+      cards.forEach((card, i) => {
+        if (typeof ScrollTrigger !== 'undefined') {
+          gsap.from(card, {
+            y: 60,
+            scale: 0.85,
+            opacity: 0,
+            duration: 0.55,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            },
+            delay: 0
+          });
+        }
+      });
+
+    } else {
+      // Fallback: dismiss curtain
+      const c = document.getElementById('curtain');
+      if (c) { c.style.opacity = '0'; setTimeout(() => { c.style.display = 'none'; }, 500); }
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // ── LENIS SMOOTH SCROLL ──
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const shouldUseLenis = !(navigator.deviceMemory && navigator.deviceMemory < 2);
+      if (shouldUseLenis) {
+        const lenis = new Lenis({ lerp: 0.08 });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => { try { lenis.raf(time * 1000); } catch(e) {} });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function rafLoop(time) {
+            try { lenis.raf(time); } catch(e) {}
+            requestAnimationFrame(rafLoop);
+          }
+          requestAnimationFrame(rafLoop);
+        }
+      }
+    }
+  } catch(e) {}
+
+  // ── MOBILE NAV SMOOTH SCROLL ──
+  try {
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const href = btn.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+      });
+    });
+  } catch(e) {}
+
+  // ── INTERSECTION OBSERVER for lazy animation fallback ──
+  try {
+    if ('IntersectionObserver' in window && typeof gsap === 'undefined') {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.transition = 'opacity 0.5s, transform 0.5s';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'none';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fun-card, .quiz-card').forEach(card => {
+        observer.observe(card);
+      });
+    }
+  } catch(e) {}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

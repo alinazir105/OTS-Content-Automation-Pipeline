@@ -1,1428 +1,1766 @@
+<!-- CLASS: 1 | SUBJECT: computer | VERSION: 1.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>STARTING AND SHUTTING DOWN THE COMPUTER – computer class 1</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 – Starting and Shutting Down the Computer | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
-/* ── RESET & ROOT ─────────────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --p:#00BCD4; --p-dk:#FF9800; --a:#673AB7; --a2:#F49040;
-  --bg-s:#0a1628; --bg-e:#0d2b3e;
-  --card:rgba(255,255,255,0.08); --txt:#e0f7fa;
-  --radius:16px; --radius-sm:10px;
-  --shadow:0 8px 32px rgba(0,0,0,0.35);
-  --font-hero:'Orbitron', 'Segoe UI', sans-serif; --font-body:'Exo 2', 'Segoe UI', sans-serif;
-  --correct:#22c55e; --incorrect:#ef4444;
-  /* Typography scale (bigger + consistent across sections) */
-  --fs:clamp(17px, 0.45vw + 15px, 21px);      /* base */
-  --fs-sm:clamp(15px, 0.25vw + 14px, 18px);   /* small labels */
-  --fs-lg:clamp(18px, 0.65vw + 15px, 24px);   /* section titles */
-  --fs-xl:clamp(22px, 1.1vw + 16px, 34px);    /* hero title */
-}
-html{scroll-behavior:smooth}
-body{
-  background:linear-gradient(135deg,var(--bg-s) 0%,var(--bg-e) 100%);
-  color:var(--txt); font-family:var(--font-body);
-  min-height:100vh; padding:0; line-height:1.65;
-  font-size:var(--fs);
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── PARTICLES CANVAS ────────────────────────────────────── */
-#particlesBg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
-.page-wrap{
-  position:relative;z-index:1;
-  width:100%;
-  max-width:none;
-  margin:0 auto;
-  padding:clamp(12px, 2vw, 28px);
-}
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #e0f7fa;
+  }
 
-/* ── HEADER ──────────────────────────────────────────────── */
-.hero{
-  background:linear-gradient(135deg, #00BCD4 0%, #FF9800 100%);
-  border-radius:var(--radius);padding:2.5rem 1.5rem 2rem;
-  text-align:center;margin-bottom:1.25rem;
-  box-shadow:var(--shadow);position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-.hero-badge{
-  display:inline-block;background:rgba(255,255,255,.15);
-  padding:.35rem 1rem;border-radius:50px;font-size:.85rem;
-  margin-bottom:.75rem;letter-spacing:.05em;text-transform:uppercase;
-}
-.hero h1{
-  font-family:var(--font-hero);
-  font-size:var(--fs-xl);
-  line-height:1.15;margin-bottom:.5rem;color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,.4);
-}
-.hero-tagline{font-size:clamp(1.05rem, .55vw + .95rem, 1.35rem);opacity:.9;max-width:680px;margin:0 auto .75rem;}
-.hero-meta{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.9rem;opacity:.8;}
-.hero-meta span{display:flex;align-items:center;gap:.4rem;}
+  body {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    color: #333;
+    min-height: 100vh;
+  }
 
-/* ── PROGRESS BAR ────────────────────────────────────────── */
-.progress-bar-wrap{
-  background:var(--card);backdrop-filter:blur(8px);
-  border-radius:var(--radius);padding:.9rem 1.25rem;
-  margin-bottom:1.25rem;
-  border:1px solid rgba(255,255,255,.08);
-}
-.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-weight:600;font-size:.9rem;}
-.prog-track{height:10px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .6s ease;border-radius:5px;}
-.sound-btn{
-  width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
-  background:rgba(255,255,255,.1);color:var(--txt);cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;transition:all .2s;
-}
-.sound-btn:hover{background:rgba(255,255,255,.2);}
+  /* Animated sky background */
+  .sky-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #a8edea 0%, #fed6e3 50%, #c8f7c5 100%);
+    overflow: hidden;
+  }
 
-/* ── CARDS ───────────────────────────────────────────────── */
-.section-card{
-  background:var(--card);backdrop-filter:blur(12px);
-  border-radius:var(--radius);padding:1.5rem;
-  margin-bottom:1.25rem;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:var(--shadow);
-}
-.section-title{
-  display:flex;align-items:center;gap:10px;
-  color:var(--a);font-size:var(--fs-lg);font-weight:800;
-  padding-bottom:.6rem;margin-bottom:1rem;
-  border-bottom:2px solid rgba(255,255,255,.08);
-}
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.8;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  .cloud1 { width: 120px; height: 40px; top: 8%; animation-duration: 25s; animation-delay: 0s; }
+  .cloud1::before { width: 60px; height: 60px; top: -30px; left: 15px; }
+  .cloud1::after { width: 40px; height: 40px; top: -20px; left: 55px; }
+  .cloud2 { width: 160px; height: 50px; top: 18%; animation-duration: 35s; animation-delay: -10s; }
+  .cloud2::before { width: 80px; height: 80px; top: -40px; left: 20px; }
+  .cloud2::after { width: 55px; height: 55px; top: -28px; left: 75px; }
+  .cloud3 { width: 100px; height: 35px; top: 30%; animation-duration: 20s; animation-delay: -5s; }
+  .cloud3::before { width: 50px; height: 50px; top: -25px; left: 10px; }
+  .cloud3::after { width: 35px; height: 35px; top: -18px; left: 45px; }
 
-/* ── OBJECTIVES ──────────────────────────────────────────── */
-.objectives-list{list-style:none;display:grid;gap:.5rem;}
-.objectives-list li{display:flex;align-items:center;gap:.65rem;padding:.75rem 1rem;background:rgba(255,255,255,.05);border-radius:var(--radius-sm);font-size:1.02rem;}
-.objectives-list li i{color:var(--a);flex-shrink:0;}
+  @keyframes floatCloud {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
 
-/* ── CONCEPTS ────────────────────────────────────────────── */
-.concepts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
-.concept-card{
-  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:var(--radius);padding:1.25rem;
-  text-align:center;transition:transform .3s,box-shadow .3s;
-  cursor:default;
-}
-.concept-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
-.concept-emoji{font-size:2.5rem;margin-bottom:.6rem;}
-.concept-term{font-size:1.18rem;font-weight:800;color:var(--a);margin-bottom:.45rem;}
-.concept-def{font-size:1.02rem;opacity:.92;margin-bottom:.85rem;}
-.concept-examples{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;}
-.example-tag{background:rgba(255,255,255,.1);padding:.28rem .7rem;border-radius:50px;font-size:var(--fs-sm);}
+  /* Page wrapper */
+  .page-wrapper {
+    width: 100%;
+    padding: 0 0 120px 0;
+  }
 
-/* ── FUN FACTS ───────────────────────────────────────────── */
-.fun-facts-wrap{display:grid;gap:.75rem;}
-.fun-fact{
-  background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border-left:4px solid var(--a2);border-radius:var(--radius-sm);
-  padding:1rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;font-size:1.05rem;
-}
-.fun-fact i{color:var(--a2);flex-shrink:0;margin-top:.15rem;}
+  /* Hero */
+  .hero {
+    width: 100vw;
+    min-height: 70vh;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 50%, #6BCB77 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px 80px;
+    position: relative;
+    overflow: hidden;
+  }
 
-/* ── ENRICHMENT SECTIONS (tiered) ─────────────────────────── */
-.enrich-text{opacity:.92;line-height:1.8;font-size:1.05rem;}
-.enrich-list{display:grid;gap:.55rem;margin-left:1.1rem;}
-.enrich-list li{margin-left:.2rem;}
-.qa-wrap{display:grid;gap:.75rem;}
-.qa-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:1rem;}
-.qa-q{font-weight:800;color:var(--a);margin-bottom:.35rem;}
-.qa-a{opacity:.92;}
-.glossary{display:grid;gap:.65rem;}
-.gloss-row{display:grid;grid-template-columns:minmax(140px, 220px) 1fr;gap:.8rem;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.85rem 1rem;}
-.gloss-term{font-weight:900;color:#fff;}
-.gloss-def{opacity:.9;}
-.enrich-acc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.7rem 1rem;}
-.enrich-acc + .enrich-acc{margin-top:.6rem;}
-.enrich-acc summary{cursor:pointer;font-weight:800;color:#fff;}
-.enrich-body{padding:.75rem 0 0;opacity:.94;}
-.steps{margin-left:1.2rem;display:grid;gap:.4rem;}
-.final,.why,.answer,.kp{margin-top:.6rem;}
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 60px;
+    background: #e0f7fa;
+    border-radius: 60px 60px 0 0;
+  }
 
-/* ── 3D SCENE ────────────────────────────────────────────── */
-.scene-wrap{
-  position:relative;border-radius:var(--radius);overflow:hidden;
-  height:360px;background:#000;
-  border:1px solid rgba(255,255,255,.1);
-}
-#scene3dCanvas{display:block;width:100%!important;height:100%!important;}
-.scene-controls{
-  position:absolute;bottom:14px;right:14px;
-  display:flex;flex-direction:column;gap:.4rem;z-index:5;
-}
-.scene-btn{
-  width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
-  background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:1rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;backdrop-filter:blur(6px);
-}
-.scene-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1);}
-.scene-hint{
-  position:absolute;top:12px;left:50%;transform:translateX(-50%);
-  background:rgba(0,0,0,.6);padding:.4rem 1rem;border-radius:50px;
-  font-size:var(--fs-sm);color:rgba(255,255,255,.88);backdrop-filter:blur(6px);
-  animation:fadePulse 3s infinite;white-space:nowrap;z-index:5;
-}
-@keyframes fadePulse{0%,100%{opacity:.7}50%{opacity:1}}
-.scene-desc{
-  position:absolute;bottom:14px;left:14px;
-  background:rgba(0,0,0,.7);padding:.6rem 1rem;border-radius:var(--radius-sm);
-  font-size:clamp(.95rem, .25vw + .9rem, 1.05rem);color:rgba(255,255,255,.88);max-width:260px;
-  backdrop-filter:blur(6px);line-height:1.4;z-index:5;
-}
+  .hero-badge {
+    background: white;
+    color: #FF6B6B;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    padding: 10px 28px;
+    border-radius: 50px;
+    border: 4px solid #FF6B6B;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
 
-/* ── TABS ────────────────────────────────────────────────── */
-.tabs-wrap{margin-bottom:1.25rem;}
-.tabs-header{
-  display:flex;overflow-x:auto;scrollbar-width:none;
-  background:rgba(0,0,0,.3);border-radius:var(--radius) var(--radius) 0 0;
-  border:1px solid rgba(255,255,255,.08);border-bottom:none;
-}
-.tabs-header::-webkit-scrollbar{display:none}
-.tab-btn{
-  flex:1;min-width:90px;padding:.85rem .75rem;border:none;background:transparent;
-  color:rgba(255,255,255,.6);cursor:pointer;font-family:var(--font-body);font-weight:600;
-  font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);display:flex;align-items:center;justify-content:center;gap:6px;
-  white-space:nowrap;transition:all .25s;position:relative;
-}
-.tab-btn::after{
-  content:'';position:absolute;bottom:0;left:50%;width:0;height:3px;
-  background:var(--a);transition:all .25s;transform:translateX(-50%);
-  border-radius:3px 3px 0 0;
-}
-.tab-btn:hover{color:#fff;background:rgba(255,255,255,.05);}
-.tab-btn.active{
-  background:linear-gradient(135deg, #00BCD4, #FF9800);color:#fff;
-  box-shadow:0 4px 15px rgba(0,0,0,.3);
-}
-.tab-btn.active::after{width:70%;}
-.tab-content{
-  background:rgba(0,0,0,.25);backdrop-filter:blur(8px);
-  border-radius:0 0 var(--radius) var(--radius);
-  border:1px solid rgba(255,255,255,.08);border-top:none;
-  padding:1.5rem;
-}
+  .hero h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: white;
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
 
-/* ── BUTTONS ─────────────────────────────────────────────── */
-.btn{
-  padding:.8rem 1.4rem;border:none;border-radius:var(--radius);
-  font-family:var(--font-body);font-weight:700;cursor:pointer;
-  transition:all .25s;display:inline-flex;align-items:center;
-  justify-content:center;gap:8px;min-height:46px;font-size:clamp(.98rem, .2vw + .95rem, 1.08rem);
-}
-.btn-primary{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.35);}
-.btn-outline{background:transparent;color:var(--a);border:2px solid var(--a);}
-.btn-outline:hover{background:var(--a);color:#000;}
-.btn-row{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:1.25rem;}
+  .hero-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: white;
+    font-weight: 700;
+    margin-bottom: 30px;
+    max-width: 700px;
+  }
 
-/* ── GAME ELEMENTS ───────────────────────────────────────── */
-.game-section{animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.game-instruction{margin-bottom:1rem;opacity:.9;display:flex;align-items:center;gap:.5rem;font-size:1.05rem;}
+  .hero-computer {
+    font-size: clamp(5rem, 15vw, 10rem);
+    animation: bounce 2s ease-in-out infinite;
+    display: block;
+    margin-bottom: 10px;
+  }
 
-/* Sort */
-.sort-zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem;}
-.sort-zone{
-  min-height:140px;border:2.5px dashed var(--cat-color,var(--a));
-  border-radius:var(--radius);padding:.75rem;
-  background:rgba(255,255,255,.03);transition:all .25s;
-}
-.sort-zone.drag-over{background:rgba(255,255,255,.1);transform:scale(1.02);}
-.sort-zone h4{color:var(--cat-color,var(--a));margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;font-size:1.05rem;}
-.sort-items-drop{min-height:60px;display:flex;flex-wrap:wrap;gap:.4rem;align-content:flex-start;}
-.item-pool{
-  display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;
-  background:rgba(255,255,255,.05);border-radius:var(--radius);
-}
-.sort-item{
-  background:rgba(255,255,255,.12);padding:.45rem .9rem;border-radius:50px;
-  cursor:grab;font-weight:600;font-size:1.02rem;transition:all .2s;
-  border:1.5px solid rgba(255,255,255,.15);user-select:none;
-}
-.sort-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.2);}
-.sort-item.correct{background:rgba(34,197,94,.2);border-color:var(--correct);}
-.sort-item.incorrect{background:rgba(239,68,68,.2);border-color:var(--incorrect);}
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
 
-/* Quiz & TF */
-.quiz-header{
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;
-  background:rgba(255,255,255,.05);border-radius:var(--radius-sm);
-}
-.quiz-title{font-weight:700;display:flex;align-items:center;gap:.5rem;color:var(--a);}
-.quiz-prog-wrap{flex:1;min-width:140px;}
-.quiz-prog-bar{height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden;}
-.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));width:0;transition:width .4s;}
-.quiz-prog-text{font-size:var(--fs-sm);margin-top:.3rem;opacity:.8;}
-.quiz-card{background:rgba(255,255,255,.05);border-radius:var(--radius);padding:1.25rem;border:1px solid rgba(255,255,255,.08);}
-.slide-in{animation:slideIn .25s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.quiz-q{font-size:clamp(1.15rem, .35vw + 1.05rem, 1.35rem);font-weight:800;margin-bottom:1rem;line-height:1.4;}
-.q-num{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(255,255,255,.12);margin-right:6px;font-size:.85rem;
-}
-.quiz-options{display:grid;gap:.6rem;}
-.quiz-opt{
-  width:100%;text-align:left;padding:.85rem 1rem;
-  background:rgba(255,255,255,.07);border:2px solid transparent;
-  border-radius:var(--radius-sm);color:var(--txt);font-family:var(--font-body);
-  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.75rem;
-  font-size:1.05rem;font-weight:600;
-}
-.quiz-opt:hover{border-color:var(--p);background:rgba(255,255,255,.12);}
-.quiz-opt.selected{border-color:var(--p);}
-.quiz-opt.correct{background:rgba(34,197,94,.15);border-color:var(--correct);}
-.quiz-opt.incorrect{background:rgba(239,68,68,.15);border-color:var(--incorrect);}
-.opt-letter{
-  width:26px;height:26px;border-radius:50%;background:var(--p);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:.95rem;flex-shrink:0;
-}
-.quiz-feedback{
-  margin-top:.85rem;padding:.85rem 1rem;border-radius:var(--radius-sm);
-  display:flex;align-items:flex-start;gap:.65rem;font-size:1.02rem;
-}
-.quiz-feedback.hidden{display:none!important}
-.fb-success{background:rgba(34,197,94,.15);border:1px solid var(--correct);color:#86efac;}
-.fb-error{background:rgba(239,68,68,.15);border:1px solid var(--incorrect);color:#fca5a5;}
-.quiz-nav{display:flex;justify-content:space-between;gap:.75rem;margin-top:1.25rem;}
+  /* Content container */
+  .content-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
 
-/* TF buttons */
-.tf-choices{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0;}
-.tf-btn{
-  padding:1.1rem;border-radius:var(--radius);font-weight:800;font-size:1.05rem;
-  cursor:pointer;border:2px solid;transition:all .25s;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-}
-.tf-true{border-color:var(--correct);background:rgba(34,197,94,.1);color:#86efac;}
-.tf-false{border-color:var(--incorrect);background:rgba(239,68,68,.1);color:#fca5a5;}
-.tf-btn.selected,.tf-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);}
-.tf-true.selected,.tf-true:hover{background:rgba(34,197,94,.25);}
-.tf-false.selected,.tf-false:hover{background:rgba(239,68,68,.25);}
-.tf-true.correct{background:rgba(34,197,94,.35)!important;}
-.tf-false.correct{background:rgba(239,68,68,.35)!important;}
+  /* Fun cards */
+  .fun-card {
+    width: 100%;
+    max-width: 100%;
+    background: white;
+    border-radius: 32px;
+    border: 4px solid #FFD93D;
+    padding: 40px;
+    margin-bottom: 40px;
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
 
-/* Results overlay */
-.results-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);
-  display:flex;align-items:center;justify-content:center;
-  padding:1rem;z-index:2000;
-}
-.results-overlay.hidden{display:none!important}
-.results-card{
-  background:linear-gradient(135deg,var(--bg-s),var(--bg-e));
-  border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);
-  padding:2rem;width:min(480px,100%);text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-.results-icon{
-  width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(135deg,var(--p),var(--a));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;margin:0 auto .75rem;
-}
-.results-card h3{font-size:1.4rem;margin-bottom:.4rem;}
-.results-card p{opacity:.85;margin-bottom:.6rem;}
-.stars-row{display:flex;gap:.3rem;justify-content:center;color:#fbbf24;font-size:1.2rem;margin:.5rem 0;}
+  .fun-card.card-blue { border-color: #6BCB77; }
+  .fun-card.card-red { border-color: #FF6B6B; }
+  .fun-card.card-yellow { border-color: #FFD93D; }
 
-/* Memory */
-.memory-score-row{display:flex;gap:2rem;margin-bottom:.75rem;font-size:.95rem;opacity:.85;}
-.memory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;}
-.mem-card{height:80px;cursor:pointer;perspective:800px;}
-.mem-card-inner{
-  width:100%;height:100%;position:relative;transition:transform .5s;
-  transform-style:preserve-3d;
-}
-.mem-card.flipped .mem-card-inner{transform:rotateY(180deg);}
-.mem-card.matched .mem-card-inner{transform:rotateY(180deg);}
-.mem-card-front,.mem-card-back{
-  position:absolute;inset:0;border-radius:var(--radius-sm);
-  display:flex;align-items:center;justify-content:center;
-  backface-visibility:hidden;font-size:.85rem;font-weight:600;
-  text-align:center;padding:.4rem;
-}
-.mem-card-front{background:linear-gradient(135deg,var(--p),var(--p-dk));color:#fff;font-size:1.4rem;}
-.mem-card-back{background:linear-gradient(135deg,var(--a),var(--p));color:#000;transform:rotateY(180deg);}
-.mem-card.matched .mem-card-back{background:linear-gradient(135deg,var(--correct),#16a34a);}
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
 
-/* Fill blanks / scramble */
-.blanks-container{display:grid;gap:.85rem;}
-.blank-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
-.blank-sentence{font-size:1rem;line-height:1.8;margin-bottom:.4rem;}
-.blank-input{
-  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);
-  border-radius:8px;padding:.4rem .75rem;color:var(--txt);
-  font-family:var(--font-body);font-size:.95rem;
-  outline:none;transition:border .2s;width:auto;max-width:180px;
-}
-.blank-input:focus{border-color:var(--a);}
-.blank-hint{font-size:.82rem;opacity:.65;margin:.35rem 0;display:flex;align-items:center;gap:.4rem;}
-.blank-hint i{color:var(--a2);}
-.blank-result{padding:.35rem .75rem;border-radius:6px;font-size:.85rem;font-weight:600;margin-top:.35rem;}
-.blank-result.hidden{display:none!important}
-.scramble-letters{
-  font-size:1.4rem;letter-spacing:.2rem;font-weight:800;
-  color:var(--a);margin-bottom:.5rem;
-}
-.scramble-item{background:rgba(255,255,255,.05);padding:1rem;border-radius:var(--radius-sm);}
-.game-feedback{padding:.85rem 1rem;border-radius:var(--radius-sm);margin-top:1rem;display:flex;align-items:center;gap:.6rem;}
-.game-feedback.hidden{display:none!important}
-.hidden{display:none!important}
+  .card-icon {
+    font-size: 3rem;
+    line-height: 1;
+  }
 
-/* ── RESPONSIVE ───────────────────────────────────────────── */
-@media(max-width:600px){
-  .scene-wrap{height:280px}
-  .sort-zones{grid-template-columns:1fr}
-  .tf-choices{grid-template-columns:1fr}
-  .memory-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
-  .btn{min-height:44px;padding:.7rem 1rem;font-size:.88rem}
-  .hero h1{font-size:1.5rem}
-  .concepts-grid{grid-template-columns:1fr}
-  .scene-desc{display:none}
-  .gloss-row{grid-template-columns:1fr}
-}
+  .card-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: #FF6B6B;
+  }
+
+  .card-blue .card-title { color: #3a9a57; }
+  .card-red .card-title { color: #FF6B6B; }
+
+  /* Learning objectives */
+  .objectives-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .objectives-list li {
+    background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
+    border: 3px solid #FFD93D;
+    border-radius: 20px;
+    padding: 18px 24px;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Steps layout */
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: linear-gradient(135deg, #f0fff4, #e6ffe6);
+    border: 3px solid #6BCB77;
+    border-radius: 24px;
+    padding: 24px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+
+  .step-item:hover { transform: scale(1.02); }
+
+  .step-number {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 3rem;
+    color: white;
+    background: #6BCB77;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .step-text {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    color: #2d6a4f;
+    flex: 1;
+  }
+
+  .step-emoji {
+    font-size: 3rem;
+    flex-shrink: 0;
+  }
+
+  .step-item.shutdown .step-number { background: #FF6B6B; }
+  .step-item.shutdown {
+    background: linear-gradient(135deg, #fff0f0, #ffe6e6);
+    border-color: #FF6B6B;
+  }
+  .step-item.shutdown .step-text { color: #8b1a1a; }
+
+  /* Tap to reveal */
+  .tap-reveal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .tap-card {
+    background: linear-gradient(135deg, #fff9e6, #fff3cc);
+    border: 4px solid #FFD93D;
+    border-radius: 24px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .tap-card:hover { transform: scale(1.03); }
+  .tap-card:active { transform: scale(0.97); }
+
+  .tap-card .tap-emoji { font-size: 4rem; transition: transform 0.3s; }
+  .tap-card .tap-label {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: #d4900a;
+  }
+  .tap-card .tap-reveal-text {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: 700;
+    color: #555;
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 8px 14px;
+    border: 2px solid #FFD93D;
+    margin-top: 4px;
+  }
+  .tap-card.revealed .tap-reveal-text { display: block; }
+  .tap-card.revealed .tap-emoji { transform: rotate(360deg) scale(1.3); }
+
+  /* Drag and drop */
+  .drag-section {
+    margin-top: 10px;
+  }
+
+  .drag-instruction {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drag-words-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 32px;
+    justify-content: center;
+  }
+
+  .drag-word {
+    background: #FFD93D;
+    border: 4px solid #d4900a;
+    border-radius: 16px;
+    padding: 14px 24px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s, opacity 0.2s;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    touch-action: none;
+  }
+  .drag-word:active { cursor: grabbing; transform: scale(1.1); }
+  .drag-word.dragging { opacity: 0.5; }
+  .drag-word.used { opacity: 0.3; pointer-events: none; }
+
+  .drop-targets-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .drop-target {
+    border: 4px dashed #6BCB77;
+    border-radius: 20px;
+    padding: 16px 12px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #f0fff4;
+    transition: background 0.3s, border-color 0.3s;
+    text-align: center;
+  }
+
+  .drop-target.drag-over {
+    background: #d4f7d4;
+    border-color: #3a9a57;
+  }
+
+  .drop-target .target-emoji { font-size: 3rem; }
+  .drop-target .target-label {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    font-weight: 700;
+    color: #777;
+  }
+  .drop-target .dropped-word {
+    background: #6BCB77;
+    border: 3px solid #3a9a57;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    color: white;
+    display: none;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+  }
+  .drop-target.filled .dropped-word { display: flex; }
+  .drop-target.correct-drop { border-color: #3a9a57; background: #c8f7c5; }
+  .drop-target.wrong-drop { border-color: #FF6B6B; background: #ffe6e6; }
+
+  .drag-check-btn {
+    display: block;
+    margin: 24px auto 0;
+    background: #FF6B6B;
+    color: white;
+    border: 4px solid #cc4040;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 60px;
+  }
+  .drag-check-btn:hover { transform: scale(1.05); }
+
+  /* Quiz section */
+  .quiz-question {
+    display: none;
+  }
+  .quiz-question.active {
+    display: block;
+  }
+
+  .quiz-q-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #FF6B6B;
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .quiz-q-image {
+    font-size: 6rem;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .quiz-option {
+    background: white;
+    border: 4px solid #6BCB77;
+    border-radius: 24px;
+    padding: 20px 28px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    cursor: pointer;
+    min-width: 160px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s, background 0.2s;
+    text-align: center;
+    user-select: none;
+  }
+
+  .quiz-option:hover { transform: scale(1.05); background: #f0fff4; }
+  .quiz-option .opt-emoji { font-size: 2.5rem; }
+  .quiz-option.correct-opt { background: #c8f7c5; border-color: #3a9a57; }
+  .quiz-option.wrong-opt { background: #ffe6e6; border-color: #FF6B6B; }
+
+  .quiz-progress {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .quiz-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 3px solid #bbb;
+    transition: background 0.3s;
+  }
+  .quiz-dot.done { background: #6BCB77; border-color: #3a9a57; }
+  .quiz-dot.active-dot { background: #FFD93D; border-color: #d4900a; }
+
+  .quiz-feedback {
+    text-align: center;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    padding: 12px 24px;
+    border-radius: 16px;
+    margin-top: 20px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: #c8f7c5; color: #2d6a4f; border: 3px solid #6BCB77; }
+  .quiz-feedback.wrong { background: #ffe6e6; color: #8b1a1a; border: 3px solid #FF6B6B; }
+
+  .quiz-next-btn {
+    display: none;
+    margin: 20px auto 0;
+    background: #6BCB77;
+    color: white;
+    border: 4px solid #3a9a57;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    cursor: pointer;
+    min-height: 56px;
+    transition: transform 0.2s;
+  }
+  .quiz-next-btn:hover { transform: scale(1.05); }
+  .quiz-next-btn.show { display: block; }
+
+  .quiz-complete {
+    text-align: center;
+    display: none;
+    padding: 20px;
+  }
+  .quiz-complete.show { display: block; }
+  .quiz-complete-emoji { font-size: 5rem; }
+  .quiz-complete h3 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #FF6B6B;
+    margin: 12px 0;
+  }
+  .quiz-complete p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #555;
+    font-weight: 700;
+  }
+
+  /* Fill in blanks exercise */
+  .fill-blanks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .fill-item {
+    background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+    border: 3px solid #6BCB77;
+    border-radius: 20px;
+    padding: 20px 24px;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .fill-item .item-num {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.5rem;
+    color: #FF6B6B;
+    margin-right: 4px;
+  }
+
+  .blank-input {
+    border: 3px solid #FFD93D;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: #333;
+    background: white;
+    min-width: 140px;
+    min-height: 44px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: #FF6B6B; }
+  .blank-input.correct-input { border-color: #6BCB77; background: #c8f7c5; }
+  .blank-input.wrong-input { border-color: #FF6B6B; background: #ffe6e6; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: center;
+    padding: 20px;
+    background: #fff9e6;
+    border: 3px solid #FFD93D;
+    border-radius: 20px;
+  }
+
+  .word-bank-label {
+    width: 100%;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: #d4900a;
+    margin-bottom: 8px;
+  }
+
+  .word-chip {
+    background: #FFD93D;
+    border: 3px solid #d4900a;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    color: #7a4f00;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .word-chip:hover { transform: scale(1.1); }
+  .word-chip.chip-used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+  .check-answers-btn {
+    display: block;
+    margin: 20px auto 0;
+    background: #FF6B6B;
+    color: white;
+    border: 4px solid #cc4040;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-height: 60px;
+  }
+  .check-answers-btn:hover { transform: scale(1.05); }
+
+  /* Order exercise */
+  .order-section { display: flex; flex-direction: column; gap: 28px; }
+
+  .order-group {
+    background: #f9f9f9;
+    border: 3px solid #6BCB77;
+    border-radius: 20px;
+    padding: 24px;
+  }
+  .order-group.shutdown-group { border-color: #FF6B6B; }
+
+  .order-group-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    margin-bottom: 16px;
+    color: #2d6a4f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .shutdown-group .order-group-title { color: #8b1a1a; }
+
+  .order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .order-item {
+    background: white;
+    border: 3px solid #6BCB77;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 56px;
+    touch-action: none;
+  }
+  .shutdown-group .order-item { border-color: #FF6B6B; }
+  .order-item:active { cursor: grabbing; box-shadow: 0 6px 20px rgba(0,0,0,0.15); transform: scale(1.02); }
+  .order-item.correct-order { background: #c8f7c5; border-color: #3a9a57; }
+  .order-item.wrong-order { background: #ffe6e6; border-color: #FF6B6B; }
+  .order-handle { font-size: 1.5rem; opacity: 0.6; }
+  .order-letter {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 1.4rem;
+    color: #6BCB77;
+    background: #f0fff4;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid #6BCB77;
+  }
+  .shutdown-group .order-letter { color: #FF6B6B; background: #ffe6e6; border-color: #FF6B6B; }
+
+  .check-order-btn {
+    display: block;
+    margin: 16px auto 0;
+    background: #6BCB77;
+    color: white;
+    border: 4px solid #3a9a57;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    cursor: pointer;
+    min-height: 56px;
+    transition: transform 0.2s;
+  }
+  .check-order-btn:hover { transform: scale(1.05); }
+
+  /* Stars */
+  .stars-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .star { font-size: 2rem; opacity: 0.3; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Bottom mobile nav */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 4px solid #FFD93D;
+    z-index: 1000;
+    overflow-x: auto;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .bottom-nav-inner {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+    min-width: max-content;
+  }
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: #fff9e6;
+    border: 3px solid #FFD93D;
+    text-decoration: none;
+    color: #333;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 13px;
+    min-width: 64px;
+    min-height: 56px;
+    justify-content: center;
+  }
+  .bottom-nav a span { font-size: 1.4rem; }
+
+  /* Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 50%, #6BCB77 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s;
+  }
+  #curtain .curtain-content {
+    text-align: center;
+  }
+  #curtain h2 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+  }
+  .loading-dots {
+    display: flex; gap: 12px; justify-content: center;
+  }
+  .loading-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: white;
+    animation: dotPulse 1.4s ease-in-out infinite;
+  }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotPulse { 0%,80%,100%{transform:scale(0.8);opacity:0.5} 40%{transform:scale(1.2);opacity:1} }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-container { padding: 0 16px; }
+    .fun-card { padding: 24px 18px; margin-bottom: 28px; }
+    .hero { min-height: 60vh; padding: 40px 16px 70px; }
+    .bottom-nav { display: flex; }
+    .page-wrapper { padding-bottom: 80px; }
+    .tap-reveal-grid { grid-template-columns: 1fr 1fr; }
+    .drop-targets-row { grid-template-columns: 1fr 1fr; }
+    .step-item { flex-direction: row; gap: 16px; }
+    .step-number { width: 56px; height: 56px; font-size: 2rem; }
+    .quiz-options { flex-direction: column; align-items: center; }
+    .quiz-option { width: 100%; max-width: 340px; }
+  }
+  @media (max-width: 480px) {
+    .tap-reveal-grid { grid-template-columns: 1fr; }
+    .drop-targets-row { grid-template-columns: 1fr; }
+    .drag-words-row { gap: 10px; }
+  }
 </style>
 </head>
 <body>
-<canvas id="particlesBg"></canvas>
-<div class="page-wrap">
 
-  <!-- HEADER -->
-  <header class="hero">
-    <div class="hero-badge"><i class="fas fa-microchip"></i> computer · class 1</div>
-    <h1>STARTING AND SHUTTING DOWN THE COMPUTER</h1>
-    <p class="hero-tagline">Learn the simple steps to turn your computer on and off like a pro!</p>
-    <div class="hero-meta">
-      <span><i class="fas fa-layer-group"></i> Unit UNIT 4</span>
-      <span><i class="fas fa-gamepad"></i> 4 Activities</span>
-      <span><i class="fas fa-star"></i> Interactive</span>
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-content">
+    <div style="font-size:5rem;margin-bottom:16px;">💻</div>
+    <h2>Getting Ready...</h2>
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
     </div>
+  </div>
+</div>
+
+<!-- Animated Sky Background -->
+<div class="sky-bg">
+  <div class="cloud cloud1" style="left:-150px"></div>
+  <div class="cloud cloud2" style="left:-200px"></div>
+  <div class="cloud cloud3" style="left:-120px"></div>
+</div>
+
+<!-- Page -->
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <header class="hero" id="hero">
+    <div class="hero-badge">📚 Unit 4 • Digital School</div>
+    <span class="hero-computer">💻</span>
+    <h1>Starting &amp; Shutting Down the Computer</h1>
+    <p class="hero-sub">Let's learn how to switch on and switch off our computer! 🌟</p>
   </header>
 
-  <!-- PROGRESS -->
-  <div class="progress-bar-wrap">
-    <div class="prog-top">
-      <span><i class="fas fa-trophy"></i> Your Progress</span>
-      <span style="display:flex;align-items:center;gap:.6rem">
-        <span id="progPct">0%</span>
-        <button class="sound-btn" id="soundBtn"><i class="fas fa-volume-up"></i></button>
-      </span>
-    </div>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-  </div>
+  <div class="content-container">
 
-  <!-- LEARNING OBJECTIVES -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-bullseye"></i> Learning Objectives</h2>
-    <ul class="objectives-list"><li><i class="fas fa-check-circle"></i> Know how to switch on the computer.</li><li><i class="fas fa-check-circle"></i> Know how to shut down the computer.</li></ul>
-  </div>
+    <!-- SECTION 1: Learning Objectives -->
+    <section class="fun-card card-yellow" id="objectives" style="margin-top:50px;">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <h2 class="card-title">What Will We Learn?</h2>
+      </div>
+      <ul class="objectives-list">
+        <li>⚡ Know how to <strong>switch ON</strong> the computer</li>
+        <li>🔴 Know how to <strong>shut DOWN</strong> the computer</li>
+      </ul>
+    </section>
 
-  <!-- KEY CONCEPTS -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-lightbulb"></i> Key Concepts</h2>
-    <div class="concepts-grid">
-    <div class="concept-card">
-      <div class="concept-emoji">🔌</div>
-      <h3 class="concept-term">Power Button</h3>
-      <p class="concept-def">This special button is like a switch for your computer. You press it to wake up the computer or to tell it to go to sleep.</p>
-      <div class="concept-examples"><span class="example-tag">Press the power button to start your computer.</span><span class="example-tag">Hold the power button for a few seconds to force shut down (only in emergencies).</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">💻</div>
-      <h3 class="concept-term">Operating System</h3>
-      <p class="concept-def">It's like the computer's brain manager! The operating system, like Windows, helps all the parts of the computer work together and lets you use programs.</p>
-      <div class="concept-examples"><span class="example-tag">Windows is a very popular operating system.</span><span class="example-tag">The operating system loads when you turn on the computer.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">⏳</div>
-      <h3 class="concept-term">Loading</h3>
-      <p class="concept-def">When the computer is 'loading,' it means it's getting ready! The operating system is starting up, preparing everything so you can begin to use it.</p>
-      <div class="concept-examples"><span class="example-tag">You see a 'loading' screen while the computer starts.</span><span class="example-tag">Waiting for a game to load before playing.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🔑</div>
-      <h3 class="concept-term">Password</h3>
-      <p class="concept-def">A secret word or code you type to unlock your computer. It keeps your computer safe and your information private from others.</p>
-      <div class="concept-examples"><span class="example-tag">Always keep your password a secret.</span><span class="example-tag">You enter your password to log in.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">✅</div>
-      <h3 class="concept-term">Logged In</h3>
-      <p class="concept-def">When you are 'logged in,' it means you have successfully entered your password and the computer is now ready for you to use and explore.</p>
-      <div class="concept-examples"><span class="example-tag">Once logged in, you can open your favorite drawing program.</span><span class="example-tag">You need to be logged in to save your work.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🏁</div>
-      <h3 class="concept-term">Start Menu</h3>
-      <p class="concept-def">This is a special button, usually at the bottom left of your screen. Clicking it opens a menu where you can find programs and options, like 'Shut down'.</p>
-      <div class="concept-examples"><span class="example-tag">Click the Start menu to find your games.</span><span class="example-tag">The Start menu is where you begin to shut down.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🛑</div>
-      <h3 class="concept-term">Shut Down</h3>
-      <p class="concept-def">This is the proper way to turn off your computer. It closes all programs safely and prepares the computer to power off completely, protecting its parts.</p>
-      <div class="concept-examples"><span class="example-tag">Always shut down your computer before leaving.</span><span class="example-tag">Shutting down saves electricity.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🖥️</div>
-      <h3 class="concept-term">Monitor</h3>
-      <p class="concept-def">The monitor is like the computer's TV screen! It shows you all the pictures, words, and videos that the computer is working on.</p>
-      <div class="concept-examples"><span class="example-tag">You watch cartoons on the monitor.</span><span class="example-tag">The monitor displays your drawing.</span></div>
-    </div>
-    <div class="concept-card">
-      <div class="concept-emoji">🗼</div>
-      <h3 class="concept-term">Computer Tower</h3>
-      <p class="concept-def">This is the big box part of a desktop computer. It holds the 'brain' and other important parts that make the computer work.</p>
-      <div class="concept-examples"><span class="example-tag">The power button is usually on the computer tower.</span><span class="example-tag">The computer tower should be kept in a safe place.</span></div>
-    </div></div>
-  </div>
+    <!-- SECTION 2: Steps to Start -->
+    <section class="fun-card card-blue" id="start-steps">
+      <div class="card-header">
+        <span class="card-icon">▶️</span>
+        <h2 class="card-title">Steps to Start the Computer</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-item" onclick="revealStep(this)">
+          <div class="step-number">1</div>
+          <div class="step-text">Press the <strong>power button</strong> to turn on the computer.</div>
+          <div class="step-emoji">🔘</div>
+        </div>
+        <div class="step-item" onclick="revealStep(this)">
+          <div class="step-number">2</div>
+          <div class="step-text">Wait for the <strong>operating system</strong> (like Windows) to load.</div>
+          <div class="step-emoji">⏳</div>
+        </div>
+        <div class="step-item" onclick="revealStep(this)">
+          <div class="step-number">3</div>
+          <div class="step-text">Enter your <strong>password</strong> and you are ready to use the computer! 🎉</div>
+          <div class="step-emoji">🔑</div>
+        </div>
+      </div>
+    </section>
 
-  <!-- 3D EXPLORER -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-cube"></i> 3D Explorer · <em style="font-size:.85rem;opacity:.7;font-style:normal">A friendly, animated computer tower with a glowing power but</em></h2>
-    <div class="scene-wrap">
-      <canvas id="scene3dCanvas"></canvas>
-      <div class="scene-hint"><i class="fas fa-hand-paper"></i> Drag to rotate · Scroll/pinch to zoom</div>
-      <div class="scene-controls">
-        <button class="scene-btn" id="btn3dZoomIn"  title="Zoom in"><i class="fas fa-plus"></i></button>
-        <button class="scene-btn" id="btn3dZoomOut" title="Zoom out"><i class="fas fa-minus"></i></button>
-        <button class="scene-btn" id="btn3dReset"   title="Reset view"><i class="fas fa-sync-alt"></i></button>
+    <!-- SECTION 3: Steps to Shut Down -->
+    <section class="fun-card card-red" id="shutdown-steps">
+      <div class="card-header">
+        <span class="card-icon">⏹️</span>
+        <h2 class="card-title">Steps to Shut Down the Computer</h2>
       </div>
-      <div class="scene-desc">A friendly, animated computer tower with a glowing power button, next to a monit</div>
-    </div>
-  </div>
+      <div class="steps-grid">
+        <div class="step-item shutdown" onclick="revealStep(this)">
+          <div class="step-number">1</div>
+          <div class="step-text">Click on the <strong>Start menu</strong> (the Windows button).</div>
+          <div class="step-emoji">🪟</div>
+        </div>
+        <div class="step-item shutdown" onclick="revealStep(this)">
+          <div class="step-number">2</div>
+          <div class="step-text">Click on the <strong>Power button</strong>.</div>
+          <div class="step-emoji">⏻</div>
+        </div>
+        <div class="step-item shutdown" onclick="revealStep(this)">
+          <div class="step-number">3</div>
+          <div class="step-text">Click on <strong>Shut down</strong>.</div>
+          <div class="step-emoji">🔴</div>
+        </div>
+        <div class="step-item shutdown" onclick="revealStep(this)">
+          <div class="step-number">4</div>
+          <div class="step-text">Wait for the computer to <strong>shut down completely</strong>.</div>
+          <div class="step-emoji">⌛</div>
+        </div>
+        <div class="step-item shutdown" onclick="revealStep(this)">
+          <div class="step-number">5</div>
+          <div class="step-text">Once powered off, you can turn off the <strong>power switch</strong>.</div>
+          <div class="step-emoji">🔌</div>
+        </div>
+      </div>
+    </section>
 
-  <!-- FUN FACTS -->
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-star"></i> Fun Facts</h2>
-    <div class="fun-facts-wrap"><div class="fun-fact"><i class="fas fa-star"></i> The first computers were so big they could fill an entire room!</div><div class="fun-fact"><i class="fas fa-star"></i> Turning off your computer properly helps it last longer and work better.</div><div class="fun-fact"><i class="fas fa-star"></i> Computers can do millions of calculations in just one second!</div></div>
-  </div>
+    <!-- SECTION 4: Tap to Reveal -->
+    <section class="fun-card card-yellow" id="tap-reveal">
+      <div class="card-header">
+        <span class="card-icon">👆</span>
+        <h2 class="card-title">Tap &amp; Discover!</h2>
+      </div>
+      <p style="font-size:clamp(1rem,2vw,1.3rem);color:#888;font-weight:700;margin-bottom:16px;">Tap each picture to see what it is! 🔍</p>
+      <div class="tap-reveal-grid">
+        <div class="tap-card" onclick="tapReveal(this)" tabindex="0" role="button" aria-label="Tap to reveal power button">
+          <div class="tap-emoji">🔘</div>
+          <div class="tap-label">What is this?</div>
+          <div class="tap-reveal-text">⚡ Power Button! Press it to turn on!</div>
+        </div>
+        <div class="tap-card" onclick="tapReveal(this)" tabindex="0" role="button" aria-label="Tap to reveal Windows logo">
+          <div class="tap-emoji">🪟</div>
+          <div class="tap-label">What is this?</div>
+          <div class="tap-reveal-text">🪟 Start Menu! Click to open options!</div>
+        </div>
+        <div class="tap-card" onclick="tapReveal(this)" tabindex="0" role="button" aria-label="Tap to reveal password screen">
+          <div class="tap-emoji">🔑</div>
+          <div class="tap-label">What is this?</div>
+          <div class="tap-reveal-text">🔑 Password! Type it to log in!</div>
+        </div>
+        <div class="tap-card" onclick="tapReveal(this)" tabindex="0" role="button" aria-label="Tap to reveal shut down option">
+          <div class="tap-emoji">😴</div>
+          <div class="tap-label">What is this?</div>
+          <div class="tap-reveal-text">💤 Shut Down! The computer goes to sleep!</div>
+        </div>
+      </div>
+    </section>
 
-  
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-book"></i> Story Explanation</h2>
-    <div class="enrich-text">Meet Timmy and his robot friend, Byte! Timmy wants to draw on the computer. Byte shows him how to press the \'power\' button. The computer wakes up and starts \'loading,\' like a sleepy friend getting ready. Timmy types a secret \'password\' to say \'hello\' to the computer. Now, he\'s \'logged in\' and ready to draw! When drawing time is over, Byte teaches Timmy to click the \'Start menu,\' then the \'Power\' button, and finally \'Shut down\'. The computer says \'goodbye\' and goes to sleep safely. Good job, Timmy, you\'re a computer expert!</div>
-  </div>
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Common Mistakes</h2>
-    <ul class='enrich-list'><li>Pulling the power plug from the wall instead of properly shutting down the computer.</li><li>Trying to use the computer before the operating system has fully loaded.</li><li>Forgetting to turn off the main power switch after the computer has shut down completely.</li></ul>
-  </div>
-  <div class="section-card">
-    <h2 class="section-title"><i class="fas fa-bolt"></i> Quick Check</h2>
-    <div class='qa-wrap'><div class='qa-item'><div class='qa-q'>How do you turn on a computer?</div><div class='qa-a'>Press the power button.</div></div><div class='qa-item'><div class='qa-q'>What is the first thing you see after turning it on?</div><div class='qa-a'>The operating system loading.</div></div><div class='qa-item'><div class='qa-q'>What do you need to enter to use the computer?</div><div class='qa-a'>A password.</div></div><div class='qa-item'><div class='qa-q'>Where do you go to shut down?</div><div class='qa-a'>The Start menu.</div></div><div class='qa-item'><div class='qa-q'>Why shut down properly?</div><div class='qa-a'>To keep the computer safe and working well.</div></div></div>
-  </div>
+    <!-- SECTION 5: Exercise 1 – Fill in the Blanks -->
+    <section class="fun-card card-blue" id="exercise1">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <h2 class="card-title">Exercise 1 – Fill in the Blanks!</h2>
+      </div>
+      <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-bottom:16px;">Tap a word from the word bank, then tap the blank where it goes! 🌟</p>
 
-  <!-- GAMES TABS -->
-  <div class="tabs-wrap">
-    <div class="tabs-header">
-      <button class="tab-btn active" data-tab="sort"><i class="fas fa-layer-group"></i> Sort</button>
-      <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
-      <button class="tab-btn" data-tab="tf"><i class="fas fa-check-double"></i> True/False</button>
-      <button class="tab-btn" data-tab="extra"><i class="fas fa-pencil-alt"></i> Fill Blank</button>
-    </div>
-    <div class="tab-content">
-      
-<div class="game-section" id="tab-sort">
-  <p class="game-instruction"><i class="fas fa-hand-point-up"></i> Drag and drop the actions into the correct category: 'Starting the Computer' or 'Shutting Down the Computer'.</p>
-  <div class="sort-zones">
-      <div class="sort-zone" data-category="Starting the Computer"
-           style="--cat-color:#2ECC71">
-        <h4><i class="fas fa-power-off"></i> Starting the Computer</h4>
-        <div class="sort-items-drop"></div>
+      <div class="word-bank" id="wordBank">
+        <div class="word-bank-label">📦 Word Bank:</div>
+        <div class="word-chip" data-word="power" onclick="selectChip(this)">power</div>
+        <div class="word-chip" data-word="load" onclick="selectChip(this)">load</div>
+        <div class="word-chip" data-word="start" onclick="selectChip(this)">start</div>
+        <div class="word-chip" data-word="shut down" onclick="selectChip(this)">shut down</div>
+        <div class="word-chip" data-word="logged in" onclick="selectChip(this)">logged in</div>
       </div>
-      <div class="sort-zone" data-category="Shutting Down the Computer"
-           style="--cat-color:#E74C3C">
-        <h4><i class="fas fa-stop-circle"></i> Shutting Down the Computer</h4>
-        <div class="sort-items-drop"></div>
-      </div></div>
-  <div class="item-pool" id="sortPool">
-      <div class="sort-item" draggable="true"
-           data-answer="Starting the Computer">
-        ✅ Ready to Use
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Shutting Down the Computer">
-        🛑 Choose Shut Down
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Shutting Down the Computer">
-        🏁 Click Start Menu
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Starting the Computer">
-        🔌 Press Power Button
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Starting the Computer">
-        🔑 Enter Password
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Starting the Computer">
-        ⏳ Wait for OS to Load
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Shutting Down the Computer">
-        😴 Wait for Computer to Turn Off
-      </div>
-      <div class="sort-item" draggable="true"
-           data-answer="Shutting Down the Computer">
-        ⚡ Click Power Button
-      </div></div>
-  <div class="game-feedback hidden" id="sortFeedback"></div>
-  <div class="btn-row">
-    <button class="btn btn-primary" id="checkSort"><i class="fas fa-check"></i> Check</button>
-    <button class="btn btn-outline" id="resetSort"><i class="fas fa-redo"></i> Reset</button>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-quiz">
-  <div class="quiz-header">
-    <span class="quiz-title"><i class="fas fa-question-circle"></i> Knowledge Quiz</span>
-    <div class="quiz-prog-wrap">
-      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quizProgFill"></div></div>
-      <span class="quiz-prog-text" id="quizProgText">Q 1 / 10</span>
-    </div>
-  </div>
-  <div class="quiz-card" id="quizCard">
-    <div class="quiz-q" id="quizQ"></div>
-    <div class="quiz-options" id="quizOpts"></div>
-    <div class="quiz-feedback hidden" id="quizFb"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-outline" id="quizPrev"><i class="fas fa-arrow-left"></i> Back</button>
-      <button class="btn btn-primary" id="quizNext">Next <i class="fas fa-arrow-right"></i></button>
-    </div>
-  </div>
-  <div class="results-overlay hidden" id="quizResults">
-    <div class="results-card">
-      <div class="results-icon"><i class="fas fa-star"></i></div>
-      <h3 id="quizResultTitle"></h3>
-      <p id="quizResultScore"></p>
-      <div class="stars-row" id="quizStars"></div>
-      <p id="quizResultTip"></p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="quizRetry"><i class="fas fa-redo"></i> Try Again</button>
-        <button class="btn btn-outline" id="quizClose"><i class="fas fa-times"></i> Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-tf">
-  <div class="quiz-header">
-    <span class="quiz-title"><i class="fas fa-check-double"></i> True or False?</span>
-    <div class="quiz-prog-wrap">
-      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="tfProgFill"></div></div>
-      <span class="quiz-prog-text" id="tfProgText">1 / 10</span>
-    </div>
-  </div>
-  <div class="quiz-card" id="tfCard">
-    <div class="quiz-q" id="tfQ"></div>
-    <div class="tf-choices">
-      <button class="tf-btn tf-true"  id="tfTrue" ><i class="fas fa-check"></i> True</button>
-      <button class="tf-btn tf-false" id="tfFalse"><i class="fas fa-times"></i> False</button>
-    </div>
-    <div class="quiz-feedback hidden" id="tfFb"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-outline" id="tfPrev"><i class="fas fa-arrow-left"></i> Back</button>
-      <button class="btn btn-primary"  id="tfNext">Next <i class="fas fa-arrow-right"></i></button>
-    </div>
-  </div>
-  <div class="results-overlay hidden" id="tfResults">
-    <div class="results-card">
-      <div class="results-icon"><i class="fas fa-award"></i></div>
-      <h3 id="tfResultTitle"></h3>
-      <p id="tfResultScore"></p>
-      <div class="stars-row" id="tfStars"></div>
-      <p id="tfResultTip"></p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="tfRetry"><i class="fas fa-redo"></i> Try Again</button>
-        <button class="btn btn-outline" id="tfClose"><i class="fas fa-times"></i> Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-<div class="game-section hidden" id="tab-extra">
-  <p class="game-instruction"><i class="fas fa-pencil-alt"></i> Fill in the missing word in each sentence!</p>
-  <div class="blanks-container">
-  <div class="blank-item" id="blankItem0">
-    <div class="blank-sentence">To turn on the computer, press the <input class="blank-input" data-idx="0" data-answer="power" placeholder="???" autocomplete="off"> button.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It's the button with the universal on/off symbol.</div>
-    <div class="blank-result hidden" id="blankResult0"></div>
-  </div>
-  <div class="blank-item" id="blankItem1">
-    <div class="blank-sentence">After pressing the power button, wait for the operating system to <input class="blank-input" data-idx="1" data-answer="load" placeholder="???" autocomplete="off">.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> The computer is getting ready, like a truck getting its cargo.</div>
-    <div class="blank-result hidden" id="blankResult1"></div>
-  </div>
-  <div class="blank-item" id="blankItem2">
-    <div class="blank-sentence">To turn off the computer, go to the <input class="blank-input" data-idx="2" data-answer="start" placeholder="???" autocomplete="off"> menu.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> It's usually at the bottom-left corner of the screen.</div>
-    <div class="blank-result hidden" id="blankResult2"></div>
-  </div>
-  <div class="blank-item" id="blankItem3">
-    <div class="blank-sentence">In the start menu, choose the <input class="blank-input" data-idx="3" data-answer="shut down" placeholder="???" autocomplete="off"> option to safely turn off the computer.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> This option makes the computer go to sleep completely.</div>
-    <div class="blank-result hidden" id="blankResult3"></div>
-  </div>
-  <div class="blank-item" id="blankItem4">
-    <div class="blank-sentence">Once you are <input class="blank-input" data-idx="4" data-answer="logged in" placeholder="???" autocomplete="off"> to the computer, you are ready to use it.</div>
-    <div class="blank-hint"><i class="fas fa-lightbulb"></i> You've entered your secret code and gained access.</div>
-    <div class="blank-result hidden" id="blankResult4"></div>
-  </div></div>
-  <div class="btn-row" style="margin-top:1rem">
-    <button class="btn btn-primary" id="checkBlanks"><i class="fas fa-check"></i> Check All</button>
-    <button class="btn btn-outline" id="resetBlanks"><i class="fas fa-redo"></i> Reset</button>
-  </div>
-  <div class="game-feedback hidden" id="blanksFeedback"></div>
-</div>
-    </div>
-  </div>
 
-</div><!-- /page-wrap -->
+      <div class="fill-blanks-list">
+        <div class="fill-item">
+          <span class="item-num">1.</span>
+          To turn on the computer, press the
+          <input class="blank-input" type="text" placeholder="______" data-answer="power" id="blank1" onclick="fillFromSelected(this)" readonly>
+          button.
+        </div>
+        <div class="fill-item">
+          <span class="item-num">2.</span>
+          After pressing the power button, wait for the operating system to
+          <input class="blank-input" type="text" placeholder="______" data-answer="load" id="blank2" onclick="fillFromSelected(this)" readonly>.
+        </div>
+        <div class="fill-item">
+          <span class="item-num">3.</span>
+          To turn off the computer, go to the
+          <input class="blank-input" type="text" placeholder="______" data-answer="start" id="blank3" onclick="fillFromSelected(this)" readonly>
+          menu.
+        </div>
+        <div class="fill-item">
+          <span class="item-num">4.</span>
+          In the start menu, choose the
+          <input class="blank-input" type="text" placeholder="______" data-answer="shut down" id="blank4" onclick="fillFromSelected(this)" readonly>
+          option to safely turn off the computer.
+        </div>
+        <div class="fill-item">
+          <span class="item-num">5.</span>
+          Once you are
+          <input class="blank-input" type="text" placeholder="______" data-answer="logged in" id="blank5" onclick="fillFromSelected(this)" readonly>
+          to the computer, you are ready to use it.
+        </div>
+      </div>
+      <button class="check-answers-btn" onclick="checkFillBlanks()">✅ Check My Answers!</button>
+    </section>
+
+    <!-- SECTION 6: Exercise 2 – Order the Steps -->
+    <section class="fun-card card-yellow" id="exercise2">
+      <div class="card-header">
+        <span class="card-icon">🔢</span>
+        <h2 class="card-title">Exercise 2 – Put in Order!</h2>
+      </div>
+      <p style="font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#555;margin-bottom:20px;">Drag the steps to put them in the correct order! 🐉</p>
+
+      <div class="order-section">
+        <!-- Turning On -->
+        <div class="order-group">
+          <div class="order-group-title">▶️ Turning On the Computer</div>
+          <div class="order-items" id="turnOnList">
+            <div class="order-item" draggable="true" data-correct="2" data-id="to_a">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">a</span>
+              Wait for the operating system to load.
+            </div>
+            <div class="order-item" draggable="true" data-correct="1" data-id="to_b">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">b</span>
+              Press the power button.
+            </div>
+            <div class="order-item" draggable="true" data-correct="3" data-id="to_c">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">c</span>
+              Start using the computer once logged in.
+            </div>
+          </div>
+          <button class="check-order-btn" onclick="checkOrder('turnOnList',[2,1,3])">✅ Check Order!</button>
+        </div>
+
+        <!-- Shutting Down -->
+        <div class="order-group shutdown-group">
+          <div class="order-group-title">⏹️ Shutting Down the Computer</div>
+          <div class="order-items" id="shutDownList">
+            <div class="order-item" draggable="true" data-correct="4" data-id="sd_a">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">a</span>
+              Wait for the computer to shut down completely.
+            </div>
+            <div class="order-item" draggable="true" data-correct="2" data-id="sd_b">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">b</span>
+              Click on the Power button.
+            </div>
+            <div class="order-item" draggable="true" data-correct="1" data-id="sd_c">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">c</span>
+              Click on the Start menu.
+            </div>
+            <div class="order-item" draggable="true" data-correct="3" data-id="sd_d">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">d</span>
+              Click on Shut down.
+            </div>
+            <div class="order-item" draggable="true" data-correct="5" data-id="sd_e">
+              <span class="order-handle">⠿</span>
+              <span class="order-letter">e</span>
+              Turn off the power switch if needed.
+            </div>
+          </div>
+          <button class="check-order-btn" onclick="checkOrder('shutDownList',[4,2,1,3,5])">✅ Check Order!</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: Drag and Drop Matching -->
+    <section class="fun-card card-red" id="matching">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <h2 class="card-title">Match the Picture!</h2>
+      </div>
+      <div class="drag-section">
+        <p class="drag-instruction">🖐️ Drag each word to the matching picture below!</p>
+        <div class="drag-words-row" id="dragWordsRow">
+          <div class="drag-word" draggable="true" data-word="Power Button" id="dw_power">⚡ Power Button</div>
+          <div class="drag-word" draggable="true" data-word="Start Menu" id="dw_start">🪟 Start Menu</div>
+          <div class="drag-word" draggable="true" data-word="Password" id="dw_pass">🔑 Password</div>
+          <div class="drag-word" draggable="true" data-word="Shut Down" id="dw_shut">😴 Shut Down</div>
+        </div>
+        <div class="drop-targets-row">
+          <div class="drop-target" data-accept="Power Button" id="dt_power">
+            <div class="target-emoji">🔘</div>
+            <div class="target-label">Press this to turn on!</div>
+            <div class="dropped-word"></div>
+          </div>
+          <div class="drop-target" data-accept="Start Menu" id="dt_start">
+            <div class="target-emoji">🖥️</div>
+            <div class="target-label">Click this first to shut down!</div>
+            <div class="dropped-word"></div>
+          </div>
+          <div class="drop-target" data-accept="Password" id="dt_pass">
+            <div class="target-emoji">🔐</div>
+            <div class="target-label">Type this to log in!</div>
+            <div class="dropped-word"></div>
+          </div>
+          <div class="drop-target" data-accept="Shut Down" id="dt_shut">
+            <div class="target-emoji">💤</div>
+            <div class="target-label">Choose this to turn off safely!</div>
+            <div class="dropped-word"></div>
+          </div>
+        </div>
+        <button class="drag-check-btn" onclick="checkDragDrop()">✅ Check Matches!</button>
+      </div>
+    </section>
+
+    <!-- SECTION 8: Quiz -->
+    <section class="fun-card card-blue" id="quiz-section">
+      <div class="card-header">
+        <span class="card-icon">🏆</span>
+        <h2 class="card-title">Quiz Time! Can You Answer?</h2>
+      </div>
+
+      <div class="quiz-progress" id="quizProgress"></div>
+
+      <!-- Q1 -->
+      <div class="quiz-question active" id="qq1">
+        <div class="quiz-q-image">🖥️❓</div>
+        <div class="quiz-q-text">Which button do we press to TURN ON the computer?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="quizAnswer(this,true)">
+            <span class="opt-emoji">🔘</span>
+            Power Button
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🖱️</span>
+            Mouse Button
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">⌨️</span>
+            Any Keyboard Key
+          </div>
+        </div>
+        <div class="quiz-feedback" id="qf1"></div>
+        <button class="quiz-next-btn" id="qnext1" onclick="nextQuestion(2)">Next ➡️</button>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" id="qq2">
+        <div class="quiz-q-image">😴💻</div>
+        <div class="quiz-q-text">Where do we go FIRST to shut down the computer?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🎮</span>
+            Game Menu
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,true)">
+            <span class="opt-emoji">🪟</span>
+            Start Menu
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🖨️</span>
+            Printer
+          </div>
+        </div>
+        <div class="quiz-feedback" id="qf2"></div>
+        <button class="quiz-next-btn" id="qnext2" onclick="nextQuestion(3)">Next ➡️</button>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" id="qq3">
+        <div class="quiz-q-image">🔑❓</div>
+        <div class="quiz-q-text">What do we enter to LOG IN to the computer?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🌈</span>
+            A Drawing
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,true)">
+            <span class="opt-emoji">🔑</span>
+            A Password
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🎵</span>
+            A Song
+          </div>
+        </div>
+        <div class="quiz-feedback" id="qf3"></div>
+        <button class="quiz-next-btn" id="qnext3" onclick="nextQuestion(4)">Next ➡️</button>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question" id="qq4">
+        <div class="quiz-q-image">⏳💻</div>
+        <div class="quiz-q-text">After pressing the power button, what do we do next?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="quizAnswer(this,true)">
+            <span class="opt-emoji">⏳</span>
+            Wait for the OS to load
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">🏃</span>
+            Run away!
+          </div>
+          <div class="quiz-option" onclick="quizAnswer(this,false)">
+            <span class="opt-emoji">😴</span>
+            Go to sleep
+          </div>
+        </div>
+        <div class="quiz-feedback" id="qf4"></div>
+        <button class="quiz-next-btn" id="qnext4" onclick="showQuizComplete()">Finish 🎉</button>
+      </div>
+
+      <!-- Complete -->
+      <div class="quiz-complete" id="quizComplete">
+        <div class="quiz-complete-emoji">🏆</div>
+        <h3>Amazing Work!</h3>
+        <p>You finished the quiz! You're a computer superstar! ⭐⭐⭐</p>
+        <div class="stars-row" id="quizStars">
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+        </div>
+        <button class="check-answers-btn" style="margin-top:20px;" onclick="resetQuiz()">🔁 Play Again!</button>
+      </div>
+    </section>
+
+  </div><!-- end content-container -->
+</div><!-- end page-wrapper -->
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav" role="navigation" aria-label="Mobile navigation">
+  <div class="bottom-nav-inner">
+    <a href="#hero"><span>🏠</span>Home</a>
+    <a href="#objectives"><span>🎯</span>Goals</a>
+    <a href="#start-steps"><span>▶️</span>Start</a>
+    <a href="#shutdown-steps"><span>⏹️</span>Stop</a>
+    <a href="#exercise1"><span>✏️</span>Ex.1</a>
+    <a href="#exercise2"><span>🔢</span>Ex.2</a>
+    <a href="#matching"><span>🎯</span>Match</a>
+    <a href="#quiz-section"><span>🏆</span>Quiz</a>
+  </div>
+</nav>
 
 <script>
-// ── PROGRESS ──────────────────────────────────────────────────
-const PROGRESS = (function(){
-  const done={sort:false,quiz:false,tf:false,extra:false};
-  function mark(k){
-    done[k]=true;
-    const n=Object.values(done).filter(Boolean).length;
-    const pct=Math.round(n/4*100);
-    document.getElementById('progFill').style.width=pct+'%';
-    document.getElementById('progPct').textContent=pct+'%';
-  }
-  return {mark};
-})();
+document.addEventListener('DOMContentLoaded', () => {
 
-// ── SOUND ─────────────────────────────────────────────────────
-const SFX = (function(){
-  const AC=window.AudioContext||window.webkitAudioContext;
-  let ctx=null, master=null, on=true;
-  const btn=document.getElementById('soundBtn');
+  // ── Curtain guaranteed dismiss ──────────────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; setTimeout(() => { c.style.display = 'none'; }, 500); }
+  }, 2500);
 
-  function ensureCtx(){
-    if(!on||!AC) return null;
-    if(!ctx){ ctx=new AC(); master=ctx.createGain(); master.gain.value=1.2; master.connect(ctx.destination); }
-    if(ctx.state==='suspended') ctx.resume().catch(()=>{});
-    return ctx;
-  }
-
-  function tone(freq,dur,type='sine',gain=0.07,when=0,endFreq=null){
-    const c=ensureCtx(); if(!c) return;
-    const t0=c.currentTime+when;
-    const osc=c.createOscillator(); const g=c.createGain();
-    osc.type=type; osc.frequency.setValueAtTime(freq,t0);
-    if(endFreq!==null) osc.frequency.linearRampToValueAtTime(endFreq,t0+dur);
-    g.gain.setValueAtTime(0.001,t0); g.gain.exponentialRampToValueAtTime(Math.min(gain,0.12),t0+0.01);
-    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
-    osc.connect(g); g.connect(master||c.destination);
-    osc.start(t0); osc.stop(t0+dur+0.05);
-  }
-
-  function play(name){
-    if(name==='click')  { tone(500,0.06,'triangle',0.06); return; }
-    if(name==='correct'){ tone(520,0.14,'sine',0.08,0,880); return; }
-    if(name==='wrong')  { tone(300,0.18,'triangle',0.08,0,150); return; }
-    if(name==='complete'){ tone(523,0.12,'sine',0.08,0,784); tone(659,0.12,'sine',0.08,.12,988); tone(784,0.14,'sine',0.07,.24,1046); return; }
-  }
-
-  function toggle(){ on=!on; btn.innerHTML=on?'<i class="fas fa-volume-up"></i>':'<i class="fas fa-volume-mute"></i>'; if(on)play('click'); }
-  btn.addEventListener('click',toggle);
-  ['pointerdown','keydown'].forEach(ev=>window.addEventListener(ev,()=>ensureCtx(),{once:true,passive:true}));
-  return {play};
-})();
-
-// ── TABS ──────────────────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    SFX.play('click');
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.game-section').forEach(s=>s.classList.add('hidden'));
-    btn.classList.add('active');
-    document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
-  });
-});
-
-// ── BACKGROUND PARTICLES ─────────────────────────────────────
-(function(){
-  const cv=document.getElementById('particlesBg');
-  const ctx=cv.getContext('2d');
-  const COLORS=["#00E5CC", "#1F6A75", "#F49040"];
-  let W,H,particles=[];
-
-  function resize(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
-  window.addEventListener('resize',resize); resize();
-
-  for(let i=0;i<55;i++) particles.push({
-    x:Math.random()*W, y:Math.random()*H,
-    r:1+Math.random()*2.5, vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
-    c:COLORS[Math.floor(Math.random()*COLORS.length)], o:0.1+Math.random()*0.4
-  });
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W) p.vx*=-1;
-      if(p.y<0||p.y>H) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.c; ctx.globalAlpha=p.o; ctx.fill(); ctx.globalAlpha=1;
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ── 3D SCENE ─────────────────────────────────────────────────
-
-// ── 3D SCENE SETUP ──────────────────────────────────────────────
-const scene3d      = new THREE.Scene();
-const clock        = new THREE.Clock();
-const sceneObjects = [];
-const labelSprites = [];
-scene3d.background = new THREE.Color('#E0F7FA');
-scene3d.fog        = new THREE.FogExp2('#E0F7FA', 0.04);
-
-const ambLight = new THREE.AmbientLight(0xffffff, 0.55);
-scene3d.add(ambLight);
-const ptLight1 = new THREE.PointLight(0x673AB7, 1.5, 30);
-ptLight1.position.set(5, 5, 5);
-scene3d.add(ptLight1);
-const ptLight2 = new THREE.PointLight(0xBDC3C7, 0.8, 20);
-ptLight2.position.set(-5, -5, 8);
-scene3d.add(ptLight2);
-
-// Starfield background
-(function() {
-  const starGeo = new THREE.BufferGeometry();
-  const starVerts = [];
-  for (let i = 0; i < 600; i++) {
-    starVerts.push((Math.random()-0.5)*80, (Math.random()-0.5)*80, (Math.random()-0.5)*80);
-  }
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.08, transparent: true, opacity: 0.7 });
-  scene3d.add(new THREE.Points(starGeo, starMat));
-})();
-
-// Ground grid
-const gridHelper = new THREE.GridHelper(20, 20, 0x00BCD4, 0xFF9800);
-gridHelper.position.y = -2.5;
-gridHelper.material.opacity = 0.3;
-gridHelper.material.transparent = true;
-scene3d.add(gridHelper);
-
-// Create content objects
-
-  {
-    const geo = new THREE.IcosahedronGeometry(0.7, 1);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x2C3E50,
-      shininess: 90,
-      emissive: 0x2C3E50,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle0 = (Math.PI * 2 / 4) * 0;
-    mesh.position.set(
-      2.5 * Math.cos(angle0),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle0)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 0 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'float';
-    mesh.userData.label   = 'Computer Tower';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Computer Tower', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.SphereGeometry(0.7, 32, 32);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x2ECC71,
-      shininess: 90,
-      emissive: 0x2ECC71,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle1 = (Math.PI * 2 / 4) * 1;
-    mesh.position.set(
-      2.5 * Math.cos(angle1),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle1)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 1 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'pulse';
-    mesh.userData.label   = 'Power Button';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Power Button', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.IcosahedronGeometry(0.7, 1);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x34495E,
-      shininess: 90,
-      emissive: 0x34495E,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle2 = (Math.PI * 2 / 4) * 2;
-    mesh.position.set(
-      2.5 * Math.cos(angle2),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle2)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 2 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'rotate';
-    mesh.userData.label   = 'Monitor';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Monitor', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-  {
-    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0xECF0F1,
-      shininess: 90,
-      emissive: 0xECF0F1,
-      emissiveIntensity: 0.15,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    const angle3 = (Math.PI * 2 / 4) * 3;
-    mesh.position.set(
-      2.5 * Math.cos(angle3),
-      (Math.random() - 0.5) * 0.5,
-      2.5 * Math.sin(angle3)
-    );
-    mesh.userData.baseY   = mesh.position.y;
-    mesh.userData.offset  = 3 * 1.3;
-    mesh.userData.orbitR  = 2.5;
-    mesh.userData.anim    = 'none';
-    mesh.userData.label   = 'Loading Screen';
-    scene3d.add(mesh);
-    sceneObjects.push(mesh);
-
-    // Floating text label (sprite)
-    const canvas = document.createElement('canvas');
-    canvas.width  = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.roundRect(0, 0, 256, 64, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Loading Screen', 128, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(1.8, 0.45, 1);
-    sprite.position.copy(mesh.position);
-    sprite.position.y += 1.2;
-    scene3d.add(sprite);
-    labelSprites.push({ sprite, mesh });
-  }
-
-// ── CAMERA + RENDERER ─────────────────────────────────────────────
-const canvas3dEl = document.getElementById('scene3dCanvas');
-const cam3d = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
-cam3d.position.set(0, 1.5, 7);
-let targetCamZ3d = 7;
-
-const renderer3d = new THREE.WebGLRenderer({ canvas: canvas3dEl, antialias: true, alpha: false });
-renderer3d.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-// Resize handler
-function resize3d() {
-  const cont = canvas3dEl.parentElement;
-  const w = cont.clientWidth, h = cont.clientHeight || 400;
-  renderer3d.setSize(w, h, false);
-  cam3d.aspect = w / h;
-  cam3d.updateProjectionMatrix();
-}
-resize3d();
-window.addEventListener('resize', resize3d);
-
-// ── CONTROLS (drag + pinch-zoom) ──────────────────────────────────
-let isDrag3d = false, prevMouse3d = {x:0,y:0};
-let rotX3d = 0, rotY3d = 0.3;
-let autoRot3d = true;
-
-canvas3dEl.addEventListener('mousedown', e => { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.clientX,y:e.clientY}; });
-canvas3dEl.addEventListener('mousemove', e => {
-  if (!isDrag3d) return;
-  rotY3d += (e.clientX - prevMouse3d.x) * 0.01;
-  rotX3d += (e.clientY - prevMouse3d.y) * 0.01;
-  rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
-  prevMouse3d = {x:e.clientX, y:e.clientY};
-});
-canvas3dEl.addEventListener('mouseup',   () => isDrag3d = false);
-canvas3dEl.addEventListener('mouseleave',() => isDrag3d = false);
-canvas3dEl.addEventListener('wheel', e => {
-  e.preventDefault();
-  targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d + e.deltaY * 0.02));
-}, {passive:false});
-
-let initPinch3d = 0;
-canvas3dEl.addEventListener('touchstart', e => {
-  if (e.touches.length===1) { isDrag3d=true; autoRot3d=false; prevMouse3d={x:e.touches[0].clientX,y:e.touches[0].clientY}; }
-  if (e.touches.length===2) { const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; initPinch3d=Math.hypot(dx,dy); }
-}, {passive:true});
-canvas3dEl.addEventListener('touchmove', e => {
-  if (e.touches.length===1 && isDrag3d) {
-    rotY3d += (e.touches[0].clientX - prevMouse3d.x) * 0.012;
-    rotX3d += (e.touches[0].clientY - prevMouse3d.y) * 0.012;
-    rotX3d = Math.max(-1.2, Math.min(1.2, rotX3d));
-    prevMouse3d = {x:e.touches[0].clientX,y:e.touches[0].clientY};
-  }
-  if (e.touches.length===2 && initPinch3d>0) {
-    const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
-    const d=Math.hypot(dx,dy);
-    targetCamZ3d = Math.max(3, Math.min(15, targetCamZ3d*(initPinch3d/d)));
-    initPinch3d=d;
-  }
-}, {passive:true});
-canvas3dEl.addEventListener('touchend', () => isDrag3d=false);
-
-document.getElementById('btn3dZoomIn').addEventListener('click',  () => targetCamZ3d = Math.max(3,  targetCamZ3d - 1.5));
-document.getElementById('btn3dZoomOut').addEventListener('click', () => targetCamZ3d = Math.min(15, targetCamZ3d + 1.5));
-document.getElementById('btn3dReset').addEventListener('click',   () => { targetCamZ3d=7; rotX3d=0; rotY3d=0.3; autoRot3d=true; });
-
-// ── ANIMATION LOOP ────────────────────────────────────────────────
-function loop3d() {
-  requestAnimationFrame(loop3d);
-  const t = clock.getElapsedTime();
-  if (autoRot3d) rotY3d += 0.004;
-  scene3d.rotation.y = rotY3d;
-  scene3d.rotation.x = rotX3d;
-  cam3d.position.z += (targetCamZ3d - cam3d.position.z) * 0.08;
-  // Animate each object
-  
-  // Object 0: Computer Tower
-  if (sceneObjects[0]) {
-    const mesh = sceneObjects[0];
-    const t = clock.getElapsedTime();
-    mesh.position.y = mesh.userData.baseY + Math.sin(t * 2 + mesh.userData.offset) * 0.3;
-    // Update label sprite position
-    if (labelSprites[0]) {
-      labelSprites[0].sprite.position.copy(mesh.position);
-      labelSprites[0].sprite.position.y += 1.2;
+  // ── Lenis smooth scroll ──────────────────────────────────────────────────
+  let lenis = null;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const isMobile = navigator.deviceMemory !== undefined && navigator.deviceMemory < 2;
+      if (!isMobile) {
+        lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function rafLoop(time) { lenis.raf(time); requestAnimationFrame(rafLoop); }
+          requestAnimationFrame(rafLoop);
+        }
+      }
     }
-  }
-  // Object 1: Power Button
-  if (sceneObjects[1]) {
-    const mesh = sceneObjects[1];
-    const t = clock.getElapsedTime();
-    const s = 1 + Math.sin(t * 3 + mesh.userData.offset) * 0.08; mesh.scale.setScalar(s);
-    // Update label sprite position
-    if (labelSprites[1]) {
-      labelSprites[1].sprite.position.copy(mesh.position);
-      labelSprites[1].sprite.position.y += 1.2;
-    }
-  }
-  // Object 2: Monitor
-  if (sceneObjects[2]) {
-    const mesh = sceneObjects[2];
-    const t = clock.getElapsedTime();
-    mesh.rotation.y += 0.012; mesh.rotation.x += 0.005;
-    // Update label sprite position
-    if (labelSprites[2]) {
-      labelSprites[2].sprite.position.copy(mesh.position);
-      labelSprites[2].sprite.position.y += 1.2;
-    }
-  }
-  // Object 3: Loading Screen
-  if (sceneObjects[3]) {
-    const mesh = sceneObjects[3];
-    const t = clock.getElapsedTime();
-    mesh.position.y = mesh.userData.baseY + Math.sin(t * 2 + mesh.userData.offset) * 0.3;
-    // Update label sprite position
-    if (labelSprites[3]) {
-      labelSprites[3].sprite.position.copy(mesh.position);
-      labelSprites[3].sprite.position.y += 1.2;
-    }
-  }
-  renderer3d.render(scene3d, cam3d);
-}
-loop3d();
+  } catch(e) { console.warn('Lenis init failed:', e); }
 
+  // ── GSAP Animations ────────────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
 
-// ── GAMES ─────────────────────────────────────────────────────
+      // Hero entrance
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        gsap.from(hero, { duration: 0.6, y: -40, opacity: 0, ease: 'bounce.out' });
+      }
 
-// ── SORT GAME ───────────────────────────────────────────────────
-(function() {
-  const pool = document.getElementById('sortPool');
-  const zones = document.querySelectorAll('.sort-zone');
-  let dragged = null;
-
-  // ── Desktop drag ──────────────────────────────────────────────
-  document.querySelectorAll('.sort-item').forEach(item => {
-    item.addEventListener('dragstart', () => { dragged=item; item.style.opacity='0.4'; SFX.play('click'); });
-    item.addEventListener('dragend',   () => { item.style.opacity='1'; dragged=null; });
-  });
-
-  zones.forEach(zone => {
-    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', ()  => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault(); zone.classList.remove('drag-over');
-      if (dragged) zone.querySelector('.sort-items-drop').appendChild(dragged);
-    });
-  });
-
-  // ── Touch drag ────────────────────────────────────────────────
-  let ghost=null, touchItem=null, touchOrigin=null, touchNext=null, activeZone=null;
-
-  function getZoneAt(x,y){
-    const el=document.elementFromPoint(x,y);
-    return el?el.closest('.sort-zone'):null;
-  }
-
-  document.querySelectorAll('.sort-item').forEach(item=>{
-    item.addEventListener('touchstart', e=>{
-      if(e.touches.length!==1) return;
-      if(e.cancelable)e.preventDefault();
-      touchItem=item; touchOrigin=item.parentElement; touchNext=item.nextElementSibling;
-      item.style.opacity='0.4';
-      ghost=item.cloneNode(true);
-      ghost.style.cssText='position:fixed;z-index:9999;pointer-events:none;opacity:0.9;transform:translate(-50%,-50%)';
-      document.body.appendChild(ghost);
-      const t=e.touches[0];
-      ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
-      SFX.play('click');
-    },{passive:false});
-  });
-
-  document.addEventListener('touchmove', e=>{
-    if(!touchItem||!ghost) return;
-    if(e.cancelable)e.preventDefault();
-    const t=e.touches[0];
-    ghost.style.left=t.clientX+'px'; ghost.style.top=t.clientY+'px';
-    const z=getZoneAt(t.clientX,t.clientY);
-    if(activeZone!==z){ zones.forEach(z2=>z2.classList.remove('drag-over')); if(z)z.classList.add('drag-over'); activeZone=z; }
-  },{passive:false});
-
-  document.addEventListener('touchend', e=>{
-    if(!touchItem) return;
-    zones.forEach(z=>z.classList.remove('drag-over'));
-    const t=e.changedTouches[0];
-    const z=getZoneAt(t.clientX,t.clientY);
-    if(z) z.querySelector('.sort-items-drop').appendChild(touchItem);
-    else { if(touchNext&&touchNext.parentElement===touchOrigin) touchOrigin.insertBefore(touchItem,touchNext); else touchOrigin.appendChild(touchItem); }
-    touchItem.style.opacity='1';
-    if(ghost&&ghost.parentNode) ghost.parentNode.removeChild(ghost);
-    ghost=null; touchItem=null; touchOrigin=null; touchNext=null; activeZone=null;
-  });
-
-  // ── Check / Reset ─────────────────────────────────────────────
-  document.getElementById('checkSort').addEventListener('click', ()=>{
-    SFX.play('click');
-    let correct=0, total=0;
-    zones.forEach(zone=>{
-      zone.querySelectorAll('.sort-item').forEach(item=>{
-        total++;
-        const ok = item.dataset.answer === zone.dataset.category;
-        item.classList.toggle('correct',ok);
-        item.classList.toggle('incorrect',!ok);
-        if(ok) correct++;
+      // Cards staggered bounce in on load
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 90%', once: true },
+          duration: 0.5,
+          y: 50,
+          scale: 0.85,
+          opacity: 0,
+          ease: 'back.out(1.4)',
+          delay: 0.05
+        });
       });
-    });
-    const fb=document.getElementById('sortFeedback');
-    fb.classList.remove('hidden');
-    if(correct===total){
-      fb.className='game-feedback fb-success';
-      fb.innerHTML='<i class="fas fa-trophy"></i> Perfect! All items sorted correctly!';
-      SFX.play('complete'); PROGRESS.mark('sort');
+
+      // Steps stagger
+      const steps = document.querySelectorAll('.step-item');
+      steps.forEach((s, i) => {
+        gsap.from(s, {
+          scrollTrigger: { trigger: s, start: 'top 95%', once: true },
+          duration: 0.4,
+          x: -30,
+          opacity: 0,
+          delay: i * 0.08,
+          ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+
+  // ── Dismiss curtain with GSAP if available ─────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      const c = document.getElementById('curtain');
+      if (c) {
+        gsap.to(c, { delay: 1.8, duration: 0.5, opacity: 0, onComplete: () => { c.style.display = 'none'; } });
+      }
+    }
+  } catch(e) {}
+
+  // ── Setup drag-and-drop (desktop) ──────────────────────────────────────
+  setupDragDrop();
+
+  // ── Setup order drag ──────────────────────────────────────────────────
+  setupOrderDrag('turnOnList');
+  setupOrderDrag('shutDownList');
+
+  // ── Quiz progress dots ─────────────────────────────────────────────────
+  buildQuizProgress();
+
+}); // end DOMContentLoaded
+
+// ── Step tap animation ────────────────────────────────────────────────────
+function revealStep(el) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(el, { duration: 0.3, scale: 0.92, ease: 'back.out(2)' });
+    }
+    el.style.boxShadow = '0 6px 24px rgba(107,203,119,0.4)';
+    setTimeout(() => { el.style.boxShadow = ''; }, 1000);
+  } catch(e) {}
+}
+
+// ── Tap reveal ────────────────────────────────────────────────────────────
+function tapReveal(el) {
+  el.classList.toggle('revealed');
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (el.classList.contains('revealed')) {
+        gsap.from(el.querySelector('.tap-reveal-text'), { duration: 0.4, scale: 0, ease: 'back.out(2)' });
+        gsap.to(el.querySelector('.tap-emoji'), { duration: 0.6, rotation: 360, scale: 1.3, ease: 'power2.out' });
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 }, colors: ['#FFD93D','#FF6B6B','#6BCB77'] });
+        }
+      }
+    }
+  } catch(e) {}
+}
+
+// ── Fill in blanks (chip-based) ──────────────────────────────────────────
+let selectedChip = null;
+
+function selectChip(chip) {
+  if (chip.classList.contains('chip-used')) return;
+  // Deselect previous
+  document.querySelectorAll('.word-chip').forEach(c => c.style.outline = '');
+  selectedChip = chip;
+  chip.style.outline = '4px solid #FF6B6B';
+  try {
+    if (typeof gsap !== 'undefined') gsap.to(chip, { duration: 0.2, scale: 1.1, yoyo: true, repeat: 1 });
+  } catch(e) {}
+}
+
+function fillFromSelected(input) {
+  if (!selectedChip) {
+    // Shake input
+    shakeElement(input);
+    return;
+  }
+  if (input.value && input.value !== '') {
+    // Un-use old chip
+    const old = input.dataset.filledBy;
+    if (old) {
+      const oldChip = document.querySelector(`.word-chip[data-word="${old}"]`);
+      if (oldChip) oldChip.classList.remove('chip-used');
+    }
+  }
+  input.value = selectedChip.dataset.word;
+  input.dataset.filledBy = selectedChip.dataset.word;
+  input.classList.remove('correct-input','wrong-input');
+  selectedChip.classList.add('chip-used');
+  selectedChip.style.outline = '';
+  selectedChip = null;
+  try {
+    if (typeof gsap !== 'undefined') gsap.from(input, { duration: 0.3, scale: 1.15, ease: 'back.out(2)' });
+  } catch(e) {}
+}
+
+function checkFillBlanks() {
+  const inputs = document.querySelectorAll('.blank-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const userVal = (inp.value || '').trim().toLowerCase();
+    const ans = (inp.dataset.answer || '').trim().toLowerCase();
+    if (userVal === ans) {
+      inp.classList.add('correct-input');
+      inp.classList.remove('wrong-input');
+      correct++;
     } else {
-      fb.className='game-feedback fb-error';
-      fb.innerHTML=`<i class="fas fa-times-circle"></i> ${correct} / ${total} correct. Keep trying!`;
-      SFX.play('wrong');
+      inp.classList.add('wrong-input');
+      inp.classList.remove('correct-input');
+      shakeElement(inp);
     }
   });
+  if (correct === inputs.length) {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#FFD93D','#FF6B6B','#6BCB77'] });
+      }
+    } catch(e) {}
+  }
+}
 
-  document.getElementById('resetSort').addEventListener('click', ()=>{
-    SFX.play('click');
-    document.querySelectorAll('.sort-item').forEach(item=>{
-      item.classList.remove('correct','incorrect');
-      pool.appendChild(item);
+// ── Order drag ────────────────────────────────────────────────────────────
+function setupOrderDrag(listId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  let dragSrc = null;
+
+  list.querySelectorAll('.order-item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      dragSrc = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
     });
-    document.getElementById('sortFeedback').classList.add('hidden');
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (dragSrc && dragSrc !== item) {
+        const allItems = [...list.querySelectorAll('.order-item')];
+        const srcIdx = allItems.indexOf(dragSrc);
+        const tgtIdx = allItems.indexOf(item);
+        if (srcIdx < tgtIdx) {
+          list.insertBefore(dragSrc, item.nextSibling);
+        } else {
+          list.insertBefore(dragSrc, item);
+        }
+      }
+    });
+
+    // Touch support
+    let touchStartY = 0;
+    item.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+      dragSrc = item;
+    }, { passive: true });
+    item.addEventListener('touchend', (e) => {
+      const touchEndY = e.changedTouches[0].clientY;
+      const allItems = [...list.querySelectorAll('.order-item')];
+      const srcIdx = allItems.indexOf(dragSrc);
+      const delta = touchEndY - touchStartY;
+      if (Math.abs(delta) > 30) {
+        const direction = delta > 0 ? 1 : -1;
+        const targetIdx = Math.max(0, Math.min(allItems.length - 1, srcIdx + direction));
+        const targetItem = allItems[targetIdx];
+        if (targetItem && targetItem !== dragSrc) {
+          if (srcIdx < targetIdx) list.insertBefore(dragSrc, targetItem.nextSibling);
+          else list.insertBefore(dragSrc, targetItem);
+        }
+      }
+      dragSrc = null;
+    }, { passive: true });
   });
-})();
+}
 
-
-// ── QUIZ ────────────────────────────────────────────────────────
-(function() {
-  const QS = [{"question": "What is the very first step to turn on a computer?", "options": ["Press the power button.", "Click the Start menu."], "correct_index": 0, "explanation": "To turn on a computer, you always start by pressing its power button."}, {"question": "What happens after you press the power button?", "options": ["The operating system starts to load.", "A game immediately opens."], "correct_index": 0, "explanation": "After pressing the power button, the computer's operating system (like Windows) begins to load."}, {"question": "What do you often need to enter to use the computer after it loads?", "options": ["A password.", "Your favorite color."], "correct_index": 0, "explanation": "Many computers require you to enter a password to log in and use them."}, {"question": "Where do you click to begin the process of shutting down the computer?", "options": ["The Start menu.", "Any icon on the desktop."], "correct_index": 0, "explanation": "The Start menu is the correct place to begin shutting down your computer safely."}, {"question": "After clicking the Start menu, what button do you usually click next to shut down?", "options": ["The Power button.", "The Volume button."], "correct_index": 0, "explanation": "Inside the Start menu, you'll find a Power button icon that leads to shut down options."}, {"question": "Which option do you choose to turn off the computer completely?", "options": ["Shut down.", "Restart."], "correct_index": 0, "explanation": "Choosing 'Shut down' will turn off your computer completely, while 'Restart' will turn it off and then back on."}, {"question": "Why is it important to shut down your computer properly?", "options": ["To keep the computer safe and working well.", "To make it run faster next time."], "correct_index": 0, "explanation": "Properly shutting down helps protect the computer's software and hardware from damage."}, {"question": "What does 'logged in' mean when using a computer?", "options": ["You have entered your password and can use the computer.", "The computer is currently turned off."], "correct_index": 0, "explanation": "Being 'logged in' means you've successfully accessed the computer with your credentials."}, {"question": "Is it okay to just pull the power plug to turn off a computer?", "options": ["No, it can harm the computer.", "Yes, it's the fastest way."], "correct_index": 0, "explanation": "Pulling the plug without shutting down properly can damage the computer's files and hardware."}, {"question": "What is Windows an example of?", "options": ["An operating system.", "A type of computer game."], "correct_index": 0, "explanation": "Windows is a very common operating system that helps your computer run."}];
-  let idx=0, answers=Array(QS.length).fill(null);
-
-  function render(anim=true) {
-    const q=QS[idx];
-    document.getElementById('quizQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${q.question}`;
-    const optsEl=document.getElementById('quizOpts');
-    optsEl.innerHTML='';
-    q.options.forEach((opt,i)=>{
-      const btn=document.createElement('button');
-      btn.className='quiz-opt';
-      btn.dataset.i=i;
-      btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+i)}</span> ${opt}`;
-      btn.addEventListener('click',()=>selectQ(i));
-      if(answers[idx]===i) btn.classList.add('selected');
-      optsEl.appendChild(btn);
-    });
-    if(answers[idx]!==null) revealQ();
-    document.getElementById('quizNext').disabled = answers[idx]===null;
-    document.getElementById('quizPrev').disabled = idx===0;
-    document.getElementById('quizNext').innerHTML = idx===QS.length-1 ?
-      'Finish <i class="fas fa-flag-checkered"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
-    const pct=Math.round(answers.filter(a=>a!==null).length/QS.length*100);
-    document.getElementById('quizProgFill').style.width=pct+'%';
-    document.getElementById('quizProgText').textContent=`Q ${idx+1} / ${QS.length}`;
-    if(anim){ const card=document.getElementById('quizCard'); card.classList.remove('slide-in'); void card.offsetWidth; card.classList.add('slide-in'); }
-  }
-
-  function selectQ(i) {
-    answers[idx]=i;
-    const correct=i===QS[idx].correct_index;
-    SFX.play(correct?'correct':'wrong');
-    revealQ();
-    document.getElementById('quizNext').disabled=false;
-  }
-
-  function revealQ() {
-    const q=QS[idx]; const sel=answers[idx];
-    document.querySelectorAll('.quiz-opt').forEach(btn=>{
-      const i=parseInt(btn.dataset.i);
-      btn.classList.remove('selected','correct','incorrect');
-      if(i===q.correct_index) btn.classList.add('correct');
-      if(i===sel && sel!==q.correct_index) btn.classList.add('incorrect');
-      if(i===sel) btn.classList.add('selected');
-    });
-    const fb=document.getElementById('quizFb');
-    const ok=sel===q.correct_index;
-    fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
-    fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${q.explanation}</strong>`;
-  }
-
-  document.getElementById('quizPrev').addEventListener('click',()=>{ SFX.play('click'); if(idx>0){idx--;render();} });
-  document.getElementById('quizNext').addEventListener('click',()=>{
-    if(answers[idx]===null){ SFX.play('wrong'); return; }
-    SFX.play('click');
-    if(idx<QS.length-1){idx++;render();}
-    else showResults();
-  });
-
-  function calcScore(){ return answers.reduce((a,v,i)=>a+(v===QS[i].correct_index?1:0),0); }
-
-  function showResults(){
-    const sc=calcScore(), total=QS.length;
-    SFX.play(sc===total?'complete':'click');
-    document.getElementById('quizResultScore').textContent=`You scored ${sc} / ${total}`;
-    const stars=Math.round(sc/total*5);
-    document.getElementById('quizStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
-    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
-    document.getElementById('quizResultTitle').textContent=titles[Math.min(stars,4)];
-    document.getElementById('quizResultTip').textContent=sc===total?'Amazing! You got everything right!':'Review the lesson and try again!';
-    document.getElementById('quizResults').classList.remove('hidden');
-    if(sc===total){ PROGRESS.mark('quiz'); }
-  }
-
-  function restart(){ SFX.play('click'); idx=0; answers=Array(QS.length).fill(null); document.getElementById('quizResults').classList.add('hidden'); render(); }
-
-  document.getElementById('quizRetry').addEventListener('click', restart);
-  document.getElementById('quizClose').addEventListener('click',()=>{ SFX.play('click'); document.getElementById('quizResults').classList.add('hidden'); });
-  document.getElementById('quizResults').addEventListener('click',e=>{ if(e.target===document.getElementById('quizResults')) document.getElementById('quizResults').classList.add('hidden'); });
-
-  render(false);
-})();
-
-
-// ── TRUE/FALSE ───────────────────────────────────────────────────
-(function() {
-  const ITEMS = [{"text": "You should always press the power button to turn on the computer.", "correct": true, "explanation": "The power button is the correct way to switch on your computer."}, {"text": "You can start using the computer immediately after pressing the power button.", "correct": false, "explanation": "You need to wait for the operating system to load and possibly enter a password before using the computer."}, {"text": "The Start menu helps you find programs and settings.", "correct": true, "explanation": "The Start menu is a central place to access applications and system options."}, {"text": "It's okay to just unplug the computer from the wall to turn it off.", "correct": false, "explanation": "Unplugging without proper shut down can damage the computer's software and hardware."}, {"text": "Shutting down your computer properly helps save electricity.", "correct": true, "explanation": "A completely shut down computer uses less power than one left on or in sleep mode."}, {"text": "You might need a password to log in to a computer.", "correct": true, "explanation": "Many computers are set up with passwords for security reasons."}, {"text": "The term 'loading' means the computer is getting ready to be used.", "correct": true, "explanation": "When a computer is 'loading,' it is preparing its operating system and programs."}, {"text": "The power button is only used for turning on the computer.", "correct": false, "explanation": "The power button is also used to initiate the shut down process or to force power off in emergencies."}, {"text": "Restarting the computer is exactly the same as shutting it down.", "correct": false, "explanation": "Restarting turns the computer off and then immediately back on, while shutting down turns it off completely."}, {"text": "The monitor is the 'brain' of the computer.", "correct": false, "explanation": "The CPU (Central Processing Unit) inside the computer tower is considered the 'brain,' while the monitor is the screen."}];
-  let idx=0, answers=Array(ITEMS.length).fill(null);
-
-  function render(anim=true) {
-    const item=ITEMS[idx];
-    document.getElementById('tfQ').innerHTML=`<span class="q-num">${idx+1}.</span> ${item.text}`;
-    [['tfTrue',true],['tfFalse',false]].forEach(([id,val])=>{
-      const btn=document.getElementById(id);
-      btn.classList.remove('selected','correct','incorrect');
-      if(answers[idx]===val){btn.classList.add('selected'); if(val===item.correct)btn.classList.add('correct'); else btn.classList.add('incorrect');}
-    });
-    if(answers[idx]!==null){
-      const correctBtn=document.getElementById(item.correct?'tfTrue':'tfFalse');
-      correctBtn.classList.add('correct');
+function checkOrder(listId, correctOrder) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  const items = [...list.querySelectorAll('.order-item')];
+  let allCorrect = true;
+  items.forEach((item, idx) => {
+    const correctPos = parseInt(item.dataset.correct);
+    if (correctPos === idx + 1) {
+      item.classList.add('correct-order');
+      item.classList.remove('wrong-order');
+    } else {
+      item.classList.add('wrong-order');
+      item.classList.remove('correct-order');
+      allCorrect = false;
+      shakeElement(item);
     }
-    const fb=document.getElementById('tfFb');
-    if(answers[idx]!==null){
-      const ok=answers[idx]===item.correct;
-      fb.className=`quiz-feedback ${ok?'fb-success':'fb-error'}`;
-      fb.innerHTML=`<i class="fas fa-${ok?'check':'times'}-circle"></i> ${ok?'Correct! ':'Try again! '}<strong>${item.explanation}</strong>`;
-    } else { fb.className='quiz-feedback hidden'; fb.innerHTML=''; }
-    document.getElementById('tfNext').disabled=answers[idx]===null;
-    document.getElementById('tfPrev').disabled=idx===0;
-    document.getElementById('tfNext').innerHTML=idx===ITEMS.length-1?'Finish <i class="fas fa-flag-checkered"></i>':'Next <i class="fas fa-arrow-right"></i>';
-    const pct=Math.round(answers.filter(a=>a!==null).length/ITEMS.length*100);
-    document.getElementById('tfProgFill').style.width=pct+'%';
-    document.getElementById('tfProgText').textContent=`${idx+1} / ${ITEMS.length}`;
-    if(anim){const card=document.getElementById('tfCard');card.classList.remove('slide-in');void card.offsetWidth;card.classList.add('slide-in');}
-  }
-
-  function choose(val){
-    answers[idx]=val;
-    const ok=val===ITEMS[idx].correct;
-    SFX.play(ok?'correct':'wrong');
-    render(false);
-    document.getElementById('tfNext').disabled=false;
-  }
-
-  document.getElementById('tfTrue').addEventListener('click',()=>choose(true));
-  document.getElementById('tfFalse').addEventListener('click',()=>choose(false));
-  document.getElementById('tfPrev').addEventListener('click',()=>{SFX.play('click');if(idx>0){idx--;render();}  });
-  document.getElementById('tfNext').addEventListener('click',()=>{
-    if(answers[idx]===null){SFX.play('wrong');return;}
-    SFX.play('click');
-    if(idx<ITEMS.length-1){idx++;render();}
-    else showResults();
   });
-
-  function calcScore(){return answers.reduce((a,v,i)=>a+(v===ITEMS[i].correct?1:0),0);}
-
-  function showResults(){
-    const sc=calcScore(),total=ITEMS.length;
-    SFX.play(sc===total?'complete':'click');
-    document.getElementById('tfResultScore').textContent=`You scored ${sc} / ${total}`;
-    const stars=Math.round(sc/total*5);
-    document.getElementById('tfStars').innerHTML=[...Array(5)].map((_,i)=>`<i class="fa${i<stars?'s':'r'} fa-star"></i>`).join('');
-    const titles=['Keep trying!','Good effort!','Well done!','Great job!','Perfect! 🎉'];
-    document.getElementById('tfResultTitle').textContent=titles[Math.min(stars,4)];
-    document.getElementById('tfResultTip').textContent=sc===total?'Excellent! You aced it!':'Review and try again!';
-    document.getElementById('tfResults').classList.remove('hidden');
-    if(sc===total) PROGRESS.mark('tf');
+  if (allCorrect) {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FFD93D','#6BCB77','#FF6B6B'] });
+      }
+    } catch(e) {}
   }
+}
 
-  function restart(){SFX.play('click');idx=0;answers=Array(ITEMS.length).fill(null);document.getElementById('tfResults').classList.add('hidden');render();}
-  document.getElementById('tfRetry').addEventListener('click',restart);
-  document.getElementById('tfClose').addEventListener('click',()=>{SFX.play('click');document.getElementById('tfResults').classList.add('hidden');});
-  document.getElementById('tfResults').addEventListener('click',e=>{if(e.target===document.getElementById('tfResults'))document.getElementById('tfResults').classList.add('hidden');});
+// ── Drag and Drop Matching ─────────────────────────────────────────────────
+function setupDragDrop() {
+  const words = document.querySelectorAll('.drag-word');
+  const targets = document.querySelectorAll('.drop-target');
+  if (!words.length || !targets.length) return;
 
-  render(false);
-})();
+  let activeDrag = null;
 
-
-// ── FILL IN THE BLANKS ──────────────────────────────────────────
-(function() {
-  document.getElementById('checkBlanks').addEventListener('click', ()=>{
-    SFX.play('click');
-    let correct=0, total=0;
-    document.querySelectorAll('.blank-input').forEach(inp=>{
-      total++;
-      const ok=inp.value.trim().toLowerCase()===inp.dataset.answer.toLowerCase();
-      if(ok) correct++;
-      const i=inp.dataset.idx;
-      const res=document.getElementById('blankResult'+i);
-      res.classList.remove('hidden');
-      if(ok){ res.className='blank-result fb-success'; res.innerHTML='<i class="fas fa-check"></i> '+inp.dataset.answer; inp.style.borderColor='#22c55e'; }
-      else { res.className='blank-result fb-error'; res.innerHTML='<i class="fas fa-times"></i> Answer: '+inp.dataset.answer; inp.style.borderColor='#ef4444'; }
+  words.forEach(word => {
+    word.addEventListener('dragstart', (e) => {
+      activeDrag = word;
+      word.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', word.dataset.word);
     });
-    const fb=document.getElementById('blanksFeedback');
-    fb.classList.remove('hidden');
-    if(correct===total){ fb.className='game-feedback fb-success'; fb.innerHTML='<i class="fas fa-trophy"></i> All correct!'; SFX.play('complete'); PROGRESS.mark('extra'); }
-    else { fb.className='game-feedback fb-error'; fb.innerHTML=`<i class="fas fa-times-circle"></i> ${correct}/${total} correct.`; SFX.play('wrong'); }
+    word.addEventListener('dragend', () => {
+      word.classList.remove('dragging');
+    });
   });
 
-  document.getElementById('resetBlanks').addEventListener('click', ()=>{
-    SFX.play('click');
-    document.querySelectorAll('.blank-input').forEach(inp=>{ inp.value=''; inp.style.borderColor=''; });
-    document.querySelectorAll('.blank-result').forEach(r=>r.classList.add('hidden'));
-    document.getElementById('blanksFeedback').classList.add('hidden');
+  targets.forEach(target => {
+    target.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      target.classList.add('drag-over');
+    });
+    target.addEventListener('dragleave', () => {
+      target.classList.remove('drag-over');
+    });
+    target.addEventListener('drop', (e) => {
+      e.preventDefault();
+      target.classList.remove('drag-over');
+      if (!activeDrag) return;
+      const wordText = e.dataTransfer.getData('text/plain') || activeDrag.dataset.word;
+      placeWordOnTarget(target, wordText, activeDrag);
+    });
   });
-})();
 
+  // Touch drag support
+  words.forEach(word => {
+    word.addEventListener('touchstart', (e) => {
+      activeDrag = word;
+      word.style.opacity = '0.6';
+    }, { passive: true });
 
+    word.addEventListener('touchend', (e) => {
+      if (!activeDrag) return;
+      const touch = e.changedTouches[0];
+      const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+      word.style.opacity = '';
+      if (elem) {
+        const target = elem.closest('.drop-target');
+        if (target) {
+          placeWordOnTarget(target, activeDrag.dataset.word, activeDrag);
+        }
+      }
+      activeDrag = null;
+    }, { passive: true });
+  });
+}
+
+function placeWordOnTarget(target, wordText, wordEl) {
+  // If target already has a word, put it back
+  if (target.classList.contains('filled')) {
+    const prevWord = target.querySelector('.dropped-word').textContent.trim();
+    const prevWordEl = document.querySelector(`.drag-word[data-word="${prevWord}"]`);
+    if (prevWordEl) prevWordEl.classList.remove('used');
+  }
+  target.classList.add('filled');
+  target.classList.remove('correct-drop','wrong-drop');
+  const dw = target.querySelector('.dropped-word');
+  if (dw) dw.textContent = wordText;
+  if (wordEl) wordEl.classList.add('used');
+  try {
+    if (typeof gsap !== 'undefined') gsap.from(dw, { duration: 0.3, scale: 0, ease: 'back.out(2)' });
+  } catch(e) {}
+}
+
+function checkDragDrop() {
+  const targets = document.querySelectorAll('.drop-target');
+  let correct = 0;
+  targets.forEach(target => {
+    if (!target.classList.contains('filled')) {
+      shakeElement(target);
+      return;
+    }
+    const dropped = target.querySelector('.dropped-word').textContent.trim();
+    const expected = target.dataset.accept;
+    if (dropped === expected) {
+      target.classList.add('correct-drop');
+      target.classList.remove('wrong-drop');
+      correct++;
+    } else {
+      target.classList.add('wrong-drop');
+      target.classList.remove('correct-drop');
+      shakeElement(target);
+    }
+  });
+  if (correct === targets.length) {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 }, colors: ['#FFD93D','#FF6B6B','#6BCB77','#fff'] });
+      }
+    } catch(e) {}
+  }
+}
+
+// ── Quiz ──────────────────────────────────────────────────────────────────
+let currentQ = 1;
+const totalQ = 4;
+let quizScore = 0;
+let answeredQ = {};
+
+function buildQuizProgress() {
+  const prog = document.getElementById('quizProgress');
+  if (!prog) return;
+  prog.innerHTML = '';
+  for (let i = 1; i <= totalQ; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-dot' + (i === 1 ? ' active-dot' : '');
+    dot.id = 'qdot' + i;
+    prog.appendChild(dot);
+  }
+}
+
+function quizAnswer(optEl, isCorrect) {
+  const qId = optEl.closest('.quiz-question').id;
+  const qNum = parseInt(qId.replace('qq',''));
+  if (answeredQ[qNum]) return; // Already answered
+  answeredQ[qNum] = true;
+
+  const feedback = document.getElementById('qf' + qNum);
+  const nextBtn = document.getElementById('qnext' + qNum);
+  const allOpts = optEl.closest('.quiz-options').querySelectorAll('.quiz-option');
+
+  allOpts.forEach(o => { o.style.pointerEvents = 'none'; });
+
+  if (isCorrect) {
+    optEl.classList.add('correct-opt');
+    if (feedback) {
+      feedback.textContent = '🎉 Correct! Amazing job!';
+      feedback.className = 'quiz-feedback show correct';
+    }
+    quizScore++;
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#FFD93D','#6BCB77','#FF6B6B'] });
+      }
+    } catch(e) {}
+    const dot = document.getElementById('qdot' + qNum);
+    if (dot) { dot.classList.add('done'); dot.classList.remove('active-dot'); }
+  } else {
+    optEl.classList.add('wrong-opt');
+    shakeElement(optEl);
+    if (feedback) {
+      feedback.textContent = '😅 Oops! Try to remember next time!';
+      feedback.className = 'quiz-feedback show wrong';
+    }
+    // Show correct
+    allOpts.forEach(o => { if (o.onclick.toString().includes('true')) o.classList.add('correct-opt'); });
+    const dot = document.getElementById('qdot' + qNum);
+    if (dot) { dot.classList.add('done'); dot.classList.remove('active-dot'); }
+  }
+
+  if (nextBtn) nextBtn.classList.add('show');
+}
+
+function nextQuestion(num) {
+  const current = document.getElementById('qq' + (num - 1));
+  const next = document.getElementById('qq' + num);
+  if (current) current.classList.remove('active');
+  if (next) {
+    next.classList.add('active');
+    try {
+      if (typeof gsap !== 'undefined') gsap.from(next, { duration: 0.4, x: 40, opacity: 0, ease: 'power2.out' });
+    } catch(e) {}
+    const dot = document.getElementById('qdot' + num);
+    if (dot) { dot.classList.add('active-dot'); }
+  }
+}
+
+function showQuizComplete() {
+  const lastQ = document.getElementById('qq' + totalQ);
+  if (lastQ) lastQ.classList.remove('active');
+  const complete = document.getElementById('quizComplete');
+  if (complete) {
+    complete.classList.add('show');
+    try {
+      if (typeof gsap !== 'undefined') gsap.from(complete, { duration: 0.5, scale: 0.8, opacity: 0, ease: 'back.out(1.5)' });
+    } catch(e) {}
+    // Light up stars
+    const stars = document.querySelectorAll('#quizStars .star');
+    stars.forEach((s, i) => {
+      setTimeout(() => {
+        s.classList.add('lit');
+        try { if (typeof gsap !== 'undefined') gsap.from(s, { duration: 0.3, scale: 0, ease: 'back.out(2)' }); } catch(e) {}
+      }, i * 300);
+    });
+    // Final confetti
+    setTimeout(() => {
+      try {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#FFD93D','#FF6B6B','#6BCB77','#fff','#a8edea'] });
+        }
+      } catch(e) {}
+    }, 400);
+  }
+}
+
+function resetQuiz() {
+  currentQ = 1;
+  quizScore = 0;
+  answeredQ = {};
+  for (let i = 1; i <= totalQ; i++) {
+    const q = document.getElementById('qq' + i);
+    if (q) {
+      q.classList.remove('active');
+      q.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('correct-opt','wrong-opt');
+        o.style.pointerEvents = '';
+      });
+      const fb = document.getElementById('qf' + i);
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      const nb = document.getElementById('qnext' + i);
+      if (nb) nb.classList.remove('show');
+    }
+  }
+  const complete = document.getElementById('quizComplete');
+  if (complete) complete.classList.remove('show');
+  const qq1 = document.getElementById('qq1');
+  if (qq1) qq1.classList.add('active');
+  const stars = document.querySelectorAll('#quizStars .star');
+  stars.forEach(s => s.classList.remove('lit'));
+  buildQuizProgress();
+}
+
+// ── Shake utility ────────────────────────────────────────────────────────
+function shakeElement(el) {
+  if (!el) return;
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to(el, { duration: 0.4, x: [-10,10,-10,10,0], ease: 'power2.inOut' });
+    } else {
+      el.style.transition = 'transform 0.1s';
+      let count = 0;
+      const shake = setInterval(() => {
+        el.style.transform = count % 2 === 0 ? 'translateX(-8px)' : 'translateX(8px)';
+        count++;
+        if (count > 5) { clearInterval(shake); el.style.transform = ''; }
+      }, 80);
+    }
+  } catch(e) {
+    el.style.outline = '4px solid #FF6B6B';
+    setTimeout(() => { el.style.outline = ''; }, 800);
+  }
+}
 </script>
 </body>
 </html>

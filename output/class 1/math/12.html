@@ -1,0 +1,974 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplication Tables – Digital School Class 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{width:100%;scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  font-size:20px;
+  background:linear-gradient(160deg,#fff9e6 0%,#e8f7ff 50%,#e6ffe8 100%);
+  min-height:100vh;
+  width:100%;
+  overflow-x:hidden;
+  color:#333;
+}
+h1{font-family:'Bubblegum Sans',cursive;font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1}
+h2{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,4vw,3rem);line-height:1.2}
+h3{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,2.5vw,1.8rem)}
+
+/* CURTAIN */
+#curtain{
+  position:fixed;inset:0;background:#FFD93D;
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;flex-direction:column;gap:20px;
+}
+#curtain h2{color:#FF6B6B;font-size:clamp(2rem,5vw,3.5rem)}
+.curtain-emoji{font-size:80px;animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* HERO */
+.hero{
+  width:100%;min-height:80vh;
+  background:linear-gradient(135deg,#FF6B6B 0%,#FFD93D 50%,#6BCB77 100%);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:60px 20px;position:relative;overflow:hidden;
+}
+@media(max-width:768px){.hero{min-height:60vh;padding:40px 16px}}
+.hero-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.hero-inner{padding:0 16px}}
+.hero h1{color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,.15);margin-bottom:16px}
+.hero p{color:#fff;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;max-width:700px;margin:0 auto 24px}
+.hero-emojis{font-size:clamp(2.5rem,6vw,5rem);display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.star-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* PAGE WRAPPER */
+.page-wrap{width:100%;max-width:100%;padding:0}
+.content-wrap{max-width:1500px;margin:0 auto;padding:40px 40px 120px}
+@media(max-width:768px){.content-wrap{padding:20px 16px 100px}}
+
+/* SECTION SPACING */
+.section-gap{height:40px}
+
+/* FUN CARD */
+.fun-card{
+  width:100%;border-radius:24px;
+  background:#fff;border:4px solid #FFD93D;
+  padding:40px 32px;margin-bottom:40px;
+  opacity:1;transform:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.08);
+}
+@media(max-width:768px){.fun-card{padding:24px 16px;margin-bottom:24px}}
+.fun-card.blue-border{border-color:#6BCB77}
+.fun-card.red-border{border-color:#FF6B6B}
+.fun-card.purple-border{border-color:#b39ddb}
+
+.card-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.card-icon{font-size:clamp(2.5rem,5vw,3.5rem);flex-shrink:0}
+.card-header h2{color:#FF6B6B}
+.card-header.blue h2{color:#6BCB77}
+.card-header.green h2{color:#4caf50}
+
+/* TABLES DISPLAY */
+.tables-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+@media(max-width:768px){.tables-grid{grid-template-columns:1fr}}
+
+.table-card{
+  border-radius:20px;padding:24px;
+  border:4px solid #6BCB77;
+  background:linear-gradient(135deg,#e8ffe8,#fff);
+  text-align:center;
+}
+.table-card.orange{border-color:#FF6B6B;background:linear-gradient(135deg,#fff3e0,#fff)}
+.table-card.teal{border-color:#26c6da;background:linear-gradient(135deg,#e0f7fa,#fff)}
+.table-card.purple{border-color:#b39ddb;background:linear-gradient(135deg,#f3e5f5,#fff)}
+.table-card.yellow{border-color:#FFD93D;background:linear-gradient(135deg,#fffde7,#fff)}
+.table-card.pink{border-color:#f48fb1;background:linear-gradient(135deg,#fce4ec,#fff)}
+.table-card.blue{border-color:#6BCB77;background:linear-gradient(135deg,#e3f2fd,#fff)}
+.table-card.lime{border-color:#aed581;background:linear-gradient(135deg,#f9fbe7,#fff)}
+
+.table-num{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,5vw,3rem);margin-bottom:16px;color:#FF6B6B}
+.table-card.teal .table-num{color:#00838f}
+.table-card.purple .table-num{color:#7b1fa2}
+.table-card.yellow .table-num{color:#f57f17}
+.table-card.pink .table-num{color:#c2185b}
+.table-card.blue .table-num{color:#1565c0}
+.table-card.lime .table-num{color:#558b2f}
+
+.table-row{
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  font-weight:700;padding:6px 0;
+  border-bottom:2px dashed rgba(0,0,0,.08);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.table-row:last-child{border-bottom:none}
+.table-row span:last-child{
+  background:#FFD93D;border-radius:10px;
+  padding:3px 12px;color:#333;font-size:clamp(1rem,2.5vw,1.3rem);
+}
+.table-card.teal .table-row span:last-child{background:#b2ebf2}
+.table-card.purple .table-row span:last-child{background:#e1bee7}
+.table-card.pink .table-row span:last-child{background:#f8bbd0}
+.table-card.blue .table-row span:last-child{background:#bbdefb}
+.table-card.lime .table-row span:last-child{background:#dcedc8}
+
+/* PRACTICE SECTION */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px}
+@media(max-width:768px){.practice-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:380px){.practice-grid{grid-template-columns:1fr}}
+
+.practice-card{
+  background:#fff;border:4px solid #6BCB77;border-radius:20px;
+  padding:24px 16px;text-align:center;cursor:pointer;
+  transition:transform .2s;position:relative;
+}
+.practice-card:hover{transform:scale(1.04)}
+.practice-eq{font-family:'Bubblegum Sans',cursive;font-size:clamp(1.5rem,4vw,2.2rem);color:#FF6B6B;margin-bottom:16px}
+.practice-input{
+  width:100%;max-width:120px;
+  font-family:'Bubblegum Sans',cursive;font-size:clamp(1.4rem,4vw,2rem);
+  text-align:center;padding:10px;border:3px solid #FFD93D;border-radius:12px;
+  outline:none;color:#333;background:#fffde7;
+}
+.practice-input:focus{border-color:#FF6B6B;background:#fff3e0}
+.check-btn{
+  margin-top:12px;background:#6BCB77;color:#fff;
+  border:none;border-radius:12px;padding:10px 20px;
+  font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2.5vw,1.2rem);
+  cursor:pointer;width:100%;min-height:48px;
+  transition:background .2s;
+}
+.check-btn:hover{background:#43a047}
+.practice-fb{margin-top:10px;font-size:clamp(1rem,2.5vw,1.2rem);font-weight:700;min-height:30px}
+.practice-fb.correct{color:#388e3c}
+.practice-fb.wrong{color:#d32f2f}
+
+/* QUIZ SECTION */
+.quiz-wrap{display:flex;flex-direction:column;gap:40px}
+.quiz-q{
+  background:#fff;border:4px solid #FFD93D;border-radius:24px;
+  padding:32px 24px;text-align:center;
+}
+.quiz-q h3{color:#FF6B6B;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:24px}
+.quiz-emoji{font-size:clamp(3rem,8vw,6rem);margin-bottom:20px;display:block}
+.quiz-options{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.quiz-opt{
+  background:#FFD93D;border:4px solid #FF6B6B;border-radius:20px;
+  padding:20px 32px;font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.5rem,4vw,2.5rem);cursor:pointer;
+  min-width:100px;min-height:80px;display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,background .2s;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+.quiz-opt:hover{transform:scale(1.08)}
+.quiz-opt.correct-ans{background:#6BCB77;border-color:#388e3c;color:#fff}
+.quiz-opt.wrong-ans{background:#FF6B6B;border-color:#c62828;color:#fff}
+.quiz-feedback{margin-top:16px;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:800;min-height:36px}
+.quiz-feedback.yes{color:#388e3c}
+.quiz-feedback.no{color:#d32f2f}
+
+/* DRAG DROP */
+.drag-section{display:flex;flex-direction:column;gap:24px}
+.drag-row{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.drag-eq-label{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.4rem,3.5vw,2rem);color:#555;
+  background:#e3f2fd;border-radius:14px;padding:12px 20px;
+  border:3px solid #6BCB77;min-width:180px;text-align:center;
+}
+.drop-zone{
+  min-width:100px;min-height:60px;border-radius:14px;
+  border:3px dashed #FFD93D;background:#fffde7;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;font-size:clamp(1.3rem,3vw,1.8rem);
+  transition:background .2s;color:#888;padding:8px;
+}
+.drop-zone.over{background:#fff9c4;border-color:#FF6B6B}
+.drop-zone.filled{border-style:solid;border-color:#6BCB77;background:#e8ffe8;color:#333}
+.drag-answers{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.drag-chip{
+  background:#FF6B6B;color:#fff;border-radius:14px;
+  padding:12px 24px;font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.2rem,3vw,1.8rem);cursor:grab;
+  border:3px solid #c62828;user-select:none;
+  transition:transform .15s;touch-action:none;
+}
+.drag-chip:active{transform:scale(1.1);cursor:grabbing}
+.drag-check-btn{
+  margin-top:20px;background:#FFD93D;color:#333;
+  border:4px solid #FF6B6B;border-radius:16px;padding:14px 32px;
+  font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);
+  cursor:pointer;min-height:56px;
+  transition:background .2s;
+}
+.drag-check-btn:hover{background:#ffc107}
+.drag-feedback{margin-top:14px;font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:800;color:#388e3c;min-height:30px}
+
+/* MOBILE NAV */
+.mobile-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:#fff;border-top:4px solid #FFD93D;
+  overflow-x:auto;z-index:500;padding:8px 0;
+  box-shadow:0 -4px 16px rgba(0,0,0,.1);
+}
+@media(max-width:768px){.mobile-nav{display:flex}}
+.mobile-nav a{
+  flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
+  gap:4px;padding:8px 16px;text-decoration:none;
+  font-family:'Bubblegum Sans',cursive;font-size:13px;color:#555;
+  min-height:56px;justify-content:center;
+}
+.mobile-nav a:hover{color:#FF6B6B}
+.mobile-nav .nav-icon{font-size:22px}
+
+/* PROGRESS BAR */
+.progress-bar-wrap{background:#eee;border-radius:20px;height:18px;overflow:hidden;margin:16px 0 8px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D,#6BCB77);border-radius:20px;transition:width .5s}
+
+/* TABLET */
+@media(max-width:1024px){
+  .tables-grid{grid-template-columns:repeat(2,1fr)}
+  .practice-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* SCROLL TOP */
+.scroll-top{
+  position:fixed;bottom:90px;right:20px;
+  background:#FF6B6B;color:#fff;border:none;border-radius:50%;
+  width:52px;height:52px;font-size:22px;cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:400;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s;
+}
+.scroll-top:hover{transform:scale(1.1)}
+@media(min-width:769px){.scroll-top{bottom:20px}}
+
+/* SECTION HIGHLIGHT */
+.sec-badge{
+  display:inline-block;background:#FFD93D;border-radius:30px;
+  padding:6px 20px;font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1rem,2.5vw,1.3rem);color:#333;
+  margin-bottom:12px;border:3px solid #FF6B6B;
+}
+
+/* FLOATING STARS */
+.floating-star{position:absolute;font-size:2rem;animation:floatStar 4s ease-in-out infinite;opacity:.6;pointer-events:none}
+@keyframes floatStar{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+/* INTRO VISUAL */
+.intro-visual{
+  display:flex;justify-content:center;align-items:center;gap:20px;
+  flex-wrap:wrap;margin:24px 0;font-size:clamp(2rem,6vw,4rem);
+}
+.times-sign{
+  background:#FF6B6B;color:#fff;border-radius:50%;
+  width:60px;height:60px;display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;font-size:2rem;flex-shrink:0;
+}
+.num-bubble{
+  background:#FFD93D;border:4px solid #FF6B6B;border-radius:20px;
+  width:80px;height:80px;display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;font-size:2.5rem;color:#333;flex-shrink:0;
+}
+.equals-sign{font-size:2.5rem;font-weight:900;color:#6BCB77}
+.result-bubble{
+  background:#6BCB77;border:4px solid #388e3c;border-radius:20px;
+  padding:10px 24px;display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;font-size:2.5rem;color:#fff;flex-shrink:0;
+}
+
+/* CANVAS confetti area */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9000}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">⭐</div>
+  <h2>Loading Fun Math!</h2>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="star-bg" id="starBg"></div>
+  <div class="hero-inner">
+    <div class="hero-emojis">
+      <span>🔢</span><span>✖️</span><span>⭐</span><span>🎉</span>
+    </div>
+    <h1>Multiplication!</h1>
+    <p>Let's learn to multiply numbers — it's like adding super fast! 🚀</p>
+    <div class="intro-visual">
+      <div class="num-bubble">2</div>
+      <div class="times-sign">✕</div>
+      <div class="num-bubble">5</div>
+      <div class="equals-sign">=</div>
+      <div class="result-bubble">10</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+<div class="content-wrap">
+
+<!-- WHAT IS MULTIPLICATION -->
+<div class="fun-card" id="sec-intro">
+  <div class="card-header">
+    <span class="card-icon">💡</span>
+    <h2>What is Multiplication?</h2>
+  </div>
+  <div class="sec-badge">Big Idea</div>
+  <p style="font-size:clamp(1.1rem,2.5vw,1.4rem);line-height:1.8;margin-bottom:20px">
+    Multiplication is <strong>fast adding</strong>! Instead of adding the same number again and again, we multiply! 🎯
+  </p>
+  <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:16px 0">
+    <div style="background:#fff9c4;border:4px solid #FFD93D;border-radius:20px;padding:20px 24px;text-align:center;min-width:160px">
+      <div style="font-size:clamp(1.8rem,4vw,2.5rem)">🍎🍎🍎</div>
+      <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.4rem);margin-top:8px;color:#FF6B6B">3 + 3 = 6</div>
+    </div>
+    <div style="background:#e8ffe8;border:4px solid #6BCB77;border-radius:20px;padding:20px 24px;text-align:center;min-width:160px">
+      <div style="font-size:clamp(1.8rem,4vw,2.5rem)">✕</div>
+      <div style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1.1rem,2.5vw,1.4rem);margin-top:8px;color:#388e3c">2 × 3 = 6</div>
+    </div>
+  </div>
+  <p style="font-size:clamp(1rem,2.5vw,1.3rem);color:#555;text-align:center">Both give us <strong>6</strong> — multiplication is just faster! 🏃‍♂️💨</p>
+</div>
+
+<!-- TABLES 1 & 2 -->
+<div class="fun-card blue-border" id="sec-tables12">
+  <div class="card-header blue">
+    <span class="card-icon">📚</span>
+    <h2>Tables 1 and 2</h2>
+  </div>
+  <div class="tables-grid">
+    <div class="table-card orange">
+      <div class="table-num">Table of 1 🌟</div>
+      <div class="table-row"><span>1 × 1</span><span>1</span></div>
+      <div class="table-row"><span>1 × 2</span><span>2</span></div>
+      <div class="table-row"><span>1 × 3</span><span>3</span></div>
+      <div class="table-row"><span>1 × 4</span><span>4</span></div>
+      <div class="table-row"><span>1 × 5</span><span>5</span></div>
+      <div class="table-row"><span>1 × 6</span><span>6</span></div>
+      <div class="table-row"><span>1 × 7</span><span>7</span></div>
+      <div class="table-row"><span>1 × 8</span><span>8</span></div>
+      <div class="table-row"><span>1 × 9</span><span>9</span></div>
+      <div class="table-row"><span>1 × 10</span><span>10</span></div>
+    </div>
+    <div class="table-card teal">
+      <div class="table-num">Table of 2 ✌️</div>
+      <div class="table-row"><span>2 × 1</span><span>2</span></div>
+      <div class="table-row"><span>2 × 2</span><span>4</span></div>
+      <div class="table-row"><span>2 × 3</span><span>6</span></div>
+      <div class="table-row"><span>2 × 4</span><span>8</span></div>
+      <div class="table-row"><span>2 × 5</span><span>10</span></div>
+      <div class="table-row"><span>2 × 6</span><span>12</span></div>
+      <div class="table-row"><span>2 × 7</span><span>14</span></div>
+      <div class="table-row"><span>2 × 8</span><span>16</span></div>
+      <div class="table-row"><span>2 × 9</span><span>18</span></div>
+      <div class="table-row"><span>2 × 10</span><span>20</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLES 3 & 4 -->
+<div class="fun-card red-border" id="sec-tables34">
+  <div class="card-header">
+    <span class="card-icon">🎒</span>
+    <h2>Tables 3 and 4</h2>
+  </div>
+  <div class="tables-grid">
+    <div class="table-card purple">
+      <div class="table-num">Table of 3 🔺</div>
+      <div class="table-row"><span>3 × 1</span><span>3</span></div>
+      <div class="table-row"><span>3 × 2</span><span>6</span></div>
+      <div class="table-row"><span>3 × 3</span><span>9</span></div>
+      <div class="table-row"><span>3 × 4</span><span>12</span></div>
+      <div class="table-row"><span>3 × 5</span><span>15</span></div>
+      <div class="table-row"><span>3 × 6</span><span>18</span></div>
+      <div class="table-row"><span>3 × 7</span><span>21</span></div>
+      <div class="table-row"><span>3 × 8</span><span>24</span></div>
+      <div class="table-row"><span>3 × 9</span><span>27</span></div>
+      <div class="table-row"><span>3 × 10</span><span>30</span></div>
+    </div>
+    <div class="table-card yellow">
+      <div class="table-num">Table of 4 🍀</div>
+      <div class="table-row"><span>4 × 1</span><span>4</span></div>
+      <div class="table-row"><span>4 × 2</span><span>8</span></div>
+      <div class="table-row"><span>4 × 3</span><span>12</span></div>
+      <div class="table-row"><span>4 × 4</span><span>16</span></div>
+      <div class="table-row"><span>4 × 5</span><span>20</span></div>
+      <div class="table-row"><span>4 × 6</span><span>24</span></div>
+      <div class="table-row"><span>4 × 7</span><span>28</span></div>
+      <div class="table-row"><span>4 × 8</span><span>32</span></div>
+      <div class="table-row"><span>4 × 9</span><span>36</span></div>
+      <div class="table-row"><span>4 × 10</span><span>40</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLES 5 & 6 -->
+<div class="fun-card blue-border" id="sec-tables56">
+  <div class="card-header blue">
+    <span class="card-icon">🎨</span>
+    <h2>Tables 5 and 6</h2>
+  </div>
+  <div class="tables-grid">
+    <div class="table-card pink">
+      <div class="table-num">Table of 5 🖐️</div>
+      <div class="table-row"><span>5 × 1</span><span>5</span></div>
+      <div class="table-row"><span>5 × 2</span><span>10</span></div>
+      <div class="table-row"><span>5 × 3</span><span>15</span></div>
+      <div class="table-row"><span>5 × 4</span><span>20</span></div>
+      <div class="table-row"><span>5 × 5</span><span>25</span></div>
+      <div class="table-row"><span>5 × 6</span><span>30</span></div>
+      <div class="table-row"><span>5 × 7</span><span>35</span></div>
+      <div class="table-row"><span>5 × 8</span><span>40</span></div>
+      <div class="table-row"><span>5 × 9</span><span>45</span></div>
+      <div class="table-row"><span>5 × 10</span><span>50</span></div>
+    </div>
+    <div class="table-card blue">
+      <div class="table-num">Table of 6 🌈</div>
+      <div class="table-row"><span>6 × 1</span><span>6</span></div>
+      <div class="table-row"><span>6 × 2</span><span>12</span></div>
+      <div class="table-row"><span>6 × 3</span><span>18</span></div>
+      <div class="table-row"><span>6 × 4</span><span>24</span></div>
+      <div class="table-row"><span>6 × 5</span><span>30</span></div>
+      <div class="table-row"><span>6 × 6</span><span>36</span></div>
+      <div class="table-row"><span>6 × 7</span><span>42</span></div>
+      <div class="table-row"><span>6 × 8</span><span>48</span></div>
+      <div class="table-row"><span>6 × 9</span><span>54</span></div>
+      <div class="table-row"><span>6 × 10</span><span>60</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLES 7 & 8 -->
+<div class="fun-card red-border" id="sec-tables78">
+  <div class="card-header">
+    <span class="card-icon">✏️</span>
+    <h2>Tables 7 and 8</h2>
+  </div>
+  <div class="tables-grid">
+    <div class="table-card orange">
+      <div class="table-num">Table of 7 🌟</div>
+      <div class="table-row"><span>7 × 1</span><span>7</span></div>
+      <div class="table-row"><span>7 × 2</span><span>14</span></div>
+      <div class="table-row"><span>7 × 3</span><span>21</span></div>
+      <div class="table-row"><span>7 × 4</span><span>28</span></div>
+      <div class="table-row"><span>7 × 5</span><span>35</span></div>
+      <div class="table-row"><span>7 × 6</span><span>42</span></div>
+      <div class="table-row"><span>7 × 7</span><span>49</span></div>
+      <div class="table-row"><span>7 × 8</span><span>56</span></div>
+      <div class="table-row"><span>7 × 9</span><span>63</span></div>
+      <div class="table-row"><span>7 × 10</span><span>70</span></div>
+    </div>
+    <div class="table-card lime">
+      <div class="table-num">Table of 8 🎯</div>
+      <div class="table-row"><span>8 × 1</span><span>8</span></div>
+      <div class="table-row"><span>8 × 2</span><span>16</span></div>
+      <div class="table-row"><span>8 × 3</span><span>24</span></div>
+      <div class="table-row"><span>8 × 4</span><span>32</span></div>
+      <div class="table-row"><span>8 × 5</span><span>40</span></div>
+      <div class="table-row"><span>8 × 6</span><span>48</span></div>
+      <div class="table-row"><span>8 × 7</span><span>56</span></div>
+      <div class="table-row"><span>8 × 8</span><span>64</span></div>
+      <div class="table-row"><span>8 × 9</span><span>72</span></div>
+      <div class="table-row"><span>8 × 10</span><span>80</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="fun-card purple-border" id="sec-practice">
+  <div class="card-header">
+    <span class="card-icon">📝</span>
+    <h2>Practice Time!</h2>
+  </div>
+  <div class="sec-badge">Type your answer!</div>
+  <p style="font-size:clamp(1rem,2.5vw,1.3rem);margin-bottom:24px;color:#555">Type the answer and press ✅ Check!</p>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="practiceProgress" style="width:0%"></div>
+  </div>
+  <div id="practiceScore" style="font-family:'Bubblegum Sans',cursive;font-size:clamp(1rem,2.5vw,1.3rem);color:#FF6B6B;margin-bottom:20px">Score: 0 / 16</div>
+  <div class="practice-grid" id="practiceGrid">
+    <!-- generated by JS -->
+  </div>
+</div>
+
+<!-- DRAG AND DROP -->
+<div class="fun-card blue-border" id="sec-drag">
+  <div class="card-header blue">
+    <span class="card-icon">🧩</span>
+    <h2>Drag and Match!</h2>
+  </div>
+  <div class="sec-badge">Drag the answer to the right box! 🖱️</div>
+  <div class="drag-section" id="dragSection">
+    <!-- generated by JS -->
+  </div>
+  <div class="drag-answers" id="dragAnswers"></div>
+  <button class="drag-check-btn" id="dragCheckBtn">✅ Check My Answers!</button>
+  <div class="drag-feedback" id="dragFeedback"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="fun-card red-border" id="sec-quiz">
+  <div class="card-header">
+    <span class="card-icon">🎮</span>
+    <h2>Fun Quiz!</h2>
+  </div>
+  <div class="sec-badge">Tap the right answer! 🎯</div>
+  <div class="quiz-wrap" id="quizWrap">
+    <!-- generated by JS -->
+  </div>
+</div>
+
+<!-- WELL DONE -->
+<div class="fun-card blue-border" id="sec-end" style="text-align:center">
+  <div class="card-header blue" style="justify-content:center">
+    <span class="card-icon">🏆</span>
+    <h2>Well Done Superstar!</h2>
+  </div>
+  <div style="font-size:clamp(3rem,8vw,6rem);margin:20px 0">🌟🎉⭐🎊🌟</div>
+  <p style="font-size:clamp(1.1rem,3vw,1.6rem);color:#555;line-height:1.8">
+    You finished the Multiplication lesson!<br>
+    Keep practising your tables every day! 💪
+  </p>
+  <button onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})" style="margin-top:28px;background:#FF6B6B;color:#fff;border:none;border-radius:20px;padding:18px 40px;font-family:'Bubblegum Sans',cursive;font-size:clamp(1.2rem,3vw,1.8rem);cursor:pointer;min-height:60px">
+    ⬆️ Go to Top!
+  </button>
+</div>
+
+</div><!-- end content-wrap -->
+</div><!-- end page-wrap -->
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <a href="#top"><span class="nav-icon">🏠</span>Top</a>
+  <a href="#sec-intro"><span class="nav-icon">💡</span>What</a>
+  <a href="#sec-tables12"><span class="nav-icon">1️⃣</span>1&2</a>
+  <a href="#sec-tables34"><span class="nav-icon">3️⃣</span>3&4</a>
+  <a href="#sec-tables56"><span class="nav-icon">5️⃣</span>5&6</a>
+  <a href="#sec-tables78"><span class="nav-icon">7️⃣</span>7&8</a>
+  <a href="#sec-practice"><span class="nav-icon">📝</span>Practice</a>
+  <a href="#sec-drag"><span class="nav-icon">🧩</span>Drag</a>
+  <a href="#sec-quiz"><span class="nav-icon">🎮</span>Quiz</a>
+</nav>
+
+<button class="scroll-top" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})" title="Back to top">⬆️</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN DISMISS - guaranteed fallback
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.display = 'none'; }
+  }, 3000);
+
+  // ---- LENIS ----
+  let lenis = null;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const shouldUseLenis = !(navigator.deviceMemory !== undefined && navigator.deviceMemory < 2 && window.innerWidth < 768);
+      if (shouldUseLenis) {
+        lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // ---- CURTAIN GSAP DISMISS ----
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { duration: 0.5, opacity: 0, delay: 1.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+  // ---- FLOATING STARS IN HERO ----
+  const starBg = document.getElementById('starBg');
+  if (starBg) {
+    const emojis = ['⭐','🌟','✨','💫','🎉'];
+    for (let i = 0; i < 12; i++) {
+      const s = document.createElement('span');
+      s.className = 'floating-star';
+      s.textContent = emojis[i % emojis.length];
+      s.style.left = (Math.random() * 95) + '%';
+      s.style.top = (Math.random() * 90) + '%';
+      s.style.animationDelay = (Math.random() * 3) + 's';
+      s.style.animationDuration = (3 + Math.random() * 2) + 's';
+      starBg.appendChild(s);
+    }
+  }
+
+  // ---- GSAP CARD ANIMATIONS ----
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        gsap.fromTo(card, { y: 40, scale: 0.92 }, {
+          y: 0, scale: 1, duration: 0.5,
+          ease: 'back.out(1.4)',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+      gsap.fromTo('.hero-inner', { y: -30, opacity: 0.5 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+    }
+  } catch(e) { console.warn('GSAP animations failed:', e); }
+
+  // ---- CONFETTI HELPER ----
+  function fireConfetti() {
+    try {
+      if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#fff','#b39ddb'] });
+      }
+    } catch(e) {}
+  }
+
+  // ---- SHAKE HELPER ----
+  function shakeEl(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { x: [-10,10,-10,10,0], duration: 0.4, ease: 'power1.inOut' });
+      } else {
+        el.style.animation = 'none';
+        el.offsetHeight;
+        el.style.animation = 'shake .4s';
+      }
+    } catch(e) {}
+  }
+
+  // ---- PRACTICE SECTION ----
+  const practiceData = [
+    {eq:'5 × 2', ans:10},{eq:'3 × 2', ans:6},{eq:'6 × 2', ans:12},{eq:'8 × 2', ans:16},
+    {eq:'5 × 3', ans:15},{eq:'3 × 3', ans:9},{eq:'9 × 3', ans:27},{eq:'7 × 3', ans:21},
+    {eq:'4 × 4', ans:16},{eq:'2 × 4', ans:8},{eq:'5 × 4', ans:20},{eq:'6 × 4', ans:24},
+    {eq:'5 × 1', ans:5},{eq:'9 × 6', ans:54},{eq:'8 × 4', ans:32},{eq:'9 × 5', ans:45}
+  ];
+  let practiceScore = 0;
+  const correctSet = new Set();
+  const practiceGrid = document.getElementById('practiceGrid');
+  if (practiceGrid) {
+    practiceData.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'practice-card';
+      card.innerHTML = `
+        <div class="practice-eq">${item.eq} = ?</div>
+        <input class="practice-input" type="number" inputmode="numeric" placeholder="?" id="pinput-${idx}" aria-label="Answer for ${item.eq}">
+        <button class="check-btn" data-idx="${idx}">✅ Check</button>
+        <div class="practice-fb" id="pfb-${idx}"></div>
+      `;
+      practiceGrid.appendChild(card);
+    });
+    practiceGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.check-btn');
+      if (!btn) return;
+      const idx = parseInt(btn.dataset.idx);
+      const input = document.getElementById(`pinput-${idx}`);
+      const fb = document.getElementById(`pfb-${idx}`);
+      if (!input || !fb) return;
+      const val = parseInt(input.value);
+      if (isNaN(val)) {
+        fb.textContent = 'Type a number! 🔢';
+        fb.className = 'practice-fb wrong';
+        shakeEl(input);
+        return;
+      }
+      if (val === practiceData[idx].ans) {
+        fb.textContent = '🎉 Correct! Great job!';
+        fb.className = 'practice-fb correct';
+        if (!correctSet.has(idx)) {
+          correctSet.add(idx);
+          practiceScore++;
+          const scoreEl = document.getElementById('practiceScore');
+          const progressEl = document.getElementById('practiceProgress');
+          if (scoreEl) scoreEl.textContent = `Score: ${practiceScore} / ${practiceData.length}`;
+          if (progressEl) progressEl.style.width = ((practiceScore / practiceData.length) * 100) + '%';
+        }
+        fireConfetti();
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.fromTo(btn.closest('.practice-card'), { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1 });
+          }
+        } catch(e2) {}
+      } else {
+        fb.textContent = `❌ Try again! Hint: ${practiceData[idx].eq}`;
+        fb.className = 'practice-fb wrong';
+        shakeEl(input);
+      }
+    });
+    // Allow enter key
+    practiceGrid.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const input = e.target.closest('.practice-input');
+        if (input) {
+          const card = input.closest('.practice-card');
+          if (card) { const btn = card.querySelector('.check-btn'); if(btn) btn.click(); }
+        }
+      }
+    });
+  }
+
+  // ---- DRAG AND DROP ----
+  const dragPairs = [
+    {eq:'2 × 5', ans:10}, {eq:'3 × 4', ans:12},
+    {eq:'6 × 3', ans:18}, {eq:'5 × 5', ans:25},
+    {eq:'4 × 7', ans:28}, {eq:'8 × 3', ans:24}
+  ];
+  const dragSection = document.getElementById('dragSection');
+  const dragAnswers = document.getElementById('dragAnswers');
+  let dragState = {};
+  let draggedChipId = null;
+  let touchDragging = false;
+  let touchChip = null;
+  let touchClone = null;
+
+  if (dragSection && dragAnswers) {
+    // Build drop zones
+    dragPairs.forEach((pair, idx) => {
+      dragState[idx] = null;
+      const row = document.createElement('div');
+      row.className = 'drag-row';
+      row.innerHTML = `
+        <div class="drag-eq-label">${pair.eq} = ?</div>
+        <div class="drop-zone" id="dz-${idx}" data-idx="${idx}">Drop here ⬇️</div>
+      `;
+      dragSection.appendChild(row);
+    });
+
+    // Build shuffled chips
+    const shuffled = [...dragPairs].map((p,i) => ({val:p.ans, id:'chip-'+i})).sort(()=>Math.random()-.5);
+    shuffled.forEach(chip => {
+      const el = document.createElement('div');
+      el.className = 'drag-chip';
+      el.textContent = chip.val;
+      el.id = chip.id;
+      el.draggable = true;
+      el.dataset.val = chip.val;
+      dragAnswers.appendChild(el);
+    });
+
+    // Desktop drag
+    dragAnswers.addEventListener('dragstart', (e) => {
+      const chip = e.target.closest('.drag-chip');
+      if (chip) { draggedChipId = chip.id; e.dataTransfer.setData('text/plain', chip.dataset.val); }
+    });
+    document.querySelectorAll('.drop-zone').forEach(dz => {
+      dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('over'); });
+      dz.addEventListener('dragleave', () => { dz.classList.remove('over'); });
+      dz.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dz.classList.remove('over');
+        const val = e.dataTransfer.getData('text/plain');
+        const idx = parseInt(dz.dataset.idx);
+        const chip = document.getElementById(draggedChipId);
+        if (chip) {
+          // Return previous chip to answers if zone was filled
+          if (dragState[idx] !== null) {
+            const old = document.getElementById(dragState[idx]);
+            if (old) dragAnswers.appendChild(old);
+          }
+          dragState[idx] = draggedChipId;
+          dz.innerHTML = '';
+          dz.appendChild(chip);
+          dz.classList.add('filled');
+          dz.style.color = '#333';
+          draggedChipId = null;
+        }
+      });
+    });
+
+    // Touch drag
+    dragAnswers.addEventListener('touchstart', (e) => {
+      const chip = e.target.closest('.drag-chip');
+      if (!chip) return;
+      touchChip = chip;
+      touchDragging = true;
+      touchClone = chip.cloneNode(true);
+      touchClone.style.position = 'fixed';
+      touchClone.style.opacity = '0.8';
+      touchClone.style.zIndex = '9999';
+      touchClone.style.pointerEvents = 'none';
+      touchClone.style.width = chip.offsetWidth + 'px';
+      document.body.appendChild(touchClone);
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - chip.offsetWidth/2) + 'px';
+      touchClone.style.top = (t.clientY - 30) + 'px';
+    }, {passive: true});
+
+    document.addEventListener('touchmove', (e) => {
+      if (!touchDragging || !touchClone) return;
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - parseInt(touchClone.style.width)/2) + 'px';
+      touchClone.style.top = (t.clientY - 30) + 'px';
+    }, {passive: true});
+
+    document.addEventListener('touchend', (e) => {
+      if (!touchDragging || !touchChip || !touchClone) return;
+      touchDragging = false;
+      const t = e.changedTouches[0];
+      if (touchClone.parentNode) touchClone.parentNode.removeChild(touchClone);
+      touchClone = null;
+      // Find drop zone under finger
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const dz = el ? el.closest('.drop-zone') : null;
+      if (dz) {
+        const idx = parseInt(dz.dataset.idx);
+        if (dragState[idx] !== null) {
+          const old = document.getElementById(dragState[idx]);
+          if (old) dragAnswers.appendChild(old);
+        }
+        dragState[idx] = touchChip.id;
+        dz.innerHTML = '';
+        dz.appendChild(touchChip);
+        dz.classList.add('filled');
+        dz.style.color = '#333';
+      }
+      touchChip = null;
+    });
+
+    const dragCheckBtn = document.getElementById('dragCheckBtn');
+    const dragFeedback = document.getElementById('dragFeedback');
+    if (dragCheckBtn) {
+      dragCheckBtn.addEventListener('click', () => {
+        let correct = 0;
+        dragPairs.forEach((pair, idx) => {
+          const dz = document.getElementById(`dz-${idx}`);
+          if (!dz) return;
+          const chip = dz.querySelector('.drag-chip');
+          if (chip && parseInt(chip.dataset.val) === pair.ans) {
+            correct++;
+            dz.style.borderColor = '#6BCB77';
+            dz.style.background = '#e8ffe8';
+          } else {
+            dz.style.borderColor = '#FF6B6B';
+            dz.style.background = '#fff0f0';
+            shakeEl(dz);
+          }
+        });
+        if (dragFeedback) {
+          dragFeedback.textContent = correct === dragPairs.length
+            ? `🎉 Perfect! All ${correct} correct!`
+            : `${correct} / ${dragPairs.length} correct! Try again! 💪`;
+          dragFeedback.style.color = correct === dragPairs.length ? '#388e3c' : '#d32f2f';
+        }
+        if (correct === dragPairs.length) fireConfetti();
+      });
+    }
+  }
+
+  // ---- QUIZ ----
+  const quizData = [
+    { q:'What is 2 × 3?', emoji:'✌️✌️✌️', correct:6, options:[4,6,9] },
+    { q:'What is 5 × 2?', emoji:'🖐️✌️', correct:10, options:[10,8,12] },
+    { q:'What is 3 × 3?', emoji:'🔺🔺🔺', correct:9, options:[6,9,12] },
+    { q:'What is 4 × 2?', emoji:'🍀✌️', correct:8, options:[8,6,10] },
+    { q:'What is 6 × 2?', emoji:'🌈✌️', correct:12, options:[12,10,14] },
+    { q:'What is 5 × 5?', emoji:'🖐️🖐️', correct:25, options:[20,25,30] },
+    { q:'What is 7 × 2?', emoji:'⭐✌️', correct:14, options:[12,14,16] },
+    { q:'What is 4 × 4?', emoji:'🍀🍀', correct:16, options:[16,12,20] }
+  ];
+  const quizWrap = document.getElementById('quizWrap');
+  if (quizWrap) {
+    quizData.forEach((qitem, qi) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-q';
+      div.id = `quiz-${qi}`;
+      const shuffled = [...qitem.options].sort(()=>Math.random()-.5);
+      div.innerHTML = `
+        <span class="quiz-emoji">${qitem.emoji}</span>
+        <h3>${qitem.q}</h3>
+        <div class="quiz-options" id="qopts-${qi}">
+          ${shuffled.map(opt => `<button class="quiz-opt" data-qi="${qi}" data-val="${opt}">${opt}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="qfb-${qi}"></div>
+      `;
+      quizWrap.appendChild(div);
+    });
+
+    quizWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.quiz-opt');
+      if (!btn) return;
+      const qi = parseInt(btn.dataset.qi);
+      const val = parseInt(btn.dataset.val);
+      const fb = document.getElementById(`qfb-${qi}`);
+      const opts = document.querySelectorAll(`#qopts-${qi} .quiz-opt`);
+      // Disable all options after answer
+      opts.forEach(o => { o.style.pointerEvents = 'none'; });
+      if (val === quizData[qi].correct) {
+        btn.classList.add('correct-ans');
+        if (fb) { fb.textContent = '🎉 Yes! Well done!'; fb.className = 'quiz-feedback yes'; }
+        fireConfetti();
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.fromTo(btn, { scale: 1 }, { scale: 1.15, duration: 0.3, yoyo: true, repeat: 1 });
+          }
+        } catch(e2) {}
+      } else {
+        btn.classList.add('wrong-ans');
+        if (fb) { fb.textContent = `❌ Not quite! The answer is ${quizData[qi].correct} 😊`; fb.className = 'quiz-feedback no'; }
+        shakeEl(btn);
+        // Show correct
+        opts.forEach(o => { if (parseInt(o.dataset.val) === quizData[qi].correct) o.classList.add('correct-ans'); });
+      }
+    });
+  }
+
+  // ---- IntersectionObserver for table cards ----
+  try {
+    const tCards = document.querySelectorAll('.table-card');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            try {
+              if (typeof gsap !== 'undefined') {
+                gsap.fromTo(entry.target, { scale: 0.9, opacity: 0.7 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.3)' });
+              }
+            } catch(ge) {}
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      tCards.forEach(tc => io.observe(tc));
+    }
+  } catch(oe) {}
+
+  // ---- Tap to reveal on intro visual bubbles ----
+  document.querySelectorAll('.num-bubble,.result-bubble,.times-sign').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(el, { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+        }
+      } catch(ge) {}
+    });
+  });
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

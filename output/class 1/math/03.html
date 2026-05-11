@@ -1,0 +1,928 @@
+<!-- CLASS: 1 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Missing Numbers | Class 1 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{width:100%;scroll-behavior:smooth;}
+body{
+  font-family:'Nunito',sans-serif;
+  font-size:20px;
+  background:linear-gradient(160deg,#fff9e6 0%,#e8f7ff 50%,#f0ffe8 100%);
+  min-height:100vh;
+  width:100%;
+  overflow-x:hidden;
+  color:#333;
+}
+
+/* ===== CURTAIN ===== */
+#curtain{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,#FFD93D,#FF6B6B);
+  z-index:9999;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:20px;
+}
+#curtain .logo{font-family:'Bubblegum Sans',cursive;font-size:clamp(2rem,6vw,4rem);color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,0.15);}
+#curtain .sub{font-family:'Nunito',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);color:#fff;font-weight:700;}
+.bus-emoji{font-size:5rem;animation:busMove 1s ease-in-out infinite alternate;}
+@keyframes busMove{from{transform:translateX(-20px);}to{transform:translateX(20px);}}
+
+/* ===== SKY BACKGROUND ===== */
+.sky-bg{
+  position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,#e0f4ff 0%,#fff9e6 60%,#e8ffe0 100%);
+  overflow:hidden;
+}
+.cloud{position:absolute;background:#fff;border-radius:50px;opacity:0.7;}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%;}
+.c1{width:120px;height:40px;top:8%;left:5%;animation:cloudFloat 18s linear infinite;}
+.c2{width:90px;height:30px;top:18%;left:55%;animation:cloudFloat 24s linear infinite 3s;}
+.c3{width:150px;height:50px;top:5%;left:75%;animation:cloudFloat 20s linear infinite 7s;}
+@keyframes cloudFloat{from{transform:translateX(-200px);}to{transform:translateX(110vw);}}
+
+/* ===== WRAPPER ===== */
+.page-wrapper{width:100%;max-width:100%;padding-bottom:100px;}
+
+/* ===== HERO ===== */
+.hero{
+  width:100%;
+  min-height:70vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:60px 20px 40px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-badge{
+  background:#FF6B6B;color:#fff;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1rem,3vw,1.4rem);
+  padding:8px 24px;border-radius:50px;
+  margin-bottom:20px;
+  display:inline-block;
+  box-shadow:0 4px 12px rgba(255,107,107,0.4);
+}
+.hero h1{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(2.8rem,8vw,5rem);
+  color:#FF6B6B;
+  text-shadow:4px 4px 0 #FFD93D;
+  line-height:1.1;
+  margin-bottom:16px;
+}
+.hero .subtitle{
+  font-size:clamp(1.2rem,3vw,1.6rem);
+  color:#555;font-weight:700;
+  margin-bottom:30px;
+  max-width:700px;
+}
+.hero-emojis{font-size:clamp(2.5rem,6vw,4rem);display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.hero-emojis span{display:inline-block;animation:bounce 1.5s ease-in-out infinite;}
+.hero-emojis span:nth-child(2){animation-delay:0.2s;}
+.hero-emojis span:nth-child(3){animation-delay:0.4s;}
+.hero-emojis span:nth-child(4){animation-delay:0.6s;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+/* ===== SECTION ===== */
+.section{
+  width:100%;
+  padding:20px 24px;
+  margin-bottom:0;
+}
+.content-inner{
+  max-width:1500px;
+  margin:0 auto;
+  padding:0 16px;
+}
+
+/* ===== FUN CARD ===== */
+.fun-card{
+  background:#fff;
+  border-radius:32px;
+  border:4px solid #FFD93D;
+  padding:36px 32px;
+  margin-bottom:40px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.08);
+  width:100%;
+  opacity:1;
+  transform:none;
+  position:relative;
+  overflow:hidden;
+}
+.fun-card.card-red{border-color:#FF6B6B;}
+.fun-card.card-blue{border-color:#6BCB77;}
+.fun-card.card-purple{border-color:#a78bfa;}
+
+.card-title{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+}
+.card-icon{font-size:2.2rem;}
+.card-desc{
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:#666;margin-bottom:28px;font-weight:700;
+}
+
+/* ===== NUMBER GRID ===== */
+.grid-section-label{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.3rem,3vw,1.8rem);
+  color:#FF6B6B;
+  margin-bottom:20px;
+  text-align:center;
+}
+.num-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin-bottom:12px;
+}
+.num-cell{
+  background:#fff9e6;
+  border:3px solid #FFD93D;
+  border-radius:16px;
+  min-height:64px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.3rem,3vw,2rem);
+  color:#333;
+  font-weight:700;
+  transition:transform 0.2s;
+  position:relative;
+}
+.num-cell.given{
+  background:#FFD93D;
+  color:#333;
+  cursor:default;
+}
+.num-cell.empty-cell{
+  background:#f0f8ff;
+  border:3px dashed #6BCB77;
+  cursor:pointer;
+}
+.num-cell.empty-cell input{
+  width:100%;height:100%;
+  border:none;background:transparent;
+  text-align:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.2rem,2.5vw,1.8rem);
+  color:#FF6B6B;
+  outline:none;
+  padding:0;
+  min-height:56px;
+}
+.num-cell.correct-cell{
+  background:#6BCB77!important;
+  border-color:#4aaa58!important;
+  color:#fff!important;
+}
+.num-cell.wrong-cell{
+  background:#FF6B6B!important;
+  border-color:#d94040!important;
+  color:#fff!important;
+}
+
+/* CHECK BTN */
+.check-btn{
+  background:linear-gradient(135deg,#6BCB77,#4aaa58);
+  color:#fff;border:none;
+  border-radius:50px;
+  padding:16px 48px;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.2rem,3vw,1.6rem);
+  cursor:pointer;
+  display:block;
+  margin:24px auto 0;
+  box-shadow:0 6px 20px rgba(107,203,119,0.4);
+  transition:transform 0.15s,box-shadow 0.15s;
+  min-height:60px;
+  min-width:200px;
+}
+.check-btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(107,203,119,0.5);}
+.check-btn:active{transform:translateY(1px);}
+
+.score-display{
+  text-align:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.2rem,3vw,1.6rem);
+  color:#FF6B6B;
+  margin-top:16px;
+  min-height:36px;
+}
+
+/* ===== NUMBER LINE ===== */
+.number-line-wrap{
+  overflow-x:auto;
+  padding:20px 0;
+}
+.number-line{
+  display:flex;align-items:center;
+  gap:0;
+  min-width:max-content;
+  padding:10px 20px;
+}
+.nl-step{
+  display:flex;flex-direction:column;align-items:center;
+  width:60px;
+}
+.nl-circle{
+  width:54px;height:54px;
+  border-radius:50%;
+  background:#FFD93D;
+  border:3px solid #FF6B6B;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:1.3rem;
+  color:#333;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform 0.2s,background 0.2s;
+  position:relative;
+  z-index:1;
+}
+.nl-circle.special{background:#FF6B6B;color:#fff;border-color:#c94040;}
+.nl-circle:hover{transform:scale(1.15);}
+.nl-arrow{
+  width:20px;height:3px;
+  background:#FFD93D;
+  position:relative;
+  margin-top:-27px;
+  z-index:0;
+}
+
+/* ===== QUIZ ===== */
+.quiz-question{
+  text-align:center;
+  margin-bottom:32px;
+  padding-bottom:32px;
+  border-bottom:3px dashed #FFD93D;
+}
+.quiz-question:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0;}
+.quiz-q-text{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.4rem,3.5vw,2rem);
+  color:#333;
+  margin-bottom:20px;
+}
+.quiz-number-row{
+  display:flex;justify-content:center;align-items:center;gap:10px;
+  margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.quiz-num-box{
+  width:70px;height:70px;
+  border-radius:16px;
+  background:#FFD93D;
+  border:3px solid #FF6B6B;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:1.8rem;
+  color:#333;
+  font-weight:700;
+}
+.quiz-num-box.blank{
+  background:#f0f8ff;
+  border:3px dashed #6BCB77;
+  font-size:2.5rem;color:#ccc;
+}
+.quiz-options{
+  display:flex;justify-content:center;gap:16px;flex-wrap:wrap;
+}
+.quiz-opt-btn{
+  width:90px;height:90px;
+  border-radius:20px;
+  border:4px solid #FFD93D;
+  background:#fff9e6;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:2rem;color:#333;
+  cursor:pointer;
+  transition:transform 0.15s,box-shadow 0.15s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  display:flex;align-items:center;justify-content:center;
+  min-height:56px;
+}
+.quiz-opt-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,0.12);}
+.quiz-opt-btn.correct-ans{background:#6BCB77;border-color:#4aaa58;color:#fff;}
+.quiz-opt-btn.wrong-ans{background:#FF6B6B;border-color:#c94040;color:#fff;}
+.quiz-feedback{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  margin-top:14px;
+  min-height:32px;
+}
+.feedback-correct{color:#4aaa58;}
+.feedback-wrong{color:#FF6B6B;}
+
+/* ===== INTRO CARD ===== */
+.intro-visual{
+  display:flex;justify-content:center;align-items:center;
+  gap:12px;flex-wrap:wrap;
+  margin:24px 0;
+}
+.intro-balloon{
+  width:60px;height:80px;
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:1.6rem;color:#fff;
+  font-weight:700;
+  position:relative;
+  animation:balloonFloat 2.5s ease-in-out infinite;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
+.intro-balloon::after{
+  content:'';
+  position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+  width:2px;height:18px;background:#999;
+}
+.intro-balloon:nth-child(2){animation-delay:0.4s;}
+.intro-balloon:nth-child(3){animation-delay:0.8s;}
+.intro-balloon:nth-child(4){animation-delay:1.2s;}
+.intro-balloon:nth-child(5){animation-delay:1.6s;}
+@keyframes balloonFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* ===== HOW IT WORKS ===== */
+.steps-row{
+  display:flex;gap:20px;flex-wrap:wrap;justify-content:center;
+  margin-top:20px;
+}
+.step-card{
+  flex:1;min-width:140px;max-width:220px;
+  background:#fff9e6;
+  border:3px solid #FFD93D;
+  border-radius:24px;
+  padding:20px 16px;
+  text-align:center;
+}
+.step-emoji{font-size:2.5rem;margin-bottom:10px;display:block;}
+.step-text{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:#555;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:3px solid #FFD93D;
+  padding:10px 16px;
+  z-index:1000;
+  overflow-x:auto;
+}
+.bottom-nav-inner{
+  display:flex;gap:12px;
+  min-width:max-content;
+}
+.bottom-nav a{
+  display:flex;flex-direction:column;align-items:center;
+  text-decoration:none;color:#555;
+  font-family:'Bubblegum Sans',cursive;
+  font-size:0.9rem;
+  padding:6px 12px;
+  border-radius:16px;
+  border:2px solid #FFD93D;
+  background:#fff9e6;
+  min-height:56px;justify-content:center;
+  white-space:nowrap;
+  transition:background 0.2s;
+}
+.bottom-nav a span{font-size:1.4rem;margin-bottom:2px;}
+.bottom-nav a:hover{background:#FFD93D;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  body{padding-bottom:80px;}
+  .bottom-nav{display:block;}
+  .fun-card{padding:24px 16px;}
+  .num-grid{gap:6px;}
+  .num-cell{min-height:52px;}
+  .quiz-opt-btn{width:75px;height:75px;font-size:1.7rem;}
+  .quiz-num-box{width:58px;height:58px;font-size:1.5rem;}
+  .hero{min-height:60vh;padding:40px 16px 30px;}
+  .section{padding:12px 12px;}
+  .content-inner{padding:0 4px;}
+}
+@media(max-width:480px){
+  .num-grid{grid-template-columns:repeat(5,1fr);gap:4px;}
+  .num-cell{min-height:46px;border-radius:10px;}
+  .num-cell input{font-size:1rem;}
+  .num-cell.given{font-size:1.1rem;}
+}
+@media(max-width:360px){
+  .num-grid{grid-template-columns:repeat(5,1fr);gap:3px;}
+  .num-cell{min-height:40px;border-radius:8px;font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="bus-emoji">🚌</div>
+  <div class="logo">Digital School</div>
+  <div class="sub">✏️ Missing Numbers ✏️</div>
+</div>
+
+<!-- Sky Background -->
+<div class="sky-bg">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav" aria-label="Section navigation">
+  <div class="bottom-nav-inner">
+    <a href="#intro"><span>🏠</span>Home</a>
+    <a href="#howto"><span>💡</span>How To</a>
+    <a href="#grid1"><span>1️⃣</span>1–50</a>
+    <a href="#grid2"><span>5️⃣</span>51–100</a>
+    <a href="#quiz"><span>🌟</span>Quiz</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="intro">
+    <div class="hero-badge">📚 Chapter 3 · Class 1 Math</div>
+    <h1>Missing Numbers! 🔢</h1>
+    <p class="subtitle">Can you find the numbers that are hiding? Let's fill them in! 🎉</p>
+    <div class="hero-emojis">
+      <span>🔢</span><span>🎈</span><span>✏️</span><span>⭐</span>
+    </div>
+    <!-- Balloons showing 5, 7, 8 from the book cover -->
+    <div class="intro-visual">
+      <div class="intro-balloon" style="background:#FF6B6B;" onclick="popBalloon(this)">5</div>
+      <div class="intro-balloon" style="background:#FFD93D;color:#333;" onclick="popBalloon(this)">?</div>
+      <div class="intro-balloon" style="background:#6BCBFF;" onclick="popBalloon(this)">7</div>
+      <div class="intro-balloon" style="background:#FF6B6B;" onclick="popBalloon(this)">?</div>
+      <div class="intro-balloon" style="background:#FFD93D;color:#333;" onclick="popBalloon(this)">8</div>
+    </div>
+    <p style="font-size:1rem;color:#999;font-style:italic;margin-top:20px;">👆 Tap the balloons!</p>
+  </section>
+
+  <!-- HOW TO -->
+  <section class="section" id="howto">
+    <div class="content-inner">
+      <div class="fun-card card-blue">
+        <div class="card-title"><span class="card-icon">💡</span><span style="color:#FF6B6B;">How To Play!</span></div>
+        <p class="card-desc">Look at the numbers in each row. Find the pattern and write the missing number! ✍️</p>
+        <div class="steps-row">
+          <div class="step-card">
+            <span class="step-emoji">👀</span>
+            <div class="step-text">Look at the numbers given</div>
+          </div>
+          <div class="step-card">
+            <span class="step-emoji">🤔</span>
+            <div class="step-text">Find the counting pattern</div>
+          </div>
+          <div class="step-card">
+            <span class="step-emoji">✏️</span>
+            <div class="step-text">Type the missing number</div>
+          </div>
+          <div class="step-card">
+            <span class="step-emoji">🌟</span>
+            <div class="step-text">Press Check to win!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUMBER LINE 1-10 -->
+  <section class="section">
+    <div class="content-inner">
+      <div class="fun-card">
+        <div class="card-title"><span class="card-icon">🔢</span><span style="color:#6BCB77;">Count 1 to 10!</span></div>
+        <p class="card-desc">Tap each number to hear it! 🔊</p>
+        <div class="number-line-wrap">
+          <div class="number-line" id="nl1to10"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID 1: Numbers 1–50 -->
+  <section class="section" id="grid1">
+    <div class="content-inner">
+      <div class="fun-card card-red">
+        <div class="card-title"><span class="card-icon">🎈</span><span style="color:#FF6B6B;">Write the Missing Numbers! (1–50)</span></div>
+        <p class="card-desc">🚌 The school bus is waiting! Fill in the empty boxes! The numbers go up by 10 or count by a pattern!</p>
+        <div class="grid-section-label">Numbers 1 to 50 🌟</div>
+        <div class="num-grid" id="grid1-container"></div>
+        <button class="check-btn" onclick="checkGrid('grid1-container','grid1-answers')">✅ Check My Answers!</button>
+        <div class="score-display" id="grid1-score"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID 2: Numbers 51–100 -->
+  <section class="section" id="grid2">
+    <div class="content-inner">
+      <div class="fun-card card-purple">
+        <div class="card-title"><span class="card-icon">⭐</span><span style="color:#a78bfa;">Write the Missing Numbers! (51–100)</span></div>
+        <p class="card-desc">🌟 You are a superstar! Keep going! Fill in the missing numbers from 51 to 100!</p>
+        <div class="grid-section-label">Numbers 51 to 100 🎉</div>
+        <div class="num-grid" id="grid2-container"></div>
+        <button class="check-btn" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);" onclick="checkGrid('grid2-container','grid2-answers')">✅ Check My Answers!</button>
+        <div class="score-display" id="grid2-score"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz">
+    <div class="content-inner">
+      <div class="fun-card card-blue">
+        <div class="card-title"><span class="card-icon">🌟</span><span style="color:#6BCB77;">Fun Quiz Time!</span></div>
+        <p class="card-desc">👉 Which number is missing? Tap the right answer!</p>
+        <div id="quiz-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELL DONE CARD -->
+  <section class="section">
+    <div class="content-inner">
+      <div class="fun-card" style="text-align:center;background:linear-gradient(135deg,#FFD93D22,#FF6B6B11);">
+        <div style="font-size:4rem;margin-bottom:16px;">🏆</div>
+        <div class="card-title" style="justify-content:center;"><span style="color:#FF6B6B;">Well Done, Superstar!</span></div>
+        <p class="card-desc" style="text-align:center;">You practiced counting and finding missing numbers!<br>Keep it up! 🎉🎈⭐</p>
+        <button class="check-btn" onclick="celebrateFinal()" style="background:linear-gradient(135deg,#FF6B6B,#FFD93D);margin-top:16px;">🎊 Celebrate! 🎊</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== CURTAIN FALLBACK =====
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity='0'; c.style.transition='opacity 0.5s'; setTimeout(()=>{c.style.display='none';},500); }
+  }, 2000);
+
+  // ===== LENIS =====
+  let lenis;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lowMem = navigator.deviceMemory && navigator.deviceMemory < 2;
+      if (!lowMem) {
+        lenis = new Lenis({ lerp: 0.08, smooth: true });
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        } else {
+          function rafLenis(t) { lenis.raf(t); requestAnimationFrame(rafLenis); }
+          requestAnimationFrame(rafLenis);
+        }
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // ===== GSAP SETUP =====
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      // Page load: stagger cards
+      const cards = document.querySelectorAll('.fun-card');
+      cards.forEach((card, i) => {
+        gsap.from(card, {
+          y: 60, scale: 0.88, opacity: 0,
+          duration: 0.55, delay: i * 0.08, ease: 'back.out(1.5)',
+          scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
+        });
+      });
+      // Hero entrance
+      gsap.from('.hero h1', { y: -40, opacity: 0, duration: 0.55, ease: 'back.out(2)' });
+      gsap.from('.hero .subtitle', { y: 30, opacity: 0, duration: 0.5, delay: 0.15 });
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // ===== BUILD NUMBER LINE 1-10 =====
+  try {
+    const nl = document.getElementById('nl1to10');
+    if (nl) {
+      for (let i = 1; i <= 10; i++) {
+        const step = document.createElement('div');
+        step.className = 'nl-step';
+        const circle = document.createElement('div');
+        circle.className = 'nl-circle' + (i % 5 === 0 ? ' special' : '');
+        circle.textContent = i;
+        circle.title = 'Number ' + i;
+        circle.addEventListener('click', () => {
+          try {
+            const u = new SpeechSynthesisUtterance(String(i));
+            u.rate = 0.8; speechSynthesis.speak(u);
+          } catch(e) {}
+          animatePop(circle);
+        });
+        step.appendChild(circle);
+        if (i < 10) {
+          const arr = document.createElement('div');
+          arr.className = 'nl-arrow';
+          step.appendChild(arr);
+        }
+        nl.appendChild(step);
+      }
+    }
+  } catch(e) { console.warn('Number line error:', e); }
+
+  // ===== GRID DATA =====
+  // Grid 1: 1-50 arranged in 10 rows of 5
+  // Row pattern: each row has 5 cells, some given, some blank
+  // Following the book layout exactly
+  const grid1Data = [
+    // [value, isGiven]
+    [1,true],[11,false],[21,true],[31,false],[41,true],
+    [2,false],[12,true],[22,false],[32,true],[42,false],
+    [3,true],[13,false],[23,true],[33,false],[43,false],
+    [4,false],[14,true],[24,false],[34,false],[44,true],
+    [5,false],[15,false],[25,false],[35,true],[45,false],
+    [6,true],[16,false],[26,false],[36,false],[46,true],
+    [7,false],[17,false],[27,true],[37,false],[47,false],
+    [8,false],[18,true],[28,false],[38,false],[48,false],
+    [9,false],[19,false],[29,false],[39,true],[49,false],
+    [10,true],[20,false],[30,false],[40,false],[50,true]
+  ];
+
+  const grid2Data = [
+    [51,true],[61,false],[71,true],[81,false],[91,true],
+    [52,false],[62,true],[72,false],[82,true],[92,false],
+    [53,true],[63,false],[73,true],[83,false],[93,false],
+    [54,false],[64,true],[74,false],[84,false],[94,true],
+    [55,false],[65,false],[75,false],[85,true],[95,false],
+    [56,true],[66,false],[76,false],[86,false],[96,true],
+    [57,false],[67,false],[77,true],[87,false],[97,false],
+    [58,false],[68,true],[78,false],[88,false],[98,false],
+    [59,false],[69,false],[79,false],[89,true],[99,false],
+    [60,true],[70,false],[80,false],[90,false],[100,true]
+  ];
+
+  window['grid1-answers'] = grid1Data;
+  window['grid2-answers'] = grid2Data;
+
+  buildGrid('grid1-container', grid1Data);
+  buildGrid('grid2-container', grid2Data);
+
+  // ===== BUILD QUIZ =====
+  buildQuiz();
+
+  // ===== CURTAIN GSAP DISMISS =====
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 1.6, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+});
+
+// ===== BUILD GRID =====
+function buildGrid(containerId, data) {
+  try {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    data.forEach((item, idx) => {
+      const cell = document.createElement('div');
+      cell.className = 'num-cell ' + (item[1] ? 'given' : 'empty-cell');
+      cell.dataset.answer = item[0];
+      cell.dataset.given = item[1] ? '1' : '0';
+      if (item[1]) {
+        cell.textContent = item[0];
+        cell.setAttribute('aria-label', 'Number ' + item[0]);
+      } else {
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.inputMode = 'numeric';
+        inp.pattern = '[0-9]*';
+        inp.min = 1; inp.max = 100;
+        inp.placeholder = '?';
+        inp.setAttribute('aria-label', 'Missing number ' + (idx+1));
+        inp.style.cssText = 'width:100%;height:100%;border:none;background:transparent;text-align:center;font-family:"Bubblegum Sans",cursive;font-size:clamp(1.1rem,2.5vw,1.7rem);color:#FF6B6B;outline:none;padding:0;min-height:48px;';
+        cell.appendChild(inp);
+      }
+      container.appendChild(cell);
+    });
+  } catch(e) { console.warn('buildGrid error:', e); }
+}
+
+// ===== CHECK GRID =====
+function checkGrid(containerId, answersKey) {
+  try {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const scoreEl = document.getElementById(containerId.replace('container','score'));
+    const cells = container.querySelectorAll('.num-cell.empty-cell');
+    let correct = 0, total = cells.length;
+    cells.forEach(cell => {
+      const inp = cell.querySelector('input');
+      if (!inp) return;
+      const userVal = parseInt(inp.value, 10);
+      const ans = parseInt(cell.dataset.answer, 10);
+      cell.classList.remove('correct-cell','wrong-cell');
+      if (userVal === ans) {
+        correct++;
+        cell.classList.add('correct-cell');
+        inp.style.color = '#fff';
+        animatePop(cell);
+      } else {
+        cell.classList.add('wrong-cell');
+        shakeElement(cell);
+      }
+    });
+    const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+    if (scoreEl) {
+      scoreEl.textContent = `🌟 ${correct} out of ${total} correct! (${pct}%)`;
+      scoreEl.style.color = pct >= 80 ? '#4aaa58' : pct >= 50 ? '#FF6B6B' : '#c94040';
+    }
+    if (pct >= 80) {
+      try {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#FF6B6B','#FFD93D','#6BCB77','#a78bfa','#fff'] });
+        }
+      } catch(e) {}
+    }
+  } catch(e) { console.warn('checkGrid error:', e); }
+}
+
+// ===== QUIZ =====
+function buildQuiz() {
+  try {
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+
+    const quizData = [
+      { sequence: [1,2,'?',4,5], answer: 3, options: [3,6,7] },
+      { sequence: [5,'?',7,8,9], answer: 6, options: [4,6,10] },
+      { sequence: [10,'?',30,40,50], answer: 20, options: [15,20,25] },
+      { sequence: [21,22,'?',24,25], answer: 23, options: [20,23,26] },
+      { sequence: [46,47,48,'?',50], answer: 49, options: [44,49,51] },
+      { sequence: [71,'?',73,74,75], answer: 72, options: [70,72,76] },
+      { sequence: [85,86,87,88,'?'], answer: 89, options: [84,89,90] },
+      { sequence: ['?',92,93,94,95], answer: 91, options: [89,91,96] }
+    ];
+
+    quizData.forEach((q, qi) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-question';
+      div.id = 'qq-' + qi;
+
+      const qText = document.createElement('div');
+      qText.className = 'quiz-q-text';
+      qText.textContent = `Question ${qi+1}: What is the missing number? 🤔`;
+      div.appendChild(qText);
+
+      const row = document.createElement('div');
+      row.className = 'quiz-number-row';
+      q.sequence.forEach(n => {
+        const box = document.createElement('div');
+        box.className = 'quiz-num-box' + (n === '?' ? ' blank' : '');
+        box.textContent = n === '?' ? '?' : n;
+        row.appendChild(box);
+      });
+      div.appendChild(row);
+
+      const opts = document.createElement('div');
+      opts.className = 'quiz-options';
+      // Shuffle options
+      const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+      shuffled.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = opt;
+        btn.setAttribute('aria-label', 'Answer: ' + opt);
+        btn.addEventListener('click', () => handleQuizAnswer(btn, opt, q.answer, qi));
+        opts.appendChild(btn);
+      });
+      div.appendChild(opts);
+
+      const fb = document.createElement('div');
+      fb.className = 'quiz-feedback';
+      fb.id = 'qfb-' + qi;
+      div.appendChild(fb);
+
+      container.appendChild(div);
+    });
+  } catch(e) { console.warn('buildQuiz error:', e); }
+}
+
+function handleQuizAnswer(btn, chosen, correct, qi) {
+  try {
+    const fbEl = document.getElementById('qfb-' + qi);
+    const allBtns = btn.closest('.quiz-options').querySelectorAll('.quiz-opt-btn');
+    // Disable all buttons in this question
+    allBtns.forEach(b => b.style.pointerEvents = 'none');
+    if (chosen === correct) {
+      btn.classList.add('correct-ans');
+      if (fbEl) { fbEl.textContent = '🎉 Amazing! That\'s right! You are a star! ⭐'; fbEl.className = 'quiz-feedback feedback-correct'; }
+      try {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 }, colors: ['#FF6B6B','#FFD93D','#6BCB77'] });
+        }
+      } catch(e) {}
+      animatePop(btn);
+    } else {
+      btn.classList.add('wrong-ans');
+      if (fbEl) { fbEl.textContent = '😊 Oops! Try again next time! The answer was ' + correct; fbEl.className = 'quiz-feedback feedback-wrong'; }
+      shakeElement(btn);
+      // Highlight correct
+      allBtns.forEach(b => { if (parseInt(b.textContent) === correct) b.classList.add('correct-ans'); });
+    }
+  } catch(e) { console.warn('quizAnswer error:', e); }
+}
+
+// ===== POP BALLOON =====
+function popBalloon(el) {
+  try {
+    if (el.dataset.popped) {
+      el.dataset.popped = '';
+      el.style.transform = '';
+      return;
+    }
+    el.dataset.popped = '1';
+    if (typeof gsap !== 'undefined') {
+      gsap.to(el, { scale: 1.3, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
+    } else {
+      el.style.transform = 'scale(1.3)';
+      setTimeout(() => { el.style.transform = ''; }, 300);
+    }
+    try {
+      const u = new SpeechSynthesisUtterance(el.textContent === '?' ? 'What number?' : 'Number ' + el.textContent);
+      u.rate = 0.8; speechSynthesis.speak(u);
+    } catch(e) {}
+  } catch(e) {}
+}
+
+// ===== ANIMATE POP =====
+function animatePop(el) {
+  try {
+    if (!el) return;
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(el, { scale: 1 }, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1, ease: 'back.out(2)' });
+    } else {
+      el.style.transition = 'transform 0.15s';
+      el.style.transform = 'scale(1.2)';
+      setTimeout(() => { el.style.transform = 'scale(1)'; }, 200);
+    }
+  } catch(e) {}
+}
+
+// ===== SHAKE =====
+function shakeElement(el) {
+  try {
+    if (!el) return;
+    if (typeof gsap !== 'undefined') {
+      gsap.to(el, { x: [-10, 10, -10, 10, 0], duration: 0.5, ease: 'power2.out' });
+    } else {
+      el.style.transition = 'transform 0.1s';
+      const steps = [-10,10,-10,10,0];
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i >= steps.length) { clearInterval(interval); el.style.transform=''; return; }
+        el.style.transform = 'translateX(' + steps[i] + 'px)';
+        i++;
+      }, 80);
+    }
+  } catch(e) {}
+}
+
+// ===== FINAL CELEBRATE =====
+function celebrateFinal() {
+  try {
+    if (typeof confetti !== 'undefined') {
+      const duration = 3000;
+      const end = Date.now() + duration;
+      const frame = () => {
+        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FF6B6B','#FFD93D','#6BCB77'] });
+        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FF6B6B','#FFD93D','#a78bfa'] });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    }
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
