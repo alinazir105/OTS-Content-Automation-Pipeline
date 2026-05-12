@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles (A, An, The) – Class 2 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #FAFAFA;
+    color: #2d3436;
+    font-size: 18px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 7px;
+    background: rgba(0,0,0,0.08);
+    z-index: 9999;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #FF9F43, #1DD1A1);
+    transition: width 0.3s ease;
+    border-radius: 0 4px 4px 0;
+  }
+  #progress-label {
+    position: fixed;
+    top: 8px; right: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #636e72;
+    z-index: 9999;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF9F43 0%, #A29BFE 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #curtain .curtain-emoji { font-size: 64px; animation: bounce 0.8s infinite alternate; }
+  #curtain .curtain-text { font-size: 24px; font-weight: 800; color: white; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-16px); } }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    min-height: 90vh;
+    background: linear-gradient(135deg, #FF9F43 0%, #ffd89b 50%, #A29BFE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    top: -200px; right: -200px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+    bottom: -150px; left: -100px;
+  }
+  .hero-badge {
+    background: rgba(255,255,255,0.25);
+    color: white;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(4px);
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .hero h1 .word { display: inline-block; opacity: 1; margin: 0 4px; }
+  .hero-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: rgba(255,255,255,0.9);
+    max-width: 600px;
+    font-weight: 600;
+    margin-bottom: 36px;
+  }
+  .hero-articles {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .hero-pill {
+    background: white;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    padding: 16px 36px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    color: #FF9F43;
+    cursor: default;
+    transition: transform 0.2s;
+  }
+  .hero-pill:nth-child(2) { color: #1DD1A1; }
+  .hero-pill:nth-child(3) { color: #A29BFE; }
+  .hero-pill:hover { transform: translateY(-4px) scale(1.05); }
+
+  /* MAIN WRAPPER */
+  .page-wrap { width: 100%; padding-top: 16px; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    margin: 40px 0;
+    padding: 48px 48px;
+    opacity: 1;
+    transform: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-card.accent-orange { border-left: 6px solid #FF9F43; }
+  .section-card.accent-teal   { border-left: 6px solid #1DD1A1; }
+  .section-card.accent-purple { border-left: 6px solid #A29BFE; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .section-icon {
+    font-size: 36px;
+    background: #FFF5EB;
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .accent-teal .section-icon { background: #E8FBF5; }
+  .accent-purple .section-icon { background: #F0EFFF; }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+    color: #2d3436;
+  }
+  .section-subtitle {
+    font-size: 18px;
+    color: #636e72;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* RULE BOX */
+  .rule-box {
+    background: linear-gradient(135deg, #FFF5EB, #fff);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    border: 2px dashed #FFD1A4;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.7;
+    color: #4a3f35;
+  }
+  .accent-teal .rule-box { background: linear-gradient(135deg, #E8FBF5, #fff); border-color: #A0F0DC; color: #1a4a3a; }
+  .accent-purple .rule-box { background: linear-gradient(135deg, #F0EFFF, #fff); border-color: #C9C4FF; color: #3a3060; }
+
+  /* EXAMPLE GRID */
+  .example-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .example-item {
+    background: #FFF8F0;
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(255,159,67,0.15);
+  }
+  .accent-teal .example-item { background: #F0FBF8; border-color: rgba(29,209,161,0.15); }
+  .accent-purple .example-item { background: #F5F4FF; border-color: rgba(162,155,254,0.2); }
+  .example-item .ex-emoji { font-size: 22px; }
+  .example-item strong { color: #FF9F43; }
+  .accent-teal .example-item strong { color: #1DD1A1; }
+  .accent-purple .example-item strong { color: #6c5ce7; }
+
+  /* ARTICLE SHOWCASE */
+  .article-showcase {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .article-card {
+    flex: 1;
+    min-width: 200px;
+    background: linear-gradient(135deg, #FF9F43, #FFD89B);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+    box-shadow: 0 6px 20px rgba(255,159,67,0.25);
+  }
+  .article-card.teal { background: linear-gradient(135deg, #1DD1A1, #A8F0DC); box-shadow: 0 6px 20px rgba(29,209,161,0.25); }
+  .article-card.purple { background: linear-gradient(135deg, #A29BFE, #D4D0FF); box-shadow: 0 6px 20px rgba(162,155,254,0.25); }
+  .article-big { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; display: block; margin-bottom: 8px; }
+  .article-label { font-size: 17px; font-weight: 600; opacity: 0.9; }
+  .article-examples { font-size: 16px; margin-top: 10px; opacity: 0.85; font-weight: 600; }
+
+  /* THE USE BOXES */
+  .the-uses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .the-use-card {
+    background: linear-gradient(135deg, #F0EFFF, #fff);
+    border-radius: 16px;
+    padding: 24px 24px;
+    border: 2px solid rgba(162,155,254,0.3);
+  }
+  .the-use-num {
+    width: 36px; height: 36px;
+    background: #A29BFE;
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .the-use-title { font-size: 19px; font-weight: 800; color: #6c5ce7; margin-bottom: 8px; }
+  .the-use-text { font-size: 17px; font-weight: 600; color: #4a4580; line-height: 1.6; }
+
+  /* READ ALOUD */
+  .read-aloud-btn {
+    background: white;
+    border: 2px solid #FF9F43;
+    color: #FF9F43;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+    min-height: 48px;
+  }
+  .read-aloud-btn:hover { background: #FF9F43; color: white; }
+  .read-aloud-btn.teal-btn { border-color: #1DD1A1; color: #1DD1A1; }
+  .read-aloud-btn.teal-btn:hover { background: #1DD1A1; color: white; }
+  .read-aloud-btn.purple-btn { border-color: #A29BFE; color: #A29BFE; }
+  .read-aloud-btn.purple-btn:hover { background: #A29BFE; color: white; }
+
+  /* ACTIVITIES */
+  .activity-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    font-weight: 900;
+    color: #2d3436;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* FILL IN BLANK */
+  .blank-activity { margin: 20px 0; }
+  .blank-sentence {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 19px;
+    font-weight: 600;
+    padding: 14px 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    min-height: 60px;
+  }
+  .blank-word-btn {
+    background: white;
+    border: 2.5px dashed #FF9F43;
+    border-radius: 10px;
+    min-width: 70px;
+    text-align: center;
+    padding: 6px 14px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    color: transparent;
+    transition: all 0.2s;
+    min-height: 42px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .blank-word-btn.filled { color: #FF9F43; border-style: solid; }
+  .blank-word-btn.filled.teal { color: #1DD1A1; border-color: #1DD1A1; }
+  .blank-word-btn.filled.purple { color: #A29BFE; border-color: #A29BFE; }
+  .blank-word-btn.correct { background: #E8FBF5; border-color: #1DD1A1; color: #1DD1A1; }
+  .blank-word-btn.wrong { background: #FFE8E8; border-color: #e17055; color: #e17055; }
+  .word-bank {
+    display: none;
+    position: absolute;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 12px;
+    z-index: 1000;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 280px;
+  }
+  .word-bank.open { display: flex; }
+  .word-bank-btn {
+    background: #F0EFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #6c5ce7;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 44px;
+    transition: background 0.15s;
+  }
+  .word-bank-btn:hover { background: #A29BFE; color: white; }
+  .blank-wrapper { position: relative; display: inline-flex; }
+
+  /* UNDERLINE ACTIVITY */
+  .underline-activity { margin: 20px 0; }
+  .underline-sentence {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+  }
+  .article-choice {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 17px;
+    font-weight: 700;
+    min-height: 44px;
+    flex-wrap: wrap;
+  }
+  .choice-opt {
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .choice-opt:hover { background: #F0EFFF; color: #6c5ce7; }
+  .choice-opt.selected-correct { background: #1DD1A1; color: white; border-radius: 6px; }
+  .choice-opt.selected-wrong { background: #FF7675; color: white; border-radius: 6px; }
+  .choice-opt.selected-neutral { background: #A29BFE; color: white; border-radius: 6px; }
+
+  /* SORTING ACTIVITY */
+  .sort-activity { margin: 20px 0; }
+  .sort-items-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    min-height: 80px;
+  }
+  .sort-item {
+    background: white;
+    border: 2.5px solid #A29BFE;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    touch-action: none;
+  }
+  .sort-item:hover { background: #F0EFFF; transform: scale(1.04); }
+  .sort-item.dragging { opacity: 0.5; cursor: grabbing; }
+  .sort-buckets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .sort-bucket {
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 140px;
+    border: 3px dashed #ccc;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sort-bucket.bucket-a { border-color: #FF9F43; background: #FFF8F0; }
+  .sort-bucket.bucket-an { border-color: #1DD1A1; background: #F0FBF8; }
+  .sort-bucket.drag-over { background: #FFF0D0; border-color: #FF9F43; transform: scale(1.01); }
+  .sort-bucket.bucket-an.drag-over { background: #D0F8EF; border-color: #1DD1A1; }
+  .sort-bucket-title {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: #FF9F43;
+  }
+  .sort-bucket.bucket-an .sort-bucket-title { color: #1DD1A1; }
+  .sort-bucket-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sort-bucket-items .sort-item { cursor: pointer; font-size: 16px; padding: 8px 14px; }
+
+  /* QUIZ */
+  .quiz-wrap { margin: 20px 0; }
+  .quiz-q {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 28px 28px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .quiz-q.active { display: block; }
+  .quiz-q-text {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #2d3436;
+  }
+  .quiz-q-num { color: #A29BFE; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .quiz-opt {
+    background: white;
+    border: 2.5px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+  }
+  .quiz-opt:hover { border-color: #A29BFE; background: #F5F4FF; }
+  .quiz-opt.correct { background: #E8FBF5; border-color: #1DD1A1; color: #00b894; }
+  .quiz-opt.wrong { background: #FFE8E8; border-color: #e17055; color: #e17055; }
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .quiz-btn {
+    background: #A29BFE;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    transition: background 0.2s;
+  }
+  .quiz-btn:hover { background: #6c5ce7; }
+  .quiz-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .quiz-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: #636e72;
+  }
+  .quiz-result {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-result-emoji { font-size: 80px; margin-bottom: 16px; }
+  .quiz-result-score {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: #A29BFE;
+    margin-bottom: 12px;
+  }
+  .quiz-result-msg { font-size: 20px; font-weight: 700; color: #636e72; margin-bottom: 24px; }
+  .quiz-restart-btn {
+    background: #FF9F43;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 52px;
+  }
+
+  /* FEEDBACK */
+  .feedback-msg {
+    margin-top: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    min-height: 28px;
+  }
+  .feedback-msg.correct { color: #1DD1A1; }
+  .feedback-msg.wrong { color: #e17055; }
+
+  /* CHECK BTN */
+  .check-btn {
+    background: #FF9F43;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    margin-top: 16px;
+    min-height: 48px;
+    transition: background 0.2s;
+  }
+  .check-btn:hover { background: #e67e22; }
+
+  /* MENTION-AGAIN activity */
+  .mention-pairs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .mention-pair {
+    background: #F5F4FF;
+    border-radius: 14px;
+    padding: 20px 20px;
+    border: 2px solid rgba(162,155,254,0.3);
+  }
+  .pair-first { font-size: 17px; color: #636e72; margin-bottom: 8px; font-weight: 600; }
+  .pair-second { font-size: 18px; font-weight: 700; color: #6c5ce7; }
+  .pair-second strong { color: #FF9F43; }
+
+  /* MOBILE NAV */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
+    z-index: 999;
+    overflow-x: auto;
+    padding: 8px 4px;
+  }
+  .mobile-nav-inner {
+    display: flex;
+    gap: 4px;
+    padding: 0 4px;
+    white-space: nowrap;
+  }
+  .mobile-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    min-height: 52px;
+    padding: 6px 10px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    color: #636e72;
+    gap: 2px;
+    transition: all 0.15s;
+  }
+  .mobile-nav a:hover, .mobile-nav a.active { background: #F0EFFF; color: #6c5ce7; }
+  .mobile-nav a .nav-icon { font-size: 20px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { min-height: 60vh; padding: 70px 16px 40px; }
+    .container { padding: 0 16px; }
+    .section-card { padding: 28px 20px; margin: 24px 0; }
+    .sort-buckets { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .mention-pairs { grid-template-columns: 1fr; }
+    .mobile-nav { display: block; }
+    body { padding-bottom: 80px; }
+    .article-showcase { flex-direction: column; }
+    .rule-box { padding: 20px 20px; font-size: 17px; }
+    .example-item { font-size: 17px; }
+    .blank-sentence { font-size: 17px; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2.2rem; }
+    .hero-pill { padding: 12px 22px; font-size: 1.5rem; }
+    .section-card { padding: 22px 14px; }
+  }
+
+  /* STARS ANIMATION */
+  .floating-star {
+    position: absolute;
+    pointer-events: none;
+    font-size: 24px;
+    animation: float-up 1s ease-out forwards;
+    z-index: 100;
+  }
+  @keyframes float-up {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
+  }
+
+  /* INTRO CARD */
+  .intro-card {
+    background: linear-gradient(135deg, #FFF8F0, #F0EFFF);
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin: 28px 0;
+    border: 2px solid rgba(162,155,254,0.2);
+    font-size: 19px;
+    font-weight: 600;
+    color: #4a3f5c;
+    line-height: 1.8;
+  }
+  .intro-examples {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .intro-ex {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+  }
+  .intro-ex .ex-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-orange { background: #FF9F43; }
+  .dot-teal { background: #1DD1A1; }
+  .dot-purple { background: #A29BFE; }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: #2d3436;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 10000;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .tooltip.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">📖</div>
+  <div class="curtain-text">Loading Lesson...</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <div id="progress-bar"></div>
+</div>
+<div id="progress-label">0% done</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-badge">📚 Class 2 · English · Chapter 3</div>
+  <h1 id="hero-title">
+    <span class="word">Learning</span>
+    <span class="word">Articles:</span>
+    <span class="word" style="color:#fff3;">A,</span>
+    <span class="word" style="color:#fff3;">An</span>
+    <span class="word">&amp;</span>
+    <span class="word">The</span>
+  </h1>
+  <p class="hero-sub">Special little words that go before nouns — and make a big difference!</p>
+  <div class="hero-articles">
+    <div class="hero-pill">A</div>
+    <div class="hero-pill">An</div>
+    <div class="hero-pill">The</div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="page-wrap">
+  <div class="container">
+
+    <!-- INTRO -->
+    <div class="section-card accent-purple" id="sec-intro" data-section="0">
+      <div class="section-header">
+        <div class="section-icon">💡</div>
+        <div>
+          <div class="section-title">What Are Articles?</div>
+          <div class="section-subtitle">Let's find out what articles do!</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn purple-btn" onclick="readAloud('Articles are special words that we use before nouns to talk about something specific or general. For example: I saw a dog in the park. He ate an apple for lunch. The dog I saw in the park was very friendly.')">🔊 Read Aloud</button>
+      <div class="intro-card">
+        <strong>Articles are special words</strong> that we use before nouns to talk about something <em>specific</em> or <em>general</em>.
+        <div class="intro-examples">
+          <div class="intro-ex"><div class="ex-dot dot-orange"></div> I saw <strong style="color:#FF9F43">a</strong> dog in the park.</div>
+          <div class="intro-ex"><div class="ex-dot dot-teal"></div> He ate <strong style="color:#1DD1A1">an</strong> apple for lunch.</div>
+          <div class="intro-ex"><div class="ex-dot dot-purple"></div> <strong style="color:#A29BFE">The</strong> dog I saw in the park was very friendly.</div>
+        </div>
+      </div>
+      <div class="article-showcase">
+        <div class="article-card">
+          <span class="article-big">A</span>
+          <div class="article-label">Before consonant sounds</div>
+          <div class="article-examples">a chair · a dog · a book</div>
+        </div>
+        <div class="article-card teal">
+          <span class="article-big">An</span>
+          <div class="article-label">Before vowel sounds (a, e, i, o, u)</div>
+          <div class="article-examples">an apple · an elephant · an owl</div>
+        </div>
+        <div class="article-card purple">
+          <span class="article-big">The</span>
+          <div class="article-label">For specific or unique things</div>
+          <div class="article-examples">the Sun · the Eiffel Tower · the sky</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USING A -->
+    <div class="section-card accent-orange" id="sec-a" data-section="1">
+      <div class="section-header">
+        <div class="section-icon">🅰️</div>
+        <div>
+          <div class="section-title">When to Use "A"</div>
+          <div class="section-subtitle">Before consonant sounds, for one non-specific thing</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" onclick="readAloud('A is used before words that begin with a consonant sound and talk about one thing that is not specific. For example: I have a pencil. She saw a bird in the tree. He is eating a mango. There is a cat under the chair. A dog is barking outside.')">🔊 Read Aloud</button>
+      <div class="rule-box">
+        <strong>"A"</strong> is used before words that begin with a <strong>consonant sound</strong> (like b, c, d, f, g…) and talk about <strong>one thing that is not specific</strong>.
+        <br><br>
+        Think of it as "any one of these" — not a particular one!
+      </div>
+      <div class="example-grid">
+        <div class="example-item"><span class="ex-emoji">✏️</span> I have <strong>a</strong> pencil.</div>
+        <div class="example-item"><span class="ex-emoji">🐦</span> She saw <strong>a</strong> bird in the tree.</div>
+        <div class="example-item"><span class="ex-emoji">🥭</span> He is eating <strong>a</strong> mango.</div>
+        <div class="example-item"><span class="ex-emoji">🐱</span> There is <strong>a</strong> cat under the chair.</div>
+        <div class="example-item"><span class="ex-emoji">🐕</span> <strong>A</strong> dog is barking outside.</div>
+        <div class="example-item"><span class="ex-emoji">🎈</span> I want to buy <strong>a</strong> red balloon.</div>
+        <div class="example-item"><span class="ex-emoji">🌸</span> She found <strong>a</strong> flower in the garden.</div>
+        <div class="example-item"><span class="ex-emoji">⭐</span> Can you draw <strong>a</strong> star?</div>
+        <div class="example-item"><span class="ex-emoji">🐸</span> There is <strong>a</strong> frog in the pond.</div>
+        <div class="example-item"><span class="ex-emoji">📚</span> He has <strong>a</strong> book in his bag.</div>
+      </div>
+    </div>
+
+    <!-- USING AN -->
+    <div class="section-card accent-teal" id="sec-an" data-section="2">
+      <div class="section-header">
+        <div class="section-icon">🔤</div>
+        <div>
+          <div class="section-title">When to Use "An"</div>
+          <div class="section-subtitle">Before vowel sounds (a, e, i, o, u)</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn teal-btn" onclick="readAloud('An is used before words that begin with a vowel sound — a, e, i, o, u — and talk about one thing that is not specific. For example: She ate an orange for breakfast. He needs an eraser. He ate an apple for lunch. They saw an airplane flying high in the sky.')">🔊 Read Aloud</button>
+      <div class="rule-box">
+        <strong>"An"</strong> is used before words that begin with a <strong>vowel sound</strong> — <strong>A, E, I, O, U</strong> — and talk about one thing that is not specific.
+        <br><br>
+        Remember: it's about the <em>sound</em>, not just the letter!
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:20px 0;">
+        <div style="background:linear-gradient(135deg,#E8FBF5,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(29,209,161,0.2);">
+          <div style="font-size:48px;">🍎</div>
+          <div style="font-weight:800;font-size:19px;color:#1DD1A1;margin-top:8px;">An apple</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#E8FBF5,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(29,209,161,0.2);">
+          <div style="font-size:48px;">🐘</div>
+          <div style="font-weight:800;font-size:19px;color:#1DD1A1;margin-top:8px;">An elephant</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#E8FBF5,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(29,209,161,0.2);">
+          <div style="font-size:48px;">☂️</div>
+          <div style="font-weight:800;font-size:19px;color:#1DD1A1;margin-top:8px;">An umbrella</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#E8FBF5,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(29,209,161,0.2);">
+          <div style="font-size:48px;">🦉</div>
+          <div style="font-weight:800;font-size:19px;color:#1DD1A1;margin-top:8px;">An owl</div>
+        </div>
+      </div>
+      <div class="example-grid">
+        <div class="example-item"><span class="ex-emoji">🍊</span> She ate <strong>an</strong> orange for breakfast.</div>
+        <div class="example-item"><span class="ex-emoji">👗</span> She wore <strong>an</strong> elegant dress.</div>
+        <div class="example-item"><span class="ex-emoji">✏️</span> He needs <strong>an</strong> eraser.</div>
+        <div class="example-item"><span class="ex-emoji">🍎</span> He ate <strong>an</strong> apple for lunch.</div>
+        <div class="example-item"><span class="ex-emoji">📖</span> She found <strong>an</strong> interesting book.</div>
+        <div class="example-item"><span class="ex-emoji">✈️</span> They saw <strong>an</strong> airplane in the sky.</div>
+        <div class="example-item"><span class="ex-emoji">🐜</span> He observed <strong>an</strong> ant carrying food.</div>
+        <div class="example-item"><span class="ex-emoji">🍦</span> She had <strong>an</strong> ice cream cone.</div>
+        <div class="example-item"><span class="ex-emoji">🐘</span> They spotted <strong>an</strong> elephant at the zoo.</div>
+        <div class="example-item"><span class="ex-emoji">🖊️</span> He used <strong>an</strong> ink pen to write.</div>
+      </div>
+    </div>
+
+    <!-- USING THE -->
+    <div class="section-card accent-purple" id="sec-the" data-section="3">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div>
+          <div class="section-title">When to Use "The"</div>
+          <div class="section-subtitle">For specific, known, or unique things</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn purple-btn" onclick="readAloud('The is used when we are talking about something specific, something we already know about, or something that is the only one of its kind. The Sun rises in the east. The cat is sleeping under the tree. The book on the table is mine. The sky is blue.')">🔊 Read Aloud</button>
+      <div class="rule-box">
+        <strong>"The"</strong> is used when we are talking about something <strong>specific</strong>, something we <strong>already know about</strong>, or something that is the <strong>only one of its kind</strong>.
+      </div>
+      <div class="the-uses-grid">
+        <div class="the-use-card">
+          <div class="the-use-num">1</div>
+          <div class="the-use-title">Talking About Something Specific</div>
+          <div class="the-use-text">Use "the" before something that both the speaker and listener know about.<br><br>
+          💬 "I saw <strong style="color:#6c5ce7">the</strong> teacher in the classroom."<br>
+          <em>(A specific teacher we both know.)</em></div>
+        </div>
+        <div class="the-use-card">
+          <div class="the-use-num">2</div>
+          <div class="the-use-title">Unique Things</div>
+          <div class="the-use-text">Use "the" before something that is the only one of its kind.<br><br>
+          🌞 "<strong style="color:#6c5ce7">The</strong> Sun is bright today."<br>
+          <em>(There is only one sun!)</em></div>
+        </div>
+        <div class="the-use-card">
+          <div class="the-use-num">3</div>
+          <div class="the-use-title">Mentioning Something Again</div>
+          <div class="the-use-text">When you mention something for the second time, use "the".<br><br>
+          🐦 "I saw <strong style="color:#FF9F43">a</strong> bird. <strong style="color:#6c5ce7">The</strong> bird was flying high."</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin:20px 0;">
+        <div style="background:linear-gradient(135deg,#F0EFFF,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(162,155,254,0.3);">
+          <div style="font-size:48px;">☀️</div>
+          <div style="font-weight:800;font-size:19px;color:#A29BFE;margin-top:8px;">The Sun</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#F0EFFF,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(162,155,254,0.3);">
+          <div style="font-size:48px;">🗼</div>
+          <div style="font-weight:800;font-size:19px;color:#A29BFE;margin-top:8px;">The Eiffel Tower</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#F0EFFF,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(162,155,254,0.3);">
+          <div style="font-size:48px;">🌍</div>
+          <div style="font-weight:800;font-size:19px;color:#A29BFE;margin-top:8px;">The Earth</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#F0EFFF,#fff);border-radius:16px;padding:20px 28px;flex:1;min-width:140px;text-align:center;border:2px solid rgba(162,155,254,0.3);">
+          <div style="font-size:48px;">🌙</div>
+          <div style="font-weight:800;font-size:19px;color:#A29BFE;margin-top:8px;">The Moon</div>
+        </div>
+      </div>
+      <div class="example-grid">
+        <div class="example-item"><span class="ex-emoji">🌅</span> <strong>The</strong> Sun rises in the east.</div>
+        <div class="example-item"><span class="ex-emoji">😺</span> <strong>The</strong> cat is sleeping under the tree.</div>
+        <div class="example-item"><span class="ex-emoji">📗</span> <strong>The</strong> book on the table is mine.</div>
+        <div class="example-item"><span class="ex-emoji">☁️</span> <strong>The</strong> sky is blue.</div>
+        <div class="example-item"><span class="ex-emoji">👩‍🏫</span> <strong>The</strong> teacher is writing on the board.</div>
+        <div class="example-item"><span class="ex-emoji">🍎</span> <strong>The</strong> apple is red and sweet.</div>
+        <div class="example-item"><span class="ex-emoji">⭐</span> <strong>The</strong> stars shine at night.</div>
+        <div class="example-item"><span class="ex-emoji">🐶</span> <strong>The</strong> dog is barking loudly.</div>
+        <div class="example-item"><span class="ex-emoji">🌈</span> <strong>The</strong> rainbow has many colours.</div>
+        <div class="example-item"><span class="ex-emoji">🌊</span> <strong>The</strong> ocean is home to many fish.</div>
+      </div>
+      <div style="margin-top:28px;">
+        <div class="activity-title">🔁 Mentioning Something Again — Examples</div>
+        <div class="mention-pairs">
+          <div class="mention-pair">
+            <div class="pair-first">First mention: <strong>a</strong> pencil</div>
+            <div class="pair-second">My friend gave me <strong style="color:#FF9F43">a pencil</strong>. <strong style="color:#A29BFE">The</strong> pencil is blue.</div>
+          </div>
+          <div class="mention-pair">
+            <div class="pair-first">First mention: <strong>a</strong> cat</div>
+            <div class="pair-second">I saw <strong style="color:#FF9F43">a cat</strong> in the garden. <strong style="color:#A29BFE">The cat</strong> was playing with a ball.</div>
+          </div>
+          <div class="mention-pair">
+            <div class="pair-first">First mention: <strong>a</strong> toy car</div>
+            <div class="pair-second">She has <strong style="color:#FF9F43">a toy car</strong>. <strong style="color:#A29BFE">The toy car</strong> is red and shiny.</div>
+          </div>
+          <div class="mention-pair">
+            <div class="pair-first">First mention: <strong>a</strong> big tree</div>
+            <div class="pair-second">There is <strong style="color:#FF9F43">a big tree</strong> in the park. <strong style="color:#A29BFE">The tree</strong> has many birds in it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY 3.1 — Fill in blank (a/an) -->
+    <div class="section-card accent-orange" id="sec-act1" data-section="4">
+      <div class="section-header">
+        <div class="section-icon">✍️</div>
+        <div>
+          <div class="section-title">Activity 3.1 — Write "A" or "An"</div>
+          <div class="section-subtitle">Click the blank and choose the correct article!</div>
+        </div>
+      </div>
+      <div class="blank-activity" id="blank-activity">
+        <!-- Sentences are generated by JS -->
+      </div>
+      <button class="check-btn" onclick="checkBlanks()">✅ Check Answers</button>
+      <div class="feedback-msg" id="blank-feedback"></div>
+    </div>
+
+    <!-- ACTIVITY 3.2 — Underline correct article -->
+    <div class="section-card accent-teal" id="sec-act2" data-section="5">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div>
+          <div class="section-title">Activity 3.2 — Choose the Right Article</div>
+          <div class="section-subtitle">Tap the correct article (a / an / the) in each sentence!</div>
+        </div>
+      </div>
+      <div class="underline-activity" id="underline-activity">
+        <!-- Generated by JS -->
+      </div>
+      <button class="check-btn" style="background:#1DD1A1;" onclick="checkUnderline()">✅ Check Answers</button>
+      <div class="feedback-msg" id="underline-feedback"></div>
+    </div>
+
+    <!-- ACTIVITY 3.3 — Sorting -->
+    <div class="section-card accent-purple" id="sec-act3" data-section="6">
+      <div class="section-header">
+        <div class="section-icon">🗂️</div>
+        <div>
+          <div class="section-title">Activity 3.3 — Sort Into "A" or "An"</div>
+          <div class="section-subtitle">Drag (or tap) each word into the correct bucket!</div>
+        </div>
+      </div>
+      <div class="sort-activity">
+        <div class="sort-items-pool" id="sort-pool"></div>
+        <div class="sort-buckets">
+          <div class="sort-bucket bucket-a" id="bucket-a" ondragover="dragOver(event)" ondrop="dropItem(event,'a')" ondragenter="dragEnter(event,'bucket-a')" ondragleave="dragLeave(event,'bucket-a')">
+            <div class="sort-bucket-title">🅰️ A ___</div>
+            <div class="sort-bucket-items" id="bucket-a-items"></div>
+          </div>
+          <div class="sort-bucket bucket-an" id="bucket-an" ondragover="dragOver(event)" ondrop="dropItem(event,'an')" ondragenter="dragEnter(event,'bucket-an')" ondragleave="dragLeave(event,'bucket-an')">
+            <div class="sort-bucket-title">🔤 An ___</div>
+            <div class="sort-bucket-items" id="bucket-an-items"></div>
+          </div>
+        </div>
+        <div class="feedback-msg" id="sort-feedback" style="margin-top:16px;"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+          <button class="check-btn" style="background:#A29BFE;" onclick="checkSort()">✅ Check Sorting</button>
+          <button class="check-btn" style="background:#636e72;" onclick="resetSort()">🔄 Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="section-card accent-purple" id="sec-quiz" data-section="7">
+      <div class="section-header">
+        <div class="section-icon">🏆</div>
+        <div>
+          <div class="section-title">End-of-Lesson Quiz</div>
+          <div class="section-subtitle">6 questions — you can do it! 🌟</div>
+        </div>
+      </div>
+      <div class="quiz-wrap" id="quiz-wrap"></div>
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /page-wrap -->
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Section Navigation">
+  <div class="mobile-nav-inner">
+    <a href="#sec-intro"><span class="nav-icon">💡</span>Intro</a>
+    <a href="#sec-a"><span class="nav-icon">🅰️</span>A</a>
+    <a href="#sec-an"><span class="nav-icon">🔤</span>An</a>
+    <a href="#sec-the"><span class="nav-icon">🎯</span>The</a>
+    <a href="#sec-act1"><span class="nav-icon">✍️</span>Act 1</a>
+    <a href="#sec-act2"><span class="nav-icon">🎯</span>Act 2</a>
+    <a href="#sec-act3"><span class="nav-icon">🗂️</span>Act 3</a>
+    <a href="#sec-quiz"><span class="nav-icon">🏆</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- CURTAIN FALLBACK ---
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // LENIS SMOOTH SCROLL
+  // =====================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis.on('scroll', () => { updateProgress(); });
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          function rafLoop(t) { lenis.raf(t); requestAnimationFrame(rafLoop); }
+          requestAnimationFrame(rafLoop);
+        }
+      } catch(e) {
+        function rafLoop2(t) { lenis.raf(t); requestAnimationFrame(rafLoop2); }
+        requestAnimationFrame(rafLoop2);
+      }
+    }
+  } catch(e) { console.warn('Lenis not loaded', e); }
+
+  // =====================
+  // PROGRESS BAR
+  // =====================
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? Math.round((scrollTop / docH) * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '% done';
+  }
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // =====================
+  // CURTAIN DISMISS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 0.8, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    } else {
+      setTimeout(() => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }, 900);
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // =====================
+  // HERO ANIMATION
+  // =====================
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      const words = document.querySelectorAll('#hero-title .word');
+      gsap.set(words, { opacity: 0, y: 30 });
+      gsap.to(words, { opacity: 1, y: 0, stagger: 0.12, duration: 0.6, ease: 'back.out(1.7)', delay: 1 });
+      gsap.from('.hero-badge', { opacity: 0, y: -20, duration: 0.5, delay: 0.8 });
+      gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.5, delay: 1.5 });
+      gsap.from('.hero-pill', { opacity: 0, scale: 0.5, stagger: 0.15, duration: 0.4, ease: 'back.out(2)', delay: 1.8 });
+    }
+  } catch(e) { console.warn('GSAP hero anim error', e); }
+
+  // =====================
+  // SCROLL TRIGGER CARDS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+      gsap.registerPlugin(ScrollTrigger);
+      const cards = document.querySelectorAll('.section-card');
+      cards.forEach(card => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out',
+            scrollTrigger: { trigger: card, start: 'top 88%', once: true }
+          }
+        );
+      });
+    }
+  } catch(e) { console.warn('ScrollTrigger error', e); }
+
+  // =====================
+  // READ ALOUD
+  // =====================
+  window.readAloud = function(text) {
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.rate = 0.85;
+        utt.pitch = 1.1;
+        window.speechSynthesis.speak(utt);
+      } else {
+        showTooltip('Speech not supported in this browser.');
+      }
+    } catch(e) {
+      showTooltip('Could not read aloud: ' + e.message);
+    }
+  };
+
+  function showTooltip(msg) {
+    const tt = document.getElementById('tooltip');
+    tt.textContent = msg;
+    tt.classList.add('show');
+    setTimeout(() => tt.classList.remove('show'), 3000);
+  }
+
+  // =====================
+  // ACTIVITY 3.1 — Fill in Blank (A / An)
+  // =====================
+  const blankData = [
+    { before: 'a', noun: 'flower', correct: 'a' },
+    { before: 'a', noun: 'puppy', correct: 'a' },
+    { before: 'an', noun: 'umbrella', correct: 'an' },
+    { before: 'a', noun: 'baseball', correct: 'a' },
+    { before: 'an', noun: 'apple', correct: 'an' },
+    { before: 'a', noun: 'log', correct: 'a' },
+    { before: 'an', noun: 'oven', correct: 'an' },
+    { before: 'an', noun: 'idea', correct: 'an' },
+  ];
+
+  const blankContainer = document.getElementById('blank-activity');
+  blankData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'blank-sentence';
+    div.innerHTML = `
+      <div class="blank-wrapper" id="bw-${i}">
+        <button class="blank-word-btn" id="blank-${i}" data-filled="" onclick="openWordBank(${i}, this)" aria-label="Choose article">___</button>
+        <div class="word-bank" id="wb-${i}">
+          <button class="word-bank-btn" onclick="fillBlank(${i}, 'a')">a</button>
+          <button class="word-bank-btn" onclick="fillBlank(${i}, 'an')">an</button>
+        </div>
+      </div>
+      <span>${item.noun}</span>
+    `;
+    blankContainer.appendChild(div);
+  });
+
+  window.openWordBank = function(i, btn) {
+    // Close all others
+    document.querySelectorAll('.word-bank').forEach(wb => wb.classList.remove('open'));
+    const wb = document.getElementById('wb-' + i);
+    wb.classList.toggle('open');
+    // Close on outside click
+    setTimeout(() => {
+      document.addEventListener('click', function handler(e) {
+        if (!e.target.closest('#bw-' + i)) {
+          wb.classList.remove('open');
+          document.removeEventListener('click', handler);
+        }
+      });
+    }, 10);
+  };
+
+  window.fillBlank = function(i, val) {
+    const btn = document.getElementById('blank-' + i);
+    btn.textContent = val;
+    btn.dataset.filled = val;
+    btn.classList.add('filled');
+    btn.classList.remove('correct', 'wrong');
+    document.getElementById('wb-' + i).classList.remove('open');
+  };
+
+  window.checkBlanks = function() {
+    let score = 0;
+    blankData.forEach((item, i) => {
+      const btn = document.getElementById('blank-' + i);
+      const filled = btn.dataset.filled;
+      btn.classList.remove('correct', 'wrong');
+      if (!filled) return;
+      if (filled === item.correct) {
+        btn.classList.add('correct');
+        score++;
+        animateCorrect(btn);
+      } else {
+        btn.classList.add('wrong');
+        animateWrong(btn);
+      }
+    });
+    const fb = document.getElementById('blank-feedback');
+    if (score === blankData.length) {
+      fb.textContent = `🎉 Perfect! All ${score} correct!`;
+      fb.className = 'feedback-msg correct';
+      spawnStars(document.getElementById('blank-activity'));
+    } else {
+      fb.textContent = `You got ${score} out of ${blankData.length}. Try again! 💪`;
+      fb.className = 'feedback-msg wrong';
+    }
+  };
+
+  // =====================
+  // ACTIVITY 3.2 — Underline correct article
+  // =====================
+  const underlineData = [
+    { text: ['I love to read', null, 'book.'], choices: ['a','an','the'], correct: 'a' },
+    { text: ['Mary ate', null, 'egg for breakfast.'], choices: ['a','an','the'], correct: 'an' },
+    { text: ['The truck was driving down', null, 'dirty road.'], choices: ['a','an','the'], correct: 'a' },
+    { text: ['There is a chair on', null, 'table.'], choices: ['a','an','the'], correct: 'the' },
+    { text: [null, 'elephant has', null, 'long trunk.'], choices: ['a','an','the'], correct2: 'an', correct: 'a', multiSlot: true, slots: [{correct:'an'},{correct:'a'}] },
+    { text: [null, 'Earth spins around', null, 'sun.'], choices: ['a','an','the'], correct: 'the', multiSlot: true, slots: [{correct:'the'},{correct:'the'}] },
+    { text: ['That cat is stuck in', null, 'tree.'], choices: ['a','an','the'], correct: 'the' },
+    { text: ['He carried', null, 'axe.'], choices: ['a','an','the'], correct: 'an' },
+    { text: ['There is', null, 'inky spot on my pants.'], choices: ['a','an','the'], correct: 'an' },
+    { text: [null, 'Sun helps plants grow.'], choices: ['a','an','the'], correct: 'the' },
+    { text: ['Sami runs as fast as', null, 'cheetah.'], choices: ['a','an','the'], correct: 'a' },
+    { text: [null, 'cat jumped over a chair.'], choices: ['a','an','the'], correct: 'a' },
+    { text: [null, 'apple fell from the tree.'], choices: ['a','an','the'], correct: 'an' },
+  ];
+
+  const underlineContainer = document.getElementById('underline-activity');
+
+  // Simplified: single slot per sentence
+  const simpleUnderline = [
+    { before: 'I love to read', after: 'book.', choices: ['a','an','the'], correct: 'a' },
+    { before: 'Mary ate', after: 'egg for breakfast.', choices: ['a','an','the'], correct: 'an' },
+    { before: 'The truck was driving down', after: 'dirty road.', choices: ['a','an','the'], correct: 'a' },
+    { before: 'There is a chair on', after: 'table.', choices: ['a','an','the'], correct: 'the' },
+    { before: 'An elephant has', after: 'long trunk.', choices: ['a','an','the'], correct: 'a' },
+    { before: '', after: 'Earth spins around the sun.', choices: ['a','an','the'], correct: 'the' },
+    { before: 'That cat is stuck in', after: 'tree.', choices: ['a','an','the'], correct: 'the' },
+    { before: 'He carried', after: 'axe.', choices: ['a','an','the'], correct: 'an' },
+    { before: 'There is', after: 'inky spot on my pants.', choices: ['a','an','the'], correct: 'an' },
+    { before: '', after: 'Sun helps plants grow.', choices: ['a','an','the'], correct: 'the' },
+    { before: 'Sami runs as fast as', after: 'cheetah.', choices: ['a','an','the'], correct: 'a' },
+    { before: '', after: 'cat jumped over a chair.', choices: ['a','an','the'], correct: 'a' },
+    { before: '', after: 'apple fell from the tree.', choices: ['a','an','the'], correct: 'an' },
+  ];
+
+  simpleUnderline.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'underline-sentence';
+    let html = '';
+    if (item.before) html += `<span>${item.before}</span>`;
+    html += `<span class="article-choice" id="ac-${i}">`;
+    item.choices.forEach(ch => {
+      html += `<span class="choice-opt" onclick="selectChoice(${i},'${ch}',this)">${ch}</span>`;
+    });
+    html += `</span>`;
+    if (item.after) html += `<span>${item.after}</span>`;
+    div.innerHTML = html;
+    underlineContainer.appendChild(div);
+  });
+
+  window.selectChoice = function(i, val, el) {
+    const ac = document.getElementById('ac-' + i);
+    ac.querySelectorAll('.choice-opt').forEach(o => {
+      o.classList.remove('selected-correct','selected-wrong','selected-neutral');
+    });
+    el.classList.add('selected-neutral');
+    el.dataset.selected = val;
+    ac.dataset.selected = val;
+  };
+
+  window.checkUnderline = function() {
+    let score = 0;
+    simpleUnderline.forEach((item, i) => {
+      const ac = document.getElementById('ac-' + i);
+      const selected = ac.dataset.selected;
+      ac.querySelectorAll('.choice-opt').forEach(o => {
+        o.classList.remove('selected-correct','selected-wrong','selected-neutral');
+        if (o.textContent === item.correct) {
+          if (selected === item.correct) { o.classList.add('selected-correct'); }
+        } else if (o.textContent === selected && selected !== item.correct) {
+          o.classList.add('selected-wrong');
+        }
+      });
+      if (selected === item.correct) {
+        score++;
+        animateCorrect(ac);
+      } else if (selected) {
+        animateWrong(ac);
+      }
+    });
+    const fb = document.getElementById('underline-feedback');
+    if (score === simpleUnderline.length) {
+      fb.textContent = `🌟 Brilliant! All ${score} correct!`;
+      fb.className = 'feedback-msg correct';
+      spawnStars(underlineContainer);
+    } else {
+      fb.textContent = `You got ${score} out of ${simpleUnderline.length}. Keep trying! 💪`;
+      fb.className = 'feedback-msg wrong';
+    }
+  };
+
+  // =====================
+  // ACTIVITY 3.3 — SORT A / AN
+  // =====================
+  const sortData = [
+    { word: 'egg', emoji: '🥚', correct: 'an' },
+    { word: 'feather', emoji: '🪶', correct: 'a' },
+    { word: 'leaf', emoji: '🍃', correct: 'a' },
+    { word: 'nest', emoji: '🪹', correct: 'a' },
+    { word: 'mushroom', emoji: '🍄', correct: 'a' },
+    { word: 'rock', emoji: '🪨', correct: 'a' },
+    { word: 'butterfly', emoji: '🦋', correct: 'a' },
+    { word: 'ant', emoji: '🐜', correct: 'an' },
+    { word: 'apple', emoji: '🍎', correct: 'an' },
+  ];
+
+  let sortState = {};
+  sortData.forEach(item => { sortState[item.word] = 'pool'; });
+
+  function renderSort() {
+    const pool = document.getElementById('sort-pool');
+    const bucketA = document.getElementById('bucket-a-items');
+    const bucketAn = document.getElementById('bucket-an-items');
+    pool.innerHTML = '';
+    bucketA.innerHTML = '';
+    bucketAn.innerHTML = '';
+
+    sortData.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'sort-item';
+      el.textContent = item.emoji + ' ' + item.word;
+      el.draggable = true;
+      el.dataset.word = item.word;
+
+      el.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.word);
+        el.classList.add('dragging');
+      });
+      el.addEventListener('dragend', () => el.classList.remove('dragging'));
+
+      // Touch support
+      el.addEventListener('click', () => { handleSortClick(item.word); });
+
+      if (sortState[item.word] === 'pool') pool.appendChild(el);
+      else if (sortState[item.word] === 'a') bucketA.appendChild(el);
+      else if (sortState[item.word] === 'an') bucketAn.appendChild(el);
+    });
+  }
+
+  function handleSortClick(word) {
+    const current = sortState[word];
+    if (current === 'pool') sortState[word] = 'a';
+    else if (current === 'a') sortState[word] = 'an';
+    else sortState[word] = 'pool';
+    renderSort();
+  }
+
+  window.dragOver = function(e) { e.preventDefault(); };
+  window.dragEnter = function(e, bucketId) {
+    document.getElementById(bucketId).classList.add('drag-over');
+  };
+  window.dragLeave = function(e, bucketId) {
+    document.getElementById(bucketId).classList.remove('drag-over');
+  };
+  window.dropItem = function(e, bucket) {
+    e.preventDefault();
+    const word = e.dataTransfer.getData('text/plain');
+    sortState[word] = bucket;
+    ['bucket-a','bucket-an'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('drag-over');
+    });
+    renderSort();
+  };
+
+  window.checkSort = function() {
+    let correct = 0, total = 0;
+    sortData.forEach(item => {
+      if (sortState[item.word] !== 'pool') {
+        total++;
+        if (sortState[item.word] === item.correct) correct++;
+      }
+    });
+    const fb = document.getElementById('sort-feedback');
+    if (total === 0) {
+      fb.textContent = 'Please sort some items first!';
+      fb.className = 'feedback-msg wrong';
+      return;
+    }
+    if (correct === sortData.length && total === sortData.length) {
+      fb.textContent = `🎉 Amazing! All ${correct} sorted correctly!`;
+      fb.className = 'feedback-msg correct';
+      spawnStars(document.getElementById('sort-pool'));
+    } else {
+      fb.textContent = `${correct} out of ${total} placed items are correct. Keep going! 💪`;
+      fb.className = 'feedback-msg wrong';
+    }
+  };
+
+  window.resetSort = function() {
+    sortData.forEach(item => { sortState[item.word] = 'pool'; });
+    document.getElementById('sort-feedback').textContent = '';
+    renderSort();
+  };
+
+  renderSort();
+
+  // =====================
+  // QUIZ
+  // =====================
+  const quizData = [
+    {
+      q: 'Which is correct? He saw ___ elephant at the zoo.',
+      opts: ['a elephant', 'an elephant'],
+      correct: 1,
+      emoji: ['🐘😕', '🐘✅']
+    },
+    {
+      q: 'Which is correct? She has ___ cat.',
+      opts: ['a cat', 'an cat'],
+      correct: 0,
+      emoji: ['🐱✅', '🐱😕']
+    },
+    {
+      q: 'Which sentence uses "the" correctly?',
+      opts: ['I saw the dog yesterday. The dog was barking.', 'I saw a dog yesterday. A dog was barking.'],
+      correct: 0,
+      emoji: ['🐕✅', '🐕😕']
+    },
+    {
+      q: 'Which is correct? ___ Sun rises in the east.',
+      opts: ['A Sun', 'The Sun'],
+      correct: 1,
+      emoji: ['☀️😕', '☀️✅']
+    },
+    {
+      q: 'Which is correct? Can you draw ___ star?',
+      opts: ['a star', 'an star'],
+      correct: 0,
+      emoji: ['⭐✅', '⭐😕']
+    },
+    {
+      q: 'Which is correct? He used ___ ink pen.',
+      opts: ['a ink pen', 'an ink pen'],
+      correct: 1,
+      emoji: ['🖊️😕', '🖊️✅']
+    },
+  ];
+
+  let currentQ = 0;
+  let quizScore = 0;
+  let answered = new Array(quizData.length).fill(false);
+
+  const quizWrap = document.getElementById('quiz-wrap');
+
+  function buildQuiz() {
+    quizWrap.innerHTML = '';
+    quizData.forEach((q, qi) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-q' + (qi === 0 ? ' active' : '');
+      div.id = 'qq-' + qi;
+      div.innerHTML = `
+        <div class="quiz-q-num">Question ${qi+1} of ${quizData.length}</div>
+        <div class="quiz-q-text">${q.q}</div>
+        <div class="quiz-options">
+          ${q.opts.map((opt, oi) => `
+            <button class="quiz-opt" onclick="quizAnswer(${qi},${oi},this)">${q.emoji[oi]} ${opt}</button>
+          `).join('')}
+        </div>
+      `;
+      quizWrap.appendChild(div);
+    });
+
+    const nav = document.createElement('div');
+    nav.className = 'quiz-nav';
+    nav.innerHTML = `
+      <button class="quiz-btn" id="quiz-prev" onclick="quizNav(-1)" disabled>← Previous</button>
+      <span class="quiz-score" id="quiz-score-label">Score: 0 / ${quizData.length}</span>
+      <button class="quiz-btn" id="quiz-next" onclick="quizNav(1)">Next →</button>
+    `;
+    quizWrap.appendChild(nav);
+
+    const result = document.createElement('div');
+    result.className = 'quiz-result';
+    result.id = 'quiz-result';
+    result.innerHTML = `
+      <div class="quiz-result-emoji" id="result-emoji">🎉</div>
+      <div class="quiz-result-score" id="result-score"></div>
+      <div class="quiz-result-msg" id="result-msg"></div>
+      <button class="quiz-restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
+    `;
+    quizWrap.appendChild(result);
+  }
+
+  window.quizAnswer = function(qi, oi, btn) {
+    if (answered[qi]) return;
+    answered[qi] = true;
+    const q = quizData[qi];
+    const qEl = document.getElementById('qq-' + qi);
+    qEl.querySelectorAll('.quiz-opt').forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.correct) { b.classList.add('correct'); }
+      else if (i === oi && oi !== q.correct) { b.classList.add('wrong'); }
+    });
+    if (oi === q.correct) {
+      quizScore++;
+      animateCorrect(btn);
+      spawnStars(btn);
+    } else {
+      animateWrong(btn);
+    }
+    document.getElementById('quiz-score-label').textContent = `Score: ${quizScore} / ${quizData.length}`;
+
+    // Auto-advance
+    setTimeout(() => {
+      if (qi < quizData.length - 1) {
+        quizNav(1);
+      } else {
+        showQuizResult();
+      }
+    }, 900);
+  };
+
+  window.quizNav = function(dir) {
+    const qEl = document.getElementById('qq-' + currentQ);
+    if (qEl) qEl.classList.remove('active');
+    currentQ = Math.max(0, Math.min(quizData.length - 1, currentQ + dir));
+    const nextEl = document.getElementById('qq-' + currentQ);
+    if (nextEl) nextEl.classList.add('active');
+    document.getElementById('quiz-prev').disabled = currentQ === 0;
+    document.getElementById('quiz-next').disabled = currentQ === quizData.length - 1;
+  };
+
+  function showQuizResult() {
+    document.querySelectorAll('.quiz-q').forEach(q => q.style.display = 'none');
+    document.querySelector('.quiz-nav').style.display = 'none';
+    const res = document.getElementById('quiz-result');
+    res.classList.add('show');
+    const pct = Math.round((quizScore / quizData.length) * 100);
+    document.getElementById('result-score').textContent = `${quizScore} / ${quizData.length} (${pct}%)`;
+    if (pct === 100) {
+      document.getElementById('result-emoji').textContent = '🏆';
+      document.getElementById('result-msg').textContent = 'Outstanding! You are an articles expert!';
+    } else if (pct >= 66) {
+      document.getElementById('result-emoji').textContent = '🌟';
+      document.getElementById('result-msg').textContent = 'Great job! A little more practice and you\'ll be perfect!';
+    } else {
+      document.getElementById('result-emoji').textContent = '📖';
+      document.getElementById('result-msg').textContent = 'Good try! Read the lesson again and you\'ll do better!';
+    }
+    spawnStars(res);
+  }
+
+  window.restartQuiz = function() {
+    currentQ = 0;
+    quizScore = 0;
+    answered = new Array(quizData.length).fill(false);
+    buildQuiz();
+  };
+
+  buildQuiz();
+
+  // =====================
+  // ANIMATIONS HELPERS
+  // =====================
+  window.animateCorrect = function(el) {
+    try {
+      if (typeof gsap !== 'undefined' && !prefersReduced) {
+        gsap.to(el, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.out' });
+      }
+    } catch(e) {}
+  };
+
+  window.animateWrong = function(el) {
+    try {
+      if (typeof gsap !== 'undefined' && !prefersReduced) {
+        gsap.to(el, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, ease: 'none',
+          onComplete: () => { gsap.set(el, { rotation: 0 }); }
+        });
+      }
+    } catch(e) {}
+  };
+
+  window.spawnStars = function(parent) {
+    const rect = parent.getBoundingClientRect();
+    const emojis = ['⭐','🌟','✨','💫','🎉'];
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        const star = document.createElement('div');
+        star.className = 'floating-star';
+        star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        const x = rect.left + Math.random() * Math.min(rect.width, window.innerWidth - 40);
+        const y = rect.top + window.scrollY + Math.random() * 40;
+        star.style.left = x + 'px';
+        star.style.top = y + 'px';
+        star.style.position = 'absolute';
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 1100);
+      }, i * 120);
+    }
+  };
+
+}); // DOMContentLoaded end
+</script>
+</body>
+</html>

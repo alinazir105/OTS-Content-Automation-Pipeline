@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: science | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Life Cycles – Unit 5 | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d3436;scroll-behavior:auto;overflow-x:hidden}
+body{font-size:18px;line-height:1.7}
+
+/* Progress Bar */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:9999;height:8px;background:rgba(255,255,255,0.3)}
+#progress-bar{height:8px;width:0%;background:linear-gradient(90deg,#FF9F43,#1DD1A1);transition:width 0.3s ease;border-radius:0 4px 4px 0}
+#progress-label{position:fixed;top:10px;right:16px;z-index:9999;background:#fff;color:#2d3436;font-size:13px;font-weight:700;padding:2px 10px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+
+/* Curtain */
+#curtain{position:fixed;inset:0;background:#1DD1A1;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999}
+#curtain h1{color:#fff;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;margin-bottom:12px}
+#curtain p{color:rgba(255,255,255,0.85);font-size:20px}
+.curtain-plant{font-size:80px;margin-bottom:20px;animation:bounce 1s infinite alternate}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+
+/* Nav */
+#desktop-nav{position:fixed;top:8px;left:0;right:0;z-index:1000;display:flex;justify-content:center;gap:8px;padding:8px 20px;pointer-events:none}
+#desktop-nav a{pointer-events:all;background:#fff;color:#2d3436;font-size:14px;font-weight:700;padding:6px 14px;border-radius:30px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,0.1);transition:background 0.2s,color 0.2s}
+#desktop-nav a:hover{background:#FF9F43;color:#fff}
+
+/* Hero */
+#hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#A29BFE 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden}
+#hero::before{content:'🌱';position:absolute;font-size:200px;opacity:0.08;top:-20px;left:-30px}
+#hero::after{content:'🌸';position:absolute;font-size:160px;opacity:0.08;bottom:-20px;right:-30px}
+#hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px}
+#hero h1 span{display:inline-block;opacity:1}
+#hero p.sub{font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,0.9);max-width:700px;font-weight:600}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.hero-badge{background:rgba(255,255,255,0.2);color:#fff;padding:8px 18px;border-radius:30px;font-weight:700;font-size:15px}
+
+/* Page wrapper */
+.page-wrap{width:100%;max-width:100%}
+.container{max-width:1200px;margin:0 auto;padding:0 40px}
+
+/* Section */
+.section{padding:60px 0;opacity:1;transform:none}
+.section-card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:40px;margin-bottom:32px;opacity:1;transform:none}
+.section-card.orange{border-left:5px solid #FF9F43}
+.section-card.teal{border-left:5px solid #1DD1A1}
+.section-card.purple{border-left:5px solid #A29BFE}
+.section-card.pink{border-left:5px solid #fd79a8}
+.section-card.blue{border-left:5px solid #74b9ff}
+
+.section-title{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.section-subtitle{font-size:18px;color:#636e72;margin-bottom:24px;font-weight:600}
+
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:24px}
+.info-item{background:#FAFAFA;border-radius:16px;padding:24px;text-align:center;border:2px solid #f0f0f0;transition:transform 0.2s}
+.info-item:hover{transform:translateY(-4px)}
+.info-icon{font-size:48px;margin-bottom:12px}
+.info-item h3{font-size:clamp(1.2rem,2vw,1.4rem);font-weight:800;margin-bottom:8px}
+.info-item p{font-size:17px;color:#636e72}
+
+/* Two col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}
+.compare-card{background:#FAFAFA;border-radius:16px;padding:24px;text-align:center;border:2px solid #f0f0f0}
+.compare-card h3{font-size:1.3rem;font-weight:800;margin-bottom:10px}
+.compare-card p{font-size:17px;color:#555}
+.big-emoji{font-size:60px;margin-bottom:12px}
+
+/* Read Aloud Button */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#A29BFE,#6c5ce7);color:#fff;border:none;padding:10px 22px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:20px;transition:transform 0.2s}
+.read-aloud-btn:hover{transform:scale(1.05)}
+
+/* Mermaid */
+.mermaid-wrap{background:#f8f9fa;border-radius:16px;padding:24px;margin-top:20px;overflow-x:auto}
+.mermaid{font-size:16px}
+
+/* Activities */
+.activity-section{background:linear-gradient(135deg,#fff9f0,#fff);border:2px dashed #FF9F43;border-radius:20px;padding:32px;margin-top:24px}
+.activity-title{font-size:1.5rem;font-weight:900;color:#FF9F43;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+
+/* Fill in blank */
+.fitb-sentence{font-size:20px;font-weight:600;line-height:2.2;margin:8px 0}
+.blank{display:inline-block;min-width:120px;border-bottom:3px solid #A29BFE;background:#f0eeff;border-radius:8px;padding:2px 12px;cursor:pointer;font-weight:700;color:#6c5ce7;transition:all 0.2s;position:relative;text-align:center;min-height:36px;vertical-align:middle}
+.blank:hover{background:#A29BFE;color:#fff}
+.blank.filled{background:#1DD1A1;color:#fff;border-color:#1DD1A1}
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.word-chip{background:#fff;border:2px solid #A29BFE;border-radius:20px;padding:6px 18px;font-size:17px;font-weight:700;color:#6c5ce7;cursor:pointer;transition:all 0.2s}
+.word-chip:hover{background:#A29BFE;color:#fff}
+.word-chip.used{background:#e0e0e0;color:#aaa;border-color:#e0e0e0;cursor:default;pointer-events:none}
+.fitb-feedback{font-size:18px;font-weight:700;margin-top:12px;min-height:30px}
+.fitb-check-btn{background:#FF9F43;color:#fff;border:none;padding:10px 28px;border-radius:20px;font-size:18px;font-weight:800;cursor:pointer;margin-top:12px;transition:transform 0.2s}
+.fitb-check-btn:hover{transform:scale(1.05)}
+
+/* Sorting */
+.sort-pool{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;min-height:60px;padding:12px;background:#f8f9fa;border-radius:12px;border:2px dashed #ccc}
+.sort-item{background:#A29BFE;color:#fff;padding:8px 18px;border-radius:20px;font-size:17px;font-weight:700;cursor:grab;user-select:none;transition:transform 0.15s;touch-action:none}
+.sort-item:active{cursor:grabbing;transform:scale(1.08)}
+.sort-buckets{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.sort-bucket{background:#fff;border:3px solid #1DD1A1;border-radius:16px;padding:16px;min-height:120px}
+.sort-bucket h4{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:#1DD1A1;text-align:center}
+.sort-bucket.orange-bucket{border-color:#FF9F43}
+.sort-bucket.orange-bucket h4{color:#FF9F43}
+.dropped-item{background:#1DD1A1;color:#fff;padding:6px 14px;border-radius:14px;font-size:16px;font-weight:700;margin:4px;display:inline-block}
+.sort-check-btn{background:#1DD1A1;color:#fff;border:none;padding:10px 28px;border-radius:20px;font-size:18px;font-weight:800;cursor:pointer;margin-top:14px;transition:transform 0.2s}
+.sort-check-btn:hover{transform:scale(1.05)}
+.sort-feedback{font-size:18px;font-weight:700;margin-top:10px;min-height:28px}
+
+/* Quiz */
+.quiz-wrap{padding:20px 0}
+.quiz-question{background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.07);padding:28px;margin-bottom:24px;border-left:5px solid #FF9F43}
+.quiz-question p{font-size:20px;font-weight:800;margin-bottom:16px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quiz-opt{background:#FAFAFA;border:2px solid #e0e0e0;border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;min-height:54px}
+.quiz-opt:hover{border-color:#A29BFE;background:#f0eeff}
+.quiz-opt.correct{background:#d1fae5;border-color:#1DD1A1;color:#065f46}
+.quiz-opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.quiz-opt-emoji{font-size:28px}
+.quiz-score{font-size:24px;font-weight:900;text-align:center;padding:20px;background:linear-gradient(135deg,#1DD1A1,#A29BFE);color:#fff;border-radius:16px;margin-top:20px;display:none}
+.quiz-submit{background:#FF9F43;color:#fff;border:none;padding:12px 32px;border-radius:20px;font-size:20px;font-weight:900;cursor:pointer;display:block;margin:20px auto 0;transition:transform 0.2s}
+.quiz-submit:hover{transform:scale(1.05)}
+
+/* Life Cycle Steps */
+.lifecycle-steps{display:flex;flex-direction:column;gap:16px;margin-top:20px;position:relative}
+.lifecycle-step{display:flex;align-items:flex-start;gap:20px;background:#FAFAFA;border-radius:16px;padding:20px;border:2px solid #f0f0f0}
+.step-num{background:linear-gradient(135deg,#FF9F43,#fd79a8);color:#fff;font-size:22px;font-weight:900;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-text{font-size:18px;font-weight:600}
+.step-title{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+
+/* Fact box */
+.fact-box{background:linear-gradient(135deg,#fff9f0,#fff0f9);border-radius:16px;padding:20px 24px;margin-top:16px;border-left:5px solid #fd79a8;font-size:18px;font-weight:600}
+.fact-box span{font-weight:900;color:#fd79a8}
+
+/* Mobile nav */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.12);z-index:1000;overflow-x:auto;padding:8px 12px;gap:8px;flex-direction:row;align-items:center;white-space:nowrap}
+#mobile-nav a{display:inline-flex;flex-direction:column;align-items:center;color:#636e72;font-size:12px;font-weight:700;text-decoration:none;padding:6px 12px;border-radius:12px;transition:color 0.2s;min-width:60px;min-height:48px;justify-content:center;flex-shrink:0}
+#mobile-nav a .nav-icon{font-size:22px;margin-bottom:2px}
+#mobile-nav a.active,#mobile-nav a:hover{color:#FF9F43}
+
+/* SVG plant diagram */
+.plant-svg-wrap{display:flex;justify-content:center;margin:24px 0}
+.plant-label-box{background:#fff;border-radius:12px;padding:6px 14px;font-size:15px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+
+/* Highlight */
+.highlight{background:linear-gradient(135deg,#fff9f0,#f0fff8);border-radius:12px;padding:16px 20px;margin:12px 0;font-size:18px;font-weight:600;border-left:4px solid #1DD1A1}
+
+/* Badge */
+.badge{display:inline-block;background:#A29BFE;color:#fff;font-size:13px;font-weight:800;padding:3px 12px;border-radius:20px;margin-left:10px;vertical-align:middle}
+
+/* Objectives */
+.obj-list{list-style:none;margin-top:16px}
+.obj-list li{padding:10px 0 10px 44px;position:relative;font-size:18px;font-weight:600;border-bottom:1px solid #f0f0f0}
+.obj-list li:last-child{border-bottom:none}
+.obj-list li::before{content:attr(data-icon);position:absolute;left:0;top:8px;font-size:22px}
+
+@media(max-width:768px){
+  #desktop-nav{display:none}
+  #mobile-nav{display:flex}
+  body{padding-bottom:80px}
+  .container{padding:0 16px}
+  .section{padding:36px 0}
+  .section-card{padding:22px 16px}
+  #hero{min-height:60vh;padding:60px 16px 40px}
+  .two-col{grid-template-columns:1fr}
+  .sort-buckets{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  #progress-label{display:none}
+  #desktop-nav{display:none!important}
+  .section-title{font-size:1.6rem}
+}
+@media(max-width:480px){
+  .quiz-opt{font-size:16px;padding:12px 12px}
+  .fitb-sentence{font-size:17px}
+}
+
+/* Animations defaults - always visible */
+.anim-card{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-plant">🌱</div>
+  <h1>Plant Life Cycles</h1>
+  <p>Unit 5 · Class 2 Science</p>
+</div>
+
+<!-- Progress -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0% done</div>
+
+<!-- Desktop Nav -->
+<nav id="desktop-nav">
+  <a href="#objectives">🎯 Goals</a>
+  <a href="#parts">🌿 Parts</a>
+  <a href="#roots">🌱 Roots</a>
+  <a href="#flowers">🌸 Flowers</a>
+  <a href="#seeds">🌰 Seeds</a>
+  <a href="#dispersal">💨 Dispersal</a>
+  <a href="#lifecycle">🔄 Life Cycle</a>
+  <a href="#habitats">🏜️ Habitats</a>
+  <a href="#activities">✏️ Activities</a>
+  <a href="#quiz">🎮 Quiz</a>
+</nav>
+
+<div class="page-wrap">
+
+<!-- Hero -->
+<section id="hero">
+  <h1 id="hero-title">
+    <span>🌿</span><span> Plant</span><span> Life</span><span> Cycles</span>
+  </h1>
+  <p class="sub">Discover how plants grow, make seeds, and keep our world green!</p>
+  <div class="hero-badges">
+    <span class="hero-badge">🌍 Unit 5</span>
+    <span class="hero-badge">📚 Class 2</span>
+    <span class="hero-badge">🔬 Science</span>
+  </div>
+</section>
+
+<!-- OBJECTIVES -->
+<section class="section" id="objectives">
+<div class="container">
+  <div class="section-card teal anim-card">
+    <div class="section-title">🎯 <span>What Will You Learn?</span></div>
+    <div class="section-subtitle">Learning Objectives for Unit 5</div>
+    <button class="read-aloud-btn" onclick="readAloud('objectives-text')">🔊 Read Aloud</button>
+    <div id="objectives-text">
+    <ul class="obj-list">
+      <li data-icon="🌿">Identify roots, stems, leaves, flowers, fruits, and seeds — and describe what they do.</li>
+      <li data-icon="🏜️">Explain how plants in rainforests, deserts, and other places change to survive.</li>
+      <li data-icon="🌸">Understand that flowers make seeds, fruits protect seeds, and seeds grow into new plants.</li>
+      <li data-icon="💨">Explain how animals, wind, and water help move seeds to new places.</li>
+      <li data-icon="🔄">Describe how a plant grows from a seed, changes, and makes new plants.</li>
+      <li data-icon="👨‍👩‍👧">Explain how young plants look like their parent plants.</li>
+      <li data-icon="☀️">Understand that plants need light, water, and soil to grow.</li>
+    </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PARTS OF A PLANT -->
+<section class="section" id="parts">
+<div class="container">
+  <div class="section-card orange anim-card">
+    <div class="section-title">🌿 <span>Parts of a Plant</span></div>
+    <div class="section-subtitle">Roots, Stems, and Leaves each have an important job!</div>
+    <button class="read-aloud-btn" onclick="readAloud('parts-text')">🔊 Read Aloud</button>
+    <div id="parts-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:20px">Plants use their roots, stems, and leaves to get light and water. Each part has a very special job to help the plant live and grow.</p>
+    </div>
+
+    <!-- SVG Plant Diagram via Mermaid-free approach: emoji layout -->
+    <div style="display:flex;justify-content:center;margin:24px 0">
+      <div style="position:relative;width:320px;min-height:380px;display:flex;flex-direction:column;align-items:center">
+        <!-- Sun -->
+        <div style="position:absolute;top:0;right:0;font-size:48px">☀️</div>
+        <!-- Leaf -->
+        <div style="background:#d4edda;border-radius:50% 0 50% 0;width:80px;height:40px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#2d6a4f;margin-top:24px;margin-bottom:0">🍃 Leaves</div>
+        <div style="font-size:11px;color:#636e72;font-weight:600;margin-top:2px;margin-bottom:4px">Use light to make food</div>
+        <!-- Stem -->
+        <div style="width:16px;height:80px;background:linear-gradient(180deg,#52b788,#2d6a4f);border-radius:8px;position:relative">
+          <div style="position:absolute;left:20px;top:20px;background:#fff9f0;border-radius:10px;padding:4px 10px;font-size:12px;font-weight:800;color:#FF9F43;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.1)">🌿 Stem — holds plant up</div>
+        </div>
+        <!-- Ground line -->
+        <div style="width:200px;height:3px;background:#8B4513;border-radius:2px;margin:4px 0"></div>
+        <!-- Roots -->
+        <div style="display:flex;gap:12px;margin-top:8px">
+          <div style="width:4px;height:60px;background:#a0522d;border-radius:2px;transform:rotate(-15deg)"></div>
+          <div style="width:4px;height:80px;background:#8B4513;border-radius:2px"></div>
+          <div style="width:4px;height:60px;background:#a0522d;border-radius:2px;transform:rotate(15deg)"></div>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#6d4c41;margin-top:6px">🪱 Roots</div>
+        <div style="font-size:12px;color:#636e72;font-weight:600;text-align:center">Hold plant in ground.<br>Take in water from soil.</div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-icon">🪴</div>
+        <h3>Roots</h3>
+        <p>Hold the plant in the ground and take in water from the soil.</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌿</div>
+        <h3>Stem</h3>
+        <p>Holds the plant up and carries water from roots to leaves.</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🍃</div>
+        <h3>Leaves</h3>
+        <p>Use sunlight to make food for the plant (photosynthesis!).</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ROOTS -->
+<section class="section" id="roots">
+<div class="container">
+  <div class="section-card purple anim-card">
+    <div class="section-title">🌱 <span>All About Roots</span></div>
+    <div class="section-subtitle">Roots come in many shapes and sizes!</div>
+    <button class="read-aloud-btn" onclick="readAloud('roots-text')">🔊 Read Aloud</button>
+    <div id="roots-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Some roots are long and thin. Others are short and thick. The type of root depends on where the plant lives!</p>
+    </div>
+
+    <div class="two-col">
+      <div class="compare-card" style="border-color:#FF9F43">
+        <div class="big-emoji">🏜️</div>
+        <h3 style="color:#FF9F43">Dry Places (Desert)</h3>
+        <p>Plants have <strong>long roots</strong> that grow deep down to find water underground.</p>
+      </div>
+      <div class="compare-card" style="border-color:#1DD1A1">
+        <div class="big-emoji">🌊</div>
+        <h3 style="color:#1DD1A1">Wet Places</h3>
+        <p>Plants like the banyan tree have roots <strong>above the ground</strong> so they don't get too much water.</p>
+      </div>
+    </div>
+
+    <div class="fact-box" style="margin-top:20px">
+      <span>🐻 Did you know?</span> Animals like bears, raccoons, and porcupines eat roots! We eat roots too — carrots, radishes, and beets are all roots!
+    </div>
+
+    <div class="info-grid" style="margin-top:20px">
+      <div class="info-item">
+        <div class="info-icon">🥕</div>
+        <h3>Carrots</h3>
+        <p>A root we eat! It grows underground.</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🫚</div>
+        <h3>Beetroot</h3>
+        <p>Another tasty root that grows in the soil.</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌳</div>
+        <h3>Banyan Tree</h3>
+        <p>Lives in a wet place — its roots grow above the ground!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FLOWERS FRUITS SEEDS -->
+<section class="section" id="flowers">
+<div class="container">
+  <div class="section-card pink anim-card">
+    <div class="section-title">🌸 <span>Flowers, Fruit and Seeds</span></div>
+    <div class="section-subtitle">Flowers make seeds → Fruits protect seeds → Seeds become new plants!</div>
+    <button class="read-aloud-btn" onclick="readAloud('flowers-text')">🔊 Read Aloud</button>
+    <div id="flowers-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Many plants have flowers. <strong>Flowers</strong> are the parts of plants that make seeds. Inside a flower is a sticky powder called <strong>pollen</strong>. Pollen helps flowers make seeds.</p>
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Plants that have flowers make <strong>fruit</strong>. Seeds grow inside the fruit. The fruit keeps seeds safe and helps them grow. Seeds can then grow into new plants!</p>
+    </div>
+
+    <div class="mermaid-wrap">
+      <div class="mermaid">
+graph LR
+  A["🌸 Flower\nmakes pollen"] --> B["🌼 Pollen\ncreates seeds"]
+  B --> C["🍎 Fruit\nprotects seeds"]
+  C --> D["🌱 Seeds grow\ninto new plants"]
+  D --> E["🌿 New plant\nmakes flowers"]
+  E --> A
+      </div>
+    </div>
+
+    <div class="info-grid" style="margin-top:20px">
+      <div class="info-item">
+        <div class="info-icon">🌸</div>
+        <h3>Flowers</h3>
+        <p>Parts of the plant that make seeds. They contain pollen.</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">✨</div>
+        <h3>Pollen</h3>
+        <p>A sticky powder inside flowers. Bees move pollen from flower to flower!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🍎</div>
+        <h3>Fruit</h3>
+        <p>Grows around the seeds to keep them safe. Apples are fruits!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌰</div>
+        <h3>Seeds</h3>
+        <p>Grow inside fruit. Each seed can become a whole new plant!</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      🥦 <strong>Fun fact:</strong> We actually eat the flower of the broccoli plant! And bees are amazing helpers — they carry pollen from one flower to another.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SEEDS -->
+<section class="section" id="seeds">
+<div class="container">
+  <div class="section-card blue anim-card">
+    <div class="section-title">🌰 <span>How Do Seeds Look?</span></div>
+    <div class="section-subtitle">Seeds have many different shapes and sizes!</div>
+    <button class="read-aloud-btn" onclick="readAloud('seeds-text')">🔊 Read Aloud</button>
+    <div id="seeds-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Seeds have many different shapes and sizes. But they all need the same things: <strong>light, water, and food</strong> to grow into new plants.</p>
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">All seeds have covers that protect them and help keep them from drying out. Some seeds, like peanuts, even have shells!</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-icon">🌼</div>
+        <h3>Marigold Seeds</h3>
+        <p>Small and thin seeds. They grow into beautiful yellow and orange flowers!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">⭐</div>
+        <h3>Star Anise Pod</h3>
+        <p>A pod is a shell for seeds. The star anise pod has room for many seeds inside!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🥜</div>
+        <h3>Peanuts</h3>
+        <p>Peanuts are seeds! They grow underground. They have a hard shell and a thin dark cover.</p>
+      </div>
+    </div>
+
+    <div class="fact-box" style="margin-top:20px">
+      <span>🛡️ Seed Covers:</span> Every seed has a cover (called a seed coat) that protects it and stops it from drying out. Some have extra shells too, like peanuts!
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SEED DISPERSAL -->
+<section class="section" id="dispersal">
+<div class="container">
+  <div class="section-card teal anim-card">
+    <div class="section-title">💨 <span>How Do Seeds Move?</span></div>
+    <div class="section-subtitle">Seeds travel to new places in amazing ways!</div>
+    <button class="read-aloud-btn" onclick="readAloud('dispersal-text')">🔊 Read Aloud</button>
+    <div id="dispersal-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Seeds need to move away from their parent plant to find space to grow. Animals, wind, and water all help seeds travel to new places!</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-icon">🐿️</div>
+        <h3>Animals</h3>
+        <p>Squirrels bury seeds. Baboons eat fruit and leave seeds behind. Seeds stick to animal fur!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">💨</div>
+        <h3>Wind</h3>
+        <p>Maple tree seeds spin like helicopters and fly far away in the wind!</p>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌊</div>
+        <h3>Water</h3>
+        <p>Seeds fall into rivers and oceans and are carried to new places!</p>
+      </div>
+    </div>
+
+    <div class="mermaid-wrap" style="margin-top:20px">
+      <div class="mermaid">
+graph TD
+  S["🌰 Seed"] --> A["🐒 Eaten by animal\n→ dropped elsewhere"]
+  S --> B["🐿️ Buried\nby squirrel"]
+  S --> C["🐂 Stuck to\nanimal fur"]
+  S --> D["💨 Carried\nby wind"]
+  S --> E["🌊 Floated\nby water"]
+  A --> N["🌱 New Plant!"]
+  B --> N
+  C --> N
+  D --> N
+  E --> N
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- LIFE CYCLE -->
+<section class="section" id="lifecycle">
+<div class="container">
+  <div class="section-card orange anim-card">
+    <div class="section-title">🔄 <span>The Plant Life Cycle</span></div>
+    <div class="section-subtitle">How plants grow, change, and make new plants!</div>
+    <button class="read-aloud-btn" onclick="readAloud('lifecycle-text')">🔊 Read Aloud</button>
+    <div id="lifecycle-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">A <strong>life cycle</strong> shows how a living thing grows, changes, and makes new living things. The plant life cycle begins with a seed and keeps going as plants make new plants.</p>
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Young plants look like their parent plants — same flower shapes, same leaf shapes. Some, like tulips, might look a little different (different colours!). Different plants have different life cycles — some live for a few weeks, others for many years!</p>
+    </div>
+
+    <div class="lifecycle-steps">
+      <div class="lifecycle-step">
+        <div class="step-num">1</div>
+        <div class="step-text"><div class="step-title">🌰 Seed</div>The life cycle starts with a tiny seed. The seed has a protective cover.</div>
+      </div>
+      <div class="lifecycle-step">
+        <div class="step-num">2</div>
+        <div class="step-text"><div class="step-title">🌱 Sprout / Germination</div>With water, light, and soil, the seed cracks open and a tiny shoot grows up!</div>
+      </div>
+      <div class="lifecycle-step">
+        <div class="step-num">3</div>
+        <div class="step-text"><div class="step-title">🌿 Young Plant</div>The sprout grows bigger, growing leaves that use sunlight to make food.</div>
+      </div>
+      <div class="lifecycle-step">
+        <div class="step-num">4</div>
+        <div class="step-text"><div class="step-title">🌸 Mature Plant with Flowers</div>The plant grows fully and makes flowers. Flowers make pollen to create new seeds!</div>
+      </div>
+      <div class="lifecycle-step">
+        <div class="step-num">5</div>
+        <div class="step-text"><div class="step-title">🍎 Fruit and Seeds</div>Flowers turn into fruits with seeds inside. Seeds travel to new places and the cycle begins again!</div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px">
+      <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:12px">🌲 Pine Tree Life Cycle</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph LR
+  A["🌲 Pine Tree\nmakes seeds\ninside cones"] --> B["🍂 Cones fall\nto ground.\nSeeds spread."]
+  B --> C["🌱 Seed becomes\na young plant"]
+  C --> D["🌿 Young plant\ngrows bigger\nand makes cones"]
+  D --> A
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:20px">
+      <div class="compare-card">
+        <div class="big-emoji">🌼</div>
+        <h3>Short Life Cycle</h3>
+        <p>Some flowers complete their life cycle in just a few <strong>months</strong>!</p>
+      </div>
+      <div class="compare-card">
+        <div class="big-emoji">🌲</div>
+        <h3>Long Life Cycle</h3>
+        <p>Redwood trees take more than <strong>two years</strong> just to make their cones!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- HABITATS -->
+<section class="section" id="habitats">
+<div class="container">
+  <div class="section-card purple anim-card">
+    <div class="section-title">🏡 <span>Plants and Their Homes</span></div>
+    <div class="section-subtitle">Plants adapt to where they live!</div>
+    <button class="read-aloud-btn" onclick="readAloud('habitats-text')">🔊 Read Aloud</button>
+    <div id="habitats-text">
+      <p style="font-size:18px;font-weight:600;margin-bottom:16px">Plants need light, water, and soil to grow. Different plants live in different places and have special features to help them survive!</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item" style="border-color:#1DD1A1">
+        <div class="info-icon">🌴</div>
+        <h3>Rainforest Plants</h3>
+        <p>Have <strong>large leaves</strong> to take in lots of sunlight in the shady forest.</p>
+      </div>
+      <div class="info-item" style="border-color:#FF9F43">
+        <div class="info-icon">🌵</div>
+        <h3>Desert Plants</h3>
+        <p>Have <strong>few or no leaves</strong>. They store water in their thick stems!</p>
+      </div>
+      <div class="info-item" style="border-color:#74b9ff">
+        <div class="info-icon">🪷</div>
+        <h3>Water Plants (Lily)</h3>
+        <p>Roots in soil at pond bottom. Long stem reaches up. Leaf floats on top to get light!</p>
+      </div>
+      <div class="info-item" style="border-color:#fd79a8">
+        <div class="info-icon">🌿</div>
+        <h3>Mimosa Plant</h3>
+        <p>Closes its leaves when touched — this keeps animals from eating them!</p>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:20px">
+      🌞 <strong>Plants chase the light!</strong> Stems and leaves bend toward sunlight. Some flowers even turn to follow the sun as it moves across the sky! Strong winds can also change how a tree grows — bending it to one side.
+    </div>
+
+    <div style="margin-top:20px">
+      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:12px">🌍 Habitat Comparison</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph TD
+  H["🌍 Plant Habitats"] --> R["🌴 Rainforest\nLarge leaves\nfor sunlight"]
+  H --> D["🏜️ Desert\nThick stems\nstore water"]
+  H --> W["🌊 Wetlands\nRoots above\nground"]
+  H --> P["🏞️ Pond\nLong stem,\nfloating leaf"]
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="section" id="activities">
+<div class="container">
+
+  <!-- Fill in the Blank -->
+  <div class="section-card teal anim-card" style="margin-bottom:32px">
+    <div class="section-title">✏️ <span>Fill in the Blanks</span></div>
+    <div class="section-subtitle">Click a blank, then choose the right word!</div>
+
+    <div class="activity-section">
+      <div class="activity-title">📝 Word Bank</div>
+      <div class="word-bank" id="word-bank">
+        <span class="word-chip" data-word="Flowers">Flowers</span>
+        <span class="word-chip" data-word="flowers">flowers</span>
+        <span class="word-chip" data-word="fruit">fruit</span>
+        <span class="word-chip" data-word="light">light</span>
+        <span class="word-chip" data-word="burying">burying</span>
+        <span class="word-chip" data-word="seed">seed</span>
+        <span class="word-chip" data-word="long">long</span>
+        <span class="word-chip" data-word="beets">beets</span>
+        <span class="word-chip" data-word="plants">plants</span>
+        <span class="word-chip" data-word="closes">closes</span>
+      </div>
+
+      <div id="fitb-sentences">
+        <p class="fitb-sentence">1. <span class="blank" data-answer="Flowers" data-index="0">_______</span> are the parts of plants that make seeds.</p>
+        <p class="fitb-sentence">2. Pollen is a sticky powder inside <span class="blank" data-answer="flowers" data-index="1">_______</span>.</p>
+        <p class="fitb-sentence">3. The <span class="blank" data-answer="fruit" data-index="2">_______</span> protects the seeds and helps them grow.</p>
+        <p class="fitb-sentence">4. Plants need <span class="blank" data-answer="light" data-index="3">_______</span>, water, and food to grow.</p>
+        <p class="fitb-sentence">5. Animals like squirrels help move seeds by <span class="blank" data-answer="burying" data-index="4">_______</span> them.</p>
+        <p class="fitb-sentence">6. The life cycle of a plant begins with a <span class="blank" data-answer="seed" data-index="5">_______</span>.</p>
+        <p class="fitb-sentence">7. Plants that live in dry places may have <span class="blank" data-answer="long" data-index="6">_______</span> roots.</p>
+        <p class="fitb-sentence">8. We eat roots such as carrots and <span class="blank" data-answer="beets" data-index="7">_______</span>.</p>
+        <p class="fitb-sentence">9. A fruit's seeds can grow into new <span class="blank" data-answer="plants" data-index="8">_______</span>.</p>
+        <p class="fitb-sentence">10. A mimosa plant <span class="blank" data-answer="closes" data-index="9">_______</span> its leaves when it is touched.</p>
+      </div>
+      <button class="fitb-check-btn" onclick="checkFITB()">✅ Check My Answers</button>
+      <div class="fitb-feedback" id="fitb-feedback"></div>
+    </div>
+  </div>
+
+  <!-- Sorting Activity -->
+  <div class="section-card orange anim-card" style="margin-bottom:32px">
+    <div class="section-title">🗂️ <span>Sort It Out!</span></div>
+    <div class="section-subtitle">Drag each item into the correct bucket.</div>
+
+    <div class="activity-section">
+      <div class="activity-title">🎯 Drag to Sort</div>
+      <p style="font-size:17px;font-weight:600;margin-bottom:12px">Sort these into: <strong>Parts of a Plant</strong> or <strong>Ways Seeds Travel</strong></p>
+
+      <div class="sort-pool" id="sort-pool">
+        <div class="sort-item" draggable="true" data-category="parts" data-id="s1">🌿 Stem</div>
+        <div class="sort-item" draggable="true" data-category="travel" data-id="s2">💨 Wind</div>
+        <div class="sort-item" draggable="true" data-category="parts" data-id="s3">🍃 Leaves</div>
+        <div class="sort-item" draggable="true" data-category="travel" data-id="s4">🌊 Water</div>
+        <div class="sort-item" draggable="true" data-category="parts" data-id="s5">🌱 Roots</div>
+        <div class="sort-item" draggable="true" data-category="travel" data-id="s6">🐒 Animals</div>
+        <div class="sort-item" draggable="true" data-category="parts" data-id="s7">🌸 Flower</div>
+        <div class="sort-item" draggable="true" data-category="travel" data-id="s8">🐿️ Squirrel buries</div>
+      </div>
+
+      <div class="sort-buckets">
+        <div class="sort-bucket" id="bucket-parts" ondragover="event.preventDefault()" ondrop="dropItem(event,'parts')">
+          <h4>🌿 Parts of a Plant</h4>
+        </div>
+        <div class="sort-bucket orange-bucket" id="bucket-travel" ondragover="event.preventDefault()" ondrop="dropItem(event,'travel')">
+          <h4>🌱 Ways Seeds Travel</h4>
+        </div>
+      </div>
+      <button class="sort-check-btn" onclick="checkSort()">✅ Check Sort</button>
+      <div class="sort-feedback" id="sort-feedback"></div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- QUIZ -->
+<section class="section" id="quiz">
+<div class="container">
+  <div class="section-card pink anim-card">
+    <div class="section-title">🎮 <span>Test Your Knowledge!</span></div>
+    <div class="section-subtitle">Answer all questions, then see your score!</div>
+
+    <div class="quiz-wrap" id="quiz-wrap">
+
+      <div class="quiz-question" data-q="0">
+        <p>1. 🌱 What do the roots of a plant do?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,0,false)"><span class="quiz-opt-emoji">🍃</span> Make food for the plant</div>
+          <div class="quiz-opt" onclick="selectOpt(this,0,true)"><span class="quiz-opt-emoji">🌱</span> Hold the plant in the ground and take in water</div>
+        </div>
+      </div>
+
+      <div class="quiz-question" data-q="1">
+        <p>2. 🌸 What is pollen?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,1,true)"><span class="quiz-opt-emoji">✨</span> A sticky powder inside flowers that helps make seeds</div>
+          <div class="quiz-opt" onclick="selectOpt(this,1,false)"><span class="quiz-opt-emoji">💧</span> Water that plants drink</div>
+        </div>
+      </div>
+
+      <div class="quiz-question" data-q="2">
+        <p>3. 🍎 What does the fruit do for the seeds?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,2,false)"><span class="quiz-opt-emoji">☀️</span> It gives the seed sunlight</div>
+          <div class="quiz-opt" onclick="selectOpt(this,2,true)"><span class="quiz-opt-emoji">🛡️</span> It keeps the seeds safe and helps them grow</div>
+        </div>
+      </div>
+
+      <div class="quiz-question" data-q="3">
+        <p>4. 🌴 Why do rainforest plants have large leaves?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,3,true)"><span class="quiz-opt-emoji">☀️</span> To take in more sunlight</div>
+          <div class="quiz-opt" onclick="selectOpt(this,3,false)"><span class="quiz-opt-emoji">💧</span> To store more water</div>
+        </div>
+      </div>
+
+      <div class="quiz-question" data-q="4">
+        <p>5. 🔄 What starts the plant life cycle?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,4,false)"><span class="quiz-opt-emoji">🌸</span> A flower</div>
+          <div class="quiz-opt" onclick="selectOpt(this,4,true)"><span class="quiz-opt-emoji">🌰</span> A seed</div>
+        </div>
+      </div>
+
+      <div class="quiz-question" data-q="5">
+        <p>6. 💨 Which helps move seeds to new places?</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,5,true)"><span class="quiz-opt-emoji">🐿️</span> Animals, wind, and water</div>
+          <div class="quiz-opt" onclick="selectOpt(this,5,false)"><span class="quiz-opt-emoji">🪨</span> Rocks and soil only</div>
+        </div>
+      </div>
+
+      <button class="quiz-submit" onclick="submitQuiz()">🎯 See My Score!</button>
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
+  </div>
+</div>
+</section>
+
+</div><!-- end page-wrap -->
+
+<!-- Mobile Nav -->
+<nav id="mobile-nav">
+  <a href="#objectives"><span class="nav-icon">🎯</span>Goals</a>
+  <a href="#parts"><span class="nav-icon">🌿</span>Parts</a>
+  <a href="#roots"><span class="nav-icon">🌱</span>Roots</a>
+  <a href="#flowers"><span class="nav-icon">🌸</span>Flowers</a>
+  <a href="#seeds"><span class="nav-icon">🌰</span>Seeds</a>
+  <a href="#dispersal"><span class="nav-icon">💨</span>Travel</a>
+  <a href="#lifecycle"><span class="nav-icon">🔄</span>Cycle</a>
+  <a href="#habitats"><span class="nav-icon">🏡</span>Homes</a>
+  <a href="#activities"><span class="nav-icon">✏️</span>Activity</a>
+  <a href="#quiz"><span class="nav-icon">🎮</span>Quiz</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── CURTAIN GUARANTEED DISMISS ──
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity='0'; c.style.transition='opacity 0.5s'; setTimeout(()=>c.style.display='none',500); }
+  }, 2000);
+
+  // ── LENIS SMOOTH SCROLL ──
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smooth: true });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      if (typeof gsap !== 'undefined') {
+        try { gsap.ticker.add(time => lenis.raf(time * 1000)); } catch(e){}
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // ── MERMAID ──
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis' } });
+    }
+  } catch(e) { console.warn('Mermaid failed:', e); }
+
+  // ── PROGRESS BAR ──
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? Math.round((scrollTop / docH) * 100) : 0;
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-label');
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = pct + '% done';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ── GSAP ANIMATIONS ──
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title words
+      const spans = document.querySelectorAll('#hero-title span');
+      gsap.from(spans, { opacity: 0, y: 30, stagger: 0.15, duration: 0.7, ease: 'back.out(1.5)', delay: 0.3 });
+
+      // Section cards
+      document.querySelectorAll('.anim-card').forEach(card => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 88%', once: true },
+          opacity: 0, y: 40, duration: 0.6, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // ── FILL IN THE BLANK ──
+  let selectedBlank = null;
+
+  document.querySelectorAll('.blank').forEach(blank => {
+    blank.addEventListener('click', () => {
+      if (blank.classList.contains('filled')) return;
+      document.querySelectorAll('.blank').forEach(b => b.style.outline = 'none');
+      blank.style.outline = '3px solid #A29BFE';
+      selectedBlank = blank;
+    });
+  });
+
+  document.querySelectorAll('.word-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (!selectedBlank || chip.classList.contains('used')) return;
+      const word = chip.dataset.word;
+      selectedBlank.textContent = word;
+      selectedBlank.dataset.filled = word;
+      selectedBlank.style.outline = 'none';
+      chip.classList.add('used');
+      selectedBlank = null;
+    });
+  });
+
+  window.checkFITB = function() {
+    const blanks = document.querySelectorAll('.blank');
+    let correct = 0;
+    blanks.forEach(blank => {
+      const filled = blank.dataset.filled || '';
+      const answer = blank.dataset.answer || '';
+      if (filled.toLowerCase() === answer.toLowerCase()) {
+        blank.style.background = '#1DD1A1';
+        blank.style.borderColor = '#1DD1A1';
+        blank.style.color = '#fff';
+        correct++;
+        try { if (typeof gsap !== 'undefined') gsap.to(blank, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 }); } catch(e){}
+      } else {
+        blank.style.background = '#fee2e2';
+        blank.style.borderColor = '#ef4444';
+        blank.style.color = '#991b1b';
+        try { if (typeof gsap !== 'undefined') gsap.to(blank, { rotation: -5, duration: 0.08, repeat: 5, yoyo: true, onComplete: () => gsap.set(blank, { rotation: 0 }) }); } catch(e){}
+      }
+    });
+    const fb = document.getElementById('fitb-feedback');
+    if (fb) {
+      fb.textContent = correct === blanks.length
+        ? `🎉 Perfect! All ${correct} correct!`
+        : `You got ${correct} out of ${blanks.length} correct. Try again!`;
+      fb.style.color = correct === blanks.length ? '#1DD1A1' : '#FF9F43';
+    }
+  };
+
+  // ── SORTING ──
+  let draggedId = null;
+
+  document.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedId = item.dataset.id;
+      e.dataTransfer.setData('text/plain', draggedId);
+      setTimeout(() => item.style.opacity = '0.4', 0);
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+
+    // Touch support
+    item.addEventListener('touchstart', e => {
+      draggedId = item.dataset.id;
+    }, { passive: true });
+  });
+
+  window.dropItem = function(event, bucket) {
+    event.preventDefault();
+    const id = event.dataTransfer ? event.dataTransfer.getData('text/plain') : draggedId;
+    const item = document.querySelector(`.sort-item[data-id="${id}"]`);
+    if (!item) return;
+    const targetBucket = document.getElementById('bucket-' + bucket);
+    if (!targetBucket) return;
+    const dropped = document.createElement('span');
+    dropped.className = 'dropped-item';
+    dropped.textContent = item.textContent;
+    dropped.dataset.category = item.dataset.category;
+    dropped.dataset.bucket = bucket;
+    targetBucket.appendChild(dropped);
+    item.remove();
+  };
+
+  window.checkSort = function() {
+    const dropped = document.querySelectorAll('.dropped-item');
+    let correct = 0;
+    dropped.forEach(d => {
+      if (d.dataset.category === d.dataset.bucket) {
+        correct++;
+        d.style.background = '#1DD1A1';
+      } else {
+        d.style.background = '#ef4444';
+      }
+    });
+    const fb = document.getElementById('sort-feedback');
+    if (fb) {
+      fb.textContent = correct === dropped.length && dropped.length > 0
+        ? `🎉 Amazing! All sorted correctly!`
+        : `${correct} out of ${dropped.length} sorted correctly. Keep trying!`;
+      fb.style.color = correct === dropped.length ? '#1DD1A1' : '#FF9F43';
+    }
+  };
+
+  // ── QUIZ ──
+  const quizAnswers = {};
+
+  window.selectOpt = function(el, qIdx, isCorrect) {
+    const qBlock = el.closest('.quiz-question');
+    const opts = qBlock.querySelectorAll('.quiz-opt');
+    opts.forEach(o => { o.classList.remove('correct','wrong'); o.style.pointerEvents = 'none'; });
+    if (isCorrect) {
+      el.classList.add('correct');
+      quizAnswers[qIdx] = true;
+      try { if (typeof gsap !== 'undefined') gsap.to(el, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1 }); } catch(e){}
+    } else {
+      el.classList.add('wrong');
+      quizAnswers[qIdx] = false;
+      try { if (typeof gsap !== 'undefined') gsap.to(el, { rotation: -5, duration: 0.08, repeat: 5, yoyo: true, onComplete: () => gsap.set(el, { rotation: 0 }) }); } catch(e){}
+      // highlight correct
+      opts.forEach(o => { if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct'); });
+    }
+  };
+
+  window.submitQuiz = function() {
+    const totalQ = document.querySelectorAll('.quiz-question').length;
+    let score = 0;
+    for (let i = 0; i < totalQ; i++) {
+      if (quizAnswers[i] === true) score++;
+    }
+    const scoreEl = document.getElementById('quiz-score');
+    if (scoreEl) {
+      const pct = Math.round((score / totalQ) * 100);
+      let emoji = pct === 100 ? '🏆' : pct >= 60 ? '⭐' : '💪';
+      scoreEl.textContent = `${emoji} You scored ${score} out of ${totalQ}! (${pct}%)`;
+      scoreEl.style.display = 'block';
+      try { if (typeof gsap !== 'undefined') gsap.from(scoreEl, { scale: 0.5, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' }); } catch(e){}
+    }
+  };
+
+  // ── READ ALOUD ──
+  window.readAloud = function(elId) {
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const el = document.getElementById(elId);
+        if (!el) return;
+        const text = el.innerText || el.textContent || '';
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 0.85;
+        utter.pitch = 1.1;
+        window.speechSynthesis.speak(utter);
+      } else {
+        alert('Read Aloud is not supported in this browser. Please read the text on screen!');
+      }
+    } catch(e) {
+      console.warn('Speech synthesis failed:', e);
+      alert('Could not read aloud. Please read the text on screen!');
+    }
+  };
+
+  // ── CURTAIN GSAP DISMISS ──
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 1.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

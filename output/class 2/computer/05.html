@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Primary & Secondary Storage Devices | Class 2 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#333;font-size:18px;scroll-behavior:smooth}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--card-shadow:0 8px 32px rgba(0,0,0,0.08)}
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:8px 20px;display:flex;align-items:center;gap:12px}
+#progress-bar-wrap span{font-size:14px;font-weight:700;color:#555;white-space:nowrap}
+#progress-track{flex:1;height:10px;background:#eee;border-radius:10px;overflow:hidden}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--orange));border-radius:10px;transition:width 0.4s ease}
+#progress-pct{font-size:14px;font-weight:800;color:var(--orange);min-width:40px;text-align:right}
+/* HERO */
+.hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#A29BFE 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,0.08);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;background:rgba(255,255,255,0.06);border-radius:50%}
+.hero-badge{background:rgba(255,255,255,0.2);color:#fff;font-size:16px;font-weight:700;padding:8px 20px;border-radius:50px;margin-bottom:20px;display:inline-block}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:16px}
+.hero-title span{display:inline-block;opacity:1}
+.hero-sub{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 30px}
+.hero-icons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.hero-icon-chip{background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 20px;color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+/* LAYOUT */
+.page-wrap{width:100%;max-width:100%;padding-top:60px}
+.section-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.section{padding:60px 0}
+/* CARDS */
+.card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:36px;width:100%;opacity:1;transform:none;margin-bottom:30px}
+.card.accent-orange{border-left:4px solid var(--orange)}
+.card.accent-teal{border-left:4px solid var(--teal)}
+.card.accent-purple{border-left:4px solid var(--purple)}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:8px}
+.section-icon{font-size:2.5rem;margin-right:12px}
+.section-desc{font-size:18px;color:#555;line-height:1.7;margin-bottom:20px}
+/* DEVICE GRID */
+.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;margin-top:24px}
+.device-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px 20px;text-align:center;cursor:default;transition:transform 0.2s;opacity:1}
+.device-card:hover{transform:translateY(-6px)}
+.device-card .d-icon{font-size:3.5rem;margin-bottom:12px}
+.device-card .d-name{font-size:20px;font-weight:800;margin-bottom:8px}
+.device-card .d-desc{font-size:17px;color:#666;line-height:1.5}
+.device-card.primary-card{border-top:4px solid var(--purple)}
+.device-card.secondary-card{border-top:4px solid var(--teal)}
+/* COMPARISON */
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.compare-box{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px;opacity:1}
+.compare-box h3{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:16px}
+.compare-box ul{list-style:none;padding:0}
+.compare-box ul li{font-size:18px;padding:10px 0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px}
+.compare-box ul li:last-child{border-bottom:none}
+/* READ ALOUD */
+.read-aloud-btn{background:var(--purple);color:#fff;border:none;border-radius:50px;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;margin-top:14px;transition:background 0.2s}
+.read-aloud-btn:hover{background:#8b7efd}
+/* SORTING ACTIVITY */
+.sort-wrap{margin-top:24px}
+.sort-items{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;min-height:60px;padding:16px;background:#f5f5f5;border-radius:16px}
+.sort-item{background:var(--orange);color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:17px;cursor:grab;user-select:none;transition:transform 0.1s,box-shadow 0.1s;min-height:48px;display:flex;align-items:center;gap:6px}
+.sort-item:active{cursor:grabbing;transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+.sort-item.placed{opacity:0.5;cursor:default}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.bucket{border-radius:20px;border:3px dashed #ccc;padding:20px;min-height:160px;transition:border-color 0.2s,background 0.2s}
+.bucket.drag-over{border-color:var(--teal);background:rgba(29,209,161,0.06)}
+.bucket h4{font-size:20px;font-weight:800;margin-bottom:12px}
+.bucket.b-primary{border-color:var(--purple)}
+.bucket.b-secondary{border-color:var(--teal)}
+.bucket-items{display:flex;flex-wrap:wrap;gap:10px;min-height:60px}
+.bucket-item{padding:10px 18px;border-radius:10px;font-weight:700;font-size:16px;color:#fff;min-height:48px;display:flex;align-items:center}
+.bucket-item.correct{background:var(--teal)}
+.bucket-item.wrong{background:#ff6b6b}
+.sort-feedback{font-size:18px;font-weight:700;margin-top:14px;min-height:28px}
+.sort-check-btn{background:var(--teal);color:#fff;border:none;border-radius:50px;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:16px;transition:background 0.2s;min-height:48px}
+.sort-check-btn:hover{background:#17b890}
+/* FILL IN BLANK */
+.fitb-wrap{margin-top:20px}
+.fitb-sentence{font-size:20px;line-height:2;margin-bottom:16px;font-weight:600}
+.blank{display:inline-block;min-width:120px;border-bottom:3px solid var(--orange);cursor:pointer;color:var(--orange);font-weight:800;padding:0 6px;position:relative;text-align:center;vertical-align:bottom}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal)}
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;padding:16px;background:#f9f9f9;border-radius:14px}
+.word-chip{background:var(--purple);color:#fff;border-radius:10px;padding:10px 20px;font-weight:700;font-size:17px;cursor:pointer;transition:transform 0.15s,opacity 0.2s;min-height:48px;display:flex;align-items:center}
+.word-chip:hover{transform:scale(1.05)}
+.word-chip.used{opacity:0.35;cursor:default;pointer-events:none}
+.fitb-check-btn{background:var(--orange);color:#fff;border:none;border-radius:50px;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:10px;min-height:48px;transition:background 0.2s}
+.fitb-check-btn:hover{background:#e88d30}
+.fitb-feedback{font-size:18px;font-weight:700;margin-top:12px;min-height:28px}
+/* QUIZ */
+.quiz-wrap{margin-top:20px}
+.quiz-q{margin-bottom:28px;padding:24px;background:#fff;border-radius:20px;box-shadow:var(--card-shadow);border-left:4px solid var(--orange);opacity:1}
+.quiz-q p{font-size:20px;font-weight:700;margin-bottom:16px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quiz-opt{background:#f5f5f5;border:3px solid transparent;border-radius:14px;padding:16px 20px;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px}
+.quiz-opt:hover{border-color:var(--orange);background:#fff8f0}
+.quiz-opt.correct{background:#d4fef0;border-color:var(--teal);color:#059862}
+.quiz-opt.wrong{background:#ffe0e0;border-color:#ff6b6b;color:#c0392b}
+.quiz-submit-btn{background:var(--purple);color:#fff;border:none;border-radius:50px;padding:14px 36px;font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;cursor:pointer;margin-top:10px;min-height:52px;transition:background 0.2s}
+.quiz-submit-btn:hover{background:#8b7efd}
+.quiz-result{font-size:22px;font-weight:800;margin-top:20px;padding:20px;border-radius:16px;text-align:center;display:none}
+.quiz-result.show{display:block}
+.quiz-result.great{background:#d4fef0;color:#059862}
+.quiz-result.ok{background:#fff3cd;color:#856404}
+.quiz-result.try{background:#ffe0e0;color:#c0392b}
+/* TRUE/FALSE */
+.tf-wrap{margin-top:20px}
+.tf-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:16px;background:#fff;border-radius:14px;box-shadow:var(--card-shadow);flex-wrap:wrap;opacity:1}
+.tf-stmt{flex:1;font-size:18px;font-weight:600;min-width:200px}
+.tf-btns{display:flex;gap:10px}
+.tf-btn{padding:10px 22px;border-radius:10px;border:2px solid transparent;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 0.2s}
+.tf-btn.t-btn{background:#d4fef0;color:#059862;border-color:var(--teal)}
+.tf-btn.f-btn{background:#ffe0e0;color:#c0392b;border-color:#ff6b6b}
+.tf-btn.selected-correct{background:var(--teal);color:#fff}
+.tf-btn.selected-wrong{background:#ff6b6b;color:#fff}
+.tf-icon{font-size:1.4rem;min-width:28px}
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+/* MERMAID */
+.mermaid-wrap{overflow-x:auto;margin:20px 0;padding:10px}
+.mermaid{background:#fff;border-radius:16px;padding:20px;box-shadow:var(--card-shadow)}
+/* MOBILE NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,0.1);z-index:999;padding:8px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mobile-nav-inner{display:flex;min-width:max-content;padding:0 12px;gap:6px}
+.mobile-nav a{display:flex;flex-direction:column;align-items:center;padding:8px 14px;border-radius:12px;color:#555;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;min-height:52px;justify-content:center;gap:4px}
+.mobile-nav a:hover{background:#f0f0f0}
+.mobile-nav a span.nav-icon{font-size:1.4rem}
+/* DESKTOP NAV */
+.desktop-nav{display:none}
+/* CONFETTI */
+.confetti-piece{position:fixed;width:12px;height:12px;border-radius:3px;pointer-events:none;z-index:9999;opacity:0}
+/* STICKY NOTE */
+.sticky-note{background:#fff9c4;border-radius:12px;padding:16px 20px;font-size:18px;font-weight:700;color:#555;border-left:4px solid var(--orange);margin:16px 0;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+/* ANIMATIONS */
+@keyframes wobble{0%{transform:rotate(0)}20%{transform:rotate(-5deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+.wobble{animation:wobble 0.5s ease}
+@keyframes pulse-scale{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+.pulse-scale{animation:pulse-scale 0.4s ease}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{min-height:60vh;padding:80px 16px 40px}
+  .section-container{padding:0 16px}
+  .section{padding:40px 0}
+  .compare-wrap{grid-template-columns:1fr}
+  .buckets{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .device-grid{grid-template-columns:1fr 1fr}
+  .card{padding:20px}
+  .mobile-nav{display:flex}
+  body{padding-bottom:80px}
+  .tf-row{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){
+  .device-grid{grid-template-columns:1fr}
+  .hero-title{font-size:clamp(2rem,8vw,3rem)}
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <span>📖 Lesson</span>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <span id="progress-pct">0%</span>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Section navigation">
+  <div class="mobile-nav-inner">
+    <a href="#hero"><span class="nav-icon">🏠</span>Home</a>
+    <a href="#primary-section"><span class="nav-icon">💾</span>Primary</a>
+    <a href="#secondary-section"><span class="nav-icon">💿</span>Secondary</a>
+    <a href="#sort-section"><span class="nav-icon">🗂️</span>Sort It</a>
+    <a href="#fitb-section"><span class="nav-icon">✏️</span>Fill In</a>
+    <a href="#tf-section"><span class="nav-icon">✅</span>True/False</a>
+    <a href="#quiz-section"><span class="nav-icon">🏆</span>Quiz</a>
+  </div>
+</nav>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">📚 Unit 5 · Class 2 Computer</div>
+    <h1 class="hero-title">
+      <span>Primary</span> <span>&amp;</span> <span>Secondary</span><br>
+      <span>Storage</span> <span>Devices</span>
+    </h1>
+    <p class="hero-sub">Learn where computers save your work — and how to tell the difference!</p>
+    <div class="hero-icons">
+      <div class="hero-icon-chip">💾 RAM</div>
+      <div class="hero-icon-chip">💿 DVD</div>
+      <div class="hero-icon-chip">🖥️ Hard Disk</div>
+      <div class="hero-icon-chip">🔌 Pen Drive</div>
+      <div class="hero-icon-chip">📱 Memory Card</div>
+    </div>
+  </section>
+
+  <!-- PRIMARY STORAGE -->
+  <section class="section" id="primary-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">💜</span>
+        <h2 class="section-title" style="color:var(--purple)">Primary Storage Devices</h2>
+      </div>
+      <div class="card accent-purple">
+        <p class="section-desc">
+          Primary storage devices store data <strong>temporarily</strong> while you are working on the computer. 
+          When the computer is turned off, the data is <strong>lost</strong>!
+        </p>
+        <div class="sticky-note">💡 Think of it like your brain — you remember things while you're awake, but forget when you sleep!</div>
+        <button class="read-aloud-btn" data-text="Primary storage devices store data temporarily while you are working on the computer. When the computer is turned off, the data is lost. RAM helps the computer to work and think fast.">🔊 Read Aloud</button>
+      </div>
+
+      <div class="device-grid">
+        <div class="device-card primary-card">
+          <div class="d-icon">🟩</div>
+          <div class="d-name">RAM</div>
+          <div class="d-desc">Random Access Memory. Helps the computer think and work fast. Data disappears when turned off.</div>
+        </div>
+      </div>
+
+      <div class="card accent-purple" style="margin-top:24px">
+        <h3 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:14px">Key Facts About RAM</h3>
+        <ul style="list-style:none;padding:0">
+          <li style="padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:18px">✅ RAM stands for <strong>Random Access Memory</strong></li>
+          <li style="padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:18px">⚡ It helps the computer work and <strong>think fast</strong></li>
+          <li style="padding:10px 0;font-size:18px">❌ Data in RAM is <strong>lost</strong> when the computer is turned off</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECONDARY STORAGE -->
+  <section class="section" id="secondary-section" style="background:#f0fdfa">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">💚</span>
+        <h2 class="section-title" style="color:var(--teal)">Secondary Storage Devices</h2>
+      </div>
+      <div class="card accent-teal">
+        <p class="section-desc">
+          Secondary storage devices are used to <strong>store information permanently</strong>. 
+          Even when the computer is turned off, your data stays safe!
+        </p>
+        <div class="sticky-note">💡 Think of it like a notebook — you write things down and they stay there even when you close it!</div>
+        <button class="read-aloud-btn" data-text="Secondary storage devices are used to store information permanently. Examples include the hard disk, DVD, CD, pen drive, external hard drive, and memory card. Memory cards are used in mobile phones and cameras.">🔊 Read Aloud</button>
+      </div>
+
+      <div class="device-grid">
+        <div class="device-card secondary-card">
+          <div class="d-icon">🖴</div>
+          <div class="d-name">Hard Disk</div>
+          <div class="d-desc">The main storage device <strong>inside</strong> a computer. Holds all data and files permanently.</div>
+        </div>
+        <div class="device-card secondary-card">
+          <div class="d-icon">📀</div>
+          <div class="d-name">DVD</div>
+          <div class="d-desc">A flat circular disc that can hold <strong>more data</strong> than a CD. Often used for movies and software.</div>
+        </div>
+        <div class="device-card secondary-card">
+          <div class="d-icon">💿</div>
+          <div class="d-name">CD</div>
+          <div class="d-desc">A flat circular disc for music, videos, and software. Holds <strong>less data</strong> than a DVD.</div>
+        </div>
+        <div class="device-card secondary-card">
+          <div class="d-icon">🔌</div>
+          <div class="d-name">Pen Drive</div>
+          <div class="d-desc">A small portable device also called a <strong>USB drive</strong>. Used to store and transfer files easily.</div>
+        </div>
+        <div class="device-card secondary-card">
+          <div class="d-icon">🗃️</div>
+          <div class="d-name">External Hard Drive</div>
+          <div class="d-desc">A portable hard disk you can plug in from outside the computer for <strong>extra storage</strong>.</div>
+        </div>
+        <div class="device-card secondary-card">
+          <div class="d-icon">📱</div>
+          <div class="d-name">Memory Card</div>
+          <div class="d-desc">A tiny storage card used in <strong>cameras and mobile phones</strong> to save photos and videos.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="section" id="compare-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">⚖️</span>
+        <h2 class="section-title" style="color:var(--orange)">Primary vs Secondary</h2>
+      </div>
+      <div class="compare-wrap">
+        <div class="compare-box" style="border-left:4px solid var(--purple)">
+          <h3 style="color:var(--purple)">💜 Primary Storage</h3>
+          <ul>
+            <li>🟩 Example: RAM</li>
+            <li>⏳ Stores data <strong>temporarily</strong></li>
+            <li>❌ Data lost when turned off</li>
+            <li>⚡ Makes computer fast</li>
+            <li>🏠 Lives <strong>inside</strong> the computer</li>
+          </ul>
+        </div>
+        <div class="compare-box" style="border-left:4px solid var(--teal)">
+          <h3 style="color:var(--teal)">💚 Secondary Storage</h3>
+          <ul>
+            <li>💿 Examples: Hard Disk, DVD, Pen Drive</li>
+            <li>♾️ Stores data <strong>permanently</strong></li>
+            <li>✅ Data stays safe when turned off</li>
+            <li>📦 Stores large amounts of data</li>
+            <li>🔄 Can be internal or external</li>
+          </ul>
+        </div>
+      </div>
+      <button class="read-aloud-btn" data-text="Primary storage, like RAM, stores data temporarily. Data is lost when the computer is turned off. Secondary storage, like hard disk, DVD, and pen drive, stores data permanently. Your data stays safe even when the computer is off.">🔊 Read Aloud</button>
+    </div>
+  </section>
+
+  <!-- SORTING ACTIVITY -->
+  <section class="section" id="sort-section" style="background:#fff8f0">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">🗂️</span>
+        <h2 class="section-title" style="color:var(--orange)">Sort It Out!</h2>
+      </div>
+      <div class="card accent-orange">
+        <p class="section-desc">Drag each device into the correct bucket — <strong>Primary</strong> or <strong>Secondary</strong> storage!</p>
+        <div class="sort-wrap">
+          <div class="sort-items" id="sort-bank">
+            <div class="sort-item" draggable="true" data-device="RAM" data-type="primary">🟩 RAM</div>
+            <div class="sort-item" draggable="true" data-device="Hard Disk" data-type="secondary">🖴 Hard Disk</div>
+            <div class="sort-item" draggable="true" data-device="DVD" data-type="secondary">📀 DVD</div>
+            <div class="sort-item" draggable="true" data-device="Pen Drive" data-type="secondary">🔌 Pen Drive</div>
+            <div class="sort-item" draggable="true" data-device="CD" data-type="secondary">💿 CD</div>
+            <div class="sort-item" draggable="true" data-device="Memory Card" data-type="secondary">📱 Memory Card</div>
+          </div>
+          <div class="buckets">
+            <div class="bucket b-primary" id="bucket-primary" data-type="primary">
+              <h4 style="color:var(--purple)">💜 Primary Storage</h4>
+              <div class="bucket-items" id="primary-items"></div>
+            </div>
+            <div class="bucket b-secondary" id="bucket-secondary" data-type="secondary">
+              <h4 style="color:var(--teal)">💚 Secondary Storage</h4>
+              <div class="bucket-items" id="secondary-items"></div>
+            </div>
+          </div>
+          <div class="sort-feedback" id="sort-feedback"></div>
+          <button class="sort-check-btn" id="sort-check-btn" onclick="checkSort()">✅ Check My Answer</button>
+          <button class="sort-check-btn" style="background:var(--orange);margin-left:10px" onclick="resetSort()">🔄 Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILL IN THE BLANK -->
+  <section class="section" id="fitb-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">✏️</span>
+        <h2 class="section-title" style="color:var(--purple)">Fill in the Blanks</h2>
+      </div>
+      <div class="card accent-purple">
+        <p class="section-desc">Click on the word from the word bank, then click on a blank to fill it in!</p>
+        <div class="word-bank" id="word-bank">
+          <div class="word-chip" data-word="RAM" onclick="selectWord(this)">RAM</div>
+          <div class="word-chip" data-word="temporarily" onclick="selectWord(this)">temporarily</div>
+          <div class="word-chip" data-word="Pen drive" onclick="selectWord(this)">Pen drive</div>
+          <div class="word-chip" data-word="DVD" onclick="selectWord(this)">DVD</div>
+          <div class="word-chip" data-word="Memory card" onclick="selectWord(this)">Memory card</div>
+          <div class="word-chip" data-word="Hard disk" onclick="selectWord(this)">Hard disk</div>
+          <div class="word-chip" data-word="permanently" onclick="selectWord(this)">permanently</div>
+        </div>
+        <div class="fitb-wrap">
+          <div class="fitb-sentence">1. Primary storage devices store data <span class="blank" data-answer="temporarily" onclick="fillBlank(this)">_______</span> while working on the computer.</div>
+          <div class="fitb-sentence">2. <span class="blank" data-answer="RAM" onclick="fillBlank(this)">_______</span> helps the computer to work and think fast.</div>
+          <div class="fitb-sentence">3. A <span class="blank" data-answer="Pen drive" onclick="fillBlank(this)">_______</span> is also known as a USB drive.</div>
+          <div class="fitb-sentence">4. A <span class="blank" data-answer="DVD" onclick="fillBlank(this)">_______</span> can hold more data than a CD.</div>
+          <div class="fitb-sentence">5. The <span class="blank" data-answer="Hard disk" onclick="fillBlank(this)">_______</span> is the main storage device inside a computer.</div>
+          <div class="fitb-sentence">6. A <span class="blank" data-answer="Memory card" onclick="fillBlank(this)">_______</span> is used in cameras and mobile phones.</div>
+          <div class="fitb-sentence">7. Secondary storage devices store data <span class="blank" data-answer="permanently" onclick="fillBlank(this)">_______</span>.</div>
+        </div>
+        <button class="fitb-check-btn" onclick="checkFITB()">✅ Check Answers</button>
+        <button class="fitb-check-btn" style="background:var(--purple);margin-left:10px" onclick="resetFITB()">🔄 Reset</button>
+        <div class="fitb-feedback" id="fitb-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUE / FALSE -->
+  <section class="section" id="tf-section" style="background:#f5f3ff">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">✅</span>
+        <h2 class="section-title" style="color:var(--purple)">True or False?</h2>
+      </div>
+      <div class="card accent-purple">
+        <p class="section-desc">Read each statement and tap <strong>True</strong> or <strong>False</strong>!</p>
+        <div class="tf-wrap" id="tf-wrap">
+          <!-- TF rows generated by JS -->
+        </div>
+        <button class="sort-check-btn" style="background:var(--purple);margin-top:8px" onclick="resetTF()">🔄 Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz-section" style="background:#fff8f0">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">🏆</span>
+        <h2 class="section-title" style="color:var(--orange)">Quiz Time!</h2>
+      </div>
+      <div class="card accent-orange">
+        <p class="section-desc">Answer all questions, then tap <strong>Submit</strong> to see your score!</p>
+        <div class="quiz-wrap" id="quiz-wrap">
+          <!-- Questions generated by JS -->
+        </div>
+        <button class="quiz-submit-btn" onclick="submitQuiz()">🏁 Submit Quiz</button>
+        <div class="quiz-result" id="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB ACTIVITY -->
+  <section class="section" id="lab-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-icon">🔬</span>
+        <h2 class="section-title" style="color:var(--teal)">Lab Activity</h2>
+      </div>
+      <div class="card accent-teal">
+        <h3 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:16px">Lab Visit 🖥️</h3>
+        <p class="section-desc">In the computer lab, you will get to see real storage devices connected to a computer!</p>
+        <div class="device-grid" style="margin-top:16px">
+          <div class="device-card secondary-card">
+            <div class="d-icon">💿</div>
+            <div class="d-name">Step 1</div>
+            <div class="d-desc">Insert a <strong>CD/DVD</strong> into the computer's drive slot.</div>
+          </div>
+          <div class="device-card secondary-card">
+            <div class="d-icon">🔌</div>
+            <div class="d-name">Step 2</div>
+            <div class="d-desc">Plug a <strong>pen drive</strong> into the USB port on the computer.</div>
+          </div>
+          <div class="device-card secondary-card">
+            <div class="d-icon">📱</div>
+            <div class="d-name">Step 3</div>
+            <div class="d-desc">Insert a <strong>memory card</strong> into the card reader slot.</div>
+          </div>
+          <div class="device-card secondary-card">
+            <div class="d-icon">📂</div>
+            <div class="d-name">Step 4</div>
+            <div class="d-desc">Open and <strong>access files</strong> from each device on the computer.</div>
+          </div>
+        </div>
+        <button class="read-aloud-btn" style="margin-top:20px" data-text="In the lab, you will insert a CD or DVD into the computer's drive, plug a pen drive into the USB port, insert a memory card into the card reader slot, and then open and access files from each device.">🔊 Read Aloud</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid@10/dist/mermaid.min.js" onerror="console.log('mermaid not loaded')"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK (no curtain used but safety timer)
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // LENIS SMOOTH SCROLL
+  // =====================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1 });
+      if (typeof gsap !== 'undefined' && gsap.ticker) {
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function rafLoop(time) { lenis.raf(time); requestAnimationFrame(rafLoop); }
+        requestAnimationFrame(rafLoop);
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed:', e); }
+
+  // =====================
+  // GSAP ANIMATIONS
+  // =====================
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  try {
+    if (typeof gsap !== 'undefined' && !reducedMotion) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title words animate in
+      const heroSpans = document.querySelectorAll('.hero-title span');
+      gsap.fromTo(heroSpans,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.12, duration: 0.6, ease: 'back.out(1.7)', delay: 0.2 }
+      );
+
+      // Cards scroll fade-up
+      document.querySelectorAll('.card, .device-card, .compare-box, .quiz-q, .tf-row').forEach(el => {
+        gsap.fromTo(el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.6, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+          }
+        );
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+
+  // =====================
+  // PROGRESS BAR
+  // =====================
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // =====================
+  // READ ALOUD
+  // =====================
+  document.querySelectorAll('.read-aloud-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-text');
+      try {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(text);
+          utt.rate = 0.85;
+          utt.pitch = 1.1;
+          window.speechSynthesis.speak(utt);
+          btn.textContent = '🔊 Reading...';
+          utt.onend = () => { btn.textContent = '🔊 Read Aloud'; };
+          utt.onerror = () => { btn.textContent = '🔊 Read Aloud'; };
+        } else {
+          btn.title = text;
+          btn.textContent = '📝 ' + text.substring(0, 40) + '...';
+        }
+      } catch(e) {
+        btn.title = text;
+      }
+    });
+  });
+
+  // =====================
+  // SORTING ACTIVITY
+  // =====================
+  let draggedItem = null;
+
+  document.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      item.style.opacity = '0.5';
+    });
+    item.addEventListener('dragend', e => {
+      item.style.opacity = '1';
+      draggedItem = null;
+    });
+  });
+
+  document.querySelectorAll('.bucket').forEach(bucket => {
+    bucket.addEventListener('dragover', e => {
+      e.preventDefault();
+      bucket.classList.add('drag-over');
+    });
+    bucket.addEventListener('dragleave', () => {
+      bucket.classList.remove('drag-over');
+    });
+    bucket.addEventListener('drop', e => {
+      e.preventDefault();
+      bucket.classList.remove('drag-over');
+      if (draggedItem && !draggedItem.classList.contains('placed')) {
+        const itemsEl = bucket.querySelector('.bucket-items');
+        const chip = document.createElement('div');
+        chip.className = 'bucket-item';
+        chip.textContent = draggedItem.textContent;
+        chip.setAttribute('data-device', draggedItem.getAttribute('data-device'));
+        chip.setAttribute('data-type', draggedItem.getAttribute('data-type'));
+        chip.setAttribute('data-bucket', bucket.getAttribute('data-type'));
+        itemsEl.appendChild(chip);
+        draggedItem.classList.add('placed');
+        draggedItem.setAttribute('draggable', 'false');
+        draggedItem.style.opacity = '0.4';
+        document.getElementById('sort-feedback').textContent = '';
+      }
+    });
+  });
+
+  // Touch support for sorting
+  let touchDragged = null;
+  let touchClone = null;
+  document.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('touchstart', e => {
+      if (item.classList.contains('placed')) return;
+      touchDragged = item;
+      const touch = e.touches[0];
+      touchClone = item.cloneNode(true);
+      touchClone.style.position = 'fixed';
+      touchClone.style.top = (touch.clientY - 20) + 'px';
+      touchClone.style.left = (touch.clientX - 40) + 'px';
+      touchClone.style.opacity = '0.8';
+      touchClone.style.zIndex = '9999';
+      touchClone.style.pointerEvents = 'none';
+      document.body.appendChild(touchClone);
+    }, { passive: true });
+    item.addEventListener('touchmove', e => {
+      if (!touchClone) return;
+      const touch = e.touches[0];
+      touchClone.style.top = (touch.clientY - 20) + 'px';
+      touchClone.style.left = (touch.clientX - 40) + 'px';
+    }, { passive: true });
+    item.addEventListener('touchend', e => {
+      if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+      if (!touchDragged) return;
+      const touch = e.changedTouches[0];
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      const bucket = el ? el.closest('.bucket') : null;
+      if (bucket && !touchDragged.classList.contains('placed')) {
+        const itemsEl = bucket.querySelector('.bucket-items');
+        const chip = document.createElement('div');
+        chip.className = 'bucket-item';
+        chip.textContent = touchDragged.textContent;
+        chip.setAttribute('data-device', touchDragged.getAttribute('data-device'));
+        chip.setAttribute('data-type', touchDragged.getAttribute('data-type'));
+        chip.setAttribute('data-bucket', bucket.getAttribute('data-type'));
+        itemsEl.appendChild(chip);
+        touchDragged.classList.add('placed');
+        touchDragged.setAttribute('draggable', 'false');
+        touchDragged.style.opacity = '0.4';
+      }
+      touchDragged = null;
+    });
+  });
+
+  // =====================
+  // TRUE / FALSE DATA
+  // =====================
+  const tfData = [
+    { stmt: 'A DVD can hold more data than a CD.', answer: true },
+    { stmt: 'A pen drive is also known as a USB drive.', answer: true },
+    { stmt: 'The hard disk is an external storage device.', answer: false },
+    { stmt: 'A memory card is often used in cameras and phones.', answer: true },
+    { stmt: 'The taskbar is found at the top of the desktop.', answer: false },
+    { stmt: 'A CD can store more data than a Hard disk.', answer: false },
+    { stmt: 'When I delete a file, it goes to the recycle bin.', answer: true },
+    { stmt: 'The desktop is the main screen on your computer where you can see and open your programs.', answer: true },
+  ];
+
+  function buildTF() {
+    const wrap = document.getElementById('tf-wrap');
+    wrap.innerHTML = '';
+    tfData.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.className = 'tf-row';
+      row.innerHTML = `
+        <span class="tf-icon" id="tf-icon-${idx}">❓</span>
+        <span class="tf-stmt">${item.stmt}</span>
+        <div class="tf-btns">
+          <button class="tf-btn t-btn" onclick="answerTF(${idx}, true, this)">✅ True</button>
+          <button class="tf-btn f-btn" onclick="answerTF(${idx}, false, this)">❌ False</button>
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+  }
+  buildTF();
+
+  window.answerTF = function(idx, answer, btn) {
+    const correct = tfData[idx].answer;
+    const icon = document.getElementById('tf-icon-' + idx);
+    const row = btn.closest('.tf-row');
+    const btns = row.querySelectorAll('.tf-btn');
+    btns.forEach(b => b.disabled = true);
+    if (answer === correct) {
+      btn.classList.add('selected-correct');
+      icon.textContent = '✅';
+      triggerCorrect(btn);
+    } else {
+      btn.classList.add('selected-wrong');
+      icon.textContent = '❌';
+      triggerWrong(btn);
+      // Show correct answer
+      btns.forEach(b => {
+        const isTrue = b.classList.contains('t-btn');
+        if ((correct === true && isTrue) || (correct === false && !isTrue)) {
+          b.style.outline = '3px solid var(--teal)';
+        }
+      });
+    }
+  };
+
+  window.resetTF = function() { buildTF(); };
+
+  // =====================
+  // QUIZ DATA
+  // =====================
+  const quizData = [
+    {
+      q: 'Which device stores data temporarily?',
+      options: ['💾 RAM', '💿 DVD'],
+      correct: 0
+    },
+    {
+      q: 'A pen drive is also known as a:',
+      options: ['📡 Bluetooth device', '🔌 USB drive'],
+      correct: 1
+    },
+    {
+      q: 'Which holds more data — a CD or a DVD?',
+      options: ['💿 CD', '📀 DVD'],
+      correct: 1
+    },
+    {
+      q: 'The Hard Disk is located:',
+      options: ['🏠 Inside the computer', '📱 In your phone'],
+      correct: 0
+    },
+    {
+      q: 'What happens to RAM data when the computer is turned off?',
+      options: ['❌ It is lost', '✅ It is saved'],
+      correct: 0
+    },
+    {
+      q: 'Which device is used in cameras and mobile phones?',
+      options: ['🔌 Pen Drive', '📱 Memory Card'],
+      correct: 1
+    },
+  ];
+
+  function buildQuiz() {
+    const wrap = document.getElementById('quiz-wrap');
+    wrap.innerHTML = '';
+    quizData.forEach((q, qi) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-q';
+      div.innerHTML = `<p>${qi + 1}. ${q.q}</p>
+        <div class="quiz-options">
+          ${q.options.map((opt, oi) => `
+            <div class="quiz-opt" data-qi="${qi}" data-oi="${oi}" onclick="selectQuizOpt(this, ${qi}, ${oi})">
+              ${opt}
+            </div>
+          `).join('')}
+        </div>`;
+      wrap.appendChild(div);
+    });
+  }
+  buildQuiz();
+
+  window.selectQuizOpt = function(el, qi, oi) {
+    const opts = document.querySelectorAll(`.quiz-opt[data-qi="${qi}"]`);
+    opts.forEach(o => o.classList.remove('selected-quiz'));
+    el.classList.add('selected-quiz');
+    el.setAttribute('data-selected', '1');
+    opts.forEach(o => o.removeAttribute('data-selected'));
+    el.setAttribute('data-selected', '1');
+    // Store selection
+    el.closest('.quiz-q').setAttribute('data-selected', oi);
+  };
+
+  window.submitQuiz = function() {
+    let score = 0;
+    let answered = 0;
+    quizData.forEach((q, qi) => {
+      const qEl = document.querySelector(`.quiz-q:nth-child(${qi + 1})`);
+      const sel = qEl ? qEl.getAttribute('data-selected') : null;
+      const opts = document.querySelectorAll(`.quiz-opt[data-qi="${qi}"]`);
+      opts.forEach((o, oi) => {
+        o.style.pointerEvents = 'none';
+        if (oi === q.correct) {
+          o.classList.add('correct');
+        }
+        if (sel !== null && parseInt(sel) === oi && oi !== q.correct) {
+          o.classList.add('wrong');
+        }
+      });
+      if (sel !== null) {
+        answered++;
+        if (parseInt(sel) === q.correct) {
+          score++;
+          const correctEl = document.querySelector(`.quiz-opt[data-qi="${qi}"][data-oi="${q.correct}"]`);
+          if (correctEl) triggerCorrect(correctEl);
+        }
+      }
+    });
+    const resultEl = document.getElementById('quiz-result');
+    resultEl.classList.add('show');
+    const pct = Math.round((score / quizData.length) * 100);
+    if (score >= 5) {
+      resultEl.className = 'quiz-result show great';
+      resultEl.innerHTML = `🎉 Amazing! You got ${score}/${quizData.length} correct! (${pct}%) You're a storage superstar! 🌟`;
+      launchConfetti();
+    } else if (score >= 3) {
+      resultEl.className = 'quiz-result show ok';
+      resultEl.innerHTML = `👍 Good job! You got ${score}/${quizData.length} correct! (${pct}%) Keep practicing!`;
+    } else {
+      resultEl.className = 'quiz-result show try';
+      resultEl.innerHTML = `🔁 You got ${score}/${quizData.length} correct. (${pct}%) Try again — you can do it!`;
+    }
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  // =====================
+  // FILL IN THE BLANK
+  // =====================
+  let selectedWord = null;
+
+  window.selectWord = function(el) {
+    if (el.classList.contains('used')) return;
+    document.querySelectorAll('.word-chip').forEach(c => c.style.outline = 'none');
+    el.style.outline = '3px solid var(--orange)';
+    selectedWord = el;
+  };
+
+  window.fillBlank = function(blank) {
+    if (!selectedWord) {
+      blank.style.animation = 'wobble 0.5s';
+      setTimeout(() => blank.style.animation = '', 600);
+      return;
+    }
+    const prev = blank.getAttribute('data-filled');
+    if (prev) {
+      // unuse prev word
+      document.querySelectorAll('.word-chip').forEach(c => {
+        if (c.getAttribute('data-word') === prev) {
+          c.classList.remove('used');
+          c.style.opacity = '1';
+          c.style.pointerEvents = '';
+        }
+      });
+    }
+    blank.textContent = selectedWord.getAttribute('data-word');
+    blank.setAttribute('data-filled', selectedWord.getAttribute('data-word'));
+    blank.classList.add('filled');
+    selectedWord.classList.add('used');
+    selectedWord.style.outline = 'none';
+    selectedWord = null;
+  };
+
+  window.checkFITB = function() {
+    const blanks = document.querySelectorAll('.blank');
+    let correct = 0;
+    blanks.forEach(b => {
+      const filled = b.getAttribute('data-filled') || '';
+      const answer = b.getAttribute('data-answer');
+      if (filled.toLowerCase() === answer.toLowerCase()) {
+        correct++;
+        b.style.color = 'var(--teal)';
+        b.style.borderBottomColor = 'var(--teal)';
+        triggerCorrect(b);
+      } else if (filled) {
+        b.style.color = '#ff6b6b';
+        b.style.borderBottomColor = '#ff6b6b';
+        triggerWrong(b);
+      }
+    });
+    const fb = document.getElementById('fitb-feedback');
+    if (correct === blanks.length) {
+      fb.textContent = `🎉 Perfect! All ${correct} answers are correct!`;
+      fb.style.color = 'var(--teal)';
+      launchConfetti();
+    } else {
+      fb.textContent = `You got ${correct} out of ${blanks.length} correct. Keep trying!`;
+      fb.style.color = 'var(--orange)';
+    }
+  };
+
+  window.resetFITB = function() {
+    const blanks = document.querySelectorAll('.blank');
+    blanks.forEach(b => {
+      b.textContent = '_______';
+      b.removeAttribute('data-filled');
+      b.classList.remove('filled');
+      b.style.color = '';
+      b.style.borderBottomColor = '';
+    });
+    document.querySelectorAll('.word-chip').forEach(c => {
+      c.classList.remove('used');
+      c.style.opacity = '1';
+      c.style.pointerEvents = '';
+      c.style.outline = 'none';
+    });
+    document.getElementById('fitb-feedback').textContent = '';
+    selectedWord = null;
+  };
+
+  // =====================
+  // SORT CHECK & RESET
+  // =====================
+  window.checkSort = function() {
+    const allItems = document.querySelectorAll('.bucket-item');
+    if (allItems.length === 0) {
+      document.getElementById('sort-feedback').textContent = '⚠️ Please drag some items first!';
+      return;
+    }
+    let correct = 0;
+    allItems.forEach(item => {
+      const type = item.getAttribute('data-type');
+      const bucket = item.getAttribute('data-bucket');
+      if (type === bucket) {
+        item.classList.add('correct');
+        item.classList.remove('wrong');
+        correct++;
+      } else {
+        item.classList.add('wrong');
+        item.classList.remove('correct');
+        triggerWrong(item);
+      }
+    });
+    const fb = document.getElementById('sort-feedback');
+    if (correct === allItems.length && allItems.length === 6) {
+      fb.textContent = `🎉 Excellent! All ${correct} devices sorted correctly!`;
+      fb.style.color = 'var(--teal)';
+      launchConfetti();
+    } else {
+      fb.textContent = `${correct} out of ${allItems.length} correct. Red ones are wrong — try again!`;
+      fb.style.color = 'var(--orange)';
+    }
+  };
+
+  window.resetSort = function() {
+    document.querySelectorAll('.sort-item').forEach(item => {
+      item.classList.remove('placed');
+      item.setAttribute('draggable', 'true');
+      item.style.opacity = '1';
+    });
+    document.getElementById('primary-items').innerHTML = '';
+    document.getElementById('secondary-items').innerHTML = '';
+    document.getElementById('sort-feedback').textContent = '';
+  };
+
+  // =====================
+  // ANIMATION HELPERS
+  // =====================
+  function triggerCorrect(el) {
+    if (reducedMotion) return;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(el, { scale: 1 }, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+      }
+    } catch(e) {}
+  }
+
+  function triggerWrong(el) {
+    if (reducedMotion) return;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(el,
+          { rotation: 0 },
+          { rotation: 5, duration: 0.08, yoyo: true, repeat: 5, ease: 'power1.inOut',
+            onComplete: () => gsap.set(el, { rotation: 0 }) }
+        );
+      } else {
+        el.classList.add('wobble');
+        setTimeout(() => el.classList.remove('wobble'), 600);
+      }
+    } catch(e) {}
+  }
+
+  // =====================
+  // CONFETTI
+  // =====================
+  function launchConfetti() {
+    const colors = ['#FF9F43','#1DD1A1','#A29BFE','#ff6b6b','#ffd700'];
+    for (let i = 0; i < 30; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.top = '-20px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+      piece.style.width = (8 + Math.random() * 8) + 'px';
+      piece.style.height = (8 + Math.random() * 8) + 'px';
+      document.body.appendChild(piece);
+      const fall = Math.random() * 80 + 40;
+      const drift = (Math.random() - 0.5) * 60;
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(piece, {
+            top: '110vh', left: '+=' + drift + 'vw', rotation: Math.random() * 360,
+            opacity: 1, duration: fall / 20, ease: 'none',
+            onComplete: () => { if (piece.parentNode) piece.parentNode.removeChild(piece); }
+          });
+          gsap.to(piece, { opacity: 1, duration: 0.1 });
+        } else {
+          piece.style.opacity = '1';
+          piece.style.transition = `top ${fall / 20}s linear`;
+          piece.style.top = '110vh';
+          setTimeout(() => { if (piece.parentNode) piece.parentNode.removeChild(piece); }, fall * 60);
+        }
+      } catch(e) {
+        if (piece.parentNode) piece.parentNode.removeChild(piece);
+      }
+    }
+  }
+
+  // Init complete
+  console.log('Digital School - Unit 5 Storage Devices loaded successfully.');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,955 @@
+<!-- CLASS: 2 | SUBJECT: english | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>This / That / These / Those – Class 2 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d3436;overflow-x:hidden;font-size:18px}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--card-shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);padding:8px 40px;box-shadow:0 2px 12px rgba(0,0,0,0.08);display:flex;align-items:center;gap:12px}
+#progress-bar-wrap span{font-size:14px;font-weight:700;color:var(--orange);white-space:nowrap}
+#progress-track{flex:1;height:8px;background:#ffe0b2;border-radius:99px;overflow:hidden}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--teal));border-radius:99px;transition:width 0.4s ease}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#FF9F43,#A29BFE);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain h2{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900}
+.curtain-dots{display:flex;gap:10px}
+.curtain-dots span{width:14px;height:14px;border-radius:50%;background:#fff;opacity:0.5;animation:dotPulse 1.2s infinite}
+.curtain-dots span:nth-child(2){animation-delay:0.2s}
+.curtain-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dotPulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+
+/* HERO */
+.hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#FF9F43 0%,#ffcc80 50%,#A29BFE 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:120px 40px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(29,209,161,0.2),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(162,155,254,0.3),transparent 60%)}
+.hero-badge{background:rgba(255,255,255,0.25);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,0.4);border-radius:99px;padding:8px 20px;font-size:15px;font-weight:700;color:#fff;margin-bottom:24px;display:inline-block}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.1;text-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.hero-title .word{display:inline-block;margin-right:12px;opacity:1}
+.hero-sub{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);margin-top:16px;font-weight:600;max-width:600px}
+.hero-emojis{font-size:3rem;margin-top:24px;display:flex;gap:16px;justify-content:center}
+.hero-emojis span{display:inline-block;animation:float 3s ease-in-out infinite}
+.hero-emojis span:nth-child(2){animation-delay:0.5s}
+.hero-emojis span:nth-child(3){animation-delay:1s}
+.hero-emojis span:nth-child(4){animation-delay:1.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* SECTIONS */
+.section{width:100%;padding:60px 0}
+.section:nth-child(even){background:#fff}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:40px}
+.section-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.section-title{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:900;color:var(--dark)}
+.section-subtitle{font-size:18px;color:#636e72;font-weight:600;margin-top:2px}
+
+/* CARD */
+.card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:36px;width:100%;opacity:1;transform:none}
+.card.orange-accent{border-left:4px solid var(--orange)}
+.card.teal-accent{border-left:4px solid var(--teal)}
+.card.purple-accent{border-left:4px solid var(--purple)}
+
+/* CONCEPT GRID */
+.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.concept-card{border-radius:20px;padding:32px;text-align:center;box-shadow:var(--card-shadow);opacity:1;transform:none}
+.concept-card.near{background:linear-gradient(135deg,#fff9f0,#fff3e0);border:3px solid var(--orange)}
+.concept-card.far{background:linear-gradient(135deg,#f0fff8,#e0fff4);border:3px solid var(--teal)}
+.concept-card .big-word{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;margin-bottom:8px}
+.concept-card.near .big-word{color:var(--orange)}
+.concept-card.far .big-word{color:var(--teal)}
+.concept-card .rule{font-size:18px;font-weight:700;color:#636e72;margin-bottom:16px}
+.concept-card .example{font-size:19px;font-weight:600;color:var(--dark);background:rgba(255,255,255,0.7);border-radius:12px;padding:12px 16px;margin-top:12px;line-height:1.5}
+.concept-card .emoji-scene{font-size:4rem;margin-bottom:16px}
+
+/* SUMMARY TABLE */
+.summary-table{width:100%;border-collapse:collapse;border-radius:16px;overflow:hidden;box-shadow:var(--card-shadow)}
+.summary-table th{padding:18px 24px;font-size:17px;font-weight:800;text-align:center;color:#fff}
+.summary-table td{padding:18px 24px;font-size:17px;font-weight:600;text-align:center;border-bottom:1px solid #f0f0f0}
+.summary-table tr:last-child td{border-bottom:none}
+.summary-table thead tr:first-child th:nth-child(1){background:var(--orange)}
+.summary-table thead tr:first-child th:nth-child(2){background:#fdba74}
+.summary-table thead tr:first-child th:nth-child(3){background:var(--teal)}
+.summary-table thead tr:first-child th:nth-child(4){background:#34d399}
+.summary-table tbody tr:nth-child(odd){background:#fafafa}
+.summary-table tbody tr:nth-child(even){background:#fff}
+.tag{display:inline-block;padding:4px 14px;border-radius:99px;font-size:15px;font-weight:700}
+.tag.orange{background:#fff3e0;color:#e67e22}
+.tag.teal{background:#e0fff4;color:#00b894}
+
+/* READ ALOUD */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;border-radius:99px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 12px rgba(162,155,254,0.4)}
+.read-aloud-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(162,155,254,0.5)}
+.read-aloud-btn:active{transform:scale(0.96)}
+
+/* ACTIVITY 8.1 - Word Blanks */
+.activity-title{font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:900;color:var(--dark);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.activity-num{width:36px;height:36px;border-radius:10px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0}
+.blank-item{display:flex;align-items:center;gap:16px;padding:20px 24px;background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:16px;border-left:4px solid var(--orange);flex-wrap:wrap}
+.blank-item .sentence{font-size:19px;font-weight:600;flex:1;min-width:200px;line-height:1.6}
+.blank-item .item-emoji{font-size:2.5rem;flex-shrink:0}
+.blank-trigger{display:inline-block;min-width:90px;border-bottom:3px dashed var(--orange);padding:2px 8px;font-weight:800;color:var(--orange);cursor:pointer;border-radius:4px;transition:background 0.2s;text-align:center}
+.blank-trigger:hover{background:#fff3e0}
+.blank-trigger.answered{border-style:solid;border-color:var(--teal);color:var(--teal);background:#e0fff4}
+.blank-trigger.wrong-answer{border-color:#e74c3c;color:#e74c3c;background:#ffeaea}
+.word-bank-popup{position:fixed;z-index:1000;background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:16px;display:none;gap:10px;flex-wrap:wrap;max-width:260px}
+.word-bank-popup.active{display:flex}
+.wb-option{padding:10px 18px;border-radius:99px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;border:2px solid var(--orange);color:var(--orange);background:#fff;cursor:pointer;transition:all 0.2s;min-height:44px}
+.wb-option:hover{background:var(--orange);color:#fff}
+
+/* ACTIVITY 8.2 */
+.q82-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.q82-item{background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.06);padding:24px;border-left:4px solid var(--teal);position:relative}
+.q82-item .q-text{font-size:18px;font-weight:600;margin-bottom:16px}
+.q82-item .q-text span{font-weight:900;color:var(--teal)}
+.q82-choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.q82-btn{padding:9px 18px;border-radius:99px;border:2px solid var(--teal);background:#fff;color:var(--teal);font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:44px}
+.q82-btn:hover{background:var(--teal);color:#fff}
+.q82-btn.selected-correct{background:var(--teal);color:#fff;border-color:var(--teal)}
+.q82-btn.selected-wrong{background:#ffeaea;color:#e74c3c;border-color:#e74c3c}
+.q82-emoji{font-size:3rem;text-align:center}
+.q82-feedback{font-size:16px;font-weight:700;min-height:22px;text-align:center}
+
+/* SORTING ACTIVITY */
+.sort-words{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;justify-content:center}
+.sort-chip{background:#fff;border:2px solid var(--purple);border-radius:99px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;color:var(--purple);cursor:grab;user-select:none;transition:all 0.2s;min-height:48px;display:inline-flex;align-items:center}
+.sort-chip:hover{background:var(--purple);color:#fff;transform:scale(1.05)}
+.sort-chip.dragging{opacity:0.5;transform:scale(1.1)}
+.sort-chip.placed{opacity:0.4;pointer-events:none}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bucket{border-radius:20px;padding:24px;min-height:120px;border:3px dashed #ccc;transition:border-color 0.2s;background:#fafafa}
+.bucket.orange-bucket{border-color:var(--orange);background:#fff9f5}
+.bucket.teal-bucket{border-color:var(--teal);background:#f0fffb}
+.bucket.drag-over{transform:scale(1.02);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.bucket-title{font-size:20px;font-weight:900;margin-bottom:16px;text-align:center}
+.bucket-chips{display:flex;flex-wrap:wrap;gap:10px;min-height:50px}
+.bucket-chip{padding:8px 18px;border-radius:99px;font-size:17px;font-weight:700;color:#fff}
+.bucket-chip.orange-chip{background:var(--orange)}
+.bucket-chip.teal-chip{background:var(--teal)}
+.check-sort-btn{display:block;margin:20px auto 0;padding:14px 36px;background:var(--purple);color:#fff;border:none;border-radius:99px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(162,155,254,0.4);min-height:52px}
+.check-sort-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(162,155,254,0.5)}
+.sort-result{font-size:18px;font-weight:700;text-align:center;min-height:28px;margin-top:12px}
+
+/* QUIZ */
+.quiz-q{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:32px;margin-bottom:24px;border-left:4px solid var(--purple);opacity:1}
+.quiz-q .q-num{font-size:15px;font-weight:800;color:var(--purple);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.quiz-q .q-text{font-size:20px;font-weight:700;margin-bottom:20px;color:var(--dark)}
+.quiz-options{display:flex;gap:12px;flex-wrap:wrap}
+.quiz-opt{flex:1;min-width:140px;padding:16px 20px;border-radius:16px;border:2px solid #e0e0e0;background:#fafafa;font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.2s;text-align:center;min-height:56px;display:flex;align-items:center;justify-content:center;gap:8px}
+.quiz-opt:hover{border-color:var(--purple);background:#f3f0ff}
+.quiz-opt.correct{background:#e0fff4;border-color:var(--teal);color:#00b894}
+.quiz-opt.incorrect{background:#ffeaea;border-color:#e74c3c;color:#e74c3c}
+.quiz-feedback{font-size:17px;font-weight:700;margin-top:12px;min-height:24px}
+.quiz-submit-btn{display:block;margin:32px auto 0;padding:16px 48px;background:linear-gradient(135deg,var(--orange),#ff7675);color:#fff;border:none;border-radius:99px;font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(255,159,67,0.4);transition:all 0.2s;min-height:56px}
+.quiz-submit-btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(255,159,67,0.5)}
+.quiz-result{text-align:center;padding:40px;background:#fff;border-radius:20px;box-shadow:var(--card-shadow);display:none}
+.quiz-result h3{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:900;margin-bottom:12px}
+.quiz-result .score-big{font-size:clamp(3rem,6vw,5rem);font-weight:900;color:var(--orange)}
+.quiz-result p{font-size:19px;color:#636e72;margin-top:8px}
+.retry-btn{margin-top:24px;padding:14px 36px;background:var(--teal);color:#fff;border:none;border-radius:99px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;cursor:pointer;transition:all 0.2s;min-height:52px}
+.retry-btn:hover{transform:translateY(-2px)}
+
+/* BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #f0f0f0;z-index:9998;overflow-x:auto;padding:8px 12px}
+.bottom-nav-inner{display:flex;gap:8px;min-width:max-content}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:12px;text-decoration:none;color:#636e72;font-size:13px;font-weight:700;white-space:nowrap;min-height:52px;justify-content:center}
+.bottom-nav a:hover{background:#f0f0f0}
+
+/* SUCCESS BURST */
+.burst{position:fixed;pointer-events:none;font-size:3rem;z-index:9999;animation:burstAnim 0.8s forwards}
+@keyframes burstAnim{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(2) translateY(-60px)}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{min-height:60vh;padding:100px 20px 60px}
+  .container{padding:0 16px}
+  .concept-grid{grid-template-columns:1fr}
+  .q82-grid{grid-template-columns:1fr}
+  .buckets{grid-template-columns:1fr}
+  .quiz-options{flex-direction:column}
+  .quiz-opt{min-width:100%}
+  .bottom-nav{display:block}
+  main{padding-bottom:80px}
+  #progress-bar-wrap{padding:8px 16px}
+  .blank-item{padding:16px}
+  .card{padding:20px}
+  .section{padding:40px 0}
+}
+@media(max-width:480px){
+  .hero-emojis{font-size:2.2rem;gap:10px}
+  .sort-chip{font-size:16px;padding:8px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <h2>Loading Lesson...</h2>
+  <div class="curtain-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <span>📖 <span id="progress-pct">0%</span></span>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <span>Lesson 8</span>
+</div>
+
+<!-- WORD BANK POPUP -->
+<div class="word-bank-popup" id="wb-popup"></div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">📚 Class 2 · English · Lesson 8</div>
+  <h1 class="hero-title">
+    <span class="word">This,</span>
+    <span class="word">That,</span>
+    <span class="word">These</span>
+    <span class="word">&amp;</span>
+    <span class="word">Those</span>
+  </h1>
+  <p class="hero-sub">Learn when to use the right word — near or far, one or many!</p>
+  <div class="hero-emojis">
+    <span>👆</span>
+    <span>👋</span>
+    <span>📚</span>
+    <span>👟</span>
+  </div>
+</section>
+
+<!-- SECTION 1: CONCEPT -->
+<section class="section" id="sec-concept">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fff3e0">💡</div>
+      <div>
+        <div class="section-title">The Big Idea</div>
+        <div class="section-subtitle">Near vs Far · Singular vs Plural</div>
+      </div>
+    </div>
+
+    <div class="card orange-accent" style="margin-bottom:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <p style="font-size:19px;font-weight:600;line-height:1.7;flex:1;min-width:200px">
+          We use <strong style="color:var(--orange)">demonstrative pronouns</strong> to point to people and things.<br>
+          The word we choose depends on two things:<br>
+          1️⃣ Is it <strong>near</strong> us or <strong>far</strong> from us?<br>
+          2️⃣ Is it <strong>one thing</strong> (singular) or <strong>more than one</strong> (plural)?
+        </p>
+        <button class="read-aloud-btn" onclick="readAloud('We use demonstrative pronouns to point to people and things. The word we choose depends on two things. Is it near us or far from us? Is it one thing, singular, or more than one, plural?')">🔊 Read Aloud</button>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card near">
+        <div class="emoji-scene">👆🧒</div>
+        <div class="big-word">This</div>
+        <div class="rule">Singular · Near</div>
+        <div class="example">🧒 <strong>"This</strong> is my brother, Sami."<br><small style="color:#888">(One person, right next to you)</small></div>
+        <button class="read-aloud-btn" style="margin-top:14px" onclick="readAloud('This is my brother Sami.')">🔊 Hear it</button>
+      </div>
+      <div class="concept-card far">
+        <div class="emoji-scene">👉🌳</div>
+        <div class="big-word" style="color:var(--teal)">That</div>
+        <div class="rule">Singular · Far</div>
+        <div class="example">🌳 <strong>"That's</strong> my brother."<br><small style="color:#888">(One person, far away)</small></div>
+        <button class="read-aloud-btn" style="margin-top:14px;background:var(--teal)" onclick="readAloud('That is my brother.')">🔊 Hear it</button>
+      </div>
+      <div class="concept-card near" style="border-color:#A29BFE;background:linear-gradient(135deg,#f3f0ff,#ede7fd)">
+        <div class="emoji-scene">📚📚</div>
+        <div class="big-word" style="color:var(--purple)">These</div>
+        <div class="rule">Plural · Near</div>
+        <div class="example">📚 <strong>"These</strong> books are mine."<br><small style="color:#888">(Many things, close to you)</small></div>
+        <button class="read-aloud-btn" style="margin-top:14px" onclick="readAloud('These books are mine.')">🔊 Hear it</button>
+      </div>
+      <div class="concept-card far" style="border-color:#fdba74;background:linear-gradient(135deg,#fff9f0,#fef3e2)">
+        <div class="emoji-scene">👟👟👟</div>
+        <div class="big-word" style="color:#e67e22">Those</div>
+        <div class="rule">Plural · Far</div>
+        <div class="example">👟 <strong>"I like those</strong> shoes."<br><small style="color:#888">(Many things, far away)</small></div>
+        <button class="read-aloud-btn" style="margin-top:14px;background:#e67e22" onclick="readAloud('I like those shoes.')">🔊 Hear it</button>
+      </div>
+    </div>
+
+    <!-- Summary table -->
+    <div style="margin-top:40px;overflow-x:auto">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Word</th>
+            <th>Singular / Plural</th>
+            <th>Near / Far</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--orange);font-size:20px">This</strong></td>
+            <td><span class="tag orange">Singular</span></td>
+            <td>📍 Near</td>
+            <td><em>"This is my cat."</em></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--teal);font-size:20px">That</strong></td>
+            <td><span class="tag teal">Singular</span></td>
+            <td>🔭 Far</td>
+            <td><em>"That is a big tree."</em></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--purple);font-size:20px">These</strong></td>
+            <td><span class="tag orange">Plural</span></td>
+            <td>📍 Near</td>
+            <td><em>"These are my books."</em></td>
+          </tr>
+          <tr>
+            <td><strong style="color:#e67e22;font-size:20px">Those</strong></td>
+            <td><span class="tag teal">Plural</span></td>
+            <td>🔭 Far</td>
+            <td><em>"I like those shoes."</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: ACTIVITY 8.1 -->
+<section class="section" id="sec-81" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon" style="background:#e0fff4">✏️</div>
+      <div>
+        <div class="section-title">Exercise 8.1</div>
+        <div class="section-subtitle">Click the blank and choose the correct word!</div>
+      </div>
+    </div>
+    <div class="card teal-accent">
+      <div class="activity-title"><div class="activity-num">8.1</div> Circle and choose the correct word</div>
+
+      <div class="blank-item" id="q1-wrap">
+        <div class="sentence">
+          <span class="blank-trigger" id="q1" data-correct="this" data-options="this,that" onclick="openWordBank(this, event)">_____</span>
+          train over here is old.
+        </div>
+        <div class="item-emoji">🚂</div>
+        <button class="read-aloud-btn" style="font-size:14px;padding:8px 14px" onclick="readAloud('This train over here is old.')">🔊</button>
+      </div>
+
+      <div class="blank-item" id="q2-wrap">
+        <div class="sentence">
+          I don't know if
+          <span class="blank-trigger" id="q2" data-correct="that" data-options="this,that" onclick="openWordBank(this, event)">_____</span>
+          orange is sweet.
+        </div>
+        <div class="item-emoji">🍊</div>
+        <button class="read-aloud-btn" style="font-size:14px;padding:8px 14px" onclick="readAloud('I don\'t know if that orange is sweet.')">🔊</button>
+      </div>
+
+      <div class="blank-item" id="q3-wrap">
+        <div class="sentence">
+          <span class="blank-trigger" id="q3" data-correct="those" data-options="these,those" onclick="openWordBank(this, event)">_____</span>
+          are my favourite boots.
+        </div>
+        <div class="item-emoji">👢</div>
+        <button class="read-aloud-btn" style="font-size:14px;padding:8px 14px" onclick="readAloud('Those are my favourite boots.')">🔊</button>
+      </div>
+
+      <div class="blank-item" id="q4-wrap">
+        <div class="sentence">
+          Can you pass
+          <span class="blank-trigger" id="q4" data-correct="these" data-options="these,those" onclick="openWordBank(this, event)">_____</span>
+          sheets around?
+        </div>
+        <div class="item-emoji">📄</div>
+        <button class="read-aloud-btn" style="font-size:14px;padding:8px 14px" onclick="readAloud('Can you pass these sheets around?')">🔊</button>
+      </div>
+
+      <div class="blank-item" id="q5-wrap">
+        <div class="sentence">
+          <span class="blank-trigger" id="q5" data-correct="those" data-options="these,those" onclick="openWordBank(this, event)">_____</span>
+          are the pencils I prefer.
+        </div>
+        <div class="item-emoji">✏️</div>
+        <button class="read-aloud-btn" style="font-size:14px;padding:8px 14px" onclick="readAloud('Those are the pencils I prefer.')">🔊</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: ACTIVITY 8.2 -->
+<section class="section" id="sec-82">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f3f0ff">❓</div>
+      <div>
+        <div class="section-title">Exercise 8.2</div>
+        <div class="section-subtitle">Complete the questions — choose the right word!</div>
+      </div>
+    </div>
+    <div class="card purple-accent">
+      <div class="activity-title"><div class="activity-num" style="background:var(--purple)">8.2</div> Complete with this, that, these or those</div>
+      <div class="q82-grid" id="q82-container">
+
+        <div class="q82-item">
+          <div class="q82-emoji">🌳</div>
+          <div class="q-text">1. What's <span>that</span>?</div>
+          <div style="font-size:15px;color:#636e72;font-weight:600;margin-bottom:8px">Already answered for you as an example!</div>
+          <div class="q82-feedback" style="color:var(--teal)">✅ Correct! "That" — singular and far.</div>
+        </div>
+
+        <div class="q82-item">
+          <div class="q82-emoji">📚</div>
+          <div class="q-text">2. What are <span id="ans2">_____</span>?</div>
+          <div class="q82-choices">
+            <button class="q82-btn" onclick="answer82(this,'these',2,'these')">these</button>
+            <button class="q82-btn" onclick="answer82(this,'those',2,'these')">those</button>
+            <button class="q82-btn" onclick="answer82(this,'this',2,'these')">this</button>
+            <button class="q82-btn" onclick="answer82(this,'that',2,'these')">that</button>
+          </div>
+          <div class="q82-feedback" id="fb2"></div>
+        </div>
+
+        <div class="q82-item">
+          <div class="q82-emoji">🎒</div>
+          <div class="q-text">3. What's <span id="ans3">_____</span>?</div>
+          <div class="q82-choices">
+            <button class="q82-btn" onclick="answer82(this,'this',3,'this')">this</button>
+            <button class="q82-btn" onclick="answer82(this,'that',3,'this')">that</button>
+            <button class="q82-btn" onclick="answer82(this,'these',3,'this')">these</button>
+            <button class="q82-btn" onclick="answer82(this,'those',3,'this')">those</button>
+          </div>
+          <div class="q82-feedback" id="fb3"></div>
+        </div>
+
+        <div class="q82-item">
+          <div class="q82-emoji">👟</div>
+          <div class="q-text">4. What are <span id="ans4">_____</span>?</div>
+          <div class="q82-choices">
+            <button class="q82-btn" onclick="answer82(this,'these',4,'those')">these</button>
+            <button class="q82-btn" onclick="answer82(this,'those',4,'those')">those</button>
+            <button class="q82-btn" onclick="answer82(this,'this',4,'those')">this</button>
+            <button class="q82-btn" onclick="answer82(this,'that',4,'those')">that</button>
+          </div>
+          <div class="q82-feedback" id="fb4"></div>
+        </div>
+
+        <div class="q82-item">
+          <div class="q82-emoji">✂️</div>
+          <div class="q-text">5. What's <span id="ans5">_____</span>?</div>
+          <div class="q82-choices">
+            <button class="q82-btn" onclick="answer82(this,'this',5,'this')">this</button>
+            <button class="q82-btn" onclick="answer82(this,'that',5,'this')">that</button>
+            <button class="q82-btn" onclick="answer82(this,'these',5,'this')">these</button>
+            <button class="q82-btn" onclick="answer82(this,'those',5,'this')">those</button>
+          </div>
+          <div class="q82-feedback" id="fb5"></div>
+        </div>
+
+        <div class="q82-item">
+          <div class="q82-emoji">🍱</div>
+          <div class="q-text">6. What are <span id="ans6">_____</span>?</div>
+          <div class="q82-choices">
+            <button class="q82-btn" onclick="answer82(this,'these',6,'these')">these</button>
+            <button class="q82-btn" onclick="answer82(this,'those',6,'these')">those</button>
+            <button class="q82-btn" onclick="answer82(this,'this',6,'these')">this</button>
+            <button class="q82-btn" onclick="answer82(this,'that',6,'these')">that</button>
+          </div>
+          <div class="q82-feedback" id="fb6"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: SORTING ACTIVITY -->
+<section class="section" id="sec-sort" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fff3e0">🗂️</div>
+      <div>
+        <div class="section-title">Sorting Activity</div>
+        <div class="section-subtitle">Drag each word into the correct bucket!</div>
+      </div>
+    </div>
+    <div class="card orange-accent">
+      <div class="activity-title"><div class="activity-num">🗂</div> Near vs Far — Sort the words!</div>
+      <div class="sort-words" id="sort-source">
+        <div class="sort-chip" draggable="true" data-word="this" data-bucket="near" id="chip-this">this</div>
+        <div class="sort-chip" draggable="true" data-word="that" data-bucket="far" id="chip-that">that</div>
+        <div class="sort-chip" draggable="true" data-word="these" data-bucket="near" id="chip-these">these</div>
+        <div class="sort-chip" draggable="true" data-word="those" data-bucket="far" id="chip-those">those</div>
+      </div>
+      <div class="buckets">
+        <div class="bucket orange-bucket" id="bucket-near" ondragover="allowDrop(event)" ondrop="dropChip(event,'near')" onclick="tapDrop('near')">
+          <div class="bucket-title" style="color:var(--orange)">📍 Near</div>
+          <div class="bucket-chips" id="near-chips"></div>
+        </div>
+        <div class="bucket teal-bucket" id="bucket-far" ondragover="allowDrop(event)" ondrop="dropChip(event,'far')" onclick="tapDrop('far')">
+          <div class="bucket-title" style="color:var(--teal)">🔭 Far</div>
+          <div class="bucket-chips" id="far-chips"></div>
+        </div>
+      </div>
+      <button class="check-sort-btn" onclick="checkSort()">Check My Answer ✅</button>
+      <div class="sort-result" id="sort-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: QUIZ -->
+<section class="section" id="sec-quiz">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f3f0ff">🏆</div>
+      <div>
+        <div class="section-title">Final Quiz</div>
+        <div class="section-subtitle">Test what you've learned! Choose the right answer.</div>
+      </div>
+    </div>
+
+    <div id="quiz-container">
+      <div class="quiz-q" id="qq1">
+        <div class="q-num">Question 1 of 6</div>
+        <div class="q-text">👉 "___ is my pencil." (The pencil is right next to you.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'this','qq1')">✏️ This</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'that','qq1')">🔭 That</button>
+        </div>
+        <div class="quiz-feedback" id="qf1"></div>
+      </div>
+
+      <div class="quiz-q" id="qq2">
+        <div class="q-num">Question 2 of 6</div>
+        <div class="q-text">🌳 "___ is a big tree." (The tree is far away.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'this','qq2')">📍 This</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'that','qq2')">🌳 That</button>
+        </div>
+        <div class="quiz-feedback" id="qf2"></div>
+      </div>
+
+      <div class="quiz-q" id="qq3">
+        <div class="q-num">Question 3 of 6</div>
+        <div class="q-text">📚 "___ books are mine." (The books are in your hands.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'these','qq3')">📍 These</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'those','qq3')">🔭 Those</button>
+        </div>
+        <div class="quiz-feedback" id="qf3"></div>
+      </div>
+
+      <div class="quiz-q" id="qq4">
+        <div class="q-num">Question 4 of 6</div>
+        <div class="q-text">👟 "I like ___ shoes." (The shoes are in a shop far from you.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'these','qq4')">📍 These</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'those','qq4')">👟 Those</button>
+        </div>
+        <div class="quiz-feedback" id="qf4"></div>
+      </div>
+
+      <div class="quiz-q" id="qq5">
+        <div class="q-num">Question 5 of 6</div>
+        <div class="q-text">🎒 "What's ___?" (One bag is near you.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'this','qq5')">📍 This</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'those','qq5')">🔭 Those</button>
+        </div>
+        <div class="quiz-feedback" id="qf5"></div>
+      </div>
+
+      <div class="quiz-q" id="qq6">
+        <div class="q-num">Question 6 of 6</div>
+        <div class="q-text">🍊 "___ is sweet." (One orange is in front of you, nearby.)</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="quizAnswer(this,'this','qq6')">📍 This</button>
+          <button class="quiz-opt" onclick="quizAnswer(this,'that','qq6')">🔭 That</button>
+        </div>
+        <div class="quiz-feedback" id="qf6"></div>
+      </div>
+
+      <button class="quiz-submit-btn" id="quiz-submit" onclick="submitQuiz()">See My Score 🎉</button>
+    </div>
+
+    <div class="quiz-result" id="quiz-result">
+      <div id="quiz-result-emoji" style="font-size:4rem;margin-bottom:16px">🎉</div>
+      <h3 id="quiz-result-title">Great Job!</h3>
+      <div class="score-big" id="quiz-score">0/6</div>
+      <p id="quiz-result-msg">Keep practising!</p>
+      <button class="retry-btn" onclick="retryQuiz()">Try Again 🔄</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="#sec-concept">💡 Concept</a>
+    <a href="#sec-81">✏️ Ex 8.1</a>
+    <a href="#sec-82">❓ Ex 8.2</a>
+    <a href="#sec-sort">🗂️ Sort</a>
+    <a href="#sec-quiz">🏆 Quiz</a>
+  </div>
+</nav>
+
+<script>
+// CLASS: 2 | SUBJECT: english | VERSION: 1.0
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity='0'; c.style.transition='opacity 0.4s'; setTimeout(()=>c.style.display='none',400); }
+  }, 3000);
+
+  // LENIS
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smooth: true });
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        }
+      } catch(e) {}
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) {}
+
+  // CURTAIN DISMISS
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.5, delay: 0.4, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if(c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // PROGRESS BAR
+  const progressFill = document.getElementById('progress-fill');
+  const progressPct = document.getElementById('progress-pct');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+    if(progressFill) progressFill.style.width = pct + '%';
+    if(progressPct) progressPct.textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+
+  // HERO ANIMATION
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      const words = document.querySelectorAll('.hero-title .word');
+      gsap.from(words, { opacity: 0, y: 30, duration: 0.6, stagger: 0.15, ease: 'back.out(1.7)', delay: 0.6 });
+      gsap.from('.hero-badge', { opacity: 0, y: -20, duration: 0.5, delay: 0.3 });
+      gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.5, delay: 1.2 });
+    }
+  } catch(e) {}
+
+  // SCROLL TRIGGER CARDS
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.utils.toArray('.card, .concept-card, .quiz-q, .q82-item, .blank-item').forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+          y: 40, opacity: 0, duration: 0.6, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) {}
+
+  // DRAG AND DROP SORT
+  let draggedChip = null;
+  const chips = document.querySelectorAll('.sort-chip');
+  chips.forEach(chip => {
+    chip.addEventListener('dragstart', (e) => {
+      draggedChip = chip;
+      chip.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', chip.dataset.word);
+    });
+    chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); });
+  });
+
+  // INIT
+  updateProgress();
+});
+
+// WORD BANK POPUP
+let currentBlank = null;
+function openWordBank(el, e) {
+  e.stopPropagation();
+  if (el.classList.contains('answered')) return;
+  const popup = document.getElementById('wb-popup');
+  const options = el.dataset.options.split(',');
+  popup.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'wb-option';
+    btn.textContent = opt;
+    btn.onclick = () => handleBlankAnswer(el, opt);
+    popup.appendChild(btn);
+  });
+  const rect = el.getBoundingClientRect();
+  const popupW = 240;
+  let left = rect.left + window.scrollX;
+  let top = rect.bottom + window.scrollY + 8;
+  if (left + popupW > window.innerWidth) left = window.innerWidth - popupW - 12;
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+  popup.classList.add('active');
+  currentBlank = el;
+  setTimeout(() => document.addEventListener('click', closePopupOutside, {once:true}), 10);
+}
+
+function closePopupOutside(e) {
+  const popup = document.getElementById('wb-popup');
+  if (!popup.contains(e.target)) { popup.classList.remove('active'); }
+}
+
+function handleBlankAnswer(el, chosen) {
+  const popup = document.getElementById('wb-popup');
+  popup.classList.remove('active');
+  const correct = el.dataset.correct;
+  el.textContent = chosen;
+  if (chosen === correct) {
+    el.classList.add('answered');
+    el.classList.remove('wrong-answer');
+    showBurst('🎉', el);
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { scale: 1.3, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
+      }
+    } catch(e) {}
+  } else {
+    el.classList.add('wrong-answer');
+    el.classList.remove('answered');
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(el, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, ease: 'none', onComplete: () => gsap.set(el, {rotation:0}) });
+      }
+    } catch(e) {}
+  }
+}
+
+// ACTIVITY 8.2
+function answer82(btn, chosen, qNum, correct) {
+  const fbEl = document.getElementById('fb'+qNum);
+  const ansEl = document.getElementById('ans'+qNum);
+  const allBtns = btn.parentElement.querySelectorAll('.q82-btn');
+  allBtns.forEach(b => { b.disabled = true; });
+  if (chosen === correct) {
+    btn.classList.add('selected-correct');
+    if(ansEl) { ansEl.textContent = chosen; ansEl.style.color = 'var(--teal)'; }
+    if(fbEl) { fbEl.textContent = '✅ Correct! "' + correct + '" — well done!'; fbEl.style.color = 'var(--teal)'; }
+    showBurst('⭐', btn);
+    try {
+      if (typeof gsap !== 'undefined') gsap.to(btn, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1 });
+    } catch(e){}
+  } else {
+    btn.classList.add('selected-wrong');
+    if(fbEl) { fbEl.textContent = '❌ Not quite! The answer is "' + correct + '".'; fbEl.style.color = '#e74c3c'; }
+    if(ansEl) { ansEl.textContent = correct; ansEl.style.color = 'var(--teal)'; }
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(btn, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, ease: 'none', onComplete: () => gsap.set(btn,{rotation:0}) });
+      }
+    } catch(e){}
+  }
+}
+
+// SORTING
+function allowDrop(e) { e.preventDefault(); const b = e.currentTarget; b.classList.add('drag-over'); }
+document.addEventListener('dragleave', (e) => {
+  if (e.target.classList && e.target.classList.contains('bucket')) e.target.classList.remove('drag-over');
+});
+
+let activeSortChip = null;
+function dropChip(e, bucketId) {
+  e.preventDefault();
+  const bucket = document.getElementById('bucket-'+bucketId);
+  if(bucket) bucket.classList.remove('drag-over');
+  const word = e.dataTransfer.getData('text/plain');
+  if(!word) return;
+  placeChipInBucket(word, bucketId);
+}
+
+function tapDrop(bucketId) {
+  if (activeSortChip) {
+    placeChipInBucket(activeSortChip.dataset.word, bucketId);
+    activeSortChip = null;
+  }
+}
+
+document.querySelectorAll('.sort-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.sort-chip').forEach(c => c.style.outline='');
+    if (activeSortChip === chip) { activeSortChip = null; return; }
+    activeSortChip = chip;
+    chip.style.outline = '3px solid var(--orange)';
+  });
+});
+
+function placeChipInBucket(word, bucketId) {
+  const chip = document.getElementById('chip-'+word);
+  if (!chip || chip.classList.contains('placed')) return;
+  chip.classList.add('placed');
+  chip.style.outline = '';
+  const bucketChips = document.getElementById(bucketId+'-chips');
+  if (!bucketChips) return;
+  const newChip = document.createElement('div');
+  newChip.className = 'bucket-chip ' + (bucketId === 'near' ? 'orange-chip' : 'teal-chip');
+  newChip.textContent = word;
+  bucketChips.appendChild(newChip);
+  activeSortChip = null;
+  try {
+    if (typeof gsap !== 'undefined') gsap.from(newChip, { scale: 0, duration: 0.3, ease: 'back.out(1.7)' });
+  } catch(e){}
+}
+
+function checkSort() {
+  const nearEl = document.getElementById('near-chips');
+  const farEl = document.getElementById('far-chips');
+  const nearWords = Array.from(nearEl.querySelectorAll('.bucket-chip')).map(c => c.textContent.trim());
+  const farWords = Array.from(farEl.querySelectorAll('.bucket-chip')).map(c => c.textContent.trim());
+  const correctNear = ['this','these'];
+  const correctFar = ['that','those'];
+  const nearOk = correctNear.every(w => nearWords.includes(w)) && nearWords.length === 2;
+  const farOk = correctFar.every(w => farWords.includes(w)) && farWords.length === 2;
+  const resultEl = document.getElementById('sort-result');
+  if (nearOk && farOk) {
+    resultEl.textContent = '🎉 Excellent! You sorted all the words correctly!';
+    resultEl.style.color = 'var(--teal)';
+    showBurst('🌟', document.querySelector('.check-sort-btn'));
+  } else {
+    resultEl.textContent = '🤔 Not quite right. Try again! Remember: this/these = near, that/those = far.';
+    resultEl.style.color = '#e74c3c';
+    try {
+      if (typeof gsap !== 'undefined') gsap.to('.check-sort-btn', { rotation: -3, duration: 0.07, repeat: 5, yoyo: true, ease:'none', onComplete:()=>gsap.set('.check-sort-btn',{rotation:0}) });
+    } catch(e){}
+  }
+}
+
+// QUIZ
+const quizAnswers = { qq1:'this', qq2:'that', qq3:'these', qq4:'those', qq5:'this', qq6:'this' };
+const quizSelected = {};
+
+function quizAnswer(btn, chosen, qId) {
+  const allBtns = btn.parentElement.querySelectorAll('.quiz-opt');
+  allBtns.forEach(b => { b.classList.remove('correct','incorrect'); b.disabled = false; });
+  quizSelected[qId] = chosen;
+  const correct = quizAnswers[qId];
+  const fbEl = document.getElementById('qf'+qId.replace('qq',''));
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    if(fbEl) { fbEl.textContent = '✅ Correct!'; fbEl.style.color = 'var(--teal)'; }
+    showBurst('⭐', btn);
+  } else {
+    btn.classList.add('incorrect');
+    if(fbEl) { fbEl.textContent = '❌ Not quite! Try again.'; fbEl.style.color = '#e74c3c'; }
+    allBtns.forEach(b => { if(b.textContent.trim().toLowerCase().includes(correct.toLowerCase())) b.classList.add('correct'); });
+    try {
+      if (typeof gsap !== 'undefined') gsap.to(btn, { rotation: -5, duration: 0.07, repeat: 5, yoyo:true, ease:'none', onComplete:()=>gsap.set(btn,{rotation:0}) });
+    } catch(e){}
+  }
+}
+
+function submitQuiz() {
+  let score = 0;
+  Object.keys(quizAnswers).forEach(qId => {
+    if (quizSelected[qId] === quizAnswers[qId]) score++;
+  });
+  const total = Object.keys(quizAnswers).length;
+  document.getElementById('quiz-container').style.display = 'none';
+  const resultEl = document.getElementById('quiz-result');
+  resultEl.style.display = 'block';
+  document.getElementById('quiz-score').textContent = score + '/' + total;
+  if (score === total) {
+    document.getElementById('quiz-result-emoji').textContent = '🏆';
+    document.getElementById('quiz-result-title').textContent = 'Perfect Score!';
+    document.getElementById('quiz-result-msg').textContent = 'Amazing! You got everything right! You\'re a star! ⭐';
+    document.getElementById('quiz-result-title').style.color = 'var(--orange)';
+    showBurst('🎉', resultEl);
+    showBurst('🌟', resultEl);
+  } else if (score >= total/2) {
+    document.getElementById('quiz-result-emoji').textContent = '😊';
+    document.getElementById('quiz-result-title').textContent = 'Good Job!';
+    document.getElementById('quiz-result-msg').textContent = 'You\'re doing well! Review the ones you missed and try again!';
+    document.getElementById('quiz-result-title').style.color = 'var(--teal)';
+  } else {
+    document.getElementById('quiz-result-emoji').textContent = '📖';
+    document.getElementById('quiz-result-title').textContent = 'Keep Practising!';
+    document.getElementById('quiz-result-msg').textContent = 'Go back and review the lesson, then try again!';
+    document.getElementById('quiz-result-title').style.color = 'var(--purple)';
+  }
+  try {
+    if (typeof gsap !== 'undefined') gsap.from(resultEl, { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+  } catch(e){}
+}
+
+function retryQuiz() {
+  document.getElementById('quiz-container').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct','incorrect'); b.disabled = false; });
+  document.querySelectorAll('.quiz-feedback').forEach(fb => { fb.textContent = ''; });
+  for (let k in quizSelected) delete quizSelected[k];
+}
+
+// READ ALOUD
+function readAloud(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 0.85;
+      utter.pitch = 1.1;
+      utter.lang = 'en-US';
+      window.speechSynthesis.speak(utter);
+    } else {
+      alert('Text: ' + text);
+    }
+  } catch(e) {
+    console.warn('Speech synthesis error:', e);
+    try { alert('Read: ' + text); } catch(ex) {}
+  }
+}
+
+// BURST EFFECT
+function showBurst(emoji, nearEl) {
+  try {
+    const burst = document.createElement('div');
+    burst.className = 'burst';
+    burst.textContent = emoji;
+    const rect = nearEl.getBoundingClientRect();
+    burst.style.left = (rect.left + rect.width/2 - 24) + 'px';
+    burst.style.top = (rect.top + window.scrollY - 20) + 'px';
+    document.body.appendChild(burst);
+    setTimeout(() => { if(burst.parentNode) burst.parentNode.removeChild(burst); }, 900);
+  } catch(e){}
+}
+</script>
+</body>
+</html>

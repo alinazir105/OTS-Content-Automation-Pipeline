@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poems – Class 2 English | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF9F43;
+    --teal: #1DD1A1;
+    --purple: #A29BFE;
+    --pink: #FD79A8;
+    --blue: #74B9FF;
+    --offwhite: #FAFAFA;
+    --dark: #2d3436;
+    --mid: #636e72;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    background: var(--offwhite);
+    color: var(--dark);
+    scroll-behavior: smooth;
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: rgba(0,0,0,0.07);
+    z-index: 9999;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--orange), var(--teal));
+    transition: width 0.3s ease;
+  }
+  #progress-label {
+    position: fixed;
+    top: 8px;
+    right: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mid);
+    z-index: 9999;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF9F43 0%, #A29BFE 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #curtain .curtain-emoji { font-size: 64px; animation: bounce 0.8s infinite alternate; }
+  #curtain .curtain-text { font-size: 24px; font-weight: 800; color: #fff; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+  /* DESKTOP SIDEBAR NAV */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 6px;
+    width: 220px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 2px 0 20px rgba(0,0,0,0.06);
+    padding: 80px 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 900;
+    overflow-y: auto;
+  }
+  #sidebar .nav-logo {
+    position: absolute;
+    top: 16px; left: 0; right: 0;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+  }
+  #sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--mid);
+    text-decoration: none;
+    border-radius: 0 20px 20px 0;
+    transition: all 0.2s;
+  }
+  #sidebar a:hover, #sidebar a.active {
+    background: #fff7f0;
+    color: var(--orange);
+  }
+  #sidebar a .nav-icon { font-size: 20px; }
+
+  /* MAIN CONTENT */
+  #main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding-top: 6px;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #fff7f0 0%, #f0f7ff 50%, #f3f0ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,159,67,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(162,155,254,0.12) 0%, transparent 70%);
+    bottom: -50px; left: -50px;
+    border-radius: 50%;
+  }
+  .hero-inner { max-width: 1500px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--orange), #ff6b6b);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .hero h1 .word { display: inline-block; margin-right: 16px; opacity: 1; }
+  .hero h1 .word.accent { color: var(--orange); }
+  .hero-desc {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--mid);
+    max-width: 600px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .hero-poems-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .hero-poem-chip {
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  .hero-poem-chip:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+
+  /* CONTENT WRAPPER */
+  .content-wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 60px 0 28px;
+  }
+  .section-title .icon {
+    font-size: 40px;
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--dark);
+  }
+  .section-title p {
+    font-size: 18px;
+    color: var(--mid);
+    margin-top: 4px;
+  }
+
+  /* CARDS */
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 36px;
+    margin-bottom: 28px;
+    opacity: 1;
+    transform: none;
+    width: 100%;
+  }
+  .card.orange-border { border-left: 4px solid var(--orange); }
+  .card.teal-border { border-left: 4px solid var(--teal); }
+  .card.purple-border { border-left: 4px solid var(--purple); }
+  .card.pink-border { border-left: 4px solid var(--pink); }
+  .card.blue-border { border-left: 4px solid var(--blue); }
+
+  /* POEM DISPLAY */
+  .poem-container {
+    background: linear-gradient(135deg, #fff7f0, #fffaf5);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .poem-container::before {
+    content: '❝';
+    position: absolute;
+    top: 10px; left: 20px;
+    font-size: 80px;
+    color: rgba(255,159,67,0.12);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .poem-title-display {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .poem-author {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--mid);
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+  .poem-lines { list-style: none; }
+  .poem-lines li {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 2;
+    color: var(--dark);
+    font-weight: 600;
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.05);
+  }
+  .poem-lines li:last-child { border-bottom: none; }
+  .poem-stanza-gap { height: 20px; }
+
+  .poem-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .poem-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 20px;
+    padding: 30px;
+    min-height: 200px;
+  }
+
+  /* READ ALOUD BUTTON */
+  .read-aloud-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--orange), #ff6b6b);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+  }
+  .read-aloud-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,159,67,0.35); }
+  .read-aloud-btn.speaking { background: linear-gradient(135deg, var(--teal), #00b894); }
+
+  /* RHYME SECTION */
+  .rhyme-pairs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .rhyme-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .rhyme-word { color: var(--orange); }
+  .rhyme-pair-word { color: var(--teal); }
+  .rhyme-arrow { color: var(--mid); font-size: 20px; }
+
+  /* ACTIVITIES */
+  .activity-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .activity-subtitle {
+    font-size: 18px;
+    color: var(--mid);
+    margin-bottom: 24px;
+  }
+
+  /* FILL IN THE BLANK */
+  .blank-sentence {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 2.5;
+    margin-bottom: 24px;
+  }
+  .blank {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 3px solid var(--orange);
+    padding: 2px 8px;
+    margin: 0 6px;
+    color: var(--teal);
+    font-weight: 800;
+    cursor: pointer;
+    background: rgba(29,209,161,0.05);
+    border-radius: 4px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .blank:hover { background: rgba(29,209,161,0.12); }
+  .blank.filled { border-color: var(--teal); background: rgba(29,209,161,0.1); }
+  .blank.wrong-blank { border-color: #e17055; background: rgba(225,112,85,0.1); }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+  }
+  .word-chip {
+    background: #fff;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .word-chip:hover { background: var(--purple); color: #fff; transform: translateY(-2px); }
+  .word-chip.used { opacity: 0.4; pointer-events: none; background: #eee; border-color: #ccc; color: #999; }
+
+  .word-bank-popup {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 12px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    z-index: 100;
+    min-width: 200px;
+  }
+  .word-bank-popup.open { display: flex; }
+  .popup-chip {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 36px;
+    transition: all 0.2s;
+  }
+  .popup-chip:hover { background: #7c73e0; transform: scale(1.05); }
+
+  /* SORTING ACTIVITY */
+  .sort-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .sort-source {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    grid-column: 1 / -1;
+  }
+  .sort-source-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--mid);
+    margin-bottom: 12px;
+    text-transform: none;
+  }
+  .sort-items-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .drag-item {
+    background: #fff;
+    border: 2px solid var(--purple);
+    color: var(--dark);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .drag-item:hover { transform: scale(1.04); box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+  .drag-item.dragging { opacity: 0.5; cursor: grabbing; }
+  .sort-bucket {
+    background: #fff;
+    border-radius: 16px;
+    border: 2px dashed #ddd;
+    padding: 20px;
+    min-height: 140px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sort-bucket.drag-over { border-color: var(--teal); background: rgba(29,209,161,0.05); }
+  .bucket-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+  }
+  .bucket-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 60px; }
+
+  /* CHECK BUTTON */
+  .check-btn {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(29,209,161,0.35); }
+
+  .reset-btn {
+    background: transparent;
+    color: var(--mid);
+    border: 2px solid #ddd;
+    border-radius: 14px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 12px;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  .feedback-msg {
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 14px 20px;
+    border-radius: 12px;
+    display: none;
+  }
+  .feedback-msg.correct { background: rgba(29,209,161,0.15); color: #00b894; display: block; }
+  .feedback-msg.incorrect { background: rgba(225,112,85,0.12); color: #e17055; display: block; }
+
+  /* QUIZ */
+  .quiz-progress {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .quiz-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    transition: all 0.3s;
+  }
+  .quiz-dot.done { background: var(--teal); }
+  .quiz-dot.current { background: var(--orange); transform: scale(1.3); }
+
+  .quiz-question-text {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .quiz-option {
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 20px 16px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--dark);
+  }
+  .quiz-option .opt-emoji { font-size: 32px; }
+  .quiz-option:hover { border-color: var(--orange); background: #fff7f0; transform: translateY(-2px); }
+  .quiz-option.selected-correct { border-color: var(--teal); background: rgba(29,209,161,0.12); color: #00b894; }
+  .quiz-option.selected-wrong { border-color: #e17055; background: rgba(225,112,85,0.1); color: #e17055; }
+  .quiz-option.reveal-correct { border-color: var(--teal); background: rgba(29,209,161,0.12); }
+  .quiz-option:disabled, .quiz-option[disabled] { cursor: not-allowed; }
+
+  .quiz-nav {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+  }
+  .quiz-nav-btn {
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    transition: all 0.2s;
+  }
+  .quiz-nav-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,159,67,0.35); }
+  .quiz-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .quiz-counter { font-size: 16px; font-weight: 700; color: var(--mid); margin-left: auto; }
+
+  .quiz-result {
+    text-align: center;
+    padding: 40px;
+    display: none;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-result-emoji { font-size: 80px; margin-bottom: 16px; }
+  .quiz-result h3 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+  .quiz-result p { font-size: 18px; color: var(--mid); margin-bottom: 24px; }
+  .quiz-result-score {
+    display: inline-block;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--orange);
+  }
+
+  .retry-btn {
+    background: linear-gradient(135deg, var(--orange), #ff6b6b);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    margin-top: 16px;
+    transition: all 0.2s;
+  }
+  .retry-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,159,67,0.35); }
+
+  /* VOCABULARY */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .vocab-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .vocab-item:hover { border-color: var(--orange); transform: translateY(-3px); }
+  .vocab-emoji { font-size: 40px; margin-bottom: 8px; }
+  .vocab-word { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+  .vocab-meaning { font-size: 14px; font-weight: 600; color: var(--mid); display: none; }
+  .vocab-item.revealed .vocab-meaning { display: block; color: var(--teal); }
+
+  /* CONGRATS SECTION */
+  .congrats-card {
+    background: linear-gradient(135deg, #fff7f0, #f3f0ff);
+    border-radius: 24px;
+    padding: 60px 40px;
+    text-align: center;
+    margin-top: 60px;
+    border: 2px solid rgba(255,159,67,0.2);
+  }
+  .congrats-card h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: var(--dark);
+    margin: 16px 0 12px;
+  }
+  .congrats-card p { font-size: 18px; color: var(--mid); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+  /* MOBILE BOTTOM NAV */
+  #bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 900;
+    overflow-x: auto;
+    padding: 0 8px;
+  }
+  #bottom-nav .bnav-inner {
+    display: flex;
+    min-width: max-content;
+    gap: 0;
+  }
+  #bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mid);
+    text-decoration: none;
+    min-width: 60px;
+    min-height: 60px;
+    justify-content: center;
+    transition: color 0.2s;
+  }
+  #bottom-nav a .bnav-icon { font-size: 22px; }
+  #bottom-nav a:hover, #bottom-nav a.active { color: var(--orange); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
+    #bottom-nav { display: block; }
+    .content-wrap { padding: 0 16px 40px; }
+    .hero { padding: 60px 20px 40px; min-height: 60vh; }
+    .card { padding: 22px 18px; }
+    .poem-two-col { grid-template-columns: 1fr; }
+    .poem-illustration { min-height: 140px; font-size: 70px; padding: 20px; }
+    .sort-wrap { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr 1fr; }
+    .section-title { gap: 12px; }
+    .section-title .icon { width: 50px; height: 50px; font-size: 28px; }
+    .congrats-card { padding: 40px 20px; }
+    .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .rhyme-pairs { gap: 10px; }
+    .hero-poems-row { gap: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">📚</div>
+  <div class="curtain-text">Loading Poems...</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <div id="progress-bar"></div>
+</div>
+<div id="progress-label">0% complete</div>
+
+<!-- DESKTOP SIDEBAR -->
+<nav id="sidebar">
+  <div class="nav-logo">🌟 Digital School</div>
+  <a href="#hero" class="active"><span class="nav-icon">🏠</span> Home</a>
+  <a href="#my-flower"><span class="nav-icon">🌸</span> My Flower</a>
+  <a href="#school-days"><span class="nav-icon">🏫</span> School Days</a>
+  <a href="#rain"><span class="nav-icon">🌧️</span> Rain</a>
+  <a href="#rhymes"><span class="nav-icon">🎵</span> Rhyming Words</a>
+  <a href="#vocab"><span class="nav-icon">📖</span> Vocabulary</a>
+  <a href="#activity1"><span class="nav-icon">✏️</span> Fill in the Blank</a>
+  <a href="#activity2"><span class="nav-icon">🎯</span> Sort It!</a>
+  <a href="#quiz"><span class="nav-icon">🧩</span> Quiz</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">📚 Class 2 · English · Chapter 24</div>
+      <h1>
+        <span class="word">Beautiful</span>
+        <span class="word accent">Poems</span>
+        <span class="word">for</span>
+        <span class="word">You!</span>
+      </h1>
+      <p class="hero-desc">Explore three wonderful poems — about a growing flower, school days, and the rain. Listen, read, and enjoy!</p>
+      <div class="hero-poems-row">
+        <a href="#my-flower" class="hero-poem-chip">🌸 My Flower</a>
+        <a href="#school-days" class="hero-poem-chip">🏫 School Days</a>
+        <a href="#rain" class="hero-poem-chip">🌧️ Rain</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-wrap">
+
+    <!-- MY FLOWER POEM -->
+    <div class="section-title" id="my-flower">
+      <div class="icon" style="background:rgba(255,159,67,0.12)">🌸</div>
+      <div>
+        <h2>My Flower</h2>
+        <p>A poem about growing a flower with love and patience</p>
+      </div>
+    </div>
+
+    <div class="card orange-border animate-card">
+      <div class="poem-two-col">
+        <div class="poem-container">
+          <div class="poem-title-display">My Flower</div>
+          <div class="poem-author">By Margaret Schroder</div>
+          <ul class="poem-lines" id="poem1-lines">
+            <li>I had a little seed,</li>
+            <li>And I put it in a pot.</li>
+            <li>I put it in the sunshine,</li>
+            <li>And I watered it a lot.</li>
+            <li class="poem-stanza-gap"></li>
+            <li>I waited and I waited.</li>
+            <li>I watched it grow and grow.</li>
+            <li>And then one day a flower</li>
+            <li>Came out to say hello.</li>
+          </ul>
+          <button class="read-aloud-btn" id="read-btn-1" onclick="readPoem('poem1')">
+            🔊 Read Aloud
+          </button>
+        </div>
+        <div>
+          <div class="poem-illustration">🌱🌸</div>
+          <div class="card teal-border" style="margin-top:20px; padding:20px">
+            <div style="font-size:17px;font-weight:800;color:var(--teal);margin-bottom:10px;">💡 What happens in this poem?</div>
+            <ol style="padding-left:20px;font-size:17px;line-height:2;font-weight:600;color:var(--mid)">
+              <li>A seed is planted in a pot 🪴</li>
+              <li>It gets sunshine ☀️ and water 💧</li>
+              <li>After waiting, a flower blooms! 🌸</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHOOL DAYS POEM -->
+    <div class="section-title" id="school-days">
+      <div class="icon" style="background:rgba(162,155,254,0.12)">🏫</div>
+      <div>
+        <h2>School Days</h2>
+        <p>A poem about the fun and joy of going to school</p>
+      </div>
+    </div>
+
+    <div class="card purple-border animate-card">
+      <div class="poem-two-col">
+        <div>
+          <div class="poem-illustration" style="background:rgba(162,155,254,0.08)">🎒✏️📚</div>
+          <div class="card pink-border" style="margin-top:20px; padding:20px">
+            <div style="font-size:17px;font-weight:800;color:var(--pink);margin-bottom:10px;">💡 Things at school!</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+              <span style="background:rgba(253,121,168,0.1);color:var(--pink);padding:6px 14px;border-radius:10px;font-size:16px;font-weight:700">✏️ Pencils</span>
+              <span style="background:rgba(253,121,168,0.1);color:var(--pink);padding:6px 14px;border-radius:10px;font-size:16px;font-weight:700">📚 Books</span>
+              <span style="background:rgba(253,121,168,0.1);color:var(--pink);padding:6px 14px;border-radius:10px;font-size:16px;font-weight:700">🖍️ Crayons</span>
+              <span style="background:rgba(253,121,168,0.1);color:var(--pink);padding:6px 14px;border-radius:10px;font-size:16px;font-weight:700">📝 Read & Write</span>
+              <span style="background:rgba(253,121,168,0.1);color:var(--pink);padding:6px 14px;border-radius:10px;font-size:16px;font-weight:700">🎮 Play</span>
+            </div>
+          </div>
+        </div>
+        <div class="poem-container" style="background:linear-gradient(135deg,#f3f0ff,#fdf9ff)">
+          <div class="poem-title-display" style="color:var(--purple)">School Days</div>
+          <div class="poem-author">By Anonymous</div>
+          <ul class="poem-lines" id="poem2-lines">
+            <li>Off to school we go today,</li>
+            <li>To learn and read and write and play.</li>
+            <li>With pencils, books, and crayons too,</li>
+            <li>There's so much fun and work to do.</li>
+          </ul>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--purple),#6c5ce7)" id="read-btn-2" onclick="readPoem('poem2')">
+            🔊 Read Aloud
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAIN POEM -->
+    <div class="section-title" id="rain">
+      <div class="icon" style="background:rgba(116,185,255,0.12)">🌧️</div>
+      <div>
+        <h2>Rain</h2>
+        <p>A poem about rain falling everywhere — on land and sea</p>
+      </div>
+    </div>
+
+    <div class="card blue-border animate-card">
+      <div class="poem-two-col">
+        <div class="poem-container" style="background:linear-gradient(135deg,#f0f7ff,#e8f4fd)">
+          <div class="poem-title-display" style="color:var(--blue)">Rain</div>
+          <div class="poem-author">By Robert Louis Stevenson</div>
+          <ul class="poem-lines" id="poem3-lines">
+            <li>The rain is raining all around,</li>
+            <li>It falls on field and tree;</li>
+            <li>It rains on the umbrellas here,</li>
+            <li>And on the ships at sea.</li>
+          </ul>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--blue),#0984e3)" id="read-btn-3" onclick="readPoem('poem3')">
+            🔊 Read Aloud
+          </button>
+        </div>
+        <div>
+          <div class="poem-illustration" style="background:rgba(116,185,255,0.08)">🌧️⛵🌲</div>
+          <div class="card blue-border" style="margin-top:20px; padding:20px">
+            <div style="font-size:17px;font-weight:800;color:var(--blue);margin-bottom:10px;">💡 Where does it rain?</div>
+            <ul style="padding-left:20px;font-size:17px;line-height:2;font-weight:600;color:var(--mid)">
+              <li>On fields 🌾</li>
+              <li>On trees 🌳</li>
+              <li>On umbrellas ☂️</li>
+              <li>On ships at sea ⛵</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RHYMING WORDS -->
+    <div class="section-title" id="rhymes">
+      <div class="icon" style="background:rgba(253,121,168,0.12)">🎵</div>
+      <div>
+        <h2>Rhyming Words</h2>
+        <p>Words that sound the same at the end — they rhyme!</p>
+      </div>
+    </div>
+
+    <div class="card pink-border animate-card">
+      <p style="font-size:18px;color:var(--mid);margin-bottom:20px;font-weight:600">Poems use <strong>rhyming words</strong> to make them fun to say and easy to remember. Can you spot the rhymes?</p>
+      <div class="rhyme-pairs">
+        <div class="rhyme-card">
+          <span class="rhyme-word">pot</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">lot</span>
+          <span style="font-size:20px">🪴</span>
+        </div>
+        <div class="rhyme-card">
+          <span class="rhyme-word">grow</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">hello</span>
+          <span style="font-size:20px">🌸</span>
+        </div>
+        <div class="rhyme-card">
+          <span class="rhyme-word">today</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">play</span>
+          <span style="font-size:20px">🏫</span>
+        </div>
+        <div class="rhyme-card">
+          <span class="rhyme-word">too</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">do</span>
+          <span style="font-size:20px">✏️</span>
+        </div>
+        <div class="rhyme-card">
+          <span class="rhyme-word">around</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">ground</span>
+          <span style="font-size:20px">🌧️</span>
+        </div>
+        <div class="rhyme-card">
+          <span class="rhyme-word">tree</span>
+          <span class="rhyme-arrow">↔</span>
+          <span class="rhyme-pair-word">sea</span>
+          <span style="font-size:20px">🌊</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOCABULARY -->
+    <div class="section-title" id="vocab">
+      <div class="icon" style="background:rgba(29,209,161,0.12)">📖</div>
+      <div>
+        <h2>Word Meanings</h2>
+        <p>Click on each word to see what it means!</p>
+      </div>
+    </div>
+
+    <div class="card teal-border animate-card">
+      <p style="font-size:18px;color:var(--mid);margin-bottom:20px;font-weight:600">Tap any word card to reveal its meaning 👇</p>
+      <div class="vocab-grid">
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">🌱</div>
+          <div class="vocab-word">Seed</div>
+          <div class="vocab-meaning">A tiny part of a plant that grows into a new plant</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">☀️</div>
+          <div class="vocab-word">Sunshine</div>
+          <div class="vocab-meaning">Bright light from the sun</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">💧</div>
+          <div class="vocab-word">Watered</div>
+          <div class="vocab-meaning">Gave water to a plant to help it grow</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">🖍️</div>
+          <div class="vocab-word">Crayons</div>
+          <div class="vocab-meaning">Coloured sticks used for drawing and colouring</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">☂️</div>
+          <div class="vocab-word">Umbrella</div>
+          <div class="vocab-meaning">Something you hold over your head to stay dry in the rain</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">⛵</div>
+          <div class="vocab-word">Ships</div>
+          <div class="vocab-meaning">Big boats that travel on the sea</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">🌾</div>
+          <div class="vocab-word">Field</div>
+          <div class="vocab-meaning">A large open area of land, often with grass or crops</div>
+        </div>
+        <div class="vocab-item" onclick="this.classList.toggle('revealed')">
+          <div class="vocab-emoji">⏳</div>
+          <div class="vocab-word">Waited</div>
+          <div class="vocab-meaning">Stayed in one place until something happened</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILL IN THE BLANK -->
+    <div class="section-title" id="activity1">
+      <div class="icon" style="background:rgba(255,159,67,0.12)">✏️</div>
+      <div>
+        <h2>Fill in the Blank</h2>
+        <p>Click on a blank space and choose the correct word!</p>
+      </div>
+    </div>
+
+    <div class="card orange-border animate-card" id="fitb-card">
+      <div class="activity-title">✏️ Complete the poem lines</div>
+      <div class="activity-subtitle">Click on the blank, then pick the right word from the pop-up!</div>
+
+      <div class="blank-sentence">
+        1. I had a little
+        <span class="blank" id="b1" data-answer="seed" onclick="openPopup('b1', ['seed','flower','tree','rain'])">_______</span>,
+        And I put it in a
+        <span class="blank" id="b2" data-answer="pot" onclick="openPopup('b2', ['pot','box','bag','jar'])">_______</span>.
+      </div>
+
+      <div class="blank-sentence">
+        2. I put it in the
+        <span class="blank" id="b3" data-answer="sunshine" onclick="openPopup('b3', ['sunshine','darkness','moonlight','shadow'])">_______</span>,
+        And I
+        <span class="blank" id="b4" data-answer="watered" onclick="openPopup('b4', ['watered','painted','sang','drew'])">_______</span>
+        it a lot.
+      </div>
+
+      <div class="blank-sentence">
+        3. Off to
+        <span class="blank" id="b5" data-answer="school" onclick="openPopup('b5', ['school','park','shop','home'])">_______</span>
+        we go today, to learn and read and write and
+        <span class="blank" id="b6" data-answer="play" onclick="openPopup('b6', ['play','sleep','eat','run'])">_______</span>.
+      </div>
+
+      <div class="blank-sentence">
+        4. The rain is raining all
+        <span class="blank" id="b7" data-answer="around" onclick="openPopup('b7', ['around','above','below','inside'])">_______</span>,
+        It falls on field and
+        <span class="blank" id="b8" data-answer="tree" onclick="openPopup('b8', ['tree','road','wall','roof'])">_______</span>.
+      </div>
+
+      <div style="position:relative">
+        <div class="word-bank-popup" id="active-popup"></div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <button class="check-btn" onclick="checkFITB()">✅ Check Answers</button>
+        <button class="reset-btn" onclick="resetFITB()">🔄 Reset</button>
+      </div>
+      <div class="feedback-msg" id="fitb-feedback"></div>
+    </div>
+
+    <!-- SORTING ACTIVITY -->
+    <div class="section-title" id="activity2">
+      <div class="icon" style="background:rgba(29,209,161,0.12)">🎯</div>
+      <div>
+        <h2>Sort It!</h2>
+        <p>Drag each word into the correct poem bucket!</p>
+      </div>
+    </div>
+
+    <div class="card teal-border animate-card">
+      <div class="activity-title">🎯 Which poem does this belong to?</div>
+      <div class="activity-subtitle">Drag each word or phrase to the correct poem!</div>
+
+      <div class="sort-wrap">
+        <div class="sort-source">
+          <div class="sort-source-title">📦 Words to Sort — drag them to the right poem:</div>
+          <div class="sort-items-row" id="sort-source">
+            <div class="drag-item" draggable="true" data-category="flower" data-id="s1">🌱 seed</div>
+            <div class="drag-item" draggable="true" data-category="school" data-id="s2">✏️ pencils</div>
+            <div class="drag-item" draggable="true" data-category="rain" data-id="s3">☂️ umbrella</div>
+            <div class="drag-item" draggable="true" data-category="flower" data-id="s4">🪴 pot</div>
+            <div class="drag-item" draggable="true" data-category="school" data-id="s5">📚 books</div>
+            <div class="drag-item" draggable="true" data-category="rain" data-id="s6">⛵ ship</div>
+            <div class="drag-item" draggable="true" data-category="flower" data-id="s7">💧 water</div>
+            <div class="drag-item" draggable="true" data-category="school" data-id="s8">🖍️ crayons</div>
+            <div class="drag-item" draggable="true" data-category="rain" data-id="s9">🌾 field</div>
+          </div>
+        </div>
+
+        <div class="sort-bucket" id="bucket-flower" data-category="flower">
+          <div class="bucket-title" style="background:var(--orange)">🌸 My Flower</div>
+          <div class="bucket-items" id="bucket-flower-items"></div>
+        </div>
+
+        <div class="sort-bucket" id="bucket-school" data-category="school">
+          <div class="bucket-title" style="background:var(--purple)">🏫 School Days</div>
+          <div class="bucket-items" id="bucket-school-items"></div>
+        </div>
+
+        <div class="sort-bucket" id="bucket-rain" data-category="rain" style="grid-column:1/-1">
+          <div class="bucket-title" style="background:var(--blue)">🌧️ Rain</div>
+          <div class="bucket-items" id="bucket-rain-items"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px">
+        <button class="check-btn" onclick="checkSort()">✅ Check Sorting</button>
+        <button class="reset-btn" onclick="resetSort()">🔄 Reset</button>
+      </div>
+      <div class="feedback-msg" id="sort-feedback"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="section-title" id="quiz">
+      <div class="icon" style="background:rgba(162,155,254,0.12)">🧩</div>
+      <div>
+        <h2>Quick Quiz!</h2>
+        <p>Test what you've learned about the three poems!</p>
+      </div>
+    </div>
+
+    <div class="card purple-border animate-card">
+      <div id="quiz-area">
+        <div class="quiz-progress" id="quiz-dots"></div>
+        <div id="quiz-question-wrap">
+          <div class="quiz-question-text" id="quiz-q-text"></div>
+          <div class="quiz-options" id="quiz-opts"></div>
+          <div class="quiz-nav">
+            <button class="quiz-nav-btn" id="quiz-next-btn" onclick="quizNext()" disabled>Next ➡️</button>
+            <span class="quiz-counter" id="quiz-counter">1 / 6</span>
+          </div>
+          <div class="feedback-msg" id="quiz-feedback"></div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="quiz-result-emoji" id="quiz-emoji">🌟</div>
+          <h3 id="quiz-result-title">Well done!</h3>
+          <p id="quiz-result-msg">You answered all questions!</p>
+          <div class="quiz-result-score" id="quiz-score"></div>
+          <br>
+          <button class="retry-btn" onclick="initQuiz()">🔄 Try Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONGRATS -->
+    <div class="congrats-card animate-card">
+      <div style="font-size:60px">🎉</div>
+      <h2>Well done, Superstar!</h2>
+      <p>You've completed an exciting year of learning English. Remember, every word you learn is a step towards becoming a better reader and writer. Stay curious and keep learning!</p>
+      <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <span style="background:rgba(255,159,67,0.12);color:var(--orange);padding:10px 20px;border-radius:12px;font-weight:800;font-size:16px">🌸 My Flower — Done!</span>
+        <span style="background:rgba(162,155,254,0.12);color:var(--purple);padding:10px 20px;border-radius:12px;font-weight:800;font-size:16px">🏫 School Days — Done!</span>
+        <span style="background:rgba(116,185,255,0.12);color:var(--blue);padding:10px 20px;border-radius:12px;font-weight:800;font-size:16px">🌧️ Rain — Done!</span>
+      </div>
+    </div>
+
+  </div><!-- end content-wrap -->
+</main>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="bottom-nav">
+  <div class="bnav-inner">
+    <a href="#hero"><span class="bnav-icon">🏠</span>Home</a>
+    <a href="#my-flower"><span class="bnav-icon">🌸</span>Flower</a>
+    <a href="#school-days"><span class="bnav-icon">🏫</span>School</a>
+    <a href="#rain"><span class="bnav-icon">🌧️</span>Rain</a>
+    <a href="#rhymes"><span class="bnav-icon">🎵</span>Rhymes</a>
+    <a href="#vocab"><span class="bnav-icon">📖</span>Words</a>
+    <a href="#activity1"><span class="bnav-icon">✏️</span>Fill In</a>
+    <a href="#activity2"><span class="bnav-icon">🎯</span>Sort</a>
+    <a href="#quiz"><span class="bnav-icon">🧩</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- CURTAIN FALLBACK ---
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.4s'; setTimeout(() => c.style.display = 'none', 400); }
+  }, 3000);
+
+  // --- LENIS SMOOTH SCROLL ---
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smooth: true });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add(time => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+        requestAnimationFrame(lenisRaf);
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // --- DISMISS CURTAIN WITH GSAP ---
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 0.8, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+  // --- GSAP HERO TITLE ANIMATION ---
+  try {
+    if (typeof gsap !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        const words = document.querySelectorAll('.hero h1 .word');
+        gsap.from(words, { opacity: 0, y: 30, stagger: 0.15, duration: 0.7, ease: 'back.out(1.4)', delay: 1 });
+        gsap.from('.hero-badge', { opacity: 0, y: -20, duration: 0.6, delay: 0.7 });
+        gsap.from('.hero-desc', { opacity: 0, y: 20, duration: 0.6, delay: 1.6 });
+        gsap.from('.hero-poems-row', { opacity: 0, y: 20, duration: 0.6, delay: 1.9 });
+      }
+    }
+  } catch(e) {}
+
+  // --- GSAP SCROLL ANIMATIONS ---
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        gsap.utils.toArray('.animate-card').forEach(card => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 0, y: 40, duration: 0.7, ease: 'power2.out'
+          });
+        });
+      }
+    }
+  } catch(e) {}
+
+  // --- PROGRESS BAR ---
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '% complete';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // --- DRAG & DROP SETUP ---
+  setupDragDrop();
+
+  // --- QUIZ INIT ---
+  initQuiz();
+
+});
+
+// =====================
+// READ ALOUD
+// =====================
+const poemTexts = {
+  poem1: "My Flower, by Margaret Schroder. I had a little seed, And I put it in a pot. I put it in the sunshine, And I watered it a lot. I waited and I waited. I watched it grow and grow. And then one day a flower Came out to say hello.",
+  poem2: "School Days, by Anonymous. Off to school we go today, To learn and read and write and play. With pencils, books, and crayons too, There's so much fun and work to do.",
+  poem3: "Rain, by Robert Louis Stevenson. The rain is raining all around, It falls on field and tree; It rains on the umbrellas here, And on the ships at sea."
+};
+
+let currentUtterance = null;
+function readPoem(poemId) {
+  try {
+    if (!('speechSynthesis' in window)) {
+      showTooltip('Speech not supported in this browser.');
+      return;
+    }
+    const btn = document.getElementById('read-btn-' + poemId.replace('poem',''));
+    if (currentUtterance) {
+      window.speechSynthesis.cancel();
+      document.querySelectorAll('.read-aloud-btn').forEach(b => b.classList.remove('speaking'));
+      currentUtterance = null;
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(poemTexts[poemId]);
+    utter.rate = 0.85;
+    utter.pitch = 1.1;
+    utter.lang = 'en-GB';
+    utter.onstart = () => { btn.classList.add('speaking'); btn.textContent = '⏹ Stop'; };
+    utter.onend = () => { btn.classList.remove('speaking'); btn.textContent = '🔊 Read Aloud'; currentUtterance = null; };
+    utter.onerror = () => { btn.classList.remove('speaking'); btn.textContent = '🔊 Read Aloud'; currentUtterance = null; };
+    currentUtterance = utter;
+    window.speechSynthesis.speak(utter);
+  } catch(e) {
+    showTooltip('Could not read aloud. Please try again.');
+  }
+}
+
+function showTooltip(msg) {
+  const tip = document.createElement('div');
+  tip.textContent = msg;
+  Object.assign(tip.style, {
+    position:'fixed', bottom:'100px', left:'50%', transform:'translateX(-50%)',
+    background:'#333', color:'#fff', padding:'10px 20px', borderRadius:'10px',
+    fontSize:'15px', fontWeight:'700', zIndex:'9999', maxWidth:'300px', textAlign:'center'
+  });
+  document.body.appendChild(tip);
+  setTimeout(() => tip.remove(), 3000);
+}
+
+// =====================
+// FILL IN THE BLANK
+// =====================
+let activeBlankId = null;
+const fitbAnswers = {
+  b1: 'seed', b2: 'pot', b3: 'sunshine', b4: 'watered',
+  b5: 'school', b6: 'play', b7: 'around', b8: 'tree'
+};
+const fitbSelected = {};
+
+function openPopup(blankId, options) {
+  // Close any open popup
+  closeAllPopups();
+  activeBlankId = blankId;
+  const blank = document.getElementById(blankId);
+  const popup = document.getElementById('active-popup');
+  popup.innerHTML = '';
+  options.forEach(word => {
+    const btn = document.createElement('button');
+    btn.className = 'popup-chip';
+    btn.textContent = word;
+    btn.onclick = (e) => { e.stopPropagation(); selectWord(blankId, word); };
+    popup.appendChild(btn);
+  });
+  // Position popup near the blank
+  const blankRect = blank.getBoundingClientRect();
+  const cardRect = document.getElementById('fitb-card').getBoundingClientRect();
+  popup.style.position = 'fixed';
+  popup.style.left = Math.min(blankRect.left, window.innerWidth - 220) + 'px';
+  popup.style.top = (blankRect.bottom + 6) + 'px';
+  popup.style.zIndex = '9999';
+  popup.classList.add('open');
+  document.addEventListener('click', closeAllPopups, { once: true });
+}
+
+function closeAllPopups() {
+  const popup = document.getElementById('active-popup');
+  if (popup) popup.classList.remove('open');
+  activeBlankId = null;
+}
+
+function selectWord(blankId, word) {
+  fitbSelected[blankId] = word;
+  const blank = document.getElementById(blankId);
+  blank.textContent = word;
+  blank.classList.add('filled');
+  blank.classList.remove('wrong-blank');
+  closeAllPopups();
+}
+
+function checkFITB() {
+  let correct = 0, total = Object.keys(fitbAnswers).length;
+  Object.keys(fitbAnswers).forEach(id => {
+    const blank = document.getElementById(id);
+    if (fitbSelected[id] === fitbAnswers[id]) {
+      correct++;
+      blank.classList.add('filled');
+      blank.classList.remove('wrong-blank');
+      tryAnimateCorrect(blank);
+    } else if (fitbSelected[id]) {
+      blank.classList.add('wrong-blank');
+      blank.classList.remove('filled');
+      tryAnimateWrong(blank);
+    }
+  });
+  const msg = document.getElementById('fitb-feedback');
+  if (correct === total) {
+    msg.textContent = '🎉 Perfect! All ' + total + ' answers are correct!';
+    msg.className = 'feedback-msg correct';
+  } else {
+    msg.textContent = '✏️ You got ' + correct + ' out of ' + total + '. Try the others again!';
+    msg.className = 'feedback-msg incorrect';
+  }
+}
+
+function resetFITB() {
+  Object.keys(fitbAnswers).forEach(id => {
+    const blank = document.getElementById(id);
+    blank.textContent = '_______';
+    blank.classList.remove('filled', 'wrong-blank');
+    delete fitbSelected[id];
+  });
+  const msg = document.getElementById('fitb-feedback');
+  msg.className = 'feedback-msg';
+  msg.textContent = '';
+}
+
+// =====================
+// DRAG & DROP SORT
+// =====================
+function setupDragDrop() {
+  const items = document.querySelectorAll('.drag-item');
+  const buckets = document.querySelectorAll('.sort-bucket');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.dataset.id);
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    // Touch support
+    item.addEventListener('touchstart', handleTouchStart, { passive: true });
+    item.addEventListener('touchmove', handleTouchMove, { passive: false });
+    item.addEventListener('touchend', handleTouchEnd);
+  });
+
+  buckets.forEach(bucket => {
+    bucket.addEventListener('dragover', e => { e.preventDefault(); bucket.classList.add('drag-over'); });
+    bucket.addEventListener('dragleave', () => bucket.classList.remove('drag-over'));
+    bucket.addEventListener('drop', e => {
+      e.preventDefault();
+      bucket.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain');
+      const el = document.querySelector('[data-id="' + id + '"]');
+      if (el) {
+        const itemsContainer = bucket.querySelector('.bucket-items');
+        const cloned = el.cloneNode(true);
+        cloned.setAttribute('draggable', 'true');
+        cloned.addEventListener('dragstart', ev => { ev.dataTransfer.setData('text/plain', cloned.dataset.id); cloned.classList.add('dragging'); });
+        cloned.addEventListener('dragend', () => cloned.classList.remove('dragging'));
+        itemsContainer.appendChild(cloned);
+        el.style.opacity = '0.3';
+        el.style.pointerEvents = 'none';
+      }
+    });
+  });
+}
+
+// Simple touch drag
+let touchEl = null, touchClone = null;
+function handleTouchStart(e) {
+  touchEl = e.currentTarget;
+}
+function handleTouchMove(e) {
+  if (!touchEl) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  if (!touchClone) {
+    touchClone = touchEl.cloneNode(true);
+    touchClone.style.position = 'fixed';
+    touchClone.style.opacity = '0.7';
+    touchClone.style.zIndex = '9998';
+    touchClone.style.pointerEvents = 'none';
+    touchClone.style.width = touchEl.offsetWidth + 'px';
+    document.body.appendChild(touchClone);
+  }
+  touchClone.style.left = (touch.clientX - touchEl.offsetWidth / 2) + 'px';
+  touchClone.style.top = (touch.clientY - 24) + 'px';
+}
+function handleTouchEnd(e) {
+  if (!touchEl) return;
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (!el) { touchEl = null; return; }
+  const bucket = el.closest('.sort-bucket');
+  if (bucket) {
+    const itemsContainer = bucket.querySelector('.bucket-items');
+    const cloned = touchEl.cloneNode(true);
+    cloned.setAttribute('draggable', 'true');
+    cloned.style.opacity = '1';
+    cloned.style.pointerEvents = 'auto';
+    cloned.addEventListener('dragstart', ev => { ev.dataTransfer.setData('text/plain', cloned.dataset.id); });
+    itemsContainer.appendChild(cloned);
+    touchEl.style.opacity = '0.3';
+    touchEl.style.pointerEvents = 'none';
+  }
+  touchEl = null;
+}
+
+function checkSort() {
+  let correct = 0, total = 9;
+  const buckets = ['flower', 'school', 'rain'];
+  buckets.forEach(cat => {
+    const items = document.querySelectorAll('#bucket-' + cat + '-items .drag-item');
+    items.forEach(item => {
+      if (item.dataset.category === cat) {
+        correct++;
+        item.style.borderColor = 'var(--teal)';
+        item.style.background = 'rgba(29,209,161,0.1)';
+        tryAnimateCorrect(item);
+      } else {
+        item.style.borderColor = '#e17055';
+        item.style.background = 'rgba(225,112,85,0.1)';
+        tryAnimateWrong(item);
+      }
+    });
+  });
+  const msg = document.getElementById('sort-feedback');
+  if (correct === total) {
+    msg.textContent = '🎉 Amazing! All items are in the right place!';
+    msg.className = 'feedback-msg correct';
+  } else {
+    msg.textContent = '🤔 You got ' + correct + ' right. Some items might be in the wrong poem!';
+    msg.className = 'feedback-msg incorrect';
+  }
+}
+
+function resetSort() {
+  ['flower','school','rain'].forEach(cat => {
+    document.getElementById('bucket-' + cat + '-items').innerHTML = '';
+  });
+  document.querySelectorAll('#sort-source .drag-item').forEach(item => {
+    item.style.opacity = '1';
+    item.style.pointerEvents = 'auto';
+    item.style.borderColor = '';
+    item.style.background = '';
+  });
+  const msg = document.getElementById('sort-feedback');
+  msg.className = 'feedback-msg';
+  msg.textContent = '';
+}
+
+// =====================
+// QUIZ
+// =====================
+const quizData = [
+  {
+    q: "Who wrote the poem 'My Flower'?",
+    opts: [{ text: 'Margaret Schroder', emoji: '✍️', correct: true }, { text: 'Robert Louis Stevenson', emoji: '🖊️', correct: false }]
+  },
+  {
+    q: "In 'My Flower', where did the child put the seed?",
+    opts: [{ text: 'In the garden', emoji: '🌻', correct: false }, { text: 'In a pot', emoji: '🪴', correct: true }]
+  },
+  {
+    q: "In 'School Days', what do children NOT do at school according to the poem?",
+    opts: [{ text: 'Read and write', emoji: '📝', correct: false }, { text: 'Cook food', emoji: '🍳', correct: true }]
+  },
+  {
+    q: "In the poem 'Rain', who wrote it?",
+    opts: [{ text: 'Anonymous', emoji: '❓', correct: false }, { text: 'Robert Louis Stevenson', emoji: '🖊️', correct: true }]
+  },
+  {
+    q: "In 'Rain', where do ships sail when it rains?",
+    opts: [{ text: 'At sea', emoji: '⛵', correct: true }, { text: 'In the sky', emoji: '🌥️', correct: false }]
+  },
+  {
+    q: "Which words rhyme in 'School Days'?",
+    opts: [{ text: 'today / play', emoji: '🎮', correct: true }, { text: 'school / tree', emoji: '🌳', correct: false }]
+  }
+];
+
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+
+function initQuiz() {
+  quizIdx = 0; quizScore = 0; quizAnswered = false;
+  document.getElementById('quiz-result').classList.remove('show');
+  document.getElementById('quiz-question-wrap').style.display = '';
+  renderQuizDots();
+  renderQuestion();
+}
+
+function renderQuizDots() {
+  const dotsEl = document.getElementById('quiz-dots');
+  dotsEl.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-dot' + (i === quizIdx ? ' current' : (i < quizIdx ? ' done' : ''));
+    dotsEl.appendChild(dot);
+  });
+}
+
+function renderQuestion() {
+  const q = quizData[quizIdx];
+  document.getElementById('quiz-q-text').textContent = q.q;
+  document.getElementById('quiz-counter').textContent = (quizIdx + 1) + ' / ' + quizData.length;
+  const optsEl = document.getElementById('quiz-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.innerHTML = '<span class="opt-emoji">' + opt.emoji + '</span>' + opt.text;
+    btn.onclick = () => { if (!quizAnswered) selectQuizOpt(btn, opt.correct, oi); };
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('quiz-next-btn').disabled = true;
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = 'feedback-msg'; fb.textContent = '';
+  quizAnswered = false;
+  renderQuizDots();
+}
+
+function selectQuizOpt(btn, isCorrect, oi) {
+  quizAnswered = true;
+  const allBtns = document.querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('quiz-feedback');
+  if (isCorrect) {
+    btn.classList.add('selected-correct');
+    fb.textContent = '🎉 Correct! Great job!';
+    fb.className = 'feedback-msg correct';
+    quizScore++;
+    tryAnimateCorrect(btn);
+  } else {
+    btn.classList.add('selected-wrong');
+    fb.textContent = '❌ Not quite! The other answer was correct.';
+    fb.className = 'feedback-msg incorrect';
+    const opts = quizData[quizIdx].opts;
+    const corrIdx = opts.findIndex(o => o.correct);
+    allBtns[corrIdx].classList.add('reveal-correct');
+    tryAnimateWrong(btn);
+  }
+  document.getElementById('quiz-next-btn').disabled = false;
+}
+
+function quizNext() {
+  quizIdx++;
+  if (quizIdx >= quizData.length) {
+    showQuizResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showQuizResult() {
+  document.getElementById('quiz-question-wrap').style.display = 'none';
+  const result = document.getElementById('quiz-result');
+  result.classList.add('show');
+  const pct = Math.round((quizScore / quizData.length) * 100);
+  document.getElementById('quiz-score').textContent = quizScore + ' / ' + quizData.length;
+  if (quizScore === quizData.length) {
+    document.getElementById('quiz-emoji').textContent = '🏆';
+    document.getElementById('quiz-result-title').textContent = 'Perfect Score!';
+    document.getElementById('quiz-result-msg').textContent = 'Wow! You got everything right. You are a poetry star! ⭐';
+  } else if (quizScore >= 4) {
+    document.getElementById('quiz-emoji').textContent = '🌟';
+    document.getElementById('quiz-result-title').textContent = 'Well Done!';
+    document.getElementById('quiz-result-msg').textContent = 'Great effort! Read the poems again to get a perfect score!';
+  } else {
+    document.getElementById('quiz-emoji').textContent = '📚';
+    document.getElementById('quiz-result-title').textContent = 'Keep Trying!';
+    document.getElementById('quiz-result-msg').textContent = 'Read the poems once more and try again — you can do it!';
+  }
+}
+
+// =====================
+// ANIMATION HELPERS
+// =====================
+function tryAnimateCorrect(el) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        gsap.fromTo(el, { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1, ease: 'back.out(2)' });
+      }
+    }
+  } catch(e) {}
+}
+
+function tryAnimateWrong(el) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        gsap.to(el, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'none', clearProps: 'rotation' });
+      }
+    }
+  } catch(e) {}
+}
+
+// Close popups on outside click
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.blank') && !e.target.closest('#active-popup')) {
+    closeAllPopups();
+  }
+});
+</script>
+</body>
+</html>

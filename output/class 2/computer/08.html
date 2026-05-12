@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 8: Using a Presentation Software | Class 2 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; font-family: 'Nunito', sans-serif; background: #FAFAFA; color: #2d3436; font-size: 18px; scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+
+  /* Progress Bar */
+  #progress-bar-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 7px; background: #e0e0e0; z-index: 9999; }
+  #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #FF9F43, #1DD1A1); transition: width 0.3s ease; }
+  #progress-label { position: fixed; top: 8px; right: 16px; font-size: 13px; font-weight: 700; color: #636e72; z-index: 9999; background: rgba(255,255,255,0.9); padding: 2px 8px; border-radius: 20px; }
+
+  /* Curtain */
+  #curtain { position: fixed; inset: 0; background: linear-gradient(135deg, #FF9F43, #1DD1A1); z-index: 99999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  #curtain .curtain-icon { font-size: 64px; animation: spin 1s ease-in-out; }
+  #curtain .curtain-text { font-size: 22px; font-weight: 800; color: white; }
+  @keyframes spin { from { transform: rotate(-20deg) scale(0.5); } to { transform: rotate(0) scale(1); } }
+
+  /* Sidebar */
+  #sidebar { position: fixed; left: 0; top: 7px; height: 100vh; width: 220px; background: white; box-shadow: 4px 0 20px rgba(0,0,0,0.08); padding: 80px 0 20px; z-index: 1000; overflow-y: auto; }
+  #sidebar h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #b2bec3; padding: 0 20px 10px; letter-spacing: 1px; }
+  #sidebar a { display: block; padding: 10px 20px; font-size: 15px; font-weight: 600; color: #636e72; text-decoration: none; border-left: 3px solid transparent; transition: all 0.2s; }
+  #sidebar a:hover, #sidebar a.active { color: #FF9F43; border-left-color: #FF9F43; background: #fff8f0; }
+
+  /* Main */
+  #main-content { margin-left: 220px; padding-top: 7px; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #FF9F43 0%, #e17055 50%, #1DD1A1 100%); min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 80px 40px; position: relative; overflow: hidden; width: 100%; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-badge { display: inline-block; background: rgba(255,255,255,0.25); color: white; font-size: 15px; font-weight: 700; padding: 6px 20px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 20px; }
+  .hero h1 .word { display: inline-block; opacity: 1; margin-right: 12px; }
+  .hero p { font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 30px; font-weight: 600; }
+  .hero-icons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .hero-icon-pill { background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 30px; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+  /* Sections */
+  .lesson-section { padding: 70px 0; }
+  .lesson-section:nth-child(even) { background: #f0f4f8; }
+
+  /* Cards */
+  .card { background: white; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 36px; margin-bottom: 28px; opacity: 1; transform: none; width: 100%; }
+  .card-teal { border-left: 4px solid #1DD1A1; }
+  .card-orange { border-left: 4px solid #FF9F43; }
+  .card-purple { border-left: 4px solid #A29BFE; }
+  .card-pink { border-left: 4px solid #fd79a8; }
+
+  .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .section-subtitle { font-size: 18px; color: #636e72; margin-bottom: 40px; font-weight: 600; }
+
+  /* Steps */
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; }
+  .step-card { background: white; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 28px; text-align: center; position: relative; overflow: hidden; opacity: 1; }
+  .step-number { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; color: white; margin: 0 auto 16px; }
+  .step-num-orange { background: #FF9F43; }
+  .step-num-teal { background: #1DD1A1; }
+  .step-num-purple { background: #A29BFE; }
+  .step-card h3 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 800; margin-bottom: 10px; }
+  .step-card p { font-size: 17px; color: #636e72; font-weight: 600; line-height: 1.6; }
+
+  /* Methods */
+  .methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .method-card { background: white; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 28px; text-align: center; opacity: 1; border-top: 5px solid; }
+  .method-card:nth-child(1) { border-color: #FF9F43; }
+  .method-card:nth-child(2) { border-color: #1DD1A1; }
+  .method-card:nth-child(3) { border-color: #A29BFE; }
+  .method-icon { font-size: 52px; margin-bottom: 12px; }
+  .method-card h3 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 800; margin-bottom: 10px; }
+  .method-card p { font-size: 17px; color: #636e72; font-weight: 600; line-height: 1.6; }
+
+  /* Format toolbar visual */
+  .toolbar-demo { background: #2d3436; border-radius: 16px; padding: 20px 28px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 24px 0; }
+  .tb-item { background: #636e72; color: white; border-radius: 8px; padding: 8px 16px; font-size: 17px; font-weight: 700; cursor: default; transition: transform 0.2s; }
+  .tb-item:hover { transform: scale(1.1); }
+  .tb-bold { font-weight: 900; }
+  .tb-italic { font-style: italic; }
+  .tb-underline { text-decoration: underline; }
+  .tb-orange { background: #FF9F43; }
+  .tb-teal { background: #1DD1A1; }
+  .tb-purple { background: #A29BFE; }
+
+  /* Slide Preview */
+  .slide-preview { background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); padding: 40px; text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 24px 0; border: 2px solid #e0e0e0; }
+  .slide-preview .slide-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; color: #2d3436; }
+  .slide-preview .slide-subtitle { font-size: clamp(1rem, 2vw, 1.4rem); color: #636e72; margin-top: 10px; font-weight: 600; }
+
+  /* Read Aloud Button */
+  .read-aloud-btn { background: linear-gradient(135deg, #A29BFE, #6c5ce7); color: white; border: none; border-radius: 30px; padding: 12px 28px; font-size: 17px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; font-family: 'Nunito', sans-serif; margin: 12px 0; }
+  .read-aloud-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(162,155,254,0.4); }
+
+  /* Activities */
+  .activity-title { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+  /* Fill in the blank */
+  .fill-blank-container { background: #f8f9fa; border-radius: 16px; padding: 28px; margin: 20px 0; }
+  .fill-sentence { font-size: 20px; font-weight: 700; line-height: 2.2; margin-bottom: 16px; color: #2d3436; }
+  .blank { display: inline-block; min-width: 130px; height: 36px; border-bottom: 3px solid #FF9F43; margin: 0 6px; cursor: pointer; text-align: center; font-weight: 800; color: #FF9F43; position: relative; vertical-align: middle; font-size: 19px; border-radius: 4px; transition: background 0.2s; padding: 0 8px; }
+  .blank:hover { background: #fff8f0; }
+  .blank.filled { border-bottom-color: #1DD1A1; color: #1DD1A1; background: #f0fdf8; }
+  .blank.wrong { border-bottom-color: #e17055; color: #e17055; background: #fff5f3; animation: wobble 0.5s ease; }
+  @keyframes wobble { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-5deg)} 40%{transform:rotate(5deg)} 60%{transform:rotate(-5deg)} 80%{transform:rotate(5deg)} }
+  .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .word-chip { background: #A29BFE; color: white; padding: 8px 20px; border-radius: 20px; font-size: 17px; font-weight: 700; cursor: pointer; transition: transform 0.2s, opacity 0.2s; user-select: none; min-height: 48px; display: flex; align-items: center; }
+  .word-chip:hover { transform: scale(1.08); }
+  .word-chip.used { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+  .activity-feedback { font-size: 18px; font-weight: 700; margin-top: 12px; min-height: 28px; }
+  .feedback-correct { color: #1DD1A1; }
+  .feedback-wrong { color: #e17055; }
+
+  /* Sorting */
+  .sorting-container { margin: 20px 0; }
+  .sort-items { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; padding: 16px; background: #f8f9fa; border-radius: 16px; min-height: 70px; }
+  .sort-item { background: #FF9F43; color: white; padding: 10px 20px; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: grab; user-select: none; touch-action: none; min-height: 48px; display: flex; align-items: center; transition: transform 0.2s, box-shadow 0.2s; }
+  .sort-item:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .sort-item.dragging { opacity: 0.5; transform: scale(1.1); }
+  .buckets { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bucket { border-radius: 16px; padding: 20px; min-height: 120px; border: 3px dashed; transition: border-color 0.2s, background 0.2s; }
+  .bucket.drag-over { background: rgba(29,209,161,0.1); border-color: #1DD1A1; }
+  .bucket-teal { border-color: #1DD1A1; }
+  .bucket-purple { border-color: #A29BFE; }
+  .bucket-label { font-size: 17px; font-weight: 800; margin-bottom: 12px; text-align: center; }
+  .bucket-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 50px; }
+  .bucket-items .sort-item { background: #1DD1A1; font-size: 15px; padding: 8px 16px; cursor: default; }
+  .bucket-items .sort-item.bucket-purple-item { background: #A29BFE; }
+
+  /* Quiz */
+  .quiz-container { max-width: 100%; }
+  .quiz-question { background: white; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 32px; margin-bottom: 24px; opacity: 1; border-left: 4px solid #FF9F43; }
+  .quiz-q-text { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: #2d3436; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .quiz-option { background: #f8f9fa; border: 2px solid #e0e0e0; border-radius: 14px; padding: 16px 20px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .quiz-option:hover { border-color: #FF9F43; background: #fff8f0; transform: translateY(-2px); }
+  .quiz-option.correct { background: #e8fdf5; border-color: #1DD1A1; color: #00b894; }
+  .quiz-option.wrong { background: #fff5f3; border-color: #e17055; color: #e17055; }
+  .quiz-option.disabled { pointer-events: none; }
+  .quiz-progress { font-size: 17px; font-weight: 700; color: #636e72; margin-bottom: 20px; }
+  .quiz-score { text-align: center; padding: 40px; font-size: 22px; font-weight: 800; color: #2d3436; display: none; }
+  .quiz-score .big-score { font-size: 60px; font-weight: 900; color: #FF9F43; }
+  .reset-btn { background: linear-gradient(135deg, #FF9F43, #e17055); color: white; border: none; border-radius: 30px; padding: 14px 36px; font-size: 18px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; margin-top: 20px; transition: transform 0.2s; }
+  .reset-btn:hover { transform: scale(1.05); }
+
+  /* Info box */
+  .info-box { background: linear-gradient(135deg, #fff8f0, #fff); border-left: 4px solid #FF9F43; border-radius: 12px; padding: 20px 24px; margin: 20px 0; font-size: 18px; font-weight: 600; line-height: 1.7; }
+  .info-box.teal { background: linear-gradient(135deg, #f0fdf8, #fff); border-left-color: #1DD1A1; }
+  .info-box.purple { background: linear-gradient(135deg, #f5f3ff, #fff); border-left-color: #A29BFE; }
+
+  /* Key Terms */
+  .key-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 24px; }
+  .key-term { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-top: 4px solid; text-align: center; opacity: 1; }
+  .key-term:nth-child(1) { border-color: #FF9F43; }
+  .key-term:nth-child(2) { border-color: #1DD1A1; }
+  .key-term:nth-child(3) { border-color: #A29BFE; }
+  .key-term:nth-child(4) { border-color: #fd79a8; }
+  .key-term .term-icon { font-size: 40px; margin-bottom: 10px; }
+  .key-term h4 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .key-term p { font-size: 17px; color: #636e72; font-weight: 600; }
+
+  /* Emoji Slide Viewer */
+  .slide-viewer { background: #2d3436; border-radius: 20px; padding: 20px; }
+  .slide-tabs { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .slide-tab { background: #636e72; color: white; border: none; border-radius: 10px; padding: 8px 18px; font-size: 17px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.2s; min-height: 48px; }
+  .slide-tab.active { background: #FF9F43; }
+  .slide-display { background: white; border-radius: 12px; min-height: 200px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 40px 20px; text-align: center; }
+
+  /* Highlight */
+  .highlight-orange { color: #FF9F43; font-weight: 800; }
+  .highlight-teal { color: #1DD1A1; font-weight: 800; }
+  .highlight-purple { color: #A29BFE; font-weight: 800; }
+
+  /* Bottom mobile nav */
+  #bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); z-index: 1000; overflow-x: auto; white-space: nowrap; padding: 8px 0; }
+  #bottom-nav a { display: inline-block; padding: 10px 16px; font-size: 13px; font-weight: 700; color: #636e72; text-decoration: none; min-height: 48px; line-height: 28px; }
+  #bottom-nav a.active { color: #FF9F43; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #bottom-nav { display: block; }
+    #main-content { margin-left: 0; padding-bottom: 80px; }
+    .container { padding: 0 16px; }
+    .hero { min-height: 60vh; padding: 60px 20px; }
+    .buckets { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .methods-grid { grid-template-columns: 1fr; }
+    .key-terms { grid-template-columns: repeat(2, 1fr); }
+    .lesson-section { padding: 40px 0; }
+    .card { padding: 24px; }
+  }
+  @media (max-width: 480px) {
+    .key-terms { grid-template-columns: 1fr; }
+  }
+
+  /* Animation burst */
+  @keyframes burst { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+  .burst { animation: burst 0.4s ease; }
+</style>
+</head>
+<body>
+
+<!-- Curtain -->
+<div id="curtain">
+  <div class="curtain-icon">📊</div>
+  <div class="curtain-text">Loading Lesson...</div>
+</div>
+
+<!-- Progress -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <h3>Lesson</h3>
+  <a href="#hero" class="active">🏠 Home</a>
+  <a href="#sec-intro">📋 Presentation</a>
+  <a href="#sec-open">🖥️ Opening</a>
+  <a href="#sec-close">❌ Closing</a>
+  <a href="#sec-slideshow">▶️ Slideshow</a>
+  <a href="#sec-format">🎨 Formatting</a>
+  <a href="#sec-activity1">✏️ Activity 1</a>
+  <a href="#sec-activity2">🔀 Activity 2</a>
+  <a href="#sec-quiz">🧩 Quiz</a>
+</nav>
+
+<!-- Mobile Bottom Nav -->
+<nav id="bottom-nav">
+  <a href="#hero">🏠</a>
+  <a href="#sec-intro">📋 Intro</a>
+  <a href="#sec-open">🖥️ Open</a>
+  <a href="#sec-close">❌ Close</a>
+  <a href="#sec-slideshow">▶️ Show</a>
+  <a href="#sec-format">🎨 Format</a>
+  <a href="#sec-activity1">✏️ Act.1</a>
+  <a href="#sec-activity2">🔀 Act.2</a>
+  <a href="#sec-quiz">🧩 Quiz</a>
+</nav>
+
+<!-- Main Content -->
+<div id="main-content">
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Unit 8 · Class 2 Computer</div>
+      <h1 id="hero-title">
+        <span class="word">Using</span>
+        <span class="word">a</span>
+        <span class="word">Presentation</span>
+        <span class="word">Software</span>
+      </h1>
+      <p>Learn to open, create, format, and show slides using Microsoft PowerPoint 2019!</p>
+      <div class="hero-icons">
+        <div class="hero-icon-pill">📊 Slides</div>
+        <div class="hero-icon-pill">🎨 Formatting</div>
+        <div class="hero-icon-pill">▶️ Slideshow</div>
+        <div class="hero-icon-pill">💾 PowerPoint</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: What is a Presentation -->
+  <section class="lesson-section" id="sec-intro">
+    <div class="container">
+      <div class="section-title">📋 <span>What is a Presentation?</span></div>
+      <div class="section-subtitle">Let's learn what a presentation is and what it contains.</div>
+
+      <div class="card card-teal">
+        <button class="read-aloud-btn" onclick="readAloud('A presentation is a document that has two or more slides. Each slide can contain text, images, videos, and music or sound. Microsoft PowerPoint 2019 is a popular presentation program.')">🔊 Read Aloud</button>
+        <div class="info-box teal">
+          A <span class="highlight-teal">presentation</span> is a document that has <span class="highlight-orange">two or more slides</span>. Each slide can contain text, images, videos, and music (sound). <span class="highlight-purple">Microsoft PowerPoint 2019</span> is a popular presentation program.
+        </div>
+
+        <div class="key-terms">
+          <div class="key-term">
+            <div class="term-icon">📄</div>
+            <h4>Presentation</h4>
+            <p>A document with 2 or more slides shown on screen</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon">🖼️</div>
+            <h4>Slide</h4>
+            <p>One page of a presentation with text, images, or more</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon">💾</div>
+            <h4>PowerPoint</h4>
+            <p>Microsoft's presentation program (version 2019)</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon">🎬</div>
+            <h4>Slideshow</h4>
+            <p>Playing your slides full screen one after another</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide viewer demo -->
+      <div class="card card-orange">
+        <div class="activity-title">👀 What can a slide contain?</div>
+        <div class="slide-tabs">
+          <button class="slide-tab active" onclick="showSlideContent(this,'text')">📝 Text</button>
+          <button class="slide-tab" onclick="showSlideContent(this,'image')">🖼️ Image</button>
+          <button class="slide-tab" onclick="showSlideContent(this,'video')">🎬 Video</button>
+          <button class="slide-tab" onclick="showSlideContent(this,'music')">🎵 Music</button>
+        </div>
+        <div class="slide-viewer">
+          <div class="slide-display" id="slide-content-demo">
+            <div style="font-size:60px;">📝</div>
+            <div style="font-size:22px;font-weight:800;color:#2d3436;margin-top:10px;">Text on a Slide</div>
+            <div style="font-size:18px;color:#636e72;margin-top:8px;font-weight:600;">You can type titles, subtitles, and any words on a slide!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Opening PowerPoint -->
+  <section class="lesson-section" id="sec-open">
+    <div class="container">
+      <div class="section-title">🖥️ <span>Opening PowerPoint 2019</span></div>
+      <div class="section-subtitle">There are 3 ways to open PowerPoint. Let's learn them all!</div>
+
+      <div class="card card-orange">
+        <button class="read-aloud-btn" onclick="readAloud('There are 3 ways to open PowerPoint 2019. Method 1: Double click on the PowerPoint icon on the desktop. Method 2: Click on the PowerPoint icon on the taskbar at the bottom of the screen. Method 3: Click on the Start Button, find PowerPoint in the menu, and click on it. Then click on Blank Presentation to start a new slideshow.')">🔊 Read Aloud</button>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number step-num-orange">1</div>
+            <h3>Desktop Icon</h3>
+            <div style="font-size:52px;margin:12px 0;">🖥️</div>
+            <p>Double-click the <strong>PowerPoint icon</strong> on your desktop to open the program.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-teal">2</div>
+            <h3>Taskbar Icon</h3>
+            <div style="font-size:52px;margin:12px 0;">📌</div>
+            <p>Click the <strong>PowerPoint icon</strong> pinned to the taskbar at the bottom of the screen.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-purple">3</div>
+            <h3>Start Button</h3>
+            <div style="font-size:52px;margin:12px 0;">🪟</div>
+            <p>Click the <strong>Start Button</strong>, scroll to find PowerPoint in the menu, then click it!</p>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:28px;">
+          🎯 After opening PowerPoint, you will see the welcome screen. Click on <strong>"Blank Presentation"</strong> to start a new, empty slideshow!
+        </div>
+
+        <!-- Visual mock of blank presentation -->
+        <div style="background:#1a1a2e;border-radius:16px;padding:24px;margin-top:24px;">
+          <div style="background:#3d3d5c;border-radius:8px;padding:8px 16px;display:flex;gap:12px;margin-bottom:16px;align-items:center;">
+            <span style="color:white;font-size:15px;font-weight:700;">File</span>
+            <span style="color:white;font-size:15px;font-weight:700;">Home</span>
+            <span style="color:white;font-size:15px;font-weight:700;">Insert</span>
+            <span style="color:white;font-size:15px;font-weight:700;">Design</span>
+            <span style="color:#FF9F43;font-size:15px;font-weight:800;">Slide Show</span>
+          </div>
+          <div style="background:white;border-radius:12px;padding:40px;text-align:center;">
+            <div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#b2bec3;">Click to add title</div>
+            <div style="font-size:clamp(1rem,2vw,1.2rem);color:#dfe6e9;margin-top:16px;font-weight:600;">Click to add subtitle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Closing PowerPoint -->
+  <section class="lesson-section" id="sec-close">
+    <div class="container">
+      <div class="section-title">❌ <span>Closing PowerPoint 2019</span></div>
+      <div class="section-subtitle">Learn how to close the program properly.</div>
+
+      <div class="card card-purple">
+        <button class="read-aloud-btn" onclick="readAloud('To close PowerPoint 2019, click on the Close Button. It is the X button found at the top right corner of the screen. Click it to close the program.')">🔊 Read Aloud</button>
+        <div class="info-box purple">
+          To close PowerPoint 2019, click on the <span class="highlight-purple">Close Button ✕</span> found at the <strong>top right corner</strong> of the screen.
+        </div>
+        <div style="background:#2d3436;border-radius:16px;padding:16px 24px;margin-top:20px;display:flex;justify-content:flex-end;align-items:center;">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <div style="width:20px;height:20px;background:#f9ca24;border-radius:50%;cursor:pointer;"></div>
+            <div style="width:20px;height:20px;background:#6ab04c;border-radius:50%;cursor:pointer;"></div>
+            <div id="close-btn-demo" style="width:20px;height:20px;background:#e17055;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:white;font-weight:800;transition:transform 0.2s;" onclick="this.style.transform='scale(1.4)';setTimeout(()=>this.style.transform='scale(1)',400)">✕</div>
+          </div>
+        </div>
+        <div style="text-align:right;padding:8px 24px 0;font-size:17px;color:#FF9F43;font-weight:700;">👆 Click the red ✕ button to close!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Exercise 1 — Insert Text -->
+  <section class="lesson-section" id="sec-exercise1">
+    <div class="container">
+      <div class="section-title">✏️ <span>Exercise 1: Insert Text on a Slide</span></div>
+      <div class="section-subtitle">Follow these steps to add text to your first slide!</div>
+
+      <div class="card card-teal">
+        <button class="read-aloud-btn" onclick="readAloud('Exercise 1: Insert text on a slide. Step 1: Open PowerPoint 2019. Step 2: Click on Blank Presentation. Step 3: Click on the Click to add title area. Step 4: Type MY PET. Step 5: Click on the Click to add subtitle area. Step 6: Type your name.')">🔊 Read Aloud</button>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number step-num-orange">1</div>
+            <h3>Open PowerPoint</h3>
+            <div style="font-size:48px;margin:12px 0;">💾</div>
+            <p>Open <strong>PowerPoint 2019</strong> using any of the 3 methods you learned.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-teal">2</div>
+            <h3>Blank Presentation</h3>
+            <div style="font-size:48px;margin:12px 0;">📄</div>
+            <p>Click on <strong>"Blank Presentation"</strong> to create a new empty slide.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-purple">3</div>
+            <h3>Click Title Area</h3>
+            <div style="font-size:48px;margin:12px 0;">🖱️</div>
+            <p>Click where it says <strong>"Click to add title"</strong> on the slide.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-orange">4</div>
+            <h3>Type "MY PET"</h3>
+            <div style="font-size:48px;margin:12px 0;">⌨️</div>
+            <p>Use the keyboard to type <strong>"MY PET"</strong> as your title.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-teal">5</div>
+            <h3>Click Subtitle Area</h3>
+            <div style="font-size:48px;margin:12px 0;">🖱️</div>
+            <p>Click where it says <strong>"Click to add subtitle"</strong> below the title.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-purple">6</div>
+            <h3>Type Your Name</h3>
+            <div style="font-size:48px;margin:12px 0;">👤</div>
+            <p>Type your <strong>own name</strong> as the subtitle (e.g., Meena).</p>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;">
+          <div style="font-size:18px;font-weight:800;color:#2d3436;margin-bottom:12px;">📺 Your slide should look like this:</div>
+          <div class="slide-preview">
+            <div class="slide-title">MY PET</div>
+            <div class="slide-subtitle">Meena</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Viewing a Slideshow -->
+  <section class="lesson-section" id="sec-slideshow">
+    <div class="container">
+      <div class="section-title">▶️ <span>View a Slideshow</span></div>
+      <div class="section-subtitle">There are 3 ways to play your slideshow full screen!</div>
+
+      <div class="card card-orange">
+        <button class="read-aloud-btn" onclick="readAloud('There are 3 ways to view a slideshow. Method 1: Click on the Slide Show tab at the top of the screen, then click From Beginning. Method 2: Click on the Slide Show icon at the bottom right of the screen. Method 3: Press the F5 key on the keyboard. To go back to PowerPoint after the slideshow, press the Enter key twice.')">🔊 Read Aloud</button>
+
+        <div class="methods-grid">
+          <div class="method-card">
+            <div class="method-icon">🗂️</div>
+            <h3>Method 1</h3>
+            <p>Click the <strong>"Slide Show"</strong> tab at the top → Click <strong>"From Beginning"</strong></p>
+          </div>
+          <div class="method-card">
+            <div class="method-icon">🖱️</div>
+            <h3>Method 2</h3>
+            <p>Click the <strong>Slide Show icon</strong> (📽️) at the bottom right corner of the screen</p>
+          </div>
+          <div class="method-card">
+            <div class="method-icon">⌨️</div>
+            <h3>Method 3</h3>
+            <p>Press the <strong>F5 key</strong> on your keyboard to start the slideshow instantly!</p>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:24px;">
+          🔙 <strong>To go back to PowerPoint:</strong> Press the <span class="highlight-orange">Enter Key</span> once — you'll see "End of slide show, click to exit." Press <span class="highlight-orange">Enter</span> one more time to return to the program.
+        </div>
+
+        <!-- Keyboard F5 visual -->
+        <div style="display:flex;justify-content:center;margin-top:24px;">
+          <div style="background:#2d3436;padding:24px 40px;border-radius:16px;text-align:center;">
+            <div style="font-size:13px;color:#b2bec3;font-weight:700;margin-bottom:12px;">Press this key to start slideshow</div>
+            <div style="background:#FF9F43;color:white;font-size:28px;font-weight:900;padding:16px 32px;border-radius:10px;display:inline-block;box-shadow:0 6px 0 #c67c2a;">F5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Format Text -->
+  <section class="lesson-section" id="sec-format">
+    <div class="container">
+      <div class="section-title">🎨 <span>Format Text on Slides</span></div>
+      <div class="section-subtitle">Make your text look amazing using these formatting tools!</div>
+
+      <div class="card card-purple">
+        <button class="read-aloud-btn" onclick="readAloud('You can format text on slides using these tools. Font: changes the style of the letters. Font Size: makes text bigger or smaller. Bold: makes text thick and strong. Italic: makes text lean to the side. Underline: adds a line under the text. Font Colour: changes the colour of the text.')">🔊 Read Aloud</button>
+
+        <div class="toolbar-demo">
+          <div class="tb-item tb-orange" style="font-size:17px;">Calibri Light</div>
+          <div class="tb-item tb-teal" style="font-size:17px;">60</div>
+          <div class="tb-item tb-bold">B Bold</div>
+          <div class="tb-item tb-italic">I Italic</div>
+          <div class="tb-item tb-underline">U Underline</div>
+          <div class="tb-item tb-orange">A Font Colour</div>
+          <div class="tb-item tb-purple">Aa Font</div>
+        </div>
+
+        <div class="key-terms">
+          <div class="key-term">
+            <div class="term-icon">🔤</div>
+            <h4>Font</h4>
+            <p>Changes the style or shape of all your letters</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon">🔢</div>
+            <h4>Font Size</h4>
+            <p>Makes text bigger (larger number) or smaller</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon" style="font-weight:900;">B</div>
+            <h4>Bold</h4>
+            <p>Makes text thick and easy to read</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon" style="font-style:italic;">I</div>
+            <h4>Italic</h4>
+            <p>Makes text lean to the right side</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon" style="text-decoration:underline;">U</div>
+            <h4>Underline</h4>
+            <p>Adds a line under the text</p>
+          </div>
+          <div class="key-term">
+            <div class="term-icon" style="color:#FF9F43;">A</div>
+            <h4>Font Colour</h4>
+            <p>Changes the colour of selected text</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise 2 steps -->
+      <div class="card card-teal" style="margin-top:28px;">
+        <div class="activity-title">✏️ Exercise 2: Format Your Slide</div>
+        <div class="info-box teal">Follow these steps to format the "MY PET" slide you created!</div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number step-num-orange">3</div>
+            <h3>Select the Title</h3>
+            <div style="font-size:40px;margin:10px 0;">🖱️</div>
+            <p>Click and drag to select the text <strong>"MY PET"</strong> in the title box.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-teal">4</div>
+            <h3>Change Font</h3>
+            <div style="font-size:40px;margin:10px 0;">🔤</div>
+            <p>Click the <strong>Font</strong> dropdown and choose any font you like!</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-purple">5</div>
+            <h3>Change Font Size</h3>
+            <div style="font-size:40px;margin:10px 0;">🔢</div>
+            <p>Click the <strong>Font Size</strong> box and change the size to <strong>66</strong>.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-orange">6</div>
+            <h3>Change Colour</h3>
+            <div style="font-size:40px;margin:10px 0;color:#FF9F43;">🎨</div>
+            <p>Click <strong>Font Colour</strong> and change the colour to <strong>Orange</strong>.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-teal">7-8</div>
+            <h3>Bold & Italic</h3>
+            <div style="font-size:40px;margin:10px 0;"><strong><em>Aa</em></strong></div>
+            <p>Select your name in the subtitle, then click <strong>Bold</strong> then <strong>Italic</strong>.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number step-num-purple">9-10</div>
+            <h3>Underline</h3>
+            <div style="font-size:40px;margin:10px 0;text-decoration:underline;">Aa</div>
+            <p>With your name still selected, click <strong>Underline</strong> to add a line under it.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;">
+          <div style="font-size:18px;font-weight:800;color:#2d3436;margin-bottom:12px;">📺 Final result should look like:</div>
+          <div class="slide-preview">
+            <div class="slide-title" style="color:#FF9F43;font-family:'Georgia',serif;">MY PET</div>
+            <div class="slide-subtitle" style="font-weight:800;font-style:italic;text-decoration:underline;">Meena</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Activity 1 — Fill in the Blank -->
+  <section class="lesson-section" id="sec-activity1">
+    <div class="container">
+      <div class="section-title">✏️ <span>Activity 1: Fill in the Blanks</span></div>
+      <div class="section-subtitle">Click on a blank, then pick the correct word from the word bank!</div>
+
+      <div class="card card-orange">
+        <div class="activity-title">📝 Choose the correct words</div>
+
+        <div class="fill-blank-container">
+          <!-- Q1 -->
+          <div class="fill-sentence" data-q="1">
+            1. A presentation is a document that has two or more
+            <span class="blank" data-answer="slides" data-q="1" onclick="selectBlank(this)">_______</span>.
+          </div>
+          <!-- Q2 -->
+          <div class="fill-sentence" data-q="2">
+            2. PowerPoint 2019 is a
+            <span class="blank" data-answer="presentation" data-q="2" onclick="selectBlank(this)">_______</span>
+            program.
+          </div>
+          <!-- Q3 -->
+          <div class="fill-sentence" data-q="3">
+            3. To close PowerPoint, click the
+            <span class="blank" data-answer="Close Button" data-q="3" onclick="selectBlank(this)">_______</span>.
+          </div>
+          <!-- Q4 -->
+          <div class="fill-sentence" data-q="4">
+            4. Press the
+            <span class="blank" data-answer="F5" data-q="4" onclick="selectBlank(this)">_______</span>
+            key to start a slideshow.
+          </div>
+          <!-- Q5 -->
+          <div class="fill-sentence" data-q="5">
+            5. The <strong>Bold</strong> button makes text look
+            <span class="blank" data-answer="thick" data-q="5" onclick="selectBlank(this)">_______</span>
+            and strong.
+          </div>
+          <!-- Q6 -->
+          <div class="fill-sentence" data-q="6">
+            6. The
+            <span class="blank" data-answer="Underline" data-q="6" onclick="selectBlank(this)">_______</span>
+            button adds a line under the text.
+          </div>
+
+          <!-- Word Bank -->
+          <div style="font-size:17px;font-weight:800;color:#636e72;margin-top:20px;">📦 Word Bank — Click a word, then click a blank:</div>
+          <div class="word-bank" id="word-bank">
+            <div class="word-chip" data-word="slides" onclick="placeWord(this)">slides</div>
+            <div class="word-chip" data-word="presentation" onclick="placeWord(this)">presentation</div>
+            <div class="word-chip" data-word="Close Button" onclick="placeWord(this)">Close Button</div>
+            <div class="word-chip" data-word="F5" onclick="placeWord(this)">F5</div>
+            <div class="word-chip" data-word="thick" onclick="placeWord(this)">thick</div>
+            <div class="word-chip" data-word="Underline" onclick="placeWord(this)">Underline</div>
+          </div>
+
+          <div class="activity-feedback" id="fill-feedback"></div>
+
+          <button class="reset-btn" onclick="resetFillBlanks()" style="margin-top:12px;">🔄 Reset Activity</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Activity 2 — Sorting -->
+  <section class="lesson-section" id="sec-activity2">
+    <div class="container">
+      <div class="section-title">🔀 <span>Activity 2: Sort the Items</span></div>
+      <div class="section-subtitle">Drag each item into the correct bucket!</div>
+
+      <div class="card card-purple">
+        <div class="activity-title">📦 Sort: Opening Methods vs Formatting Tools</div>
+        <div class="info-box purple">Drag each item below into the correct group!</div>
+
+        <div class="sorting-container">
+          <div class="sort-items" id="sort-pool">
+            <div class="sort-item" draggable="true" data-category="open" data-label="Desktop Icon">🖥️ Desktop Icon</div>
+            <div class="sort-item" draggable="true" data-category="format" data-label="Bold">B Bold</div>
+            <div class="sort-item" draggable="true" data-category="open" data-label="Taskbar Icon">📌 Taskbar Icon</div>
+            <div class="sort-item" draggable="true" data-category="format" data-label="Font Colour">🎨 Font Colour</div>
+            <div class="sort-item" draggable="true" data-category="open" data-label="Start Button">🪟 Start Button</div>
+            <div class="sort-item" draggable="true" data-category="format" data-label="Italic">I Italic</div>
+            <div class="sort-item" draggable="true" data-category="format" data-label="Underline">U Underline</div>
+            <div class="sort-item" draggable="true" data-category="open" data-label="F5 Key">⌨️ F5 Key</div>
+          </div>
+
+          <div class="buckets">
+            <div class="bucket bucket-teal" id="bucket-open" ondragover="allowDrop(event)" ondrop="dropItem(event,'open')">
+              <div class="bucket-label" style="color:#00b894;">🖥️ Ways to Open PowerPoint</div>
+              <div class="bucket-items" id="bucket-open-items"></div>
+            </div>
+            <div class="bucket bucket-purple" id="bucket-format" ondragover="allowDrop(event)" ondrop="dropItem(event,'format')">
+              <div class="bucket-label" style="color:#6c5ce7;">🎨 Text Formatting Tools</div>
+              <div class="bucket-items" id="bucket-format-items"></div>
+            </div>
+          </div>
+
+          <div class="activity-feedback" id="sort-feedback" style="margin-top:16px;"></div>
+          <button class="reset-btn" onclick="resetSort()" style="margin-top:12px;">🔄 Reset Sort</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section class="lesson-section" id="sec-quiz">
+    <div class="container">
+      <div class="section-title">🧩 <span>Quiz Time!</span></div>
+      <div class="section-subtitle">Test what you learned about PowerPoint and presentations!</div>
+
+      <div class="card card-teal">
+        <div class="quiz-container">
+          <div class="quiz-progress" id="quiz-progress">Question 1 of 6</div>
+          <div id="quiz-questions"></div>
+          <div class="quiz-score" id="quiz-score">
+            <div>🎉 You finished the quiz!</div>
+            <div class="big-score" id="score-display">0/6</div>
+            <div id="score-message" style="font-size:20px;margin-top:12px;"></div>
+            <button class="reset-btn" onclick="resetQuiz()">🔄 Try Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Congratulations -->
+  <section class="lesson-section" style="background:linear-gradient(135deg,#FF9F43,#1DD1A1);">
+    <div class="container">
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-size:80px;margin-bottom:16px;">🎉</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;margin-bottom:16px;">Congratulations!</h2>
+        <p style="font-size:20px;color:rgba(255,255,255,0.95);font-weight:700;max-width:600px;margin:0 auto;line-height:1.7;">You have learned how to use Microsoft PowerPoint 2019! You can now open, create, format, and present slides. Keep exploring the digital world! 🌟</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end main-content -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── Curtain dismiss (guaranteed fallback) ──────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ── Lenis Smooth Scroll ────────────────────────────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1 });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // ── Dismiss curtain with GSAP ──────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.8, delay: 1.2, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+  // ── Progress Bar ───────────────────────────────────────────────────────────
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-label');
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+
+  // ── Hero Title Animation ───────────────────────────────────────────────────
+  try {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      gsap.from('#hero-title .word', {
+        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'back.out(1.7)', delay: 1.5
+      });
+    }
+  } catch(e) {}
+
+  // ── ScrollTrigger card animations ─────────────────────────────────────────
+  try {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+      gsap.registerPlugin(ScrollTrigger);
+      const animTargets = document.querySelectorAll('.card, .step-card, .method-card, .key-term, .quiz-question');
+      animTargets.forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          y: 40, opacity: 0, duration: 0.6, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) {}
+
+  // ── Sidebar active link ────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('[id^="sec-"], #hero');
+  const sideLinks = document.querySelectorAll('#sidebar a, #bottom-nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sideLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+
+  // ── Slide content demo ─────────────────────────────────────────────────────
+  window.showSlideContent = function(btn, type) {
+    document.querySelectorAll('.slide-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const demos = {
+      text:  { icon:'📝', title:'Text on a Slide', desc:'You can type titles, subtitles, and any words on a slide!' },
+      image: { icon:'🖼️', title:'Image on a Slide', desc:'Insert pictures and photos to make your slide more interesting!' },
+      video: { icon:'🎬', title:'Video on a Slide', desc:'You can even add videos to play during your presentation!' },
+      music: { icon:'🎵', title:'Music / Sound on a Slide', desc:'Add background music or sound effects to your slides!' }
+    };
+    const d = demos[type];
+    const el = document.getElementById('slide-content-demo');
+    if (el && d) {
+      el.innerHTML = `<div style="font-size:60px;">${d.icon}</div><div style="font-size:22px;font-weight:800;color:#2d3436;margin-top:10px;">${d.title}</div><div style="font-size:18px;color:#636e72;margin-top:8px;font-weight:600;">${d.desc}</div>`;
+    }
+  };
+
+  // ── Read Aloud ─────────────────────────────────────────────────────────────
+  window.readAloud = function(text) {
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.rate = 0.9;
+        utt.pitch = 1.1;
+        window.speechSynthesis.speak(utt);
+      } else {
+        alert(text);
+      }
+    } catch(e) { alert(text); }
+  };
+
+  // ── Fill in Blanks ─────────────────────────────────────────────────────────
+  let selectedWord = null;
+  let selectedBlankEl = null;
+
+  window.selectBlank = function(el) {
+    document.querySelectorAll('.blank').forEach(b => b.style.outline = '');
+    el.style.outline = '3px solid #FF9F43';
+    selectedBlankEl = el;
+    if (selectedWord) placeWordInBlank();
+  };
+
+  window.placeWord = function(chip) {
+    if (chip.classList.contains('used')) return;
+    selectedWord = chip.dataset.word;
+    document.querySelectorAll('.word-chip').forEach(c => c.style.outline = '');
+    chip.style.outline = '3px solid #FF9F43';
+    if (selectedBlankEl) placeWordInBlank();
+  };
+
+  function placeWordInBlank() {
+    if (!selectedWord || !selectedBlankEl) return;
+    const correct = selectedBlankEl.dataset.answer;
+    if (selectedWord === correct) {
+      selectedBlankEl.textContent = selectedWord;
+      selectedBlankEl.classList.remove('wrong');
+      selectedBlankEl.classList.add('filled');
+      selectedBlankEl.style.outline = '';
+      // Mark chip as used
+      document.querySelectorAll('.word-chip').forEach(c => {
+        if (c.dataset.word === selectedWord) { c.classList.add('used'); c.style.outline = ''; }
+      });
+      // Burst animation
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(selectedBlankEl, { scale:1 }, { scale:1.2, duration:0.15, yoyo:true, repeat:1 });
+        }
+      } catch(e) {}
+      checkAllFilled();
+    } else {
+      selectedBlankEl.classList.add('wrong');
+      setTimeout(() => selectedBlankEl.classList.remove('wrong'), 600);
+      document.getElementById('fill-feedback').innerHTML = '<span class="feedback-wrong">❌ Try again!</span>';
+      document.querySelectorAll('.word-chip').forEach(c => c.style.outline = '');
+    }
+    selectedWord = null;
+    selectedBlankEl = null;
+  }
+
+  function checkAllFilled() {
+    const blanks = document.querySelectorAll('.blank');
+    const allFilled = Array.from(blanks).every(b => b.classList.contains('filled'));
+    if (allFilled) {
+      document.getElementById('fill-feedback').innerHTML = '<span class="feedback-correct">🎉 Excellent! All correct!</span>';
+    } else {
+      document.getElementById('fill-feedback').innerHTML = '<span class="feedback-correct">✅ Correct!</span>';
+    }
+  }
+
+  window.resetFillBlanks = function() {
+    document.querySelectorAll('.blank').forEach(b => {
+      b.textContent = '_______';
+      b.classList.remove('filled','wrong');
+      b.style.outline = '';
+    });
+    document.querySelectorAll('.word-chip').forEach(c => {
+      c.classList.remove('used');
+      c.style.outline = '';
+    });
+    document.getElementById('fill-feedback').textContent = '';
+    selectedWord = null;
+    selectedBlankEl = null;
+  };
+
+  // ── Sorting Activity ───────────────────────────────────────────────────────
+  let draggedItem = null;
+
+  document.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      setTimeout(() => item.classList.add('dragging'), 0);
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      draggedItem = null;
+    });
+    // Touch support
+    item.addEventListener('touchstart', e => {
+      draggedItem = item;
+    }, { passive: true });
+  });
+
+  window.allowDrop = function(e) { e.preventDefault(); };
+
+  window.dropItem = function(e, category) {
+    e.preventDefault();
+    if (!draggedItem) return;
+    const itemCat = draggedItem.dataset.category;
+    const correct = itemCat === category;
+    const poolEl = document.getElementById('sort-pool');
+    if (poolEl.contains(draggedItem)) {
+      poolEl.removeChild(draggedItem);
+      const bucketItems = document.getElementById('bucket-' + category + '-items');
+      const clone = draggedItem.cloneNode(true);
+      clone.classList.remove('dragging');
+      clone.draggable = false;
+      clone.style.cursor = 'default';
+      if (correct) {
+        clone.classList.add(category === 'format' ? 'bucket-purple-item' : '');
+        clone.style.background = category === 'format' ? '#A29BFE' : '#1DD1A1';
+        bucketItems.appendChild(clone);
+        try {
+          if (typeof gsap !== 'undefined') gsap.fromTo(clone, {scale:0.8}, {scale:1, duration:0.3, ease:'back.out(1.7)'});
+        } catch(e2) {}
+      } else {
+        // Wrong bucket — wobble and put back
+        draggedItem.classList.add('wrong');
+        poolEl.appendChild(draggedItem);
+        try {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(draggedItem, { rotation: -5, duration: 0.1, yoyo: true, repeat: 5, onComplete: () => { draggedItem.style.transform=''; draggedItem.classList.remove('wrong'); } });
+          }
+        } catch(e2) { draggedItem.classList.remove('wrong'); }
+        document.getElementById('sort-feedback').innerHTML = '<span class="feedback-wrong">❌ That does not go there! Try again!</span>';
+        return;
+      }
+    }
+    checkSortComplete();
+  };
+
+  function checkSortComplete() {
+    const remaining = document.querySelectorAll('#sort-pool .sort-item').length;
+    if (remaining === 0) {
+      document.getElementById('sort-feedback').innerHTML = '<span class="feedback-correct">🎉 Amazing! You sorted everything correctly!</span>';
+    }
+  }
+
+  window.resetSort = function() {
+    const pool = document.getElementById('sort-pool');
+    const openBucket = document.getElementById('bucket-open-items');
+    const formatBucket = document.getElementById('bucket-format-items');
+    openBucket.innerHTML = '';
+    formatBucket.innerHTML = '';
+    pool.innerHTML = '';
+    const items = [
+      { cat:'open', label:'🖥️ Desktop Icon' },
+      { cat:'format', label:'B Bold' },
+      { cat:'open', label:'📌 Taskbar Icon' },
+      { cat:'format', label:'🎨 Font Colour' },
+      { cat:'open', label:'🪟 Start Button' },
+      { cat:'format', label:'I Italic' },
+      { cat:'format', label:'U Underline' },
+      { cat:'open', label:'⌨️ F5 Key' }
+    ];
+    items.forEach(it => {
+      const el = document.createElement('div');
+      el.className = 'sort-item';
+      el.draggable = true;
+      el.dataset.category = it.cat;
+      el.textContent = it.label;
+      el.addEventListener('dragstart', e => { draggedItem = el; setTimeout(()=>el.classList.add('dragging'),0); });
+      el.addEventListener('dragend', () => { el.classList.remove('dragging'); draggedItem = null; });
+      pool.appendChild(el);
+    });
+    document.getElementById('sort-feedback').textContent = '';
+  };
+
+  // ── Quiz ───────────────────────────────────────────────────────────────────
+  const quizData = [
+    { q: 'Which software is used for creating presentations with slides?', options: ['A) MS Word', 'B) MS PowerPoint'], answer: 1 },
+    { q: 'Which software is used for creating text-based documents?', options: ['A) MS Word', 'B) MS Paint'], answer: 0 },
+    { q: 'Which software is used to draw shapes and edit images?', options: ['A) MS Paint', 'B) MS PowerPoint'], answer: 0 },
+    { q: 'How do you start a new blank presentation in PowerPoint?', options: ['A) Click "Blank Presentation"', 'B) Click File > Save'], answer: 0 },
+    { q: 'Which button makes text thick and strong?', options: ['A) Italic Button', 'B) Bold Button'], answer: 1 },
+    { q: 'What does the Underline button do?', options: ['A) Adds a line under the text', 'B) Changes the font style'], answer: 0 }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  function renderQuiz() {
+    const container = document.getElementById('quiz-questions');
+    const scoreEl = document.getElementById('quiz-score');
+    if (currentQ >= quizData.length) {
+      container.innerHTML = '';
+      scoreEl.style.display = 'block';
+      document.getElementById('score-display').textContent = score + '/' + quizData.length;
+      const msgs = ['Keep practicing! 💪', 'Good effort! 👍', 'Well done! 🌟', 'Excellent! 🏆', 'Outstanding! 🎉', 'Perfect! 🥇', 'Perfect score! 🎊'];
+      document.getElementById('score-message').textContent = msgs[score] || msgs[0];
+      return;
+    }
+
+    document.getElementById('quiz-progress').textContent = `Question ${currentQ+1} of ${quizData.length}`;
+    const q = quizData[currentQ];
+    container.innerHTML = `
+      <div class="quiz-question" id="quiz-q">
+        <div class="quiz-q-text">${q.q}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `<div class="quiz-option" onclick="answerQuiz(${i})">${opt}</div>`).join('')}
+        </div>
+      </div>`;
+    answered = false;
+  }
+
+  window.answerQuiz = function(idx) {
+    if (answered) return;
+    answered = true;
+    const q = quizData[currentQ];
+    const opts = document.querySelectorAll('.quiz-option');
+    opts.forEach((o, i) => {
+      o.classList.add('disabled');
+      if (i === q.answer) o.classList.add('correct');
+      else if (i === idx && idx !== q.answer) o.classList.add('wrong');
+    });
+
+    if (idx === q.answer) {
+      score++;
+      try {
+        if (typeof gsap !== 'undefined') gsap.fromTo(opts[idx], {scale:1}, {scale:1.08, duration:0.15, yoyo:true, repeat:1});
+      } catch(e) {}
+    } else {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(opts[idx], { rotation: -5, duration: 0.1, yoyo: true, repeat: 5, onComplete: () => opts[idx].style.transform = '' });
+        }
+      } catch(e) {}
+    }
+
+    setTimeout(() => {
+      currentQ++;
+      renderQuiz();
+    }, 1200);
+  };
+
+  window.resetQuiz = function() {
+    currentQ = 0;
+    score = 0;
+    answered = false;
+    document.getElementById('quiz-score').style.display = 'none';
+    renderQuiz();
+  };
+
+  renderQuiz();
+
+  // ── Init complete ──────────────────────────────────────────────────────────
+  updateProgress();
+  console.log('✅ Lesson loaded successfully');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composition – Class 2 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{width:100%;scroll-behavior:auto}
+  body{font-family:'Nunito',sans-serif;font-size:18px;background:#FAFAFA;color:#333;width:100%;overflow-x:hidden}
+  
+  /* Progress bar */
+  #progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:6px;background:#e8e8e8;z-index:9999}
+  #progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#FF9F43,#1DD1A1);transition:width 0.3s}
+  
+  /* Curtain */
+  #curtain{position:fixed;inset:0;background:#FF9F43;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+  #curtain .c-title{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff}
+  #curtain .c-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);font-weight:600}
+  .spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  
+  /* Layout */
+  .page-wrap{width:100%;max-width:100%}
+  .container{max-width:1500px;margin:0 auto;padding:0 40px}
+  
+  /* Hero */
+  .hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#FF9F43 0%,#ffbe76 50%,#ffd32a 100%);display:flex;align-items:center;justify-content:center;padding:80px 40px 60px;position:relative;overflow:hidden}
+  .hero-content{text-align:center;position:relative;z-index:2}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.2;text-shadow:0 4px 20px rgba(0,0,0,0.15)}
+  .hero h1 span{display:inline-block;opacity:1}
+  .hero-sub{font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,0.95);font-weight:700;margin-top:16px}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.25);backdrop-filter:blur(8px);border-radius:50px;padding:10px 24px;margin-bottom:24px;font-weight:700;color:#fff;font-size:1rem}
+  .hero-bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .bubble{position:absolute;border-radius:50%;opacity:0.15;animation:float 6s ease-in-out infinite}
+  .bubble:nth-child(1){width:120px;height:120px;background:#fff;top:10%;left:5%;animation-delay:0s}
+  .bubble:nth-child(2){width:80px;height:80px;background:#A29BFE;top:60%;left:80%;animation-delay:1s}
+  .bubble:nth-child(3){width:60px;height:60px;background:#1DD1A1;top:80%;left:15%;animation-delay:2s}
+  .bubble:nth-child(4){width:100px;height:100px;background:#fff;top:20%;left:75%;animation-delay:3s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+  
+  /* Nav sidebar */
+  .sidebar{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;padding:16px 8px;background:rgba(255,255,255,0.95);border-radius:0 20px 20px 0;box-shadow:0 8px 32px rgba(0,0,0,0.1)}
+  .sidebar a{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;text-decoration:none;transition:all 0.3s;background:#f0f0f0}
+  .sidebar a:hover{background:#FF9F43;transform:scale(1.1)}
+  .sidebar a.active{background:#FF9F43}
+  
+  /* Mobile bottom nav */
+  .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:200;overflow-x:auto;padding:8px 12px;gap:8px}
+  .mobile-nav a{flex:0 0 auto;min-width:60px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;font-size:11px;font-weight:700;color:#555;gap:3px;border-radius:12px;padding:4px 8px;transition:all 0.2s}
+  .mobile-nav a:hover,.mobile-nav a.active{background:#FFF3E0;color:#FF9F43}
+  .mobile-nav span.nav-icon{font-size:1.4rem}
+  
+  /* Sections */
+  .section{padding:60px 0}
+  .section:nth-child(even){background:#fff}
+  
+  /* Cards */
+  .card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:32px;width:100%;max-width:100%;opacity:1;transform:none}
+  .card.orange{border-left:4px solid #FF9F43}
+  .card.teal{border-left:4px solid #1DD1A1}
+  .card.purple{border-left:4px solid #A29BFE}
+  .card.red{border-left:4px solid #ff6b6b}
+  
+  .section-header{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+  .section-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+  .icon-orange{background:#FFF3E0}
+  .icon-teal{background:#E0FBF4}
+  .icon-purple{background:#F0EEFF}
+  .section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#333}
+  .section-num{background:#FF9F43;color:#fff;border-radius:12px;padding:4px 14px;font-weight:800;font-size:1rem;margin-left:auto;white-space:nowrap}
+  
+  /* Word bank */
+  .word-bank{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+  .word-chip{background:linear-gradient(135deg,#FF9F43,#ffbe76);color:#fff;border-radius:50px;padding:8px 20px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;user-select:none;border:none}
+  .word-chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,159,67,0.4)}
+  .word-chip.teal-chip{background:linear-gradient(135deg,#1DD1A1,#55efc4)}
+  .word-chip.purple-chip{background:linear-gradient(135deg,#A29BFE,#c7c3ff)}
+  .word-chip.red-chip{background:linear-gradient(135deg,#ff6b6b,#ff8e8e)}
+  .word-chip.blue-chip{background:linear-gradient(135deg,#74b9ff,#a8d8ff);color:#333}
+  .word-chip.used{opacity:0.4;pointer-events:none;text-decoration:line-through}
+  
+  /* Writing area */
+  .writing-lines{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+  .writing-line{position:relative;display:flex;align-items:center;gap:12px}
+  .line-num{background:#FF9F43;color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.9rem;flex-shrink:0}
+  .line-num.teal{background:#1DD1A1}
+  .line-num.purple{background:#A29BFE}
+  .sentence-input{flex:1;border:none;border-bottom:2px solid #ddd;padding:12px 4px;font-family:'Nunito',sans-serif;font-size:1.1rem;outline:none;background:transparent;transition:border-color 0.3s;color:#333}
+  .sentence-input:focus{border-bottom-color:#FF9F43}
+  .sentence-input.teal:focus{border-bottom-color:#1DD1A1}
+  .sentence-input.purple:focus{border-bottom-color:#A29BFE}
+  
+  /* Picture card */
+  .picture-card{background:linear-gradient(135deg,#FFF3E0,#fff8f0);border-radius:16px;padding:24px;text-align:center;margin-bottom:24px;border:2px dashed #FF9F43}
+  .picture-emoji{font-size:6rem;line-height:1;margin:16px 0}
+  .picture-desc{font-size:1rem;color:#888;font-weight:600}
+  
+  /* SVG illustration */
+  .illus-wrap{text-align:center;margin:20px 0}
+  
+  /* Dog scene */
+  .dog-scene{background:linear-gradient(180deg,#87CEEB 0%,#90EE90 70%,#228B22 100%);border-radius:16px;padding:32px;text-align:center;min-height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .dog-scene::after{content:'🌳';position:absolute;right:24px;bottom:16px;font-size:3rem}
+  .dog-scene::before{content:'☁️';position:absolute;top:16px;left:32px;font-size:2rem}
+  .dog-emoji{font-size:8rem;display:inline-block;animation:dogBounce 2s ease-in-out infinite}
+  @keyframes dogBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  
+  /* Picnic scene */
+  .picnic-scene{background:linear-gradient(180deg,#87CEEB 0%,#90EE90 60%,#5a8a3c 100%);border-radius:16px;padding:24px;text-align:center;min-height:180px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;position:relative}
+  .picnic-scene::after{content:'🌤️';position:absolute;top:12px;right:24px;font-size:2rem}
+  
+  /* Bus scene */
+  .bus-scene{background:linear-gradient(180deg,#87CEEB 0%,#c8e6c9 60%,#8d6e63 100%);border-radius:16px;padding:24px;text-align:center;min-height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .bus-emoji{font-size:7rem;display:inline-block;animation:busMove 3s ease-in-out infinite}
+  @keyframes busMove{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}
+  
+  /* Read aloud btn */
+  .read-btn{display:inline-flex;align-items:center;gap:8px;background:#1DD1A1;color:#fff;border:none;border-radius:50px;padding:10px 22px;font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;margin-top:12px}
+  .read-btn:hover{background:#00b894;transform:translateY(-2px);box-shadow:0 4px 12px rgba(29,209,161,0.3)}
+  
+  /* Friend form */
+  .friend-form{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .form-group{display:flex;flex-direction:column;gap:8px}
+  .form-label{font-weight:700;font-size:1rem;color:#555}
+  .form-input{border:2px solid #e8e8e8;border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:1rem;outline:none;transition:border-color 0.3s;background:#fafafa}
+  .form-input:focus{border-color:#A29BFE;background:#fff}
+  .form-group.full{grid-column:1/-1}
+  .preview-box{background:linear-gradient(135deg,#F0EEFF,#fff);border-radius:16px;padding:24px;margin-top:24px;border:2px solid #A29BFE;min-height:120px}
+  .preview-box h4{font-size:1.1rem;font-weight:800;color:#A29BFE;margin-bottom:12px}
+  .preview-text{font-size:1.05rem;line-height:1.8;color:#444;white-space:pre-wrap}
+  
+  /* Subject writing */
+  .subject-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+  .subject-card{border-radius:16px;padding:20px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all 0.2s;opacity:1}
+  .subject-card:hover{transform:translateY(-4px)}
+  .subject-card.selected{border-color:#FF9F43;box-shadow:0 4px 20px rgba(255,159,67,0.3)}
+  .subject-card .s-icon{font-size:2.5rem;margin-bottom:8px}
+  .subject-card .s-name{font-weight:700;font-size:1rem}
+  
+  /* Story builder */
+  .story-chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+  .story-chip{background:#f0f0f0;border-radius:50px;padding:8px 18px;font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 0.2s;border:2px solid #ddd;user-select:none}
+  .story-chip:hover{background:#FFF3E0;border-color:#FF9F43}
+  .story-chip.added{background:#FF9F43;color:#fff;border-color:#FF9F43}
+  .story-output{background:#fff;border-radius:16px;border:2px dashed #ccc;padding:20px;min-height:100px;margin-top:16px;font-size:1.05rem;line-height:1.9;color:#333}
+  .story-output.has-content{border-color:#1DD1A1;border-style:solid}
+  
+  /* House describe */
+  .rooms-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+  .room-card{border-radius:16px;padding:20px;background:#fff;border:2px solid #eee;transition:all 0.2s}
+  .room-card:hover{border-color:#1DD1A1;background:#E0FBF4}
+  .room-title{font-weight:800;font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .room-words{display:flex;flex-wrap:wrap;gap:8px}
+  .room-word{background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 12px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;border:2px solid transparent}
+  .room-word:hover{background:#1DD1A1;color:#fff}
+  .room-word.selected{background:#1DD1A1;color:#fff;border-color:#00b894}
+  .house-output{background:#fff;border-radius:16px;border:2px dashed #1DD1A1;padding:20px;min-height:140px;margin-top:16px;font-size:1.05rem;line-height:1.9;color:#333}
+  
+  /* Quiz */
+  .quiz-wrap{margin-top:20px}
+  .quiz-q{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:28px;margin-bottom:20px;border-left:4px solid #FF9F43;opacity:1}
+  .quiz-q h3{font-size:1.2rem;font-weight:800;margin-bottom:16px;color:#333}
+  .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .quiz-opt{border:2px solid #eee;border-radius:16px;padding:14px;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:600;background:#fafafa;text-align:left;display:flex;align-items:center;gap:10px;min-height:48px}
+  .quiz-opt:hover{border-color:#FF9F43;background:#FFF3E0}
+  .quiz-opt.correct{background:#E0FBF4;border-color:#1DD1A1;color:#00b894}
+  .quiz-opt.wrong{background:#ffe0e0;border-color:#ff6b6b;color:#ff6b6b}
+  .quiz-opt:disabled{cursor:default}
+  .quiz-result{text-align:center;padding:32px;background:linear-gradient(135deg,#FFF3E0,#fff8f0);border-radius:20px;margin-top:20px;display:none}
+  .quiz-result.show{display:block}
+  .result-score{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#FF9F43}
+  .result-msg{font-size:1.2rem;font-weight:700;color:#555;margin-top:8px}
+  .retry-btn{background:#FF9F43;color:#fff;border:none;border-radius:50px;padding:14px 32px;font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:16px;transition:all 0.2s}
+  .retry-btn:hover{background:#e67e22;transform:translateY(-2px)}
+  
+  /* Tips */
+  .tip-box{background:linear-gradient(135deg,#FFF3E0,#fff8f0);border-radius:16px;padding:20px 24px;margin:20px 0;border-left:4px solid #FF9F43}
+  .tip-box h4{font-weight:800;color:#FF9F43;margin-bottom:8px;font-size:1.05rem}
+  .tip-box p,.tip-box li{font-size:1rem;color:#555;line-height:1.7}
+  .tip-box ul{padding-left:20px}
+  
+  /* Submit btn */
+  .submit-btn{background:linear-gradient(135deg,#FF9F43,#ffbe76);color:#fff;border:none;border-radius:50px;padding:14px 32px;font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:20px;display:inline-flex;align-items:center;gap:8px}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,159,67,0.4)}
+  .submit-btn.teal{background:linear-gradient(135deg,#1DD1A1,#55efc4)}
+  .submit-btn.purple{background:linear-gradient(135deg,#A29BFE,#c7c3ff)}
+  
+  /* Clear btn */
+  .clear-btn{background:transparent;color:#999;border:2px solid #ddd;border-radius:50px;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:12px;margin-left:12px}
+  .clear-btn:hover{border-color:#ff6b6b;color:#ff6b6b}
+  
+  /* Feedback */
+  .feedback-toast{position:fixed;top:24px;right:24px;background:#1DD1A1;color:#fff;padding:14px 24px;border-radius:16px;font-weight:700;font-size:1rem;z-index:9998;opacity:0;pointer-events:none;transform:translateY(-10px);transition:all 0.3s}
+  .feedback-toast.show{opacity:1;transform:translateY(0)}
+  
+  /* Responsive */
+  @media(max-width:768px){
+    .sidebar{display:none}
+    .mobile-nav{display:flex}
+    body{padding-bottom:80px}
+    .container{padding:0 20px}
+    .hero{min-height:60vh;padding:60px 20px 40px}
+    .friend-form{grid-template-columns:1fr}
+    .form-group.full{grid-column:1}
+    .subject-grid{grid-template-columns:repeat(2,1fr)}
+    .quiz-options{grid-template-columns:1fr}
+    .rooms-grid{grid-template-columns:1fr}
+    .section{padding:40px 0}
+    .card{padding:20px}
+  }
+  @media(max-width:480px){
+    .subject-grid{grid-template-columns:1fr 1fr}
+    .word-bank{gap:8px}
+    .word-chip{padding:7px 14px;font-size:0.9rem}
+  }
+  
+  /* Sentence builder hint */
+  .hint-text{font-size:0.95rem;color:#999;font-style:italic;margin-top:8px}
+  
+  /* Composition intro */
+  .intro-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+  .step-card{background:#fff;border-radius:16px;padding:20px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+  .step-num{width:40px;height:40px;border-radius:50%;background:#FF9F43;color:#fff;font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+  .step-text{font-size:0.95rem;font-weight:600;color:#555}
+  @media(max-width:600px){.intro-steps{grid-template-columns:1fr}}
+  
+  /* Tabs */
+  .tab-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .tab-btn{border:2px solid #eee;background:#fafafa;border-radius:50px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:48px}
+  .tab-btn.active,.tab-btn:hover{background:#FF9F43;color:#fff;border-color:#FF9F43}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- Curtain -->
+<div id="curtain">
+  <div class="c-title">✏️ Composition</div>
+  <div class="c-sub">Class 2 English – Let's Write!</div>
+  <div class="spinner"></div>
+</div>
+
+<!-- Progress Bar -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<!-- Feedback Toast -->
+<div class="feedback-toast" id="toast"></div>
+
+<!-- Desktop Sidebar -->
+<nav class="sidebar" aria-label="Section navigation">
+  <a href="#intro" title="Intro">📖</a>
+  <a href="#ex231" title="Dog">🐶</a>
+  <a href="#ex232" title="Picnic">🧺</a>
+  <a href="#ex233" title="Friend">👫</a>
+  <a href="#ex234" title="Subject">📚</a>
+  <a href="#ex235" title="Bus">🚌</a>
+  <a href="#ex236" title="House">🏠</a>
+  <a href="#quiz" title="Quiz">🧩</a>
+</nav>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <a href="#intro"><span class="nav-icon">📖</span>Intro</a>
+  <a href="#ex231"><span class="nav-icon">🐶</span>Dog</a>
+  <a href="#ex232"><span class="nav-icon">🧺</span>Picnic</a>
+  <a href="#ex233"><span class="nav-icon">👫</span>Friend</a>
+  <a href="#ex234"><span class="nav-icon">📚</span>Subject</a>
+  <a href="#ex235"><span class="nav-icon">🚌</span>Bus</a>
+  <a href="#ex236"><span class="nav-icon">🏠</span>House</a>
+  <a href="#quiz"><span class="nav-icon">🧩</span>Quiz</a>
+</nav>
+
+<div class="page-wrap">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✏️ Chapter 23 &nbsp;|&nbsp; Class 2 English</div>
+    <h1 id="hero-title">
+      <span>Let's</span> <span>Write</span> <span>—</span><br><span>Composition!</span>
+    </h1>
+    <p class="hero-sub">Look, think, and build great sentences 🌟</p>
+    <button class="read-btn" onclick="speakText('Welcome to Chapter 23 Composition! Let us look at pictures and write amazing sentences!')">🔊 Read Aloud</button>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="section" id="intro">
+  <div class="container">
+    <div class="card orange">
+      <div class="section-header">
+        <div class="section-icon icon-orange">📖</div>
+        <div>
+          <div class="section-title">What Is Composition?</div>
+        </div>
+      </div>
+      <p style="font-size:1.1rem;line-height:1.8;color:#444;margin-bottom:20px">
+        A <strong>composition</strong> is when we write sentences or a short story about something — like a picture, a person, or a place. 
+        Good writers always look carefully, think, and then write clearly!
+      </p>
+      <div class="tip-box">
+        <h4>💡 Tips for Great Writing</h4>
+        <ul>
+          <li>Look at the picture carefully before you write.</li>
+          <li>Use the <strong>word bank</strong> to get ideas.</li>
+          <li>Start each sentence with a capital letter.</li>
+          <li>End each sentence with a full stop (.) or question mark (?).</li>
+          <li>Try to write <em>interesting</em> sentences, not just "I see a dog."</li>
+        </ul>
+      </div>
+      <div class="intro-steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-text">👀 Look at the picture</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-text">💭 Think about the words</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-text">✍️ Write your sentences</div>
+        </div>
+      </div>
+      <button class="read-btn" onclick="speakText('A composition is when we write sentences or a short story about something. Look at the picture carefully, use the word bank to get ideas, start each sentence with a capital letter, and end each sentence with a full stop.')">🔊 Read Aloud</button>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.1 – DOG -->
+<section class="section" id="ex231" style="background:#fff">
+  <div class="container">
+    <div class="card orange">
+      <div class="section-header">
+        <div class="section-icon icon-orange">🐶</div>
+        <div>
+          <div class="section-title">Exercise 23.1 – The Dog</div>
+        </div>
+        <div class="section-num">23.1</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Look at the picture. Write <strong>5 sentences</strong> about the picture. Use the word bank below to help you.</p>
+      
+      <div class="dog-scene">
+        <span class="dog-emoji">🐕</span>
+      </div>
+      
+      <p style="font-size:1rem;color:#888;text-align:center;margin:8px 0 20px;font-style:italic">A cute little dog</p>
+      
+      <p style="font-weight:800;font-size:1rem;margin-bottom:8px;color:#FF9F43">📦 Word Bank — click a word to add it to a sentence:</p>
+      <div class="word-bank" id="wb231">
+        <button class="word-chip" onclick="insertWord('231','happy')">happy</button>
+        <button class="word-chip" onclick="insertWord('231','jump')">jump</button>
+        <button class="word-chip" onclick="insertWord('231','bark')">bark</button>
+        <button class="word-chip" onclick="insertWord('231','play')">play</button>
+        <button class="word-chip" onclick="insertWord('231','food')">food</button>
+      </div>
+      <p class="hint-text">👆 Click a word above, then click a sentence line to insert it.</p>
+      
+      <div class="writing-lines" id="lines231">
+        <div class="writing-line"><span class="line-num">1</span><input class="sentence-input" type="text" id="l231-1" placeholder="Write sentence 1 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num">2</span><input class="sentence-input" type="text" id="l231-2" placeholder="Write sentence 2 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num">3</span><input class="sentence-input" type="text" id="l231-3" placeholder="Write sentence 3 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num">4</span><input class="sentence-input" type="text" id="l231-4" placeholder="Write sentence 4 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num">5</span><input class="sentence-input" type="text" id="l231-5" placeholder="Write sentence 5 here…" autocomplete="off"></div>
+      </div>
+      
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="submit-btn" onclick="checkWriting('231',5)">✅ Check My Sentences</button>
+        <button class="clear-btn" onclick="clearLines('231',5)">🗑️ Clear</button>
+        <button class="read-btn" onclick="readSentences('231',5)">🔊 Read My Sentences</button>
+      </div>
+      
+      <div class="tip-box" style="margin-top:20px">
+        <h4>📝 Sample Sentences</h4>
+        <ul>
+          <li>The dog is very happy today.</li>
+          <li>It likes to jump and play in the garden.</li>
+          <li>The dog can bark loudly.</li>
+          <li>It loves to eat its food quickly.</li>
+          <li>The little dog wants to play with me.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.2 – PICNIC -->
+<section class="section" id="ex232">
+  <div class="container">
+    <div class="card teal">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🧺</div>
+        <div>
+          <div class="section-title">Exercise 23.2 – Family Picnic</div>
+        </div>
+        <div class="section-num">23.2</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Look at the picture. Write <strong>5 sentences</strong> about the picture. Use the word bank below to help you.</p>
+      
+      <div class="picnic-scene">
+        <span style="font-size:4rem">👩</span>
+        <span style="font-size:5rem">🧺</span>
+        <span style="font-size:4rem">👨</span>
+        <span style="font-size:3rem">👦</span>
+        <span style="font-size:3.5rem">🍉</span>
+        <span style="font-size:3rem">🍎</span>
+        <span style="font-size:3rem">🐱</span>
+      </div>
+      <p style="font-size:1rem;color:#888;text-align:center;margin:8px 0 20px;font-style:italic">A family having a picnic in the park</p>
+      
+      <p style="font-weight:800;font-size:1rem;margin-bottom:8px;color:#1DD1A1">📦 Word Bank:</p>
+      <div class="word-bank" id="wb232">
+        <button class="word-chip teal-chip" onclick="insertWord('232','picnic')">picnic</button>
+        <button class="word-chip teal-chip" onclick="insertWord('232','family')">family</button>
+        <button class="word-chip teal-chip" onclick="insertWord('232','happy')">happy</button>
+        <button class="word-chip teal-chip" onclick="insertWord('232','park')">park</button>
+        <button class="word-chip teal-chip" onclick="insertWord('232','fruits')">fruits</button>
+        <button class="word-chip teal-chip" onclick="insertWord('232','lunch')">lunch</button>
+      </div>
+      <p class="hint-text">👆 Click a word above, then click a sentence line to insert it.</p>
+      
+      <div class="writing-lines" id="lines232">
+        <div class="writing-line"><span class="line-num teal">1</span><input class="sentence-input teal" type="text" id="l232-1" placeholder="Write sentence 1 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">2</span><input class="sentence-input teal" type="text" id="l232-2" placeholder="Write sentence 2 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">3</span><input class="sentence-input teal" type="text" id="l232-3" placeholder="Write sentence 3 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">4</span><input class="sentence-input teal" type="text" id="l232-4" placeholder="Write sentence 4 here…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">5</span><input class="sentence-input teal" type="text" id="l232-5" placeholder="Write sentence 5 here…" autocomplete="off"></div>
+      </div>
+      
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="submit-btn teal" onclick="checkWriting('232',5)">✅ Check My Sentences</button>
+        <button class="clear-btn" onclick="clearLines('232',5)">🗑️ Clear</button>
+        <button class="read-btn" onclick="readSentences('232',5)">🔊 Read My Sentences</button>
+      </div>
+      
+      <div class="tip-box" style="margin-top:20px;background:linear-gradient(135deg,#E0FBF4,#fff)">
+        <h4 style="color:#1DD1A1">📝 Sample Sentences</h4>
+        <ul>
+          <li>The family is having a picnic in the park.</li>
+          <li>They are eating lunch together on a sunny day.</li>
+          <li>The children look very happy and excited.</li>
+          <li>There are many fruits on the picnic blanket.</li>
+          <li>The family is smiling and having a great time.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.3 – FRIEND -->
+<section class="section" id="ex233" style="background:#fff">
+  <div class="container">
+    <div class="card purple">
+      <div class="section-header">
+        <div class="section-icon icon-purple">👫</div>
+        <div>
+          <div class="section-title">Exercise 23.3 – Write About Your Friend</div>
+        </div>
+        <div class="section-num">23.3</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Write about your friend. Use these questions to help you. Fill in the details and see your composition build!</p>
+      
+      <div style="text-align:center;margin-bottom:24px">
+        <span style="font-size:7rem">👫</span>
+      </div>
+      
+      <div class="tip-box" style="background:linear-gradient(135deg,#F0EEFF,#fff)">
+        <h4 style="color:#A29BFE">❓ Guide Questions</h4>
+        <ul>
+          <li>What is your friend's name?</li>
+          <li>How old is he/she?</li>
+          <li>Which class is he/she in?</li>
+          <li>What does he/she look like?</li>
+          <li>How many brothers and sisters does he/she have?</li>
+        </ul>
+      </div>
+      
+      <div class="friend-form" id="friendForm">
+        <div class="form-group">
+          <label class="form-label" for="f-name">👤 Friend's Name</label>
+          <input class="form-input" id="f-name" type="text" placeholder="e.g. Ali" oninput="buildFriendStory()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-age">🎂 Age</label>
+          <input class="form-input" id="f-age" type="text" placeholder="e.g. 7" oninput="buildFriendStory()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-class">🏫 Class</label>
+          <input class="form-input" id="f-class" type="text" placeholder="e.g. Class 2" oninput="buildFriendStory()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-gender">🧑 He / She</label>
+          <select class="form-input" id="f-gender" onchange="buildFriendStory()">
+            <option value="he">He</option>
+            <option value="she">She</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="f-look">👁️ What does he/she look like?</label>
+          <input class="form-input" id="f-look" type="text" placeholder="e.g. tall, curly hair, brown eyes" oninput="buildFriendStory()">
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="f-siblings">👨‍👩‍👦 Brothers &amp; Sisters</label>
+          <input class="form-input" id="f-siblings" type="text" placeholder="e.g. two brothers and one sister" oninput="buildFriendStory()">
+        </div>
+      </div>
+      
+      <div class="preview-box" id="friendPreview">
+        <h4>📄 Your Composition Will Appear Here</h4>
+        <div class="preview-text" id="friendText" style="color:#aaa;font-style:italic">Start typing above to see your composition…</div>
+      </div>
+      
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="submit-btn purple" onclick="readFriendStory()">🔊 Read My Composition</button>
+        <button class="clear-btn" onclick="clearFriendForm()">🗑️ Clear</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.4 – FAVOURITE SUBJECT -->
+<section class="section" id="ex234">
+  <div class="container">
+    <div class="card orange">
+      <div class="section-header">
+        <div class="section-icon icon-orange">📚</div>
+        <div>
+          <div class="section-title">Exercise 23.4 – My Favourite Subject</div>
+        </div>
+        <div class="section-num">23.4</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Write about your <strong>favourite school subject</strong>. First choose your subject, then answer the questions to build your composition!</p>
+      
+      <p style="font-weight:800;font-size:1rem;margin-bottom:12px;color:#FF9F43">1️⃣ Pick Your Favourite Subject:</p>
+      <div class="subject-grid" id="subjectGrid">
+        <div class="subject-card" style="background:#FFF3E0" onclick="selectSubject('English','📝')">
+          <div class="s-icon">📝</div><div class="s-name">English</div>
+        </div>
+        <div class="subject-card" style="background:#E8F5E9" onclick="selectSubject('Maths','🔢')">
+          <div class="s-icon">🔢</div><div class="s-name">Maths</div>
+        </div>
+        <div class="subject-card" style="background:#E3F2FD" onclick="selectSubject('Science','🔬')">
+          <div class="s-icon">🔬</div><div class="s-name">Science</div>
+        </div>
+        <div class="subject-card" style="background:#F3E5F5" onclick="selectSubject('Art','🎨')">
+          <div class="s-icon">🎨</div><div class="s-name">Art</div>
+        </div>
+        <div class="subject-card" style="background:#E0F7FA" onclick="selectSubject('P.E.','⚽')">
+          <div class="s-icon">⚽</div><div class="s-name">P.E.</div>
+        </div>
+        <div class="subject-card" style="background:#FFF8E1" onclick="selectSubject('Social Studies','🌍')">
+          <div class="s-icon">🌍</div><div class="s-name">Social Studies</div>
+        </div>
+      </div>
+      
+      <div id="subjectForm" style="display:none">
+        <p style="font-weight:800;font-size:1rem;margin:20px 0 12px;color:#FF9F43">2️⃣ Answer These Questions:</p>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="form-group">
+            <label class="form-label" for="sq1">💛 Why do you like <span id="subjectNameQ">it</span>?</label>
+            <input class="form-input" id="sq1" type="text" placeholder="e.g. It is fun and interesting." oninput="buildSubjectStory()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sq2">🧠 What can you learn from it?</label>
+            <input class="form-input" id="sq2" type="text" placeholder="e.g. I can learn new words." oninput="buildSubjectStory()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sq3">📅 How often do you study it?</label>
+            <input class="form-input" id="sq3" type="text" placeholder="e.g. I study it every day." oninput="buildSubjectStory()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sq4">😊 How do you feel when you study it?</label>
+            <input class="form-input" id="sq4" type="text" placeholder="e.g. I feel excited and happy." oninput="buildSubjectStory()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sq5">🔮 What do you want to do in the future?</label>
+            <input class="form-input" id="sq5" type="text" placeholder="e.g. I want to be a teacher." oninput="buildSubjectStory()">
+          </div>
+        </div>
+        
+        <div class="preview-box" id="subjectPreview" style="margin-top:20px;border-color:#FF9F43">
+          <h4 style="color:#FF9F43">📄 Your Composition</h4>
+          <div class="preview-text" id="subjectText" style="color:#aaa;font-style:italic">Start answering above…</div>
+        </div>
+        
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+          <button class="submit-btn" onclick="readSubjectStory()">🔊 Read My Composition</button>
+          <button class="clear-btn" onclick="clearSubjectForm()">🗑️ Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.5 – SCHOOL BUS -->
+<section class="section" id="ex235" style="background:#fff">
+  <div class="container">
+    <div class="card teal">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🚌</div>
+        <div>
+          <div class="section-title">Exercise 23.5 – The School Bus</div>
+        </div>
+        <div class="section-num">23.5</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Look at the picture. Write about what you see. Use the word bank to help you. <strong>Give your story a title!</strong></p>
+      
+      <div class="bus-scene">
+        <span class="bus-emoji">🚌</span>
+        <span style="font-size:3rem;position:absolute;top:20px;left:30%">👦</span>
+        <span style="font-size:3rem;position:absolute;top:20px;left:50%">👧</span>
+        <span style="font-size:2.5rem;position:absolute;top:25px;right:20%">🧒</span>
+      </div>
+      <p style="font-size:1rem;color:#888;text-align:center;margin:8px 0 20px;font-style:italic">Happy kids on a yellow school bus</p>
+      
+      <div style="margin-bottom:20px">
+        <label class="form-label" style="font-weight:800;color:#1DD1A1;margin-bottom:8px;display:block">📰 Give Your Story a Title:</label>
+        <input class="form-input" id="busTitle" type="text" placeholder="e.g. A Happy Ride to School" style="font-size:1.2rem;font-weight:700;border-color:#1DD1A1">
+      </div>
+      
+      <p style="font-weight:800;font-size:1rem;margin-bottom:8px;color:#1DD1A1">📦 Word Bank — build your story:</p>
+      <div class="word-bank" id="wb235">
+        <button class="word-chip teal-chip" onclick="addToStory235('school')">school</button>
+        <button class="word-chip teal-chip" onclick="addToStory235('bus')">bus</button>
+        <button class="word-chip teal-chip" onclick="addToStory235('kids')">kids</button>
+        <button class="word-chip teal-chip" onclick="addToStory235('bus driver')">bus driver</button>
+        <button class="word-chip teal-chip" onclick="addToStory235('yellow')">yellow</button>
+        <button class="word-chip teal-chip" onclick="addToStory235('happy')">happy</button>
+      </div>
+      
+      <p style="font-weight:700;font-size:1rem;margin:16px 0 8px;color:#555">✍️ Write Your Story:</p>
+      <div class="writing-lines" id="lines235">
+        <div class="writing-line"><span class="line-num teal">1</span><input class="sentence-input teal" type="text" id="l235-1" placeholder="Write sentence 1…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">2</span><input class="sentence-input teal" type="text" id="l235-2" placeholder="Write sentence 2…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">3</span><input class="sentence-input teal" type="text" id="l235-3" placeholder="Write sentence 3…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">4</span><input class="sentence-input teal" type="text" id="l235-4" placeholder="Write sentence 4…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">5</span><input class="sentence-input teal" type="text" id="l235-5" placeholder="Write sentence 5…" autocomplete="off"></div>
+      </div>
+      
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="submit-btn teal" onclick="checkBusStory()">✅ Check My Story</button>
+        <button class="clear-btn" onclick="clearBusStory()">🗑️ Clear</button>
+        <button class="read-btn" onclick="readBusStory()">🔊 Read My Story</button>
+      </div>
+      
+      <div class="tip-box" style="margin-top:20px;background:linear-gradient(135deg,#E0FBF4,#fff)">
+        <h4 style="color:#1DD1A1">📝 Sample Story — "The Happy School Bus"</h4>
+        <ul>
+          <li>The yellow school bus is big and bright.</li>
+          <li>Happy kids get on the bus every morning.</li>
+          <li>The bus driver smiles and says good morning.</li>
+          <li>The kids sit and talk on the way to school.</li>
+          <li>Everyone is excited to start a new day!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE 23.6 – HOUSE -->
+<section class="section" id="ex236">
+  <div class="container">
+    <div class="card" style="border-left:4px solid #1DD1A1">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🏠</div>
+        <div>
+          <div class="section-title">Exercise 23.6 – Describe Your House</div>
+        </div>
+        <div class="section-num">23.6</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:20px">Describe your house. Click the words below to add them to your description. Then read your composition!</p>
+      
+      <div style="text-align:center;margin-bottom:24px">
+        <span style="font-size:7rem">🏡</span>
+      </div>
+      
+      <p style="font-weight:800;font-size:1rem;margin-bottom:12px;color:#1DD1A1">🏠 Click words from each room to use them in your description:</p>
+      
+      <div class="rooms-grid">
+        <div class="room-card">
+          <div class="room-title">🛏️ Bedroom</div>
+          <div class="room-words">
+            <span class="room-word" onclick="toggleRoomWord(this,'bed')">bed</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'wardrobe')">wardrobe</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'pillows')">pillows</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'mattress')">mattress</span>
+          </div>
+        </div>
+        <div class="room-card">
+          <div class="room-title">🍳 Kitchen</div>
+          <div class="room-words">
+            <span class="room-word" onclick="toggleRoomWord(this,'stove')">stove</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'fridge')">fridge</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'sink')">sink</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'microwave oven')">microwave oven</span>
+          </div>
+        </div>
+        <div class="room-card">
+          <div class="room-title">🛋️ Living Room</div>
+          <div class="room-words">
+            <span class="room-word" onclick="toggleRoomWord(this,'sofa')">sofa</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'TV set')">TV set</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'curtains')">curtains</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'carpet')">carpet</span>
+          </div>
+        </div>
+        <div class="room-card">
+          <div class="room-title">🛁 Bathroom</div>
+          <div class="room-words">
+            <span class="room-word" onclick="toggleRoomWord(this,'toilet')">toilet</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'bathtub')">bathtub</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'mirror')">mirror</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'shower')">shower</span>
+          </div>
+        </div>
+        <div class="room-card">
+          <div class="room-title">🌿 Garden</div>
+          <div class="room-words">
+            <span class="room-word" onclick="toggleRoomWord(this,'garden')">garden</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'yard')">yard</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'gate')">gate</span>
+            <span class="room-word" onclick="toggleRoomWord(this,'balcony')">balcony</span>
+          </div>
+        </div>
+      </div>
+      
+      <p style="font-weight:700;font-size:1rem;margin:8px 0 4px;color:#1DD1A1">Selected words: <span id="selectedWordsDisplay" style="color:#333;font-weight:600">None yet</span></p>
+      
+      <p style="font-weight:800;font-size:1rem;margin:20px 0 12px;color:#1DD1A1">✍️ Now write your sentences about your house:</p>
+      <div class="writing-lines" id="lines236">
+        <div class="writing-line"><span class="line-num teal">1</span><input class="sentence-input teal" type="text" id="l236-1" placeholder="Write about the bedroom…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">2</span><input class="sentence-input teal" type="text" id="l236-2" placeholder="Write about the kitchen…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">3</span><input class="sentence-input teal" type="text" id="l236-3" placeholder="Write about the living room…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">4</span><input class="sentence-input teal" type="text" id="l236-4" placeholder="Write about the bathroom…" autocomplete="off"></div>
+        <div class="writing-line"><span class="line-num teal">5</span><input class="sentence-input teal" type="text" id="l236-5" placeholder="Write about the garden or whole house…" autocomplete="off"></div>
+      </div>
+      
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="submit-btn teal" onclick="checkWriting('236',5)">✅ Check My Sentences</button>
+        <button class="clear-btn" onclick="clearHouseForm()">🗑️ Clear All</button>
+        <button class="read-btn" onclick="readSentences('236',5)">🔊 Read My Sentences</button>
+      </div>
+      
+      <div class="tip-box" style="margin-top:20px;background:linear-gradient(135deg,#E0FBF4,#fff)">
+        <h4 style="color:#1DD1A1">📝 Sample Description</h4>
+        <ul>
+          <li>My bedroom has a soft bed and fluffy pillows.</li>
+          <li>In the kitchen, there is a big fridge and a stove.</li>
+          <li>We have a comfortable sofa and a TV set in the living room.</li>
+          <li>The bathroom has a shower, a mirror, and a clean toilet.</li>
+          <li>My house also has a beautiful garden with a green yard and a gate.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="section" id="quiz" style="background:#fff">
+  <div class="container">
+    <div class="card orange">
+      <div class="section-header">
+        <div class="section-icon icon-orange">🧩</div>
+        <div>
+          <div class="section-title">Quick Quiz – Composition Skills!</div>
+        </div>
+        <div class="section-num">Quiz</div>
+      </div>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:24px">Let's test what you've learned! Click the best answer for each question. 🌟</p>
+      
+      <div class="quiz-wrap" id="quizWrap">
+        
+        <div class="quiz-q" id="qq1">
+          <h3>1. What should a sentence always start with?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(1,'A','A')">🅰️ A capital letter</button>
+            <button class="quiz-opt" onclick="answerQ(1,'B','A')">🅱️ A small letter</button>
+          </div>
+        </div>
+        
+        <div class="quiz-q" id="qq2">
+          <h3>2. What do we put at the END of a sentence?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(2,'A','B')">🅰️ A comma</button>
+            <button class="quiz-opt" onclick="answerQ(2,'B','B')">🅱️ A full stop (.)</button>
+          </div>
+        </div>
+        
+        <div class="quiz-q" id="qq3">
+          <h3>3. Which sentence is written correctly?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(3,'A','A')">🅰️ The dog is happy.</button>
+            <button class="quiz-opt" onclick="answerQ(3,'B','A')">🅱️ the dog is happy</button>
+          </div>
+        </div>
+        
+        <div class="quiz-q" id="qq4">
+          <h3>4. In Exercise 23.1 (the dog picture), which word from the word bank means to make a loud sound?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(4,'A','B')">🅰️ happy</button>
+            <button class="quiz-opt" onclick="answerQ(4,'B','B')">🅱️ bark</button>
+          </div>
+        </div>
+        
+        <div class="quiz-q" id="qq5">
+          <h3>5. In a composition about a picnic, which word from the word bank means a meal eaten outdoors?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(5,'A','A')">🅰️ picnic</button>
+            <button class="quiz-opt" onclick="answerQ(5,'B','A')">🅱️ fruits</button>
+          </div>
+        </div>
+        
+        <div class="quiz-q" id="qq6">
+          <h3>6. To write about your house, which room would have a bed and pillows?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answerQ(6,'A','B')">🅰️ Kitchen</button>
+            <button class="quiz-opt" onclick="answerQ(6,'B','B')">🅱️ Bedroom</button>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="quiz-result" id="quizResult">
+        <div class="result-score" id="quizScore">0/6</div>
+        <div class="result-msg" id="quizMsg">Keep trying!</div>
+        <div id="quizEmoji" style="font-size:3rem;margin-top:8px">😊</div>
+        <br>
+        <button class="retry-btn" onclick="resetQuiz()">🔄 Try Again</button>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#333;color:#fff;text-align:center;padding:32px 20px">
+  <p style="font-size:1.1rem;font-weight:700">✏️ Chapter 23: Composition — Class 2 English</p>
+  <p style="font-size:0.95rem;color:#aaa;margin-top:8px">Digital School EdTech Platform · Keep writing, keep growing! 🌟</p>
+</footer>
+
+</div><!-- end page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── Curtain fallback ──────────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(()=>{c.style.display='none'},500); }
+  }, 2000);
+
+  // ── Lenis Smooth Scroll ───────────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1 });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed:', e); }
+
+  // ── GSAP Animations ───────────────────────────────────────
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title word-by-word
+      const spans = document.querySelectorAll('#hero-title span');
+      gsap.fromTo(spans, 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.15, duration: 0.7, ease: 'back.out(1.5)', delay: 0.3 }
+      );
+
+      // Cards fade up on scroll
+      document.querySelectorAll('.card, .quiz-q').forEach(el => {
+        gsap.fromTo(el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          }
+        );
+      });
+
+    } catch(e) { console.warn('GSAP error:', e); }
+  }
+
+  // ── Progress Bar ──────────────────────────────────────────
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = total > 0 ? (scrolled / total) * 100 : 0;
+    const bar = document.getElementById('progress-bar');
+    if (bar) bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ── Active Nav Highlight ──────────────────────────────────
+  const sections = ['intro','ex231','ex232','ex233','ex234','ex235','ex236','quiz'];
+  function updateActiveNav() {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 200) current = id;
+    });
+    document.querySelectorAll('.sidebar a, .mobile-nav a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+  // ── Curtain dismiss on full load ──────────────────────────
+  const curtain = document.getElementById('curtain');
+  if (curtain) {
+    curtain.style.opacity = '0';
+    curtain.style.transition = 'opacity 0.6s';
+    setTimeout(() => { curtain.style.display = 'none'; }, 700);
+  }
+
+  // Init house selected words
+  window._selectedRoomWords = [];
+  window._selectedSubject = '';
+  window._selectedSubjectIcon = '';
+  window._activeWordInsert = { ex: null, word: null };
+  window._quizAnswers = {};
+  window._quizScore = 0;
+  window._quizDone = false;
+
+});
+
+// ── Word Bank Insert ───────────────────────────────────────
+function insertWord(ex, word) {
+  // find first empty input in that exercise
+  let inserted = false;
+  for (let i = 1; i <= 6; i++) {
+    const inp = document.getElementById('l'+ex+'-'+i);
+    if (inp && !inp.value.trim()) {
+      inp.value = word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+      inp.focus();
+      inserted = true;
+      showToast('Word added to line ' + i + '! Finish the sentence.', '#FF9F43');
+      break;
+    }
+  }
+  if (!inserted) {
+    // insert into currently focused
+    const focused = document.activeElement;
+    if (focused && focused.classList.contains('sentence-input')) {
+      const cur = focused.value;
+      focused.value = cur + word + ' ';
+      focused.focus();
+      showToast('Word inserted!', '#FF9F43');
+    } else {
+      showToast('All lines have content. Click a line to add the word.', '#999');
+    }
+  }
+}
+
+// ── Check Writing ──────────────────────────────────────────
+function checkWriting(ex, count) {
+  let filled = 0;
+  let hasCap = true;
+  let hasPunct = true;
+  for (let i = 1; i <= count; i++) {
+    const inp = document.getElementById('l'+ex+'-'+i);
+    if (inp && inp.value.trim().length > 2) {
+      filled++;
+      const v = inp.value.trim();
+      if (v[0] !== v[0].toUpperCase()) hasCap = false;
+      const last = v[v.length-1];
+      if (last !== '.' && last !== '!' && last !== '?') hasPunct = false;
+      // Animate input
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+        try { gsap.fromTo(inp, {borderBottomColor:'#1DD1A1'},{borderBottomColor:'#1DD1A1',duration:0.5}); } catch(e){}
+      }
+    }
+  }
+  if (filled === 0) {
+    showToast('Please write at least one sentence first! ✏️', '#ff6b6b');
+    return;
+  }
+  if (!hasCap) {
+    showToast('Remember: Start each sentence with a CAPITAL letter! 📝', '#ff6b6b');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+      try { gsap.to('#lines'+ex+' .sentence-input', {rotation:[-3,3,-3,3,0],duration:0.5}); } catch(e){}
+    }
+    return;
+  }
+  if (!hasPunct) {
+    showToast('Don\'t forget the full stop (.) at the end! ✏️', '#FF9F43');
+    return;
+  }
+  showToast('Great job! ' + filled + ' sentences written! 🌟', '#1DD1A1');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+    try {
+      gsap.to('#lines'+ex, {scale:1.02,duration:0.2,yoyo:true,repeat:1,ease:'power2.out'});
+    } catch(e){}
+  }
+}
+
+// ── Clear Lines ────────────────────────────────────────────
+function clearLines(ex, count) {
+  for (let i = 1; i <= count; i++) {
+    const inp = document.getElementById('l'+ex+'-'+i);
+    if (inp) inp.value = '';
+  }
+  showToast('Lines cleared! ✨', '#999');
+}
+
+// ── Read Sentences ─────────────────────────────────────────
+function readSentences(ex, count) {
+  let text = '';
+  for (let i = 1; i <= count; i++) {
+    const inp = document.getElementById('l'+ex+'-'+i);
+    if (inp && inp.value.trim()) text += inp.value.trim() + ' ';
+  }
+  if (!text.trim()) { showToast('Nothing to read yet! Write some sentences first.', '#999'); return; }
+  speakText(text);
+}
+
+// ── Read Aloud ─────────────────────────────────────────────
+function speakText(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.85;
+      u.pitch = 1.1;
+      u.lang = 'en-US';
+      window.speechSynthesis.speak(u);
+      showToast('🔊 Reading aloud…', '#1DD1A1');
+    } else {
+      showToast('Speech not supported on this device. Text: ' + text.substring(0,60) + '…', '#999');
+    }
+  } catch(e) {
+    showToast('Speech unavailable on this device.', '#999');
+  }
+}
+
+// ── Toast ──────────────────────────────────────────────────
+function showToast(msg, color) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.style.background = color || '#1DD1A1';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Friend Story Builder ───────────────────────────────────
+function buildFriendStory() {
+  const name = document.getElementById('f-name').value.trim() || 'My friend';
+  const age = document.getElementById('f-age').value.trim();
+  const cls = document.getElementById('f-class').value.trim();
+  const gen = document.getElementById('f-gender').value;
+  const look = document.getElementById('f-look').value.trim();
+  const sib = document.getElementById('f-siblings').value.trim();
+  const pro = gen === 'he' ? 'He' : 'She';
+  const pp = gen === 'he' ? 'his' : 'her';
+  let story = '';
+  story += 'My friend\'s name is ' + (name||'___') + '.';
+  if (age) story += ' ' + pro + ' is ' + age + ' years old.';
+  if (cls) story += ' ' + pro + ' is in ' + cls + '.';
+  if (look) story += ' ' + pro + ' has ' + look + '.';
+  if (sib) story += ' ' + pro + ' has ' + sib + '.';
+  story += ' ' + (name||'My friend') + ' is a very good friend to me!';
+  const el = document.getElementById('friendText');
+  if (el) {
+    el.textContent = story;
+    el.style.color = '#333';
+    el.style.fontStyle = 'normal';
+  }
+}
+
+function readFriendStory() {
+  const el = document.getElementById('friendText');
+  if (el && el.textContent && !el.textContent.includes('Start typing')) speakText(el.textContent);
+  else showToast('Fill in the form first!', '#999');
+}
+
+function clearFriendForm() {
+  ['f-name','f-age','f-class','f-look','f-siblings'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const el = document.getElementById('friendText');
+  if (el) { el.textContent = 'Start typing above to see your composition…'; el.style.color='#aaa'; el.style.fontStyle='italic'; }
+}
+
+// ── Subject Story Builder ──────────────────────────────────
+function selectSubject(name, icon) {
+  window._selectedSubject = name;
+  window._selectedSubjectIcon = icon;
+  document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const form = document.getElementById('subjectForm');
+  if (form) form.style.display = 'block';
+  const qSpan = document.getElementById('subjectNameQ');
+  if (qSpan) qSpan.textContent = name;
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+    try { gsap.fromTo('#subjectForm',{opacity:0,y:20},{opacity:1,y:0,duration:0.5}); } catch(e){}
+  }
+  showToast(icon + ' ' + name + ' selected!', '#FF9F43');
+}
+
+function buildSubjectStory() {
+  const name = window._selectedSubject || 'my favourite subject';
+  const icon = window._selectedSubjectIcon || '📚';
+  const q1 = document.getElementById('sq1').value.trim();
+  const q2 = document.getElementById('sq2').value.trim();
+  const q3 = document.getElementById('sq3').value.trim();
+  const q4 = document.getElementById('sq4').value.trim();
+  const q5 = document.getElementById('sq5').value.trim();
+  let story = 'My favourite subject at school is ' + name + '. ';
+  if (q1) story += q1 + ' ';
+  if (q2) story += q2 + ' ';
+  if (q3) story += q3 + ' ';
+  if (q4) story += 'When I study ' + name + ', ' + q4.toLowerCase() + ' ';
+  if (q5) story += q5 + ' ';
+  story = story.trim();
+  const el = document.getElementById('subjectText');
+  if (el) {
+    el.textContent = story;
+    el.style.color = '#333';
+    el.style.fontStyle = 'normal';
+  }
+}
+
+function readSubjectStory() {
+  const el = document.getElementById('subjectText');
+  if (el && el.textContent && !el.textContent.includes('Start')) speakText(el.textContent);
+  else showToast('Answer the questions first!', '#999');
+}
+
+function clearSubjectForm() {
+  ['sq1','sq2','sq3','sq4','sq5'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const el = document.getElementById('subjectText');
+  if (el) { el.textContent = 'Start answering above…'; el.style.color='#aaa'; el.style.fontStyle='italic'; }
+}
+
+// ── Bus Story ──────────────────────────────────────────────
+function addToStory235(word) {
+  // find first empty line
+  for (let i = 1; i <= 5; i++) {
+    const inp = document.getElementById('l235-'+i);
+    if (inp && !inp.value.trim()) {
+      inp.value = word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+      inp.focus();
+      showToast('Word added! Complete the sentence.', '#1DD1A1');
+      return;
+    }
+  }
+  // focused
+  const focused = document.activeElement;
+  if (focused && focused.classList.contains('sentence-input')) {
+    focused.value += word + ' ';
+    showToast('Word inserted!', '#1DD1A1');
+  } else {
+    showToast('Click a sentence line then click a word to insert.', '#999');
+  }
+}
+
+function checkBusStory() {
+  const title = document.getElementById('busTitle').value.trim();
+  if (!title) {
+    showToast('Don\'t forget to give your story a title! 📰', '#FF9F43');
+    const ti = document.getElementById('busTitle');
+    if (ti) {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+        try { gsap.to(ti, {rotation:[-4,4,-4,4,0],duration:0.4}); } catch(e){}
+      }
+    }
+    return;
+  }
+  checkWriting('235', 5);
+}
+
+function clearBusStory() {
+  document.getElementById('busTitle').value = '';
+  clearLines('235', 5);
+}
+
+function readBusStory() {
+  const title = document.getElementById('busTitle').value.trim();
+  let text = title ? title + '. ' : '';
+  for (let i = 1; i <= 5; i++) {
+    const inp = document.getElementById('l235-'+i);
+    if (inp && inp.value.trim()) text += inp.value.trim() + ' ';
+  }
+  if (!text.trim()) { showToast('Write your story first!', '#999'); return; }
+  speakText(text);
+}
+
+// ── House Room Words ───────────────────────────────────────
+function toggleRoomWord(el, word) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    window._selectedRoomWords.push(word);
+    showToast('✅ "' + word + '" added!', '#1DD1A1');
+  } else {
+    window._selectedRoomWords = window._selectedRoomWords.filter(w => w !== word);
+  }
+  const display = document.getElementById('selectedWordsDisplay');
+  if (display) {
+    if (window._selectedRoomWords.length > 0) {
+      display.textContent = window._selectedRoomWords.join(', ');
+    } else {
+      display.textContent = 'None yet';
+    }
+  }
+}
+
+function clearHouseForm() {
+  clearLines('236', 5);
+  window._selectedRoomWords = [];
+  document.querySelectorAll('.room-word').forEach(w => w.classList.remove('selected'));
+  const display = document.getElementById('selectedWordsDisplay');
+  if (display) display.textContent = 'None yet';
+  showToast('All cleared! 🗑️', '#999');
+}
+
+// ── Quiz ───────────────────────────────────────────────────
+window._quizScore = 0;
+window._quizAnswered = {};
+window._totalQ = 6;
+
+function answerQ(qNum, chosen, correct) {
+  if (window._quizAnswered[qNum]) return;
+  window._quizAnswered[qNum] = true;
+  const qEl = document.getElementById('qq' + qNum);
+  const buttons = qEl.querySelectorAll('.quiz-opt');
+  const letters = ['A','B'];
+  
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (letters[idx] === correct) {
+      btn.classList.add('correct');
+    } else if (letters[idx] === chosen && chosen !== correct) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  const isCorrect = chosen === correct;
+  if (isCorrect) {
+    window._quizScore++;
+    showToast('🎉 Correct! Well done!', '#1DD1A1');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+      try { gsap.fromTo(qEl, {scale:1},{scale:1.03,duration:0.2,yoyo:true,repeat:1}); } catch(e){}
+    }
+  } else {
+    showToast('Not quite! The correct answer is highlighted. 💪', '#ff6b6b');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+      try { gsap.to(qEl, {rotation:[-4,4,-4,4,0],duration:0.4}); } catch(e){}
+    }
+  }
+  
+  // Check if all answered
+  if (Object.keys(window._quizAnswered).length === window._totalQ) {
+    setTimeout(showQuizResult, 800);
+  }
+}
+
+function showQuizResult() {
+  const r = document.getElementById('quizResult');
+  const scoreEl = document.getElementById('quizScore');
+  const msgEl = document.getElementById('quizMsg');
+  const emojiEl = document.getElementById('quizEmoji');
+  if (!r) return;
+  r.classList.add('show');
+  scoreEl.textContent = window._quizScore + '/' + window._totalQ;
+  if (window._quizScore === window._totalQ) {
+    msgEl.textContent = 'Perfect score! You are a writing star! ⭐';
+    emojiEl.textContent = '🏆';
+  } else if (window._quizScore >= 4) {
+    msgEl.textContent = 'Great job! Keep practising!';
+    emojiEl.textContent = '🌟';
+  } else if (window._quizScore >= 2) {
+    msgEl.textContent = 'Good try! Review the lesson and try again.';
+    emojiEl.textContent = '😊';
+  } else {
+    msgEl.textContent = 'Keep practising — you can do it!';
+    emojiEl.textContent = '💪';
+  }
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof gsap !== 'undefined') {
+    try { gsap.fromTo(r, {scale:0.8,opacity:0},{scale:1,opacity:1,duration:0.6,ease:'back.out(1.5)'}); } catch(e){}
+  }
+}
+
+function resetQuiz() {
+  window._quizScore = 0;
+  window._quizAnswered = {};
+  document.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove('correct','wrong');
+  });
+  const r = document.getElementById('quizResult');
+  if (r) r.classList.remove('show');
+  showToast('Quiz reset! Good luck! 🍀', '#FF9F43');
+}
+</script>
+</body>
+</html>

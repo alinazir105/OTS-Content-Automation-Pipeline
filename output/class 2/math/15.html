@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money – Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#333;font-size:18px;scroll-behavior:smooth}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436}
+#curtain{position:fixed;inset:0;background:#1DD1A1;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .logo{font-size:clamp(2rem,6vw,3.5rem);font-weight:900;color:#fff}
+#curtain .sub{font-size:clamp(1rem,3vw,1.4rem);color:rgba(255,255,255,0.85)}
+#progress-bar{position:fixed;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,0.08);z-index:1000}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#FF9F43,#1DD1A1);transition:width 0.3s ease}
+.page-wrapper{width:100%;max-width:100%}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+/* HERO */
+.hero{width:100vw;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#00b894 40%,#0984e3 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:60px 20px}
+.hero-content{text-align:center;z-index:2}
+.hero-badge{background:rgba(255,255,255,0.2);color:#fff;border-radius:50px;padding:8px 24px;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;display:inline-block;margin-bottom:20px;backdrop-filter:blur(10px)}
+.hero-title{font-size:clamp(3rem,8vw,5.5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-title span{display:inline-block;opacity:1}
+.hero-subtitle{font-size:clamp(1.1rem,3vw,1.6rem);color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 30px}
+.hero-coins{font-size:clamp(3rem,8vw,6rem);margin-bottom:10px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.read-aloud-btn{background:#FF9F43;color:#fff;border:none;border-radius:50px;padding:14px 32px;font-size:clamp(1rem,2.5vw,1.1rem);font-weight:700;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(255,159,67,0.4);font-family:'Nunito',sans-serif}
+.read-aloud-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,159,67,0.5)}
+/* SECTIONS */
+.section{padding:60px 0}
+.section-card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:40px;margin-bottom:32px;opacity:1;transform:none;border-left:4px solid var(--teal)}
+.section-card.orange{border-left-color:var(--orange)}
+.section-card.purple{border-left-color:var(--purple)}
+.section-card.teal{border-left-color:var(--teal)}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.section-icon{font-size:2.5rem;flex-shrink:0}
+.section-title{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:var(--dark)}
+.section-desc{font-size:clamp(1rem,2.5vw,1.15rem);color:#636e72;line-height:1.7;margin-bottom:24px}
+/* PRICE TAG GRID */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:20px;margin:24px 0}
+.price-item{background:#FAFAFA;border-radius:16px;padding:20px 16px;text-align:center;border:2px solid #f0f0f0;transition:transform 0.2s,box-shadow 0.2s}
+.price-item:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.price-item .emoji{font-size:2.8rem;margin-bottom:10px;display:block}
+.price-tag{background:var(--orange);color:#fff;border-radius:50px;padding:6px 18px;font-size:clamp(0.9rem,2vw,1.05rem);font-weight:800;display:inline-block;margin-top:8px}
+/* BILL ACTIVITY */
+.bill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin:24px 0}
+.bill-card{background:#FAFAFA;border-radius:16px;padding:24px;border:2px solid #f0f0f0;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.bill-items{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.bill-item{text-align:center;font-size:2rem}
+.bill-item span{display:block;font-size:clamp(0.8rem,1.8vw,0.95rem);font-weight:700;color:#636e72}
+.plus-sign{font-size:1.8rem;font-weight:900;color:var(--teal)}
+.equals-sign{font-size:1.8rem;font-weight:900;color:var(--purple)}
+.bill-answer{min-width:80px;height:50px;border-radius:12px;border:2px dashed var(--orange);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:var(--orange);cursor:pointer;transition:all 0.2s}
+.bill-answer.correct{background:#1DD1A1;border-color:#1DD1A1;color:#fff}
+.bill-answer.wrong{border-color:#e17055}
+/* ADDITION TABLE */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}
+.calc-box{background:#FAFAFA;border-radius:16px;padding:24px;border:2px solid #f0f0f0}
+.calc-row{display:flex;align-items:baseline;justify-content:flex-end;gap:8px;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:8px}
+.calc-row .label{margin-right:auto;font-weight:700;color:var(--dark);font-size:clamp(0.95rem,2.5vw,1.1rem)}
+.calc-row .amount{font-weight:800;min-width:70px;text-align:right}
+.calc-divider{border:none;border-top:2px solid #dfe6e9;margin:8px 0}
+.calc-total{display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:clamp(1.1rem,3vw,1.4rem)}
+.calc-total .answer-box{min-width:100px;height:44px;border-radius:10px;border:2px dashed var(--orange);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:var(--orange);cursor:pointer;padding:0 12px;transition:all 0.2s}
+.calc-total .answer-box.correct{background:#1DD1A1;border-color:#1DD1A1;color:#fff}
+.calc-total .answer-box.wrong{border-color:#e17055;animation:wobble 0.5s}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+/* WORD BANK */
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;padding:16px;background:#f0f0f0;border-radius:12px}
+.word-chip{background:#fff;border:2px solid var(--purple);border-radius:50px;padding:8px 20px;font-size:clamp(1rem,2.5vw,1.1rem);font-weight:700;color:var(--purple);cursor:pointer;transition:all 0.2s;user-select:none}
+.word-chip:hover{background:var(--purple);color:#fff;transform:scale(1.05)}
+.word-chip.used{opacity:0.4;pointer-events:none}
+/* QUIZ */
+.quiz-section{padding:60px 0}
+.quiz-card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:40px;margin-bottom:32px}
+.quiz-question{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;color:var(--dark);margin-bottom:24px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.quiz-option{background:#FAFAFA;border:3px solid #e0e0e0;border-radius:16px;padding:20px;text-align:center;cursor:pointer;font-size:clamp(1rem,2.5vw,1.2rem);font-weight:700;color:var(--dark);transition:all 0.2s;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.quiz-option .opt-emoji{font-size:2rem}
+.quiz-option:hover{border-color:var(--teal);background:#f0fdf9}
+.quiz-option.correct{background:#d4f8ee;border-color:#1DD1A1;color:#00b894}
+.quiz-option.wrong{background:#ffedef;border-color:#e17055;color:#e17055}
+.quiz-feedback{margin-top:16px;font-size:clamp(1rem,2.5vw,1.2rem);font-weight:700;min-height:32px;text-align:center}
+.quiz-nav{display:flex;gap:16px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.btn{background:var(--teal);color:#fff;border:none;border-radius:50px;padding:14px 32px;font-size:clamp(1rem,2.5vw,1.1rem);font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;min-height:48px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(29,209,161,0.4)}
+.btn.orange{background:var(--orange)}
+.btn.purple{background:var(--purple)}
+.score-display{text-align:center;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:var(--teal);margin-top:20px}
+/* COST FINDER */
+.cost-finder-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}
+.cost-row{background:#FAFAFA;border-radius:16px;padding:20px;border:2px solid #f0f0f0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cost-emoji{font-size:2.2rem;text-align:center}
+.op-sign{font-size:1.5rem;font-weight:900;color:var(--purple)}
+.cost-answer{min-width:90px;height:44px;border-radius:10px;border:2px dashed var(--teal);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--teal);cursor:pointer;transition:all 0.2s;padding:0 10px}
+.cost-answer.correct{background:#1DD1A1;border-color:#1DD1A1;color:#fff}
+.cost-answer.wrong{border-color:#e17055;animation:wobble 0.5s}
+/* NAV */
+.desktop-nav{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:12px;padding:16px;background:rgba(255,255,255,0.95);border-radius:0 20px 20px 0;box-shadow:0 8px 32px rgba(0,0,0,0.1)}
+.nav-dot{width:12px;height:12px;border-radius:50%;background:#dfe6e9;cursor:pointer;transition:all 0.2s;position:relative}
+.nav-dot.active{background:var(--teal);transform:scale(1.3)}
+.nav-dot:hover::after{content:attr(data-label);position:absolute;left:20px;top:50%;transform:translateY(-50%);background:var(--dark);color:#fff;padding:4px 12px;border-radius:8px;font-size:13px;white-space:nowrap;font-family:'Nunito',sans-serif}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:500;overflow-x:auto;padding:8px 0}
+.mobile-nav-inner{display:flex;gap:0;min-width:max-content}
+.mobile-nav-item{padding:10px 18px;font-size:13px;font-weight:700;color:#636e72;cursor:pointer;white-space:nowrap;transition:color 0.2s;min-height:48px;display:flex;align-items:center;border-bottom:3px solid transparent}
+.mobile-nav-item.active{color:var(--teal);border-bottom-color:var(--teal)}
+/* DIFF SECTION */
+.diff-note{background:linear-gradient(135deg,#A29BFE20,#A29BFE10);border-radius:16px;padding:16px 20px;margin-bottom:20px;font-size:clamp(1rem,2.5vw,1.1rem);color:var(--dark);border-left:4px solid var(--purple)}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .desktop-nav{display:none}
+  .mobile-nav{display:block}
+  body{padding-bottom:80px}
+  .container{padding:0 16px}
+  .section{padding:30px 0}
+  .section-card{padding:24px 18px}
+  .calc-grid{grid-template-columns:1fr}
+  .cost-finder-grid{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .bill-grid{grid-template-columns:1fr}
+  .hero{min-height:60vh;padding:40px 16px}
+  .price-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .cost-row{justify-content:center}
+}
+@media(max-width:480px){
+  .calc-grid{grid-template-columns:1fr}
+  .bill-card{flex-direction:column;align-items:flex-start}
+}
+/* CONFETTI */
+.confetti-piece{position:fixed;top:-10px;border-radius:4px;animation:fall linear forwards;pointer-events:none;z-index:9998}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<div id="curtain">
+  <div class="logo">💰 Money</div>
+  <div class="sub">Class 2 Math • Digital School</div>
+</div>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- Desktop Nav -->
+<nav class="desktop-nav" id="desktop-nav">
+  <div class="nav-dot active" data-section="0" data-label="Intro"></div>
+  <div class="nav-dot" data-section="1" data-label="Bill Activity"></div>
+  <div class="nav-dot" data-section="2" data-label="Price Tags"></div>
+  <div class="nav-dot" data-section="3" data-label="Cost Finder"></div>
+  <div class="nav-dot" data-section="4" data-label="Addition"></div>
+  <div class="nav-dot" data-section="5" data-label="Subtraction"></div>
+  <div class="nav-dot" data-section="6" data-label="Quiz"></div>
+</nav>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mobile-nav-item active" data-section="0">🏠 Intro</div>
+    <div class="mobile-nav-item" data-section="1">🧾 Bill</div>
+    <div class="mobile-nav-item" data-section="2">🏷️ Prices</div>
+    <div class="mobile-nav-item" data-section="3">🔍 Cost</div>
+    <div class="mobile-nav-item" data-section="4">➕ Add</div>
+    <div class="mobile-nav-item" data-section="5">➖ Subtract</div>
+    <div class="mobile-nav-item" data-section="6">🎯 Quiz</div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="sec-0">
+    <div class="hero-content">
+      <div class="hero-badge">📚 Chapter 15</div>
+      <div class="hero-coins">💰🪙💵</div>
+      <h1 class="hero-title">
+        <span id="hw1">Let's</span>&nbsp;
+        <span id="hw2">Learn</span>&nbsp;
+        <span id="hw3">About</span>&nbsp;
+        <span id="hw4">Money!</span>
+      </h1>
+      <p class="hero-subtitle">We use money every day to buy things. Let's find out how much things cost!</p>
+      <button class="read-aloud-btn" onclick="readAloud('Welcome to the Money lesson! In this lesson, you will learn about Pakistani Rupees, how to find the total cost of things, and how to find the difference in prices.')">🔊 Read Aloud</button>
+    </div>
+  </section>
+
+  <!-- SECTION 1: BILL ACTIVITY -->
+  <section class="section" id="sec-1">
+    <div class="container">
+      <div class="section-card orange" data-animate>
+        <div class="section-header">
+          <span class="section-icon">🧾</span>
+          <h2 class="section-title">How Much Is the Bill?</h2>
+        </div>
+        <p class="section-desc">Look at the price of each item below. Then add the two items together to find the total bill!</p>
+
+        <div style="background:linear-gradient(135deg,#FF9F4320,#FF9F4310);border-radius:16px;padding:24px;margin-bottom:24px">
+          <h3 style="font-size:clamp(1.2rem,3vw,1.5rem);font-weight:800;margin-bottom:16px;color:var(--dark)">🏷️ Item Price List</h3>
+          <div class="price-grid">
+            <div class="price-item"><span class="emoji">⚽</span><div>Football</div><div class="price-tag">Rs 20</div></div>
+            <div class="price-item"><span class="emoji">✈️</span><div>Aeroplane</div><div class="price-tag">Rs 30</div></div>
+            <div class="price-item"><span class="emoji">🍓</span><div>Strawberry</div><div class="price-tag">Rs 10</div></div>
+            <div class="price-item"><span class="emoji">🧁</span><div>Cupcake</div><div class="price-tag">Rs 35</div></div>
+            <div class="price-item"><span class="emoji">✏️</span><div>Pencil</div><div class="price-tag">Rs 3</div></div>
+            <div class="price-item"><span class="emoji">🏠</span><div>House</div><div class="price-tag">Rs 50</div></div>
+            <div class="price-item"><span class="emoji">🚢</span><div>Ship</div><div class="price-tag">Rs 60</div></div>
+            <div class="price-item"><span class="emoji">🎩</span><div>Hat</div><div class="price-tag">Rs 40</div></div>
+            <div class="price-item"><span class="emoji">🍎</span><div>Apple</div><div class="price-tag">Rs 15</div></div>
+          </div>
+        </div>
+
+        <h3 style="font-size:clamp(1.1rem,3vw,1.4rem);font-weight:800;margin-bottom:16px;color:var(--dark)">🧮 Add the items — click the answer box!</h3>
+        <div class="bill-grid" id="bill-grid"></div>
+
+        <div style="margin-top:20px">
+          <button class="read-aloud-btn" onclick="readAloud('Look at the price of each item. Add the two items together to find the total bill. Click on the answer box to see the answer!')">🔊 Read Instructions</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PRICE TAGS -->
+  <section class="section" id="sec-2">
+    <div class="container">
+      <div class="section-card teal" data-animate>
+        <div class="section-header">
+          <span class="section-icon">🏷️</span>
+          <h2 class="section-title">Things and Their Price Tags</h2>
+        </div>
+        <p class="section-desc">Look at each toy or item and remember its price. You will need these prices in the next activity!</p>
+        <div class="price-grid">
+          <div class="price-item"><span class="emoji">🚁</span><div>Helicopter</div><div class="price-tag">Rs 150</div></div>
+          <div class="price-item"><span class="emoji">🚗</span><div>Car</div><div class="price-tag">Rs 10</div></div>
+          <div class="price-item"><span class="emoji">✈️</span><div>Aeroplane</div><div class="price-tag">Rs 250</div></div>
+          <div class="price-item"><span class="emoji">🧸</span><div>Teddy Bear</div><div class="price-tag">Rs 50</div></div>
+          <div class="price-item"><span class="emoji">🎒</span><div>School Bag</div><div class="price-tag">Rs 30</div></div>
+          <div class="price-item"><span class="emoji">🤖</span><div>Robot</div><div class="price-tag">Rs 5</div></div>
+          <div class="price-item"><span class="emoji">🕶️</span><div>Sunglasses</div><div class="price-tag">Rs 25</div></div>
+          <div class="price-item"><span class="emoji">🪁</span><div>Kite</div><div class="price-tag">Rs 5</div></div>
+        </div>
+        <button class="read-aloud-btn" style="margin-top:16px" onclick="readAloud('Look at the price tags. A helicopter costs Rs 150. A car costs Rs 10. An aeroplane costs Rs 250. A teddy bear costs Rs 50. A school bag costs Rs 30. A robot costs Rs 5. Sunglasses cost Rs 25. A kite costs Rs 5.')">🔊 Read Prices</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: COST FINDER -->
+  <section class="section" id="sec-3">
+    <div class="container">
+      <div class="section-card purple" data-animate>
+        <div class="section-header">
+          <span class="section-icon">🔍</span>
+          <h2 class="section-title">Find the Cost of Things</h2>
+        </div>
+        <p class="section-desc">Using the prices from the list above, add up the cost of the items in each row. Tap the answer box to check!</p>
+        <div class="cost-finder-grid" id="cost-grid"></div>
+        <button class="read-aloud-btn" style="margin-top:16px" onclick="readAloud('Add the prices of the items in each row. Click the answer box to see if you are correct!')">🔊 Read Instructions</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: ADDITION -->
+  <section class="section" id="sec-4">
+    <div class="container">
+      <div class="section-card orange" data-animate>
+        <div class="section-header">
+          <span class="section-icon">➕</span>
+          <h2 class="section-title">How Much Do These Cost? (Addition)</h2>
+        </div>
+        <p class="section-desc">Add the prices of two items together to find the total. Click each answer box to reveal the answer!</p>
+        <div class="calc-grid" id="add-grid"></div>
+        <button class="read-aloud-btn" style="margin-top:16px" onclick="readAloud('Add the prices shown. Click the answer box to see the total!')">🔊 Read Instructions</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: SUBTRACTION -->
+  <section class="section" id="sec-5">
+    <div class="container">
+      <div class="section-card purple" data-animate>
+        <div class="section-header">
+          <span class="section-icon">➖</span>
+          <h2 class="section-title">Find the Difference in Price</h2>
+        </div>
+        <div class="diff-note">💡 <strong>Difference</strong> means we <strong>subtract</strong> the smaller price from the bigger price!</div>
+        <p class="section-desc">Find the difference between the two prices. Click the answer box to check your answer!</p>
+        <div class="calc-grid" id="sub-grid"></div>
+        <button class="read-aloud-btn" style="margin-top:16px" onclick="readAloud('Subtract the smaller price from the bigger price to find the difference. Click the answer box to check!')">🔊 Read Instructions</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: QUIZ -->
+  <section class="quiz-section" id="sec-6">
+    <div class="container">
+      <div class="section-card teal" data-animate>
+        <div class="section-header">
+          <span class="section-icon">🎯</span>
+          <h2 class="section-title">Let's Test Yourself!</h2>
+        </div>
+        <p class="section-desc">Answer these questions about money. Choose the correct answer!</p>
+      </div>
+      <div id="quiz-container"></div>
+      <div class="quiz-nav">
+        <button class="btn orange" id="prev-btn" onclick="changeQuestion(-1)" style="display:none">◀ Previous</button>
+        <button class="btn" id="next-btn" onclick="changeQuestion(1)">Next ▶</button>
+        <button class="btn purple" id="restart-btn" onclick="restartQuiz()" style="display:none">🔄 Try Again</button>
+      </div>
+      <div class="score-display" id="score-display"></div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(()=>c.style.display='none',500); }
+  }, 2500);
+
+  // ── DATA ──────────────────────────────────────────────
+  const billItems = [
+    { a:'✈️', aName:'Aeroplane', aPrice:30, b:'🍓', bName:'Strawberry', bPrice:10 },
+    { a:'🎩', aName:'Hat', aPrice:40, b:'🏠', bName:'House', bPrice:50 },
+    { a:'🧁', aName:'Cupcake', aPrice:35, b:'✏️', bName:'Pencil', bPrice:3 },
+    { a:'🍓', aName:'Strawberry', aPrice:10, b:'🚢', bName:'Ship', bPrice:60 },
+    { a:'⚽', aName:'Football', aPrice:20, b:'🍎', bName:'Apple', bPrice:15 },
+    { a:'🧁', aName:'Cupcake', aPrice:35, b:'🏠', bName:'House', bPrice:50 },
+  ];
+
+  const priceLookup = {
+    '🚁':150, '🚗':10, '✈️':250, '🧸':50, '🎒':30, '🤖':5, '🕶️':25, '🪁':5
+  };
+
+  const costItems = [
+    { items:['🚁','🎒','🕶️'] },
+    { items:['✈️','🧸','🚗'] },
+    { items:['🤖','🎒','🪁'] },
+    { items:['🚗','🧸','🕶️'] },
+    { items:['✈️','🎒','🪁'] },
+  ];
+
+  const addProblems = [
+    { item1:'Shoes', p1:499, item2:'Ball', p2:210, op:'+' },
+    { item1:'Book', p1:350, item2:'Kite', p2:300, op:'+' },
+    { item1:'Jeep', p1:500, item2:'Ball', p2:210, op:'+' },
+    { item1:'Lamp', p1:499, item2:'Doll', p2:258, op:'+' },
+    { item1:'Shoes', p1:258, item2:'Car', p2:188, op:'+' },
+    { item1:'Book', p1:380, item2:'Bat', p2:289, op:'+' },
+    { item1:'Jeep', p1:805, item2:'Kite', p2:281, op:'+' },
+    { item1:'Lamp', p1:999, item2:'Toy', p2:812, op:'+' },
+  ];
+
+  const subProblems = [
+    { item1:'Shoes', p1:499, item2:'Ball', p2:210, op:'-' },
+    { item1:'Book', p1:350, item2:'Kite', p2:300, op:'-' },
+    { item1:'Jeep', p1:500, item2:'Ball', p2:210, op:'-' },
+    { item1:'Lamp', p1:499, item2:'Doll', p2:258, op:'-' },
+    { item1:'Shoes', p1:258, item2:'Car', p2:188, op:'-' },
+    { item1:'Book', p1:380, item2:'Bat', p2:289, op:'-' },
+    { item1:'Jeep', p1:805, item2:'Kite', p2:281, op:'-' },
+    { item1:'Lamp', p1:999, item2:'Toy car', p2:812, op:'-' },
+  ];
+
+  const quizData = [
+    {
+      q:'A football costs Rs 20 and an apple costs Rs 15. What is the total?',
+      opts:[{label:'Rs 35 ✅',val:35,emoji:'✅'},{label:'Rs 25',val:25,emoji:'❌'}],
+      correct:35
+    },
+    {
+      q:'A cupcake costs Rs 35 and a pencil costs Rs 3. How much do they cost together?',
+      opts:[{label:'Rs 38 ✅',val:38,emoji:'🧁'},{label:'Rs 32',val:32,emoji:'❌'}],
+      correct:38
+    },
+    {
+      q:'A teddy bear costs Rs 50 and a school bag costs Rs 30. What is the total?',
+      opts:[{label:'Rs 80 ✅',val:80,emoji:'🧸'},{label:'Rs 70',val:70,emoji:'❌'}],
+      correct:80
+    },
+    {
+      q:'Shoes cost Rs 499 and a ball costs Rs 210. What is the total?',
+      opts:[{label:'Rs 709 ✅',val:709,emoji:'👟'},{label:'Rs 689',val:689,emoji:'❌'}],
+      correct:709
+    },
+    {
+      q:'A lamp costs Rs 499 and a doll costs Rs 258. What is the difference?',
+      opts:[{label:'Rs 241 ✅',val:241,emoji:'💡'},{label:'Rs 757',val:757,emoji:'❌'}],
+      correct:241
+    },
+    {
+      q:'An aeroplane toy costs Rs 250, a school bag costs Rs 30, and a kite costs Rs 5. What is the total?',
+      opts:[{label:'Rs 285 ✅',val:285,emoji:'✈️'},{label:'Rs 275',val:275,emoji:'❌'}],
+      correct:285
+    },
+  ];
+
+  // ── BUILD BILL ACTIVITY ────────────────────────────────
+  const billGrid = document.getElementById('bill-grid');
+  billItems.forEach(bi => {
+    const total = bi.aPrice + bi.bPrice;
+    const div = document.createElement('div');
+    div.className = 'bill-card';
+    div.innerHTML = `
+      <div class="bill-items">
+        <div class="bill-item">${bi.a}<span>Rs ${bi.aPrice}</span></div>
+        <span class="plus-sign">+</span>
+        <div class="bill-item">${bi.b}<span>Rs ${bi.bPrice}</span></div>
+        <span class="equals-sign">=</span>
+        <div class="bill-answer" data-answer="${total}" onclick="revealAnswer(this,'Rs ${total}')">?</div>
+      </div>`;
+    billGrid.appendChild(div);
+  });
+
+  // ── BUILD COST FINDER ──────────────────────────────────
+  const costGrid = document.getElementById('cost-grid');
+  costItems.forEach(ci => {
+    const total = ci.items.reduce((sum, em) => sum + (priceLookup[em]||0), 0);
+    const div = document.createElement('div');
+    div.className = 'cost-row';
+    let inner = '';
+    ci.items.forEach((em, idx) => {
+      inner += `<div class="cost-emoji">${em}<div style="font-size:0.8rem;font-weight:700;color:#636e72">Rs ${priceLookup[em]}</div></div>`;
+      if (idx < ci.items.length-1) inner += `<span class="op-sign">+</span>`;
+    });
+    inner += `<span class="op-sign">=</span><div class="cost-answer" data-answer="${total}" onclick="revealCostAnswer(this,'Rs ${total}')">?</div>`;
+    div.innerHTML = inner;
+    costGrid.appendChild(div);
+  });
+
+  // ── BUILD ADDITION GRID ────────────────────────────────
+  buildCalcGrid('add-grid', addProblems, '+');
+  buildCalcGrid('sub-grid', subProblems, '-');
+
+  function buildCalcGrid(id, problems, op) {
+    const grid = document.getElementById(id);
+    problems.forEach(p => {
+      const result = op === '+' ? p.p1 + p.p2 : Math.abs(p.p1 - p.p2);
+      const box = document.createElement('div');
+      box.className = 'calc-box';
+      box.innerHTML = `
+        <div class="calc-row"><span class="label">${p.item1}</span><span class="amount">Rs. ${p.p1}</span></div>
+        <div class="calc-row"><span class="label">${p.item2}</span><span class="amount">${op} Rs. ${p.p2}</span></div>
+        <hr class="calc-divider">
+        <div class="calc-total"><span>Total =</span><div class="answer-box" data-answer="${result}" onclick="revealCalcAnswer(this,'Rs ${result}')">?</div></div>`;
+      grid.appendChild(box);
+    });
+  }
+
+  // ── BUILD QUIZ ─────────────────────────────────────────
+  let currentQ = 0;
+  let score = 0;
+  let answered = new Array(quizData.length).fill(false);
+
+  function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+    const q = quizData[currentQ];
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div style="font-size:clamp(0.9rem,2vw,1rem);color:#636e72;margin-bottom:8px;font-weight:700">Question ${currentQ+1} of ${quizData.length}</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-options" id="quiz-opts"></div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>`;
+    container.appendChild(card);
+
+    const optsDiv = document.getElementById('quiz-opts');
+    q.opts.forEach(opt => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-option';
+      btn.innerHTML = `<span class="opt-emoji">${opt.emoji}</span><span>${opt.label}</span>`;
+      btn.setAttribute('data-val', opt.val);
+      btn.addEventListener('click', () => handleAnswer(opt.val, q.correct, btn));
+      optsDiv.appendChild(btn);
+    });
+
+    document.getElementById('prev-btn').style.display = currentQ > 0 ? 'inline-block' : 'none';
+    document.getElementById('next-btn').textContent = currentQ < quizData.length-1 ? 'Next ▶' : 'Finish 🎉';
+    document.getElementById('restart-btn').style.display = 'none';
+    document.getElementById('score-display').textContent = '';
+
+    if (answered[currentQ]) {
+      // show already-answered state
+      const correctVal = q.correct;
+      document.querySelectorAll('.quiz-option').forEach(btn => {
+        const v = parseInt(btn.getAttribute('data-val'));
+        if (v === correctVal) btn.classList.add('correct');
+        btn.style.pointerEvents = 'none';
+      });
+    }
+  }
+
+  function handleAnswer(val, correct, btn) {
+    if (answered[currentQ]) return;
+    answered[currentQ] = true;
+    const feedback = document.getElementById('quiz-feedback');
+    if (val === correct) {
+      btn.classList.add('correct');
+      feedback.textContent = '🎉 Correct! Well done!';
+      feedback.style.color = '#1DD1A1';
+      score++;
+      confettiBurst();
+      try { if(typeof gsap!=='undefined') gsap.fromTo(btn,{scale:1},{scale:1.08,duration:0.3,yoyo:true,repeat:1}); } catch(e){}
+    } else {
+      btn.classList.add('wrong');
+      feedback.textContent = '🤔 Not quite! The green one is correct.';
+      feedback.style.color = '#e17055';
+      document.querySelectorAll('.quiz-option').forEach(b => {
+        if (parseInt(b.getAttribute('data-val')) === correct) b.classList.add('correct');
+      });
+      try { if(typeof gsap!=='undefined') gsap.to(btn,{x:[-6,6,-4,4,0],duration:0.4}); } catch(e){}
+    }
+    document.querySelectorAll('.quiz-option').forEach(b => b.style.pointerEvents='none');
+  }
+
+  window.changeQuestion = function(dir) {
+    if (currentQ + dir >= quizData.length) {
+      showFinalScore();
+      return;
+    }
+    currentQ = Math.max(0, Math.min(quizData.length-1, currentQ+dir));
+    renderQuiz();
+  };
+
+  function showFinalScore() {
+    const container = document.getElementById('quiz-container');
+    const pct = Math.round((score/quizData.length)*100);
+    let msg = pct >= 80 ? '🌟 Excellent!' : pct >= 60 ? '👍 Good job!' : '📚 Keep practicing!';
+    container.innerHTML = `
+      <div class="quiz-card" style="text-align:center">
+        <div style="font-size:5rem;margin-bottom:16px">${pct>=80?'🏆':pct>=60?'🥈':'📖'}</div>
+        <div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:var(--teal);margin-bottom:8px">${msg}</div>
+        <div style="font-size:clamp(1.1rem,3vw,1.5rem);font-weight:700">You scored <strong>${score}</strong> out of <strong>${quizData.length}</strong></div>
+        <div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:var(--orange);margin-top:12px">${pct}%</div>
+      </div>`;
+    document.getElementById('prev-btn').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('restart-btn').style.display = 'inline-block';
+    document.getElementById('score-display').textContent = '';
+    if (pct >= 80) confettiBurst();
+  }
+
+  window.restartQuiz = function() {
+    currentQ = 0; score = 0;
+    answered = new Array(quizData.length).fill(false);
+    document.getElementById('next-btn').style.display = 'inline-block';
+    renderQuiz();
+  };
+
+  renderQuiz();
+
+  // ── ANSWER REVEAL HELPERS ──────────────────────────────
+  window.revealAnswer = function(el, answer) {
+    if (el.classList.contains('correct')) return;
+    el.textContent = answer;
+    el.classList.add('correct');
+    animateCorrect(el);
+  };
+  window.revealCostAnswer = function(el, answer) {
+    if (el.classList.contains('correct')) return;
+    el.textContent = answer;
+    el.classList.add('correct');
+    animateCorrect(el);
+  };
+  window.revealCalcAnswer = function(el, answer) {
+    if (el.classList.contains('correct')) return;
+    el.textContent = answer;
+    el.classList.add('correct');
+    animateCorrect(el);
+  };
+
+  function animateCorrect(el) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(el, {scale:0.8}, {scale:1.15, duration:0.2, yoyo:true, repeat:1, ease:'power2.out'});
+      }
+    } catch(e){}
+  }
+
+  // ── CONFETTI ───────────────────────────────────────────
+  function confettiBurst() {
+    const colors = ['#FF9F43','#1DD1A1','#A29BFE','#fd79a8','#fdcb6e','#6c5ce7'];
+    for (let i=0; i<30; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left:${Math.random()*100}vw;
+        width:${8+Math.random()*8}px;
+        height:${8+Math.random()*8}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration:${1.5+Math.random()*1.5}s;
+        animation-delay:${Math.random()*0.5}s;
+        transform:rotate(${Math.random()*360}deg);
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    }
+  }
+
+  // ── READ ALOUD ─────────────────────────────────────────
+  window.readAloud = function(text) {
+    try {
+      if (!('speechSynthesis' in window)) throw new Error('No speech');
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.85; u.pitch = 1.1;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch(e) {
+      alert('📢 ' + text);
+    }
+  };
+
+  // ── PROGRESS BAR ──────────────────────────────────────
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? (scrollTop / docH) * 100 : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+
+  // ── NAV DOTS ──────────────────────────────────────────
+  const sections = ['sec-0','sec-1','sec-2','sec-3','sec-4','sec-5','sec-6'];
+  const desktopDots = document.querySelectorAll('.nav-dot');
+  const mobileDots = document.querySelectorAll('.mobile-nav-item');
+
+  desktopDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const s = document.getElementById('sec-'+dot.dataset.section);
+      if (s) s.scrollIntoView({behavior:'smooth'});
+    });
+  });
+  mobileDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const s = document.getElementById('sec-'+dot.dataset.section);
+      if (s) s.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  function updateNav() {
+    let active = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight/2) active = i;
+      }
+    });
+    desktopDots.forEach((d,i) => d.classList.toggle('active', i===active));
+    mobileDots.forEach((d,i) => d.classList.toggle('active', i===active));
+  }
+  window.addEventListener('scroll', updateNav);
+
+  // ── GSAP ANIMATIONS ───────────────────────────────────
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      // Hero title
+      const words = ['hw1','hw2','hw3','hw4'];
+      words.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) {
+          gsap.fromTo(el, {opacity:0, y:30}, {opacity:1, y:0, duration:0.6, delay:0.5+i*0.15, ease:'power3.out'});
+        }
+      });
+
+      // Curtain exit
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll('[data-animate]').forEach(el => {
+          gsap.fromTo(el, {opacity:0, y:40}, {
+            opacity:1, y:0, duration:0.7, ease:'power3.out',
+            scrollTrigger:{trigger:el, start:'top 85%', once:true}
+          });
+        });
+      }
+
+      // Curtain
+      const curtain = document.getElementById('curtain');
+      if (curtain) {
+        gsap.to(curtain, {opacity:0, duration:0.6, delay:2, onComplete:()=>curtain.style.display='none'});
+      }
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+  }
+
+  // ── LENIS SMOOTH SCROLL ───────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({lerp:0.1, smooth:true});
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add(time => lenis.raf(time*1000));
+          gsap.ticker.lagSmoothing(0);
+        }
+      } catch(e2){}
+    }
+  } catch(e) {
+    console.warn('Lenis error:', e);
+  }
+
+  // Initial call
+  updateProgress();
+  updateNav();
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

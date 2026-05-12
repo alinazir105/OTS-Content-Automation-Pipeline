@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backward Counting | Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d3436;font-size:18px;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436}
+
+/* Progress Bar */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:9999;height:7px;background:rgba(255,255,255,0.3)}
+#progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--teal));transition:width 0.3s ease;border-radius:0 4px 4px 0}
+#progress-label{position:fixed;top:10px;right:16px;z-index:9999;background:white;border-radius:20px;padding:4px 14px;font-size:14px;font-weight:700;color:var(--dark);box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+
+/* Curtain */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#FF9F43,#1DD1A1);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:white;text-align:center}
+#curtain .c-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.85);font-weight:600}
+.loader-dots{display:flex;gap:10px}
+.loader-dots span{width:14px;height:14px;border-radius:50%;background:white;animation:bounce 0.8s ease-in-out infinite}
+.loader-dots span:nth-child(2){animation-delay:0.15s}
+.loader-dots span:nth-child(3){animation-delay:0.3s}
+@keyframes bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+
+/* Hero */
+.hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#FF9F43 0%,#FFD093 50%,#1DD1A1 100%);display:flex;align-items:center;justify-content:center;padding:80px 40px 60px;position:relative;overflow:hidden}
+.hero-content{max-width:1500px;width:100%;margin:0 auto;text-align:center;position:relative;z-index:2}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.3);backdrop-filter:blur(8px);border-radius:30px;padding:8px 24px;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700;color:white;margin-bottom:20px;border:2px solid rgba(255,255,255,0.4)}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:white;line-height:1.1;margin-bottom:20px;text-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.hero h1 span{display:inline-block;opacity:1}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);font-weight:600;max-width:700px;margin:0 auto 30px}
+.hero-numbers{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:30px}
+.hero-num{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,0.25);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;border:2px solid rgba(255,255,255,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.hero-bg-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.08)}
+.hero-bg-circle.c1{width:300px;height:300px;top:-100px;left:-100px}
+.hero-bg-circle.c2{width:200px;height:200px;bottom:-80px;right:-60px}
+.hero-bg-circle.c3{width:150px;height:150px;top:50%;right:10%}
+
+/* Main content */
+.page-wrap{width:100%;max-width:100%}
+.section-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+section{padding:60px 0}
+section:nth-child(even){background:#f0f4ff}
+
+/* Section headers */
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:30px;padding-bottom:16px;border-bottom:3px solid rgba(0,0,0,0.07)}
+.section-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--dark)}
+.section-subtitle{font-size:clamp(1rem,2vw,1.2rem);color:#636e72;font-weight:600;margin-top:4px}
+
+/* Cards */
+.card{background:white;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:30px;width:100%;opacity:1;transform:none;margin-bottom:24px}
+.card.accent-orange{border-left:5px solid var(--orange)}
+.card.accent-teal{border-left:5px solid var(--teal)}
+.card.accent-purple{border-left:5px solid var(--purple)}
+
+/* Concept explanation */
+.concept-text{font-size:clamp(1rem,2vw,1.2rem);color:#2d3436;line-height:1.8;font-weight:600}
+.concept-highlight{background:linear-gradient(135deg,#FFF3CD,#FFE69C);border-radius:12px;padding:20px 24px;margin:20px 0;font-size:clamp(1rem,2vw,1.15rem);font-weight:700;border-left:5px solid var(--orange)}
+.arrow-sequence{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:20px 0}
+.seq-num{background:linear-gradient(135deg,var(--orange),#FF6B35);color:white;border-radius:12px;padding:10px 18px;font-size:clamp(1rem,2vw,1.2rem);font-weight:800;box-shadow:0 4px 12px rgba(255,159,67,0.3)}
+.seq-arrow{font-size:1.4rem;color:#636e72;font-weight:700}
+.seq-num.teal{background:linear-gradient(135deg,var(--teal),#00b894)}
+.seq-num.purple{background:linear-gradient(135deg,var(--purple),#6c5ce7)}
+
+/* HTO Grid */
+.hto-section-title{font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:800;color:var(--dark);margin-bottom:16px}
+.hto-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.hto-table{border-collapse:separate;border-spacing:4px;width:100%;min-width:480px}
+.hto-table th{background:linear-gradient(135deg,var(--teal),#00b894);color:white;padding:10px 8px;border-radius:10px;font-size:clamp(0.85rem,1.8vw,1rem);font-weight:800;text-align:center;letter-spacing:2px}
+.hto-table td{background:white;border:2px solid #e0e0e0;border-radius:10px;padding:12px 8px;text-align:center;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:var(--dark);min-width:50px}
+.hto-table td.filled{background:linear-gradient(135deg,#FFF3CD,#FFE69C);color:var(--dark);border-color:var(--orange)}
+.hto-table td.start-num{background:linear-gradient(135deg,var(--orange),#FF6B35);color:white;border-color:var(--orange);font-size:clamp(1rem,2vw,1.2rem)}
+.hto-table td.end-num{background:linear-gradient(135deg,var(--teal),#00b894);color:white;border-color:var(--teal);font-size:clamp(1rem,2vw,1.2rem)}
+
+/* Number line visual */
+.numline-wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#f8f9fa,#e9ecef);border-radius:16px;margin:16px 0}
+.nl-num{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(0.8rem,1.8vw,1rem);font-weight:800;background:white;box-shadow:0 3px 10px rgba(0,0,0,0.1);transition:all 0.3s;cursor:pointer;color:var(--dark);border:2px solid #e0e0e0}
+.nl-num:hover{transform:scale(1.15);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
+.nl-num.highlight-o{background:linear-gradient(135deg,var(--orange),#FF6B35);color:white;border-color:transparent;transform:scale(1.1)}
+.nl-num.highlight-t{background:linear-gradient(135deg,var(--teal),#00b894);color:white;border-color:transparent;transform:scale(1.1)}
+.nl-arrow{font-size:1.2rem;color:#b2bec3;font-weight:700}
+
+/* Activity: Fill in the blanks */
+.activity-wrap{background:white;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:30px;width:100%;margin-bottom:24px;border-left:5px solid var(--purple)}
+.activity-title{font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:800;color:var(--dark);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.activity-title .act-icon{font-size:1.4rem}
+.blank-sequence{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.blank-num{background:linear-gradient(135deg,var(--purple),#6c5ce7);color:white;border-radius:10px;padding:10px 16px;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:800}
+.blank-input{width:64px;height:48px;border:3px dashed var(--purple);border-radius:10px;background:#f8f7ff;display:flex;align-items:center;justify-content:center;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:800;cursor:pointer;transition:all 0.3s;color:transparent;position:relative;user-select:none}
+.blank-input.filled-blank{background:linear-gradient(135deg,var(--teal),#00b894);color:white;border-color:transparent}
+.blank-input.wrong-blank{border-color:#e74c3c;background:#ffeaea}
+
+/* Word bank */
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#f8f7ff;border-radius:14px;border:2px solid rgba(162,155,254,0.3);margin-top:16px}
+.word-bank-title{font-size:1rem;font-weight:700;color:#6c5ce7;margin-bottom:8px;width:100%}
+.word-chip{padding:10px 20px;background:white;border:2px solid var(--purple);border-radius:30px;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700;cursor:pointer;transition:all 0.3s;color:var(--dark)}
+.word-chip:hover{background:var(--purple);color:white;transform:translateY(-2px)}
+.word-chip.used{opacity:0.35;pointer-events:none}
+
+/* Drag and sort */
+.sort-activity{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px}
+.sort-bucket{border-radius:16px;padding:20px;min-height:140px;border:3px dashed #b2bec3;background:#f8f9fa;transition:all 0.3s}
+.sort-bucket.over{border-color:var(--teal);background:rgba(29,209,161,0.08)}
+.sort-bucket-title{font-size:clamp(0.95rem,2vw,1.1rem);font-weight:800;margin-bottom:12px;text-align:center}
+.sort-items-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:16px}
+.sort-chip{padding:10px 18px;border-radius:30px;font-size:clamp(0.9rem,2vw,1rem);font-weight:800;cursor:grab;transition:all 0.3s;user-select:none;touch-action:none}
+.sort-chip:active{cursor:grabbing;transform:scale(1.05);opacity:0.85}
+.sort-bucket .sort-chip{margin:4px}
+.sort-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:30px;border:none;font-size:clamp(0.9rem,2vw,1rem);font-weight:800;cursor:pointer;transition:all 0.3s;font-family:'Nunito',sans-serif}
+.sort-btn.primary{background:linear-gradient(135deg,var(--teal),#00b894);color:white}
+.sort-btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(29,209,161,0.35)}
+.sort-btn.secondary{background:linear-gradient(135deg,var(--orange),#FF6B35);color:white}
+.sort-btn.secondary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,159,67,0.35)}
+.sort-result{margin-top:14px;padding:14px 20px;border-radius:12px;font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;display:none}
+.sort-result.correct{background:#d4edda;color:#155724;border:2px solid #c3e6cb}
+.sort-result.incorrect{background:#ffeaea;color:#721c24;border:2px solid #f5c6cb}
+
+/* Counting activity */
+.count-activity{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.count-box{width:70px;height:64px;border-radius:14px;border:3px solid #e0e0e0;background:white;display:flex;align-items:center;justify-content:center;font-size:clamp(0.95rem,2vw,1.15rem);font-weight:800;transition:all 0.3s}
+.count-box.active-count{background:linear-gradient(135deg,var(--orange),#FF6B35);color:white;border-color:transparent;animation:pulse 0.6s ease}
+.count-box.filled-count{background:linear-gradient(135deg,var(--teal),#00b894);color:white;border-color:transparent}
+@keyframes pulse{0%{transform:scale(0.9)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+/* Quiz */
+.quiz-wrap{background:white;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:30px;width:100%;border-left:5px solid var(--orange)}
+.quiz-progress{display:flex;gap:8px;margin-bottom:24px}
+.quiz-dot{width:14px;height:14px;border-radius:50%;background:#e0e0e0;transition:all 0.3s}
+.quiz-dot.done{background:var(--teal)}
+.quiz-dot.current{background:var(--orange);transform:scale(1.3)}
+.quiz-q{font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:800;color:var(--dark);margin-bottom:24px;line-height:1.5}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quiz-opt{padding:18px 24px;border:3px solid #e0e0e0;border-radius:16px;background:white;font-size:clamp(0.95rem,2vw,1.15rem);font-weight:700;cursor:pointer;transition:all 0.3s;text-align:center;font-family:'Nunito',sans-serif;min-height:64px;display:flex;align-items:center;justify-content:center;gap:8px}
+.quiz-opt:hover:not(:disabled){border-color:var(--orange);background:#FFF8F0;transform:translateY(-2px)}
+.quiz-opt.correct{background:linear-gradient(135deg,#d4edda,#c3e6cb);border-color:#28a745;color:#155724}
+.quiz-opt.wrong{background:linear-gradient(135deg,#ffeaea,#ffc1c1);border-color:#dc3545;color:#721c24}
+.quiz-opt:disabled{cursor:not-allowed}
+.quiz-feedback{margin-top:16px;padding:14px 20px;border-radius:12px;font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#d4edda;color:#155724;border:2px solid #c3e6cb}
+.quiz-feedback.wrong-fb{background:#ffeaea;color:#721c24;border:2px solid #f5c6cb}
+.quiz-nav{margin-top:20px;display:flex;justify-content:flex-end}
+.quiz-next{padding:12px 30px;background:linear-gradient(135deg,var(--orange),#FF6B35);color:white;border:none;border-radius:30px;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.3s;display:none}
+.quiz-next:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,159,67,0.4)}
+.quiz-score{text-align:center;padding:40px 20px;display:none}
+.quiz-score .score-num{font-size:clamp(3rem,8vw,5rem);font-weight:900;color:var(--orange)}
+.quiz-score .score-msg{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--dark);margin-top:10px}
+.quiz-score .score-stars{font-size:2.5rem;margin-top:14px}
+.quiz-retry{margin-top:20px;padding:14px 32px;background:linear-gradient(135deg,var(--teal),#00b894);color:white;border:none;border-radius:30px;font-size:clamp(0.95rem,2vw,1.1rem);font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.3s}
+
+/* Read aloud button */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--purple),#6c5ce7);color:white;border:none;border-radius:30px;font-size:clamp(0.85rem,1.8vw,1rem);font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.3s;margin-top:10px}
+.read-aloud-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(162,155,254,0.4)}
+.read-aloud-btn .btn-icon{font-size:1.1rem}
+
+/* Fun fact / tip card */
+.tip-card{background:linear-gradient(135deg,#FFF3CD,#FFE69C);border-radius:16px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;margin:20px 0;border:2px solid rgba(255,159,67,0.3)}
+.tip-icon{font-size:2rem;flex-shrink:0}
+.tip-text{font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;color:#856404;line-height:1.6}
+
+/* Steps list */
+.steps-list{list-style:none;padding:0;margin:16px 0}
+.steps-list li{display:flex;gap:16px;align-items:flex-start;padding:16px;background:#f8f9fa;border-radius:14px;margin-bottom:12px;border:2px solid transparent;transition:all 0.3s}
+.steps-list li:hover{border-color:var(--teal);background:rgba(29,209,161,0.06)}
+.step-num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#00b894);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0}
+.step-text{font-size:clamp(0.95rem,2vw,1.1rem);font-weight:600;color:var(--dark);line-height:1.6;padding-top:6px}
+
+/* Bottom nav (mobile) */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:888;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mobile-nav-inner{display:flex;padding:8px 12px;gap:6px;min-width:max-content}
+.mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:12px;text-decoration:none;color:#636e72;font-size:12px;font-weight:700;transition:all 0.3s;white-space:nowrap;min-height:56px;justify-content:center}
+.mobile-nav a:hover,.mobile-nav a.active{background:#f0f4ff;color:var(--orange)}
+.mobile-nav a .nav-icon{font-size:1.3rem}
+
+/* Desktop nav / sidebar - hidden by default, using progress bar instead */
+
+/* Confetti */
+.confetti-piece{position:fixed;top:-10px;border-radius:3px;pointer-events:none;z-index:99998;animation:confettiFall 2.5s linear forwards}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* Color burst */
+@keyframes colorBurst{0%{box-shadow:0 0 0 0 rgba(29,209,161,0.6)}100%{box-shadow:0 0 0 30px rgba(29,209,161,0)}}
+
+/* Responsive */
+@media(max-width:768px){
+  body{font-size:16px;padding-bottom:80px}
+  .hero{min-height:60vh;padding:70px 20px 40px}
+  .section-inner{padding:0 16px}
+  section{padding:40px 0}
+  .sort-activity{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .card,.activity-wrap,.quiz-wrap{padding:20px 16px}
+  .hero-num{width:48px;height:48px;font-size:1.1rem}
+  .mobile-nav{display:block}
+  .count-box{width:60px;height:56px}
+  .hto-table th,.hto-table td{padding:8px 5px;font-size:0.85rem}
+}
+@media(max-width:480px){
+  .blank-input{width:54px;height:44px}
+  .blank-num{padding:8px 12px}
+  .quiz-opt{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading curtain -->
+<div id="curtain">
+  <div class="c-title">⬅️ Backward Counting</div>
+  <div class="c-sub">Class 2 Maths • Digital School</div>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- Progress bar -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a href="#hero" class="active"><span class="nav-icon">🏠</span>Home</a>
+    <a href="#concept"><span class="nav-icon">💡</span>Concept</a>
+    <a href="#counting200"><span class="nav-icon">🔢</span>200→151</a>
+    <a href="#counting150"><span class="nav-icon">🔢</span>150→101</a>
+    <a href="#activity1"><span class="nav-icon">✏️</span>Fill In</a>
+    <a href="#activity2"><span class="nav-icon">🔀</span>Sort</a>
+    <a href="#quiz"><span class="nav-icon">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-bg-circle c3"></div>
+  <div class="hero-content">
+    <div class="hero-badge">📚 Chapter 2 · Class 2 Maths</div>
+    <h1 id="heroTitle">
+      <span>Backward</span>&nbsp;<span>Counting</span>
+    </h1>
+    <p class="hero-sub">Learn to count backwards from 200 all the way to 101 — one step at a time! 🚀</p>
+    <div class="hero-numbers">
+      <div class="hero-num">200</div>
+      <div class="hero-num" style="font-size:1rem">←</div>
+      <div class="hero-num">199</div>
+      <div class="hero-num" style="font-size:1rem">←</div>
+      <div class="hero-num">198</div>
+      <div class="hero-num" style="font-size:1rem">←</div>
+      <div class="hero-num">197</div>
+      <div class="hero-num" style="font-size:1rem">←</div>
+      <div class="hero-num">196</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+
+<!-- SECTION 1: What is Backward Counting? -->
+<section id="concept">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#FF9F43,#FF6B35)">💡</div>
+      <div>
+        <div class="section-title">What Is Backward Counting?</div>
+        <div class="section-subtitle">Counting from a bigger number to a smaller number</div>
+      </div>
+    </div>
+
+    <div class="card accent-orange">
+      <p class="concept-text">When we count <strong>forward</strong>, we add 1 each time: 1, 2, 3, 4 …</p>
+      <p class="concept-text" style="margin-top:12px">When we count <strong>backward</strong>, we subtract 1 each time: 10, 9, 8, 7 …</p>
+      <div class="concept-highlight">
+        🔑 Key Idea: In backward counting, each number is <strong>1 less</strong> than the number before it!
+      </div>
+      <div class="arrow-sequence">
+        <div class="seq-num">10</div><div class="seq-arrow">→</div>
+        <div class="seq-num teal">9</div><div class="seq-arrow">→</div>
+        <div class="seq-num purple">8</div><div class="seq-arrow">→</div>
+        <div class="seq-num">7</div><div class="seq-arrow">→</div>
+        <div class="seq-num teal">6</div><div class="seq-arrow">→</div>
+        <div class="seq-num purple">5</div>
+      </div>
+      <button class="read-aloud-btn" onclick="readAloud('When we count backward, we subtract 1 each time. Each number is one less than the number before it.')">
+        <span class="btn-icon">🔊</span> Read Aloud
+      </button>
+    </div>
+
+    <div class="card accent-teal">
+      <div class="hto-section-title">How to Count Backward — Steps 🪜</div>
+      <ul class="steps-list">
+        <li>
+          <div class="step-num">1</div>
+          <div class="step-text">Start with the <strong>bigger number</strong>. (Example: 200)</div>
+        </li>
+        <li>
+          <div class="step-num">2</div>
+          <div class="step-text">Subtract <strong>1</strong> from it to get the next number. (200 − 1 = 199)</div>
+        </li>
+        <li>
+          <div class="step-num">3</div>
+          <div class="step-text">Keep subtracting 1 each time: 199, 198, 197, 196 …</div>
+        </li>
+        <li>
+          <div class="step-num">4</div>
+          <div class="step-text">Stop when you reach the <strong>smaller number</strong> you need!</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🌟</div>
+      <div class="tip-text">Fun Tip: Backward counting is like a rocket countdown — 10, 9, 8, 7, 6, 5, 4, 3, 2, 1… Blast off! 🚀</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: 200 to 151 -->
+<section id="counting200" style="background:#f0f4ff">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#1DD1A1,#00b894)">🔢</div>
+      <div>
+        <div class="section-title">Backward Counting: 200 to 151</div>
+        <div class="section-subtitle">Writing numbers from 200 down to 151</div>
+      </div>
+    </div>
+
+    <div class="card accent-teal">
+      <div class="hto-section-title">Number Line: 200 → 151 👀</div>
+      <div class="numline-wrap" id="numline1"></div>
+      <button class="read-aloud-btn" onclick="readAloud('Backward counting from two hundred to one hundred fifty one. Two hundred, one hundred ninety nine, one hundred ninety eight, and so on until one hundred fifty one.')">
+        <span class="btn-icon">🔊</span> Read Aloud
+      </button>
+    </div>
+
+    <div class="card accent-orange">
+      <div class="hto-section-title">H T O Table: 200 → 151 📋</div>
+      <div class="hto-grid-wrap">
+        <table class="hto-table" id="htoTable1"></table>
+      </div>
+      <p style="margin-top:14px;font-size:clamp(0.9rem,2vw,1rem);color:#636e72;font-weight:600">H = Hundreds, T = Tens, O = Ones</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: 150 to 101 -->
+<section id="counting150">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#A29BFE,#6c5ce7)">🔢</div>
+      <div>
+        <div class="section-title">Backward Counting: 150 to 101</div>
+        <div class="section-subtitle">Writing numbers from 150 down to 101</div>
+      </div>
+    </div>
+
+    <div class="card accent-purple">
+      <div class="hto-section-title">Number Line: 150 → 101 👀</div>
+      <div class="numline-wrap" id="numline2"></div>
+      <button class="read-aloud-btn" onclick="readAloud('Backward counting from one hundred fifty to one hundred one. One hundred fifty, one hundred forty nine, one hundred forty eight, and so on until one hundred one.')">
+        <span class="btn-icon">🔊</span> Read Aloud
+      </button>
+    </div>
+
+    <div class="card accent-teal">
+      <div class="hto-section-title">H T O Table: 150 → 101 📋</div>
+      <div class="hto-grid-wrap">
+        <table class="hto-table" id="htoTable2"></table>
+      </div>
+      <p style="margin-top:14px;font-size:clamp(0.9rem,2vw,1rem);color:#636e72;font-weight:600">H = Hundreds, T = Tens, O = Ones</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Fill in the Blanks Activity -->
+<section id="activity1" style="background:#f0f4ff">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#A29BFE,#6c5ce7)">✏️</div>
+      <div>
+        <div class="section-title">Fill In the Blanks</div>
+        <div class="section-subtitle">Click on a blank, then pick the correct number from the bank below!</div>
+      </div>
+    </div>
+
+    <div class="activity-wrap" id="fillActivity">
+      <div class="activity-title"><span class="act-icon">🧩</span> Complete the backward counting sequences</div>
+
+      <!-- Sequence A -->
+      <div style="margin-bottom:24px">
+        <p style="font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;color:#636e72;margin-bottom:10px">Sequence A: 200 → ?</p>
+        <div class="blank-sequence" id="seqA"></div>
+      </div>
+
+      <!-- Sequence B -->
+      <div style="margin-bottom:24px">
+        <p style="font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;color:#636e72;margin-bottom:10px">Sequence B: 165 → ?</p>
+        <div class="blank-sequence" id="seqB"></div>
+      </div>
+
+      <!-- Sequence C -->
+      <div style="margin-bottom:20px">
+        <p style="font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;color:#636e72;margin-bottom:10px">Sequence C: 120 → ?</p>
+        <div class="blank-sequence" id="seqC"></div>
+      </div>
+
+      <div class="word-bank" id="wordBank">
+        <div class="word-bank-title">🏦 Number Bank — click a blank first, then pick a number:</div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+        <button class="sort-btn primary" onclick="checkFill()">✅ Check Answers</button>
+        <button class="sort-btn secondary" onclick="resetFill()">🔄 Reset</button>
+      </div>
+      <div class="sort-result" id="fillResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: Sorting Activity -->
+<section id="activity2">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#FF9F43,#FF6B35)">🔀</div>
+      <div>
+        <div class="section-title">Sort the Numbers</div>
+        <div class="section-subtitle">Drag each number into the correct bucket!</div>
+      </div>
+    </div>
+
+    <div class="activity-wrap" style="border-left-color:var(--orange)">
+      <div class="activity-title"><span class="act-icon">🪣</span> Is each number in the range 200–151 or 150–101?</div>
+
+      <div class="sort-items-pool" id="sortPool"></div>
+
+      <div class="sort-activity">
+        <div class="sort-bucket" id="bucket1" data-range="200-151">
+          <div class="sort-bucket-title" style="color:var(--orange)">🟠 Range: 200 – 151</div>
+        </div>
+        <div class="sort-bucket" id="bucket2" data-range="150-101">
+          <div class="sort-bucket-title" style="color:var(--teal)">🟢 Range: 150 – 101</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+        <button class="sort-btn primary" onclick="checkSort()">✅ Check Answers</button>
+        <button class="sort-btn secondary" onclick="resetSort()">🔄 Reset</button>
+      </div>
+      <div class="sort-result" id="sortResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: Interactive Counting -->
+<section id="activity3" style="background:#f0f4ff">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#1DD1A1,#00b894)">🎮</div>
+      <div>
+        <div class="section-title">Count It Yourself!</div>
+        <div class="section-subtitle">Press the button and watch the numbers light up one by one</div>
+      </div>
+    </div>
+
+    <div class="card accent-teal">
+      <div class="hto-section-title">Backward Counting: 180 → 171 🔦</div>
+      <p style="font-size:clamp(0.95rem,2vw,1.1rem);font-weight:600;color:#636e72;margin-bottom:16px">Press "Start" and watch each number light up!</p>
+      <div class="count-activity" id="countRow"></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+        <button class="sort-btn primary" id="startCountBtn" onclick="startCountAnim()">▶️ Start</button>
+        <button class="sort-btn secondary" onclick="resetCountAnim()">🔄 Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: Quiz -->
+<section id="quiz">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#FF9F43,#FF6B35)">🎯</div>
+      <div>
+        <div class="section-title">Quiz Time!</div>
+        <div class="section-subtitle">Let's see how much you learned about backward counting!</div>
+      </div>
+    </div>
+
+    <div class="quiz-wrap" id="quizWrap">
+      <div class="quiz-progress" id="quizDots"></div>
+      <div id="quizBody"></div>
+      <div class="quiz-score" id="quizScore">
+        <div class="score-num" id="scoreNum"></div>
+        <div class="score-msg" id="scoreMsg"></div>
+        <div class="score-stars" id="scoreStars"></div>
+        <button class="quiz-retry" onclick="restartQuiz()">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+// ──────────────────────────────────────────────
+// CURTAIN DISMISSAL (guaranteed)
+// ──────────────────────────────────────────────
+setTimeout(() => {
+  const c = document.getElementById('curtain');
+  if (c) c.style.display = 'none';
+}, 3000);
+
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+try { initLenis(); } catch(e) { console.warn('Lenis init failed', e); }
+try { initGSAP(); } catch(e) { console.warn('GSAP init failed', e); }
+buildNumlines();
+buildHTOTables();
+buildFillActivity();
+buildSortActivity();
+buildCountRow();
+buildQuiz();
+initProgressBar();
+
+// ──────────────────────────────────────────────
+// LENIS
+// ──────────────────────────────────────────────
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.1, smooth: true });
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+  if (typeof gsap !== 'undefined' && gsap.ticker) {
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+}
+
+// ──────────────────────────────────────────────
+// GSAP
+// ──────────────────────────────────────────────
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Hero title word animation
+  const spans = document.querySelectorAll('#heroTitle span');
+  gsap.from(spans, {
+    y: 50, opacity: 0, duration: 0.7, stagger: 0.2, ease: 'back.out(1.5)',
+    delay: 3.1
+  });
+
+  // Section cards fade up
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.utils.toArray('.card, .activity-wrap, .quiz-wrap').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        y: 40, opacity: 0, duration: 0.6, ease: 'power2.out'
+      });
+    });
+  }
+}
+
+// ──────────────────────────────────────────────
+// PROGRESS BAR
+// ──────────────────────────────────────────────
+function initProgressBar() {
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? Math.round((window.scrollY / docH) * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '%';
+  });
+}
+
+// ──────────────────────────────────────────────
+// NUMBER LINES
+// ──────────────────────────────────────────────
+function buildNumlines() {
+  buildNumline('numline1', 200, 151, 'orange');
+  buildNumline('numline2', 150, 101, 'teal');
+}
+
+function buildNumline(id, start, end, color) {
+  const wrap = document.getElementById(id);
+  if (!wrap) return;
+  for (let n = start; n >= end; n--) {
+    const div = document.createElement('div');
+    div.className = 'nl-num';
+    const isHighlight = (n === start || n === end || n % 10 === 0);
+    if (isHighlight) {
+      div.classList.add(color === 'orange' ? 'highlight-o' : 'highlight-t');
+    }
+    div.textContent = n;
+    div.title = n;
+    div.addEventListener('click', () => {
+      try {
+        const u = new SpeechSynthesisUtterance(String(n));
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      } catch(e) {}
+      if (typeof gsap !== 'undefined') {
+        gsap.to(div, { scale: 1.3, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' });
+      }
+    });
+    wrap.appendChild(div);
+    if (n > end) {
+      const arr = document.createElement('div');
+      arr.className = 'nl-arrow';
+      arr.textContent = '←';
+      wrap.appendChild(arr);
+    }
+  }
+}
+
+// ──────────────────────────────────────────────
+// HTO TABLES
+// ──────────────────────────────────────────────
+function buildHTOTables() {
+  buildHTOTable('htoTable1', 200, 151);
+  buildHTOTable('htoTable2', 150, 101);
+}
+
+function getDigits(n) {
+  const h = Math.floor(n / 100);
+  const t = Math.floor((n % 100) / 10);
+  const o = n % 10;
+  return [h, t, o];
+}
+
+function buildHTOTable(id, start, end) {
+  const table = document.getElementById(id);
+  if (!table) return;
+
+  // Header row
+  const thead = document.createElement('thead');
+  const trHead = document.createElement('tr');
+  const cols = 5;
+  for (let c = 0; c < cols; c++) {
+    const numCols = 3;
+    for (let k = 0; k < numCols; k++) {
+      const th = document.createElement('th');
+      th.textContent = ['H','T','O'][k];
+      trHead.appendChild(th);
+    }
+  }
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  // Body
+  const tbody = document.createElement('tbody');
+  const total = start - end + 1;
+  const rows = Math.ceil(total / cols);
+
+  for (let r = 0; r < rows; r++) {
+    const tr = document.createElement('tr');
+    for (let c = 0; c < cols; c++) {
+      const n = start - (r * cols + c);
+      if (n < end) {
+        for (let k = 0; k < 3; k++) {
+          const td = document.createElement('td');
+          td.style.background = '#f8f9fa';
+          tr.appendChild(td);
+        }
+      } else {
+        const [h, t, o] = getDigits(n);
+        const isStart = n === start;
+        const isEnd = n === end;
+        const isSpecial = (n % 10 === 0);
+        [h, t, o].forEach((val, idx) => {
+          const td = document.createElement('td');
+          td.textContent = val;
+          if (isStart) td.classList.add('start-num');
+          else if (isEnd) td.classList.add('end-num');
+          else if (isSpecial) td.classList.add('filled');
+          tr.appendChild(td);
+        });
+      }
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+}
+
+// ──────────────────────────────────────────────
+// FILL IN BLANKS
+// ──────────────────────────────────────────────
+const seqAData = [200, 199, null, 197, null, 195, null, 193];
+const seqBData = [165, null, 163, null, 161, null, 159, null];
+const seqCData = [120, null, 118, null, 116, null, 114, null];
+
+let selectedBlank = null;
+let fillAnswers = {};
+
+function buildFillActivity() {
+  buildSeq('seqA', seqAData, 'A');
+  buildSeq('seqB', seqBData, 'B');
+  buildSeq('seqC', seqCData, 'C');
+  buildWordBank();
+}
+
+function buildSeq(id, data, prefix) {
+  const wrap = document.getElementById(id);
+  if (!wrap) return;
+  data.forEach((val, i) => {
+    if (val !== null) {
+      const div = document.createElement('div');
+      div.className = 'blank-num';
+      div.textContent = val;
+      wrap.appendChild(div);
+    } else {
+      const div = document.createElement('div');
+      div.className = 'blank-input';
+      div.dataset.id = prefix + '_' + i;
+      div.dataset.answer = getCorrectVal(data, i);
+      div.textContent = '';
+      div.style.color = 'transparent';
+      div.addEventListener('click', () => selectBlank(div));
+      wrap.appendChild(div);
+    }
+    if (i < data.length - 1) {
+      const arr = document.createElement('div');
+      arr.className = 'seq-arrow';
+      arr.textContent = '←';
+      wrap.appendChild(arr);
+    }
+  });
+}
+
+function getCorrectVal(data, idx) {
+  // Find nearest known value and compute
+  for (let i = idx - 1; i >= 0; i--) {
+    if (data[i] !== null) return data[i] - (idx - i);
+  }
+  for (let i = idx + 1; i < data.length; i++) {
+    if (data[i] !== null) return data[i] + (i - idx);
+  }
+  return null;
+}
+
+function buildWordBank() {
+  const bank = document.getElementById('wordBank');
+  const nums = new Set();
+  [seqAData, seqBData, seqCData].forEach(seq => {
+    seq.forEach((v, i) => {
+      if (v === null) nums.add(getCorrectVal(seq, i));
+    });
+  });
+  // Add some distractors
+  const arr = Array.from(nums);
+  arr.forEach(n => nums.add(n + 2));
+  arr.forEach(n => nums.add(n - 2));
+
+  const shuffled = Array.from(nums).sort(() => Math.random() - 0.5);
+  shuffled.forEach(n => {
+    const chip = document.createElement('div');
+    chip.className = 'word-chip';
+    chip.textContent = n;
+    chip.dataset.val = n;
+    chip.addEventListener('click', () => placeNumber(chip));
+    bank.appendChild(chip);
+  });
+}
+
+function selectBlank(el) {
+  document.querySelectorAll('.blank-input').forEach(b => b.style.boxShadow = '');
+  selectedBlank = el;
+  el.style.boxShadow = '0 0 0 4px rgba(162,155,254,0.6)';
+}
+
+function placeNumber(chip) {
+  if (!selectedBlank) {
+    // Show tooltip
+    chip.title = 'Click a blank first!';
+    return;
+  }
+  const val = chip.dataset.val;
+  selectedBlank.textContent = val;
+  selectedBlank.style.color = 'white';
+  selectedBlank.classList.add('filled-blank');
+  selectedBlank.classList.remove('wrong-blank');
+  selectedBlank.style.boxShadow = '';
+  fillAnswers[selectedBlank.dataset.id] = parseInt(val);
+  chip.classList.add('used');
+  selectedBlank = null;
+}
+
+window.checkFill = function() {
+  let correct = 0, total = 0;
+  document.querySelectorAll('.blank-input').forEach(bl => {
+    total++;
+    const id = bl.dataset.id;
+    const expected = parseInt(bl.dataset.answer);
+    const given = fillAnswers[id];
+    if (given === expected) {
+      correct++;
+      bl.classList.add('filled-blank');
+      bl.classList.remove('wrong-blank');
+      if (typeof gsap !== 'undefined') {
+        gsap.to(bl, { scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 });
+      }
+    } else {
+      bl.classList.add('wrong-blank');
+      bl.classList.remove('filled-blank');
+      if (typeof gsap !== 'undefined') {
+        gsap.to(bl, { rotation: [-5,5,-5,5,0], duration: 0.5 });
+      }
+    }
+  });
+  const res = document.getElementById('fillResult');
+  res.style.display = 'block';
+  if (correct === total) {
+    res.className = 'sort-result correct';
+    res.textContent = `🎉 Amazing! All ${total} answers are correct!`;
+    launchConfetti();
+  } else {
+    res.className = 'sort-result incorrect';
+    res.textContent = `Got ${correct} out of ${total}. Try the wrong ones again!`;
+  }
+}
+
+window.resetFill = function() {
+  fillAnswers = {};
+  selectedBlank = null;
+  document.querySelectorAll('.blank-input').forEach(bl => {
+    bl.textContent = '';
+    bl.style.color = 'transparent';
+    bl.classList.remove('filled-blank','wrong-blank');
+    bl.style.boxShadow = '';
+  });
+  document.querySelectorAll('.word-chip').forEach(c => c.classList.remove('used'));
+  const res = document.getElementById('fillResult');
+  res.style.display = 'none';
+}
+
+// ──────────────────────────────────────────────
+// SORT ACTIVITY
+// ──────────────────────────────────────────────
+const sortNumbers = [175, 130, 200, 108, 160, 145, 185, 102, 155, 120, 195, 115];
+
+function buildSortActivity() {
+  const pool = document.getElementById('sortPool');
+  const colors = ['#FF9F43','#1DD1A1','#A29BFE','#FF6B35','#00b894','#6c5ce7'];
+  const shuffled = [...sortNumbers].sort(() => Math.random() - 0.5);
+  shuffled.forEach((n, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'sort-chip';
+    chip.textContent = n;
+    chip.dataset.val = n;
+    chip.dataset.range = n >= 151 ? '200-151' : '150-101';
+    chip.style.background = colors[i % colors.length];
+    chip.style.color = 'white';
+    chip.draggable = true;
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', n);
+      e.dataTransfer.setData('chipId', chip.dataset.val);
+      chip.style.opacity = '0.5';
+    });
+    chip.addEventListener('dragend', () => { chip.style.opacity = '1'; });
+    // Touch support
+    addTouchDrag(chip);
+    pool.appendChild(chip);
+  });
+  ['bucket1','bucket2'].forEach(bid => {
+    const bucket = document.getElementById(bid);
+    bucket.addEventListener('dragover', e => { e.preventDefault(); bucket.classList.add('over'); });
+    bucket.addEventListener('dragleave', () => bucket.classList.remove('over'));
+    bucket.addEventListener('drop', e => {
+      e.preventDefault();
+      bucket.classList.remove('over');
+      const val = e.dataTransfer.getData('chipId');
+      const chip = document.querySelector(`.sort-chip[data-val="${val}"]`);
+      if (chip) bucket.appendChild(chip);
+    });
+  });
+}
+
+function addTouchDrag(el) {
+  let clone = null, startX, startY;
+  el.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    clone = el.cloneNode(true);
+    clone.style.position = 'fixed';
+    clone.style.zIndex = '9999';
+    clone.style.pointerEvents = 'none';
+    clone.style.opacity = '0.8';
+    clone.style.left = startX - 30 + 'px';
+    clone.style.top = startY - 20 + 'px';
+    document.body.appendChild(clone);
+  }, {passive: true});
+  el.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+    if (clone) { clone.style.left = x - 30 + 'px'; clone.style.top = y - 20 + 'px'; }
+  }, {passive: false});
+  el.addEventListener('touchend', e => {
+    if (clone) { document.body.removeChild(clone); clone = null; }
+    const x = e.changedTouches[0].clientX;
+    const y = e.changedTouches[0].clientY;
+    const b1 = document.getElementById('bucket1').getBoundingClientRect();
+    const b2 = document.getElementById('bucket2').getBoundingClientRect();
+    if (x >= b1.left && x <= b1.right && y >= b1.top && y <= b1.bottom) {
+      document.getElementById('bucket1').appendChild(el);
+    } else if (x >= b2.left && x <= b2.right && y >= b2.top && y <= b2.bottom) {
+      document.getElementById('bucket2').appendChild(el);
+    }
+  });
+}
+
+window.checkSort = function() {
+  let correct = 0, total = sortNumbers.length;
+  ['bucket1','bucket2'].forEach(bid => {
+    const bucket = document.getElementById(bid);
+    const expectedRange = bucket.dataset.range;
+    bucket.querySelectorAll('.sort-chip').forEach(chip => {
+      if (chip.dataset.range === expectedRange) {
+        correct++;
+        chip.style.outline = '3px solid #28a745';
+      } else {
+        chip.style.outline = '3px solid #dc3545';
+        if (typeof gsap !== 'undefined') {
+          gsap.to(chip, { rotation: [-4,4,-4,4,0], duration: 0.5 });
+        }
+      }
+    });
+  });
+  const poolItems = document.getElementById('sortPool').querySelectorAll('.sort-chip');
+  poolItems.forEach(() => { /* items not placed = not counted */ });
+  const res = document.getElementById('sortResult');
+  res.style.display = 'block';
+  if (correct === total) {
+    res.className = 'sort-result correct';
+    res.textContent = `🎉 Perfect! All ${total} numbers sorted correctly!`;
+    launchConfetti();
+  } else {
+    res.className = 'sort-result incorrect';
+    res.textContent = `Got ${correct} out of ${total} correct. Check the ones with red borders!`;
+  }
+}
+
+window.resetSort = function() {
+  const pool = document.getElementById('sortPool');
+  ['bucket1','bucket2'].forEach(bid => {
+    document.getElementById(bid).querySelectorAll('.sort-chip').forEach(chip => {
+      chip.style.outline = '';
+      pool.appendChild(chip);
+    });
+  });
+  document.getElementById('sortResult').style.display = 'none';
+}
+
+// ──────────────────────────────────────────────
+// COUNT ANIMATION
+// ──────────────────────────────────────────────
+function buildCountRow() {
+  const row = document.getElementById('countRow');
+  for (let n = 180; n >= 171; n--) {
+    const box = document.createElement('div');
+    box.className = 'count-box';
+    box.textContent = n;
+    box.id = 'cbox_' + n;
+    row.appendChild(box);
+    if (n > 171) {
+      const arr = document.createElement('div');
+      arr.style.fontSize = '1.2rem';
+      arr.style.color = '#b2bec3';
+      arr.style.fontWeight = '700';
+      arr.textContent = '←';
+      row.appendChild(arr);
+    }
+  }
+}
+
+let countTimer = null;
+window.startCountAnim = function() {
+  resetCountAnim();
+  let current = 180;
+  const btn = document.getElementById('startCountBtn');
+  btn.disabled = true;
+  countTimer = setInterval(() => {
+    const box = document.getElementById('cbox_' + current);
+    if (box) {
+      box.classList.add('active-count');
+      try {
+        const u = new SpeechSynthesisUtterance(String(current));
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+      } catch(e) {}
+      setTimeout(() => {
+        if (box) { box.classList.remove('active-count'); box.classList.add('filled-count'); }
+      }, 600);
+    }
+    current--;
+    if (current < 171) {
+      clearInterval(countTimer);
+      btn.disabled = false;
+    }
+  }, 900);
+}
+
+window.resetCountAnim = function() {
+  if (countTimer) clearInterval(countTimer);
+  for (let n = 180; n >= 171; n--) {
+    const box = document.getElementById('cbox_' + n);
+    if (box) { box.classList.remove('active-count','filled-count'); }
+  }
+  const btn = document.getElementById('startCountBtn');
+  if (btn) btn.disabled = false;
+}
+
+// ──────────────────────────────────────────────
+// QUIZ
+// ──────────────────────────────────────────────
+const quizData = [
+  {
+    q: 'What comes after 200 in backward counting?',
+    options: ['201', '199'],
+    answer: 1,
+    emoji: ['😮','✅']
+  },
+  {
+    q: 'What number comes before 155 when counting backward?',
+    options: ['156', '154'],
+    answer: 0,
+    emoji: ['✅','😮']
+  },
+  {
+    q: 'Which of these is a backward counting sequence?',
+    options: ['151, 152, 153, 154', '200, 199, 198, 197'],
+    answer: 1,
+    emoji: ['❌','✅']
+  },
+  {
+    q: 'Fill in the blank: 170, 169, ___, 167',
+    options: ['168', '171'],
+    answer: 0,
+    emoji: ['✅','❌']
+  },
+  {
+    q: 'In the sequence 180, 179, 178 — what is the rule?',
+    options: ['Add 1 each time', 'Subtract 1 each time'],
+    answer: 1,
+    emoji: ['❌','✅']
+  },
+  {
+    q: 'Which number is in the range 200 to 151?',
+    options: ['140', '175'],
+    answer: 1,
+    emoji: ['❌','✅']
+  }
+];
+
+let qIdx = 0, score = 0, answered = false;
+
+function buildQuiz() {
+  renderQuizDots();
+  renderQuestion();
+}
+
+function renderQuizDots() {
+  const dots = document.getElementById('quizDots');
+  dots.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'quiz-dot' + (i === qIdx ? ' current' : (i < qIdx ? ' done' : ''));
+    dots.appendChild(d);
+  });
+}
+
+function renderQuestion() {
+  const body = document.getElementById('quizBody');
+  const q = quizData[qIdx];
+  body.innerHTML = `
+    <div class="quiz-q">${q.emoji ? '' : ''}❓ ${q.q}</div>
+    <div class="quiz-options" id="quizOpts">
+      ${q.options.map((opt, i) => `
+        <button class="quiz-opt" onclick="selectAnswer(${i})">${q.emoji ? q.emoji[i]+' ' : ''}${opt}</button>
+      `).join('')}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav"><button class="quiz-next" id="quizNextBtn" onclick="nextQuestion()">Next ➡️</button></div>
+  `;
+  answered = false;
+}
+
+window.selectAnswer = function(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById('quizFeedback');
+  const nextBtn = document.getElementById('quizNextBtn');
+  opts.forEach(o => o.disabled = true);
+  if (idx === q.answer) {
+    score++;
+    opts[idx].classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = '🎉 Correct! Well done!';
+    if (typeof gsap !== 'undefined') {
+      gsap.to(opts[idx], { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1 });
+    }
+    opts[idx].style.animation = 'colorBurst 0.6s ease';
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[q.answer].classList.add('correct');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = `❌ Not quite! The correct answer is: ${q.options[q.answer]}`;
+    if (typeof gsap !== 'undefined') {
+      gsap.to(opts[idx], { rotation: [-5,5,-5,5,0], duration: 0.5 });
+    }
+  }
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
+}
+
+window.nextQuestion = function() {
+  qIdx++;
+  if (qIdx >= quizData.length) {
+    showScore();
+    return;
+  }
+  renderQuizDots();
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('quizBody').innerHTML = '';
+  document.getElementById('quizDots').innerHTML = '';
+  const scoreWrap = document.getElementById('quizScore');
+  scoreWrap.style.display = 'block';
+  document.getElementById('scoreNum').textContent = score + '/' + quizData.length;
+  let msg, stars;
+  if (score === quizData.length) { msg = '🌟 Perfect! You are a backward counting star!'; stars = '⭐⭐⭐'; }
+  else if (score >= 4) { msg = '😊 Great job! Almost there!'; stars = '⭐⭐'; }
+  else { msg = '🙂 Good try! Keep practising!'; stars = '⭐'; }
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('scoreStars').textContent = stars;
+  if (score >= 4) launchConfetti();
+  if (typeof gsap !== 'undefined') {
+    gsap.from('#scoreNum', { scale: 0, duration: 0.6, ease: 'back.out(2)' });
+  }
+}
+
+window.restartQuiz = function() {
+  qIdx = 0; score = 0;
+  document.getElementById('quizScore').style.display = 'none';
+  buildQuiz();
+}
+
+// ──────────────────────────────────────────────
+// CONFETTI
+// ──────────────────────────────────────────────
+function launchConfetti() {
+  const colors = ['#FF9F43','#1DD1A1','#A29BFE','#FF6B35','#00b894','#FFD93D'];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (10 + Math.random() * 14) + 'px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => { if (piece.parentNode) piece.parentNode.removeChild(piece); }, 3500);
+  }
+}
+
+// ──────────────────────────────────────────────
+// READ ALOUD
+// ──────────────────────────────────────────────
+window.readAloud = function(text) {
+  try {
+    if (!('speechSynthesis' in window)) throw new Error('No speech synthesis');
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.85;
+    u.pitch = 1.1;
+    window.speechSynthesis.speak(u);
+  } catch(e) {
+    console.warn('Speech synthesis not available', e);
+    const tooltip = document.createElement('div');
+    tooltip.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:10px 20px;border-radius:12px;font-size:15px;font-weight:600;z-index:9999;font-family:Nunito,sans-serif';
+    tooltip.textContent = '🔊 ' + text.substring(0, 60) + '…';
+    document.body.appendChild(tooltip);
+    setTimeout(() => { if (tooltip.parentNode) tooltip.parentNode.removeChild(tooltip); }, 3000);
+  }
+}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forward Counting | Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d3436;font-size:18px;overflow-x:hidden}
+  :root{
+    --orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;
+    --dark:#2d3436;--card-shadow:0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(250,250,250,0.95);backdrop-filter:blur(8px);padding:8px 20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  #progress-label{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px}
+  #progress-track{width:100%;height:10px;background:#e0e0e0;border-radius:10px;overflow:hidden}
+  #progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--purple));border-radius:10px;transition:width 0.4s ease}
+
+  /* CURTAIN */
+  #curtain{position:fixed;inset:0;background:linear-gradient(135deg,#1DD1A1,#A29BFE);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+  #curtain .curtain-emoji{font-size:72px;animation:bounce 0.8s infinite alternate}
+  #curtain p{font-size:22px;font-weight:800;color:#fff}
+  @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+
+  /* LAYOUT */
+  .page-wrapper{width:100%;padding-top:60px;padding-bottom:100px}
+  .container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+  /* HERO */
+  .hero{width:100vw;min-height:70vh;background:linear-gradient(135deg,#1DD1A1 0%,#A29BFE 100%);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:60px 20px}
+  .hero-inner{position:relative;z-index:2}
+  .hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px}
+  .hero h1 span{display:inline-block;opacity:1}
+  .hero p{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);font-weight:600;max-width:600px;margin:0 auto 28px}
+  .hero-badge{display:inline-block;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);color:#fff;padding:8px 24px;border-radius:50px;font-size:17px;font-weight:700}
+  .hero-shapes .shape{position:absolute;border-radius:50%;opacity:0.15}
+  .hero-shapes .s1{width:200px;height:200px;background:#fff;top:-60px;left:-60px}
+  .hero-shapes .s2{width:120px;height:120px;background:#FF9F43;bottom:40px;right:80px}
+  .hero-shapes .s3{width:80px;height:80px;background:#fff;top:40px;right:200px}
+
+  /* READ ALOUD */
+  .read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:#fff;border:none;border-radius:50px;padding:10px 24px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(255,159,67,0.4);transition:transform 0.2s,box-shadow 0.2s;font-family:'Nunito',sans-serif}
+  .read-aloud-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,159,67,0.5)}
+  .read-aloud-btn:active{transform:scale(0.97)}
+
+  /* SECTION */
+  .lesson-section{padding:60px 0}
+  .section-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:40px;margin-bottom:40px;opacity:1;transform:none;position:relative;overflow:hidden}
+  .section-card.accent-orange{border-left:4px solid var(--orange)}
+  .section-card.accent-teal{border-left:4px solid var(--teal)}
+  .section-card.accent-purple{border-left:4px solid var(--purple)}
+  .section-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+  .section-desc{font-size:18px;color:#636e72;line-height:1.7;margin-bottom:24px}
+
+  /* COUNTING GRID */
+  .counting-range-label{font-size:clamp(1.1rem,2.5vw,1.3rem);font-weight:800;color:var(--teal);margin-bottom:16px}
+  .counting-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-bottom:12px}
+  .count-cell{background:linear-gradient(135deg,#e8f8f5,#d5f5e3);border-radius:12px;padding:10px 4px;text-align:center;font-size:clamp(0.85rem,1.5vw,1rem);font-weight:700;color:#1DD1A1;border:2px solid #b2dfdb;cursor:default;transition:transform 0.15s,background 0.15s;user-select:none}
+  .count-cell:hover{transform:scale(1.12);background:linear-gradient(135deg,#1DD1A1,#26de81);color:#fff}
+  .count-cell.highlight{background:linear-gradient(135deg,var(--orange),#f9ca24);color:#fff;border-color:var(--orange)}
+  .count-cell.special{background:linear-gradient(135deg,var(--purple),#6c5ce7);color:#fff;border-color:var(--purple)}
+
+  /* FILL IN THE BLANK */
+  .fitb-section{margin-top:28px}
+  .fitb-title{font-size:1.1rem;font-weight:800;margin-bottom:16px;color:var(--dark)}
+  .fitb-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;font-size:18px;font-weight:700}
+  .fitb-num{background:#f0f0f0;border-radius:10px;padding:8px 14px;color:#2d3436;font-weight:800;font-size:18px}
+  .fitb-blank{display:inline-block;min-width:60px;height:44px;border:2.5px dashed var(--teal);border-radius:10px;background:#fff;cursor:pointer;text-align:center;line-height:40px;font-size:18px;font-weight:800;color:var(--teal);transition:border-color 0.2s,background 0.2s;position:relative}
+  .fitb-blank:hover{border-color:var(--orange);background:#fff8f0}
+  .fitb-blank.correct{background:#d5f5e3;border-color:var(--teal);color:var(--teal)}
+  .fitb-blank.wrong{background:#ffe0e0;border-color:#ff6b6b;color:#ff6b6b}
+  .word-bank{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .word-chip{background:var(--purple);color:#fff;padding:8px 18px;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;transition:transform 0.15s,background 0.15s;user-select:none}
+  .word-chip:hover{transform:scale(1.08);background:#6c5ce7}
+  .word-chip.used{opacity:0.4;pointer-events:none}
+
+  /* WORD BANK POPUP */
+  .wb-popup{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.18);padding:24px 32px;z-index:500;min-width:300px;max-width:90vw;display:none}
+  .wb-popup.active{display:block}
+  .wb-popup h4{font-size:18px;font-weight:800;margin-bottom:14px;color:var(--dark)}
+  .wb-popup-chips{display:flex;flex-wrap:wrap;gap:10px}
+  .wb-close{float:right;background:none;border:none;font-size:22px;cursor:pointer;color:#636e72}
+
+  /* SORTING ACTIVITY */
+  .sort-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}
+  .sort-items{background:#f8f8f8;border-radius:16px;padding:20px;margin-bottom:20px}
+  .sort-items h4{font-size:17px;font-weight:800;margin-bottom:12px;color:#636e72}
+  .draggable-pool{display:flex;flex-wrap:wrap;gap:10px}
+  .drag-item{background:var(--orange);color:#fff;padding:10px 18px;border-radius:50px;font-size:17px;font-weight:700;cursor:grab;user-select:none;transition:transform 0.15s,box-shadow 0.15s}
+  .drag-item:hover{transform:scale(1.07);box-shadow:0 4px 16px rgba(255,159,67,0.4)}
+  .drag-item:active{cursor:grabbing}
+  .bucket{border-radius:16px;border:3px dashed #ccc;padding:20px;min-height:140px;transition:border-color 0.2s,background 0.2s}
+  .bucket.drag-over{border-color:var(--teal);background:#e8f8f5}
+  .bucket h4{font-size:17px;font-weight:800;margin-bottom:12px}
+  .bucket-items{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+  .bucket.bucket-hundreds h4{color:var(--teal)}
+  .bucket.bucket-round h4{color:var(--purple)}
+
+  /* QUIZ */
+  .quiz-section{margin-top:20px}
+  .quiz-q{margin-bottom:32px;padding:24px;background:#f8f9fa;border-radius:16px}
+  .quiz-q p{font-size:19px;font-weight:700;margin-bottom:16px}
+  .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .quiz-opt{background:#fff;border:2.5px solid #e0e0e0;border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;cursor:pointer;transition:border-color 0.2s,background 0.2s,transform 0.15s;text-align:center;font-family:'Nunito',sans-serif}
+  .quiz-opt:hover{border-color:var(--orange);background:#fff8f0;transform:translateY(-2px)}
+  .quiz-opt.correct-ans{background:#d5f5e3;border-color:var(--teal);color:#00b894}
+  .quiz-opt.wrong-ans{background:#ffe0e0;border-color:#ff6b6b;color:#d63031}
+  .quiz-feedback{font-size:17px;font-weight:700;margin-top:10px;min-height:24px}
+  .quiz-score{display:none;text-align:center;padding:28px;background:linear-gradient(135deg,var(--teal),var(--purple));border-radius:20px;color:#fff;margin-top:20px}
+  .quiz-score h3{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;margin-bottom:8px}
+  .quiz-score p{font-size:19px}
+  .quiz-btn{background:var(--orange);color:#fff;border:none;border-radius:50px;padding:14px 36px;font-size:19px;font-weight:800;cursor:pointer;margin-top:16px;font-family:'Nunito',sans-serif;transition:transform 0.2s}
+  .quiz-btn:hover{transform:scale(1.04)}
+
+  /* STAIRCASE VISUAL */
+  .staircase-wrap{display:flex;align-items:flex-end;gap:6px;margin:24px 0;overflow-x:auto;padding:10px 4px}
+  .stair-step{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .stair-block{border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:clamp(0.7rem,1.2vw,0.9rem);transition:transform 0.2s}
+  .stair-block:hover{transform:translateY(-4px)}
+  .stair-label{font-size:13px;font-weight:700;color:#636e72}
+
+  /* MOBILE NAV */
+  .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:800;overflow-x:auto;padding:8px 8px 12px}
+  .mobile-nav-inner{display:flex;gap:8px;min-width:max-content}
+  .mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 14px;border-radius:12px;text-decoration:none;color:#636e72;font-size:13px;font-weight:700;min-height:48px;justify-content:center;white-space:nowrap;transition:background 0.2s,color 0.2s}
+  .mobile-nav a:hover,.mobile-nav a.active{background:var(--teal);color:#fff}
+
+  /* SIDEBAR NAV (desktop) */
+  .desktop-nav{position:fixed;left:0;top:60px;width:200px;height:calc(100vh - 60px);background:#fff;box-shadow:2px 0 16px rgba(0,0,0,0.06);padding:24px 16px;overflow-y:auto;z-index:100}
+  .desktop-nav a{display:block;padding:10px 14px;border-radius:12px;text-decoration:none;color:#636e72;font-size:15px;font-weight:700;margin-bottom:4px;transition:background 0.2s,color 0.2s}
+  .desktop-nav a:hover,.desktop-nav a.active{background:var(--teal);color:#fff}
+  .main-with-nav{margin-left:200px}
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .desktop-nav{display:none}
+    .main-with-nav{margin-left:0}
+    .mobile-nav{display:block}
+    .container{padding:0 16px}
+    .section-card{padding:20px}
+    .hero{min-height:60vh;padding:40px 16px}
+    .sort-wrap{grid-template-columns:1fr}
+    .quiz-opts{grid-template-columns:1fr}
+    .counting-grid{grid-template-columns:repeat(5,1fr)}
+    .page-wrapper{padding-bottom:90px}
+    .fitb-row{font-size:16px}
+    .fitb-blank{min-width:48px;height:40px;line-height:36px;font-size:16px}
+  }
+  @media(max-width:480px){
+    .counting-grid{grid-template-columns:repeat(5,1fr);gap:4px}
+    .count-cell{font-size:0.78rem;padding:7px 2px}
+    .staircase-wrap{gap:3px}
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">🔢</div>
+  <p>Loading Forward Counting...</p>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <div id="progress-label">Lesson Progress: 0%</div>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+</div>
+
+<!-- DESKTOP NAV -->
+<nav class="desktop-nav" id="desktop-nav">
+  <a href="#hero" class="active">🏠 Home</a>
+  <a href="#intro">📖 What is Forward Counting?</a>
+  <a href="#range501">🔢 501–550</a>
+  <a href="#range551">🔢 551–600</a>
+  <a href="#range601">🔢 601–650</a>
+  <a href="#range651">🔢 651–700</a>
+  <a href="#range701">🔢 701–750</a>
+  <a href="#range751">🔢 751–800</a>
+  <a href="#range801">🔢 801–850</a>
+  <a href="#range851">🔢 851–900</a>
+  <a href="#range901">🔢 901–950</a>
+  <a href="#range951">🔢 951–1000</a>
+  <a href="#activity">✏️ Fill in Blanks</a>
+  <a href="#sorting">🗂️ Sorting</a>
+  <a href="#quiz">🧠 Quiz</a>
+</nav>
+
+<div class="main-with-nav">
+<div class="page-wrapper" id="page-wrapper">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+  <div class="hero-inner">
+    <h1 id="hero-title">
+      <span>Forward</span> <span>Counting</span>
+    </h1>
+    <p>Count from 501 all the way to 1000 — one step at a time!</p>
+    <div class="hero-badge">📚 Class 2 · Chapter 1</div>
+    <br><br>
+    <button class="read-aloud-btn" onclick="readAloud('Welcome to Forward Counting! In this lesson, we will learn to count forward from five hundred and one all the way to one thousand. Let us begin!')">
+      🔊 Read Aloud
+    </button>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="lesson-section" id="intro">
+  <div class="container">
+    <div class="section-card accent-teal">
+      <div class="section-title">📖 <span>What is Forward Counting?</span></div>
+      <p class="section-desc">
+        <strong>Forward counting</strong> means counting numbers in order from a smaller number to a bigger number. We go one step ahead each time!
+        <br><br>
+        Just like climbing stairs — each step goes <strong>UP</strong> by 1.
+        Think of it like: 501 → 502 → 503 → 504 → ...
+      </p>
+      <!-- Staircase visual -->
+      <div class="staircase-wrap" id="staircase-wrap"></div>
+      <button class="read-aloud-btn" style="margin-top:12px" onclick="readAloud('Forward counting means counting numbers in order from a smaller number to a bigger number. We go one step ahead each time. Just like climbing stairs each step goes up by one.')">
+        🔊 Read Aloud
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 501–550 -->
+<section class="lesson-section" id="range501">
+  <div class="container">
+    <div class="section-card accent-orange">
+      <div class="section-title">🔢 <span>Forward Counting: 501 to 550</span></div>
+      <p class="section-desc">Let's count from <strong>501</strong> all the way to <strong>550</strong>. Each number goes up by 1!</p>
+      <div class="counting-range-label">501 → 502 → 503 → ... → 550</div>
+      <div class="counting-grid" id="grid-501"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(501,550)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 551–600 -->
+<section class="lesson-section" id="range551">
+  <div class="container">
+    <div class="section-card accent-teal">
+      <div class="section-title">🔢 <span>Forward Counting: 551 to 600</span></div>
+      <p class="section-desc">Now let's count from <strong>551</strong> to <strong>600</strong>!</p>
+      <div class="counting-range-label">551 → 552 → 553 → ... → 600</div>
+      <div class="counting-grid" id="grid-551"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(551,600)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 601–650 -->
+<section class="lesson-section" id="range601">
+  <div class="container">
+    <div class="section-card accent-purple">
+      <div class="section-title">🔢 <span>Forward Counting: 601 to 650</span></div>
+      <p class="section-desc">Keep going! Count from <strong>601</strong> to <strong>650</strong>.</p>
+      <div class="counting-range-label">601 → 602 → 603 → ... → 650</div>
+      <div class="counting-grid" id="grid-601"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(601,650)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 651–700 -->
+<section class="lesson-section" id="range651">
+  <div class="container">
+    <div class="section-card accent-orange">
+      <div class="section-title">🔢 <span>Forward Counting: 651 to 700</span></div>
+      <p class="section-desc">Great job! Now count from <strong>651</strong> to <strong>700</strong>.</p>
+      <div class="counting-range-label">651 → 652 → 653 → ... → 700</div>
+      <div class="counting-grid" id="grid-651"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(651,700)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 701–750 -->
+<section class="lesson-section" id="range701">
+  <div class="container">
+    <div class="section-card accent-teal">
+      <div class="section-title">🔢 <span>Forward Counting: 701 to 750</span></div>
+      <p class="section-desc">We are past 700! Count from <strong>701</strong> to <strong>750</strong>.</p>
+      <div class="counting-range-label">701 → 702 → 703 → ... → 750</div>
+      <div class="counting-grid" id="grid-701"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(701,750)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 751–800 -->
+<section class="lesson-section" id="range751">
+  <div class="container">
+    <div class="section-card accent-purple">
+      <div class="section-title">🔢 <span>Forward Counting: 751 to 800</span></div>
+      <p class="section-desc">Excellent! Count from <strong>751</strong> to <strong>800</strong>.</p>
+      <div class="counting-range-label">751 → 752 → 753 → ... → 800</div>
+      <div class="counting-grid" id="grid-751"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(751,800)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 801–850 -->
+<section class="lesson-section" id="range801">
+  <div class="container">
+    <div class="section-card accent-orange">
+      <div class="section-title">🔢 <span>Forward Counting: 801 to 850</span></div>
+      <p class="section-desc">Almost there! Count from <strong>801</strong> to <strong>850</strong>.</p>
+      <div class="counting-range-label">801 → 802 → 803 → ... → 850</div>
+      <div class="counting-grid" id="grid-801"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(801,850)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 851–900 -->
+<section class="lesson-section" id="range851">
+  <div class="container">
+    <div class="section-card accent-teal">
+      <div class="section-title">🔢 <span>Forward Counting: 851 to 900</span></div>
+      <p class="section-desc">Count from <strong>851</strong> to <strong>900</strong>!</p>
+      <div class="counting-range-label">851 → 852 → 853 → ... → 900</div>
+      <div class="counting-grid" id="grid-851"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(851,900)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 901–950 -->
+<section class="lesson-section" id="range901">
+  <div class="container">
+    <div class="section-card accent-purple">
+      <div class="section-title">🔢 <span>Forward Counting: 901 to 950</span></div>
+      <p class="section-desc">So close! Count from <strong>901</strong> to <strong>950</strong>.</p>
+      <div class="counting-range-label">901 → 902 → 903 → ... → 950</div>
+      <div class="counting-grid" id="grid-901"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(901,950)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE 951–1000 -->
+<section class="lesson-section" id="range951">
+  <div class="container">
+    <div class="section-card accent-orange">
+      <div class="section-title">🎉 <span>Forward Counting: 951 to 1000</span></div>
+      <p class="section-desc">The last stretch! Count from <strong>951</strong> to <strong>1000</strong>. You made it to one thousand!</p>
+      <div class="counting-range-label">951 → 952 → 953 → ... → 1000 🎊</div>
+      <div class="counting-grid" id="grid-951"></div>
+      <button class="read-aloud-btn" onclick="readRangeAloud(951,1000)">🔊 Listen</button>
+    </div>
+  </div>
+</section>
+
+<!-- FILL IN THE BLANK ACTIVITY -->
+<section class="lesson-section" id="activity">
+  <div class="container">
+    <div class="section-card accent-teal">
+      <div class="section-title">✏️ <span>Fill in the Blanks</span></div>
+      <p class="section-desc">Click on a blank box and pick the correct number from the word bank below!</p>
+      <div class="fitb-section" id="fitb-section"></div>
+      <div style="margin-top:20px">
+        <button class="quiz-btn" onclick="checkFITB()">✅ Check Answers</button>
+        <button class="quiz-btn" style="background:var(--purple);margin-left:10px" onclick="resetFITB()">🔄 Reset</button>
+      </div>
+      <div id="fitb-result" style="margin-top:16px;font-size:19px;font-weight:800;display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SORTING ACTIVITY -->
+<section class="lesson-section" id="sorting">
+  <div class="container">
+    <div class="section-card accent-purple">
+      <div class="section-title">🗂️ <span>Sorting Activity</span></div>
+      <p class="section-desc">Drag each number into the correct bucket! Put numbers that are <strong>round hundreds</strong> (500, 600, 700…) in one bucket, and <strong>in-between numbers</strong> in the other.</p>
+      <div class="sort-items">
+        <h4>Numbers to Sort:</h4>
+        <div class="draggable-pool" id="drag-pool"></div>
+      </div>
+      <div class="sort-wrap">
+        <div class="bucket bucket-hundreds" id="bucket-round" ondrop="dropItem(event,'bucket-round')" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+          <h4>🔵 Round Hundreds (500, 600, 700, 800, 900, 1000)</h4>
+          <div class="bucket-items" id="bucket-round-items"></div>
+        </div>
+        <div class="bucket bucket-round" id="bucket-between" ondrop="dropItem(event,'bucket-between')" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+          <h4>🟡 In-Between Numbers</h4>
+          <div class="bucket-items" id="bucket-between-items"></div>
+        </div>
+      </div>
+      <button class="quiz-btn" onclick="checkSort()">✅ Check Sorting</button>
+      <div id="sort-result" style="margin-top:14px;font-size:18px;font-weight:800;display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="lesson-section" id="quiz">
+  <div class="container">
+    <div class="section-card accent-orange">
+      <div class="section-title">🧠 <span>Quiz Time!</span></div>
+      <p class="section-desc">Answer all questions and see how well you know forward counting!</p>
+      <div class="quiz-section" id="quiz-section"></div>
+      <div class="quiz-score" id="quiz-score">
+        <h3 id="score-title">🎉 Well done!</h3>
+        <p id="score-text"></p>
+        <button class="quiz-btn" onclick="retakeQuiz()">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="#hero">🏠</a>
+    <a href="#intro">📖 Intro</a>
+    <a href="#range501">501–550</a>
+    <a href="#range551">551–600</a>
+    <a href="#range601">601–650</a>
+    <a href="#range651">651–700</a>
+    <a href="#range701">701–750</a>
+    <a href="#range751">751–800</a>
+    <a href="#range801">801–850</a>
+    <a href="#range851">851–900</a>
+    <a href="#range901">901–950</a>
+    <a href="#range951">951–1000</a>
+    <a href="#activity">✏️ Blanks</a>
+    <a href="#sorting">🗂️ Sort</a>
+    <a href="#quiz">🧠 Quiz</a>
+  </div>
+</nav>
+
+<!-- WORD BANK POPUP -->
+<div class="wb-popup" id="wb-popup">
+  <button class="wb-close" onclick="closeWBPopup()">✕</button>
+  <h4>Pick a Number:</h4>
+  <div class="wb-popup-chips" id="wb-chips"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- CURTAIN DISMISS ---
+  setTimeout(() => { const c = document.getElementById('curtain'); if (c) c.style.display = 'none'; }, 3000);
+
+  // --- LENIS SMOOTH SCROLL ---
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smooth: true });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+        requestAnimationFrame(lenisRaf);
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // --- BUILD STAIRCASE ---
+  buildStaircase();
+
+  // --- BUILD COUNTING GRIDS ---
+  buildGrid('grid-501', 501, 550);
+  buildGrid('grid-551', 551, 600);
+  buildGrid('grid-601', 601, 650);
+  buildGrid('grid-651', 651, 700);
+  buildGrid('grid-701', 701, 750);
+  buildGrid('grid-751', 751, 800);
+  buildGrid('grid-801', 801, 850);
+  buildGrid('grid-851', 851, 900);
+  buildGrid('grid-901', 901, 950);
+  buildGrid('grid-951', 951, 1000);
+
+  // --- BUILD FILL IN BLANK ---
+  buildFITB();
+
+  // --- BUILD SORTING ---
+  buildSorting();
+
+  // --- BUILD QUIZ ---
+  buildQuiz();
+
+  // --- GSAP ANIMATIONS ---
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero title
+        const spans = document.querySelectorAll('#hero-title span');
+        gsap.from(spans, { opacity: 0, y: 30, stagger: 0.2, duration: 0.7, ease: 'back.out(1.7)' });
+
+        // Section cards fade-up
+        document.querySelectorAll('.section-card').forEach(card => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 88%' },
+            y: 40, opacity: 0, duration: 0.6, ease: 'power2.out'
+          });
+        });
+
+        // Count cells pop-in per grid
+        document.querySelectorAll('.counting-grid').forEach(grid => {
+          const cells = grid.querySelectorAll('.count-cell');
+          gsap.from(cells, {
+            scrollTrigger: { trigger: grid, start: 'top 90%' },
+            scale: 0.6, opacity: 0, stagger: 0.02, duration: 0.3, ease: 'back.out(1.4)'
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // --- PROGRESS BAR ---
+  updateProgress();
+  window.addEventListener('scroll', updateProgress);
+
+  // --- CURTAIN GSAP HIDE ---
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.8, delay: 0.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+});
+
+// =====================
+// STAIRCASE VISUAL
+// =====================
+function buildStaircase() {
+  const wrap = document.getElementById('staircase-wrap');
+  if (!wrap) return;
+  const numbers = [501, 502, 503, 504, 505, 506, 507, 508, 509, 510];
+  const colors = ['#1DD1A1','#00b894','#00cec9','#A29BFE','#6c5ce7','#FF9F43','#e17055','#fd79a8','#fdcb6e','#55efc4'];
+  numbers.forEach((n, i) => {
+    const step = document.createElement('div');
+    step.className = 'stair-step';
+    const height = 30 + i * 18;
+    const width = Math.max(52, 60);
+    step.innerHTML = `<div class="stair-block" style="width:${width}px;height:${height}px;background:${colors[i]}">${n}</div><div class="stair-label">+1</div>`;
+    wrap.appendChild(step);
+  });
+}
+
+// =====================
+// BUILD COUNTING GRID
+// =====================
+function buildGrid(id, start, end) {
+  const grid = document.getElementById(id);
+  if (!grid) return;
+  for (let n = start; n <= end; n++) {
+    const cell = document.createElement('div');
+    cell.className = 'count-cell';
+    // Highlight round tens
+    if (n % 100 === 0) cell.classList.add('special');
+    else if (n % 10 === 0) cell.classList.add('highlight');
+    cell.textContent = n;
+    cell.title = n;
+    grid.appendChild(cell);
+  }
+}
+
+// =====================
+// READ ALOUD
+// =====================
+function readAloud(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 0.85;
+      utter.pitch = 1.1;
+      window.speechSynthesis.speak(utter);
+    } else {
+      alert('Read Aloud: ' + text.substring(0, 80) + '...');
+    }
+  } catch(e) {
+    console.warn('Speech synthesis failed', e);
+  }
+}
+
+function readRangeAloud(start, end) {
+  let nums = [];
+  for (let i = start; i <= end; i++) nums.push(i);
+  readAloud(nums.join(', '));
+}
+
+// =====================
+// FILL IN THE BLANK
+// =====================
+const fitbData = [
+  { sequence: [541, null, 543, 544, null], answers: [542, 545] },
+  { sequence: [591, null, 593, null, 595], answers: [592, 594] },
+  { sequence: [641, null, 643, null, 645], answers: [642, 644] },
+  { sequence: [741, null, 743, 744, null], answers: [742, 745] },
+  { sequence: [891, null, 893, null, 895], answers: [892, 894] },
+  { sequence: [941, null, 943, 944, null], answers: [942, 945] },
+  { sequence: [991, null, 993, null, 995], answers: [992, 994] },
+  { sequence: [698, 699, null, 701, null], answers: [700, 702] },
+];
+
+let fitbState = {};
+let activeBlankId = null;
+
+function buildFITB() {
+  const section = document.getElementById('fitb-section');
+  if (!section) return;
+  section.innerHTML = '';
+  fitbState = {};
+
+  fitbData.forEach((item, qi) => {
+    const row = document.createElement('div');
+    row.className = 'fitb-row';
+
+    item.sequence.forEach((num, si) => {
+      if (num !== null) {
+        const box = document.createElement('span');
+        box.className = 'fitb-num';
+        box.textContent = num;
+        row.appendChild(box);
+      } else {
+        const blankId = `blank-${qi}-${si}`;
+        fitbState[blankId] = { answer: item.answers.shift ? item.answers.shift() : '', filled: null, qi, si };
+        // recalculate answer
+        const blankEl = document.createElement('span');
+        blankEl.className = 'fitb-blank';
+        blankEl.id = blankId;
+        blankEl.textContent = '?';
+        blankEl.dataset.blankid = blankId;
+        blankEl.addEventListener('click', () => openWBPopup(blankId));
+        row.appendChild(blankEl);
+      }
+    });
+
+    section.appendChild(row);
+  });
+
+  // Rebuild fitbState correctly with actual sequential answers
+  fitbState = {};
+  fitbData.forEach((item, qi) => {
+    const answersCopy = [...item.answers];
+    item.sequence.forEach((num, si) => {
+      if (num === null) {
+        const blankId = `blank-${qi}-${si}`;
+        fitbState[blankId] = { answer: answersCopy.shift(), filled: null };
+      }
+    });
+  });
+}
+
+function openWBPopup(blankId) {
+  activeBlankId = blankId;
+  const popup = document.getElementById('wb-popup');
+  const chipsDiv = document.getElementById('wb-chips');
+  popup.classList.add('active');
+  chipsDiv.innerHTML = '';
+
+  // Generate plausible options around the correct answer
+  const correct = fitbState[blankId].answer;
+  const options = new Set([correct]);
+  while (options.size < 5) {
+    options.add(correct + Math.floor(Math.random() * 6) - 3);
+  }
+  const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
+  shuffled.forEach(opt => {
+    const chip = document.createElement('div');
+    chip.className = 'word-chip';
+    chip.textContent = opt;
+    chip.addEventListener('click', () => fillBlank(blankId, opt));
+    chipsDiv.appendChild(chip);
+  });
+}
+
+function fillBlank(blankId, value) {
+  const el = document.getElementById(blankId);
+  if (!el) return;
+  fitbState[blankId].filled = value;
+  el.textContent = value;
+  el.classList.remove('correct', 'wrong');
+  closeWBPopup();
+}
+
+function closeWBPopup() {
+  const popup = document.getElementById('wb-popup');
+  popup.classList.remove('active');
+  activeBlankId = null;
+}
+
+function checkFITB() {
+  let correct = 0, total = 0;
+  Object.keys(fitbState).forEach(id => {
+    const state = fitbState[id];
+    const el = document.getElementById(id);
+    if (!el) return;
+    total++;
+    if (state.filled == state.answer) {
+      correct++;
+      el.classList.add('correct');
+      el.classList.remove('wrong');
+      animateCorrect(el);
+    } else {
+      el.classList.add('wrong');
+      el.classList.remove('correct');
+      animateWrong(el);
+      if (!state.filled) el.textContent = '?';
+    }
+  });
+  const result = document.getElementById('fitb-result');
+  result.style.display = 'block';
+  if (correct === total) {
+    result.textContent = `🎉 Perfect! All ${total} blanks correct!`;
+    result.style.color = '#00b894';
+  } else {
+    result.textContent = `You got ${correct} out of ${total} correct. Try the wrong ones again!`;
+    result.style.color = '#e17055';
+  }
+}
+
+function resetFITB() {
+  Object.keys(fitbState).forEach(id => {
+    fitbState[id].filled = null;
+    const el = document.getElementById(id);
+    if (el) { el.textContent = '?'; el.classList.remove('correct','wrong'); }
+  });
+  const result = document.getElementById('fitb-result');
+  result.style.display = 'none';
+}
+
+// =====================
+// SORTING ACTIVITY
+// =====================
+const sortNumbers = [500, 523, 600, 648, 700, 712, 800, 865, 900, 934, 1000, 977];
+const roundHundreds = new Set([500, 600, 700, 800, 900, 1000]);
+let sortState = {};
+
+function buildSorting() {
+  const pool = document.getElementById('drag-pool');
+  if (!pool) return;
+  pool.innerHTML = '';
+  sortState = {};
+
+  const shuffled = [...sortNumbers].sort(() => Math.random() - 0.5);
+  shuffled.forEach(n => {
+    sortState[n] = { placed: null };
+    const item = document.createElement('div');
+    item.className = 'drag-item';
+    item.textContent = n;
+    item.draggable = true;
+    item.dataset.num = n;
+    item.id = 'drag-' + n;
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', n);
+      item.style.opacity = '0.5';
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+    // Touch support
+    item.addEventListener('touchstart', touchStart, {passive:true});
+    item.addEventListener('touchmove', touchMove, {passive:false});
+    item.addEventListener('touchend', touchEnd);
+    pool.appendChild(item);
+  });
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function dropItem(e, bucketId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const num = parseInt(e.dataTransfer.getData('text/plain'));
+  placeItemInBucket(num, bucketId);
+}
+
+function placeItemInBucket(num, bucketId) {
+  const originalEl = document.getElementById('drag-' + num);
+  if (!originalEl) return;
+  sortState[num].placed = bucketId;
+
+  const bucketItems = document.getElementById(bucketId + '-items');
+  const newItem = document.createElement('div');
+  newItem.className = 'drag-item';
+  newItem.style.background = bucketId === 'bucket-round' ? 'var(--teal)' : 'var(--purple)';
+  newItem.textContent = num;
+  newItem.style.cursor = 'pointer';
+  newItem.title = 'Click to remove';
+  newItem.addEventListener('click', () => {
+    sortState[num].placed = null;
+    newItem.remove();
+    const pool = document.getElementById('drag-pool');
+    originalEl.style.display = '';
+    if (!pool.contains(originalEl)) pool.appendChild(originalEl);
+  });
+  bucketItems.appendChild(newItem);
+  originalEl.style.display = 'none';
+}
+
+function checkSort() {
+  let correct = 0;
+  sortNumbers.forEach(n => {
+    const placed = sortState[n].placed;
+    if (!placed) return;
+    const isRound = roundHundreds.has(n);
+    if ((isRound && placed === 'bucket-round') || (!isRound && placed === 'bucket-between')) correct++;
+  });
+  const placed = sortNumbers.filter(n => sortState[n].placed !== null).length;
+  const result = document.getElementById('sort-result');
+  result.style.display = 'block';
+  if (correct === sortNumbers.length) {
+    result.textContent = `🎉 Perfect sorting! All ${sortNumbers.length} numbers in the right bucket!`;
+    result.style.color = '#00b894';
+  } else if (placed === 0) {
+    result.textContent = '⚠️ Please drag some numbers into the buckets first!';
+    result.style.color = var_css('--orange');
+  } else {
+    result.textContent = `You placed ${placed} numbers. ${correct} are correct. Keep trying!`;
+    result.style.color = '#e17055';
+  }
+}
+
+function var_css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// Touch drag support
+let touchDragEl = null, touchClone = null;
+function touchStart(e) {
+  touchDragEl = e.currentTarget;
+}
+function touchMove(e) {
+  e.preventDefault();
+  if (!touchDragEl) return;
+  if (!touchClone) {
+    touchClone = touchDragEl.cloneNode(true);
+    touchClone.style.position = 'fixed';
+    touchClone.style.pointerEvents = 'none';
+    touchClone.style.opacity = '0.7';
+    touchClone.style.zIndex = '9999';
+    touchClone.style.width = touchDragEl.offsetWidth + 'px';
+    document.body.appendChild(touchClone);
+  }
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 30) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+}
+function touchEnd(e) {
+  if (!touchDragEl) return;
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const bucket = el ? el.closest('.bucket') : null;
+  if (bucket) {
+    const num = parseInt(touchDragEl.dataset.num);
+    placeItemInBucket(num, bucket.id);
+  }
+  touchDragEl = null;
+}
+
+// =====================
+// QUIZ
+// =====================
+const quizQuestions = [
+  {
+    q: 'What number comes after 541?',
+    opts: ['540', '542'],
+    correct: 1,
+    explanation: '541 + 1 = 542'
+  },
+  {
+    q: 'What number comes after 599?',
+    opts: ['600', '598'],
+    correct: 0,
+    explanation: '599 + 1 = 600'
+  },
+  {
+    q: 'Which number is missing? 648, ___, 650',
+    opts: ['651', '649'],
+    correct: 1,
+    explanation: '648 + 1 = 649'
+  },
+  {
+    q: 'What number comes right before 700?',
+    opts: ['699', '701'],
+    correct: 0,
+    explanation: 'The number before 700 is 699'
+  },
+  {
+    q: 'Count forward: 797, 798, 799, ___',
+    opts: ['800', '798'],
+    correct: 0,
+    explanation: '799 + 1 = 800'
+  },
+  {
+    q: 'Which number comes after 999?',
+    opts: ['998', '1000'],
+    correct: 1,
+    explanation: '999 + 1 = 1000! That is one thousand!'
+  }
+];
+
+let quizAnswers = {};
+
+function buildQuiz() {
+  const section = document.getElementById('quiz-section');
+  if (!section) return;
+  section.innerHTML = '';
+  quizAnswers = {};
+
+  quizQuestions.forEach((q, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'quiz-q';
+    qDiv.id = 'quiz-q-' + qi;
+
+    const p = document.createElement('p');
+    p.textContent = (qi + 1) + '. ' + q.q;
+    qDiv.appendChild(p);
+
+    const opts = document.createElement('div');
+    opts.className = 'quiz-opts';
+    q.opts.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => answerQuiz(qi, oi, btn, qDiv, q));
+      opts.appendChild(btn);
+    });
+    qDiv.appendChild(opts);
+
+    const feedback = document.createElement('div');
+    feedback.className = 'quiz-feedback';
+    feedback.id = 'qfb-' + qi;
+    qDiv.appendChild(feedback);
+
+    section.appendChild(qDiv);
+  });
+
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'quiz-btn';
+  submitBtn.textContent = '📊 See My Score';
+  submitBtn.id = 'quiz-submit-btn';
+  submitBtn.onclick = showQuizScore;
+  section.appendChild(submitBtn);
+}
+
+function answerQuiz(qi, oi, btn, qDiv, q) {
+  if (quizAnswers[qi] !== undefined) return;
+  quizAnswers[qi] = oi;
+  const allBtns = qDiv.querySelectorAll('.quiz-opt');
+  allBtns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('qfb-' + qi);
+  if (oi === q.correct) {
+    btn.classList.add('correct-ans');
+    fb.textContent = '✅ Correct! ' + q.explanation;
+    fb.style.color = '#00b894';
+    animateCorrect(btn);
+  } else {
+    btn.classList.add('wrong-ans');
+    allBtns[q.correct].classList.add('correct-ans');
+    fb.textContent = '❌ ' + q.explanation;
+    fb.style.color = '#d63031';
+    animateWrong(btn);
+  }
+}
+
+function showQuizScore() {
+  let score = 0;
+  quizQuestions.forEach((q, qi) => {
+    if (quizAnswers[qi] === q.correct) score++;
+  });
+  const scoreDiv = document.getElementById('quiz-score');
+  const scoreTitle = document.getElementById('score-title');
+  const scoreText = document.getElementById('score-text');
+  scoreDiv.style.display = 'block';
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  if (pct === 100) { scoreTitle.textContent = '🏆 Perfect Score!'; }
+  else if (pct >= 60) { scoreTitle.textContent = '🌟 Great Job!'; }
+  else { scoreTitle.textContent = '💪 Keep Practising!'; }
+  scoreText.textContent = `You got ${score} out of ${quizQuestions.length} questions right (${pct}%)`;
+  document.getElementById('quiz-submit-btn').style.display = 'none';
+  scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function retakeQuiz() {
+  document.getElementById('quiz-score').style.display = 'none';
+  buildQuiz();
+}
+
+// =====================
+// ANIMATIONS
+// =====================
+function animateCorrect(el) {
+  try {
+    if (typeof gsap !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.timeline()
+        .to(el, { scale: 1.25, duration: 0.15, ease: 'power2.out' })
+        .to(el, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.4)' });
+    }
+  } catch(e) {}
+}
+
+function animateWrong(el) {
+  try {
+    if (typeof gsap !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.to(el, { rotation: -5, duration: 0.07 });
+      gsap.to(el, { rotation: 5, duration: 0.07, delay: 0.07 });
+      gsap.to(el, { rotation: -5, duration: 0.07, delay: 0.14 });
+      gsap.to(el, { rotation: 5, duration: 0.07, delay: 0.21 });
+      gsap.to(el, { rotation: 0, duration: 0.07, delay: 0.28 });
+    }
+  } catch(e) {}
+}
+
+// =====================
+// PROGRESS BAR
+// =====================
+function updateProgress() {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+  const fill = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = 'Lesson Progress: ' + pct + '%';
+
+  // Highlight active nav
+  const sections = document.querySelectorAll('section[id]');
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  document.querySelectorAll('.desktop-nav a, .mobile-nav a').forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>

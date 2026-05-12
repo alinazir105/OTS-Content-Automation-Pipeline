@@ -1,0 +1,1046 @@
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Even and Odd Numbers – Class 2 Math</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;font-family:'Nunito',sans-serif;font-size:18px;background:#FAFAFA;color:#333;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#1DD1A1;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-emoji{font-size:64px;animation:bounce 0.6s infinite alternate}
+#curtain .c-text{font-size:22px;font-weight:800;color:#fff}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+
+/* PROGRESS BAR */
+#progress-bar{position:fixed;top:0;left:0;width:0%;height:6px;background:linear-gradient(90deg,var(--orange),var(--teal));z-index:1000;transition:width 0.3s}
+
+/* HERO */
+.hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#00b894 60%,#FF9F43 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;pointer-events:none}
+.hero-badge{background:var(--orange);color:#fff;font-size:16px;font-weight:800;padding:8px 20px;border-radius:50px;margin-bottom:20px;display:inline-block;letter-spacing:0.5px}
+.hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px}
+.hero h1 span{display:inline-block;opacity:1}
+.hero-sub{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.92);max-width:600px;font-weight:600}
+.hero-fish{font-size:clamp(80px,15vw,140px);margin-top:24px;animation:fishswim 3s ease-in-out infinite}
+@keyframes fishswim{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+
+/* NAV DESKTOP */
+.side-nav{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:800;display:flex;flex-direction:column;gap:10px;padding:16px 10px;background:#fff;border-radius:0 20px 20px 0;box-shadow:var(--shadow)}
+.side-nav a{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;background:#f0f0f0;transition:background 0.2s,transform 0.2s}
+.side-nav a:hover{background:var(--teal);transform:scale(1.1)}
+.side-nav a.active{background:var(--orange)}
+
+/* MAIN */
+main{width:100%;max-width:100%}
+.section-wrap{width:100%;padding:60px 0}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* SECTION CARD */
+.section-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:40px;margin-bottom:32px;opacity:1;transform:none;border-left:5px solid var(--teal)}
+.section-card.orange{border-left-color:var(--orange)}
+.section-card.purple{border-left-color:var(--purple)}
+.section-card.teal{border-left-color:var(--teal)}
+
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.section-icon{font-size:36px;width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.icon-orange{background:#fff3e0}
+.icon-teal{background:#e0faf4}
+.icon-purple{background:#ede9fe}
+.section-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--dark)}
+.section-sub{font-size:18px;color:#636e72;margin-top:4px;font-weight:600}
+
+/* EXPLANATION BOX */
+.explain-box{background:linear-gradient(135deg,#f8f9fa,#e8f5e9);border-radius:16px;padding:24px 28px;margin-bottom:24px;font-size:19px;line-height:1.7;font-weight:600;color:#2d3436}
+.explain-box strong{color:var(--orange)}
+.explain-box .highlight{display:inline-block;background:var(--teal);color:#fff;border-radius:8px;padding:2px 10px;margin:2px}
+.explain-box .highlight.odd{background:var(--orange)}
+
+/* NUMBER GRID VISUAL */
+.num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0}
+.num-tile{border-radius:14px;font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:900;height:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.num-tile:hover{transform:scale(1.08)}
+.num-tile.even{background:linear-gradient(135deg,#1DD1A1,#00b894);color:#fff}
+.num-tile.odd{background:linear-gradient(135deg,#FF9F43,#e17055);color:#fff}
+.num-tile.neutral{background:#f0f0f0;color:#636e72}
+
+/* FISH VISUAL */
+.fish-visual{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0;align-items:center;justify-content:center}
+.fish-section{background:#fff;border-radius:16px;padding:16px 24px;box-shadow:var(--shadow);text-align:center}
+.fish-section .label{font-size:14px;font-weight:700;color:#636e72;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.fish-nums{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fish-num{width:48px;height:48px;border-radius:12px;font-size:1.2rem;font-weight:900;display:flex;align-items:center;justify-content:center;color:#fff}
+.fish-num.ev{background:var(--teal)}
+.fish-num.od{background:var(--orange)}
+
+/* FILL IN BLANKS */
+.fill-activity{margin-top:20px}
+.fill-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.fill-cell{height:64px;border:3px solid #e0e0e0;border-radius:14px;font-size:1.3rem;font-weight:900;display:flex;align-items:center;justify-content:center;background:#fafafa;transition:border-color 0.2s,background 0.2s;position:relative;cursor:pointer}
+.fill-cell.given{background:linear-gradient(135deg,var(--teal),#00b894);color:#fff;border-color:transparent;cursor:default}
+.fill-cell.given.odd-given{background:linear-gradient(135deg,var(--orange),#e17055)}
+.fill-cell.filled{background:#e8f5e9;border-color:var(--teal);color:#2d3436}
+.fill-cell.filled.odd-filled{background:#fff3e0;border-color:var(--orange)}
+.fill-cell:not(.given):hover{border-color:var(--purple);background:#ede9fe}
+.fill-cell.correct-anim{animation:correctPop 0.4s ease}
+@keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.fill-cell.wrong-anim{animation:wrongWobble 0.5s ease}
+@keyframes wrongWobble{0%{transform:rotate(0)}20%{transform:rotate(-5deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+
+/* WORD BANK POPUP */
+.word-bank-popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#fff;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:20px 28px;z-index:900;display:none;min-width:280px;text-align:center}
+.word-bank-popup .wb-title{font-size:14px;font-weight:700;color:#636e72;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.word-bank-options{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.wb-opt{background:var(--purple);color:#fff;border:none;border-radius:12px;padding:10px 20px;font-size:1.1rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.2s,background 0.2s;min-height:48px}
+.wb-opt:hover{transform:scale(1.08);background:var(--orange)}
+.wb-close{margin-top:14px;background:#f0f0f0;color:#636e72;border:none;border-radius:10px;padding:8px 20px;font-size:1rem;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px}
+
+/* DRAG SORT */
+.sort-activity{margin-top:20px}
+.sort-items{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;min-height:60px;padding:16px;background:#f8f9fa;border-radius:16px;border:2px dashed #ddd}
+.drag-item{background:var(--purple);color:#fff;padding:10px 20px;border-radius:12px;font-size:1.1rem;font-weight:800;cursor:grab;user-select:none;border:none;display:inline-flex;align-items:center;min-height:48px;transition:transform 0.15s,box-shadow 0.15s;touch-action:none}
+.drag-item:active{cursor:grabbing;transform:scale(1.05);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.drag-item.dragging{opacity:0.4}
+.sort-buckets{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.bucket{border-radius:20px;padding:20px;min-height:120px;border:3px dashed;transition:border-color 0.2s,background 0.2s}
+.bucket.even-bucket{border-color:var(--teal);background:#e0faf4}
+.bucket.odd-bucket{border-color:var(--orange);background:#fff3e0}
+.bucket.drag-over{border-style:solid;transform:scale(1.02)}
+.bucket-label{font-size:1.2rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.bucket-items{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+.bucket .drag-item.even-placed{background:var(--teal)}
+.bucket .drag-item.odd-placed{background:var(--orange)}
+
+/* QUIZ */
+.quiz-section{margin-top:12px}
+.quiz-question{background:#f8f9fa;border-radius:16px;padding:24px;margin-bottom:20px;border-left:4px solid var(--purple)}
+.q-text{font-size:1.2rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.q-opt{background:#fff;border:3px solid #e0e0e0;border-radius:14px;padding:16px;font-size:1.2rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:border-color 0.2s,background 0.2s;min-height:64px;display:flex;align-items:center;justify-content:center;gap:8px}
+.q-opt:hover:not(.answered){border-color:var(--purple);background:#ede9fe}
+.q-opt.correct{border-color:var(--teal)!important;background:#e0faf4!important;color:#00b894}
+.q-opt.wrong{border-color:#ff6b6b!important;background:#fff0f0!important;color:#ff6b6b}
+.q-result{font-size:1rem;font-weight:700;margin-top:10px;min-height:24px}
+
+.quiz-score{background:linear-gradient(135deg,var(--teal),#00b894);color:#fff;border-radius:20px;padding:32px;text-align:center;margin-top:24px;display:none}
+.quiz-score h3{font-size:2rem;font-weight:900;margin-bottom:8px}
+.quiz-score p{font-size:1.2rem;opacity:0.9}
+.quiz-score .score-emoji{font-size:64px;margin-bottom:12px}
+
+/* READ ALOUD */
+.read-aloud-btn{background:var(--purple);color:#fff;border:none;border-radius:12px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px;min-height:44px;transition:background 0.2s,transform 0.2s;margin-top:12px}
+.read-aloud-btn:hover{background:var(--orange);transform:scale(1.04)}
+
+/* SCORE BAR */
+.score-display{background:var(--orange);color:#fff;border-radius:50px;padding:8px 20px;font-size:1rem;font-weight:800;display:inline-flex;align-items:center;gap:8px;margin-top:16px}
+
+/* CHECK BTN */
+.check-btn{background:linear-gradient(135deg,var(--teal),#00b894);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-size:1.1rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:16px;min-height:52px;transition:transform 0.2s,box-shadow 0.2s}
+.check-btn:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(29,209,161,0.3)}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:800;padding:8px 0;overflow-x:auto}
+.mobile-nav-inner{display:flex;gap:4px;padding:0 12px;min-width:max-content}
+.mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:700;color:#636e72;min-width:60px;min-height:54px;transition:background 0.2s}
+.mobile-nav a:hover,.mobile-nav a.active{background:var(--teal);color:#fff}
+.mobile-nav a span:first-child{font-size:20px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.side-nav{display:none}
+.mobile-nav{display:flex}
+main{padding-bottom:80px}
+.hero{min-height:60vh;padding:40px 16px}
+.container{padding:0 16px}
+.section-card{padding:24px 16px}
+.fill-grid{grid-template-columns:repeat(4,1fr)}
+.sort-buckets{grid-template-columns:1fr}
+.q-options{grid-template-columns:1fr}
+.num-grid{grid-template-columns:repeat(4,1fr)}
+.fish-visual{flex-direction:column}
+}
+@media(max-width:480px){
+.fill-grid{grid-template-columns:repeat(3,1fr)}
+.num-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:769px){.side-nav{display:flex}}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;z-index:9000;pointer-events:none;animation:confettiFall 1.5s ease forwards}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
+
+/* TOOLTIP */
+.speech-tooltip{position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:6px 12px;border-radius:8px;font-size:13px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.read-aloud-btn:hover .speech-tooltip{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+<div class="c-emoji">🐟</div>
+<div class="c-text">Loading Even & Odd Numbers...</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- SIDE NAV (Desktop) -->
+<nav class="side-nav" aria-label="Lesson sections">
+<a href="#section-intro" title="Introduction">📖</a>
+<a href="#section-even" title="Even Numbers">✌️</a>
+<a href="#section-odd" title="Odd Numbers">☝️</a>
+<a href="#section-activity1" title="Fill In Blanks">✏️</a>
+<a href="#section-sort" title="Sorting">🎯</a>
+<a href="#section-quiz" title="Quiz">🏆</a>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" aria-label="Mobile navigation">
+<div class="mobile-nav-inner">
+<a href="#section-intro"><span>📖</span><span>Intro</span></a>
+<a href="#section-even"><span>✌️</span><span>Even</span></a>
+<a href="#section-odd"><span>☝️</span><span>Odd</span></a>
+<a href="#section-activity1"><span>✏️</span><span>Fill</span></a>
+<a href="#section-sort"><span>🎯</span><span>Sort</span></a>
+<a href="#section-quiz"><span>🏆</span><span>Quiz</span></a>
+</div>
+</nav>
+
+<!-- WORD BANK POPUP -->
+<div class="word-bank-popup" id="wordBankPopup" role="dialog" aria-modal="true" aria-label="Word Bank">
+<div class="wb-title">Choose a Number</div>
+<div class="word-bank-options" id="wordBankOptions"></div>
+<button class="wb-close" id="wbClose">Close ✕</button>
+</div>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="section-hero" aria-label="Lesson title">
+<div class="hero-badge">Chapter 6 · Class 2 Math</div>
+<h1>
+<span class="hero-word">Even</span>&nbsp;
+<span class="hero-word">and</span>&nbsp;
+<span class="hero-word">Odd</span>&nbsp;
+<span class="hero-word">Numbers</span>
+</h1>
+<p class="hero-sub">Learn to tell apart even and odd numbers — from 1 all the way to 300! 🎉</p>
+<div class="hero-fish" role="img" aria-label="Fish illustration">🐠</div>
+</section>
+
+<!-- INTRO SECTION -->
+<section class="section-wrap" id="section-intro">
+<div class="container">
+<div class="section-card teal">
+<div class="section-header">
+<div class="section-icon icon-teal">📖</div>
+<div>
+<div class="section-title">What Are Even and Odd Numbers?</div>
+<div class="section-sub">Let's understand the two types of numbers!</div>
+</div>
+</div>
+<div class="explain-box">
+All numbers are either <strong>Even</strong> or <strong>Odd</strong>. 
+You can tell them apart by looking at the <strong>last digit</strong> of the number!<br><br>
+🐟 Think of our fish — the top half has even numbers, the bottom half has odd numbers!
+</div>
+
+<!-- Fish Body Visual -->
+<div class="fish-visual">
+<div class="fish-section">
+<div class="label">🟢 Even Numbers</div>
+<div class="fish-nums">
+<div class="fish-num ev">2</div>
+<div class="fish-num ev">4</div>
+<div class="fish-num ev">6</div>
+<div class="fish-num ev">8</div>
+</div>
+</div>
+<div style="font-size:48px">🐟</div>
+<div class="fish-section">
+<div class="label">🟠 Odd Numbers</div>
+<div class="fish-nums">
+<div class="fish-num od">1</div>
+<div class="fish-num od">3</div>
+<div class="fish-num od">5</div>
+<div class="fish-num od">7</div>
+<div class="fish-num od">9</div>
+</div>
+</div>
+</div>
+
+<button class="read-aloud-btn" onclick="readAloud('All numbers are either Even or Odd. Even numbers end in 0, 2, 4, 6, or 8. Odd numbers end in 1, 3, 5, 7, or 9.')">
+🔊 Read Aloud
+<span class="speech-tooltip">Click to hear this text</span>
+</button>
+</div>
+</div>
+</section>
+
+<!-- EVEN NUMBERS SECTION -->
+<section class="section-wrap" id="section-even" style="background:#e0faf4">
+<div class="container">
+<div class="section-card teal">
+<div class="section-header">
+<div class="section-icon icon-teal">✌️</div>
+<div>
+<div class="section-title">Even Numbers</div>
+<div class="section-sub">Numbers that can be shared equally into two groups</div>
+</div>
+</div>
+<div class="explain-box">
+<strong>Even numbers</strong> end in: <span class="highlight">0</span> <span class="highlight">2</span> <span class="highlight">4</span> <span class="highlight">6</span> <span class="highlight">8</span><br><br>
+Examples: <strong>2, 4, 6, 8, 10, 12 ... 100, 102 ... 200, 202 ... 300</strong><br><br>
+💡 Tip: If the last digit is 0, 2, 4, 6, or 8 — it is <strong>Even!</strong>
+</div>
+
+<div style="margin-bottom:12px;font-size:1.1rem;font-weight:700;color:var(--dark)">Even numbers from 2 to 20:</div>
+<div class="num-grid" style="grid-template-columns:repeat(5,1fr)">
+<div class="num-tile even">2</div>
+<div class="num-tile even">4</div>
+<div class="num-tile even">6</div>
+<div class="num-tile even">8</div>
+<div class="num-tile even">10</div>
+<div class="num-tile even">12</div>
+<div class="num-tile even">14</div>
+<div class="num-tile even">16</div>
+<div class="num-tile even">18</div>
+<div class="num-tile even">20</div>
+</div>
+
+<div style="margin:20px 0 12px;font-size:1.1rem;font-weight:700;color:var(--dark)">Even numbers from 202 to 220:</div>
+<div class="num-grid">
+<div class="num-tile even">202</div>
+<div class="num-tile even">204</div>
+<div class="num-tile even">206</div>
+<div class="num-tile even">208</div>
+<div class="num-tile even">210</div>
+<div class="num-tile even">212</div>
+<div class="num-tile even">214</div>
+<div class="num-tile even">216</div>
+<div class="num-tile even">218</div>
+<div class="num-tile even">220</div>
+</div>
+
+<button class="read-aloud-btn" onclick="readAloud('Even numbers end in 0, 2, 4, 6, or 8. For example 2, 4, 6, 8, 10, 12, 202, 204, 206, 208, 210 are all even numbers.')">
+🔊 Read Aloud
+</button>
+</div>
+</div>
+</section>
+
+<!-- ODD NUMBERS SECTION -->
+<section class="section-wrap" id="section-odd" style="background:#fff3e0">
+<div class="container">
+<div class="section-card orange">
+<div class="section-header">
+<div class="section-icon icon-orange">☝️</div>
+<div>
+<div class="section-title">Odd Numbers</div>
+<div class="section-sub">Numbers that cannot be shared equally into two groups</div>
+</div>
+</div>
+<div class="explain-box">
+<strong>Odd numbers</strong> end in: <span class="highlight odd">1</span> <span class="highlight odd">3</span> <span class="highlight odd">5</span> <span class="highlight odd">7</span> <span class="highlight odd">9</span><br><br>
+Examples: <strong>1, 3, 5, 7, 9, 11 ... 101, 103 ... 201, 203 ... 299</strong><br><br>
+💡 Tip: If the last digit is 1, 3, 5, 7, or 9 — it is <strong>Odd!</strong>
+</div>
+
+<div style="margin-bottom:12px;font-size:1.1rem;font-weight:700;color:var(--dark)">Odd numbers from 1 to 19:</div>
+<div class="num-grid">
+<div class="num-tile odd">1</div>
+<div class="num-tile odd">3</div>
+<div class="num-tile odd">5</div>
+<div class="num-tile odd">7</div>
+<div class="num-tile odd">9</div>
+<div class="num-tile odd">11</div>
+<div class="num-tile odd">13</div>
+<div class="num-tile odd">15</div>
+<div class="num-tile odd">17</div>
+<div class="num-tile odd">19</div>
+</div>
+
+<div style="margin:20px 0 12px;font-size:1.1rem;font-weight:700;color:var(--dark)">Odd numbers from 201 to 219:</div>
+<div class="num-grid">
+<div class="num-tile odd">201</div>
+<div class="num-tile odd">203</div>
+<div class="num-tile odd">205</div>
+<div class="num-tile odd">207</div>
+<div class="num-tile odd">209</div>
+<div class="num-tile odd">211</div>
+<div class="num-tile odd">213</div>
+<div class="num-tile odd">215</div>
+<div class="num-tile odd">217</div>
+<div class="num-tile odd">219</div>
+</div>
+
+<button class="read-aloud-btn" onclick="readAloud('Odd numbers end in 1, 3, 5, 7, or 9. For example 1, 3, 5, 7, 9, 11, 201, 203, 205, 207, 209 are all odd numbers.')">
+🔊 Read Aloud
+</button>
+</div>
+</div>
+</section>
+
+<!-- ACTIVITY 1: Fill In Odd Numbers 201-299 -->
+<section class="section-wrap" id="section-activity1">
+<div class="container">
+<div class="section-card purple">
+<div class="section-header">
+<div class="section-icon icon-purple">✏️</div>
+<div>
+<div class="section-title">Activity 1: Fill In Odd Numbers</div>
+<div class="section-sub">Write odd numbers from 201 to 299. Tap on a blank to fill it!</div>
+</div>
+</div>
+<div class="explain-box">
+The odd numbers from <strong>201 to 299</strong> skip by 2 each time.<br>
+201 → 203 → 205 → 207 → ... → 299
+</div>
+
+<div id="oddFillGrid" class="fill-grid fill-activity" role="grid" aria-label="Odd numbers fill activity"></div>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px">
+<button class="check-btn" onclick="checkOddFill()">✅ Check Answers</button>
+<div class="score-display" id="oddScore" style="display:none">⭐ Score: <span id="oddScoreVal">0</span>/50</div>
+</div>
+<div id="oddFeedback" style="font-size:1.1rem;font-weight:700;margin-top:12px;color:var(--teal)"></div>
+</div>
+
+<!-- ACTIVITY 2: Fill In Even Numbers 202-300 -->
+<div class="section-card orange" style="margin-top:32px">
+<div class="section-header">
+<div class="section-icon icon-orange">✏️</div>
+<div>
+<div class="section-title">Activity 2: Fill In Even Numbers</div>
+<div class="section-sub">Write even numbers from 202 to 300. Tap on a blank to fill it!</div>
+</div>
+</div>
+<div class="explain-box">
+The even numbers from <strong>202 to 300</strong> skip by 2 each time.<br>
+202 → 204 → 206 → 208 → ... → 300
+</div>
+
+<div id="evenFillGrid" class="fill-grid fill-activity" role="grid" aria-label="Even numbers fill activity"></div>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px">
+<button class="check-btn" onclick="checkEvenFill()">✅ Check Answers</button>
+<div class="score-display" id="evenScore" style="display:none">⭐ Score: <span id="evenScoreVal">0</span>/50</div>
+</div>
+<div id="evenFeedback" style="font-size:1.1rem;font-weight:700;margin-top:12px;color:var(--teal)"></div>
+</div>
+</div>
+</section>
+
+<!-- SORTING ACTIVITY -->
+<section class="section-wrap" id="section-sort" style="background:#ede9fe">
+<div class="container">
+<div class="section-card purple">
+<div class="section-header">
+<div class="section-icon icon-purple">🎯</div>
+<div>
+<div class="section-title">Sorting Activity</div>
+<div class="section-sub">Drag each number into the correct bucket!</div>
+</div>
+</div>
+<div class="explain-box">
+Drag the numbers below into the <strong>Even</strong> bucket or the <strong>Odd</strong> bucket.
+</div>
+
+<div class="sort-activity">
+<div style="font-size:1rem;font-weight:700;color:#636e72;margin-bottom:8px">Numbers to sort:</div>
+<div class="sort-items" id="sortItems"></div>
+<div class="sort-buckets">
+<div class="bucket even-bucket" id="evenBucket" data-type="even"
+  ondragover="event.preventDefault();this.classList.add('drag-over')"
+  ondragleave="this.classList.remove('drag-over')"
+  ondrop="dropItem(event,'even')">
+<div class="bucket-label">🟢 Even Numbers</div>
+<div class="bucket-items" id="evenBucketItems"></div>
+</div>
+<div class="bucket odd-bucket" id="oddBucket" data-type="odd"
+  ondragover="event.preventDefault();this.classList.add('drag-over')"
+  ondragleave="this.classList.remove('drag-over')"
+  ondrop="dropItem(event,'odd')">
+<div class="bucket-label">🟠 Odd Numbers</div>
+<div class="bucket-items" id="oddBucketItems"></div>
+</div>
+</div>
+<button class="check-btn" onclick="checkSort()" style="margin-top:20px">✅ Check Sort</button>
+<div id="sortFeedback" style="font-size:1.1rem;font-weight:700;margin-top:12px;color:var(--teal)"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section class="section-wrap" id="section-quiz">
+<div class="container">
+<div class="section-card teal">
+<div class="section-header">
+<div class="section-icon icon-teal">🏆</div>
+<div>
+<div class="section-title">Final Quiz</div>
+<div class="section-sub">Test what you've learned — 6 fun questions!</div>
+</div>
+</div>
+
+<div class="quiz-section" id="quizContainer"></div>
+
+<button class="check-btn" id="submitQuizBtn" onclick="submitQuiz()" style="margin-top:8px">🏅 See My Score</button>
+
+<div class="quiz-score" id="quizScore">
+<div class="score-emoji" id="scoreEmoji">🌟</div>
+<h3 id="scoreText">Great Job!</h3>
+<p id="scoreSub">You answered correctly!</p>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+// CURTAIN FALLBACK
+setTimeout(() => {
+  const c = document.getElementById('curtain');
+  if (c) c.style.display = 'none';
+}, 3000);
+
+// ─── LENIS SMOOTH SCROLL ───────────────────────────────────
+try {
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.1, smooth: true });
+    if (typeof gsap !== 'undefined') {
+      gsap.ticker.add(time => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  }
+} catch(e) { console.warn('Lenis init failed:', e); }
+
+// ─── HIDE CURTAIN ─────────────────────────────────────────
+try {
+  if (typeof gsap !== 'undefined') {
+    gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 0.4, onComplete: () => {
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }});
+  } else {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+} catch(e) {
+  const c = document.getElementById('curtain');
+  if (c) c.style.display = 'none';
+}
+
+// ─── PROGRESS BAR ─────────────────────────────────────────
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (scrollTop / docH) * 100 : 0;
+  const bar = document.getElementById('progress-bar');
+  if (bar) bar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+
+// ─── GSAP ANIMATIONS ──────────────────────────────────────
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+try {
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero words
+    gsap.fromTo('.hero-word',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.7)', delay: 0.8 }
+    );
+
+    // Section cards scroll animation
+    document.querySelectorAll('.section-card').forEach(card => {
+      gsap.fromTo(card,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 85%', once: true }
+        }
+      );
+    });
+
+    // Num tiles stagger
+    document.querySelectorAll('.num-tile').forEach((tile, i) => {
+      gsap.fromTo(tile,
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1, opacity: 1, duration: 0.4, delay: i * 0.04, ease: 'back.out(1.5)',
+          scrollTrigger: { trigger: tile, start: 'top 90%', once: true }
+        }
+      );
+    });
+  }
+} catch(e) { console.warn('GSAP error:', e); }
+
+// ─── ACTIVE NAV HIGHLIGHT ─────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.side-nav a, .mobile-nav a');
+function highlightNav() {
+  const scrollY = window.scrollY + 100;
+  sections.forEach(s => {
+    const top = s.offsetTop;
+    const bot = top + s.offsetHeight;
+    if (scrollY >= top && scrollY < bot) {
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + s.id) a.classList.add('active');
+      });
+    }
+  });
+}
+window.addEventListener('scroll', highlightNav, { passive: true });
+
+// ─── READ ALOUD ───────────────────────────────────────────
+window.readAloud = function(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = 0.85;
+      utt.pitch = 1.1;
+      window.speechSynthesis.speak(utt);
+    } else {
+      alert('Read Aloud: ' + text);
+    }
+  } catch(e) {
+    console.warn('Speech failed:', e);
+  }
+};
+
+// ─── BUILD ODD FILL GRID (201-299) ────────────────────────
+const oddNumbers = [];
+for (let n = 201; n <= 299; n += 2) oddNumbers.push(n);
+
+const oddGrid = document.getElementById('oddFillGrid');
+const givenOdd = new Set([201, 219, 299]);
+const oddAnswers = {};
+
+oddNumbers.forEach((num, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'fill-cell';
+  cell.setAttribute('role', 'gridcell');
+  if (givenOdd.has(num)) {
+    cell.classList.add('given', 'odd-given');
+    cell.textContent = num;
+    cell.setAttribute('aria-label', `Given: ${num}`);
+  } else {
+    cell.setAttribute('data-answer', num);
+    cell.setAttribute('data-type', 'odd');
+    cell.setAttribute('aria-label', `Blank for number ${num}`);
+    cell.setAttribute('tabindex', '0');
+    cell.addEventListener('click', () => openWordBank(cell));
+    cell.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openWordBank(cell); });
+    oddAnswers[i] = { cell, correct: num, filled: false };
+  }
+  oddGrid.appendChild(cell);
+});
+
+// ─── BUILD EVEN FILL GRID (202-300) ───────────────────────
+const evenNumbers = [];
+for (let n = 202; n <= 300; n += 2) evenNumbers.push(n);
+
+const evenGrid = document.getElementById('evenFillGrid');
+const givenEven = new Set([202, 220, 300]);
+const evenAnswers = {};
+
+evenNumbers.forEach((num, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'fill-cell';
+  cell.setAttribute('role', 'gridcell');
+  if (givenEven.has(num)) {
+    cell.classList.add('given');
+    cell.textContent = num;
+    cell.setAttribute('aria-label', `Given: ${num}`);
+  } else {
+    cell.setAttribute('data-answer', num);
+    cell.setAttribute('data-type', 'even');
+    cell.setAttribute('aria-label', `Blank for number ${num}`);
+    cell.setAttribute('tabindex', '0');
+    cell.addEventListener('click', () => openWordBank(cell));
+    cell.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openWordBank(cell); });
+    evenAnswers[i] = { cell, correct: num, filled: false };
+  }
+  evenGrid.appendChild(cell);
+});
+
+// ─── WORD BANK ────────────────────────────────────────────
+let activeCell = null;
+const popup = document.getElementById('wordBankPopup');
+const optContainer = document.getElementById('wordBankOptions');
+
+function openWordBank(cell) {
+  activeCell = cell;
+  const correct = parseInt(cell.getAttribute('data-answer'));
+  const type = cell.getAttribute('data-type');
+  
+  // Generate 4 options: correct + 3 distractors
+  const step = 2;
+  let options = new Set([correct]);
+  const directions = [-4, -2, 2, 4, 6, -6];
+  for (const d of directions) {
+    if (options.size >= 4) break;
+    const candidate = correct + d;
+    if (candidate >= 200 && candidate <= 302) options.add(candidate);
+  }
+  while (options.size < 4) {
+    const rand = correct + (Math.floor(Math.random() * 6) - 3) * 2;
+    if (rand !== correct && rand >= 200 && rand <= 302) options.add(rand);
+  }
+  
+  const optArr = Array.from(options).sort(() => Math.random() - 0.5);
+  optContainer.innerHTML = '';
+  optArr.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'wb-opt';
+    btn.textContent = opt;
+    btn.setAttribute('aria-label', `Choose ${opt}`);
+    btn.addEventListener('click', () => selectOption(opt, correct, cell, type));
+    optContainer.appendChild(btn);
+  });
+  
+  popup.style.display = 'block';
+}
+
+function selectOption(chosen, correct, cell, type) {
+  popup.style.display = 'none';
+  if (chosen === correct) {
+    cell.textContent = chosen;
+    cell.classList.add('filled', type === 'odd' ? 'odd-filled' : '');
+    cell.classList.remove('fill-cell');
+    cell.style.cursor = 'default';
+    cell.removeEventListener('click', () => openWordBank(cell));
+    animateCorrect(cell);
+  } else {
+    animateWrong(cell);
+  }
+}
+
+document.getElementById('wbClose').addEventListener('click', () => {
+  popup.style.display = 'none';
+  activeCell = null;
+});
+document.addEventListener('click', e => {
+  if (popup.style.display === 'block' && !popup.contains(e.target) && !e.target.closest('.fill-cell')) {
+    popup.style.display = 'none';
+    activeCell = null;
+  }
+});
+
+// ─── ANIMATE CORRECT / WRONG ──────────────────────────────
+function animateCorrect(el) {
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      gsap.fromTo(el, { scale: 1 }, { scale: 1.2, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out' });
+    }
+  } catch(e) {}
+  el.classList.add('correct-anim');
+  setTimeout(() => el.classList.remove('correct-anim'), 500);
+}
+
+function animateWrong(el) {
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      gsap.to(el, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'none', clearProps: 'rotation' });
+    }
+  } catch(e) {}
+  el.classList.add('wrong-anim');
+  setTimeout(() => el.classList.remove('wrong-anim'), 600);
+}
+
+// ─── CHECK ODD FILL ───────────────────────────────────────
+window.checkOddFill = function() {
+  const cells = oddGrid.querySelectorAll('.fill-cell:not(.given)');
+  let correct = 0, total = cells.length;
+  cells.forEach(cell => {
+    const ans = parseInt(cell.getAttribute('data-answer'));
+    const val = parseInt(cell.textContent);
+    if (val === ans) {
+      correct++;
+      cell.style.background = 'linear-gradient(135deg,#FF9F43,#e17055)';
+      cell.style.color = '#fff';
+      cell.style.borderColor = 'transparent';
+    } else {
+      cell.style.borderColor = '#ff6b6b';
+      cell.style.background = '#fff0f0';
+    }
+  });
+  document.getElementById('oddScoreVal').textContent = correct;
+  document.getElementById('oddScore').style.display = 'inline-flex';
+  const fb = document.getElementById('oddFeedback');
+  if (correct === total) {
+    fb.textContent = '🎉 Perfect! All odd numbers correct!';
+    spawnConfetti();
+  } else {
+    fb.textContent = `You got ${correct} out of ${total}. Keep trying! 💪`;
+  }
+};
+
+// ─── CHECK EVEN FILL ──────────────────────────────────────
+window.checkEvenFill = function() {
+  const cells = evenGrid.querySelectorAll('.fill-cell:not(.given)');
+  let correct = 0, total = cells.length;
+  cells.forEach(cell => {
+    const ans = parseInt(cell.getAttribute('data-answer'));
+    const val = parseInt(cell.textContent);
+    if (val === ans) {
+      correct++;
+      cell.style.background = 'linear-gradient(135deg,#1DD1A1,#00b894)';
+      cell.style.color = '#fff';
+      cell.style.borderColor = 'transparent';
+    } else {
+      cell.style.borderColor = '#ff6b6b';
+      cell.style.background = '#fff0f0';
+    }
+  });
+  document.getElementById('evenScoreVal').textContent = correct;
+  document.getElementById('evenScore').style.display = 'inline-flex';
+  const fb = document.getElementById('evenFeedback');
+  if (correct === total) {
+    fb.textContent = '🎉 Perfect! All even numbers correct!';
+    spawnConfetti();
+  } else {
+    fb.textContent = `You got ${correct} out of ${total}. Keep trying! 💪`;
+  }
+};
+
+// ─── SORTING ACTIVITY ─────────────────────────────────────
+const sortData = [
+  { num: 214, type: 'even' }, { num: 237, type: 'odd' }, { num: 252, type: 'even' },
+  { num: 261, type: 'odd' }, { num: 278, type: 'even' }, { num: 293, type: 'odd' },
+  { num: 246, type: 'even' }, { num: 275, type: 'odd' }, { num: 220, type: 'even' },
+  { num: 299, type: 'odd' }
+];
+
+const sortItemsEl = document.getElementById('sortItems');
+let draggedItem = null;
+
+sortData.sort(() => Math.random() - 0.5).forEach(d => {
+  const item = createDragItem(d.num, d.type);
+  sortItemsEl.appendChild(item);
+});
+
+function createDragItem(num, type) {
+  const item = document.createElement('div');
+  item.className = 'drag-item';
+  item.setAttribute('draggable', 'true');
+  item.setAttribute('data-num', num);
+  item.setAttribute('data-type', type);
+  item.textContent = num;
+  item.setAttribute('aria-label', `Number ${num}, drag to sort`);
+
+  item.addEventListener('dragstart', e => {
+    draggedItem = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', num + '|' + type);
+  });
+  item.addEventListener('dragend', () => {
+    item.classList.remove('dragging');
+    draggedItem = null;
+  });
+
+  // Touch support
+  let touchStartX, touchStartY;
+  item.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    draggedItem = item;
+  }, { passive: true });
+  item.addEventListener('touchend', e => {
+    const touch = e.changedTouches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const bucket = el ? el.closest('.bucket') : null;
+    if (bucket && draggedItem) {
+      const btype = bucket.getAttribute('data-type');
+      handleDrop(draggedItem, btype, bucket);
+    }
+    draggedItem = null;
+  }, { passive: true });
+
+  return item;
+}
+
+window.dropItem = function(e, bucketType) {
+  e.preventDefault();
+  const bucket = document.getElementById(bucketType + 'Bucket');
+  bucket.classList.remove('drag-over');
+  if (!draggedItem) return;
+  handleDrop(draggedItem, bucketType, bucket);
+};
+
+function handleDrop(item, bucketType, bucket) {
+  const itemType = item.getAttribute('data-type');
+  const bucketItems = bucket.querySelector('.bucket-items');
+  item.classList.remove('dragging');
+  const clone = item.cloneNode(true);
+  clone.classList.add(itemType === 'even' ? 'even-placed' : 'odd-placed');
+  clone.setAttribute('draggable', 'false');
+  clone.addEventListener('click', () => {
+    clone.remove();
+    const original = createDragItem(parseInt(item.getAttribute('data-num')), item.getAttribute('data-type'));
+    sortItemsEl.appendChild(original);
+  });
+  bucketItems.appendChild(clone);
+  if (item.parentElement === sortItemsEl) item.remove();
+}
+
+window.checkSort = function() {
+  const evenItems = document.querySelectorAll('#evenBucketItems .drag-item');
+  const oddItems = document.querySelectorAll('#oddBucketItems .drag-item');
+  let correct = 0, total = 0;
+
+  evenItems.forEach(item => {
+    total++;
+    if (item.getAttribute('data-type') === 'even') {
+      correct++;
+      item.style.background = 'var(--teal)';
+    } else {
+      item.style.background = '#ff6b6b';
+    }
+  });
+  oddItems.forEach(item => {
+    total++;
+    if (item.getAttribute('data-type') === 'odd') {
+      correct++;
+      item.style.background = 'var(--orange)';
+    } else {
+      item.style.background = '#ff6b6b';
+    }
+  });
+
+  const fb = document.getElementById('sortFeedback');
+  if (correct === total && total > 0) {
+    fb.textContent = `🎉 Amazing! All ${total} numbers sorted correctly!`;
+    spawnConfetti();
+  } else if (total === 0) {
+    fb.textContent = '⚠️ Please drag some numbers into the buckets first!';
+  } else {
+    fb.textContent = `You got ${correct} out of ${total} correct. Try again! 💪`;
+  }
+};
+
+// ─── QUIZ ─────────────────────────────────────────────────
+const quizData = [
+  { q: 'Which number is Even?', opts: ['237', '248'], correct: '248', emoji: ['🔵', '🟢'] },
+  { q: 'Which number is Odd?', opts: ['264', '275'], correct: '275', emoji: ['🟡', '🟠'] },
+  { q: 'Is 206 an Even or Odd number?', opts: ['Even ✌️', 'Odd ☝️'], correct: 'Even ✌️', emoji: ['✌️', '☝️'] },
+  { q: 'What comes after 281 in the odd number sequence?', opts: ['282', '283'], correct: '283', emoji: ['🔢', '🔣'] },
+  { q: 'Which number is Even?', opts: ['299', '300'], correct: '300', emoji: ['🎱', '💯'] },
+  { q: 'How do Even numbers end?', opts: ['0, 2, 4, 6, 8', '1, 3, 5, 7, 9'], correct: '0, 2, 4, 6, 8', emoji: ['🟢', '🟠'] }
+];
+
+const quizContainer = document.getElementById('quizContainer');
+let quizUserAnswers = {};
+
+quizData.forEach((q, qi) => {
+  const qDiv = document.createElement('div');
+  qDiv.className = 'quiz-question';
+  qDiv.innerHTML = `<div class="q-text">Q${qi+1}. ${q.q}</div><div class="q-options" id="qopts${qi}"></div><div class="q-result" id="qres${qi}"></div>`;
+  quizContainer.appendChild(qDiv);
+
+  const optsDiv = qDiv.querySelector(`#qopts${qi}`);
+  q.opts.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.innerHTML = `${q.emoji[oi]} ${opt}`;
+    btn.setAttribute('aria-label', `Option: ${opt}`);
+    btn.addEventListener('click', () => {
+      if (qDiv.classList.contains('answered')) return;
+      qDiv.classList.add('answered');
+      quizUserAnswers[qi] = opt;
+      const isCorrect = opt === q.correct;
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) {
+        optsDiv.querySelectorAll('.q-opt').forEach(b => {
+          if (b.textContent.includes(q.correct)) b.classList.add('correct');
+        });
+      }
+      const res = document.getElementById('qres' + qi);
+      res.textContent = isCorrect ? '✅ Correct! Well done!' : `❌ Not quite. The answer is: ${q.correct}`;
+      res.style.color = isCorrect ? 'var(--teal)' : '#ff6b6b';
+
+      try {
+        if (typeof gsap !== 'undefined' && isCorrect && !prefersReduced) {
+          gsap.fromTo(btn, { scale: 1 }, { scale: 1.1, duration: 0.15, yoyo: true, repeat: 1, ease: 'back.out' });
+        } else if (!isCorrect && typeof gsap !== 'undefined' && !prefersReduced) {
+          gsap.to(btn, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'none', clearProps: 'rotation' });
+        }
+      } catch(e) {}
+    });
+    optsDiv.appendChild(btn);
+  });
+});
+
+window.submitQuiz = function() {
+  let score = 0;
+  quizData.forEach((q, qi) => {
+    if (quizUserAnswers[qi] === q.correct) score++;
+  });
+  const total = quizData.length;
+  const scoreEl = document.getElementById('quizScore');
+  const emojiEl = document.getElementById('scoreEmoji');
+  const textEl = document.getElementById('scoreText');
+  const subEl = document.getElementById('scoreSub');
+
+  let emoji, msg, sub;
+  if (score === total) { emoji = '🌟'; msg = 'Perfect Score!'; sub = `You got all ${total} questions right! You are a star!`; }
+  else if (score >= total * 0.7) { emoji = '😊'; msg = 'Great Job!'; sub = `You got ${score} out of ${total}. Almost perfect!`; }
+  else if (score >= total * 0.5) { emoji = '💪'; msg = 'Good Try!'; sub = `You got ${score} out of ${total}. Keep practising!`; }
+  else { emoji = '📚'; msg = 'Keep Learning!'; sub = `You got ${score} out of ${total}. Review the lesson and try again!`; }
+
+  emojiEl.textContent = emoji;
+  textEl.textContent = msg;
+  subEl.textContent = sub;
+  scoreEl.style.display = 'block';
+  document.getElementById('submitQuizBtn').style.display = 'none';
+
+  if (score >= total * 0.7) spawnConfetti();
+
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReduced) {
+      gsap.fromTo(scoreEl, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+    }
+  } catch(e) {}
+};
+
+// ─── CONFETTI ─────────────────────────────────────────────
+function spawnConfetti() {
+  const colors = ['#FF9F43', '#1DD1A1', '#A29BFE', '#fd79a8', '#fdcb6e', '#e17055'];
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.top = '-20px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (8 + Math.random() * 8) + 'px';
+      piece.style.height = (8 + Math.random() * 8) + 'px';
+      piece.style.animationDuration = (1 + Math.random()) + 's';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 2500);
+    }, i * 40);
+  }
+}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

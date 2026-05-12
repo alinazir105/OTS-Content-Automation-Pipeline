@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6: Developing Word Processing Skills</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d3436;font-size:18px;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--card-shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#1DD1A1;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-logo{font-size:clamp(2rem,6vw,3.5rem);font-weight:900;color:#fff}
+#curtain .c-sub{font-size:clamp(1rem,3vw,1.4rem);color:rgba(255,255,255,0.85)}
+.spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);padding:8px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+#progress-bar-fill{height:8px;background:linear-gradient(90deg,#1DD1A1,#FF9F43);border-radius:4px;width:0%;transition:width 0.4s ease}
+#progress-bar-track{flex:1;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden}
+#progress-label{font-size:13px;font-weight:700;color:#636e72;white-space:nowrap}
+
+/* PAGE WRAPPER */
+.page-wrap{width:100%;max-width:100%;padding-top:50px}
+
+/* HERO */
+.hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#1DD1A1 0%,#00b894 50%,#00cec9 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-badge{background:rgba(255,255,255,0.2);color:#fff;padding:8px 20px;border-radius:50px;font-size:clamp(0.9rem,2.5vw,1.1rem);font-weight:700;margin-bottom:20px;backdrop-filter:blur(8px)}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px}
+.hero h1 span{display:inline-block;opacity:1}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,0.9);max-width:600px;line-height:1.6;margin-bottom:30px}
+.hero-icon{font-size:clamp(4rem,10vw,7rem);margin-bottom:20px;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.2))}
+.hero-objectives{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:800px}
+.hero-obj-pill{background:rgba(255,255,255,0.18);color:#fff;padding:10px 18px;border-radius:50px;font-size:clamp(0.85rem,2vw,1rem);font-weight:600;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3)}
+
+/* SECTIONS */
+.section{width:100%;padding:60px 0}
+.section-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:36px}
+.section-icon{font-size:2.5rem;background:var(--bg,#1DD1A1);width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--dark)}
+.section-desc{font-size:clamp(1rem,2vw,1.15rem);color:#636e72;margin-top:4px}
+
+/* CARDS */
+.card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:32px;width:100%;max-width:100%;opacity:1;transform:none;border-left:4px solid var(--accent,#1DD1A1)}
+.card+.card{margin-top:24px}
+.card h3{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:12px;color:var(--dark)}
+.card p{font-size:clamp(1rem,2vw,1.1rem);line-height:1.7;color:#444}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+
+/* STEP CARDS */
+.step-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px 32px;border-left:4px solid var(--step-color,#FF9F43);opacity:1;transform:none}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--step-color,#FF9F43);color:#fff;font-weight:900;font-size:1.1rem;margin-bottom:12px}
+.step-title{font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:800;margin-bottom:10px}
+.step-list{list-style:none;padding:0}
+.step-list li{font-size:clamp(0.95rem,2vw,1.05rem);padding:6px 0 6px 28px;position:relative;color:#444;line-height:1.6}
+.step-list li::before{content:'●';position:absolute;left:0;color:var(--step-color,#FF9F43)}
+.kbd{display:inline-block;background:#f1f2f6;border:1px solid #dfe6e9;border-radius:6px;padding:3px 10px;font-family:monospace;font-size:0.9rem;font-weight:700;color:#2d3436;margin:0 2px}
+
+/* KEYBOARD SECTION */
+.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.key-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:24px;border-top:4px solid var(--key-color,#A29BFE);opacity:1;transform:none;text-align:center}
+.key-card .key-icon{font-size:2.8rem;margin-bottom:10px}
+.key-card h4{font-size:clamp(1.2rem,2.5vw,1.4rem);font-weight:800;margin-bottom:8px;color:var(--key-color,#A29BFE)}
+.key-card p{font-size:clamp(0.9rem,2vw,1rem);color:#636e72;line-height:1.6}
+
+/* FORMAT CARDS */
+.format-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fmt-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px;text-align:center;border-top:4px solid var(--fmt-color);opacity:1;transform:none}
+.fmt-demo{font-size:2.5rem;font-weight:900;margin-bottom:12px;color:var(--fmt-color)}
+.fmt-card h4{font-size:clamp(1.2rem,2.5vw,1.4rem);font-weight:800;margin-bottom:8px}
+.fmt-card p{font-size:clamp(0.9rem,2vw,1rem);color:#636e72}
+.fmt-shortcut{display:inline-block;background:var(--fmt-color);color:#fff;padding:6px 16px;border-radius:50px;font-size:0.9rem;font-weight:700;margin-top:10px}
+
+/* ALIGN CARDS */
+.align-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.align-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px;border-top:4px solid var(--al-color);opacity:1;transform:none}
+.align-card h4{font-size:clamp(1.2rem,2.5vw,1.4rem);font-weight:800;margin-bottom:10px;color:var(--al-color)}
+.align-lines{display:flex;flex-direction:column;gap:6px;margin:14px 0}
+.align-line{height:10px;background:var(--al-color);opacity:0.5;border-radius:3px}
+.align-shortcut{display:inline-block;background:var(--al-color);color:#fff;padding:6px 16px;border-radius:50px;font-size:0.9rem;font-weight:700}
+
+/* READ ALOUD BUTTON */
+.read-btn{display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;border-radius:50px;padding:10px 22px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.2s,box-shadow 0.2s;margin-top:16px}
+.read-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(162,155,254,0.4)}
+
+/* TIP BOX */
+.tip-box{background:linear-gradient(135deg,#fff9f0,#fff3e0);border-radius:16px;padding:20px 24px;border-left:4px solid var(--orange);margin-top:24px}
+.tip-box p{font-size:clamp(0.95rem,2vw,1.05rem);color:#444}
+.tip-box strong{color:var(--orange)}
+
+/* EXERCISE SECTIONS */
+.exercise-wrap{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:36px;border-left:4px solid var(--teal);opacity:1;transform:none}
+.exercise-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--dark);margin-bottom:8px}
+.exercise-desc{font-size:clamp(0.95rem,2vw,1.05rem);color:#636e72;margin-bottom:24px}
+
+/* EXERCISE 1 - Shift Symbols */
+.symbol-table{width:100%;border-collapse:collapse;font-size:clamp(0.95rem,2vw,1.05rem)}
+.symbol-table th{background:var(--teal);color:#fff;padding:14px 18px;font-weight:700;border-radius:0}
+.symbol-table th:first-child{border-radius:12px 0 0 0}
+.symbol-table th:last-child{border-radius:0 12px 0 0}
+.symbol-table td{padding:12px 18px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.symbol-table tr:last-child td{border-bottom:none}
+.symbol-table tr:nth-child(even){background:#f8fdfc}
+.key-combo{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.key-box{background:#2d3436;color:#fff;padding:5px 12px;border-radius:8px;font-family:monospace;font-size:1rem}
+.arrow-plus{color:#636e72;font-size:1.2rem}
+.answer-box{background:#f1f2f6;border-radius:10px;padding:10px 16px;font-size:1.1rem;font-weight:700;min-width:80px;text-align:center}
+.correct-answer{background:linear-gradient(135deg,#d4fce8,#c8f5e0);color:#00b894;border-radius:10px;padding:10px 16px;font-size:1.2rem;font-weight:800;text-align:center}
+
+/* EXERCISE 3 - CUT COPY PASTE ACTIVITY */
+.exercise3-box{background:#f8f9ff;border-radius:16px;padding:24px;margin:16px 0;border:2px dashed #A29BFE}
+.exercise3-box pre{font-size:clamp(0.9rem,2vw,1rem);white-space:pre-wrap;line-height:1.8;color:#2d3436;font-family:'Nunito',sans-serif}
+
+/* FILL IN THE BLANK - EXERCISE 4 */
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;padding:20px;background:#f8f9ff;border-radius:16px}
+.word-chip{background:#A29BFE;color:#fff;padding:8px 18px;border-radius:50px;font-size:clamp(0.9rem,2vw,1rem);font-weight:700;cursor:pointer;user-select:none;transition:transform 0.2s,opacity 0.2s;min-height:44px;display:inline-flex;align-items:center}
+.word-chip:hover{transform:translateY(-2px)}
+.word-chip.used{opacity:0.4;pointer-events:none}
+.blank-sentence{font-size:clamp(1rem,2vw,1.1rem);line-height:2.2;margin-bottom:16px;color:#2d3436}
+.blank{display:inline-block;min-width:120px;border-bottom:3px solid #A29BFE;margin:0 6px;padding:2px 8px;text-align:center;cursor:pointer;font-weight:700;color:#A29BFE;border-radius:4px;transition:background 0.2s;min-height:32px;vertical-align:middle}
+.blank.filled{background:#EDE9FF;color:#6c5ce7;border-color:#6c5ce7;cursor:default}
+.blank.correct-blank{background:#d4fce8;color:#00b894;border-color:#00b894}
+.blank.wrong-blank{background:#ffe8e8;color:#d63031;border-color:#d63031}
+.check-btn{background:var(--teal);color:#fff;border:none;border-radius:50px;padding:14px 36px;font-size:1.1rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.2s;margin-top:16px;min-height:48px}
+.check-btn:hover{transform:translateY(-2px)}
+.reset-btn{background:#dfe6e9;color:#636e72;border:none;border-radius:50px;padding:14px 28px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:16px;margin-left:12px;min-height:48px}
+
+/* QUIZ SECTION */
+.quiz-wrap{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:36px;opacity:1;transform:none}
+.quiz-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:8px}
+.quiz-q{margin-bottom:28px}
+.quiz-q-text{font-size:clamp(1rem,2vw,1.15rem);font-weight:700;margin-bottom:14px;color:#2d3436}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quiz-opt{background:#f8f9ff;border:2px solid #e0e5ff;border-radius:14px;padding:16px 20px;font-size:clamp(0.95rem,2vw,1.05rem);font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;font-family:'Nunito',sans-serif;min-height:56px;display:flex;align-items:center;justify-content:center}
+.quiz-opt:hover{border-color:#A29BFE;background:#EDE9FF}
+.quiz-opt.correct{background:#d4fce8;border-color:#1DD1A1;color:#00b894}
+.quiz-opt.wrong{background:#ffe8e8;border-color:#ff7675;color:#d63031}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-feedback{font-size:1rem;font-weight:700;margin-top:10px;min-height:24px}
+.quiz-score{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:900;text-align:center;padding:20px;background:linear-gradient(135deg,#f8f9ff,#EDE9FF);border-radius:16px;margin-top:20px;display:none}
+
+/* SECTION COLORS */
+.sec-cut{--accent:#FF9F43}
+.sec-format{--accent:#A29BFE}
+.sec-align{--accent:#1DD1A1}
+.sec-keys{--accent:#FF9F43}
+.sec-ex{--accent:#1DD1A1}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.12);z-index:999;overflow-x:auto;padding:8px 0}
+.bottom-nav-inner{display:flex;gap:4px;padding:0 8px;min-width:max-content}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:12px;text-decoration:none;color:#636e72;font-size:11px;font-weight:700;min-width:64px;transition:background 0.2s;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;min-height:52px;justify-content:center}
+.bnav-item:hover,.bnav-item.active{background:#f0fff9;color:#1DD1A1}
+.bnav-icon{font-size:1.4rem}
+
+/* ACTIVITY DRAG-SORT */
+.drag-area{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+.drag-source{background:#f8f9ff;border-radius:16px;padding:16px;min-height:100px}
+.drag-source h4{font-size:1rem;font-weight:800;margin-bottom:12px;color:#636e72}
+.drag-items{display:flex;flex-wrap:wrap;gap:8px}
+.drag-item{background:var(--orange);color:#fff;padding:10px 18px;border-radius:50px;font-size:0.95rem;font-weight:700;cursor:grab;user-select:none;transition:transform 0.15s;min-height:44px;display:inline-flex;align-items:center}
+.drag-item:hover{transform:scale(1.05)}
+.drop-zone{background:#fff;border:3px dashed #e0e0e0;border-radius:16px;padding:16px;min-height:120px;transition:border-color 0.2s,background 0.2s}
+.drop-zone.drag-over{border-color:var(--teal);background:#f0fff9}
+.drop-zone h4{font-size:1rem;font-weight:800;margin-bottom:12px}
+.drop-zone .dropped{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+
+/* CANVAS placeholder */
+.canvas-placeholder{background:linear-gradient(135deg,#f8f9ff,#EDE9FF);border-radius:20px;padding:40px;text-align:center;font-size:3rem;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .section-inner{padding:0 16px}
+  .grid-2,.grid-3,.key-grid,.format-row,.align-row{grid-template-columns:1fr}
+  .drag-area{grid-template-columns:1fr}
+  .quiz-opts{grid-template-columns:1fr}
+  .hero{min-height:60vh;padding:40px 16px}
+  body{padding-bottom:80px}
+  .bottom-nav{display:block}
+  .section{padding:40px 0}
+  .hero-objectives{gap:8px}
+  .card{padding:20px}
+  .exercise-wrap{padding:20px}
+  .quiz-wrap{padding:20px}
+  .step-card{padding:20px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:clamp(1.8rem,8vw,2.5rem)}
+  .word-chip{padding:6px 14px;font-size:0.9rem}
+  .blank{min-width:80px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="c-logo">💻 Digital School</div>
+  <div class="c-sub">Unit 6: Developing Word Processing Skills</div>
+  <div class="spinner"></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <span style="font-size:1.1rem">📊</span>
+  <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
+  <span id="progress-label">0% Complete</span>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="sec-hero">
+    <div class="hero-badge">Unit 6 · Class 2 Computer</div>
+    <div class="hero-icon">💻</div>
+    <h1 id="hero-title">
+      <span>Developing</span> <span>Word</span> <span>Processing</span> <span>Skills</span>
+    </h1>
+    <p class="hero-sub">Learn to cut, copy, paste text, format it with bold, italic & underline, and align it for a beautiful document!</p>
+    <div class="hero-objectives">
+      <div class="hero-obj-pill">✂️ Cut, Copy & Paste</div>
+      <div class="hero-obj-pill">✏️ Bold, Italic, Underline</div>
+      <div class="hero-obj-pill">↔️ Align Text</div>
+      <div class="hero-obj-pill">⌨️ Keyboard Shortcuts</div>
+    </div>
+  </section>
+
+  <!-- INTRODUCTION -->
+  <section class="section" id="sec-intro">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-icon" style="--bg:#1DD1A1">📝</div>
+        <div>
+          <div class="section-title">What is MS Word?</div>
+          <div class="section-desc">A powerful tool to create and organise documents</div>
+        </div>
+      </div>
+      <div class="card" style="--accent:#1DD1A1">
+        <p>In this unit, we will learn essential skills in <strong>MS Word</strong> that help make your documents look organised. You will learn how to <strong>cut, copy, and paste</strong> text, apply basic <strong>formatting styles</strong>, and <strong>align text</strong> for a better presentation.</p>
+        <button class="read-btn" onclick="readAloud('In this unit, we will learn essential skills in MS Word that help make your documents look organised. You will learn how to cut, copy, and paste text, apply basic formatting styles, and align text for a better presentation.')">🔊 Read Aloud</button>
+      </div>
+      <div class="tip-box" style="margin-top:20px">
+        <p><strong>💡 Did you know?</strong> When you have selected a text or a picture, you can use the <strong>right-click</strong> option to cut, copy or paste your text instead of using the buttons on the clipboard!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUT COPY PASTE -->
+  <section class="section sec-cut" id="sec-ccp" style="background:linear-gradient(180deg,#FAFAFA 0%,#fff8f0 100%)">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-icon" style="--bg:#FF9F43">✂️</div>
+        <div>
+          <div class="section-title">Cut, Copy, and Paste</div>
+          <div class="section-desc">Move and duplicate text like a pro!</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="step-card" style="--step-color:#1DD1A1">
+          <div class="step-num">1</div>
+          <div class="step-title">📋 Copy</div>
+          <p style="font-size:1rem;color:#636e72;margin-bottom:12px">Use this feature to <strong>duplicate</strong> text (original stays in place).</p>
+          <ul class="step-list">
+            <li>Select the text you want to copy.</li>
+            <li>Right-click and select <strong>Copy</strong> or press <span class="kbd">Ctrl</span> + <span class="kbd">C</span></li>
+            <li>Move the cursor to where you want it.</li>
+            <li>Right-click and select <strong>Paste</strong> or press <span class="kbd">Ctrl</span> + <span class="kbd">V</span></li>
+          </ul>
+          <button class="read-btn" onclick="readAloud('Copy: Use this feature to duplicate text. Select the text you want to copy. Right-click and select Copy or press Control C. Move the cursor to where you want it and press Control V to paste.')">🔊 Read Aloud</button>
+        </div>
+
+        <div class="step-card" style="--step-color:#FF9F43">
+          <div class="step-num">2</div>
+          <div class="step-title">✂️ Cut</div>
+          <p style="font-size:1rem;color:#636e72;margin-bottom:12px">Use this to <strong>move</strong> text from one place to another (removes original).</p>
+          <ul class="step-list" style="--step-color:#FF9F43">
+            <li>Select the text you want to cut.</li>
+            <li>Right-click and select <strong>Cut</strong> or press <span class="kbd">Ctrl</span> + <span class="kbd">X</span></li>
+            <li>Move the cursor to a new location.</li>
+            <li>Right-click and select <strong>Paste</strong> or press <span class="kbd">Ctrl</span> + <span class="kbd">V</span></li>
+          </ul>
+          <button class="read-btn" onclick="readAloud('Cut: Use this to move text from one place to another. Select the text you want to cut. Right-click and select Cut or press Control X. Move the cursor to a new location and press Control V to paste.')">🔊 Read Aloud</button>
+        </div>
+      </div>
+
+      <div class="card" style="--accent:#A29BFE;margin-top:24px">
+        <h3>🖱️ Keyboard Shortcuts Summary</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:16px">
+          <div style="background:#f8f9ff;border-radius:14px;padding:16px 24px;text-align:center;min-width:140px">
+            <div style="font-size:1.8rem;margin-bottom:8px">📋</div>
+            <div style="font-weight:800;color:#2d3436;font-size:1.05rem">Copy</div>
+            <div style="margin-top:6px"><span class="kbd">Ctrl</span> + <span class="kbd">C</span></div>
+          </div>
+          <div style="background:#f8f9ff;border-radius:14px;padding:16px 24px;text-align:center;min-width:140px">
+            <div style="font-size:1.8rem;margin-bottom:8px">✂️</div>
+            <div style="font-weight:800;color:#2d3436;font-size:1.05rem">Cut</div>
+            <div style="margin-top:6px"><span class="kbd">Ctrl</span> + <span class="kbd">X</span></div>
+          </div>
+          <div style="background:#f8f9ff;border-radius:14px;padding:16px 24px;text-align:center;min-width:140px">
+            <div style="font-size:1.8rem;margin-bottom:8px">📌</div>
+            <div style="font-weight:800;color:#2d3436;font-size:1.05rem">Paste</div>
+            <div style="margin-top:6px"><span class="kbd">Ctrl</span> + <span class="kbd">V</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATTING -->
+  <section class="section sec-format" id="sec-format">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-icon" style="--bg:#A29BFE">✏️</div>
+        <div>
+          <div class="section-title">Formatting Text</div>
+          <div class="section-desc">Make your text stand out with Bold, Italic and Underline</div>
+        </div>
+      </div>
+
+      <div class="format-row">
+        <div class="fmt-card" style="--fmt-color:#2d3436">
+          <div class="fmt-demo" style="font-weight:900">B</div>
+          <h4>Bold</h4>
+          <p>Makes text <strong>darker and thicker</strong> to emphasise it.</p>
+          <br>
+          <p style="font-size:0.95rem;color:#636e72">Select text → Click <strong>B</strong> icon or press:</p>
+          <span class="fmt-shortcut" style="background:#2d3436"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + B</span>
+        </div>
+        <div class="fmt-card" style="--fmt-color:#A29BFE">
+          <div class="fmt-demo" style="font-style:italic;color:#A29BFE">I</div>
+          <h4>Italic</h4>
+          <p>Slants text to make it <em>stand out</em> from the rest.</p>
+          <br>
+          <p style="font-size:0.95rem;color:#636e72">Select text → Click <em><strong>I</strong></em> icon or press:</p>
+          <span class="fmt-shortcut"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + I</span>
+        </div>
+        <div class="fmt-card" style="--fmt-color:#1DD1A1">
+          <div class="fmt-demo" style="text-decoration:underline;color:#1DD1A1">U</div>
+          <h4>Underline</h4>
+          <p>Adds a <u>line under the text</u> for emphasis.</p>
+          <br>
+          <p style="font-size:0.95rem;color:#636e72">Select text → Click <u><strong>U</strong></u> icon or press:</p>
+          <span class="fmt-shortcut"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + U</span>
+        </div>
+      </div>
+
+      <!-- Interactive Formatting Demo -->
+      <div class="card" style="--accent:#A29BFE;margin-top:28px">
+        <h3>🎨 Try It! Format This Text</h3>
+        <p style="margin-top:8px;color:#636e72;font-size:1rem">Select any text in the box below and click a format button!</p>
+        <div id="format-demo" contenteditable="true" style="background:#f8f9ff;border-radius:12px;padding:20px;margin-top:16px;font-size:1.15rem;line-height:1.8;min-height:80px;outline:none;border:2px solid #e0e5ff">
+          MS Word is a great tool for writing documents. You can make text bold, italic, or underlined!
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">
+          <button onclick="applyFormat('bold')" style="background:#2d3436;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px"><strong>B</strong> Bold</button>
+          <button onclick="applyFormat('italic')" style="background:#A29BFE;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px"><em>I</em> Italic</button>
+          <button onclick="applyFormat('underline')" style="background:#1DD1A1;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px"><u>U</u> Underline</button>
+          <button onclick="document.getElementById('format-demo').innerHTML='MS Word is a great tool for writing documents. You can make text bold, italic, or underlined!'" style="background:#dfe6e9;color:#636e72;border:none;border-radius:10px;padding:10px 20px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px">↺ Reset</button>
+        </div>
+      </div>
+
+      <button class="read-btn" style="margin-top:16px" onclick="readAloud('Formatting Text. Bold makes text darker and thicker. Use Control B. Italic slants text to make it stand out. Use Control I. Underline adds a line under the text. Use Control U.')">🔊 Read Aloud</button>
+    </div>
+  </section>
+
+  <!-- ALIGNING -->
+  <section class="section sec-align" id="sec-align" style="background:linear-gradient(180deg,#FAFAFA 0%,#f0fff9 100%)">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-icon" style="--bg:#1DD1A1">↔️</div>
+        <div>
+          <div class="section-title">Aligning Text</div>
+          <div class="section-desc">Position your text left, center, or right</div>
+        </div>
+      </div>
+
+      <div class="align-row">
+        <div class="align-card" style="--al-color:#FF9F43">
+          <h4>⬅️ Left Align</h4>
+          <p style="font-size:1rem;color:#636e72">Aligns text to the <strong>left side</strong> of the document. This is the default alignment.</p>
+          <div class="align-lines">
+            <div class="align-line" style="width:100%"></div>
+            <div class="align-line" style="width:80%"></div>
+            <div class="align-line" style="width:90%"></div>
+            <div class="align-line" style="width:70%"></div>
+          </div>
+          <span class="align-shortcut"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + L</span>
+        </div>
+        <div class="align-card" style="--al-color:#A29BFE">
+          <h4>↔️ Center Align</h4>
+          <p style="font-size:1rem;color:#636e72">Centers text in the <strong>middle</strong> of the document. Great for titles!</p>
+          <div class="align-lines" style="align-items:center">
+            <div class="align-line" style="width:70%"></div>
+            <div class="align-line" style="width:90%"></div>
+            <div class="align-line" style="width:60%"></div>
+            <div class="align-line" style="width:80%"></div>
+          </div>
+          <span class="align-shortcut"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + E</span>
+        </div>
+        <div class="align-card" style="--al-color:#1DD1A1">
+          <h4>➡️ Right Align</h4>
+          <p style="font-size:1rem;color:#636e72">Aligns text to the <strong>right side</strong> of the document.</p>
+          <div class="align-lines" style="align-items:flex-end">
+            <div class="align-line" style="width:80%"></div>
+            <div class="align-line" style="width:100%"></div>
+            <div class="align-line" style="width:65%"></div>
+            <div class="align-line" style="width:90%"></div>
+          </div>
+          <span class="align-shortcut"><span class="kbd" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff">Ctrl</span> + R</span>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <p><strong>💡 Tip:</strong> Use alignment to organise text for readability, such as <strong>centering a title</strong> or <strong>aligning paragraphs to the left</strong>.</p>
+      </div>
+
+      <!-- Interactive Alignment Demo -->
+      <div class="card" style="--accent:#1DD1A1;margin-top:24px">
+        <h3>🎯 Try Alignment!</h3>
+        <div id="align-demo" style="background:#f8f9ff;border-radius:12px;padding:20px;margin:16px 0;font-size:1.15rem;line-height:1.8;min-height:80px;text-align:left;transition:text-align 0.3s">
+          This is a sample sentence to demonstrate text alignment in MS Word!
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <button onclick="setAlign('left')" id="btn-left" style="background:#FF9F43;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px">⬅️ Left</button>
+          <button onclick="setAlign('center')" id="btn-center" style="background:#A29BFE;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px">↔️ Center</button>
+          <button onclick="setAlign('right')" id="btn-right" style="background:#1DD1A1;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;min-height:44px">➡️ Right</button>
+        </div>
+      </div>
+
+      <button class="read-btn" onclick="readAloud('Aligning Text. Left Align aligns text to the left side. Use Control L. Center Align centers the text in the middle. Use Control E. Right Align aligns text to the right side. Use Control R.')">🔊 Read Aloud</button>
+    </div>
+  </section>
+
+  <!-- DO YOU KNOW - KEYBOARD KEYS -->
+  <section class="section sec-keys" id="sec-keys">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-icon" style="--bg:#FF9F43">⌨️</div>
+        <div>
+          <div class="section-title">Do You Know? Keyboard Keys</div>
+          <div class="section-desc">Learn the important keys on your keyboard</div>
+        </div>
+      </div>
+
+      <div class="key-grid">
+        <div class="key-card" style="--key-color:#1DD1A1">
+          <div class="key-icon">🔡</div>
+          <h4>Alphabet Keys</h4>
+          <p>The <strong>Alphabet keys</strong> are used to type letters (a, b, c ... z).</p>
+        </div>
+        <div class="key-card" style="--key-color:#FF9F43">
+          <div class="key-icon">🔢</div>
+          <h4>Number Keys</h4>
+          <p>The <strong>Number keys</strong> are used to type numbers (0, 1, 2 ... 9).</p>
+        </div>
+        <div class="key-card" style="--key-color:#A29BFE">
+          <div class="key-icon">⬆️</div>
+          <h4>Arrow Keys</h4>
+          <p>The <strong>Arrow keys</strong> are used to move the cursor up, down, right, and left.</p>
+        </div>
+        <div class="key-card" style="--key-color:#fd79a8">
+          <div class="key-icon">⇧</div>
+          <h4>Shift Key</h4>
+          <p>The <strong>Shift key</strong> is used to type <strong>uppercase letters</strong> and <strong>symbols</strong>.</p>
+        </div>
+        <div class="key-card" style="--key-color:#e17055">
+          <div class="key-icon">⌫</div>
+          <h4>Backspace Key</h4>
+          <p>The <strong>Backspace key</strong> is used to erase text to the <strong>left</strong> of the cursor.</p>
+        </div>
+        <div class="key-card" style="--key-color:#00b894">
+          <div class="key-icon">⌦</div>
+          <h4>Delete Key</h4>
+          <p>The <strong>Delete key</strong> is used to erase text to the <strong>right</strong> of the cursor.</p>
+        </div>
+      </div>
+      <button class="read-btn" style="margin-top:20px" onclick="readAloud('Keyboard Keys. Alphabet keys are used to type letters. Number keys are used to type numbers. Arrow keys move the cursor up, down, right, and left. Shift key types uppercase letters and symbols. Backspace key erases text to the left. Delete key erases text to the right.')">🔊 Read Aloud</button>
+    </div>
+  </section>
+
+  <!-- EXERCISE 1 - Shift Symbols -->
+  <section class="section sec-ex" id="sec-ex1" style="background:linear-gradient(180deg,#f0fff9 0%,#FAFAFA 100%)">
+    <div class="section-inner">
+      <div class="exercise-wrap">
+        <div class="exercise-title">✨ Exercise 1: Shift Key Symbols</div>
+        <div class="exercise-desc">When you press Shift + a number key, you get a special symbol! Look at each combination below:</div>
+
+        <div style="overflow-x:auto">
+          <table class="symbol-table">
+            <thead>
+              <tr>
+                <th>Action (Keys to Press)</th>
+                <th>Symbol You Get</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">1</span></span></td>
+                <td><div class="correct-answer">!</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">2</span></span></td>
+                <td><div class="correct-answer">@</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">3</span></span></td>
+                <td><div class="correct-answer">#</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">4</span></span></td>
+                <td><div class="correct-answer">$</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">5</span></span></td>
+                <td><div class="correct-answer">%</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">6</span></span></td>
+                <td><div class="correct-answer">^</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXERCISE 2 - Uppercase -->
+  <section class="section" id="sec-ex2">
+    <div class="section-inner">
+      <div class="exercise-wrap" style="--accent:#FF9F43;border-left-color:#FF9F43">
+        <div class="exercise-title">🔠 Exercise 2: Uppercase Letters</div>
+        <div class="exercise-desc">Pressing a letter alone gives lowercase. Pressing Shift + letter gives UPPERCASE!</div>
+
+        <div style="overflow-x:auto">
+          <table class="symbol-table">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">A</span></span> (just press A)</td>
+                <td><div class="answer-box">a</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">A</span></span></td>
+                <td><div class="correct-answer">A</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">D</span></span> (just press D)</td>
+                <td><div class="answer-box">d</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">D</span></span></td>
+                <td><div class="correct-answer">D</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">T</span></span> (just press T)</td>
+                <td><div class="answer-box">t</div></td>
+              </tr>
+              <tr>
+                <td><span class="key-combo"><span class="key-box">⇧ Shift</span><span class="arrow-plus">+</span><span class="key-box">T</span></span></td>
+                <td><div class="correct-answer">T</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXERCISE 3 - Cut Copy Paste Practice -->
+  <section class="section" id="sec-ex3" style="background:linear-gradient(180deg,#FAFAFA 0%,#f8f9ff 100%)">
+    <div class="section-inner">
+      <div class="exercise-wrap" style="border-left-color:#A29BFE">
+        <div class="exercise-title">🖊️ Exercise 3: Cut, Copy & Paste Practice</div>
+        <div class="exercise-desc">Follow these steps in MS Word to practise cut, copy and paste!</div>
+
+        <div class="exercise3-box">
+          <p style="font-weight:700;font-size:1.05rem;margin-bottom:8px;color:#6c5ce7">Original Text to Type:</p>
+          <div style="background:#fff;border-radius:10px;padding:16px;font-size:1rem;line-height:1.8;border:2px solid #EDE9FF">
+            <div style="text-align:center;font-weight:900;font-size:1.1rem;background:#EDE9FF;padding:8px;border-radius:8px;margin-bottom:12px">Science Fair Project</div>
+            <p>"Our class is preparing for the upcoming science fair. For my project, I will be demonstrating how plants absorb water using food colouring."</p>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px">
+          <div class="step-card" style="--step-color:#FF9F43">
+            <div class="step-num">1</div>
+            <div class="step-title">✂️ Cut Text</div>
+            <ul class="step-list" style="--step-color:#FF9F43">
+              <li>Select the words <strong>"science fair"</strong> from the heading.</li>
+              <li>Right-click and select <strong>Cut</strong> or use <span class="kbd">Ctrl</span> + <span class="kbd">X</span></li>
+            </ul>
+          </div>
+          <div class="step-card" style="--step-color:#1DD1A1">
+            <div class="step-num">2</div>
+            <div class="step-title">📌 Paste Text</div>
+            <ul class="step-list">
+              <li>Place your cursor after the word <strong>"project"</strong> in the second sentence.</li>
+              <li>Right-click and select <strong>Paste</strong> or use <span class="kbd">Ctrl</span> + <span class="kbd">V</span></li>
+            </ul>
+          </div>
+          <div class="step-card" style="--step-color:#A29BFE">
+            <div class="step-num">3</div>
+            <div class="step-title">📋 Copy Text</div>
+            <ul class="step-list" style="--step-color:#A29BFE">
+              <li>Select the words <strong>"how plants absorb water"</strong> in the second sentence.</li>
+              <li>Right-click and select <strong>Copy</strong> or use <span class="kbd">Ctrl</span> + <span class="kbd">C</span></li>
+            </ul>
+          </div>
+          <div class="step-card" style="--step-color:#fd79a8">
+            <div class="step-num">4</div>
+            <div class="step-title">📌 Paste Text Again</div>
+            <ul class="step-list" style="--step-color:#fd79a8">
+              <li>Place cursor at the beginning of the heading, before the word <strong>"project"</strong>.</li>
+              <li>Right-click and select <strong>Paste</strong> or use <span class="kbd">Ctrl</span> + <span class="kbd">V</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tip-box" style="margin-top:20px">
+          <p><strong>✅ Final Result should look like this:</strong></p>
+          <div style="background:#fff;border-radius:10px;padding:16px;margin-top:12px;font-size:1rem;line-height:1.8;border:2px solid #1DD1A1">
+            <div style="text-align:center;font-weight:900;font-size:1.1rem;background:#d4fce8;padding:8px;border-radius:8px;margin-bottom:12px">How plants absorb water Project</div>
+            <p>"Our class is preparing for the upcoming science fair. For my project science fair, I will be demonstrating how plants absorb water using food colouring."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXERCISE 4 - Fill in the Blanks -->
+  <section class="section" id="sec-ex4">
+    <div class="section-inner">
+      <div class="exercise-wrap" style="border-left-color:#FF9F43">
+        <div class="exercise-title">📝 Exercise 4: Fill in the Blanks</div>
+        <div class="exercise-desc">Click on a blank space, then click the correct word from the word bank below!</div>
+
+        <div class="word-bank" id="word-bank">
+          <div class="word-chip" data-word="type" onclick="selectWord(this)">type</div>
+          <div class="word-chip" data-word="cross" onclick="selectWord(this)">cross</div>
+          <div class="word-chip" data-word="letters" onclick="selectWord(this)">letters</div>
+          <div class="word-chip" data-word="numbers" onclick="selectWord(this)">numbers</div>
+          <div class="word-chip" data-word="right" onclick="selectWord(this)">right</div>
+          <div class="word-chip" data-word="shift" onclick="selectWord(this)">shift</div>
+          <div class="word-chip" data-word="formatting" onclick="selectWord(this)">formatting</div>
+          <div class="word-chip" data-word="bold" onclick="selectWord(this)">bold</div>
+          <div class="word-chip" data-word="alignment" onclick="selectWord(this)">alignment</div>
+          <div class="word-chip" data-word="copy" onclick="selectWord(this)">copy</div>
+        </div>
+
+        <div id="blanks-area">
+          <div class="blank-sentence">1. MS Word is used to <span class="blank" data-answer="type" onclick="fillBlank(this)">_________</span> a document.</div>
+          <div class="blank-sentence">2. To close MS Word program, click on the <span class="blank" data-answer="cross" onclick="fillBlank(this)">_________</span> button.</div>
+          <div class="blank-sentence">3. Alphabet keys are used to type <span class="blank" data-answer="letters" onclick="fillBlank(this)">_________</span>.</div>
+          <div class="blank-sentence">4. Number keys are used to type <span class="blank" data-answer="numbers" onclick="fillBlank(this)">_________</span>.</div>
+          <div class="blank-sentence">5. The delete key erases text to the <span class="blank" data-answer="right" onclick="fillBlank(this)">_________</span> of the cursor.</div>
+          <div class="blank-sentence">6. The <span class="blank" data-answer="shift" onclick="fillBlank(this)">_________</span> key can be used to type uppercase and symbols.</div>
+          <div class="blank-sentence">7. The <span class="blank" data-answer="formatting" onclick="fillBlank(this)">_________</span> is to change the appearance of a text in a word document.</div>
+          <div class="blank-sentence">8. <span class="blank" data-answer="bold" onclick="fillBlank(this)">_________</span> is used to make a selected text darker and thicker.</div>
+          <div class="blank-sentence">9. <span class="blank" data-answer="alignment" onclick="fillBlank(this)">_________</span> refers to positioning of text.</div>
+          <div class="blank-sentence">10. You can use the right click to cut, <span class="blank" data-answer="copy" onclick="fillBlank(this)">_________</span> or paste your text.</div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px">
+          <button class="check-btn" onclick="checkBlanks()">✅ Check Answers</button>
+          <button class="reset-btn" onclick="resetBlanks()">↺ Reset</button>
+        </div>
+        <div id="blanks-result" style="margin-top:16px;font-size:1.1rem;font-weight:700;color:#2d3436;display:none"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB ACTIVITY - SORT drag -->
+  <section class="section" id="sec-lab" style="background:linear-gradient(180deg,#f8f9ff 0%,#FAFAFA 100%)">
+    <div class="section-inner">
+      <div class="exercise-wrap" style="border-left-color:#A29BFE">
+        <div class="exercise-title">🧪 Lab Activity: Sort the Actions!</div>
+        <div class="exercise-desc">Drag each action to the correct category: does it COPY text or MOVE text?</div>
+
+        <div class="drag-area">
+          <div>
+            <div class="drag-source">
+              <h4>📦 Actions to Sort:</h4>
+              <div class="drag-items" id="drag-items">
+                <div class="drag-item" draggable="true" data-cat="copy" id="di1">Ctrl + C</div>
+                <div class="drag-item" draggable="true" data-cat="move" id="di2">Ctrl + X</div>
+                <div class="drag-item" draggable="true" data-cat="copy" id="di3">Right-click → Copy</div>
+                <div class="drag-item" draggable="true" data-cat="move" id="di4">Right-click → Cut</div>
+                <div class="drag-item" draggable="true" data-cat="copy" id="di5">Duplicate text</div>
+                <div class="drag-item" draggable="true" data-cat="move" id="di6">Remove from original</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="drop-zone" id="drop-copy" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event,'copy')">
+              <h4 style="color:#1DD1A1">📋 COPY (Duplicate)</h4>
+              <div class="dropped" id="dropped-copy"></div>
+            </div>
+            <div class="drop-zone" id="drop-move" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event,'move')">
+              <h4 style="color:#FF9F43">✂️ CUT (Move)</h4>
+              <div class="dropped" id="dropped-move"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="check-btn" onclick="checkDrag()">✅ Check Sorting</button>
+        <button class="reset-btn" onclick="resetDrag()">↺ Reset</button>
+        <div id="drag-result" style="margin-top:14px;font-size:1.1rem;font-weight:700;display:none"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="sec-quiz">
+    <div class="section-inner">
+      <div class="quiz-wrap">
+        <div class="quiz-title">🎯 Unit Quiz</div>
+        <p style="font-size:1rem;color:#636e72;margin-bottom:24px">Test what you've learned! Choose the correct answer for each question.</p>
+
+        <div id="quiz-container"></div>
+
+        <button class="check-btn" onclick="submitQuiz()" id="quiz-submit-btn">✅ Submit Quiz</button>
+        <div class="quiz-score" id="quiz-score"></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrap -->
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-item" onclick="scrollToId('sec-intro')"><span class="bnav-icon">📝</span>Intro</button>
+    <button class="bnav-item" onclick="scrollToId('sec-ccp')"><span class="bnav-icon">✂️</span>Cut/Copy</button>
+    <button class="bnav-item" onclick="scrollToId('sec-format')"><span class="bnav-icon">✏️</span>Format</button>
+    <button class="bnav-item" onclick="scrollToId('sec-align')"><span class="bnav-icon">↔️</span>Align</button>
+    <button class="bnav-item" onclick="scrollToId('sec-keys')"><span class="bnav-icon">⌨️</span>Keys</button>
+    <button class="bnav-item" onclick="scrollToId('sec-ex4')"><span class="bnav-icon">📝</span>Exercise</button>
+    <button class="bnav-item" onclick="scrollToId('sec-quiz')"><span class="bnav-icon">🎯</span>Quiz</button>
+  </div>
+</nav>
+
+<script>
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK - FIRST LINE
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  initCurtain();
+  initLenis();
+  initGSAP();
+  initProgress();
+  initQuiz();
+  initDrag();
+});
+
+// =============================================
+// CURTAIN
+// =============================================
+function initCurtain() {
+  try {
+    const curtain = document.getElementById('curtain');
+    if (!curtain) return;
+    setTimeout(() => {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(curtain, { opacity: 0, duration: 0.6, onComplete: () => { curtain.style.display = 'none'; } });
+      } else {
+        curtain.style.opacity = '0';
+        curtain.style.transition = 'opacity 0.6s';
+        setTimeout(() => { curtain.style.display = 'none'; }, 700);
+      }
+    }, 1200);
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+}
+
+// =============================================
+// LENIS SMOOTH SCROLL
+// =============================================
+function initLenis() {
+  try {
+    if (typeof Lenis === 'undefined') return;
+    const lenis = new Lenis({ lerp: 0.1 });
+    if (typeof gsap !== 'undefined') {
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis init failed:', e); }
+}
+
+// =============================================
+// GSAP ANIMATIONS
+// =============================================
+function initGSAP() {
+  try {
+    if (typeof gsap === 'undefined') return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    // Register ScrollTrigger
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // Hero title word-by-word
+    const heroSpans = document.querySelectorAll('#hero-title span');
+    heroSpans.forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(30px)'; });
+    gsap.to(heroSpans, {
+      opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power3.out', delay: 1.4
+    });
+
+    // Scroll trigger cards
+    if (typeof ScrollTrigger !== 'undefined') {
+      const animTargets = document.querySelectorAll('.card, .step-card, .key-card, .fmt-card, .align-card, .exercise-wrap, .quiz-wrap');
+      animTargets.forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+          }
+        );
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+}
+
+// =============================================
+// PROGRESS BAR
+// =============================================
+function initProgress() {
+  const sections = ['sec-intro','sec-ccp','sec-format','sec-align','sec-keys','sec-ex1','sec-ex2','sec-ex3','sec-ex4','sec-lab','sec-quiz'];
+  function updateProgress() {
+    let seen = 0;
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) seen++;
+    });
+    const pct = Math.round((seen / sections.length) * 100);
+    document.getElementById('progress-bar-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '% Complete';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
+
+// =============================================
+// READ ALOUD
+// =============================================
+function readAloud(text) {
+  try {
+    if (!window.speechSynthesis) throw new Error('no speech');
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = 0.85;
+    utt.pitch = 1.1;
+    window.speechSynthesis.speak(utt);
+  } catch(e) {
+    alert('Read Aloud: ' + text.substring(0, 100) + '...');
+  }
+}
+
+// =============================================
+// FORMAT DEMO
+// =============================================
+function applyFormat(cmd) {
+  try {
+    document.getElementById('format-demo').focus();
+    document.execCommand(cmd, false, null);
+  } catch(e) {}
+}
+
+// =============================================
+// ALIGN DEMO
+// =============================================
+function setAlign(dir) {
+  const demo = document.getElementById('align-demo');
+  demo.style.textAlign = dir;
+  ['left','center','right'].forEach(d => {
+    const btn = document.getElementById('btn-' + d);
+    if (btn) btn.style.opacity = d === dir ? '1' : '0.6';
+  });
+}
+
+// =============================================
+// FILL IN BLANKS
+// =============================================
+let selectedWord = null;
+
+function selectWord(chip) {
+  if (chip.classList.contains('used')) return;
+  // Deselect previous
+  document.querySelectorAll('.word-chip.selected').forEach(c => {
+    c.style.transform = '';
+    c.style.boxShadow = '';
+    c.classList.remove('selected');
+  });
+  chip.classList.add('selected');
+  chip.style.transform = 'scale(1.1) translateY(-3px)';
+  chip.style.boxShadow = '0 6px 20px rgba(162,155,254,0.5)';
+  selectedWord = chip;
+}
+
+function fillBlank(blank) {
+  if (blank.classList.contains('filled') || blank.classList.contains('correct-blank')) return;
+  if (!selectedWord) {
+    // pulse blank
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(blank, { x: [-4,4,-4,4,0], duration: 0.4 });
+      }
+    } catch(e) {}
+    return;
+  }
+  blank.textContent = selectedWord.dataset.word;
+  blank.classList.add('filled');
+  blank.dataset.filled = selectedWord.dataset.word;
+  selectedWord.classList.add('used');
+  selectedWord.style.transform = '';
+  selectedWord.style.boxShadow = '';
+  selectedWord.classList.remove('selected');
+  selectedWord = null;
+}
+
+function checkBlanks() {
+  const blanks = document.querySelectorAll('.blank');
+  let correct = 0;
+  blanks.forEach(blank => {
+    if (!blank.dataset.filled) return;
+    if (blank.dataset.filled === blank.dataset.answer) {
+      blank.classList.remove('filled','wrong-blank');
+      blank.classList.add('correct-blank');
+      correct++;
+      try {
+        if (typeof gsap !== 'undefined') gsap.to(blank, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 });
+      } catch(e) {}
+    } else {
+      blank.classList.remove('filled','correct-blank');
+      blank.classList.add('wrong-blank');
+      try {
+        if (typeof gsap !== 'undefined') gsap.to(blank, { rotation: [-4,4,-4,4,0], duration: 0.4 });
+      } catch(e) {}
+    }
+  });
+  const res = document.getElementById('blanks-result');
+  res.style.display = 'block';
+  res.textContent = `✅ ${correct} / ${blanks.length} correct! ${correct === blanks.length ? '🎉 Perfect!' : 'Keep trying!'}`;
+  res.style.color = correct === blanks.length ? '#00b894' : '#e17055';
+}
+
+function resetBlanks() {
+  const blanks = document.querySelectorAll('.blank');
+  blanks.forEach(blank => {
+    blank.textContent = '_________';
+    blank.className = 'blank';
+    blank.dataset.filled = '';
+  });
+  document.querySelectorAll('.word-chip').forEach(c => {
+    c.classList.remove('used','selected');
+    c.style.transform = '';
+    c.style.boxShadow = '';
+    c.style.opacity = '';
+  });
+  document.getElementById('blanks-result').style.display = 'none';
+  selectedWord = null;
+}
+
+// =============================================
+// DRAG AND DROP SORT
+// =============================================
+function initDrag() {
+  const items = document.querySelectorAll('.drag-item');
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.id);
+      item.style.opacity = '0.5';
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+    // Touch support
+    item.addEventListener('touchstart', handleTouchStart, { passive: true });
+    item.addEventListener('touchmove', handleTouchMove, { passive: false });
+    item.addEventListener('touchend', handleTouchEnd);
+  });
+}
+
+let touchItem = null, touchClone = null;
+
+function handleTouchStart(e) {
+  touchItem = e.currentTarget;
+  const rect = touchItem.getBoundingClientRect();
+  touchClone = touchItem.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;opacity:0.8;z-index:9998;pointer-events:none;border-radius:50px;`;
+  document.body.appendChild(touchClone);
+  touchItem.style.opacity = '0.4';
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - touchClone.offsetWidth/2) + 'px';
+  touchClone.style.top = (t.clientY - touchClone.offsetHeight/2) + 'px';
+  // Highlight drop zones
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    const r = zone.getBoundingClientRect();
+    if (t.clientX > r.left && t.clientX < r.right && t.clientY > r.top && t.clientY < r.bottom) {
+      zone.classList.add('drag-over');
+    } else {
+      zone.classList.remove('drag-over');
+    }
+  });
+}
+
+function handleTouchEnd(e) {
+  if (!touchClone || !touchItem) return;
+  const t = e.changedTouches[0];
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.classList.remove('drag-over');
+    const r = zone.getBoundingClientRect();
+    if (t.clientX > r.left && t.clientX < r.right && t.clientY > r.top && t.clientY < r.bottom) {
+      const cat = zone.id === 'drop-copy' ? 'copy' : 'move';
+      moveItemToZone(touchItem, cat);
+    }
+  });
+  touchClone.remove();
+  touchItem.style.opacity = '1';
+  touchClone = null;
+  touchItem = null;
+}
+
+function handleDrop(e, cat) {
+  e.preventDefault();
+  const id = e.dataTransfer.getData('text/plain');
+  const item = document.getElementById(id);
+  if (!item) return;
+  document.getElementById('drop-' + cat).classList.remove('drag-over');
+  moveItemToZone(item, cat);
+}
+
+function moveItemToZone(item, cat) {
+  const dropped = document.getElementById('dropped-' + cat);
+  const clone = item.cloneNode(true);
+  clone.style.opacity = '1';
+  clone.style.cursor = 'default';
+  clone.setAttribute('draggable','false');
+  clone.style.background = cat === 'copy' ? '#1DD1A1' : '#FF9F43';
+  dropped.appendChild(clone);
+  item.remove();
+}
+
+function checkDrag() {
+  const copyItems = document.querySelectorAll('#dropped-copy [data-cat]');
+  const moveItems = document.querySelectorAll('#dropped-move [data-cat]');
+  let correct = 0, total = 0;
+  copyItems.forEach(item => { total++; if (item.dataset.cat === 'copy') correct++; });
+  moveItems.forEach(item => { total++; if (item.dataset.cat === 'move') correct++; });
+  const res = document.getElementById('drag-result');
+  res.style.display = 'block';
+  res.textContent = `✅ ${correct} / ${total} sorted correctly! ${correct === total ? '🎉 Excellent!' : 'Try again!'}`;
+  res.style.color = correct === total ? '#00b894' : '#e17055';
+}
+
+function resetDrag() {
+  const source = document.getElementById('drag-items');
+  const originalItems = [
+    {id:'di1', cat:'copy', text:'Ctrl + C'},
+    {id:'di2', cat:'move', text:'Ctrl + X'},
+    {id:'di3', cat:'copy', text:'Right-click → Copy'},
+    {id:'di4', cat:'move', text:'Right-click → Cut'},
+    {id:'di5', cat:'copy', text:'Duplicate text'},
+    {id:'di6', cat:'move', text:'Remove from original'}
+  ];
+  source.innerHTML = '';
+  originalItems.forEach(it => {
+    const div = document.createElement('div');
+    div.className = 'drag-item';
+    div.draggable = true;
+    div.id = it.id;
+    div.dataset.cat = it.cat;
+    div.textContent = it.text;
+    div.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', div.id); div.style.opacity='0.5'; });
+    div.addEventListener('dragend', () => { div.style.opacity='1'; });
+    div.addEventListener('touchstart', handleTouchStart, { passive:true });
+    div.addEventListener('touchmove', handleTouchMove, { passive:false });
+    div.addEventListener('touchend', handleTouchEnd);
+    source.appendChild(div);
+  });
+  document.getElementById('dropped-copy').innerHTML = '';
+  document.getElementById('dropped-move').innerHTML = '';
+  document.getElementById('drag-result').style.display = 'none';
+}
+
+// =============================================
+// QUIZ
+// =============================================
+const quizData = [
+  {
+    q: "What keyboard shortcut is used to COPY text?",
+    opts: ["Ctrl + X", "Ctrl + C"],
+    ans: 1
+  },
+  {
+    q: "What does the CUT command do?",
+    opts: ["Duplicates text and keeps original", "Moves text from one place to another"],
+    ans: 1
+  },
+  {
+    q: "Which formatting makes text slanted?",
+    opts: ["Bold", "Italic"],
+    ans: 1
+  },
+  {
+    q: "What keyboard shortcut centers text in MS Word?",
+    opts: ["Ctrl + E", "Ctrl + R"],
+    ans: 0
+  },
+  {
+    q: "The Backspace key erases text to which side of the cursor?",
+    opts: ["Left", "Right"],
+    ans: 0
+  },
+  {
+    q: "Which shortcut makes text BOLD?",
+    opts: ["Ctrl + I", "Ctrl + B"],
+    ans: 1
+  }
+];
+
+function initQuiz() {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  quizData.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'qq-' + qi;
+    div.innerHTML = `<div class="quiz-q-text">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((opt,oi) => `<button class="quiz-opt" data-qi="${qi}" data-oi="${oi}" onclick="answerQuiz(this,${qi},${oi})">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qf-${qi}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+const userAnswers = {};
+function answerQuiz(btn, qi, oi) {
+  if (userAnswers[qi] !== undefined) return;
+  userAnswers[qi] = oi;
+  const allOpts = document.querySelectorAll(`[data-qi="${qi}"]`);
+  allOpts.forEach(opt => opt.classList.add('disabled'));
+  const correct = quizData[qi].ans;
+  if (oi === correct) {
+    btn.classList.add('correct');
+    document.getElementById('qf-' + qi).textContent = '✅ Correct! Well done!';
+    document.getElementById('qf-' + qi).style.color = '#00b894';
+    try { if (typeof gsap !== 'undefined') gsap.to(btn, { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1 }); } catch(e) {}
+  } else {
+    btn.classList.add('wrong');
+    allOpts[correct].classList.add('correct');
+    document.getElementById('qf-' + qi).textContent = '❌ Not quite! The correct answer is: ' + quizData[qi].opts[correct];
+    document.getElementById('qf-' + qi).style.color = '#e17055';
+    try { if (typeof gsap !== 'undefined') gsap.to(btn, { rotation: [-5,5,-5,5,0], duration: 0.4 }); } catch(e) {}
+  }
+}
+
+function submitQuiz() {
+  const total = quizData.length;
+  let correct = 0;
+  quizData.forEach((q, qi) => {
+    if (userAnswers[qi] === q.ans) correct++;
+  });
+  const pct = Math.round((correct / total) * 100);
+  const scoreEl = document.getElementById('quiz-score');
+  scoreEl.style.display = 'block';
+  scoreEl.innerHTML = `🎯 Your Score: <span style="color:${pct>=80?'#00b894':'#e17055'};font-size:2rem">${correct}/${total}</span><br>
+    <span style="font-size:1.1rem;font-weight:600;color:#636e72">${pct>=80?'🌟 Excellent! You are a Word Processing Pro!':pct>=60?'👍 Good job! Review the sections and try again.':'📚 Keep studying — you can do it!'}</span>`;
+  document.getElementById('quiz-submit-btn').style.display = 'none';
+  try {
+    if (typeof gsap !== 'undefined') gsap.from(scoreEl, { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.5)' });
+  } catch(e) {}
+}
+
+// =============================================
+// SCROLL TO
+// =============================================
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

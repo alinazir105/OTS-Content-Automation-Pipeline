@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missing Numbers | Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF9F43;
+    --teal: #1DD1A1;
+    --purple: #A29BFE;
+    --offwhite: #FAFAFA;
+    --dark: #2d3436;
+    --shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  html, body {
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    background: var(--offwhite);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #FF9F43, #1DD1A1);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-icon { font-size: 60px; animation: bounce 0.8s infinite alternate; }
+  #curtain .curtain-text { font-size: clamp(1.4rem, 3vw, 2rem); color: #fff; font-weight: 800; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    height: 8px; background: rgba(255,255,255,0.3);
+  }
+  #progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--orange), var(--teal));
+    transition: width 0.3s ease;
+  }
+  #progress-label {
+    position: fixed; top: 8px; right: 16px;
+    font-size: 13px; font-weight: 700;
+    color: var(--dark); z-index: 1001;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 8px; border-radius: 20px;
+  }
+
+  /* DESKTOP NAV */
+  #desktop-nav {
+    position: fixed; left: 0; top: 50%;
+    transform: translateY(-50%);
+    z-index: 900;
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 16px 8px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 0 16px 16px 0;
+    box-shadow: var(--shadow);
+  }
+  #desktop-nav a {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; font-size: 20px;
+    text-decoration: none; color: var(--dark);
+    transition: background 0.2s;
+    position: relative;
+  }
+  #desktop-nav a:hover { background: var(--offwhite); }
+  #desktop-nav a .nav-tooltip {
+    position: absolute; left: 56px; white-space: nowrap;
+    background: var(--dark); color: #fff;
+    font-size: 13px; padding: 4px 10px; border-radius: 8px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  #desktop-nav a:hover .nav-tooltip { opacity: 1; }
+
+  /* MOBILE NAV */
+  #mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 900;
+    background: rgba(255,255,255,0.97);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+  }
+  #mobile-nav .mobile-nav-inner {
+    display: flex; gap: 6px; min-width: max-content;
+  }
+  #mobile-nav a {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 64px; padding: 6px 8px;
+    border-radius: 12px; font-size: 13px; font-weight: 700;
+    text-decoration: none; color: var(--dark);
+    gap: 3px; min-height: 56px; justify-content: center;
+    transition: background 0.2s;
+  }
+  #mobile-nav a:hover, #mobile-nav a:active { background: var(--offwhite); }
+  #mobile-nav a .nav-icon { font-size: 22px; }
+
+  /* OUTER WRAPPER */
+  .page-wrap { width: 100%; }
+
+  /* HERO */
+  #hero {
+    width: 100vw;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #FF9F43 0%, #1DD1A1 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative; overflow: hidden;
+  }
+  #hero .hero-badge {
+    background: rgba(255,255,255,0.25);
+    color: #fff; font-size: 15px; font-weight: 800;
+    padding: 6px 20px; border-radius: 30px;
+    margin-bottom: 20px; letter-spacing: 1px;
+  }
+  #hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 900; color: #fff;
+    line-height: 1.1; margin-bottom: 20px;
+  }
+  #hero h1 .word { display: inline-block; margin-right: 0.2em; }
+  #hero .hero-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(255,255,255,0.92); max-width: 600px;
+    font-weight: 600; margin-bottom: 36px;
+  }
+  .hero-balloons {
+    display: flex; gap: 16px; justify-content: center;
+    margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .hero-balloon {
+    width: 70px; height: 90px;
+    display: flex; flex-direction: column; align-items: center;
+    animation: floatBalloon 3s ease-in-out infinite;
+  }
+  .hero-balloon:nth-child(2) { animation-delay: 0.5s; }
+  .hero-balloon:nth-child(3) { animation-delay: 1s; }
+  .hero-balloon:nth-child(4) { animation-delay: 1.5s; }
+  .hero-balloon:nth-child(5) { animation-delay: 2s; }
+  .balloon-circle {
+    width: 60px; height: 70px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; font-weight: 900; color: #fff;
+    position: relative;
+  }
+  .balloon-circle::after {
+    content: '';
+    position: absolute; bottom: -8px;
+    width: 2px; height: 20px;
+    background: rgba(255,255,255,0.7);
+  }
+  .b1 { background: #e74c3c; }
+  .b2 { background: #f39c12; }
+  .b3 { background: #2c3e50; }
+  .b4 { background: #c0392b; }
+  .b5 { background: #e67e22; }
+  @keyframes floatBalloon {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-14px) rotate(3deg); }
+  }
+
+  /* READ ALOUD */
+  .read-aloud-btn {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.7);
+    color: #fff; font-size: 16px; font-weight: 700;
+    padding: 10px 24px; border-radius: 30px;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s; font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+  }
+  .read-aloud-btn:hover { background: rgba(255,255,255,0.35); }
+
+  /* SECTION CONTAINERS */
+  .section-wrap { width: 100%; padding: 60px 0; }
+  .section-inner { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    margin-bottom: 40px;
+    opacity: 1; transform: none;
+  }
+  .section-card.accent-orange { border-left: 4px solid var(--orange); }
+  .section-card.accent-teal   { border-left: 4px solid var(--teal); }
+  .section-card.accent-purple { border-left: 4px solid var(--purple); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+  }
+  .card-icon { font-size: 2.2rem; }
+  .card-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900; color: var(--dark);
+  }
+
+  /* EXPLANATION TEXT */
+  .explanation {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.8; color: #555;
+    margin-bottom: 24px;
+  }
+
+  /* NUMBER SEQUENCE DISPLAY */
+  .number-sequence {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin: 20px 0;
+  }
+  .num-box {
+    width: 62px; height: 62px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 800;
+    transition: transform 0.2s;
+  }
+  .num-box.filled {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff;
+  }
+  .num-box.empty-hint {
+    background: #f0f0f0;
+    color: #ccc;
+    border: 2px dashed #ccc;
+  }
+
+  /* MISSING NUMBER GRID ACTIVITY */
+  .grid-activity {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 24px 0;
+  }
+  .grid-cell {
+    background: #f8f9fa;
+    border-radius: 14px;
+    min-height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 800;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+    position: relative;
+  }
+  .grid-cell.given {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff;
+    border-color: transparent;
+  }
+  .grid-cell.blank {
+    background: #fff;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+    color: transparent;
+  }
+  .grid-cell.blank:hover {
+    border-color: var(--orange);
+    background: #fff8f0;
+  }
+  .grid-cell.correct {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff; border-color: transparent;
+  }
+  .grid-cell.wrong {
+    background: #ffe6e6;
+    border-color: #ff7675;
+    color: #d63031;
+  }
+  .grid-cell.filled-by-user {
+    background: linear-gradient(135deg, var(--purple), #6c5ce7);
+    color: #fff; border-color: transparent;
+  }
+
+  /* WORD BANK */
+  .word-bank-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.4);
+    align-items: center; justify-content: center;
+  }
+  .word-bank-overlay.active { display: flex; }
+  .word-bank-box {
+    background: #fff; border-radius: 20px;
+    padding: 30px; max-width: 440px; width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .word-bank-title {
+    font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 20px; text-align: center;
+  }
+  .word-bank-options {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .wb-option {
+    background: var(--offwhite);
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 12px 8px;
+    font-size: 1.1rem; font-weight: 800;
+    cursor: pointer; text-align: center;
+    transition: all 0.2s; min-height: 48px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .wb-option:hover {
+    background: var(--orange); color: #fff; border-color: var(--orange);
+  }
+  .wb-cancel {
+    margin-top: 16px; width: 100%;
+    background: #f0f0f0; border: none; border-radius: 12px;
+    padding: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; font-family: 'Nunito', sans-serif; min-height: 48px;
+  }
+  .wb-cancel:hover { background: #e0e0e0; }
+
+  /* ACTIVITY SECTION */
+  .activity-section {
+    background: linear-gradient(135deg, #fff9f0, #f0fff9);
+    border-radius: 20px; padding: 36px;
+    margin: 20px 0;
+    border: 2px solid rgba(255,159,67,0.2);
+  }
+  .activity-title {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 900; color: var(--dark);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* DRAG & DROP SORTING */
+  .sort-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; margin: 20px 0;
+  }
+  .sort-source {
+    background: #fff; border-radius: 16px;
+    padding: 20px; box-shadow: var(--shadow);
+  }
+  .sort-source-title, .sort-bucket-title {
+    font-size: 1rem; font-weight: 800;
+    margin-bottom: 14px; text-align: center;
+    padding: 8px; border-radius: 10px;
+  }
+  .sort-source-title { background: var(--purple); color: #fff; }
+  .sort-items {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    min-height: 80px;
+  }
+  .drag-item {
+    background: linear-gradient(135deg, var(--orange), #e17055);
+    color: #fff; font-weight: 800; font-size: 1rem;
+    padding: 10px 16px; border-radius: 12px;
+    cursor: grab; user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    min-height: 48px; display: flex; align-items: center;
+  }
+  .drag-item:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .drag-item.dragging { opacity: 0.5; }
+  .sort-buckets { display: flex; flex-direction: column; gap: 14px; }
+  .sort-bucket {
+    background: #fff; border-radius: 16px;
+    padding: 16px; box-shadow: var(--shadow);
+    min-height: 100px;
+    border: 2px dashed #ddd;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sort-bucket.dragover { border-color: var(--teal); background: #f0fff9; }
+  .sort-bucket-title.odd { background: var(--teal); color: #fff; }
+  .sort-bucket-title.even { background: var(--orange); color: #fff; }
+  .bucket-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; }
+
+  /* CHECK BTN */
+  .check-btn {
+    background: linear-gradient(135deg, var(--orange), #e17055);
+    color: #fff; border: none;
+    padding: 14px 36px; border-radius: 30px;
+    font-size: 1.1rem; font-weight: 800;
+    cursor: pointer; margin-top: 20px;
+    font-family: 'Nunito', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 52px; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,159,67,0.4); }
+
+  .reset-btn {
+    background: #f0f0f0; color: var(--dark);
+    border: none; padding: 12px 28px; border-radius: 30px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    margin-top: 20px; margin-left: 12px;
+    font-family: 'Nunito', sans-serif; min-height: 52px;
+    transition: background 0.2s;
+  }
+  .reset-btn:hover { background: #e0e0e0; }
+
+  /* FEEDBACK */
+  .feedback-msg {
+    margin-top: 16px; font-size: 1.1rem; font-weight: 800;
+    padding: 12px 20px; border-radius: 14px; display: none;
+  }
+  .feedback-msg.show { display: block; }
+  .feedback-msg.success { background: #d4f5e9; color: #00695c; }
+  .feedback-msg.error   { background: #ffe0e0; color: #c0392b; }
+
+  /* QUIZ */
+  .quiz-wrap { max-width: 900px; }
+  .quiz-question {
+    background: #fff; border-radius: 20px;
+    padding: 32px; margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    opacity: 1;
+  }
+  .q-number {
+    font-size: 13px; font-weight: 800;
+    color: var(--purple); text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 700; margin-bottom: 20px;
+  }
+  .q-options {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .q-option {
+    background: var(--offwhite);
+    border: 2px solid #e0e0e0;
+    border-radius: 14px; padding: 16px 20px;
+    font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; text-align: center;
+    transition: all 0.2s;
+    min-height: 56px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif;
+  }
+  .q-option:hover:not(.answered) { border-color: var(--purple); background: #f5f3ff; }
+  .q-option.selected-correct {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff; border-color: transparent;
+  }
+  .q-option.selected-wrong {
+    background: #ffe6e6; border-color: #ff7675; color: #d63031;
+  }
+  .q-option.show-correct {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: #fff; border-color: transparent;
+  }
+  .q-option.answered { cursor: default; }
+
+  .quiz-submit {
+    background: linear-gradient(135deg, var(--purple), #6c5ce7);
+    color: #fff; border: none;
+    padding: 16px 48px; border-radius: 30px;
+    font-size: 1.2rem; font-weight: 800;
+    cursor: pointer; display: block; margin: 20px auto 0;
+    font-family: 'Nunito', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s; min-height: 56px;
+  }
+  .quiz-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(162,155,254,0.4); }
+
+  .quiz-result {
+    text-align: center; padding: 40px;
+    background: #fff; border-radius: 20px;
+    box-shadow: var(--shadow); margin-top: 24px;
+    display: none;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-result .result-emoji { font-size: 4rem; margin-bottom: 12px; }
+  .quiz-result .result-score { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: var(--dark); }
+  .quiz-result .result-msg { font-size: 1.1rem; color: #555; margin-top: 8px; }
+  .quiz-retry {
+    background: var(--orange); color: #fff; border: none;
+    padding: 14px 36px; border-radius: 30px;
+    font-size: 1rem; font-weight: 800; cursor: pointer;
+    margin-top: 20px; font-family: 'Nunito', sans-serif; min-height: 52px;
+  }
+
+  /* INFO HIGHLIGHT BOX */
+  .info-box {
+    background: linear-gradient(135deg, #f0fff9, #e8f4ff);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px; padding: 20px 24px;
+    margin: 20px 0; font-size: 1.05rem;
+    font-weight: 600; line-height: 1.7; color: #2d3436;
+  }
+  .info-box strong { color: var(--teal); }
+
+  /* SCORE STARS */
+  .star { font-size: 2rem; display: inline-block; }
+
+  /* SECTION DIVIDER */
+  .section-divider { height: 2px; background: linear-gradient(90deg, var(--orange), var(--teal), var(--purple)); border-radius: 2px; margin: 40px 0; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.8);
+    text-align: center; padding: 30px 20px;
+    font-size: 15px; margin-top: 60px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #desktop-nav { display: none; }
+    #mobile-nav { display: block; }
+    main, .page-wrap { padding-bottom: 80px; }
+
+    .section-inner { padding: 0 16px; }
+    .section-card { padding: 20px; }
+    .activity-section { padding: 20px; }
+
+    #hero { min-height: 60vh; padding: 70px 16px 40px; }
+
+    .sort-wrap { grid-template-columns: 1fr; }
+    .q-options { grid-template-columns: 1fr; }
+    .grid-activity { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .grid-cell { min-height: 52px; font-size: clamp(0.85rem, 3.5vw, 1.1rem); }
+    .num-box { width: 50px; height: 50px; font-size: 0.95rem; }
+    .word-bank-options { grid-template-columns: repeat(3, 1fr); }
+    .hero-balloon { width: 54px; height: 72px; }
+    .balloon-circle { width: 46px; height: 54px; font-size: 1.2rem; }
+  }
+
+  @media (max-width: 400px) {
+    .grid-activity { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+    .grid-cell { min-height: 44px; font-size: 0.78rem; border-radius: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-icon">🔢</div>
+  <div class="curtain-text">Loading Missing Numbers…</div>
+</div>
+
+<!-- PROGRESS -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- DESKTOP NAV -->
+<nav id="desktop-nav" aria-label="Section navigation">
+  <a href="#hero"><span>🏠</span><span class="nav-tooltip">Home</span></a>
+  <a href="#what-is"><span>💡</span><span class="nav-tooltip">What Are Missing Numbers?</span></a>
+  <a href="#seq-501"><span>📊</span><span class="nav-tooltip">501 – 550 Sequence</span></a>
+  <a href="#activity-501"><span>✏️</span><span class="nav-tooltip">Fill in 501–550</span></a>
+  <a href="#seq-551"><span>📊</span><span class="nav-tooltip">551 – 600 Sequence</span></a>
+  <a href="#activity-551"><span>✏️</span><span class="nav-tooltip">Fill in 551–600</span></a>
+  <a href="#sort-activity"><span>🎯</span><span class="nav-tooltip">Odd or Even Sort</span></a>
+  <a href="#quiz"><span>🏆</span><span class="nav-tooltip">Quiz</span></a>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="mobile-nav-inner">
+    <a href="#hero"><span class="nav-icon">🏠</span>Home</a>
+    <a href="#what-is"><span class="nav-icon">💡</span>Intro</a>
+    <a href="#seq-501"><span class="nav-icon">📊</span>501–550</a>
+    <a href="#activity-501"><span class="nav-icon">✏️</span>Fill 501</a>
+    <a href="#seq-551"><span class="nav-icon">📊</span>551–600</a>
+    <a href="#activity-551"><span class="nav-icon">✏️</span>Fill 551</a>
+    <a href="#sort-activity"><span class="nav-icon">🎯</span>Sort</a>
+    <a href="#quiz"><span class="nav-icon">🏆</span>Quiz</a>
+  </div>
+</nav>
+
+<!-- WORD BANK OVERLAY -->
+<div class="word-bank-overlay" id="wordBankOverlay">
+  <div class="word-bank-box">
+    <div class="word-bank-title">✏️ Pick the missing number!</div>
+    <div class="word-bank-options" id="wordBankOptions"></div>
+    <button class="wb-cancel" onclick="closeWordBank()">Cancel</button>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-badge">📚 Chapter 3 · Class 2 Math</div>
+    <div class="hero-balloons">
+      <div class="hero-balloon"><div class="balloon-circle b1">5</div></div>
+      <div class="hero-balloon"><div class="balloon-circle b2">_</div></div>
+      <div class="hero-balloon"><div class="balloon-circle b3">7</div></div>
+      <div class="hero-balloon"><div class="balloon-circle b4">_</div></div>
+      <div class="hero-balloon"><div class="balloon-circle b5">9</div></div>
+    </div>
+    <h1 id="hero-title">
+      <span class="word">Missing</span>
+      <span class="word">Numbers</span>
+    </h1>
+    <p class="hero-sub">Can you find the numbers that are hiding? Let's fill in the gaps from 501 to 600!</p>
+    <button class="read-aloud-btn" onclick="readAloud('Welcome to Missing Numbers! In this lesson we will find the missing numbers from 501 to 600. Are you ready to be a number detective?')">
+      🔊 Read Aloud
+    </button>
+  </section>
+
+  <main>
+
+    <!-- WHAT ARE MISSING NUMBERS -->
+    <section class="section-wrap" id="what-is">
+      <div class="section-inner">
+        <div class="section-card accent-teal">
+          <div class="card-header">
+            <span class="card-icon">💡</span>
+            <h2 class="card-title">What Are Missing Numbers?</h2>
+          </div>
+          <p class="explanation">
+            When we count numbers in order, each number comes after the previous one. Sometimes a number is hidden (missing) and we need to figure out what it is!
+          </p>
+          <div class="info-box">
+            <strong>Example:</strong> 501, 502, ___, 504, 505<br>
+            The missing number is <strong>503</strong> because we count up by 1 each time.<br><br>
+            <strong>Remember:</strong> Each number is exactly 1 more than the one before it! 🔢
+          </div>
+          <div class="number-sequence">
+            <div class="num-box filled">501</div>
+            <div class="num-box filled">502</div>
+            <div class="num-box empty-hint">???</div>
+            <div class="num-box filled">504</div>
+            <div class="num-box filled">505</div>
+            <div class="num-box filled">506</div>
+            <div class="num-box empty-hint">???</div>
+            <div class="num-box filled">508</div>
+            <div class="num-box filled">509</div>
+            <div class="num-box empty-hint">???</div>
+          </div>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--teal),#00b894);border:none;margin-top:16px;" onclick="readAloud('Missing numbers are numbers that are hiding in a sequence. We count up by 1 each time. Look at the pattern and find what number is missing!')">
+            🔊 Read This
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 501 TO 550 SEQUENCE -->
+    <section class="section-wrap" id="seq-501">
+      <div class="section-inner">
+        <div class="section-card accent-orange">
+          <div class="card-header">
+            <span class="card-icon">📊</span>
+            <h2 class="card-title">Numbers from 501 to 550</h2>
+          </div>
+          <p class="explanation">
+            Here are all the numbers from 501 to 550. Look carefully at the pattern — each number is 1 more than the last!
+          </p>
+          <div id="full-seq-501" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0;"></div>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--orange),#e17055);border:none;margin-top:12px;" onclick="readAloud('Numbers from five hundred and one to five hundred and fifty. Count along with me: five hundred and one, five hundred and two, five hundred and three, all the way to five hundred and fifty.')">
+            🔊 Read This
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY 501–550 -->
+    <section class="section-wrap" id="activity-501">
+      <div class="section-inner">
+        <div class="section-card accent-purple">
+          <div class="card-header">
+            <span class="card-icon">✏️</span>
+            <h2 class="card-title">Fill in the Missing Numbers (501–550)</h2>
+          </div>
+          <p class="explanation">
+            Click on a grey box to fill in the missing number. Choose the correct number from the options that appear!
+          </p>
+          <div class="activity-section">
+            <div class="activity-title">🔍 Find the missing numbers!</div>
+            <div class="grid-activity" id="grid-501"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <button class="check-btn" onclick="checkGrid('grid-501','feedback-501')">✅ Check Answers</button>
+              <button class="reset-btn" onclick="resetGrid('grid-501','feedback-501')">🔄 Reset</button>
+            </div>
+            <div class="feedback-msg" id="feedback-501"></div>
+          </div>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--purple),#6c5ce7);border:none;margin-top:12px;" onclick="readAloud('Fill in the missing numbers from five hundred and one to five hundred and fifty. Click on a blank grey box and choose the correct number.')">
+            🔊 Read Instructions
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 551 TO 600 SEQUENCE -->
+    <section class="section-wrap" id="seq-551">
+      <div class="section-inner">
+        <div class="section-card accent-teal">
+          <div class="card-header">
+            <span class="card-icon">📊</span>
+            <h2 class="card-title">Numbers from 551 to 600</h2>
+          </div>
+          <p class="explanation">
+            Now let's look at numbers from 551 to 600. Keep counting up by 1 each time!
+          </p>
+          <div id="full-seq-551" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0;"></div>
+          <button class="read-aloud-btn" style="background:linear-gradient(135deg,var(--teal),#00b894);border:none;margin-top:12px;" onclick="readAloud('Numbers from five hundred and fifty one to six hundred. Each number is one more than the number before it.')">
+            🔊 Read This
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY 551–600 -->
+    <section class="section-wrap" id="activity-551">
+      <div class="section-inner">
+        <div class="section-card accent-orange">
+          <div class="card-header">
+            <span class="card-icon">✏️</span>
+            <h2 class="card-title">Fill in the Missing Numbers (551–600)</h2>
+          </div>
+          <p class="explanation">
+            Great job on the first set! Now try filling in the missing numbers from 551 to 600.
+          </p>
+          <div class="activity-section">
+            <div class="activity-title">🔍 Find the missing numbers!</div>
+            <div class="grid-activity" id="grid-551"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <button class="check-btn" onclick="checkGrid('grid-551','feedback-551')">✅ Check Answers</button>
+              <button class="reset-btn" onclick="resetGrid('grid-551','feedback-551')">🔄 Reset</button>
+            </div>
+            <div class="feedback-msg" id="feedback-551"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SORT ACTIVITY -->
+    <section class="section-wrap" id="sort-activity">
+      <div class="section-inner">
+        <div class="section-card accent-teal">
+          <div class="card-header">
+            <span class="card-icon">🎯</span>
+            <h2 class="card-title">Sort the Numbers!</h2>
+          </div>
+          <p class="explanation">
+            Drag each number into the correct bucket. Odd numbers end in 1, 3, 5, 7, or 9. Even numbers end in 0, 2, 4, 6, or 8!
+          </p>
+          <div class="activity-section">
+            <div class="activity-title">📦 Drag into the right bucket!</div>
+            <div class="sort-wrap">
+              <div class="sort-source">
+                <div class="sort-source-title">Numbers to Sort</div>
+                <div class="sort-items" id="sortSource"></div>
+              </div>
+              <div class="sort-buckets">
+                <div class="sort-bucket" id="bucket-odd" ondragover="bucketDragOver(event)" ondragleave="bucketDragLeave(event)" ondrop="bucketDrop(event,'odd')">
+                  <div class="sort-bucket-title odd">Odd Numbers (1,3,5,7,9)</div>
+                  <div class="bucket-items" id="bucket-odd-items"></div>
+                </div>
+                <div class="sort-bucket" id="bucket-even" ondragover="bucketDragOver(event)" ondragleave="bucketDragLeave(event)" ondrop="bucketDrop(event,'even')">
+                  <div class="sort-bucket-title even">Even Numbers (0,2,4,6,8)</div>
+                  <div class="bucket-items" id="bucket-even-items"></div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <button class="check-btn" onclick="checkSort()">✅ Check Sort</button>
+              <button class="reset-btn" onclick="resetSort()">🔄 Reset</button>
+            </div>
+            <div class="feedback-msg" id="sort-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="section-wrap" id="quiz">
+      <div class="section-inner">
+        <div class="section-card accent-purple">
+          <div class="card-header">
+            <span class="card-icon">🏆</span>
+            <h2 class="card-title">Let's Test What You Know!</h2>
+          </div>
+          <p class="explanation">Answer all 6 questions. Click the right answer for each one!</p>
+          <div class="quiz-wrap" id="quizWrap"></div>
+          <button class="quiz-submit" onclick="submitQuiz()">🎯 Submit My Answers</button>
+          <div class="quiz-result" id="quizResult">
+            <div class="result-emoji" id="resultEmoji">🎉</div>
+            <div class="result-score" id="resultScore"></div>
+            <div id="resultStars"></div>
+            <div class="result-msg" id="resultMsg"></div>
+            <button class="quiz-retry" onclick="retryQuiz()">🔄 Try Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-wrap">
+      <div class="section-inner">
+        <div class="section-divider"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>🎓 Digital School · Class 2 Mathematics · Chapter 3: Missing Numbers</p>
+    <p style="margin-top:8px;font-size:14px;">Keep practising — you're a number superstar! ⭐</p>
+  </footer>
+</div><!-- end page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // SMOOTH SCROLL (Lenis)
+  // =====================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1 });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // =====================
+  // GSAP ANIMATIONS
+  // =====================
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  try {
+    if (typeof gsap !== 'undefined' && !reducedMotion) {
+      // Register ScrollTrigger
+      if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title word-by-word
+      const words = document.querySelectorAll('#hero-title .word');
+      gsap.from(words, {
+        opacity: 0, y: 40, stagger: 0.2, duration: 0.7, ease: 'back.out(1.7)',
+        delay: 0.3
+      });
+
+      // Cards scroll fade-up
+      document.querySelectorAll('.section-card, .quiz-question').forEach(card => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+          y: 40, opacity: 0, duration: 0.65, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+
+  // Dismiss curtain after init
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(c, { opacity: 0, duration: 0.5, onComplete: () => c.style.display = 'none' });
+        } else { c.style.display = 'none'; }
+      } catch(e) { c.style.display = 'none'; }
+    }
+  }, 900);
+
+  // =====================
+  // PROGRESS BAR
+  // =====================
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // =====================
+  // BUILD FULL SEQUENCE DISPLAYS
+  // =====================
+  function buildFullSeq(containerId, start, end) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    for (let n = start; n <= end; n++) {
+      const d = document.createElement('div');
+      d.style.cssText = `
+        background:linear-gradient(135deg,var(--teal),#00b894);
+        color:#fff; border-radius:10px;
+        display:flex; align-items:center; justify-content:center;
+        font-size:clamp(0.75rem,1.5vw,1rem); font-weight:800;
+        padding:8px 4px; min-height:42px;
+      `;
+      d.textContent = n;
+      el.appendChild(d);
+    }
+  }
+  buildFullSeq('full-seq-501', 501, 550);
+  buildFullSeq('full-seq-551', 551, 600);
+
+  // =====================
+  // GRID ACTIVITY DATA
+  // =====================
+  // The given (shown) numbers from the PDF worksheets
+  const given501 = new Set([501,512,521,532,541,503,523,514,544,535,506,546,527,518,539,510,550]);
+  const given551 = new Set([551,562,571,582,591,553,573,564,594,585,556,596,577,568,589,560,600]);
+
+  function buildGrid(containerId, start, end, givenSet) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    for (let n = start; n <= end; n++) {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      cell.dataset.value = n;
+      if (givenSet.has(n)) {
+        cell.classList.add('given');
+        cell.textContent = n;
+      } else {
+        cell.classList.add('blank');
+        cell.dataset.answer = n;
+        cell.addEventListener('click', () => openWordBank(cell, n));
+      }
+      container.appendChild(cell);
+    }
+  }
+
+  buildGrid('grid-501', 501, 550, given501);
+  buildGrid('grid-551', 551, 600, given551);
+
+  // =====================
+  // WORD BANK
+  // =====================
+  let activeCell = null;
+
+  window.openWordBank = function(cell, correctNum) {
+    if (cell.classList.contains('correct')) return;
+    activeCell = cell;
+    const opts = generateOptions(correctNum);
+    const container = document.getElementById('wordBankOptions');
+    container.innerHTML = '';
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'wb-option';
+      btn.textContent = opt;
+      btn.onclick = () => selectWordBankOption(opt, correctNum);
+      container.appendChild(btn);
+    });
+    document.getElementById('wordBankOverlay').classList.add('active');
+  };
+
+  function generateOptions(correct) {
+    const opts = new Set([correct]);
+    while (opts.size < 6) {
+      const off = Math.floor(Math.random() * 7) - 3;
+      const v = correct + off;
+      if (v !== correct && v > 0) opts.add(v);
+    }
+    return shuffle([...opts]);
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  window.closeWordBank = function() {
+    document.getElementById('wordBankOverlay').classList.remove('active');
+    activeCell = null;
+  };
+
+  function selectWordBankOption(chosen, correct) {
+    if (!activeCell) return;
+    closeWordBank();
+    if (chosen === correct) {
+      activeCell.textContent = chosen;
+      activeCell.classList.remove('blank','wrong');
+      activeCell.classList.add('filled-by-user');
+      activeCell.dataset.userAnswer = chosen;
+      // Correct animation
+      try {
+        if (typeof gsap !== 'undefined' && !reducedMotion) {
+          gsap.fromTo(activeCell, { scale: 0.7 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
+        }
+      } catch(e) {}
+    } else {
+      activeCell.textContent = chosen;
+      activeCell.classList.remove('blank');
+      activeCell.classList.add('wrong');
+      activeCell.dataset.userAnswer = chosen;
+      // Wrong wobble
+      try {
+        if (typeof gsap !== 'undefined' && !reducedMotion) {
+          gsap.to(activeCell, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, onComplete: () => gsap.set(activeCell, {rotation:0}) });
+        }
+      } catch(e) {}
+      // Re-enable clicking
+      activeCell.addEventListener('click', () => openWordBank(activeCell, correct), { once: true });
+    }
+  }
+
+  // =====================
+  // CHECK / RESET GRIDS
+  // =====================
+  window.checkGrid = function(gridId, feedbackId) {
+    const grid = document.getElementById(gridId);
+    const feedback = document.getElementById(feedbackId);
+    const blanks = grid.querySelectorAll('.grid-cell.blank, .grid-cell.wrong, .grid-cell.filled-by-user');
+    let total = 0, correct = 0;
+    grid.querySelectorAll('.grid-cell[data-answer]').forEach(cell => {
+      total++;
+      const ans = parseInt(cell.dataset.answer);
+      const user = parseInt(cell.dataset.userAnswer);
+      if (user === ans) {
+        correct++;
+        cell.classList.remove('wrong','blank','filled-by-user');
+        cell.classList.add('correct');
+      } else if (!cell.dataset.userAnswer) {
+        cell.classList.add('blank');
+      } else {
+        cell.classList.add('wrong');
+      }
+    });
+    feedback.classList.add('show');
+    if (correct === total) {
+      feedback.className = 'feedback-msg show success';
+      feedback.textContent = `🎉 Amazing! All ${total} missing numbers are correct! You're a number superstar!`;
+    } else {
+      feedback.className = 'feedback-msg show error';
+      feedback.textContent = `You got ${correct} out of ${total} correct. Keep trying — you can do it! 💪`;
+    }
+  };
+
+  window.resetGrid = function(gridId, feedbackId) {
+    const grid = document.getElementById(gridId);
+    const feedback = document.getElementById(feedbackId);
+    const start = gridId === 'grid-501' ? 501 : 551;
+    const end = gridId === 'grid-501' ? 550 : 600;
+    const givenSet = gridId === 'grid-501' ? given501 : given551;
+    buildGrid(gridId, start, end, givenSet);
+    feedback.classList.remove('show');
+    feedback.textContent = '';
+  };
+
+  // =====================
+  // SORT ACTIVITY
+  // =====================
+  const sortNumbers = [503, 510, 515, 522, 527, 534, 541, 548, 556, 563, 570, 577];
+  let draggedItem = null;
+
+  function buildSort() {
+    const source = document.getElementById('sortSource');
+    source.innerHTML = '';
+    document.getElementById('bucket-odd-items').innerHTML = '';
+    document.getElementById('bucket-even-items').innerHTML = '';
+    shuffle([...sortNumbers]).forEach(num => {
+      const item = document.createElement('div');
+      item.className = 'drag-item';
+      item.textContent = num;
+      item.draggable = true;
+      item.dataset.num = num;
+      item.addEventListener('dragstart', e => {
+        draggedItem = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        draggedItem = null;
+      });
+      // Touch support
+      item.addEventListener('touchstart', touchStart, { passive: true });
+      item.addEventListener('touchmove', touchMove, { passive: false });
+      item.addEventListener('touchend', touchEnd);
+      source.appendChild(item);
+    });
+  }
+  buildSort();
+
+  window.bucketDragOver = function(e) {
+    e.preventDefault();
+    e.target.closest('.sort-bucket').classList.add('dragover');
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  window.bucketDragLeave = function(e) {
+    e.target.closest('.sort-bucket').classList.remove('dragover');
+  };
+
+  window.bucketDrop = function(e, type) {
+    e.preventDefault();
+    const bucket = e.target.closest('.sort-bucket');
+    bucket.classList.remove('dragover');
+    if (draggedItem) {
+      const itemsDiv = document.getElementById('bucket-' + type + '-items');
+      itemsDiv.appendChild(draggedItem);
+      draggedItem.draggable = false;
+    }
+  };
+
+  // Touch drag
+  let touchDragging = null, touchClone = null;
+  function touchStart(e) {
+    touchDragging = e.currentTarget;
+  }
+  function touchMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (!touchClone && touchDragging) {
+      touchClone = touchDragging.cloneNode(true);
+      touchClone.style.cssText = `position:fixed;opacity:0.8;pointer-events:none;z-index:9999;transform:scale(1.1);`;
+      document.body.appendChild(touchClone);
+    }
+    if (touchClone) {
+      touchClone.style.left = (touch.clientX - 30) + 'px';
+      touchClone.style.top = (touch.clientY - 20) + 'px';
+    }
+  }
+  function touchEnd(e) {
+    if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+    if (!touchDragging) return;
+    const touch = e.changedTouches[0];
+    const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (dropTarget) {
+      const bucket = dropTarget.closest('.sort-bucket');
+      if (bucket) {
+        const id = bucket.id;
+        const type = id.replace('bucket-','');
+        const itemsDiv = document.getElementById('bucket-' + type + '-items');
+        itemsDiv.appendChild(touchDragging);
+        touchDragging.draggable = false;
+      }
+    }
+    touchDragging = null;
+  }
+
+  window.checkSort = function() {
+    const oddItems = [...document.querySelectorAll('#bucket-odd-items .drag-item')];
+    const evenItems = [...document.querySelectorAll('#bucket-even-items .drag-item')];
+    let correct = 0, total = sortNumbers.length;
+    const placed = oddItems.length + evenItems.length;
+    if (placed < total) {
+      const fb = document.getElementById('sort-feedback');
+      fb.className = 'feedback-msg show error';
+      fb.textContent = 'Please sort all the numbers first! 🤔';
+      return;
+    }
+    oddItems.forEach(item => {
+      const n = parseInt(item.dataset.num);
+      if (n % 2 !== 0) { correct++; item.style.background = 'linear-gradient(135deg,var(--teal),#00b894)'; }
+      else { item.style.background = 'linear-gradient(135deg,#ff7675,#d63031)'; }
+    });
+    evenItems.forEach(item => {
+      const n = parseInt(item.dataset.num);
+      if (n % 2 === 0) { correct++; item.style.background = 'linear-gradient(135deg,var(--teal),#00b894)'; }
+      else { item.style.background = 'linear-gradient(135deg,#ff7675,#d63031)'; }
+    });
+    const fb = document.getElementById('sort-feedback');
+    fb.classList.add('show');
+    if (correct === total) {
+      fb.className = 'feedback-msg show success';
+      fb.textContent = `🌟 Perfect! You sorted all ${total} numbers correctly!`;
+    } else {
+      fb.className = 'feedback-msg show error';
+      fb.textContent = `You got ${correct} out of ${total} right. Red ones need to move. Try again! 💪`;
+    }
+  };
+
+  window.resetSort = function() {
+    buildSort();
+    const fb = document.getElementById('sort-feedback');
+    fb.classList.remove('show'); fb.textContent = '';
+  };
+
+  // =====================
+  // QUIZ
+  // =====================
+  const quizQuestions = [
+    {
+      q: 'What is the missing number? 501, 502, ___, 504',
+      options: ['500', '503'],
+      answer: '503'
+    },
+    {
+      q: 'What comes after 519?',
+      options: ['518', '520'],
+      answer: '520'
+    },
+    {
+      q: 'What is the missing number? 545, 546, ___, 548',
+      options: ['547', '549'],
+      answer: '547'
+    },
+    {
+      q: 'What comes before 560?',
+      options: ['559', '561'],
+      answer: '559'
+    },
+    {
+      q: 'What is the missing number? 575, ___, 577',
+      options: ['574', '576'],
+      answer: '576'
+    },
+    {
+      q: 'What is the missing number? 598, 599, ___, 601',
+      options: ['597', '600'],
+      answer: '600'
+    }
+  ];
+
+  let userAnswers = {};
+
+  function buildQuiz() {
+    const wrap = document.getElementById('quizWrap');
+    wrap.innerHTML = '';
+    userAnswers = {};
+    quizQuestions.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-question';
+      div.id = 'qq-' + i;
+      div.innerHTML = `
+        <div class="q-number">Question ${i+1} of ${quizQuestions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-options">
+          ${q.options.map(opt => `<button class="q-option" data-q="${i}" data-opt="${opt}" onclick="selectOption(${i},'${opt}')">${opt}</button>`).join('')}
+        </div>
+      `;
+      wrap.appendChild(div);
+    });
+    document.getElementById('quizResult').classList.remove('show');
+  }
+  buildQuiz();
+
+  window.selectOption = function(qIndex, chosen) {
+    const existing = userAnswers[qIndex];
+    if (existing !== undefined) return; // already answered
+    userAnswers[qIndex] = chosen;
+    const btns = document.querySelectorAll(`[data-q="${qIndex}"].q-option`);
+    btns.forEach(btn => {
+      btn.classList.add('answered');
+      if (btn.dataset.opt === chosen) {
+        if (chosen === quizQuestions[qIndex].answer) {
+          btn.classList.add('selected-correct');
+        } else {
+          btn.classList.add('selected-wrong');
+        }
+      }
+      if (btn.dataset.opt === quizQuestions[qIndex].answer) {
+        btn.classList.add('show-correct');
+      }
+    });
+  };
+
+  window.submitQuiz = function() {
+    let score = 0;
+    quizQuestions.forEach((q, i) => {
+      if (userAnswers[i] === q.answer) score++;
+    });
+    const result = document.getElementById('quizResult');
+    const emoji = document.getElementById('resultEmoji');
+    const scoreEl = document.getElementById('resultScore');
+    const starsEl = document.getElementById('resultStars');
+    const msgEl = document.getElementById('resultMsg');
+    result.classList.add('show');
+    scoreEl.textContent = `You scored ${score} out of ${quizQuestions.length}!`;
+    let stars = Math.round((score / quizQuestions.length) * 5);
+    starsEl.innerHTML = '⭐'.repeat(stars) + '☆'.repeat(5-stars);
+    if (score === quizQuestions.length) {
+      emoji.textContent = '🎉';
+      msgEl.textContent = 'Outstanding! You are a true Number Detective! 🕵️';
+    } else if (score >= quizQuestions.length * 0.7) {
+      emoji.textContent = '😊';
+      msgEl.textContent = 'Well done! Keep practising and you will get them all! 💪';
+    } else {
+      emoji.textContent = '🤔';
+      msgEl.textContent = 'Good try! Read through the lesson again and you will do better! 📚';
+    }
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.from(result, { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(2)' });
+      }
+    } catch(e) {}
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  window.retryQuiz = function() {
+    buildQuiz();
+    document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // =====================
+  // READ ALOUD
+  // =====================
+  window.readAloud = function(text) {
+    try {
+      if (!('speechSynthesis' in window)) {
+        alert('Read Aloud: ' + text);
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 0.85;
+      utter.pitch = 1.1;
+      utter.lang = 'en-US';
+      window.speechSynthesis.speak(utter);
+    } catch(e) {
+      console.warn('Speech failed:', e);
+      // Fallback tooltip-like
+      const tooltip = document.createElement('div');
+      tooltip.style.cssText = `
+        position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+        background:rgba(0,0,0,0.85); color:#fff; padding:14px 20px;
+        border-radius:14px; font-size:15px; max-width:80vw; text-align:center;
+        z-index:9999; font-family:'Nunito',sans-serif;
+      `;
+      tooltip.textContent = text.substring(0, 100) + (text.length > 100 ? '…' : '');
+      document.body.appendChild(tooltip);
+      setTimeout(() => document.body.removeChild(tooltip), 3500);
+    }
+  };
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

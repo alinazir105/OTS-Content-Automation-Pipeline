@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ascending & Descending Order | Class 2 Math</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF9F43;
+    --teal: #1DD1A1;
+    --purple: #A29BFE;
+    --pink: #fd79a8;
+    --blue: #74b9ff;
+    --off-white: #FAFAFA;
+    --dark: #2d3436;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    background: var(--off-white);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* LOADING CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #1DD1A1, #A29BFE);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  #curtain .curtain-emoji { font-size: 72px; }
+  #curtain .curtain-text { color: white; font-size: 24px; font-weight: 800; }
+  .curtain-dots { display: flex; gap: 10px; }
+  .curtain-dots span {
+    width: 14px; height: 14px;
+    background: white; border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+  }
+  .curtain-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .curtain-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--purple));
+    transition: width 0.3s ease;
+  }
+  #progress-label {
+    position: fixed;
+    top: 8px; right: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    z-index: 1001;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* SIDEBAR NAV */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 10px;
+    background: white;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+  }
+  .nav-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #dfe6e9;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+  }
+  .nav-dot.active, .nav-dot:hover { background: var(--teal); transform: scale(1.3); }
+
+  /* MOBILE BOTTOM NAV */
+  #bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 600;
+    overflow-x: auto;
+    padding: 8px 16px;
+    gap: 8px;
+    flex-direction: row;
+    white-space: nowrap;
+  }
+  .bottom-nav-item {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: var(--off-white);
+    cursor: pointer;
+    min-width: 60px;
+    min-height: 48px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    border: none;
+    text-decoration: none;
+  }
+  .bottom-nav-item span:first-child { font-size: 20px; }
+  .bottom-nav-item.active { background: var(--teal); color: white; }
+
+  /* PAGE WRAPPER */
+  #page-wrapper { width: 100%; }
+
+  /* CONTAINER */
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  #hero {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1DD1A1 0%, #A29BFE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+  .hero-content { text-align: center; position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block;
+    background: white;
+    color: var(--purple);
+    font-weight: 800;
+    font-size: 18px;
+    padding: 8px 24px;
+    border-radius: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  #hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.2;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+  }
+  #hero h1 .word { display: inline-block; opacity: 1; margin-right: 16px; }
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  .hero-pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+  .pyramid-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: white;
+    padding: 10px 24px;
+    transition: all 0.3s;
+  }
+  .pyramid-row:hover { background: rgba(255,255,255,0.4); transform: scale(1.03); }
+
+  /* FLOATING SHAPES */
+  .hero-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .shape1 { width: 300px; height: 300px; background: white; top: -80px; right: -80px; }
+  .shape2 { width: 200px; height: 200px; background: white; bottom: -60px; left: -60px; }
+  .shape3 { width: 150px; height: 150px; background: white; bottom: 100px; right: 100px; }
+
+  /* SECTIONS */
+  .lesson-section {
+    padding: 80px 0;
+    opacity: 1;
+    transform: none;
+  }
+  .section-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    margin-bottom: 32px;
+    opacity: 1;
+    transform: none;
+  }
+  .section-card.orange-accent { border-left: 4px solid var(--orange); }
+  .section-card.teal-accent { border-left: 4px solid var(--teal); }
+  .section-card.purple-accent { border-left: 4px solid var(--purple); }
+  .section-card.pink-accent { border-left: 4px solid var(--pink); }
+  .section-card.blue-accent { border-left: 4px solid var(--blue); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .section-icon {
+    font-size: 40px;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--off-white);
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--dark);
+  }
+  .section-subtitle {
+    font-size: 18px;
+    color: #636e72;
+    font-weight: 600;
+  }
+
+  .explanation-box {
+    background: linear-gradient(135deg, #f8f9fa, #f0f4ff);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+  /* READ ALOUD BUTTON */
+  .read-aloud-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Nunito', sans-serif;
+    margin-top: 12px;
+  }
+  .read-aloud-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(29,209,161,0.4); }
+
+  /* NUMBER LINE VISUALIZATION */
+  .number-line-wrap {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+  .number-line {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: 600px;
+    position: relative;
+    padding: 40px 20px 20px;
+  }
+  .nl-arrow-left, .nl-arrow-right {
+    font-size: 28px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .nl-track {
+    flex: 1;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--purple));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .nl-tick {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .nl-tick .tick-line {
+    width: 3px;
+    height: 20px;
+    background: var(--dark);
+    border-radius: 2px;
+  }
+  .nl-tick .tick-num {
+    position: absolute;
+    top: 24px;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--dark);
+    white-space: nowrap;
+  }
+  .nl-label-asc {
+    position: absolute;
+    bottom: -40px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .nl-label-desc {
+    position: absolute;
+    top: -36px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+
+  /* CONCEPT CARDS */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .concept-card {
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    opacity: 1;
+  }
+  .concept-card.asc {
+    background: linear-gradient(135deg, #d4f5ec, #a8f0d4);
+    border: 2px solid var(--teal);
+  }
+  .concept-card.desc {
+    background: linear-gradient(135deg, #eee9ff, #d4cbff);
+    border: 2px solid var(--purple);
+  }
+  .concept-card .cc-icon { font-size: 48px; margin-bottom: 12px; }
+  .concept-card .cc-title {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .concept-card.asc .cc-title { color: #00b894; }
+  .concept-card.desc .cc-title { color: #6c5ce7; }
+  .concept-card .cc-desc { font-size: 18px; line-height: 1.7; }
+  .concept-card .cc-example {
+    margin-top: 14px;
+    font-size: 20px;
+    font-weight: 800;
+    background: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+
+  /* VISUAL STAIRCASE */
+  .staircase-wrap {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding: 20px 0;
+  }
+  .staircase {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 4px;
+  }
+  .stair-label {
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .stair-block {
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+    color: white;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+  .stair-block:hover { transform: scale(1.05); }
+
+  /* ACTIVITIES */
+  .activity-wrap { margin-top: 28px; }
+  .activity-title {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* SORT ACTIVITY */
+  .sort-activity { margin: 16px 0; }
+  .sort-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    min-height: 70px;
+  }
+  .sort-num-chip {
+    background: white;
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .sort-num-chip:hover { background: var(--orange); color: white; transform: scale(1.05); }
+  .sort-num-chip.dragging { opacity: 0.5; cursor: grabbing; }
+  .sort-num-chip.placed { background: #dfe6e9; border-color: #b2bec3; color: #636e72; cursor: default; }
+
+  .sort-buckets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .sort-bucket {
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 120px;
+    border: 3px dashed;
+    transition: all 0.3s;
+  }
+  .sort-bucket.asc-bucket { border-color: var(--teal); background: #f0fdf9; }
+  .sort-bucket.desc-bucket { border-color: var(--purple); background: #f5f3ff; }
+  .sort-bucket.drag-over { background: rgba(29,209,161,0.15); transform: scale(1.01); }
+  .sort-bucket.desc-bucket.drag-over { background: rgba(162,155,254,0.15); }
+  .bucket-label {
+    font-weight: 800;
+    font-size: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .asc-bucket .bucket-label { color: var(--teal); }
+  .desc-bucket .bucket-label { color: var(--purple); }
+  .bucket-drop-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 50px;
+  }
+  .bucket-chip {
+    background: white;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    border: 2px solid;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .asc-bucket .bucket-chip { border-color: var(--teal); color: var(--teal); }
+  .desc-bucket .bucket-chip { border-color: var(--purple); color: var(--purple); }
+
+  /* ORDER TABLE ACTIVITY */
+  .order-table-activity { margin: 16px 0; }
+  .order-question {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .oq-numbers {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-weight: 800;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .oq-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .oq-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .oq-row-label {
+    font-weight: 700;
+    font-size: 17px;
+    min-width: 130px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .oq-inputs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .oq-input {
+    width: 64px;
+    height: 48px;
+    border: 2px solid #dfe6e9;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    color: var(--dark);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .oq-input:focus { border-color: var(--teal); }
+  .oq-input.correct { border-color: var(--teal); background: #d4f5ec; color: #00b894; }
+  .oq-input.wrong { border-color: var(--pink); background: #ffe4ef; color: #d63031; }
+
+  .check-btn {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.3s;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+  }
+  .check-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(255,159,67,0.4); }
+
+  .feedback-msg {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 10px;
+    display: none;
+  }
+  .feedback-msg.show { display: block; }
+  .feedback-msg.success { background: #d4f5ec; color: #00b894; }
+  .feedback-msg.error { background: #ffe4ef; color: #d63031; }
+
+  /* SORTING ACTIVITY (DRAG) */
+  .drag-sort-wrap {
+    margin: 16px 0;
+  }
+  .drag-nums-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px;
+    background: #fff8f0;
+    border-radius: 16px;
+    border: 2px dashed var(--orange);
+    margin-bottom: 20px;
+    min-height: 70px;
+  }
+  .drag-chip {
+    background: white;
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    touch-action: none;
+  }
+  .drag-chip:hover { background: var(--orange); color: white; }
+
+  .drop-zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .drop-zone {
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 100px;
+    border: 3px dashed;
+  }
+  .drop-zone.asc { border-color: var(--teal); background: #f0fdf9; }
+  .drop-zone.desc { border-color: var(--purple); background: #f5f3ff; }
+  .drop-zone .dz-label {
+    font-weight: 800;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .drop-zone.asc .dz-label { color: var(--teal); }
+  .drop-zone.desc .dz-label { color: var(--purple); }
+  .drop-zone .dz-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 48px;
+  }
+
+  /* QUIZ SECTION */
+  #quiz-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f5f3ff, #f0fdf9);
+  }
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .quiz-header h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: var(--purple);
+    margin-bottom: 10px;
+  }
+  .quiz-progress-wrap {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 12px 24px;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .quiz-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto 24px;
+    display: none;
+    opacity: 1;
+  }
+  .quiz-card.active { display: block; }
+
+  .quiz-q-num {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+  .quiz-question {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 800;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .quiz-numbers-display {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 900;
+    color: var(--orange);
+    background: #fff8f0;
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 28px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .quiz-option {
+    border: 3px solid #dfe6e9;
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    color: var(--dark);
+    letter-spacing: 1px;
+  }
+  .quiz-option:hover { border-color: var(--purple); background: #f5f3ff; transform: translateY(-2px); }
+  .quiz-option.correct { border-color: var(--teal); background: #d4f5ec; color: #00b894; }
+  .quiz-option.wrong { border-color: var(--pink); background: #ffe4ef; color: #d63031; }
+  .quiz-option:disabled { cursor: default; }
+
+  .quiz-feedback {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: #d4f5ec; color: #00b894; }
+  .quiz-feedback.wrong { background: #ffe4ef; color: #d63031; }
+
+  .quiz-nav-btns {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .quiz-nav-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Nunito', sans-serif;
+    min-height: 48px;
+    display: none;
+  }
+  .quiz-nav-btn:hover { transform: scale(1.05); }
+  .quiz-nav-btn.show { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* RESULTS */
+  #quiz-results {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    display: none;
+    opacity: 1;
+  }
+  .result-emoji { font-size: 72px; margin-bottom: 16px; }
+  .result-title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .result-score {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 20px;
+  }
+  .result-bar-wrap {
+    background: #f0f0f0;
+    border-radius: 20px;
+    height: 20px;
+    margin: 16px 0 24px;
+    overflow: hidden;
+  }
+  .result-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--purple));
+    border-radius: 20px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  .retry-btn {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Nunito', sans-serif;
+    min-height: 52px;
+  }
+  .retry-btn:hover { transform: scale(1.05); }
+
+  /* CANVAS ILLUSTRATION */
+  .canvas-wrap {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    margin: 20px 0;
+    min-height: 200px;
+  }
+  #staircase-canvas {
+    display: block;
+    border-radius: 16px;
+  }
+
+  /* TABLE WRAPPER */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+  }
+  th {
+    background: var(--teal);
+    color: white;
+    padding: 14px 16px;
+    font-weight: 800;
+    text-align: center;
+  }
+  td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  tr:nth-child(even) td { background: #f8f9fa; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #bottom-nav { display: flex; }
+    .container { padding: 0 16px; }
+    #hero { min-height: 60vh; padding: 60px 16px 40px; }
+    .section-card { padding: 24px 16px; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .sort-buckets, .drop-zones { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .staircase-wrap { gap: 24px; }
+    body { padding-bottom: 80px; }
+    #hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+    .lesson-section { padding: 40px 0; }
+    .oq-inputs { gap: 6px; }
+    .oq-input { width: 56px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-pyramid { max-width: 100%; }
+    .pyramid-row { font-size: 1rem; padding: 8px 14px; }
+    .sort-num-chip, .drag-chip { padding: 8px 14px; font-size: 18px; }
+    .oq-input { width: 48px; height: 44px; font-size: 16px; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes wobble {
+    0%,100% { transform: rotate(0deg); }
+    20% { transform: rotate(-5deg); }
+    40% { transform: rotate(5deg); }
+    60% { transform: rotate(-5deg); }
+    80% { transform: rotate(5deg); }
+  }
+  @keyframes colorBurst {
+    0% { box-shadow: 0 0 0 0 rgba(29,209,161,0.6); }
+    70% { box-shadow: 0 0 0 20px rgba(29,209,161,0); }
+    100% { box-shadow: 0 0 0 0 rgba(29,209,161,0); }
+  }
+  .wobble { animation: wobble 0.5s ease; }
+  .color-burst { animation: colorBurst 0.5s ease; }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">🔢</div>
+  <div class="curtain-text">Loading your lesson…</div>
+  <div class="curtain-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- SIDEBAR NAV -->
+<nav id="sidebar" aria-label="Section Navigation">
+  <button class="nav-dot active" title="Home" onclick="scrollToSection('hero')"></button>
+  <button class="nav-dot" title="What is Ascending?" onclick="scrollToSection('sec-ascending')"></button>
+  <button class="nav-dot" title="What is Descending?" onclick="scrollToSection('sec-descending')"></button>
+  <button class="nav-dot" title="Visual Learning" onclick="scrollToSection('sec-visual')"></button>
+  <button class="nav-dot" title="Practice" onclick="scrollToSection('sec-practice')"></button>
+  <button class="nav-dot" title="More Practice" onclick="scrollToSection('sec-practice2')"></button>
+  <button class="nav-dot" title="Quiz" onclick="scrollToSection('quiz-section')"></button>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="bottom-nav" aria-label="Mobile Navigation">
+  <a class="bottom-nav-item active" onclick="scrollToSection('hero')"><span>🏠</span><span>Home</span></a>
+  <a class="bottom-nav-item" onclick="scrollToSection('sec-ascending')"><span>📈</span><span>Up</span></a>
+  <a class="bottom-nav-item" onclick="scrollToSection('sec-descending')"><span>📉</span><span>Down</span></a>
+  <a class="bottom-nav-item" onclick="scrollToSection('sec-visual')"><span>👁️</span><span>See It</span></a>
+  <a class="bottom-nav-item" onclick="scrollToSection('sec-practice')"><span>✏️</span><span>Practice</span></a>
+  <a class="bottom-nav-item" onclick="scrollToSection('quiz-section')"><span>🎯</span><span>Quiz</span></a>
+</nav>
+
+<div id="page-wrapper">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-shape shape1"></div>
+    <div class="hero-shape shape2"></div>
+    <div class="hero-shape shape3"></div>
+    <div class="hero-content">
+      <div class="hero-badge">📚 Class 2 • Maths • Chapter 7</div>
+      <h1>
+        <span class="word">Ascending</span>
+        <span class="word">&amp;</span>
+        <span class="word">Descending</span>
+        <span class="word">Order</span>
+      </h1>
+      <p class="hero-subtitle">Learn to arrange numbers from smallest to biggest and biggest to smallest!</p>
+      <div class="hero-pyramid">
+        <div class="pyramid-row" style="width:80px;">18</div>
+        <div class="pyramid-row" style="width:140px;">17 &nbsp; 17</div>
+        <div class="pyramid-row" style="width:190px;">16 &nbsp;&nbsp;&nbsp; 16</div>
+        <div class="pyramid-row" style="width:240px;">15 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15</div>
+        <div class="pyramid-row" style="width:290px;">14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14</div>
+        <div class="pyramid-row" style="width:340px;">13 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13</div>
+        <div class="pyramid-row" style="width:390px;">12 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12</div>
+        <div class="pyramid-row" style="width:440px;">11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: ASCENDING -->
+  <section class="lesson-section" id="sec-ascending">
+    <div class="container">
+      <div class="section-card teal-accent">
+        <div class="section-header">
+          <div class="section-icon">📈</div>
+          <div>
+            <div class="section-title">Ascending Order</div>
+            <div class="section-subtitle">Going from smallest to biggest!</div>
+          </div>
+        </div>
+
+        <div class="explanation-box">
+          <strong>Ascending order</strong> means we arrange numbers starting from the <strong>smallest</strong> number and going up to the <strong>largest</strong> number. It is like climbing up a staircase — each step gets higher!
+          <br><br>
+          Think of it as counting up: <strong>1, 2, 3, 4, 5…</strong> — each number is bigger than the one before it.
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('Ascending order means we arrange numbers starting from the smallest number and going up to the largest number. It is like climbing up a staircase — each step gets higher!')">🔊 Read Aloud</button>
+
+        <div class="concept-grid" style="margin-top:28px;">
+          <div class="concept-card asc">
+            <div class="cc-icon">🪜</div>
+            <div class="cc-title">Going Up!</div>
+            <div class="cc-desc">Smallest number comes first. Numbers get bigger and bigger.</div>
+            <div class="cc-example">3 → 7 → 12 → 20 → 45</div>
+          </div>
+          <div class="concept-card asc">
+            <div class="cc-icon">⬆️</div>
+            <div class="cc-title">Arrow Points Up</div>
+            <div class="cc-desc">The values increase as we move from left to right.</div>
+            <div class="cc-example">11 → 13 → 15 → 17 → 18</div>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:24px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Given Numbers</th>
+                <th>Ascending Order (Smallest → Biggest)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>45, 12, 33, 8, 27</td><td>8, 12, 27, 33, 45 ⬆️</td></tr>
+              <tr><td>99, 32, 56, 69, 45, 87</td><td>32, 45, 56, 69, 87, 99 ⬆️</td></tr>
+              <tr><td>15, 35, 90, 57, 73, 79</td><td>15, 35, 57, 73, 79, 90 ⬆️</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DESCENDING -->
+  <section class="lesson-section" id="sec-descending">
+    <div class="container">
+      <div class="section-card purple-accent">
+        <div class="section-header">
+          <div class="section-icon">📉</div>
+          <div>
+            <div class="section-title">Descending Order</div>
+            <div class="section-subtitle">Going from biggest to smallest!</div>
+          </div>
+        </div>
+
+        <div class="explanation-box" style="background: linear-gradient(135deg, #f5f3ff, #eee9ff);">
+          <strong>Descending order</strong> means we arrange numbers starting from the <strong>largest</strong> number and going down to the <strong>smallest</strong> number. It is like going down a staircase — each step gets lower!
+          <br><br>
+          Think of a countdown: <strong>10, 9, 8, 7, 6…</strong> — each number is smaller than the one before it.
+        </div>
+        <button class="read-aloud-btn" style="background:var(--purple);" onclick="readAloud('Descending order means we arrange numbers starting from the largest number and going down to the smallest number. It is like going down a staircase — each step gets lower!')">🔊 Read Aloud</button>
+
+        <div class="concept-grid" style="margin-top:28px;">
+          <div class="concept-card desc">
+            <div class="cc-icon">🚀</div>
+            <div class="cc-title">Going Down!</div>
+            <div class="cc-desc">Largest number comes first. Numbers get smaller and smaller.</div>
+            <div class="cc-example">45 → 20 → 12 → 7 → 3</div>
+          </div>
+          <div class="concept-card desc">
+            <div class="cc-icon">⬇️</div>
+            <div class="cc-title">Arrow Points Down</div>
+            <div class="cc-desc">The values decrease as we move from left to right.</div>
+            <div class="cc-example">18 → 17 → 15 → 13 → 11</div>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:24px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Given Numbers</th>
+                <th>Descending Order (Biggest → Smallest)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>45, 12, 33, 8, 27</td><td>45, 33, 27, 12, 8 ⬇️</td></tr>
+              <tr><td>99, 32, 56, 69, 45, 87</td><td>99, 87, 69, 56, 45, 32 ⬇️</td></tr>
+              <tr><td>15, 35, 90, 57, 73, 79</td><td>90, 79, 73, 57, 35, 15 ⬇️</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: VISUAL LEARNING -->
+  <section class="lesson-section" id="sec-visual">
+    <div class="container">
+      <div class="section-card orange-accent">
+        <div class="section-header">
+          <div class="section-icon">👁️</div>
+          <div>
+            <div class="section-title">See It Clearly!</div>
+            <div class="section-subtitle">Visualizing ascending and descending with a number staircase</div>
+          </div>
+        </div>
+
+        <!-- CANVAS ILLUSTRATION -->
+        <div class="canvas-wrap">
+          <canvas id="staircase-canvas"></canvas>
+        </div>
+
+        <!-- NUMBER LINE -->
+        <div class="number-line-wrap">
+          <p style="font-weight:800; font-size:18px; margin-bottom:16px; color:var(--orange);">📏 Number Line: 1 to 10</p>
+          <div class="number-line">
+            <div class="nl-arrow-left">←</div>
+            <div class="nl-track" id="nl-track">
+              <div class="nl-label-asc">⬆️ Ascending Order (1 → 10)</div>
+              <div class="nl-label-desc">⬇️ Descending Order (10 → 1)</div>
+            </div>
+            <div class="nl-arrow-right">→</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding: 10px 44px 0; flex-wrap:wrap; gap:4px;">
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">1</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">2</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">3</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">4</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">5</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">6</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">7</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">8</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">9</span>
+            <span style="font-weight:800; color:var(--dark); font-size:16px;">10</span>
+          </div>
+        </div>
+
+        <div class="explanation-box">
+          <strong>Key Tip:</strong> To find ascending order, find the <strong>smallest number first</strong>, then the next smallest, and so on.<br>
+          For descending order, find the <strong>biggest number first</strong>, then the next biggest, and so on. 🎯
+        </div>
+        <button class="read-aloud-btn" style="background:var(--orange);" onclick="readAloud('Key Tip: To find ascending order, find the smallest number first, then the next smallest, and so on. For descending order, find the biggest number first, then the next biggest, and so on.')">🔊 Read Aloud</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: PRACTICE (Questions 1-3) -->
+  <section class="lesson-section" id="sec-practice">
+    <div class="container">
+      <div class="section-card blue-accent">
+        <div class="section-header">
+          <div class="section-icon">✏️</div>
+          <div>
+            <div class="section-title">Let's Practice!</div>
+            <div class="section-subtitle">Write numbers in ascending and descending order</div>
+          </div>
+        </div>
+
+        <div class="activity-title">🎯 Questions 1 – 3: Fill in the blanks</div>
+
+        <!-- Q1 -->
+        <div class="order-question" id="oq1">
+          <div class="oq-numbers">1) 32, 99, 69, 87, 45, 56</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q1a1" type="number" placeholder="?" data-answer="32">
+                <input class="oq-input" id="q1a2" type="number" placeholder="?" data-answer="45">
+                <input class="oq-input" id="q1a3" type="number" placeholder="?" data-answer="56">
+                <input class="oq-input" id="q1a4" type="number" placeholder="?" data-answer="69">
+                <input class="oq-input" id="q1a5" type="number" placeholder="?" data-answer="87">
+                <input class="oq-input" id="q1a6" type="number" placeholder="?" data-answer="99">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q1d1" type="number" placeholder="?" data-answer="99">
+                <input class="oq-input" id="q1d2" type="number" placeholder="?" data-answer="87">
+                <input class="oq-input" id="q1d3" type="number" placeholder="?" data-answer="69">
+                <input class="oq-input" id="q1d4" type="number" placeholder="?" data-answer="56">
+                <input class="oq-input" id="q1d5" type="number" placeholder="?" data-answer="45">
+                <input class="oq-input" id="q1d6" type="number" placeholder="?" data-answer="32">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq1')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="order-question" id="oq2">
+          <div class="oq-numbers">2) 98, 43, 72, 40, 58, 88</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q2a1" type="number" placeholder="?" data-answer="40">
+                <input class="oq-input" id="q2a2" type="number" placeholder="?" data-answer="43">
+                <input class="oq-input" id="q2a3" type="number" placeholder="?" data-answer="58">
+                <input class="oq-input" id="q2a4" type="number" placeholder="?" data-answer="72">
+                <input class="oq-input" id="q2a5" type="number" placeholder="?" data-answer="88">
+                <input class="oq-input" id="q2a6" type="number" placeholder="?" data-answer="98">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q2d1" type="number" placeholder="?" data-answer="98">
+                <input class="oq-input" id="q2d2" type="number" placeholder="?" data-answer="88">
+                <input class="oq-input" id="q2d3" type="number" placeholder="?" data-answer="72">
+                <input class="oq-input" id="q2d4" type="number" placeholder="?" data-answer="58">
+                <input class="oq-input" id="q2d5" type="number" placeholder="?" data-answer="43">
+                <input class="oq-input" id="q2d6" type="number" placeholder="?" data-answer="40">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq2')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="order-question" id="oq3">
+          <div class="oq-numbers">3) 15, 35, 73, 90, 79, 57</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q3a1" type="number" placeholder="?" data-answer="15">
+                <input class="oq-input" id="q3a2" type="number" placeholder="?" data-answer="35">
+                <input class="oq-input" id="q3a3" type="number" placeholder="?" data-answer="57">
+                <input class="oq-input" id="q3a4" type="number" placeholder="?" data-answer="73">
+                <input class="oq-input" id="q3a5" type="number" placeholder="?" data-answer="79">
+                <input class="oq-input" id="q3a6" type="number" placeholder="?" data-answer="90">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q3d1" type="number" placeholder="?" data-answer="90">
+                <input class="oq-input" id="q3d2" type="number" placeholder="?" data-answer="79">
+                <input class="oq-input" id="q3d3" type="number" placeholder="?" data-answer="73">
+                <input class="oq-input" id="q3d4" type="number" placeholder="?" data-answer="57">
+                <input class="oq-input" id="q3d5" type="number" placeholder="?" data-answer="35">
+                <input class="oq-input" id="q3d6" type="number" placeholder="?" data-answer="15">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq3')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: MORE PRACTICE (Questions 4-6) -->
+  <section class="lesson-section" id="sec-practice2">
+    <div class="container">
+      <div class="section-card pink-accent">
+        <div class="section-header">
+          <div class="section-icon">🧩</div>
+          <div>
+            <div class="section-title">More Practice!</div>
+            <div class="section-subtitle">Keep going — you are doing great!</div>
+          </div>
+        </div>
+
+        <div class="activity-title">🎯 Questions 4 – 6: Fill in the blanks</div>
+
+        <!-- Q4 -->
+        <div class="order-question" id="oq4">
+          <div class="oq-numbers">4) 67, 34, 57, 77, 60, 45</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q4a1" type="number" placeholder="?" data-answer="34">
+                <input class="oq-input" id="q4a2" type="number" placeholder="?" data-answer="45">
+                <input class="oq-input" id="q4a3" type="number" placeholder="?" data-answer="57">
+                <input class="oq-input" id="q4a4" type="number" placeholder="?" data-answer="60">
+                <input class="oq-input" id="q4a5" type="number" placeholder="?" data-answer="67">
+                <input class="oq-input" id="q4a6" type="number" placeholder="?" data-answer="77">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q4d1" type="number" placeholder="?" data-answer="77">
+                <input class="oq-input" id="q4d2" type="number" placeholder="?" data-answer="67">
+                <input class="oq-input" id="q4d3" type="number" placeholder="?" data-answer="60">
+                <input class="oq-input" id="q4d4" type="number" placeholder="?" data-answer="57">
+                <input class="oq-input" id="q4d5" type="number" placeholder="?" data-answer="45">
+                <input class="oq-input" id="q4d6" type="number" placeholder="?" data-answer="34">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq4')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="order-question" id="oq5">
+          <div class="oq-numbers">5) 23, 75, 26, 30, 9, 55</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q5a1" type="number" placeholder="?" data-answer="9">
+                <input class="oq-input" id="q5a2" type="number" placeholder="?" data-answer="23">
+                <input class="oq-input" id="q5a3" type="number" placeholder="?" data-answer="26">
+                <input class="oq-input" id="q5a4" type="number" placeholder="?" data-answer="30">
+                <input class="oq-input" id="q5a5" type="number" placeholder="?" data-answer="55">
+                <input class="oq-input" id="q5a6" type="number" placeholder="?" data-answer="75">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q5d1" type="number" placeholder="?" data-answer="75">
+                <input class="oq-input" id="q5d2" type="number" placeholder="?" data-answer="55">
+                <input class="oq-input" id="q5d3" type="number" placeholder="?" data-answer="30">
+                <input class="oq-input" id="q5d4" type="number" placeholder="?" data-answer="26">
+                <input class="oq-input" id="q5d5" type="number" placeholder="?" data-answer="23">
+                <input class="oq-input" id="q5d6" type="number" placeholder="?" data-answer="9">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq5')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="order-question" id="oq6">
+          <div class="oq-numbers">6) 15, 18, 4, 2, 17, 5</div>
+          <div class="oq-rows">
+            <div class="oq-row">
+              <div class="oq-row-label">📈 Ascending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q6a1" type="number" placeholder="?" data-answer="2">
+                <input class="oq-input" id="q6a2" type="number" placeholder="?" data-answer="4">
+                <input class="oq-input" id="q6a3" type="number" placeholder="?" data-answer="5">
+                <input class="oq-input" id="q6a4" type="number" placeholder="?" data-answer="15">
+                <input class="oq-input" id="q6a5" type="number" placeholder="?" data-answer="17">
+                <input class="oq-input" id="q6a6" type="number" placeholder="?" data-answer="18">
+              </div>
+            </div>
+            <div class="oq-row">
+              <div class="oq-row-label">📉 Descending:</div>
+              <div class="oq-inputs">
+                <input class="oq-input" id="q6d1" type="number" placeholder="?" data-answer="18">
+                <input class="oq-input" id="q6d2" type="number" placeholder="?" data-answer="17">
+                <input class="oq-input" id="q6d3" type="number" placeholder="?" data-answer="15">
+                <input class="oq-input" id="q6d4" type="number" placeholder="?" data-answer="5">
+                <input class="oq-input" id="q6d5" type="number" placeholder="?" data-answer="4">
+                <input class="oq-input" id="q6d6" type="number" placeholder="?" data-answer="2">
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkOrder('oq6')">✅ Check Answer</button>
+          <div class="feedback-msg" id="fb-oq6"></div>
+        </div>
+
+        <!-- DRAG AND DROP SORT ACTIVITY -->
+        <div style="margin-top:36px;">
+          <div class="activity-title">🐉 Drag & Drop Challenge: Sort the numbers!</div>
+          <p style="font-size:18px; color:#636e72; margin-bottom:20px;">Drag the numbers below and drop them into the correct bucket.</p>
+
+          <div class="drag-sort-wrap" id="drag-sort-1">
+            <p style="font-weight:800; font-size:18px; margin-bottom:10px; color:var(--orange);">Numbers: 67, 34, 57, 77, 60, 45</p>
+            <div class="drag-nums-pool" id="drag-pool-1">
+              <div class="drag-chip" draggable="true" data-val="67" data-pool="1">67</div>
+              <div class="drag-chip" draggable="true" data-val="34" data-pool="1">34</div>
+              <div class="drag-chip" draggable="true" data-val="57" data-pool="1">57</div>
+              <div class="drag-chip" draggable="true" data-val="77" data-pool="1">77</div>
+              <div class="drag-chip" draggable="true" data-val="60" data-pool="1">60</div>
+              <div class="drag-chip" draggable="true" data-val="45" data-pool="1">45</div>
+            </div>
+            <div class="drop-zones">
+              <div class="drop-zone asc" id="drop-asc-1" data-pool="1" data-type="asc">
+                <div class="dz-label">📈 Ascending Order</div>
+                <div class="dz-area" id="dz-asc-1"></div>
+              </div>
+              <div class="drop-zone desc" id="drop-desc-1" data-pool="1" data-type="desc">
+                <div class="dz-label">📉 Descending Order</div>
+                <div class="dz-area" id="dz-desc-1"></div>
+              </div>
+            </div>
+            <button class="check-btn" onclick="checkDragSort(1)" style="margin-top:16px;">✅ Check Sort</button>
+            <div class="feedback-msg" id="fb-drag-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ SECTION -->
+  <section id="quiz-section">
+    <div class="container">
+      <div class="quiz-header">
+        <h2>🎯 Final Quiz Time!</h2>
+        <p style="font-size:18px; color:#636e72; margin-bottom:16px;">Let's see what you've learned! Choose the correct answer.</p>
+        <div class="quiz-progress-wrap">
+          Question <span id="current-q">1</span> of <span id="total-q">6</span>
+        </div>
+      </div>
+
+      <!-- Quiz Cards -->
+      <div class="quiz-card active" id="quiz-1">
+        <div class="quiz-q-num">Question 1 of 6</div>
+        <div class="quiz-question">Which of the following is in <strong>Ascending Order</strong>?</div>
+        <div class="quiz-numbers-display">Choose the correct answer:</div>
+        <div class="quiz-options">
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 1)">32, 45, 56, 69, 87, 99</button>
+          <button class="quiz-option" onclick="selectOption(this, 1)">99, 87, 69, 56, 45, 32</button>
+        </div>
+        <div class="quiz-feedback" id="qf-1"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-1" onclick="nextQuestion(1)">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quiz-2">
+        <div class="quiz-q-num">Question 2 of 6</div>
+        <div class="quiz-question">Which of the following is in <strong>Descending Order</strong>?</div>
+        <div class="quiz-numbers-display">Given: 40, 43, 58, 72, 88, 98</div>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="selectOption(this, 2)">40, 43, 58, 72, 88, 98</button>
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 2)">98, 88, 72, 58, 43, 40</button>
+        </div>
+        <div class="quiz-feedback" id="qf-2"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-2" onclick="nextQuestion(2)">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quiz-3">
+        <div class="quiz-q-num">Question 3 of 6</div>
+        <div class="quiz-question">What is the <strong>smallest number</strong> in: 15, 35, 73, 90, 79, 57?</div>
+        <div class="quiz-numbers-display">15, 35, 73, 90, 79, 57</div>
+        <div class="quiz-options">
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 3)">15</button>
+          <button class="quiz-option" onclick="selectOption(this, 3)">35</button>
+        </div>
+        <div class="quiz-feedback" id="qf-3"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-3" onclick="nextQuestion(3)">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quiz-4">
+        <div class="quiz-q-num">Question 4 of 6</div>
+        <div class="quiz-question">Arrange these numbers in <strong>Ascending Order</strong>. Which comes <strong>first</strong>?</div>
+        <div class="quiz-numbers-display">67, 34, 57, 77, 60, 45</div>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="selectOption(this, 4)">67</button>
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 4)">34</button>
+        </div>
+        <div class="quiz-feedback" id="qf-4"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-4" onclick="nextQuestion(4)">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quiz-5">
+        <div class="quiz-q-num">Question 5 of 6</div>
+        <div class="quiz-question">Arrange these numbers in <strong>Descending Order</strong>. Which comes <strong>first</strong>?</div>
+        <div class="quiz-numbers-display">23, 75, 26, 30, 9, 55</div>
+        <div class="quiz-options">
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 5)">75</button>
+          <button class="quiz-option" onclick="selectOption(this, 5)">9</button>
+        </div>
+        <div class="quiz-feedback" id="qf-5"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-5" onclick="nextQuestion(5)">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quiz-6">
+        <div class="quiz-q-num">Question 6 of 6</div>
+        <div class="quiz-question">Which arrangement shows the numbers: 15, 18, 4, 2, 17, 5 in <strong>Ascending Order</strong>?</div>
+        <div class="quiz-numbers-display">15, 18, 4, 2, 17, 5</div>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="selectOption(this, 6)">18, 17, 15, 5, 4, 2</button>
+          <button class="quiz-option" data-correct="true" onclick="selectOption(this, 6)">2, 4, 5, 15, 17, 18</button>
+        </div>
+        <div class="quiz-feedback" id="qf-6"></div>
+        <div class="quiz-nav-btns">
+          <button class="quiz-nav-btn" id="qnext-6" onclick="showResults()">See Results 🏆</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="quiz-results">
+        <div class="result-emoji" id="result-emoji">🌟</div>
+        <div class="result-title" id="result-title">Wonderful!</div>
+        <div class="result-score" id="result-score">You scored 0 / 6</div>
+        <div class="result-bar-wrap">
+          <div class="result-bar" id="result-bar"></div>
+        </div>
+        <p style="font-size:18px; color:#636e72; margin-bottom:24px;" id="result-msg">Keep practicing!</p>
+        <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK - must be first
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // Init all modules
+  try { initLenis(); } catch(e) { console.warn('Lenis init failed', e); }
+  try { initGSAP(); } catch(e) { console.warn('GSAP init failed', e); }
+  try { initCanvas(); } catch(e) { console.warn('Canvas init failed', e); }
+  initProgress();
+  initDragDrop();
+
+  // Hide curtain after load
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(c, { opacity: 0, duration: 0.6, onComplete: () => c.style.display = 'none' });
+      } else {
+        c.style.display = 'none';
+      }
+    }
+  }, 800);
+});
+
+// ============ LENIS ============
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+  if (typeof gsap !== 'undefined') {
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+  window._lenis = lenis;
+}
+
+// ============ GSAP ============
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Hero title word-by-word
+  const words = document.querySelectorAll('#hero h1 .word');
+  gsap.fromTo(words,
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'back.out(1.7)' }
+  );
+
+  // Section cards scroll trigger
+  if (typeof ScrollTrigger !== 'undefined') {
+    document.querySelectorAll('.section-card, .order-question, .concept-card').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+  }
+}
+
+// ============ CANVAS STAIRCASE ============
+function initCanvas() {
+  const canvas = document.getElementById('staircase-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const wrap = canvas.parentElement;
+  let w, h;
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    const colors = ['#ff6b6b','#ff9f43','#ffd93d','#6bcb77','#4d96ff','#a29bfe','#fd79a8','#1dd1a1'];
+    const nums = [11, 12, 13, 14, 15, 16, 17, 18];
+    const blockCount = nums.length;
+    const maxWidth = w * 0.55;
+    const minWidth = w * 0.1;
+    const blockH = Math.max(28, Math.min(44, (h - 80) / blockCount));
+    const startY = h - 40;
+
+    // ASCENDING label
+    ctx.save();
+    ctx.font = `bold ${Math.max(13,Math.floor(blockH*0.45))}px Nunito, sans-serif`;
+    ctx.fillStyle = '#1DD1A1';
+    ctx.textAlign = 'center';
+    ctx.fillText('📈 Ascending Order', w * 0.25, 30);
+    ctx.restore();
+
+    // DESCENDING label
+    ctx.save();
+    ctx.font = `bold ${Math.max(13,Math.floor(blockH*0.45))}px Nunito, sans-serif`;
+    ctx.fillStyle = '#A29BFE';
+    ctx.textAlign = 'center';
+    ctx.fillText('📉 Descending Order', w * 0.75, 30);
+    ctx.restore();
+
+    for (let i = 0; i < blockCount; i++) {
+      const ratio = (i + 1) / blockCount;
+      const bw = minWidth + (maxWidth - minWidth) * ratio;
+      const by = startY - (i + 1) * (blockH + 4);
+      const color = colors[i % colors.length];
+
+      // Ascending side (left)
+      const ascX = w * 0.02;
+      ctx.save();
+      ctx.fillStyle = color;
+      roundRect(ctx, ascX, by, bw, blockH, 8);
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${Math.max(13,Math.floor(blockH*0.5))}px Nunito, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(nums[i], ascX + bw / 2, by + blockH / 2);
+      ctx.restore();
+
+      // Descending side (right, mirrored)
+      const descX = w - bw - w * 0.02;
+      ctx.save();
+      ctx.fillStyle = color;
+      roundRect(ctx, descX, by, bw, blockH, 8);
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${Math.max(13,Math.floor(blockH*0.5))}px Nunito, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(nums[i], descX + bw / 2, by + blockH / 2);
+      ctx.restore();
+    }
+
+    // Arrows
+    ctx.save();
+    ctx.strokeStyle = '#FF9F43';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 3]);
+    // Left arrow up
+    drawArrow(ctx, w * 0.02 + minWidth + 10, startY - blockH / 2, w * 0.02 + maxWidth + 10, startY - blockCount * (blockH + 4), '#1DD1A1');
+    // Right arrow down
+    drawArrow(ctx, w * 0.98 - minWidth - 10, startY - blockCount * (blockH + 4), w * 0.98 - maxWidth - 10, startY - blockH / 2, '#A29BFE');
+    ctx.restore();
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h);
+    ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y, x + r, y, r);
+    ctx.closePath();
+  }
+
+  function drawArrow(ctx, x1, y1, x2, y2, color) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.setLineDash([]);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const aLen = 12;
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - aLen * Math.cos(angle - 0.4), y2 - aLen * Math.sin(angle - 0.4));
+    ctx.lineTo(x2 - aLen * Math.cos(angle + 0.4), y2 - aLen * Math.sin(angle + 0.4));
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  const observer = new ResizeObserver(entries => {
+    w = entries[0].contentRect.width;
+    h = Math.min(400, Math.max(220, w * 0.5));
+    canvas.width = Math.round(w);
+    canvas.height = Math.round(h);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    draw();
+  });
+  observer.observe(wrap);
+}
+
+// ============ PROGRESS BAR ============
+function initProgress() {
+  const bar = document.getElementById('progress-bar');
+  const label = document.getElementById('progress-label');
+  const sections = ['hero','sec-ascending','sec-descending','sec-visual','sec-practice','sec-practice2','quiz-section'];
+  const dots = document.querySelectorAll('.nav-dot');
+
+  function updateProgress() {
+    const scrollY = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? Math.min(100, Math.round((scrollY / docH) * 100)) : 0;
+    bar.style.width = pct + '%';
+    label.textContent = pct + '%';
+
+    // Update active dot
+    let activeIdx = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2) activeIdx = i;
+      }
+    });
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === activeIdx);
+    });
+
+    // Bottom nav
+    const bnItems = document.querySelectorAll('.bottom-nav-item');
+    bnItems.forEach((item, i) => {
+      item.classList.toggle('active', i === activeIdx);
+    });
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
+
+// ============ SCROLL TO SECTION ============
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (window._lenis) {
+    window._lenis.scrollTo(el, { offset: -60 });
+  } else {
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ============ READ ALOUD ============
+function readAloud(text) {
+  try {
+    if (!window.speechSynthesis) throw new Error('No speech synthesis');
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = 0.85;
+    utt.pitch = 1.1;
+    window.speechSynthesis.speak(utt);
+  } catch(e) {
+    console.warn('Speech synthesis unavailable');
+    alert('💬 ' + text);
+  }
+}
+
+// ============ CHECK ORDER ACTIVITY ============
+function checkOrder(qid) {
+  const container = document.getElementById(qid);
+  if (!container) return;
+  const inputs = container.querySelectorAll('.oq-input');
+  let allCorrect = true;
+
+  inputs.forEach(input => {
+    const userVal = parseInt(input.value);
+    const correctVal = parseInt(input.dataset.answer);
+    if (isNaN(userVal) || userVal !== correctVal) {
+      input.classList.remove('correct');
+      input.classList.add('wrong');
+      allCorrect = false;
+      // Wobble animation
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(input, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'none', onComplete: () => gsap.set(input, { rotation: 0 }) });
+        } else {
+          input.classList.add('wobble');
+          setTimeout(() => input.classList.remove('wobble'), 600);
+        }
+      } catch(e) {}
+    } else {
+      input.classList.remove('wrong');
+      input.classList.add('correct');
+      // Color burst
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(input, { scale: 1 }, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1 });
+        }
+      } catch(e) {}
+    }
+  });
+
+  const fb = document.getElementById('fb-' + qid);
+  if (fb) {
+    fb.classList.add('show');
+    if (allCorrect) {
+      fb.classList.add('success');
+      fb.classList.remove('error');
+      fb.textContent = '🎉 Excellent! All answers are correct!';
+    } else {
+      fb.classList.add('error');
+      fb.classList.remove('success');
+      fb.textContent = '🔄 Some answers are wrong. Check the red boxes and try again!';
+    }
+  }
+}
+
+// ============ DRAG & DROP ============
+function initDragDrop() {
+  const chips = document.querySelectorAll('.drag-chip');
+  const dropZones = document.querySelectorAll('.drop-zone');
+
+  chips.forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ val: chip.dataset.val, pool: chip.dataset.pool }));
+      chip.classList.add('dragging');
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+
+    // Touch support
+    let touchStartX, touchStartY;
+    chip.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+    }, { passive: true });
+
+    chip.addEventListener('touchend', e => {
+      const t = e.changedTouches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const zone = el ? el.closest('.drop-zone') : null;
+      if (zone) {
+        dropChipToZone(chip, zone);
+      }
+    });
+  });
+
+  dropZones.forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      try {
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const chip = document.querySelector(`.drag-chip[data-val="${data.val}"][data-pool="${data.pool}"]`);
+        if (chip) dropChipToZone(chip, zone);
+      } catch(err) {}
+    });
+  });
+}
+
+function dropChipToZone(chip, zone) {
+  const pool = chip.dataset.pool;
+  const zonePool = zone.dataset.pool;
+  if (pool !== zonePool) return;
+
+  const areaId = zone.classList.contains('asc') ? 'dz-asc-' + pool : 'dz-desc-' + pool;
+  const area = document.getElementById(areaId);
+  if (!area) return;
+
+  chip.style.display = 'none';
+
+  const dropChip = document.createElement('div');
+  dropChip.className = 'drag-chip';
+  dropChip.textContent = chip.dataset.val;
+  dropChip.style.cursor = 'default';
+  dropChip.style.minHeight = '48px';
+  area.appendChild(dropChip);
+}
+
+function checkDragSort(poolId) {
+  const ascArea = document.getElementById('dz-asc-' + poolId);
+  const descArea = document.getElementById('dz-desc-' + poolId);
+  const fb = document.getElementById('fb-drag-' + poolId);
+  if (!ascArea || !descArea || !fb) return;
+
+  const ascNums = Array.from(ascArea.querySelectorAll('.drag-chip')).map(c => parseInt(c.textContent));
+  const descNums = Array.from(descArea.querySelectorAll('.drag-chip')).map(c => parseInt(c.textContent));
+
+  const ascSorted = [...ascNums].sort((a,b) => a - b);
+  const descSorted = [...descNums].sort((a,b) => b - a);
+
+  const ascCorrect = JSON.stringify(ascNums) === JSON.stringify(ascSorted);
+  const descCorrect = JSON.stringify(descNums) === JSON.stringify(descSorted);
+
+  fb.classList.add('show');
+  if (ascCorrect && descCorrect && ascNums.length > 0 && descNums.length > 0) {
+    fb.classList.add('success'); fb.classList.remove('error');
+    fb.textContent = '🎉 Perfect! Both ascending and descending orders are correct!';
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(fb, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  } else {
+    fb.classList.add('error'); fb.classList.remove('success');
+    fb.textContent = '🔄 Not quite right. Make sure both sides are in the correct order!';
+  }
+}
+
+// ============ QUIZ ============
+let quizScore = 0;
+let quizAnswered = Array(7).fill(false);
+
+function selectOption(btn, qNum) {
+  if (quizAnswered[qNum]) return;
+  quizAnswered[qNum] = true;
+
+  const card = document.getElementById('quiz-' + qNum);
+  const options = card.querySelectorAll('.quiz-option');
+  const fb = document.getElementById('qf-' + qNum);
+  const isCorrect = btn.dataset.correct === 'true';
+
+  options.forEach(opt => opt.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    quizScore++;
+    fb.className = 'quiz-feedback show correct';
+    fb.textContent = '🎉 Correct! Well done!';
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(btn, { scale: 1 }, { scale: 1.07, duration: 0.15, yoyo: true, repeat: 1 });
+      }
+    } catch(e) {}
+  } else {
+    btn.classList.add('wrong');
+    options.forEach(opt => { if (opt.dataset.correct === 'true') opt.classList.add('correct'); });
+    fb.className = 'quiz-feedback show wrong';
+    fb.textContent = '🔄 Not quite! The highlighted green answer is correct.';
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(btn, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'none', onComplete: () => gsap.set(btn, { rotation: 0 }) });
+      }
+    } catch(e) {}
+  }
+
+  document.getElementById('qnext-' + qNum).classList.add('show');
+  document.getElementById('current-q').textContent = qNum;
+}
+
+function nextQuestion(current) {
+  const currentCard = document.getElementById('quiz-' + current);
+  const nextCard = document.getElementById('quiz-' + (current + 1));
+  if (!nextCard) return;
+  currentCard.classList.remove('active');
+  nextCard.classList.add('active');
+  document.getElementById('current-q').textContent = current + 1;
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(nextCard, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+    }
+  } catch(e) {}
+}
+
+function showResults() {
+  document.getElementById('quiz-6').classList.remove('active');
+  const results = document.getElementById('quiz-results');
+  results.style.display = 'block';
+
+  const pct = Math.round((quizScore / 6) * 100);
+  document.getElementById('result-score').textContent = 'You scored ' + quizScore + ' / 6';
+  document.getElementById('result-bar').style.width = pct + '%';
+
+  let emoji, title, msg;
+  if (quizScore >= 5) {
+    emoji = '🌟'; title = 'Amazing Work!'; msg = 'You are a superstar! You really understand ascending and descending order!';
+  } else if (quizScore >= 3) {
+    emoji = '😊'; title = 'Good Job!'; msg = 'Great effort! Review the lesson and try again to get a perfect score!';
+  } else {
+    emoji = '💪'; title = 'Keep Trying!'; msg = 'Don\'t give up! Read through the lesson again and you\'ll do better!';
+  }
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(results, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' });
+      gsap.fromTo('#result-bar', { width: '0%' }, { width: pct + '%', duration: 1.2, ease: 'power2.out', delay: 0.3 });
+    }
+  } catch(e) {}
+}
+
+function retryQuiz() {
+  quizScore = 0;
+  quizAnswered = Array(7).fill(false);
+
+  for (let i = 1; i <= 6; i++) {
+    const card = document.getElementById('quiz-' + i);
+    if (!card) continue;
+    card.classList.remove('active');
+    const opts = card.querySelectorAll('.quiz-option');
+    opts.forEach(o => { o.classList.remove('correct', 'wrong'); o.disabled = false; });
+    const fb = card.querySelector('.quiz-feedback');
+    if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+    const nextBtn = card.querySelector('.quiz-nav-btn');
+    if (nextBtn) nextBtn.classList.remove('show');
+  }
+
+  document.getElementById('quiz-1').classList.add('active');
+  document.getElementById('quiz-results').style.display = 'none';
+  document.getElementById('result-bar').style.width = '0%';
+  document.getElementById('current-q').textContent = '1';
+
+  scrollToSection('quiz-section');
+}
+</script>
+</body>
+</html>

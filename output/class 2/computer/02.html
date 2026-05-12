@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Computer Fundamentals | Class 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;background:#FAFAFA;font-family:'Nunito',sans-serif;font-size:18px;color:#2d3436;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--card-shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(250,250,250,0.95);padding:8px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+#progress-bar-inner{display:flex;align-items:center;gap:12px;max-width:1500px;margin:0 auto}
+#progress-label{font-size:14px;font-weight:700;color:var(--dark);white-space:nowrap}
+#progress-track{flex:1;height:10px;background:#e0e0e0;border-radius:10px;overflow:hidden}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--orange));border-radius:10px;transition:width 0.4s ease}
+#progress-pct{font-size:14px;font-weight:800;color:var(--orange)}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#1DD1A1,#A29BFE);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .curtain-emoji{font-size:80px;animation:bounce 0.8s infinite alternate}
+#curtain .curtain-text{font-size:24px;font-weight:800;color:#fff}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-20px)}}
+
+/* LAYOUT */
+.page-wrap{width:100%;max-width:100%}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* HERO */
+.hero{width:100vw;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#A29BFE 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:80px 40px 60px}
+.hero-content{text-align:center;position:relative;z-index:2}
+.hero-unit{font-size:clamp(1rem,3vw,1.4rem);font-weight:800;color:rgba(255,255,255,0.85);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-title .word{display:inline-block;opacity:1;margin-right:12px}
+.hero-subtitle{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 30px;font-weight:600}
+.hero-bubbles{position:absolute;inset:0;pointer-events:none}
+.bubble{position:absolute;border-radius:50%;opacity:0.15}
+.bubble:nth-child(1){width:200px;height:200px;background:#fff;top:-50px;left:-60px}
+.bubble:nth-child(2){width:150px;height:150px;background:#FF9F43;bottom:-40px;right:-40px}
+.bubble:nth-child(3){width:100px;height:100px;background:#fff;top:60%;left:5%}
+.read-aloud-btn{background:#fff;color:var(--teal);border:none;border-radius:40px;padding:12px 28px;font-size:18px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:transform 0.2s,box-shadow 0.2s}
+.read-aloud-btn:hover{transform:scale(1.05);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+
+/* SECTIONS */
+.section{padding:60px 0;opacity:1;transform:none}
+.section-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:40px;margin-bottom:32px;opacity:1;transform:none;width:100%;max-width:100%}
+.section-card.orange-accent{border-left:4px solid var(--orange)}
+.section-card.teal-accent{border-left:4px solid var(--teal)}
+.section-card.purple-accent{border-left:4px solid var(--purple)}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.section-icon{font-size:36px;flex-shrink:0}
+.section-title{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:var(--dark)}
+.section-text{font-size:18px;line-height:1.7;color:#444;margin-bottom:20px}
+
+/* TYPES GRID */
+.types-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:24px}
+.type-card{background:linear-gradient(135deg,#f8f9fa,#fff);border-radius:20px;padding:24px 16px;text-align:center;box-shadow:var(--card-shadow);border:2px solid transparent;transition:border-color 0.2s,transform 0.2s;cursor:default}
+.type-card:hover{border-color:var(--teal);transform:translateY(-4px)}
+.type-card .type-emoji{font-size:48px;margin-bottom:12px}
+.type-card .type-name{font-size:18px;font-weight:800;color:var(--dark)}
+
+/* PARTS GRID */
+.parts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:24px}
+.part-card{background:#fff;border-radius:20px;padding:24px 16px;text-align:center;box-shadow:var(--card-shadow);border-top:4px solid var(--purple)}
+.part-card .part-emoji{font-size:52px;margin-bottom:10px}
+.part-card .part-name{font-size:18px;font-weight:800;color:var(--dark)}
+
+/* HOW IT WORKS */
+.flow-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0}
+.flow-box{background:linear-gradient(135deg,var(--teal),#00b894);color:#fff;border-radius:16px;padding:20px 28px;font-size:20px;font-weight:800;text-align:center;min-width:140px}
+.flow-box.process{background:linear-gradient(135deg,var(--purple),#6c5ce7)}
+.flow-box.output{background:linear-gradient(135deg,var(--orange),#e17055)}
+.flow-arrow{font-size:32px;color:#aaa}
+
+/* USES GRID */
+.uses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:24px}
+.use-card{background:#fff;border-radius:20px;padding:24px 16px;text-align:center;box-shadow:var(--card-shadow);border-bottom:4px solid var(--orange);transition:transform 0.2s}
+.use-card:hover{transform:translateY(-4px)}
+.use-card .use-emoji{font-size:48px;margin-bottom:10px}
+.use-card .use-label{font-size:17px;font-weight:700;color:var(--dark)}
+
+/* DAILY LIFE */
+.daily-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:24px}
+.daily-card{background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:var(--card-shadow);border-left:4px solid var(--teal)}
+.daily-card .daily-emoji{font-size:48px;margin-bottom:10px}
+.daily-card .daily-name{font-size:18px;font-weight:800;color:var(--dark)}
+
+/* ADVANTAGES */
+.adv-list{display:flex;flex-direction:column;gap:20px;margin-top:24px}
+.adv-item{display:flex;align-items:flex-start;gap:16px;background:#f8f9fa;border-radius:16px;padding:20px 24px;border-left:4px solid var(--orange)}
+.adv-num{font-size:28px;font-weight:900;color:var(--orange);flex-shrink:0}
+.adv-body .adv-title{font-size:20px;font-weight:800;color:var(--dark);margin-bottom:4px}
+.adv-body .adv-desc{font-size:18px;color:#555;line-height:1.6}
+
+/* THREE.JS CONTAINER */
+#three-wrap{width:100%;border-radius:20px;overflow:hidden;background:#1a1a2e;min-height:300px;position:relative}
+#three-canvas{display:block;width:100%;height:100%}
+.three-fallback{display:none;min-height:200px;align-items:center;justify-content:center;font-size:80px;background:#f0f0f0;border-radius:20px}
+
+/* EXERCISE SECTIONS */
+.exercise-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:40px;margin-bottom:32px;opacity:1;width:100%}
+.exercise-title{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:var(--dark);margin-bottom:8px}
+.exercise-subtitle{font-size:18px;color:#666;margin-bottom:24px}
+
+/* FILL IN THE BLANK (EX3) */
+.fitb-sentence{font-size:20px;line-height:2.2;margin-bottom:16px;font-weight:600}
+.blank-slot{display:inline-block;min-width:130px;border-bottom:3px solid var(--orange);padding:2px 8px;cursor:pointer;color:var(--orange);font-weight:800;text-align:center;border-radius:4px;transition:background 0.2s;position:relative}
+.blank-slot:hover{background:rgba(255,159,67,0.1)}
+.blank-slot.filled{color:var(--teal);border-bottom-color:var(--teal)}
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.word-chip{background:var(--purple);color:#fff;border-radius:40px;padding:8px 20px;font-size:17px;font-weight:700;cursor:pointer;transition:transform 0.15s,opacity 0.2s;user-select:none}
+.word-chip:hover{transform:scale(1.05)}
+.word-chip.used{opacity:0.3;pointer-events:none}
+.fitb-check-btn{margin-top:20px;background:var(--teal);color:#fff;border:none;border-radius:40px;padding:12px 32px;font-size:18px;font-weight:800;cursor:pointer;transition:transform 0.2s}
+.fitb-check-btn:hover{transform:scale(1.04)}
+.fitb-feedback{margin-top:12px;font-size:18px;font-weight:700;min-height:28px}
+
+/* TRUE/FALSE (EX4) */
+.tf-item{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;background:#f8f9fa;border-radius:16px;padding:18px 20px;margin-bottom:16px;flex-wrap:wrap}
+.tf-text{font-size:18px;font-weight:600;color:#333;flex:1}
+.tf-buttons{display:flex;gap:10px;flex-shrink:0}
+.tf-btn{border:none;border-radius:12px;padding:10px 20px;font-size:17px;font-weight:800;cursor:pointer;transition:transform 0.15s,background 0.2s;min-height:48px}
+.tf-btn.true-btn{background:#d4edda;color:#155724}
+.tf-btn.false-btn{background:#f8d7da;color:#721c24}
+.tf-btn.selected-correct{background:var(--teal);color:#fff;transform:scale(1.05)}
+.tf-btn.selected-wrong{background:#e74c3c;color:#fff;animation:wobble 0.5s ease}
+@keyframes wobble{0%{transform:rotate(0deg)}20%{transform:rotate(-5deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0deg)}}
+
+/* NAMING EXERCISE (EX2) */
+.naming-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:20px}
+.naming-item{text-align:center;background:#f8f9fa;border-radius:16px;padding:20px}
+.naming-item .naming-emoji{font-size:52px;margin-bottom:10px}
+.naming-input{width:100%;border:2px solid #ddd;border-radius:12px;padding:10px 14px;font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;text-align:center;outline:none;transition:border-color 0.2s}
+.naming-input:focus{border-color:var(--teal)}
+.naming-input.correct{border-color:var(--teal);background:rgba(29,209,161,0.1);color:var(--teal)}
+.naming-input.wrong{border-color:#e74c3c;background:rgba(231,76,60,0.08);animation:wobble 0.5s ease}
+.naming-check-btn{margin-top:20px;background:var(--orange);color:#fff;border:none;border-radius:40px;padding:12px 32px;font-size:18px;font-weight:800;cursor:pointer;transition:transform 0.2s}
+.naming-check-btn:hover{transform:scale(1.04)}
+
+/* QUIZ */
+.quiz-question{background:#f8f9fa;border-radius:16px;padding:24px;margin-bottom:24px;border-left:4px solid var(--purple)}
+.quiz-q-text{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:16px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quiz-option{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;cursor:pointer;transition:border-color 0.2s,background 0.2s;text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;gap:8px}
+.quiz-option:hover{border-color:var(--purple);background:rgba(162,155,254,0.08)}
+.quiz-option.correct-ans{border-color:var(--teal);background:rgba(29,209,161,0.12);color:var(--teal)}
+.quiz-option.wrong-ans{border-color:#e74c3c;background:rgba(231,76,60,0.08);color:#e74c3c;animation:wobble 0.5s ease}
+.quiz-score{text-align:center;font-size:24px;font-weight:900;color:var(--dark);margin-top:24px;padding:24px;background:linear-gradient(135deg,var(--teal),var(--purple));border-radius:20px;color:#fff;display:none}
+.quiz-submit{display:block;margin:20px auto 0;background:linear-gradient(135deg,var(--orange),#e17055);color:#fff;border:none;border-radius:40px;padding:14px 40px;font-size:20px;font-weight:800;cursor:pointer;transition:transform 0.2s}
+.quiz-submit:hover{transform:scale(1.04)}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:20px;padding:30px;box-shadow:var(--card-shadow);overflow-x:auto;margin:24px 0}
+.mermaid{font-family:'Nunito',sans-serif!important}
+
+/* SECTION LABELS */
+.section-label{display:inline-block;background:var(--orange);color:#fff;border-radius:40px;padding:6px 20px;font-size:15px;font-weight:800;margin-bottom:16px}
+.section-label.teal{background:var(--teal)}
+.section-label.purple{background:var(--purple)}
+
+/* SIDEBAR / DESKTOP NAV */
+.sidebar{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1000;display:flex;flex-direction:column;gap:8px;padding:16px 8px;background:rgba(255,255,255,0.95);border-radius:0 16px 16px 0;box-shadow:4px 0 20px rgba(0,0,0,0.08)}
+.sidebar a{display:block;width:44px;height:44px;border-radius:12px;background:var(--offwhite);border:2px solid #e0e0e0;text-align:center;line-height:40px;font-size:20px;text-decoration:none;transition:background 0.2s,border-color 0.2s;cursor:pointer}
+.sidebar a:hover,.sidebar a.active{background:var(--teal);border-color:var(--teal)}
+.sidebar-tooltip{position:absolute;left:56px;background:var(--dark);color:#fff;border-radius:8px;padding:4px 12px;font-size:14px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.2s}
+.sidebar a:hover .sidebar-tooltip{opacity:1}
+
+/* BOTTOM NAV (MOBILE) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:rgba(255,255,255,0.97);border-top:2px solid #e0e0e0;overflow-x:auto;padding:8px 8px 12px;gap:4px;-webkit-overflow-scrolling:touch}
+.bottom-nav a{display:inline-flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;padding:6px 10px;border-radius:12px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:700;white-space:nowrap;min-height:56px;justify-content:center;transition:background 0.2s;cursor:pointer}
+.bottom-nav a:hover,.bottom-nav a.active{background:rgba(29,209,161,0.15);color:var(--teal)}
+.bottom-nav a span.nav-icon{font-size:22px}
+
+/* CONFETTI BURST */
+@keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(80px) rotate(360deg);opacity:0}}
+.confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confetti-fall 0.8s ease forwards;pointer-events:none}
+
+/* WORD POPUP */
+.word-popup{position:absolute;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:12px 16px;z-index:999;display:flex;flex-wrap:wrap;gap:8px;min-width:200px;top:calc(100% + 8px);left:0}
+.word-popup .pop-chip{background:var(--orange);color:#fff;border-radius:30px;padding:6px 14px;font-size:16px;font-weight:700;cursor:pointer;transition:transform 0.15s}
+.word-popup .pop-chip:hover{transform:scale(1.08)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .bottom-nav{display:flex}
+  .container{padding:0 16px}
+  .hero{min-height:60vh;padding:80px 16px 50px}
+  .section{padding:32px 0}
+  .section-card,.exercise-card{padding:20px 16px}
+  .quiz-options{grid-template-columns:1fr}
+  body{padding-bottom:80px}
+  .types-grid,.parts-grid,.uses-grid,.daily-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+  .flow-row{gap:8px}
+  .flow-box{min-width:100px;padding:14px 16px;font-size:17px}
+  .tf-item{flex-direction:column}
+  .adv-item{flex-direction:column}
+}
+@media(max-width:480px){
+  .types-grid,.parts-grid,.uses-grid,.daily-grid{grid-template-columns:1fr 1fr}
+  .naming-grid{grid-template-columns:1fr 1fr}
+}
+
+/* UTILITY */
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+.text-center{text-align:center}
+.feedback-msg{font-size:18px;font-weight:700;margin-top:12px;min-height:28px}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-emoji">💻</div>
+  <div class="curtain-text">Loading Computer Fundamentals…</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <div id="progress-bar-inner">
+    <span id="progress-label">📚 Lesson Progress</span>
+    <div id="progress-track"><div id="progress-fill"></div></div>
+    <span id="progress-pct">0%</span>
+  </div>
+</div>
+
+<!-- DESKTOP SIDEBAR -->
+<nav class="sidebar" id="desktop-sidebar">
+  <a href="#hero" title="Top">🏠<span class="sidebar-tooltip">Top</span></a>
+  <a href="#what-is" title="What is a Computer">💻<span class="sidebar-tooltip">What is a Computer</span></a>
+  <a href="#types" title="Types">📱<span class="sidebar-tooltip">Types</span></a>
+  <a href="#parts" title="Parts">🖱️<span class="sidebar-tooltip">Parts</span></a>
+  <a href="#how-work" title="How it Works">⚙️<span class="sidebar-tooltip">How it Works</span></a>
+  <a href="#uses" title="Uses">📝<span class="sidebar-tooltip">Uses</span></a>
+  <a href="#daily" title="Daily Life">🌍<span class="sidebar-tooltip">Daily Life</span></a>
+  <a href="#advantages" title="Advantages">⭐<span class="sidebar-tooltip">Advantages</span></a>
+  <a href="#exercises" title="Exercises">✏️<span class="sidebar-tooltip">Exercises</span></a>
+  <a href="#quiz" title="Quiz">🎯<span class="sidebar-tooltip">Quiz</span></a>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav" id="mobile-nav">
+  <a href="#hero"><span class="nav-icon">🏠</span>Home</a>
+  <a href="#what-is"><span class="nav-icon">💻</span>What</a>
+  <a href="#types"><span class="nav-icon">📱</span>Types</a>
+  <a href="#parts"><span class="nav-icon">🖱️</span>Parts</a>
+  <a href="#how-work"><span class="nav-icon">⚙️</span>Works</a>
+  <a href="#uses"><span class="nav-icon">📝</span>Uses</a>
+  <a href="#daily"><span class="nav-icon">🌍</span>Daily</a>
+  <a href="#advantages"><span class="nav-icon">⭐</span>Pros</a>
+  <a href="#exercises"><span class="nav-icon">✏️</span>Exercises</a>
+  <a href="#quiz"><span class="nav-icon">🎯</span>Quiz</a>
+</nav>
+
+<div class="page-wrap">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-unit">Unit 2</div>
+    <h1 class="hero-title">
+      <span class="word">Computer</span>
+      <span class="word">Fundamentals</span>
+    </h1>
+    <p class="hero-subtitle">Learn what a computer is, its types, how it works, and much more!</p>
+    <button class="read-aloud-btn" onclick="readAloud('Welcome to Unit 2: Computer Fundamentals. In this lesson, you will learn what a computer is, the different types of computers, how a computer works, uses of a computer, and the advantages of using a computer.')">🔊 Read Aloud</button>
+  </div>
+</section>
+
+<!-- WHAT IS A COMPUTER -->
+<section class="section" id="what-is">
+  <div class="container">
+    <div class="section-card teal-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">💻</span>
+        <h2 class="section-title">What is a Computer?</h2>
+      </div>
+      <span class="section-label teal">Definition</span>
+      <p class="section-text">A computer is an <strong>electronic machine</strong>. It can store, organize and find information, do calculations and control other machines. Computers are available in <strong>different shapes and sizes</strong>.</p>
+      <button class="read-aloud-btn" style="margin-top:8px;font-size:16px;padding:8px 20px" onclick="readAloud('A computer is an electronic machine. It can store, organize and find information, do calculations and control other machines. Computers are available in different shapes and sizes.')">🔊 Read</button>
+
+      <!-- 3D Computer Visualization -->
+      <div style="margin-top:28px">
+        <div class="section-label purple">3D View — Desktop Computer</div>
+        <div id="three-wrap" style="min-height:320px;margin-top:12px">
+          <canvas id="three-canvas"></canvas>
+        </div>
+        <div class="three-fallback" id="three-fallback">🖥️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPES -->
+<section class="section" id="types">
+  <div class="container">
+    <div class="section-card orange-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">📱</span>
+        <h2 class="section-title">Types of a Computer</h2>
+      </div>
+      <span class="section-label">5 Types</span>
+      <p class="section-text">Computers come in many different shapes and sizes. Here are the five main types:</p>
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-emoji">💻</div>
+          <div class="type-name">Laptop</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Portable &amp; foldable</div>
+        </div>
+        <div class="type-card">
+          <div class="type-emoji">🖥️</div>
+          <div class="type-name">Desktop</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Stays on a desk</div>
+        </div>
+        <div class="type-card">
+          <div class="type-emoji">📱</div>
+          <div class="type-name">Smartphone</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Fits in your pocket</div>
+        </div>
+        <div class="type-card">
+          <div class="type-emoji">⌚</div>
+          <div class="type-name">Smartwatch</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Worn on your wrist</div>
+        </div>
+        <div class="type-card">
+          <div class="type-emoji">📟</div>
+          <div class="type-name">Tablet</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Like a big phone</div>
+        </div>
+      </div>
+
+      <!-- Mermaid concept map -->
+      <div class="mermaid-wrap mt-24">
+        <div class="mermaid">
+graph TD
+  A[💻 COMPUTERS] --> B[Laptop]
+  A --> C[Desktop]
+  A --> D[Smartphone]
+  A --> E[Tablet]
+  A --> F[Smartwatch]
+        </div>
+      </div>
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:8px" onclick="readAloud('There are five types of computers: Laptop, Desktop, Smartphone, Tablet, and Smartwatch.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- PARTS -->
+<section class="section" id="parts">
+  <div class="container">
+    <div class="section-card purple-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">🖱️</span>
+        <h2 class="section-title">Parts of a Desktop Computer</h2>
+      </div>
+      <span class="section-label purple">6 Main Parts</span>
+      <p class="section-text">A desktop computer has several important parts that work together:</p>
+      <div class="parts-grid">
+        <div class="part-card">
+          <div class="part-emoji">🖥️</div>
+          <div class="part-name">Monitor</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Shows you information — like a TV screen</div>
+        </div>
+        <div class="part-card">
+          <div class="part-emoji">📦</div>
+          <div class="part-name">System Unit</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">The brain of the computer</div>
+        </div>
+        <div class="part-card">
+          <div class="part-emoji">🖱️</div>
+          <div class="part-name">Mouse</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Helps you click and select things</div>
+        </div>
+        <div class="part-card">
+          <div class="part-emoji">⌨️</div>
+          <div class="part-name">Keyboard</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Used to type letters and numbers</div>
+        </div>
+        <div class="part-card">
+          <div class="part-emoji">🖨️</div>
+          <div class="part-name">Printer</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Prints documents on paper</div>
+        </div>
+        <div class="part-card">
+          <div class="part-emoji">🔊</div>
+          <div class="part-name">Speakers</div>
+          <div style="font-size:15px;color:#666;margin-top:6px">Lets you hear sounds and music</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:20px" onclick="readAloud('The six main parts of a desktop computer are: Monitor, System Unit, Mouse, Keyboard, Printer, and Speakers.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-work">
+  <div class="container">
+    <div class="section-card teal-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <h2 class="section-title">How Do Computers Work?</h2>
+      </div>
+      <span class="section-label teal">Input → Process → Output</span>
+      <p class="section-text">Computers take in <strong>data (input)</strong>, work it out <strong>(process)</strong> and produce <strong>information (output)</strong>. Think of it like this:</p>
+
+      <div style="background:#f8f9fa;border-radius:16px;padding:24px;margin:16px 0">
+        <p style="font-size:18px;font-weight:700;color:#555;margin-bottom:12px">🫧 Example: Washing Machine</p>
+        <div class="flow-row">
+          <div class="flow-box">🧥 Dirty T-Shirt<br><small style="font-size:14px;opacity:0.9">Input</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box process">🌀 Wash<br><small style="font-size:14px;opacity:0.9">Process</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box output">👕 Clean T-Shirt<br><small style="font-size:14px;opacity:0.9">Output</small></div>
+        </div>
+      </div>
+
+      <div style="background:#f8f9fa;border-radius:16px;padding:24px;margin:16px 0">
+        <p style="font-size:18px;font-weight:700;color:#555;margin-bottom:12px">🔢 Example: Calculator</p>
+        <div class="flow-row">
+          <div class="flow-box">2 + 3<br><small style="font-size:14px;opacity:0.9">Input</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box process">🧮 Calculate<br><small style="font-size:14px;opacity:0.9">Process</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box output">5<br><small style="font-size:14px;opacity:0.9">Output</small></div>
+        </div>
+      </div>
+
+      <div style="background:#f8f9fa;border-radius:16px;padding:24px;margin:16px 0">
+        <p style="font-size:18px;font-weight:700;color:#555;margin-bottom:12px">💻 Example: Computer</p>
+        <div class="flow-row">
+          <div class="flow-box">Ali is 6<br><small style="font-size:14px;opacity:0.9">Input</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box process">⚙️ Process<br><small style="font-size:14px;opacity:0.9">Process</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box output">Ali is 6<br><small style="font-size:14px;opacity:0.9">Output</small></div>
+        </div>
+      </div>
+
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:8px" onclick="readAloud('Computers take in data called input, work it out in a process, and produce information called output. Just like a washing machine takes a dirty shirt, washes it, and gives back a clean shirt.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- USES -->
+<section class="section" id="uses">
+  <div class="container">
+    <div class="section-card orange-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">📝</span>
+        <h2 class="section-title">Uses of a Computer</h2>
+      </div>
+      <span class="section-label">Many Uses!</span>
+      <p class="section-text">A computer is a useful machine that helps us in many ways. We can use it to write, draw, learn, play, and communicate with others. Here are some common uses:</p>
+      <div class="uses-grid">
+        <div class="use-card">
+          <div class="use-emoji">📄</div>
+          <div class="use-label">Type Documents</div>
+        </div>
+        <div class="use-card">
+          <div class="use-emoji">🎨</div>
+          <div class="use-label">Draw</div>
+        </div>
+        <div class="use-card">
+          <div class="use-emoji">🎮</div>
+          <div class="use-label">Play Games</div>
+        </div>
+        <div class="use-card">
+          <div class="use-emoji">📚</div>
+          <div class="use-label">Learn Online</div>
+        </div>
+        <div class="use-card">
+          <div class="use-emoji">📧</div>
+          <div class="use-label">Send an Email</div>
+        </div>
+        <div class="use-card">
+          <div class="use-emoji">💬</div>
+          <div class="use-label">Chat</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:20px" onclick="readAloud('We can use a computer to type documents, draw, play games, learn online, send an email, and chat with others.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY LIFE -->
+<section class="section" id="daily">
+  <div class="container">
+    <div class="section-card purple-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">🌍</span>
+        <h2 class="section-title">Computers in Daily Life</h2>
+      </div>
+      <span class="section-label purple">Every Day!</span>
+      <p class="section-text">Computers are important tools we use every day. They help us learn, work, and even improve health care. Here are some places where computers are used:</p>
+      <div class="daily-grid">
+        <div class="daily-card">
+          <div class="daily-emoji">🏫</div>
+          <div class="daily-name">Education</div>
+          <div style="font-size:16px;color:#555;margin-top:6px">Students and teachers use computers to learn and teach</div>
+        </div>
+        <div class="daily-card">
+          <div class="daily-emoji">🏥</div>
+          <div class="daily-name">Medical Services</div>
+          <div style="font-size:16px;color:#555;margin-top:6px">Doctors keep patient records on computers</div>
+        </div>
+        <div class="daily-card">
+          <div class="daily-emoji">🏢</div>
+          <div class="daily-name">Offices</div>
+          <div style="font-size:16px;color:#555;margin-top:6px">Workers use computers to do their jobs faster</div>
+        </div>
+        <div class="daily-card">
+          <div class="daily-emoji">🔬</div>
+          <div class="daily-name">Scientific Research</div>
+          <div style="font-size:16px;color:#555;margin-top:6px">Scientists use computers to make discoveries</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:20px" onclick="readAloud('Computers are used in many places in daily life: in schools for education, in hospitals for medical services, in offices for work, and in labs for scientific research.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="section" id="advantages">
+  <div class="container">
+    <div class="section-card teal-accent animate-card">
+      <div class="section-header">
+        <span class="section-icon">⭐</span>
+        <h2 class="section-title">Advantages of Using Computers</h2>
+      </div>
+      <span class="section-label teal">3 Key Advantages</span>
+      <div class="adv-list">
+        <div class="adv-item">
+          <div class="adv-num">1</div>
+          <div class="adv-body">
+            <div class="adv-title">⚡ Faster</div>
+            <div class="adv-desc">Computers enable faster communication, like sending emails, compared to traditional mail. What used to take days now takes seconds!</div>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">2</div>
+          <div class="adv-body">
+            <div class="adv-title">🎥 Audio &amp; Visuals</div>
+            <div class="adv-desc">Computers support video calls and online meetings, allowing visual and audio interaction. You can see and hear people far away!</div>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">3</div>
+          <div class="adv-body">
+            <div class="adv-title">📄 Less Paper Work</div>
+            <div class="adv-desc">Digital documents reduce the need for paper, making processes more environmentally friendly. We save trees by using computers!</div>
+          </div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" style="font-size:16px;padding:8px 20px;margin-top:20px" onclick="readAloud('There are three main advantages of using computers. First, they are faster — sending emails is much quicker than traditional mail. Second, they support audio and visuals for video calls. Third, they reduce paperwork, which is good for the environment.')">🔊 Read</button>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISES -->
+<section class="section" id="exercises">
+  <div class="container">
+    <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--dark);margin-bottom:32px;text-align:center">✏️ Let's Practice!</h2>
+
+    <!-- EXERCISE 1: Fill in the computer parts (word puzzle) -->
+    <div class="exercise-card orange-accent animate-card" style="border-left:4px solid var(--orange)">
+      <span class="section-label">Exercise 1</span>
+      <h3 class="exercise-title">Complete the Parts of a Computer</h3>
+      <p class="exercise-subtitle">Click on each blank, then click the matching word from the word bank below!</p>
+
+      <div id="ex1-sentences">
+        <div class="fitb-sentence">1. The <span class="blank-slot" data-answer="monitor" id="b1" onclick="showPopup(this, 'ex1')">________</span> shows you information like a TV screen.</div>
+        <div class="fitb-sentence">2. The <span class="blank-slot" data-answer="keyboard" id="b2" onclick="showPopup(this, 'ex1')">________</span> is used to type letters and numbers.</div>
+        <div class="fitb-sentence">3. The <span class="blank-slot" data-answer="mouse" id="b3" onclick="showPopup(this, 'ex1')">________</span> helps you click and select things on screen.</div>
+        <div class="fitb-sentence">4. The <span class="blank-slot" data-answer="speakers" id="b4" onclick="showPopup(this, 'ex1')">________</span> let you hear sounds and music.</div>
+        <div class="fitb-sentence">5. The <span class="blank-slot" data-answer="printer" id="b5" onclick="showPopup(this, 'ex1')">________</span> prints documents on paper.</div>
+        <div class="fitb-sentence">6. The <span class="blank-slot" data-answer="system unit" id="b6" onclick="showPopup(this, 'ex1')">________</span> is the brain of the computer.</div>
+      </div>
+      <div class="word-bank" id="ex1-bank">
+        <div class="word-chip" data-word="monitor">Monitor</div>
+        <div class="word-chip" data-word="keyboard">Keyboard</div>
+        <div class="word-chip" data-word="mouse">Mouse</div>
+        <div class="word-chip" data-word="speakers">Speakers</div>
+        <div class="word-chip" data-word="printer">Printer</div>
+        <div class="word-chip" data-word="system unit">System Unit</div>
+      </div>
+      <button class="fitb-check-btn" onclick="checkEx1()">✅ Check Answers</button>
+      <div class="fitb-feedback" id="ex1-feedback"></div>
+    </div>
+
+    <!-- EXERCISE 2: Name the types -->
+    <div class="exercise-card animate-card" style="border-left:4px solid var(--teal)">
+      <span class="section-label teal">Exercise 2</span>
+      <h3 class="exercise-title">Name the Types of Computer</h3>
+      <p class="exercise-subtitle">Look at each picture and type the correct name in the box!</p>
+      <div class="naming-grid" id="ex2-grid">
+        <div class="naming-item">
+          <div class="naming-emoji">⌚</div>
+          <input class="naming-input" id="n1" data-answer="smartwatch" placeholder="Type here…">
+        </div>
+        <div class="naming-item">
+          <div class="naming-emoji">📱</div>
+          <input class="naming-input" id="n2" data-answer="smartphone" placeholder="Type here…">
+        </div>
+        <div class="naming-item">
+          <div class="naming-emoji">📟</div>
+          <input class="naming-input" id="n3" data-answer="tablet" placeholder="Type here…">
+        </div>
+        <div class="naming-item">
+          <div class="naming-emoji">🖥️</div>
+          <input class="naming-input" id="n4" data-answer="desktop" placeholder="Type here…">
+        </div>
+        <div class="naming-item">
+          <div class="naming-emoji">💻</div>
+          <input class="naming-input" id="n5" data-answer="laptop" placeholder="Type here…">
+        </div>
+      </div>
+      <button class="naming-check-btn" onclick="checkEx2()">✅ Check Answers</button>
+      <div class="feedback-msg" id="ex2-feedback"></div>
+    </div>
+
+    <!-- EXERCISE 3: Fill in the blanks -->
+    <div class="exercise-card animate-card" style="border-left:4px solid var(--purple)">
+      <span class="section-label purple">Exercise 3</span>
+      <h3 class="exercise-title">Fill in the Blanks</h3>
+      <p class="exercise-subtitle">Click on a blank and choose the correct word!</p>
+      <div id="ex3-sentences">
+        <div class="fitb-sentence">1. A computer is an <span class="blank-slot" data-answer="electronic" id="e1" onclick="showPopupEx3(this)">________</span> machine.</div>
+        <div class="fitb-sentence">2. Computers are available in different shapes and <span class="blank-slot" data-answer="sizes" id="e2" onclick="showPopupEx3(this)">________</span>.</div>
+        <div class="fitb-sentence">3. A <span class="blank-slot" data-answer="laptop" id="e3" onclick="showPopupEx3(this)">________</span> is smaller than a desktop computer.</div>
+        <div class="fitb-sentence">4. A computer operates by taking in <span class="blank-slot" data-answer="data" id="e4" onclick="showPopupEx3(this)">________</span> as input.</div>
+        <div class="fitb-sentence">5. Computers are <span class="blank-slot" data-answer="fast" id="e5" onclick="showPopupEx3(this)">________</span> and accurate.</div>
+      </div>
+      <div class="word-bank">
+        <div class="word-chip" data-word="electronic" onclick="selectEx3Word(this)">Electronic</div>
+        <div class="word-chip" data-word="sizes" onclick="selectEx3Word(this)">Sizes</div>
+        <div class="word-chip" data-word="laptop" onclick="selectEx3Word(this)">Laptop</div>
+        <div class="word-chip" data-word="data" onclick="selectEx3Word(this)">Data</div>
+        <div class="word-chip" data-word="fast" onclick="selectEx3Word(this)">Fast</div>
+      </div>
+      <button class="fitb-check-btn" onclick="checkEx3()">✅ Check Answers</button>
+      <div class="fitb-feedback" id="ex3-feedback"></div>
+    </div>
+
+    <!-- EXERCISE 4: True or False -->
+    <div class="exercise-card animate-card" style="border-left:4px solid var(--orange)">
+      <span class="section-label">Exercise 4</span>
+      <h3 class="exercise-title">True or False?</h3>
+      <p class="exercise-subtitle">Click True or False for each statement!</p>
+      <div id="ex4-list">
+        <div class="tf-item" data-answer="true">
+          <div class="tf-text">We use computers at home to book seats and buy tickets.</div>
+          <div class="tf-buttons">
+            <button class="tf-btn true-btn" onclick="checkTF(this,'true')">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this,'false')">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item" data-answer="false">
+          <div class="tf-text">We use computers in offices to play games.</div>
+          <div class="tf-buttons">
+            <button class="tf-btn true-btn" onclick="checkTF(this,'true')">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this,'false')">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item" data-answer="true">
+          <div class="tf-text">We use computers in hospitals to keep patient records.</div>
+          <div class="tf-buttons">
+            <button class="tf-btn true-btn" onclick="checkTF(this,'true')">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this,'false')">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item" data-answer="false">
+          <div class="tf-text">We do not use computers to read the news online.</div>
+          <div class="tf-buttons">
+            <button class="tf-btn true-btn" onclick="checkTF(this,'true')">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this,'false')">❌ False</button>
+          </div>
+        </div>
+        <div class="tf-item" data-answer="true">
+          <div class="tf-text">We use computers to complete paperwork faster than people.</div>
+          <div class="tf-buttons">
+            <button class="tf-btn true-btn" onclick="checkTF(this,'true')">✅ True</button>
+            <button class="tf-btn false-btn" onclick="checkTF(this,'false')">❌ False</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 5: Q&A -->
+    <div class="exercise-card animate-card" style="border-left:4px solid var(--teal)">
+      <span class="section-label teal">Exercise 5</span>
+      <h3 class="exercise-title">Answer These Questions</h3>
+      <p class="exercise-subtitle">Read each question and tap "Show Answer" to check!</p>
+      <div style="display:flex;flex-direction:column;gap:20px;margin-top:16px">
+        <div style="background:#f8f9fa;border-radius:16px;padding:20px">
+          <div style="font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px">1. What is a computer?</div>
+          <button class="fitb-check-btn" style="margin-top:0;font-size:16px;padding:8px 20px" onclick="toggleAnswer('ans1')">👁️ Show Answer</button>
+          <div id="ans1" style="display:none;margin-top:12px;font-size:18px;color:#444;background:#fff;border-radius:12px;padding:14px;border-left:4px solid var(--teal)">A computer is an electronic machine. It can store, organize and find information, do calculations and control other machines.</div>
+        </div>
+        <div style="background:#f8f9fa;border-radius:16px;padding:20px">
+          <div style="font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px">2. How does a computer work?</div>
+          <button class="fitb-check-btn" style="margin-top:0;font-size:16px;padding:8px 20px" onclick="toggleAnswer('ans2')">👁️ Show Answer</button>
+          <div id="ans2" style="display:none;margin-top:12px;font-size:18px;color:#444;background:#fff;border-radius:12px;padding:14px;border-left:4px solid var(--teal)">A computer takes in data (input), works it out (process), and produces information (output).</div>
+        </div>
+        <div style="background:#f8f9fa;border-radius:16px;padding:20px">
+          <div style="font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px">3. How many parts does a desktop computer have?</div>
+          <button class="fitb-check-btn" style="margin-top:0;font-size:16px;padding:8px 20px" onclick="toggleAnswer('ans3')">👁️ Show Answer</button>
+          <div id="ans3" style="display:none;margin-top:12px;font-size:18px;color:#444;background:#fff;border-radius:12px;padding:14px;border-left:4px solid var(--teal)">A desktop computer has 6 main parts: Monitor, System Unit, Mouse, Keyboard, Printer, and Speakers.</div>
+        </div>
+        <div style="background:#f8f9fa;border-radius:16px;padding:20px">
+          <div style="font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px">4. Name four places where computers are used.</div>
+          <button class="fitb-check-btn" style="margin-top:0;font-size:16px;padding:8px 20px" onclick="toggleAnswer('ans4')">👁️ Show Answer</button>
+          <div id="ans4" style="display:none;margin-top:12px;font-size:18px;color:#444;background:#fff;border-radius:12px;padding:14px;border-left:4px solid var(--teal)">Computers are used in: (1) Schools for education, (2) Hospitals for medical services, (3) Offices for work, (4) Laboratories for scientific research.</div>
+        </div>
+        <div style="background:#f8f9fa;border-radius:16px;padding:20px">
+          <div style="font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px">5. What are the advantages of a computer?</div>
+          <button class="fitb-check-btn" style="margin-top:0;font-size:16px;padding:8px 20px" onclick="toggleAnswer('ans5')">👁️ Show Answer</button>
+          <div id="ans5" style="display:none;margin-top:12px;font-size:18px;color:#444;background:#fff;border-radius:12px;padding:14px;border-left:4px solid var(--teal)">The advantages of a computer are: (1) Faster communication like email, (2) Audio and visual interaction through video calls, (3) Less paper work, making processes environmentally friendly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="section" id="quiz">
+  <div class="container">
+    <div class="exercise-card animate-card" style="border-left:4px solid var(--purple)">
+      <span class="section-label purple">🎯 End Quiz</span>
+      <h3 class="exercise-title">Test Your Knowledge!</h3>
+      <p class="exercise-subtitle">Answer all 6 questions, then see your score!</p>
+
+      <div id="quiz-container">
+        <!-- Q1 -->
+        <div class="quiz-question" data-answer="b">
+          <div class="quiz-q-text">1. What is a computer?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">🍎 A fruit</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">💻 An electronic machine</div>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div class="quiz-question" data-answer="a">
+          <div class="quiz-q-text">2. Which of these is a type of computer?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">⌚ Smartwatch</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">🚗 Car</div>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div class="quiz-question" data-answer="b">
+          <div class="quiz-q-text">3. What does the keyboard do?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">🖨️ Prints documents</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">⌨️ Types letters and numbers</div>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div class="quiz-question" data-answer="a">
+          <div class="quiz-q-text">4. In a computer, INPUT → PROCESS → ___?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">📤 Output</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">📥 Input again</div>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div class="quiz-question" data-answer="b">
+          <div class="quiz-q-text">5. Where are computers used in hospitals?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">🎮 To play games</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">📋 To keep patient records</div>
+          </div>
+        </div>
+        <!-- Q6 -->
+        <div class="quiz-question" data-answer="a">
+          <div class="quiz-q-text">6. Which advantage of computers saves paper?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-val="a" onclick="selectQuiz(this)">📄 Less paperwork</div>
+            <div class="quiz-option" data-val="b" onclick="selectQuiz(this)">🎥 Audio and Visuals</div>
+          </div>
+        </div>
+      </div>
+      <button class="quiz-submit" onclick="submitQuiz()">🎯 Submit Quiz</button>
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
+  </div>
+</section>
+
+<div style="height:60px"></div>
+</div><!-- end page-wrap -->
+
+<!-- POPUP OVERLAY (click outside to close) -->
+<div id="popup-overlay" style="display:none;position:fixed;inset:0;z-index:998" onclick="closeAllPopups()"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK — must be first
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity='0'; c.style.transition='opacity 0.5s'; setTimeout(()=>c.style.display='none',500); }
+  }, 2000);
+
+  // MERMAID
+  try { mermaid.initialize({startOnLoad:true,theme:'default',fontFamily:'Nunito'}); } catch(e){}
+
+  // LENIS
+  let lenis;
+  try {
+    if(typeof Lenis !== 'undefined'){
+      lenis = new Lenis({lerp:0.1,smoothWheel:true});
+      const tickerFn = (time) => { lenis.raf(time*1000); };
+      if(typeof gsap !== 'undefined') gsap.ticker.add(tickerFn);
+      else { const raf=(t)=>{lenis.raf(t);requestAnimationFrame(raf);}; requestAnimationFrame(raf); }
+    }
+  } catch(e){ console.warn('Lenis error',e); }
+
+  // NAV SMOOTH SCROLL
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const target=document.querySelector(a.getAttribute('href'));
+      if(!target)return;
+      if(lenis) lenis.scrollTo(target,{offset:-60});
+      else target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // GSAP ANIMATIONS
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    if(typeof gsap !== 'undefined' && !prefersReduced){
+      gsap.registerPlugin(ScrollTrigger);
+      // Hero words
+      const words = document.querySelectorAll('.hero-title .word');
+      gsap.fromTo(words,{opacity:0,y:40},{opacity:1,y:0,stagger:0.15,duration:0.7,ease:'back.out(1.5)',delay:0.3});
+      // Scroll cards
+      document.querySelectorAll('.animate-card,.section-card').forEach(card=>{
+        gsap.fromTo(card,{opacity:0,y:40},{opacity:1,y:0,duration:0.6,ease:'power2.out',
+          scrollTrigger:{trigger:card,start:'top 88%',toggleActions:'play none none none'}});
+      });
+      // Type cards
+      document.querySelectorAll('.type-card').forEach((card,i)=>{
+        gsap.fromTo(card,{opacity:0,y:30},{opacity:1,y:0,duration:0.5,delay:i*0.07,ease:'power2.out',
+          scrollTrigger:{trigger:card,start:'top 90%'}});
+      });
+    }
+  } catch(e){ console.warn('GSAP error',e); }
+
+  // PROGRESS BAR
+  const fill = document.getElementById('progress-fill');
+  const pct = document.getElementById('progress-pct');
+  const sections = document.querySelectorAll('section');
+  const updateProgress = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const p = Math.min(100, Math.round((scrollTop / (docH||1)) * 100));
+    fill.style.width = p + '%';
+    pct.textContent = p + '%';
+  };
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // THREE.JS — Desktop computer 3D model
+  initThreeJS();
+
+  // CURTAIN DISMISS after init
+  const curtainEl = document.getElementById('curtain');
+  if(curtainEl){ curtainEl.style.opacity='0'; curtainEl.style.transition='opacity 0.6s'; setTimeout(()=>curtainEl.style.display='none',700); }
+});
+
+// ========== THREE.JS ==========
+function initThreeJS(){
+  const wrap = document.getElementById('three-wrap');
+  const fallback = document.getElementById('three-fallback');
+  if(!wrap) return;
+  if(typeof THREE === 'undefined'){ showThreeFallback(); return; }
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({antialias:true,canvas:document.getElementById('three-canvas')});
+    if(!renderer){ showThreeFallback(); return; }
+  } catch(e){ showThreeFallback(); return; }
+
+  renderer.setClearColor(0x1a1a2e, 1);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50,2,0.1,100);
+  camera.position.set(3, 2.5, 4);
+  camera.lookAt(0,0,0);
+
+  // Ambient + directional light
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const dLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  dLight.position.set(5,8,5);
+  scene.add(dLight);
+  const dLight2 = new THREE.DirectionalLight(0x1DD1A1, 0.4);
+  dLight2.position.set(-5,2,-3);
+  scene.add(dLight2);
+
+  // Monitor stand
+  const standMat = new THREE.MeshPhongMaterial({color:0x888888});
+  const standBase = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.08,0.5), standMat);
+  standBase.position.set(0,-1.1,0);
+  scene.add(standBase);
+  const standPole = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.5,0.12), standMat);
+  standPole.position.set(0,-0.8,0);
+  scene.add(standPole);
+
+  // Monitor body
+  const monMat = new THREE.MeshPhongMaterial({color:0xbbbbbb,shininess:60});
+  const monBody = new THREE.Mesh(new THREE.BoxGeometry(2.4,1.5,0.12), monMat);
+  monBody.position.set(0,0,0);
+  scene.add(monBody);
+
+  // Screen
+  const screenMat = new THREE.MeshPhongMaterial({color:0x1DD1A1,emissive:0x0a3d30,shininess:80});
+  const screen = new THREE.Mesh(new THREE.BoxGeometry(2.1,1.2,0.01), screenMat);
+  screen.position.set(0,0,0.07);
+  scene.add(screen);
+
+  // Screen content lines
+  const lineMat = new THREE.MeshBasicMaterial({color:0xffffff,opacity:0.5,transparent:true});
+  for(let i=0;i<4;i++){
+    const line = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,0.01),lineMat);
+    line.position.set(-0.2,-0.1+i*0.2,0.08);
+    scene.add(line);
+  }
+
+  // Keyboard
+  const kbMat = new THREE.MeshPhongMaterial({color:0xcccccc});
+  const keyboard = new THREE.Mesh(new THREE.BoxGeometry(2,0.07,0.7),kbMat);
+  keyboard.position.set(0,-1.5,1.2);
+  scene.add(keyboard);
+  // Keys
+  const keyMat = new THREE.MeshPhongMaterial({color:0x999999});
+  for(let r=0;r<3;r++) for(let c=0;c<8;c++){
+    const key = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.04,0.18),keyMat);
+    key.position.set(-0.75+c*0.22,-1.45,-0.15+r*0.22+1.2);
+    scene.add(key);
+  }
+
+  // Mouse
+  const mouseMat = new THREE.MeshPhongMaterial({color:0xdddddd,shininess:40});
+  const mouse = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.08,0.45),mouseMat);
+  mouse.position.set(1.4,-1.5,1.1);
+  scene.add(mouse);
+
+  // System unit
+  const sysMat = new THREE.MeshPhongMaterial({color:0x555566});
+  const sysUnit = new THREE.Mesh(new THREE.BoxGeometry(0.5,1.2,0.8),sysMat);
+  sysUnit.position.set(-2,−0.35,0.3);
+  scene.add(sysUnit);
+
+  // Resize observer
+  const obs = new ResizeObserver(entries=>{
+    const w = entries[0].contentRect.width;
+    const h = Math.min(400, Math.max(250, w*0.45));
+    renderer.setSize(w, h);
+    const c = renderer.domElement;
+    c.style.width = w+'px'; c.style.height = h+'px';
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  });
+  obs.observe(wrap);
+
+  let frame=0;
+  const animate = () => {
+    requestAnimationFrame(animate);
+    frame++;
+    scene.rotation.y = Math.sin(frame*0.006)*0.4;
+    screen.material.emissive.setHex(0x0a3d30 + Math.floor(Math.sin(frame*0.04)*0x050505));
+    renderer.render(scene, camera);
+  };
+  animate();
+
+  function showThreeFallback(){
+    if(wrap) wrap.style.display='none';
+    if(fallback){ fallback.style.display='flex'; }
+  }
+}
+
+function showThreeFallback(){
+  const wrap = document.getElementById('three-wrap');
+  const fallback = document.getElementById('three-fallback');
+  if(wrap) wrap.style.display='none';
+  if(fallback){ fallback.style.display='flex'; }
+}
+
+// ========== READ ALOUD ==========
+function readAloud(text){
+  try{
+    if(!window.speechSynthesis) throw new Error('No speech');
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate=0.88; utt.pitch=1.1; utt.lang='en-US';
+    window.speechSynthesis.speak(utt);
+  } catch(e){
+    alert('Read Aloud: ' + text.substring(0,80) + '…');
+  }
+}
+
+// ========== EXERCISE 1 (click blanks + word bank) ==========
+let ex1ActiveBlank = null;
+const ex1Answers = {};
+
+function showPopup(blankEl, exId){
+  closeAllPopups();
+  ex1ActiveBlank = blankEl;
+  // Create popup
+  const popup = document.createElement('div');
+  popup.className = 'word-popup';
+  popup.id = 'active-popup';
+  const words = ['monitor','keyboard','mouse','speakers','printer','system unit'];
+  words.forEach(w=>{
+    const chip = document.createElement('div');
+    chip.className='pop-chip';
+    chip.textContent = w.charAt(0).toUpperCase()+w.slice(1);
+    chip.onclick=(e)=>{e.stopPropagation(); assignWord(blankEl, w, exId); closeAllPopups();};
+    popup.appendChild(chip);
+  });
+  blankEl.style.position='relative';
+  blankEl.appendChild(popup);
+  document.getElementById('popup-overlay').style.display='block';
+}
+
+function assignWord(blank, word, exId){
+  blank.textContent = word.charAt(0).toUpperCase()+word.slice(1);
+  blank.classList.add('filled');
+  blank.dataset.selected = word;
+}
+
+function closeAllPopups(){
+  const p = document.getElementById('active-popup');
+  if(p) p.remove();
+  document.getElementById('popup-overlay').style.display='none';
+  ex1ActiveBlank=null;
+}
+
+function checkEx1(){
+  const blanks = document.querySelectorAll('#ex1-sentences .blank-slot');
+  let correct=0;
+  blanks.forEach(b=>{
+    const sel=(b.dataset.selected||'').toLowerCase().trim();
+    const ans=(b.dataset.answer||'').toLowerCase().trim();
+    if(sel===ans){correct++; animateCorrect(b);}
+    else if(sel) animateWrong(b);
+  });
+  const fb=document.getElementById('ex1-feedback');
+  fb.textContent = correct+'/'+ blanks.length + ' correct! '+(correct===blanks.length?'🎉 Excellent!':'Keep trying! 💪');
+  fb.style.color=correct===blanks.length?'var(--teal)':'var(--orange)';
+}
+
+// ========== EXERCISE 2 (naming) ==========
+function checkEx2(){
+  const inputs=document.querySelectorAll('#ex2-grid .naming-input');
+  let correct=0;
+  inputs.forEach(inp=>{
+    inp.classList.remove('correct','wrong');
+    const val=inp.value.toLowerCase().trim();
+    const ans=inp.dataset.answer.toLowerCase();
+    if(val===ans){correct++;inp.classList.add('correct');animateCorrect(inp);}
+    else if(val){inp.classList.add('wrong');animateWrong(inp);}
+  });
+  const fb=document.getElementById('ex2-feedback');
+  fb.textContent=correct+'/'+ inputs.length+' correct! '+(correct===inputs.length?'🎉 Well done!':'Try again! 💪');
+  fb.style.color=correct===inputs.length?'var(--teal)':'var(--orange)';
+}
+
+// ========== EXERCISE 3 (fill in blank from word list) ==========
+let ex3ActiveBlank=null;
+function showPopupEx3(blankEl){
+  closeAllPopups();
+  ex3ActiveBlank=blankEl;
+}
+function selectEx3Word(chip){
+  if(!ex3ActiveBlank){
+    // find first unfilled
+    const blanks=[...document.querySelectorAll('#ex3-sentences .blank-slot')];
+    ex3ActiveBlank=blanks.find(b=>!b.dataset.selected)||blanks[0];
+  }
+  if(!ex3ActiveBlank) return;
+  const w=chip.dataset.word;
+  ex3ActiveBlank.textContent=w.charAt(0).toUpperCase()+w.slice(1);
+  ex3ActiveBlank.classList.add('filled');
+  ex3ActiveBlank.dataset.selected=w;
+  ex3ActiveBlank=null;
+  chip.classList.add('used');
+}
+function checkEx3(){
+  const blanks=document.querySelectorAll('#ex3-sentences .blank-slot');
+  let correct=0;
+  blanks.forEach(b=>{
+    const sel=(b.dataset.selected||'').toLowerCase().trim();
+    const ans=(b.dataset.answer||'').toLowerCase().trim();
+    if(sel===ans){correct++;animateCorrect(b);}
+    else if(sel) animateWrong(b);
+  });
+  const fb=document.getElementById('ex3-feedback');
+  fb.textContent=correct+'/'+blanks.length+' correct! '+(correct===blanks.length?'🎉 Perfect!':'Keep going! 💪');
+  fb.style.color=correct===blanks.length?'var(--teal)':'var(--orange)';
+}
+
+// ========== EXERCISE 4 (true/false) ==========
+function checkTF(btn, chosen){
+  const item=btn.closest('.tf-item');
+  if(item.dataset.answered) return;
+  item.dataset.answered='1';
+  const correct=item.dataset.answer;
+  const btns=item.querySelectorAll('.tf-btn');
+  btns.forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('selected-correct');
+    confettiBurst(btn);
+  } else {
+    btn.classList.add('selected-wrong');
+    animateWrong(btn);
+    // show correct
+    btns.forEach(b=>{ if((b.classList.contains('true-btn')&&correct==='true')||(b.classList.contains('false-btn')&&correct==='false')) b.classList.add('selected-correct'); });
+  }
+}
+
+// ========== QUIZ ==========
+function selectQuiz(optEl){
+  const q=optEl.closest('.quiz-question');
+  if(q.dataset.answered) return;
+  const opts=q.querySelectorAll('.quiz-option');
+  opts.forEach(o=>o.style.pointerEvents='none');
+  optEl.dataset.chosen=optEl.dataset.val;
+}
+function submitQuiz(){
+  const questions=document.querySelectorAll('.quiz-question');
+  let score=0;
+  questions.forEach(q=>{
+    q.dataset.answered='1';
+    const chosen=q.querySelector('.quiz-option[data-chosen]');
+    const correct=q.dataset.answer;
+    q.querySelectorAll('.quiz-option').forEach(o=>{
+      o.style.pointerEvents='none';
+      if(o.dataset.val===correct) o.classList.add('correct-ans');
+      else if(chosen&&o===chosen&&o.dataset.val!==correct) o.classList.add('wrong-ans');
+    });
+    if(chosen&&chosen.dataset.val===correct){score++;confettiBurst(chosen);}
+  });
+  const scoreEl=document.getElementById('quiz-score');
+  scoreEl.style.display='block';
+  const emojis=['😢','😕','🙂','😊','😄','🌟','🏆'];
+  scoreEl.textContent='You scored '+score+' out of 6! '+(emojis[score]||'👏');
+  scoreEl.scrollIntoView({behavior:'smooth',block:'center'});
+
+  // GSAP score bounce
+  try{
+    if(typeof gsap!=='undefined'&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      gsap.fromTo(scoreEl,{scale:0.5,opacity:0},{scale:1,opacity:1,duration:0.6,ease:'back.out(2)'});
+    }
+  } catch(e){}
+}
+
+// ========== TOGGLE ANSWER ==========
+function toggleAnswer(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  if(el.style.display==='none'){el.style.display='block';}
+  else{el.style.display='none';}
+}
+
+// ========== ANIMATION HELPERS ==========
+function animateCorrect(el){
+  try{
+    if(typeof gsap!=='undefined'&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      gsap.fromTo(el,{scale:1},{scale:1.15,duration:0.15,yoyo:true,repeat:1,ease:'power1.inOut',onComplete:()=>gsap.to(el,{scale:1,duration:0.1})});
+    }
+  }catch(e){}
+  confettiBurst(el);
+}
+function animateWrong(el){
+  try{
+    if(typeof gsap!=='undefined'&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      gsap.to(el,{rotation:0,keyframes:[{rotation:-5},{rotation:5},{rotation:-5},{rotation:5},{rotation:0}],duration:0.5,ease:'power1.inOut'});
+    } else {
+      el.style.animation='none';
+      void el.offsetWidth;
+      el.style.animation='wobble 0.5s ease';
+    }
+  }catch(e){}
+}
+function confettiBurst(el){
+  try{
+    const rect=el.getBoundingClientRect();
+    const colors=['#FF9F43','#1DD1A1','#A29BFE','#ff6b6b','#ffd93d'];
+    for(let i=0;i<8;i++){
+      const p=document.createElement('div');
+      p.className='confetti-piece';
+      p.style.cssText=`
+        left:${rect.left+rect.width/2+Math.random()*60-30}px;
+        top:${rect.top+window.scrollY+rect.height/2}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        position:fixed;
+        z-index:99999;
+      `;
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),900);
+    }
+  }catch(e){}
+}
+
+// ========== ACTIVE NAV ==========
+const navSections=document.querySelectorAll('section[id]');
+const sidebarLinks=document.querySelectorAll('.sidebar a');
+const bottomLinks=document.querySelectorAll('.bottom-nav a');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id=entry.target.id;
+      sidebarLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+id);});
+      bottomLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+id);});
+    }
+  });
+},{threshold:0.3});
+navSections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>

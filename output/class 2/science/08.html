@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: science | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 8: Sound – Class 2 Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    background: #FAFAFA;
+    color: #2d2d2d;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: #e0e0e0;
+    z-index: 9999;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #FF9F43, #1DD1A1);
+    transition: width 0.2s ease;
+  }
+  #progress-label {
+    position: fixed;
+    top: 10px;
+    right: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    z-index: 9999;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: #1DD1A1;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #curtain .c-emoji { font-size: 64px; animation: bounce 0.8s infinite alternate; }
+  #curtain .c-text { font-size: 24px; font-weight: 800; color: white; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-16px); } }
+
+  /* DESKTOP NAV SIDEBAR */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    background: white;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    z-index: 1000;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  #sidebar a {
+    display: block;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+  }
+  #sidebar a:hover, #sidebar a.active {
+    color: #FF9F43;
+    border-left-color: #FF9F43;
+    background: #fff8f0;
+  }
+
+  /* BOTTOM NAV MOBILE */
+  #mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+    z-index: 1000;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #mobile-nav .mn-inner {
+    display: flex;
+    padding: 8px 8px;
+    gap: 4px;
+    min-width: max-content;
+  }
+  #mobile-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    min-height: 56px;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+  #mobile-nav a:hover { background: #f0fdf9; color: #1DD1A1; }
+  #mobile-nav a .mn-icon { font-size: 20px; }
+
+  /* MAIN WRAPPER */
+  #page-wrap { width: 100%; margin-left: 0; }
+  @media (min-width: 769px) { #page-wrap { margin-left: 160px; } }
+
+  .content-container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  #hero {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1DD1A1 0%, #0abde3 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+  #hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .hero-unit-badge {
+    background: rgba(255,255,255,0.25);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 6px 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero-title span { display: inline-block; opacity: 1; }
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+    max-width: 600px;
+    margin-bottom: 40px;
+  }
+  .hero-emoji { font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+  .scroll-hint {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+  /* SECTION STYLES */
+  .lesson-section { padding: 60px 0; }
+  .section-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    padding: 40px;
+    margin-bottom: 32px;
+    opacity: 1;
+    transform: none;
+    width: 100%;
+  }
+  .section-card.teal { border-left: 4px solid #1DD1A1; }
+  .section-card.orange { border-left: 4px solid #FF9F43; }
+  .section-card.purple { border-left: 4px solid #A29BFE; }
+  .section-card.blue { border-left: 4px solid #0abde3; }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-title .s-icon { font-size: 32px; }
+  .section-text {
+    font-size: 19px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 20px;
+  }
+
+  /* OBJECTIVE CARDS */
+  .obj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+  .obj-item {
+    background: linear-gradient(135deg, #f0fdf9, #e8faf6);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #2d5a4a;
+    border: 2px solid #b2f0e0;
+  }
+  .obj-item .obj-icon { font-size: 24px; flex-shrink: 0; }
+
+  /* SOUND WAVE ANIMATION (Canvas) */
+  #wave-canvas-wrap {
+    background: linear-gradient(135deg, #0abde3, #1DD1A1);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+  #wave-canvas { border-radius: 12px; display: block; }
+
+  /* VIBRATION DIAGRAM */
+  .vibration-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 28px 0;
+    flex-wrap: wrap;
+  }
+  .vib-step {
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+  }
+  .vib-step .vib-emoji { font-size: 50px; margin-bottom: 10px; display: block; }
+  .vib-step .vib-label { font-size: 16px; font-weight: 700; color: #555; }
+  .vib-arrow { font-size: 32px; color: #1DD1A1; flex-shrink: 0; }
+
+  /* LOUD/SOFT COMPARISON */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .compare-card {
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .compare-card.loud { background: linear-gradient(135deg, #ff9f4310, #ff9f4330); border: 3px solid #FF9F43; }
+  .compare-card.soft { background: linear-gradient(135deg, #1dd1a110, #1dd1a130); border: 3px solid #1DD1A1; }
+  .compare-card .cc-emoji { font-size: 56px; margin-bottom: 12px; display: block; }
+  .compare-card .cc-title { font-size: 22px; margin-bottom: 8px; }
+  .compare-card .cc-desc { font-size: 17px; color: #555; font-weight: 600; }
+
+  /* HIGH/LOW SOUNDS */
+  .pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .pitch-card {
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .pitch-card.high { background: linear-gradient(135deg, #a29bfe10, #a29bfe30); border: 3px solid #A29BFE; }
+  .pitch-card.low { background: linear-gradient(135deg, #0abde310, #0abde330); border: 3px solid #0abde3; }
+  .pitch-card .pc-emoji { font-size: 56px; margin-bottom: 12px; display: block; }
+  .pitch-card .pc-title { font-size: 22px; margin-bottom: 8px; }
+  .pitch-card .pc-desc { font-size: 17px; color: #555; font-weight: 600; }
+
+  /* MERMAID */
+  .mermaid-wrap {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    overflow-x: auto;
+  }
+  .mermaid { font-size: 16px !important; }
+
+  /* READ ALOUD BUTTON */
+  .read-aloud-btn {
+    background: linear-gradient(135deg, #FF9F43, #ff7f2a);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-size: 17px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    box-shadow: 0 4px 16px rgba(255,159,67,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 48px;
+  }
+  .read-aloud-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,159,67,0.4); }
+  .read-aloud-btn:active { transform: translateY(0); }
+
+  /* FILL IN BLANK ACTIVITY */
+  .activity-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .blank-sentence {
+    font-size: 19px;
+    line-height: 2.4;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #A29BFE;
+  }
+  .blank-sentence .b-num { font-weight: 900; color: #A29BFE; min-width: 28px; }
+  .blank-slot {
+    display: inline-block;
+    min-width: 130px;
+    height: 38px;
+    border-bottom: 3px dashed #A29BFE;
+    cursor: pointer;
+    border-radius: 8px;
+    background: #ede9ff;
+    text-align: center;
+    line-height: 38px;
+    font-weight: 700;
+    font-size: 17px;
+    color: #5f5f5f;
+    transition: background 0.2s;
+    padding: 0 12px;
+    position: relative;
+  }
+  .blank-slot:hover { background: #d8d0ff; }
+  .blank-slot.filled { background: #c8f7e8; border-color: #1DD1A1; color: #1a7a5a; }
+  .blank-slot.correct { background: #b2f0d0; border-color: #1DD1A1; color: #1a7a5a; }
+  .blank-slot.wrong { background: #ffd5d5; border-color: #ff6b6b; color: #b33; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f4ff, #ede9ff);
+    border-radius: 16px;
+  }
+  .word-chip {
+    background: white;
+    color: #A29BFE;
+    border: 2px solid #A29BFE;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .word-chip:hover { background: #A29BFE; color: white; }
+  .word-chip.used { opacity: 0.3; pointer-events: none; }
+
+  /* WORD POPUP */
+  .word-popup {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 2px solid #A29BFE;
+    border-radius: 12px;
+    padding: 8px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+    z-index: 100;
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .word-popup.open { display: flex; }
+  .word-popup .wp-chip {
+    background: #ede9ff;
+    color: #5555cc;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: background 0.15s;
+  }
+  .word-popup .wp-chip:hover { background: #A29BFE; color: white; }
+
+  /* SORTING ACTIVITY */
+  .sort-activity { margin: 24px 0; }
+  .sort-items-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px;
+    background: #f0f4ff;
+    border-radius: 16px;
+    min-height: 70px;
+    margin-bottom: 20px;
+  }
+  .sort-item {
+    background: white;
+    border: 2px solid #A29BFE;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .sort-item:hover { background: #ede9ff; transform: translateY(-2px); }
+  .sort-item.dragging { opacity: 0.5; }
+  .sort-buckets { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .sort-bucket {
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 120px;
+    border: 3px dashed #ccc;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sort-bucket.loud-bucket { border-color: #FF9F43; background: #fff8f0; }
+  .sort-bucket.soft-bucket { border-color: #1DD1A1; background: #f0fdf9; }
+  .sort-bucket.drag-over { border-style: solid; transform: scale(1.02); }
+  .sort-bucket .sb-title { font-size: 20px; font-weight: 900; margin-bottom: 12px; }
+  .sort-bucket.loud-bucket .sb-title { color: #FF9F43; }
+  .sort-bucket.soft-bucket .sb-title { color: #1DD1A1; }
+  .sort-bucket .sb-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; }
+  .sort-bucket .sb-items .sort-item { border-color: #ccc; font-size: 15px; padding: 8px 14px; cursor: default; }
+  .sort-result { margin-top: 16px; font-size: 18px; font-weight: 700; padding: 12px 20px; border-radius: 12px; display: none; }
+  .sort-result.success { background: #b2f0d0; color: #1a7a5a; display: block; }
+  .sort-result.partial { background: #ffe8b0; color: #a06000; display: block; }
+  .sort-btn {
+    background: #FF9F43;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    margin-top: 16px;
+    min-height: 48px;
+    transition: transform 0.2s;
+  }
+  .sort-btn:hover { transform: translateY(-2px); }
+
+  /* QUIZ */
+  .quiz-container { margin: 0; }
+  .quiz-header {
+    text-align: center;
+    padding: 32px 0 20px;
+  }
+  .quiz-header h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: #FF9F43; }
+  .quiz-question-wrap {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .quiz-question-wrap.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+  .quiz-q-num { font-size: 15px; font-weight: 700; color: #999; margin-bottom: 8px; }
+  .quiz-q-text { font-size: clamp(1.2rem, 2.5vw, 1.5rem); font-weight: 800; color: #2d2d2d; margin-bottom: 24px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .quiz-opt {
+    background: white;
+    border: 3px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+  .quiz-opt .opt-emoji { font-size: 28px; }
+  .quiz-opt:hover { border-color: #A29BFE; background: #f5f3ff; transform: translateY(-2px); }
+  .quiz-opt.correct { border-color: #1DD1A1; background: #b2f0d0; color: #1a7a5a; }
+  .quiz-opt.wrong { border-color: #ff6b6b; background: #ffd5d5; color: #b33; }
+  .quiz-feedback {
+    margin-top: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: #b2f0d0; color: #1a7a5a; }
+  .quiz-feedback.wrong { background: #ffd5d5; color: #b33; }
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; flex-wrap: wrap; gap: 12px; }
+  .quiz-nav-btn {
+    background: #1DD1A1;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    min-height: 48px;
+    transition: transform 0.2s;
+  }
+  .quiz-nav-btn:hover { transform: translateY(-2px); }
+  .quiz-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .quiz-score-display { text-align: center; padding: 40px 20px; display: none; }
+  .quiz-score-display h3 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 16px; color: #1DD1A1; }
+  .quiz-score-num { font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; color: #FF9F43; }
+  .quiz-score-msg { font-size: 20px; font-weight: 700; color: #555; margin-top: 12px; }
+  .quiz-retry-btn {
+    background: #FF9F43;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-size: 18px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    margin-top: 24px;
+    min-height: 48px;
+  }
+  .quiz-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .quiz-dot { width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0; transition: background 0.3s; }
+  .quiz-dot.active { background: #FF9F43; }
+  .quiz-dot.done { background: #1DD1A1; }
+
+  /* TRUE/FALSE */
+  .tf-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+  .tf-text { flex: 1; min-width: 200px; }
+  .tf-btns { display: flex; gap: 8px; }
+  .tf-btn {
+    border: 2px solid;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    min-height: 48px;
+    min-width: 56px;
+    transition: all 0.2s;
+  }
+  .tf-btn.true-btn { border-color: #1DD1A1; color: #1DD1A1; background: white; }
+  .tf-btn.false-btn { border-color: #ff6b6b; color: #ff6b6b; background: white; }
+  .tf-btn.true-btn:hover, .tf-btn.true-btn.selected-t { background: #1DD1A1; color: white; }
+  .tf-btn.false-btn:hover, .tf-btn.false-btn.selected-f { background: #ff6b6b; color: white; }
+  .tf-btn.correct-ans { background: #1DD1A1; color: white; border-color: #1DD1A1; }
+  .tf-btn.wrong-ans { background: #ff6b6b; color: white; border-color: #ff6b6b; }
+  .tf-result { margin-top: 16px; padding: 14px 20px; border-radius: 12px; font-size: 18px; font-weight: 700; display: none; }
+  .tf-result.show { display: block; }
+  .tf-check-btn {
+    background: #A29BFE;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    margin-top: 16px;
+    min-height: 48px;
+  }
+  .tf-check-btn:hover { transform: translateY(-2px); }
+
+  /* INFO HIGHLIGHT BOX */
+  .highlight-box {
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .highlight-box.teal { background: linear-gradient(135deg, #e0fdf4, #b2f0d8); border-left: 4px solid #1DD1A1; color: #1a5a4a; }
+  .highlight-box.orange { background: linear-gradient(135deg, #fff3e0, #ffe0b0); border-left: 4px solid #FF9F43; color: #7a4400; }
+  .highlight-box.purple { background: linear-gradient(135deg, #f0e8ff, #ddd0ff); border-left: 4px solid #A29BFE; color: #4a3a88; }
+  .highlight-box .hb-icon { font-size: 28px; flex-shrink: 0; }
+
+  /* SECTION DIVIDER */
+  .sec-divider { height: 4px; background: linear-gradient(90deg, #FF9F43, #1DD1A1, #A29BFE); border-radius: 4px; margin: 32px 0; }
+
+  /* DISTANCE ILLUSTRATION */
+  .distance-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 24px;
+    background: linear-gradient(135deg, #fff8f0, #ffe8c8);
+    border-radius: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .dist-item { text-align: center; flex: 1; min-width: 80px; }
+  .dist-item .di-emoji { font-size: 40px; display: block; margin-bottom: 8px; }
+  .dist-item .di-label { font-size: 15px; font-weight: 700; color: #555; }
+  .dist-arrow { font-size: 28px; color: #FF9F43; flex-shrink: 0; }
+
+  /* EAR DIAGRAM INFO */
+  .ear-info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .ear-part-card {
+    background: linear-gradient(135deg, #f0f4ff, #e8e4ff);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid #A29BFE;
+  }
+  .ear-part-card .ep-icon { font-size: 40px; margin-bottom: 10px; display: block; }
+  .ear-part-card .ep-name { font-size: 18px; font-weight: 800; color: #5a4aaa; margin-bottom: 6px; }
+  .ear-part-card .ep-desc { font-size: 16px; color: #666; font-weight: 600; }
+
+  /* XYLOPHONE VISUAL */
+  .xylophone-visual {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f5f5, #efefef);
+    border-radius: 16px;
+    margin: 20px 0;
+  }
+  .xylo-bar {
+    border-radius: 6px 6px 0 0;
+    width: 44px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .xylo-bar:hover { transform: scaleY(1.05) translateY(-4px); }
+  .xylo-bar:active { transform: scaleY(0.97); }
+
+  /* ACTIVITIES SECTION */
+  .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+  .activity-card-item {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border-top: 4px solid;
+  }
+  .activity-card-item:nth-child(1) { border-top-color: #FF9F43; }
+  .activity-card-item:nth-child(2) { border-top-color: #1DD1A1; }
+  .activity-card-item:nth-child(3) { border-top-color: #A29BFE; }
+  .activity-card-item .ac-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+  .activity-card-item h3 { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
+  .activity-card-item p { font-size: 17px; color: #555; line-height: 1.7; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #mobile-nav { display: block; }
+    #page-wrap { margin-left: 0; padding-bottom: 80px; }
+    .content-container { padding: 0 16px; }
+    .section-card { padding: 24px 18px; }
+    .compare-grid, .pitch-grid, .sort-buckets, .quiz-options { grid-template-columns: 1fr; }
+    #hero { min-height: 60vh; padding: 60px 16px 40px; }
+    .hero-emoji { font-size: 56px; }
+    .vibration-diagram { gap: 12px; }
+    .vib-arrow { display: none; }
+    .tf-item { flex-direction: column; align-items: flex-start; }
+    .distance-strip { justify-content: center; }
+    .ear-info-grid { grid-template-columns: 1fr 1fr; }
+    .xylophone-visual { gap: 3px; }
+    .xylo-bar { width: 32px; }
+    .activities-grid { grid-template-columns: 1fr; }
+    .obj-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 420px) {
+    .ear-info-grid { grid-template-columns: 1fr; }
+    .tf-btns { flex-direction: row; }
+  }
+
+  /* CONFETTI CANVAS */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="c-emoji">🔊</div>
+  <div class="c-text">Loading Sound Lesson...</div>
+</div>
+
+<!-- PROGRESS -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- CONFETTI -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- DESKTOP SIDEBAR -->
+<nav id="sidebar">
+  <a href="#hero">🏠 Home</a>
+  <a href="#what-is-sound">🔊 Sound</a>
+  <a href="#loud-soft">📣 Loud/Soft</a>
+  <a href="#high-low">🎵 High/Low</a>
+  <a href="#ear-section">👂 The Ear</a>
+  <a href="#distance-section">📏 Distance</a>
+  <a href="#fill-blanks">✏️ Fill Blanks</a>
+  <a href="#sorting-activity">🗂️ Sort It</a>
+  <a href="#true-false">✅ True/False</a>
+  <a href="#quiz-section">🎯 Quiz</a>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <div class="mn-inner">
+    <a href="#hero"><span class="mn-icon">🏠</span>Home</a>
+    <a href="#what-is-sound"><span class="mn-icon">🔊</span>Sound</a>
+    <a href="#loud-soft"><span class="mn-icon">📣</span>Loud/Soft</a>
+    <a href="#high-low"><span class="mn-icon">🎵</span>High/Low</a>
+    <a href="#ear-section"><span class="mn-icon">👂</span>Ear</a>
+    <a href="#distance-section"><span class="mn-icon">📏</span>Distance</a>
+    <a href="#fill-blanks"><span class="mn-icon">✏️</span>Fill</a>
+    <a href="#sorting-activity"><span class="mn-icon">🗂️</span>Sort</a>
+    <a href="#true-false"><span class="mn-icon">✅</span>T/F</a>
+    <a href="#quiz-section"><span class="mn-icon">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<div id="page-wrap">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-unit-badge">Unit 8 · Science · Class 2</div>
+    <div class="hero-emoji">🔊</div>
+    <h1 class="hero-title">
+      <span>Sound</span>
+    </h1>
+    <p class="hero-subtitle">Discover how vibrations make amazing sounds all around us!</p>
+    <button class="read-aloud-btn" onclick="readAloud('Sound is a kind of energy you hear. Sound is made when something vibrates, or moves back and forth.')">
+      🔈 Read Aloud
+    </button>
+    <p class="scroll-hint">↓ Scroll to start learning</p>
+  </section>
+
+  <!-- LEARNING OBJECTIVES -->
+  <section class="lesson-section" style="background: linear-gradient(180deg, #f0fdf9, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card teal">
+        <div class="section-title">
+          <span class="s-icon">🎯</span>
+          What We Will Learn
+        </div>
+        <div class="obj-grid">
+          <div class="obj-item"><span class="obj-icon">📖</span> Define sound and explain how it is produced.</div>
+          <div class="obj-item"><span class="obj-icon">〰️</span> Describe how vibrations cause sound.</div>
+          <div class="obj-item"><span class="obj-icon">🌊</span> Explain how sound travels through different mediums (air, water, solids).</div>
+          <div class="obj-item"><span class="obj-icon">📣</span> Differentiate between loud and soft sounds.</div>
+          <div class="obj-item"><span class="obj-icon">🎵</span> Differentiate between high and low sounds.</div>
+          <div class="obj-item"><span class="obj-icon">👂</span> Identify parts of the ear involved in hearing sounds.</div>
+          <div class="obj-item"><span class="obj-icon">📏</span> Understand how distance affects the loudness of sound.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS SOUND -->
+  <section id="what-is-sound" class="lesson-section">
+    <div class="content-container">
+      <div class="section-card teal">
+        <div class="section-title">
+          <span class="s-icon">🔊</span>
+          What is Sound?
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('Sound is a kind of energy you hear. Sound is made when something vibrates, or moves back and forth. When a person plucks a guitar string, it vibrates. The vibrating air travels to your ear. When your eardrum vibrates, you hear the sound.')">🔈 Read Aloud</button>
+        <p class="section-text">
+          <strong>Sound</strong> is a kind of energy you hear. Sound is made when something <strong>vibrates</strong>, or moves back and forth.
+        </p>
+        <div class="highlight-box teal">
+          <span class="hb-icon">💡</span>
+          When a guitar string is plucked, it vibrates. The vibrating air travels to your ear. When your eardrum vibrates, you hear the sound!
+        </div>
+
+        <!-- ANIMATED WAVE CANVAS -->
+        <div id="wave-canvas-wrap">
+          <canvas id="wave-canvas" width="600" height="160"></canvas>
+        </div>
+
+        <!-- HOW SOUND TRAVELS -->
+        <div class="section-title" style="margin-top:32px;">
+          <span class="s-icon">〰️</span>
+          How Does Sound Travel?
+        </div>
+        <div class="vibration-diagram">
+          <div class="vib-step">
+            <span class="vib-emoji">🎸</span>
+            <div class="vib-label">Guitar string vibrates</div>
+          </div>
+          <div class="vib-arrow">→</div>
+          <div class="vib-step">
+            <span class="vib-emoji">💨</span>
+            <div class="vib-label">Air carries vibrations</div>
+          </div>
+          <div class="vib-arrow">→</div>
+          <div class="vib-step">
+            <span class="vib-emoji">👂</span>
+            <div class="vib-label">Reaches your ear</div>
+          </div>
+          <div class="vib-arrow">→</div>
+          <div class="vib-step">
+            <span class="vib-emoji">🧠</span>
+            <div class="vib-label">You hear the sound!</div>
+          </div>
+        </div>
+
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+graph LR
+    A["🎸 Object Vibrates"] --> B["💨 Air Moves"]
+    B --> C["👂 Sound Reaches Ear"]
+    C --> D["🥁 Eardrum Vibrates"]
+    D --> E["🧠 You Hear Sound"]
+    style A fill:#1DD1A1,color:#fff,stroke:#1DD1A1
+    style B fill:#0abde3,color:#fff,stroke:#0abde3
+    style C fill:#FF9F43,color:#fff,stroke:#FF9F43
+    style D fill:#A29BFE,color:#fff,stroke:#A29BFE
+    style E fill:#54a0ff,color:#fff,stroke:#54a0ff
+          </div>
+        </div>
+
+        <div class="highlight-box orange" style="margin-top:20px;">
+          <span class="hb-icon">🗣️</span>
+          When you speak, air moves from your lungs to your throat. The air moves over your <strong>vocal cords</strong> and causes them to vibrate. Try touching your throat as you speak — you will feel the vibrations!
+        </div>
+
+        <div class="highlight-box purple">
+          <span class="hb-icon">🎶</span>
+          When you blow air through a flute, it vibrates and makes a sound!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOUD / SOFT -->
+  <section id="loud-soft" class="lesson-section" style="background: linear-gradient(180deg, #fff8f0, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card orange">
+        <div class="section-title">
+          <span class="s-icon">📣</span>
+          Loud and Soft Sounds
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('When a sound is loud, the vibrations are big. When a sound is soft, the vibrations are small. When you yell, you make big vibrations in your throat. When you whisper, you make smaller vibrations.')">🔈 Read Aloud</button>
+        <p class="section-text">
+          When a sound is <strong>loud</strong>, the vibrations are <strong>big</strong>. When a sound is <strong>soft</strong>, the vibrations are <strong>small</strong>.
+        </p>
+        <div class="compare-grid">
+          <div class="compare-card loud">
+            <span class="cc-emoji">🦁</span>
+            <div class="cc-title" style="color:#FF9F43;">Loud Sound</div>
+            <div class="cc-desc">Big vibrations<br>A lion's roar is so loud you can hear it up to 6 miles away!</div>
+          </div>
+          <div class="compare-card soft">
+            <span class="cc-emoji">🐱</span>
+            <div class="cc-title" style="color:#1DD1A1;">Soft Sound</div>
+            <div class="cc-desc">Small vibrations<br>A cat's meow is much softer than a lion's roar.</div>
+          </div>
+        </div>
+        <div class="highlight-box orange">
+          <span class="hb-icon">📢</span>
+          When you <strong>yell</strong> → big vibrations → loud sound!<br>
+          When you <strong>whisper</strong> → small vibrations → soft sound!
+        </div>
+        <div class="sec-divider"></div>
+        <div class="section-title">
+          <span class="s-icon">🎻</span>
+          More Examples
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:16px;">
+          <div class="ear-part-card" style="border-color:#FF9F43;background:linear-gradient(135deg,#fff3e0,#ffe0b0);">
+            <span class="ep-icon">🥁</span>
+            <div class="ep-name" style="color:#d07000;">Drum Beat</div>
+            <div class="ep-desc">LOUD — big vibrations</div>
+          </div>
+          <div class="ear-part-card" style="border-color:#FF9F43;background:linear-gradient(135deg,#fff3e0,#ffe0b0);">
+            <span class="ep-icon">✈️</span>
+            <div class="ep-name" style="color:#d07000;">Airplane</div>
+            <div class="ep-desc">LOUD — very big vibrations</div>
+          </div>
+          <div class="ear-part-card" style="border-color:#1DD1A1;background:linear-gradient(135deg,#e0fdf4,#b2f0d8);">
+            <span class="ep-icon">🍃</span>
+            <div class="ep-name" style="color:#1a7a5a;">Leaves Rustling</div>
+            <div class="ep-desc">SOFT — tiny vibrations</div>
+          </div>
+          <div class="ear-part-card" style="border-color:#1DD1A1;background:linear-gradient(135deg,#e0fdf4,#b2f0d8);">
+            <span class="ep-icon">🐾</span>
+            <div class="ep-name" style="color:#1a7a5a;">Cat Purring</div>
+            <div class="ep-desc">SOFT — small vibrations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGH / LOW -->
+  <section id="high-low" class="lesson-section">
+    <div class="content-container">
+      <div class="section-card purple">
+        <div class="section-title">
+          <span class="s-icon">🎵</span>
+          High and Low Sounds
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('Sounds can be high, low, or in between. When a sound is low, the vibrations are slow. A cow\'s moo and a man\'s voice are examples of low sounds. When a sound is high, the vibrations are fast. A cat\'s meow and a child\'s voice are examples of high sounds.')">🔈 Read Aloud</button>
+        <p class="section-text">
+          Sounds can be <strong>high</strong>, <strong>low</strong>, or in between. The speed of vibrations decides how high or low a sound is!
+        </p>
+        <div class="pitch-grid">
+          <div class="pitch-card high">
+            <span class="pc-emoji">🐱</span>
+            <div class="pc-title" style="color:#A29BFE;">High Sound</div>
+            <div class="pc-desc">Fast vibrations<br>Examples: Cat's meow, child's voice, bird chirp, whistle</div>
+          </div>
+          <div class="pitch-card low">
+            <span class="pc-emoji">🐄</span>
+            <div class="pc-title" style="color:#0abde3;">Low Sound</div>
+            <div class="pc-desc">Slow vibrations<br>Examples: Cow's moo, man's voice, thunder, big drum</div>
+          </div>
+        </div>
+
+        <!-- XYLOPHONE INTERACTIVE -->
+        <div class="section-title" style="margin-top:28px;"><span class="s-icon">🎹</span> Play the Xylophone!</div>
+        <p class="section-text">Click the bars to hear high and low sounds!</p>
+        <div class="xylophone-visual" id="xylophone">
+          <!-- bars rendered by JS -->
+        </div>
+        <p style="text-align:center;font-size:16px;color:#888;font-weight:600;margin-top:8px;">Short bars = High sound &nbsp;|&nbsp; Long bars = Low sound</p>
+
+        <div class="highlight-box purple" style="margin-top:20px;">
+          <span class="hb-icon">❓</span>
+          Which dog's bark is a higher sound — a small dog or a big dog? The <strong>small dog</strong> makes a higher sound because it creates faster vibrations!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EAR SECTION -->
+  <section id="ear-section" class="lesson-section" style="background: linear-gradient(180deg, #f0e8ff, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card purple">
+        <div class="section-title">
+          <span class="s-icon">👂</span>
+          How Do We Hear?
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('When sound vibrations reach your ear, the eardrum vibrates. This helps you hear the sound. The eardrum is a very important part of your ear.')">🔈 Read Aloud</button>
+        <p class="section-text">
+          Sound vibrations travel through the air and reach your ear. Inside your ear is a special part called the <strong>eardrum</strong>. When the vibrations hit the eardrum, it vibrates too — and that is how you <strong>hear</strong>!
+        </p>
+        <div class="ear-info-grid">
+          <div class="ear-part-card">
+            <span class="ep-icon">👂</span>
+            <div class="ep-name">Outer Ear</div>
+            <div class="ep-desc">Collects sound waves from the air</div>
+          </div>
+          <div class="ear-part-card">
+            <span class="ep-icon">🥁</span>
+            <div class="ep-name">Eardrum</div>
+            <div class="ep-desc">Vibrates when sound hits it — this is how you hear!</div>
+          </div>
+          <div class="ear-part-card">
+            <span class="ep-icon">🦴</span>
+            <div class="ep-name">Tiny Bones</div>
+            <div class="ep-desc">Carry vibrations deeper into the ear</div>
+          </div>
+          <div class="ear-part-card">
+            <span class="ep-icon">🧠</span>
+            <div class="ep-name">Brain</div>
+            <div class="ep-desc">Receives the signal and lets you understand the sound</div>
+          </div>
+        </div>
+        <div class="highlight-box purple">
+          <span class="hb-icon">🎯</span>
+          The part of your ear that vibrates to help you hear is called the <strong>EARDRUM</strong>!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISTANCE SECTION -->
+  <section id="distance-section" class="lesson-section">
+    <div class="content-container">
+      <div class="section-card orange">
+        <div class="section-title">
+          <span class="s-icon">📏</span>
+          Distance and Loudness
+        </div>
+        <button class="read-aloud-btn" onclick="readAloud('Think about a lion\'s roar. When you are near a lion, its roar sounds loud. When you are far away, its roar sounds soft. The farther away you are from a sound, the softer it sounds.')">🔈 Read Aloud</button>
+        <p class="section-text">
+          Think about a lion's roar. When you are <strong>near</strong> a lion, its roar sounds <strong>loud</strong>. When you are <strong>far away</strong>, its roar sounds <strong>soft</strong>.
+        </p>
+        <p class="section-text" style="margin-bottom:20px;">
+          <strong>The farther away you are from a sound, the softer it sounds.</strong>
+        </p>
+        <div class="distance-strip">
+          <div class="dist-item">
+            <span class="di-emoji">🦁</span>
+            <div class="di-label">Lion roars</div>
+          </div>
+          <div class="dist-arrow">→→</div>
+          <div class="dist-item">
+            <span class="di-emoji">📣</span>
+            <div class="di-label">Nearby — LOUD!</div>
+          </div>
+          <div class="dist-arrow">→→</div>
+          <div class="dist-item">
+            <span class="di-emoji">🔉</span>
+            <div class="di-label">A bit far — medium</div>
+          </div>
+          <div class="dist-arrow">→→</div>
+          <div class="dist-item">
+            <span class="di-emoji">🔈</span>
+            <div class="di-label">Far away — soft</div>
+          </div>
+        </div>
+        <div class="highlight-box orange">
+          <span class="hb-icon">📌</span>
+          A lion's roar is so loud that you can hear it up to <strong>6 miles</strong> away — but it will sound much softer than when you are close!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOUNDS & VIBRATION SUMMARY -->
+  <section class="lesson-section" style="background: linear-gradient(180deg, #f0fdf9, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card teal">
+        <div class="section-title">
+          <span class="s-icon">📊</span>
+          Sounds and Vibration — Summary
+        </div>
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+graph TD
+    A["An object vibrates"] -->|Cause| B["It makes a SOUND 🔊"]
+    C["The object stops vibrating"] -->|Cause| D["The sound STOPS ⛔"]
+    E["You play a guitar 🎸"] -->|Cause| F["The strings VIBRATE 〰️"]
+    style A fill:#1DD1A1,color:#fff,stroke:#1DD1A1
+    style B fill:#0abde3,color:#fff,stroke:#0abde3
+    style C fill:#FF9F43,color:#fff,stroke:#FF9F43
+    style D fill:#ff6b6b,color:#fff,stroke:#ff6b6b
+    style E fill:#A29BFE,color:#fff,stroke:#A29BFE
+    style F fill:#54a0ff,color:#fff,stroke:#54a0ff
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;" class="compare-grid">
+          <div class="highlight-box teal" style="flex-direction:column;align-items:flex-start;">
+            <span style="font-size:28px;">📣</span>
+            <div><strong>Loud sound:</strong> Big vibrations</div>
+            <div style="font-size:16px;margin-top:4px;">Examples: Lion, Drum, Thunder</div>
+          </div>
+          <div class="highlight-box orange" style="flex-direction:column;align-items:flex-start;">
+            <span style="font-size:28px;">🔈</span>
+            <div><strong>Soft sound:</strong> Small vibrations</div>
+            <div style="font-size:16px;margin-top:4px;">Examples: Whisper, Leaf, Cat purr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILL IN BLANKS -->
+  <section id="fill-blanks" class="lesson-section" style="background: linear-gradient(180deg, #f5f3ff, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card purple">
+        <div class="activity-title">
+          <span>✏️</span>
+          Fill in the Blanks
+        </div>
+        <p style="font-size:18px;color:#555;margin-bottom:20px;font-weight:600;">Click on a blank, then choose the correct word from the bank below!</p>
+
+        <!-- Word Bank -->
+        <div style="font-size:17px;font-weight:800;color:#A29BFE;margin-bottom:8px;">📚 Word Bank:</div>
+        <div class="word-bank" id="word-bank">
+          <div class="word-chip" data-word="energy">energy</div>
+          <div class="word-chip" data-word="vibrates">vibrates</div>
+          <div class="word-chip" data-word="eardrum">eardrum</div>
+          <div class="word-chip" data-word="loud">loud</div>
+          <div class="word-chip" data-word="small">small</div>
+          <div class="word-chip" data-word="smaller">smaller</div>
+        </div>
+
+        <!-- Sentences -->
+        <div id="fill-sentences">
+          <div class="blank-sentence">
+            <span class="b-num">1.</span>
+            Sound is a form of
+            <div class="blank-slot" data-answer="energy" data-index="0" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            that we can hear.
+          </div>
+          <div class="blank-sentence">
+            <span class="b-num">2.</span>
+            When something
+            <div class="blank-slot" data-answer="vibrates" data-index="1" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            , it produces sound.
+          </div>
+          <div class="blank-sentence">
+            <span class="b-num">3.</span>
+            The part of your ear that vibrates is called the
+            <div class="blank-slot" data-answer="eardrum" data-index="2" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            .
+          </div>
+          <div class="blank-sentence">
+            <span class="b-num">4.</span>
+            A lion's roar is an example of a
+            <div class="blank-slot" data-answer="loud" data-index="3" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            sound.
+          </div>
+          <div class="blank-sentence">
+            <span class="b-num">5.</span>
+            A cat's meow is not as
+            <div class="blank-slot" data-answer="loud" data-index="4" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            as a lion's roar.
+          </div>
+          <div class="blank-sentence">
+            <span class="b-num">6.</span>
+            When you whisper, you create
+            <div class="blank-slot" data-answer="smaller" data-index="5" tabindex="0">
+              _____
+              <div class="word-popup"></div>
+            </div>
+            vibrations.
+          </div>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="sort-btn" onclick="checkFillBlanks()" style="background:#A29BFE;">✅ Check Answers</button>
+          <button class="sort-btn" onclick="resetFillBlanks()" style="background:#888;">🔄 Reset</button>
+        </div>
+        <div id="fill-result" class="sort-result" style="margin-top:12px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SORTING ACTIVITY -->
+  <section id="sorting-activity" class="lesson-section">
+    <div class="content-container">
+      <div class="section-card orange">
+        <div class="activity-title">
+          <span>🗂️</span>
+          Sort It! — Loud or Soft?
+        </div>
+        <p style="font-size:18px;color:#555;margin-bottom:20px;font-weight:600;">Drag the sounds into the correct bucket. Is it a loud sound or a soft sound?</p>
+
+        <div class="sort-items-pool" id="sort-pool">
+          <div class="sort-item" draggable="true" data-category="loud" data-id="s1">🦁 Lion's Roar</div>
+          <div class="sort-item" draggable="true" data-category="soft" data-id="s2">🐱 Cat's Meow</div>
+          <div class="sort-item" draggable="true" data-category="loud" data-id="s3">✈️ Airplane</div>
+          <div class="sort-item" draggable="true" data-category="soft" data-id="s4">🍃 Rustling Leaves</div>
+          <div class="sort-item" draggable="true" data-category="loud" data-id="s5">🥁 Drum Beat</div>
+          <div class="sort-item" draggable="true" data-category="soft" data-id="s6">🤫 Whisper</div>
+          <div class="sort-item" draggable="true" data-category="loud" data-id="s7">⚡ Thunder</div>
+          <div class="sort-item" draggable="true" data-category="soft" data-id="s8">🐾 Cat Purring</div>
+        </div>
+
+        <div class="sort-buckets">
+          <div class="sort-bucket loud-bucket" id="bucket-loud" data-accepts="loud">
+            <div class="sb-title">📣 Loud Sounds</div>
+            <div class="sb-items" id="loud-items"></div>
+          </div>
+          <div class="sort-bucket soft-bucket" id="bucket-soft" data-accepts="soft">
+            <div class="sb-title">🔈 Soft Sounds</div>
+            <div class="sb-items" id="soft-items"></div>
+          </div>
+        </div>
+
+        <button class="sort-btn" onclick="checkSorting()">✅ Check My Sorting!</button>
+        <button class="sort-btn" onclick="resetSorting()" style="background:#888;margin-left:10px;">🔄 Reset</button>
+        <div id="sort-result" class="sort-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUE / FALSE -->
+  <section id="true-false" class="lesson-section" style="background: linear-gradient(180deg, #f0fdf9, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card teal">
+        <div class="activity-title">
+          <span>✅</span>
+          True or False?
+        </div>
+        <p style="font-size:18px;color:#555;margin-bottom:20px;font-weight:600;">Read each statement. Is it True (✓) or False (✗)?</p>
+
+        <div id="tf-container">
+          <div class="tf-item" data-correct="false">
+            <div class="tf-text">1. Vibrations are fast when a sound is low.</div>
+            <div class="tf-btns">
+              <button class="tf-btn true-btn" onclick="selectTF(this, 'true')">✓ True</button>
+              <button class="tf-btn false-btn" onclick="selectTF(this, 'false')">✗ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-correct="true">
+            <div class="tf-text">2. When you yell, you create bigger vibrations than when you whisper.</div>
+            <div class="tf-btns">
+              <button class="tf-btn true-btn" onclick="selectTF(this, 'true')">✓ True</button>
+              <button class="tf-btn false-btn" onclick="selectTF(this, 'false')">✗ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-correct="true">
+            <div class="tf-text">3. A child's voice usually makes a high sound.</div>
+            <div class="tf-btns">
+              <button class="tf-btn true-btn" onclick="selectTF(this, 'true')">✓ True</button>
+              <button class="tf-btn false-btn" onclick="selectTF(this, 'false')">✗ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-correct="false">
+            <div class="tf-text">4. The farther you are from a sound, the louder it sounds.</div>
+            <div class="tf-btns">
+              <button class="tf-btn true-btn" onclick="selectTF(this, 'true')">✓ True</button>
+              <button class="tf-btn false-btn" onclick="selectTF(this, 'false')">✗ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-correct="true">
+            <div class="tf-text">5. When a sound is soft, the vibrations are small.</div>
+            <div class="tf-btns">
+              <button class="tf-btn true-btn" onclick="selectTF(this, 'true')">✓ True</button>
+              <button class="tf-btn false-btn" onclick="selectTF(this, 'false')">✗ False</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="tf-check-btn" onclick="checkTrueFalse()">✅ Check Answers</button>
+        <div id="tf-result" class="tf-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- END QUIZ -->
+  <section id="quiz-section" class="lesson-section" style="background:linear-gradient(135deg,#f5f3ff,#e8f8ff);">
+    <div class="content-container">
+      <div class="section-card blue" style="border-left-color:#FF9F43;">
+        <div class="quiz-header">
+          <h2>🎯 Final Quiz</h2>
+          <p style="font-size:18px;color:#555;font-weight:600;">Test your sound knowledge! Choose the best answer.</p>
+        </div>
+        <div class="quiz-dots" id="quiz-dots"></div>
+        <div class="quiz-container" id="quiz-container">
+          <!-- Questions rendered by JS -->
+        </div>
+        <div class="quiz-score-display" id="quiz-score">
+          <h3>🎉 Quiz Complete!</h3>
+          <div class="quiz-score-num" id="score-num"></div>
+          <div class="quiz-score-msg" id="score-msg"></div>
+          <button class="quiz-retry-btn" onclick="resetQuiz()">🔄 Try Again</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITIES -->
+  <section class="lesson-section" style="background: linear-gradient(180deg, #fff8f0, #FAFAFA);">
+    <div class="content-container">
+      <div class="section-card orange">
+        <div class="section-title">
+          <span class="s-icon">🔬</span>
+          Fun Activities to Try!
+        </div>
+        <div class="activities-grid">
+          <div class="activity-card-item">
+            <span class="ac-icon">🎸</span>
+            <h3>1. Vibration Experiment</h3>
+            <p>Stretch a rubber band over a box and pluck it. Observe how it vibrates and produces sound. Try plucking harder and softer to see the difference in loudness!</p>
+          </div>
+          <div class="activity-card-item">
+            <span class="ac-icon">🚶</span>
+            <h3>2. Sound Walk</h3>
+            <p>Take a walk around your school or home and list 5 loud sounds and 5 soft sounds you hear. Discuss why some sounds are louder than others.</p>
+          </div>
+          <div class="activity-card-item">
+            <span class="ac-icon">📞</span>
+            <h3>3. DIY Telephone</h3>
+            <p>Use two paper cups and a string to create a simple telephone. Speak into one cup and listen from the other to understand how sound travels through solids!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ============================================================
+  // CURTAIN DISMISS — guaranteed fallback
+  // ============================================================
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 2500);
+
+  // ============================================================
+  // MERMAID INIT
+  // ============================================================
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) { console.warn('Mermaid init error', e); }
+
+  // ============================================================
+  // LENIS SMOOTH SCROLL
+  // ============================================================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1 });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    }
+  } catch(e) { console.warn('Lenis init error', e); }
+
+  // ============================================================
+  // GSAP ANIMATIONS
+  // ============================================================
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReduced) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title word animation
+      const heroSpans = document.querySelectorAll('.hero-title span');
+      gsap.from(heroSpans, {
+        y: 60, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.7)',
+        delay: 2.6
+      });
+
+      // Section cards scroll-triggered
+      document.querySelectorAll('.section-card').forEach(card => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 88%', once: true },
+          y: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init error', e); }
+
+  // ============================================================
+  // PROGRESS BAR
+  // ============================================================
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ============================================================
+  // WAVE CANVAS ANIMATION
+  // ============================================================
+  const waveCanvas = document.getElementById('wave-canvas');
+  const waveCtx = waveCanvas.getContext('2d');
+  let waveT = 0;
+
+  function resizeWave() {
+    const wrap = document.getElementById('wave-canvas-wrap');
+    const w = wrap.clientWidth - 40;
+    const h = 160;
+    waveCanvas.width = w;
+    waveCanvas.height = h;
+    waveCanvas.style.width = w + 'px';
+    waveCanvas.style.height = h + 'px';
+  }
+  resizeWave();
+  window.addEventListener('resize', resizeWave);
+
+  function drawWave() {
+    const w = waveCanvas.width;
+    const h = waveCanvas.height;
+    waveCtx.clearRect(0, 0, w, h);
+
+    // Background
+    waveCtx.fillStyle = 'rgba(255,255,255,0.08)';
+    waveCtx.fillRect(0, 0, w, h);
+
+    const waves = [
+      { amp: 30, freq: 0.025, speed: 0.04, color: 'rgba(255,255,255,0.9)', lw: 3 },
+      { amp: 20, freq: 0.04, speed: 0.06, color: 'rgba(255,255,255,0.6)', lw: 2 },
+      { amp: 14, freq: 0.06, speed: 0.09, color: 'rgba(255,255,255,0.4)', lw: 1.5 },
+    ];
+
+    waves.forEach(wav => {
+      waveCtx.beginPath();
+      waveCtx.strokeStyle = wav.color;
+      waveCtx.lineWidth = wav.lw;
+      for (let x = 0; x <= w; x++) {
+        const y = h / 2 + wav.amp * Math.sin(wav.freq * x + waveT * wav.speed * 40);
+        x === 0 ? waveCtx.moveTo(x, y) : waveCtx.lineTo(x, y);
+      }
+      waveCtx.stroke();
+    });
+
+    // Source dot
+    waveCtx.beginPath();
+    waveCtx.arc(40, h / 2, 10, 0, Math.PI * 2);
+    waveCtx.fillStyle = 'white';
+    waveCtx.fill();
+    waveCtx.font = 'bold 14px Nunito';
+    waveCtx.fillStyle = '#1DD1A1';
+    waveCtx.textAlign = 'center';
+    waveCtx.fillText('🔊', 40, h / 2 + 5);
+
+    waveT += 0.5;
+    requestAnimationFrame(drawWave);
+  }
+  drawWave();
+
+  // ============================================================
+  // XYLOPHONE
+  // ============================================================
+  const xyloWrap = document.getElementById('xylophone');
+  const xyloColors = ['#FF9F43','#FF6B6B','#FECA57','#1DD1A1','#0abde3','#54a0ff','#A29BFE','#5f27cd'];
+  const xyloHeights = [60, 72, 84, 96, 112, 130, 148, 170];
+  const xyloFreqs = [523, 466, 415, 370, 330, 294, 262, 220];
+
+  xyloColors.forEach((col, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'xylo-bar';
+    bar.style.height = xyloHeights[i] + 'px';
+    bar.style.background = col;
+    bar.title = i < 4 ? 'High Sound' : 'Low Sound';
+    bar.addEventListener('click', () => {
+      playTone(xyloFreqs[i], 0.4);
+      bar.style.transform = 'scaleY(1.08) translateY(-6px)';
+      setTimeout(() => { bar.style.transform = ''; }, 200);
+    });
+    xyloWrap.appendChild(bar);
+  });
+
+  function playTone(freq, dur) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.5, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + dur);
+    } catch(e) { /* audio not supported */ }
+  }
+
+  // ============================================================
+  // READ ALOUD
+  // ============================================================
+  window.readAloud = function(text) {
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.rate = 0.85;
+        utt.pitch = 1.1;
+        window.speechSynthesis.speak(utt);
+      } else {
+        alert('Read Aloud: ' + text.substring(0, 80) + '...');
+      }
+    } catch(e) {
+      console.warn('Speech error', e);
+    }
+  };
+
+  // ============================================================
+  // FILL IN BLANKS
+  // ============================================================
+  const fillAnswers = ['energy','vibrates','eardrum','loud','loud','smaller'];
+  let fillState = new Array(6).fill(null);
+  let activeSlot = null;
+
+  const wordBankWords = ['energy','vibrates','eardrum','loud','small','smaller'];
+  const wordUsed = {};
+
+  function buildPopup(slot) {
+    const popup = slot.querySelector('.word-popup');
+    popup.innerHTML = '';
+    wordBankWords.forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'wp-chip';
+      btn.textContent = w;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(slot.dataset.index);
+        slot.childNodes[0].textContent = w;
+        slot.classList.add('filled');
+        slot.classList.remove('correct','wrong');
+        fillState[idx] = w;
+        popup.classList.remove('open');
+        activeSlot = null;
+      });
+      popup.appendChild(btn);
+    });
+  }
+
+  document.querySelectorAll('.blank-slot').forEach(slot => {
+    buildPopup(slot);
+    slot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.word-popup').forEach(p => p.classList.remove('open'));
+      if (activeSlot === slot) {
+        activeSlot = null;
+        return;
+      }
+      const popup = slot.querySelector('.word-popup');
+      popup.classList.add('open');
+      activeSlot = slot;
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.word-popup').forEach(p => p.classList.remove('open'));
+    activeSlot = null;
+  });
+
+  window.checkFillBlanks = function() {
+    let correct = 0;
+    document.querySelectorAll('.blank-slot').forEach((slot, i) => {
+      const ans = fillState[i];
+      const textNode = slot.childNodes[0];
+      if (ans === fillAnswers[i]) {
+        slot.classList.add('correct');
+        slot.classList.remove('wrong','filled');
+        if (textNode) textNode.textContent = ans;
+        correct++;
+      } else {
+        slot.classList.add('wrong');
+        slot.classList.remove('correct','filled');
+        if (!ans && textNode) textNode.textContent = '_____';
+        try {
+          if (!prefersReduced && typeof gsap !== 'undefined') {
+            gsap.to(slot, { rotation: [-5,5,-5,5,0], duration: 0.4, ease: 'none' });
+          }
+        } catch(e) {}
+      }
+    });
+    const res = document.getElementById('fill-result');
+    res.className = 'sort-result ' + (correct === 6 ? 'success' : 'partial');
+    res.style.display = 'block';
+    if (correct === 6) {
+      res.textContent = '🎉 Perfect! All 6 answers are correct!';
+      launchConfetti();
+    } else {
+      res.textContent = `You got ${correct} out of 6 correct. Keep trying!`;
+    }
+  };
+
+  window.resetFillBlanks = function() {
+    fillState = new Array(6).fill(null);
+    document.querySelectorAll('.blank-slot').forEach(slot => {
+      slot.childNodes[0].textContent = '_____';
+      slot.classList.remove('filled','correct','wrong');
+    });
+    document.getElementById('fill-result').style.display = 'none';
+    document.getElementById('fill-result').className = 'sort-result';
+  };
+
+  // ============================================================
+  // SORTING DRAG & DROP
+  // ============================================================
+  let dragItem = null;
+
+  function initSorting() {
+    document.querySelectorAll('.sort-item').forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        dragItem = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        dragItem = null;
+      });
+      // Touch support
+      let touchX, touchY;
+      item.addEventListener('touchstart', (e) => {
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+        dragItem = item;
+        item.style.opacity = '0.5';
+      }, { passive: true });
+      item.addEventListener('touchend', (e) => {
+        item.style.opacity = '';
+        const touch = e.changedTouches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        const bucket = el ? el.closest('.sort-bucket') : null;
+        if (bucket && dragItem) {
+          bucket.querySelector('.sb-items').appendChild(dragItem);
+          dragItem.style.cursor = 'default';
+        }
+        dragItem = null;
+      }, { passive: true });
+    });
+
+    document.querySelectorAll('.sort-bucket').forEach(bucket => {
+      bucket.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        bucket.classList.add('drag-over');
+      });
+      bucket.addEventListener('dragleave', () => {
+        bucket.classList.remove('drag-over');
+      });
+      bucket.addEventListener('drop', (e) => {
+        e.preventDefault();
+        bucket.classList.remove('drag-over');
+        if (dragItem) {
+          bucket.querySelector('.sb-items').appendChild(dragItem);
+          dragItem.style.cursor = 'default';
+        }
+      });
+    });
+  }
+  initSorting();
+
+  window.checkSorting = function() {
+    let correct = 0, total = 0;
+    ['loud','soft'].forEach(cat => {
+      const bucket = document.getElementById('bucket-' + cat);
+      bucket.querySelectorAll('.sort-item').forEach(item => {
+        total++;
+        if (item.dataset.category === cat) correct++;
+      });
+    });
+    const res = document.getElementById('sort-result');
+    if (correct === total && total === 8) {
+      res.className = 'sort-result success';
+      res.textContent = '🎉 Excellent! All sounds sorted correctly!';
+      launchConfetti();
+    } else {
+      res.className = 'sort-result partial';
+      res.textContent = `You got ${correct} out of ${total} correct. Some sounds are in the wrong bucket — try again!`;
+    }
+    res.style.display = 'block';
+  };
+
+  window.resetSorting = function() {
+    const pool = document.getElementById('sort-pool');
+    document.querySelectorAll('.sort-bucket .sort-item').forEach(item => {
+      item.style.cursor = 'grab';
+      pool.appendChild(item);
+    });
+    document.getElementById('sort-result').style.display = 'none';
+    document.getElementById('sort-result').className = 'sort-result';
+  };
+
+  // ============================================================
+  // TRUE / FALSE
+  // ============================================================
+  window.selectTF = function(btn, choice) {
+    const tfItem = btn.closest('.tf-item');
+    const btns = tfItem.querySelectorAll('.tf-btn');
+    btns.forEach(b => { b.classList.remove('selected-t','selected-f'); });
+    if (choice === 'true') btn.classList.add('selected-t');
+    else btn.classList.add('selected-f');
+    tfItem.dataset.selected = choice;
+  };
+
+  window.checkTrueFalse = function() {
+    let correct = 0;
+    const items = document.querySelectorAll('#tf-container .tf-item');
+    items.forEach(item => {
+      const selected = item.dataset.selected;
+      const correct_ans = item.dataset.correct;
+      const btns = item.querySelectorAll('.tf-btn');
+      btns.forEach(b => {
+        b.disabled = true;
+        const isTrue = b.classList.contains('true-btn');
+        const isFalse = b.classList.contains('false-btn');
+        if ((isTrue && correct_ans === 'true') || (isFalse && correct_ans === 'false')) {
+          b.classList.add('correct-ans');
+        }
+        if (selected && ((isTrue && selected === 'true' && correct_ans !== 'true') ||
+            (isFalse && selected === 'false' && correct_ans !== 'false'))) {
+          b.classList.add('wrong-ans');
+        }
+      });
+      if (selected === correct_ans) correct++;
+    });
+    const res = document.getElementById('tf-result');
+    res.className = 'tf-result show';
+    if (correct === 5) {
+      res.style.background = '#b2f0d0';
+      res.style.color = '#1a7a5a';
+      res.textContent = '🎉 Wonderful! All 5 answers correct!';
+      launchConfetti();
+    } else {
+      res.style.background = '#ffe8b0';
+      res.style.color = '#a06000';
+      res.textContent = `You got ${correct} out of 5. Check the highlighted correct answers!`;
+    }
+  };
+
+  // ============================================================
+  // QUIZ
+  // ============================================================
+  const quizData = [
+    {
+      q: 'What causes sound?',
+      opts: [
+        { text: 'Light', emoji: '💡', correct: false },
+        { text: 'Vibrations', emoji: '〰️', correct: true }
+      ]
+    },
+    {
+      q: 'Which part of the ear helps you hear sound?',
+      opts: [
+        { text: 'Eardrum', emoji: '🥁', correct: true },
+        { text: 'Nose', emoji: '👃', correct: false }
+      ]
+    },
+    {
+      q: 'A loud sound has...',
+      opts: [
+        { text: 'Small vibrations', emoji: '🔈', correct: false },
+        { text: 'Big vibrations', emoji: '📣', correct: true }
+      ]
+    },
+    {
+      q: 'Which of the following is a HIGH sound?',
+      opts: [
+        { text: "Cat's meow", emoji: '🐱', correct: true },
+        { text: "Cow's moo", emoji: '🐄', correct: false }
+      ]
+    },
+    {
+      q: 'What happens when you hit a SHORT bar on a xylophone?',
+      opts: [
+        { text: 'It makes a HIGH sound', emoji: '🎵', correct: true },
+        { text: 'It makes a LOW sound', emoji: '🔉', correct: false }
+      ]
+    },
+    {
+      q: 'When you move FARTHER from a sound, it becomes...',
+      opts: [
+        { text: 'Louder', emoji: '📢', correct: false },
+        { text: 'Softer', emoji: '🔈', correct: true }
+      ]
+    }
+  ];
+
+  let quizCurrent = 0;
+  let quizScore = 0;
+  let quizAnswered = false;
+
+  function buildQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+    const dotsWrap = document.getElementById('quiz-dots');
+    dotsWrap.innerHTML = '';
+
+    quizData.forEach((q, qi) => {
+      // Build dot
+      const dot = document.createElement('div');
+      dot.className = 'quiz-dot' + (qi === 0 ? ' active' : '');
+      dot.id = 'dot-' + qi;
+      dotsWrap.appendChild(dot);
+
+      // Build question wrap
+      const wrap = document.createElement('div');
+      wrap.className = 'quiz-question-wrap' + (qi === 0 ? ' active' : '');
+      wrap.id = 'q-' + qi;
+      wrap.innerHTML = `
+        <div class="quiz-q-num">Question ${qi + 1} of ${quizData.length}</div>
+        <div class="quiz-q-text">${q.q}</div>
+        <div class="quiz-options">
+          ${q.opts.map((opt, oi) => `
+            <button class="quiz-opt" data-qi="${qi}" data-oi="${oi}" data-correct="${opt.correct}">
+              <span class="opt-emoji">${opt.emoji}</span> ${opt.text}
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${qi}"></div>
+        <div class="quiz-nav">
+          <button class="quiz-nav-btn" onclick="quizPrev()" ${qi === 0 ? 'disabled' : ''}>← Back</button>
+          <button class="quiz-nav-btn" id="next-${qi}" onclick="quizNext()" ${qi === quizData.length - 1 ? 'style="display:none"' : ''}>Next →</button>
+          ${qi === quizData.length - 1 ? `<button class="quiz-nav-btn" id="finish-${qi}" onclick="finishQuiz()" style="background:#FF9F43;display:none;">🏁 Finish!</button>` : ''}
+        </div>
+      `;
+      container.appendChild(wrap);
+    });
+
+    // Add option listeners
+    document.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qi = parseInt(btn.dataset.qi);
+        if (document.querySelector(`#q-${qi}`).dataset.answered === 'true') return;
+        document.querySelector(`#q-${qi}`).dataset.answered = 'true';
+
+        const isCorrect = btn.dataset.correct === 'true';
+        const fb = document.getElementById('fb-' + qi);
+
+        // Disable all options for this question
+        document.querySelectorAll(`.quiz-opt[data-qi="${qi}"]`).forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+        });
+
+        if (isCorrect) {
+          btn.classList.add('correct');
+          fb.className = 'quiz-feedback show correct';
+          fb.textContent = '✅ Correct! Well done!';
+          quizScore++;
+          try {
+            if (!prefersReduced && typeof gsap !== 'undefined') {
+              gsap.to(btn, { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1 });
+            }
+          } catch(e) {}
+        } else {
+          btn.classList.add('wrong');
+          fb.className = 'quiz-feedback show wrong';
+          fb.textContent = '❌ Not quite! The green answer is correct.';
+          try {
+            if (!prefersReduced && typeof gsap !== 'undefined') {
+              gsap.to(btn, { rotation: [-5,5,-5,5,0], duration: 0.4 });
+            }
+          } catch(e) {}
+        }
+
+        // Show next or finish button
+        const nextBtn = document.getElementById('next-' + qi);
+        if (nextBtn) nextBtn.style.display = 'inline-flex';
+        const finBtn = document.getElementById('finish-' + qi);
+        if (finBtn) finBtn.style.display = 'inline-flex';
+
+        // Update dot
+        document.getElementById('dot-' + qi).classList.add('done');
+      });
+    });
+  }
+
+  window.quizNext = function() {
+    const prev = document.getElementById('q-' + quizCurrent);
+    if (prev) prev.classList.remove('active');
+    quizCurrent++;
+    if (quizCurrent < quizData.length) {
+      const cur = document.getElementById('q-' + quizCurrent);
+      if (cur) cur.classList.add('active');
+      document.querySelectorAll('.quiz-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === quizCurrent);
+      });
+    }
+  };
+
+  window.quizPrev = function() {
+    if (quizCurrent <= 0) return;
+    document.getElementById('q-' + quizCurrent).classList.remove('active');
+    quizCurrent--;
+    document.getElementById('q-' + quizCurrent).classList.add('active');
+    document.querySelectorAll('.quiz-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === quizCurrent);
+    });
+  };
+
+  window.finishQuiz = function() {
+    document.getElementById('quiz-container').style.display = 'none';
+    document.getElementById('quiz-dots').style.display = 'none';
+    const scoreDiv = document.getElementById('quiz-score');
+    scoreDiv.style.display = 'block';
+    document.getElementById('score-num').textContent = quizScore + ' / ' + quizData.length;
+    let msg = '';
+    if (quizScore === quizData.length) { msg = '🌟 Amazing! Perfect score!'; launchConfetti(); }
+    else if (quizScore >= 4) { msg = '🎉 Great job! You know a lot about sound!'; }
+    else if (quizScore >= 2) { msg = '😊 Good try! Review the lesson and try again!'; }
+    else { msg = '📚 Keep learning! You will get better!'; }
+    document.getElementById('score-msg').textContent = msg;
+  };
+
+  window.resetQuiz = function() {
+    quizCurrent = 0;
+    quizScore = 0;
+    document.getElementById('quiz-score').style.display = 'none';
+    document.getElementById('quiz-container').style.display = 'block';
+    document.getElementById('quiz-dots').style.display = 'flex';
+    buildQuiz();
+  };
+
+  buildQuiz();
+
+  // ============================================================
+  // CONFETTI
+  // ============================================================
+  const confCanvas = document.getElementById('confetti-canvas');
+  const confCtx = confCanvas.getContext('2d');
+  let confParticles = [];
+  let confRunning = false;
+
+  function launchConfetti() {
+    confCanvas.width = window.innerWidth;
+    confCanvas.height = window.innerHeight;
+    confParticles = [];
+    const colors = ['#FF9F43','#1DD1A1','#A29BFE','#0abde3','#FECA57','#ff6b6b'];
+    for (let i = 0; i < 120; i++) {
+      confParticles.push({
+        x: Math.random() * confCanvas.width,
+        y: -10 - Math.random() * 200,
+        w: 8 + Math.random() * 8,
+        h: 6 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: 2 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 3,
+        rot: Math.random() * 360,
+        rspeed: (Math.random() - 0.5) * 6
+      });
+    }
+    if (!confRunning) { confRunning = true; animateConfetti(); }
+    setTimeout(() => { confRunning = false; confParticles = []; confCtx.clearRect(0,0,confCanvas.width,confCanvas.height); }, 3000);
+  }
+
+  function animateConfetti() {
+    if (!confRunning) return;
+    confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+    confParticles.forEach(p => {
+      confCtx.save();
+      confCtx.translate(p.x, p.y);
+      confCtx.rotate(p.rot * Math.PI / 180);
+      confCtx.fillStyle = p.color;
+      confCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      confCtx.restore();
+      p.x += p.vx; p.y += p.vy; p.rot += p.rspeed;
+    });
+    requestAnimationFrame(animateConfetti);
+  }
+
+  // ============================================================
+  // SIDEBAR ACTIVE STATE
+  // ============================================================
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 200) current = sec.id;
+    });
+    document.querySelectorAll('#sidebar a, #mobile-nav a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+
+  // ============================================================
+  // CURTAIN EXIT (GSAP preferred)
+  // ============================================================
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', {
+        yPercent: -100, duration: 0.8, ease: 'power3.inOut', delay: 1.8,
+        onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

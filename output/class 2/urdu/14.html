@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<!-- CLASS: 2 | SUBJECT: urdu | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سویرے اُٹھنا - اردو - کلاس ۲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF9F43;
+    --teal: #1DD1A1;
+    --purple: #A29BFE;
+    --pink: #FD79A8;
+    --blue: #74B9FF;
+    --offwhite: #FAFAFA;
+    --dark: #2D3436;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  html { scroll-behavior: smooth; width: 100%; }
+
+  body {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 18px;
+    background: var(--offwhite);
+    color: var(--dark);
+    direction: rtl;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: rgba(0,0,0,0.08);
+    z-index: 1000;
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--orange));
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  #progress-label {
+    position: fixed;
+    top: 8px;
+    left: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    color: var(--dark);
+    background: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    z-index: 1001;
+    direction: ltr;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF9F43, #A29BFE);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #curtain h2 {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: white;
+    text-align: center;
+  }
+  .curtain-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #FF9F43 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='40' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") repeat;
+  }
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    padding: 6px 20px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+  .hero-title {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .hero-title span {
+    display: inline-block;
+    opacity: 1;
+  }
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+    line-height: 2;
+  }
+  .hero-author {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 18px;
+    padding: 8px 24px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  /* SVG Decoration */
+  .calligraphic-deco {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto 0;
+    opacity: 0.3;
+  }
+
+  /* MAIN CONTAINER */
+  .page-container {
+    width: 100%;
+    padding-bottom: 80px;
+  }
+  .section-inner {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* SECTION STYLES */
+  .lesson-section {
+    padding: 60px 20px;
+    width: 100%;
+  }
+  .lesson-section:nth-child(even) { background: #f0f4ff; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    justify-content: flex-end;
+  }
+  .section-icon {
+    font-size: 36px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--dark);
+  }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 28px;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+    transform: none;
+  }
+  .card-orange { border-right: 4px solid var(--orange); }
+  .card-teal   { border-right: 4px solid var(--teal); }
+  .card-purple { border-right: 4px solid var(--purple); }
+  .card-pink   { border-right: 4px solid var(--pink); }
+  .card-blue   { border-right: 4px solid var(--blue); }
+
+  /* MAQASID */
+  .maqasid-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .maqasid-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 20px;
+    line-height: 2;
+    justify-content: flex-end;
+  }
+  .maqasid-list li .bullet {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  /* NAZM / POEM */
+  .poem-container {
+    background: linear-gradient(135deg, #f8f9ff, #fff5ee);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    border: 2px solid rgba(162, 155, 254, 0.3);
+    width: 100%;
+  }
+  .poem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+  }
+  .poem-misra {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    line-height: 2.8;
+    padding: 8px 20px;
+    text-align: center;
+    border-bottom: 1px dashed rgba(162,155,254,0.3);
+    transition: background 0.2s;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .poem-misra:hover { background: rgba(162,155,254,0.1); }
+  .poem-misra.misra-left { border-right: 2px dashed rgba(255,159,67,0.4); }
+  .poem-read-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--purple), var(--orange));
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 24px;
+    box-shadow: 0 4px 15px rgba(162,155,254,0.4);
+    transition: transform 0.2s;
+    min-height: 48px;
+  }
+  .poem-read-btn:hover { transform: scale(1.05); }
+
+  /* ALFAZ TABLE */
+  .alfaz-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    font-size: 20px;
+  }
+  .alfaz-table th {
+    background: var(--purple);
+    color: white;
+    padding: 14px 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .alfaz-table th:first-child { border-radius: 0 12px 12px 0; }
+  .alfaz-table th:last-child  { border-radius: 12px 0 0 12px; }
+  .alfaz-table td {
+    background: white;
+    padding: 14px 20px;
+    border-top: 2px solid #f0f0f0;
+    font-size: 20px;
+    text-align: center;
+  }
+  .alfaz-table tr td:first-child { border-radius: 0 12px 12px 0; border-right: 3px solid var(--orange); }
+  .alfaz-table tr td:last-child  { border-radius: 12px 0 0 12px; }
+  .alfaz-table tr:hover td { background: #fff5ee; }
+
+  /* QUESTIONS */
+  .questions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  .question-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: var(--card-shadow);
+    border-right: 4px solid var(--teal);
+    width: 100%;
+  }
+  .question-label {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+  .question-text {
+    font-size: 22px;
+    line-height: 2;
+    margin-bottom: 16px;
+    direction: rtl;
+  }
+  .answer-input {
+    width: 100%;
+    min-height: 80px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    direction: rtl;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .answer-input:focus { outline: none; border-color: var(--teal); }
+  .check-answer-btn {
+    margin-top: 10px;
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 18px;
+    cursor: pointer;
+    min-height: 48px;
+    transition: transform 0.2s;
+  }
+  .check-answer-btn:hover { transform: scale(1.03); }
+  .answer-reveal {
+    display: none;
+    margin-top: 12px;
+    background: #f0fff8;
+    border: 1px solid var(--teal);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 20px;
+    color: #00a67e;
+    direction: rtl;
+    line-height: 2;
+  }
+  .answer-reveal.visible { display: block; }
+
+  /* ALFAZ SAZI - PUZZLE */
+  .puzzle-section { display: flex; flex-direction: column; gap: 20px; }
+  .puzzle-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .puzzle-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    min-width: 30px;
+    text-align: center;
+  }
+  .puzzle-pieces {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .puzzle-piece {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #ffe8cc, #fff5ee);
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(255,159,67,0.2);
+  }
+  .puzzle-piece:hover { background: var(--orange); color: white; transform: scale(1.1); }
+  .puzzle-result {
+    background: white;
+    border: 2px dashed var(--purple);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--purple);
+    min-width: 140px;
+    text-align: center;
+    direction: rtl;
+  }
+
+  /* HUROOF ALAG */
+  .huroof-section { display: flex; flex-direction: column; gap: 16px; }
+  .huroof-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    background: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .huroof-word {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    min-width: 80px;
+    text-align: right;
+  }
+  .huroof-boxes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .huroof-box {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--blue);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    background: #f0f8ff;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .huroof-box.hidden-letter { background: white; color: white; }
+  .huroof-box:hover { background: var(--blue); color: white; }
+  .reveal-huroof-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 18px;
+    cursor: pointer;
+    min-height: 44px;
+    transition: transform 0.2s;
+  }
+  .reveal-huroof-btn:hover { transform: scale(1.05); }
+
+  /* WORD SEARCH */
+  .wordsearch-wrap {
+    overflow-x: auto;
+    width: 100%;
+  }
+  .wordsearch-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(6, 52px);
+    gap: 4px;
+    direction: rtl;
+  }
+  .ws-cell {
+    width: 52px;
+    height: 52px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    color: var(--dark);
+  }
+  .ws-cell:hover { background: #fff5ee; border-color: var(--orange); }
+  .ws-cell.selected { background: var(--orange); color: white; border-color: var(--orange); }
+  .ws-cell.found { background: var(--teal); color: white; border-color: var(--teal); }
+  .ws-words-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+  }
+  .ws-word-badge {
+    background: white;
+    border: 2px solid var(--purple);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 20px;
+    color: var(--purple);
+    font-weight: 600;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .ws-word-badge.found { background: var(--teal); border-color: var(--teal); color: white; text-decoration: line-through; }
+
+  /* QUIZ */
+  .quiz-container { display: flex; flex-direction: column; gap: 24px; }
+  .quiz-question-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--card-shadow);
+    border-right: 4px solid var(--orange);
+    width: 100%;
+  }
+  .quiz-q-text {
+    font-size: 22px;
+    line-height: 2;
+    margin-bottom: 20px;
+    direction: rtl;
+    font-weight: 600;
+  }
+  .quiz-q-num {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 36px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 12px;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .quiz-option {
+    background: #f8f9ff;
+    border: 2px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    direction: rtl;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quiz-option:hover { border-color: var(--orange); background: #fff5ee; transform: scale(1.02); }
+  .quiz-option.correct { background: #e8fff5; border-color: var(--teal); color: #00a67e; }
+  .quiz-option.wrong { background: #fff0f3; border-color: #ff7675; color: #d63031; }
+  .quiz-feedback {
+    margin-top: 12px;
+    font-size: 20px;
+    direction: rtl;
+    display: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+  }
+  .quiz-feedback.correct { background: #e8fff5; color: #00a67e; display: block; }
+  .quiz-feedback.wrong { background: #fff0f3; color: #d63031; display: block; }
+  .quiz-score-display {
+    background: linear-gradient(135deg, var(--teal), var(--purple));
+    color: white;
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 2;
+    display: none;
+    direction: rtl;
+  }
+
+  /* WRITING SECTION */
+  .writing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--card-shadow);
+    border-right: 4px solid var(--pink);
+    width: 100%;
+  }
+  .writing-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .writing-line {
+    width: 100%;
+    min-height: 56px;
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 8px 4px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 20px;
+    direction: rtl;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .writing-line:focus { border-bottom-color: var(--pink); }
+
+  /* DESKTOP NAV */
+  .side-nav {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 500;
+    padding: 12px 8px;
+    background: white;
+    border-radius: 20px 0 0 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .nav-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    color: var(--dark);
+  }
+  .nav-dot:hover, .nav-dot.active { background: var(--orange); color: white; transform: scale(1.1); }
+  .nav-dot[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    right: 54px;
+    background: var(--dark);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* MOBILE NAV */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 900;
+    overflow-x: auto;
+    padding: 8px 12px;
+  }
+  .mobile-nav-inner {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+  }
+  .mobile-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--dark);
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 13px;
+    min-height: 56px;
+    background: #f8f9ff;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .mobile-nav-btn:hover { background: var(--orange); color: white; }
+  .mobile-nav-btn span:first-child { font-size: 22px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .side-nav { display: none; }
+    .mobile-nav { display: block; }
+    body { padding-bottom: 80px; }
+    .section-inner { padding: 0 16px; }
+    .poem-grid { grid-template-columns: 1fr; }
+    .poem-misra.misra-left { border-right: none; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .hero { min-height: 60vh; padding: 60px 16px 40px; }
+    .wordsearch-grid { grid-template-columns: repeat(6, 44px); }
+    .ws-cell { width: 44px; height: 44px; font-size: 18px; }
+    .card { padding: 20px; }
+    .poem-container { padding: 24px 16px; }
+    .lesson-section { padding: 40px 12px; }
+  }
+  @media (max-width: 480px) {
+    .wordsearch-grid { grid-template-columns: repeat(6, 38px); }
+    .ws-cell { width: 38px; height: 38px; font-size: 16px; }
+    .puzzle-piece { width: 44px; height: 44px; font-size: 18px; }
+  }
+  @media (max-width: 320px) {
+    .wordsearch-grid { grid-template-columns: repeat(6, 32px); }
+    .ws-cell { width: 32px; height: 32px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="curtain-spinner"></div>
+  <h2>سویرے اُٹھنا لوڈ ہو رہا ہے...</h2>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- DESKTOP SIDE NAV -->
+<nav class="side-nav" aria-label="Navigation">
+  <a class="nav-dot" href="#hero" title="شروع">🏠</a>
+  <a class="nav-dot" href="#maqasid" title="مقاصد">🎯</a>
+  <a class="nav-dot" href="#nazm" title="نظم">📖</a>
+  <a class="nav-dot" href="#alfaz" title="الفاظ">📝</a>
+  <a class="nav-dot" href="#sawal" title="سوالات">❓</a>
+  <a class="nav-dot" href="#alfazsazi" title="الفاظ سازی">🔤</a>
+  <a class="nav-dot" href="#wordsearch" title="الفاظ تلاش">🔍</a>
+  <a class="nav-dot" href="#quiz" title="کوئز">🏆</a>
+  <a class="nav-dot" href="#writing" title="لکھائی">✏️</a>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Mobile Navigation">
+  <div class="mobile-nav-inner">
+    <a class="mobile-nav-btn" href="#hero"><span>🏠</span><span>شروع</span></a>
+    <a class="mobile-nav-btn" href="#maqasid"><span>🎯</span><span>مقاصد</span></a>
+    <a class="mobile-nav-btn" href="#nazm"><span>📖</span><span>نظم</span></a>
+    <a class="mobile-nav-btn" href="#alfaz"><span>📝</span><span>الفاظ</span></a>
+    <a class="mobile-nav-btn" href="#sawal"><span>❓</span><span>سوالات</span></a>
+    <a class="mobile-nav-btn" href="#alfazsazi"><span>🔤</span><span>الفاظ سازی</span></a>
+    <a class="mobile-nav-btn" href="#wordsearch"><span>🔍</span><span>تلاش</span></a>
+    <a class="mobile-nav-btn" href="#quiz"><span>🏆</span><span>کوئز</span></a>
+    <a class="mobile-nav-btn" href="#writing"><span>✏️</span><span>لکھائی</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">کلاس ۲ | سبق ۱۵ | اردو</div>
+    <h1 class="hero-title">
+      <span id="hw1">سویرے</span> <span id="hw2">اُٹھنا</span>
+    </h1>
+    <p class="hero-subtitle">مولوی محمد حسین آزاد کی خوبصورت نظم</p>
+    <div class="hero-author">✍️ مولوی محمد حسین آزاد</div>
+    <!-- Calligraphic SVG decoration -->
+    <svg class="calligraphic-deco" viewBox="0 0 500 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10,30 Q50,10 100,30 Q150,50 200,30 Q250,10 300,30 Q350,50 400,30 Q450,10 490,30" stroke="white" stroke-width="2.5" fill="none" stroke-dasharray="8,4"/>
+      <circle cx="250" cy="30" r="8" fill="rgba(255,255,255,0.5)"/>
+      <circle cx="10" cy="30" r="5" fill="rgba(255,255,255,0.4)"/>
+      <circle cx="490" cy="30" r="5" fill="rgba(255,255,255,0.4)"/>
+    </svg>
+  </div>
+</section>
+
+<div class="page-container">
+
+  <!-- MAQASID -->
+  <section class="lesson-section" id="maqasid">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">مقاصد</h2>
+        <div class="section-icon" style="background:#fff5ee;">🎯</div>
+      </div>
+      <div class="card card-orange">
+        <p style="font-size:20px; line-height:2; margin-bottom:16px;">اس نظم کو پڑھنے کے بعد طلبہ اس قابل ہو جائیں گے کہ وہ:</p>
+        <ul class="maqasid-list">
+          <li>
+            <span>مناظرِ فطرت سے لطف انداوز ہو سکیں</span>
+            <span class="bullet" style="background:#fff0dd;">🌿</span>
+          </li>
+          <li>
+            <span>آہنگ اور لے سے نظم پڑھ سکیں</span>
+            <span class="bullet" style="background:#e8fff5;">🎵</span>
+          </li>
+          <li>
+            <span>سویرے اُٹھنے کی اہمیت جان سکیں</span>
+            <span class="bullet" style="background:#f0f0ff;">🌅</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAZM -->
+  <section class="lesson-section" id="nazm">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">نظم: سویرے اُٹھنا</h2>
+        <div class="section-icon" style="background:#f0f0ff;">📖</div>
+      </div>
+      <div class="poem-container">
+        <div style="text-align:center; margin-bottom:24px;">
+          <button class="poem-read-btn" id="readPoemBtn" onclick="readPoem()">
+            🔊 نظم سنیں
+          </button>
+        </div>
+        <div class="poem-grid" id="poemGrid">
+          <div class="poem-misra misra-left">عجب تھی بہار اور عجب سیر تھی</div>
+          <div class="poem-misra">سویرے جو کل آنکھ میری کھلی</div>
+
+          <div class="poem-misra misra-left">ٹھہلتا ٹھہلتا ذرا باغ چل</div>
+          <div class="poem-misra">یہی جی میں آئی کہ گھر سے نکل</div>
+
+          <div class="poem-misra misra-left">درختوں کی ہے ہر طرف اِک قطار</div>
+          <div class="poem-misra">وہاں اور ہی جاکے دیکھی بہار</div>
+
+          <div class="poem-misra misra-left">گلاب اور گیندا کہیں ہے کھلا</div>
+          <div class="poem-misra">کہیں ہے چنبیلی کہیں موتیا</div>
+
+          <div class="poem-misra misra-left">کہیں کھٹے میٹھے ہیں دیتے بہار</div>
+          <div class="poem-misra">کہیں آم ہیں اور کہیں ہیں انار</div>
+
+          <div class="poem-misra misra-left">بچھونا ہے مخمل کا گویا بچھا</div>
+          <div class="poem-misra">بیاں کیجیے کیا ہری گھاس کا</div>
+
+          <div class="poem-misra misra-left">یہ سامان سارے ہیں پیدا کیے</div>
+          <div class="poem-misra">خدا نے ہماری خوشی کے لیے</div>
+
+          <div class="poem-misra misra-left">رہے گا وہ دن بھر ہنسی اور خوشی</div>
+          <div class="poem-misra">سویرے ہی اُٹھے گا جو آدمی</div>
+
+          <div class="poem-misra misra-left">کرے گا خوشی سے ہر اک کام کو</div>
+          <div class="poem-misra">نہ آئے گی سستی کبھی نام کو</div>
+
+          <div class="poem-misra misra-left">یہ ہے سو دواوٴں سے بہتر دوا</div>
+          <div class="poem-misra">رہے گا وہ بیماریوں سے بچا</div>
+        </div>
+        <div style="text-align:center; margin-top:24px; color:var(--purple); font-size:20px; font-weight:600;">
+          (مولوی محمد حسین آزاد)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALFAZ / VOCABULARY -->
+  <section class="lesson-section" id="alfaz">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">الفاظ اور معنی</h2>
+        <div class="section-icon" style="background:#e8fff5;">📝</div>
+      </div>
+      <div class="card card-teal">
+        <div style="overflow-x:auto;">
+          <table class="alfaz-table">
+            <thead>
+              <tr>
+                <th>معنی</th>
+                <th>الفاظ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>انوکھا، نرالا</td>
+                <td>عجب</td>
+              </tr>
+              <tr>
+                <td>نرم کپڑا</td>
+                <td>مخمل</td>
+              </tr>
+              <tr>
+                <td>صبح</td>
+                <td>سویرے</td>
+              </tr>
+              <tr>
+                <td>گھومنا پھرنا</td>
+                <td>سیر</td>
+              </tr>
+              <tr>
+                <td>خوشبو دار پھول</td>
+                <td>چنبیلی</td>
+              </tr>
+              <tr>
+                <td>سفید خوبصورت پھول</td>
+                <td>موتیا</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAWALAT -->
+  <section class="lesson-section" id="sawal">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">سوالات کے جوابات</h2>
+        <div class="section-icon" style="background:#ffe8f5;">❓</div>
+      </div>
+      <div class="questions-grid">
+
+        <div class="question-card">
+          <div class="question-label">سوال ۱</div>
+          <div class="question-text">باغ کا نظارا اپنے الفاظ میں بتائیں؟</div>
+          <textarea class="answer-input" placeholder="یہاں جواب لکھیں..."></textarea>
+          <button class="check-answer-btn" onclick="showAnswer(this)">جواب دیکھیں ✓</button>
+          <div class="answer-reveal">باغ میں ہر طرف درختوں کی قطاریں تھیں۔ گلاب، گیندا، چنبیلی اور موتیا کے پھول کھلے تھے۔ آم اور انار کے پھل بھی تھے۔ سبز گھاس مخمل جیسی بچھی ہوئی تھی۔</div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-label">سوال ۲</div>
+          <div class="question-text">نظم میں کن پھولوں کے نام آئے ہیں؟</div>
+          <textarea class="answer-input" placeholder="یہاں جواب لکھیں..."></textarea>
+          <button class="check-answer-btn" onclick="showAnswer(this)">جواب دیکھیں ✓</button>
+          <div class="answer-reveal">نظم میں یہ پھول آئے ہیں: گلاب، گیندا، چنبیلی اور موتیا۔</div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-label">سوال ۳</div>
+          <div class="question-text">صبح سویرے اُٹھنے سے دن کیسے گزرتا ہے؟</div>
+          <textarea class="answer-input" placeholder="یہاں جواب لکھیں..."></textarea>
+          <button class="check-answer-btn" onclick="showAnswer(this)">جواب دیکھیں ✓</button>
+          <div class="answer-reveal">صبح سویرے اُٹھنے سے دن بھر ہنسی اور خوشی رہتی ہے۔ ہر کام خوشی سے ہوتا ہے اور سستی نہیں آتی۔</div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-label">سوال ۴</div>
+          <div class="question-text">باغ میں موجود تین پھل دار درختوں کے نام بتائیں؟</div>
+          <textarea class="answer-input" placeholder="یہاں جواب لکھیں..."></textarea>
+          <button class="check-answer-btn" onclick="showAnswer(this)">جواب دیکھیں ✓</button>
+          <div class="answer-reveal">نظم میں آم اور انار کا ذکر ہے۔ آم، انار اور کھٹے میٹھے پھل دار درخت باغ میں موجود تھے۔</div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-label">سوال ۵</div>
+          <div class="question-text">صبح سویرے اُٹھنے کے کیا فائدے ہیں؟</div>
+          <textarea class="answer-input" placeholder="یہاں جواب لکھیں..."></textarea>
+          <button class="check-answer-btn" onclick="showAnswer(this)">جواب دیکھیں ✓</button>
+          <div class="answer-reveal">صبح سویرے اُٹھنے کے فائدے: دن بھر خوش رہیں، ہر کام خوشی سے کریں، سستی نہ آئے، اور یہ سو دواؤں سے بہتر دوا ہے۔ بیماریوں سے بھی بچاؤ ہوتا ہے۔</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ALFAZ SAZI -->
+  <section class="lesson-section" id="alfazsazi">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">الفاظ سازی</h2>
+        <div class="section-icon" style="background:#fff0f8;">🔤</div>
+      </div>
+
+      <!-- Puzzle Section -->
+      <div class="card card-purple" style="margin-bottom:24px;">
+        <h3 style="font-size:clamp(1.4rem,2.5vw,1.8rem); margin-bottom:20px; color:var(--purple);">ملا کر الفاظ لکھیں اور درست املا سیکھیں</h3>
+        <div class="puzzle-section" id="puzzleSection">
+
+          <div class="puzzle-row">
+            <div class="puzzle-label">۱</div>
+            <div class="puzzle-result" id="pr1">---</div>
+            <div style="font-size:18px; color:#888;">←</div>
+            <div class="puzzle-pieces">
+              <div class="puzzle-piece" onclick="addToPuzzle('pr1','س')">س</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr1','و')">و</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr1','ی')">ی</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr1','ر')">ر</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr1','ے')">ے</div>
+            </div>
+            <button onclick="resetPuzzle('pr1')" style="background:var(--pink);color:white;border:none;padding:8px 16px;border-radius:20px;font-size:16px;cursor:pointer;min-height:44px;">ری سیٹ</button>
+          </div>
+
+          <div class="puzzle-row">
+            <div class="puzzle-label">۲</div>
+            <div class="puzzle-result" id="pr2">---</div>
+            <div style="font-size:18px; color:#888;">←</div>
+            <div class="puzzle-pieces">
+              <div class="puzzle-piece" onclick="addToPuzzle('pr2','ٹ')">ٹ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr2','ہ')">ہ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr2','ل')">ل</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr2','ت')">ت</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr2','ا')">ا</div>
+            </div>
+            <button onclick="resetPuzzle('pr2')" style="background:var(--pink);color:white;border:none;padding:8px 16px;border-radius:20px;font-size:16px;cursor:pointer;min-height:44px;">ری سیٹ</button>
+          </div>
+
+          <div class="puzzle-row">
+            <div class="puzzle-label">۳</div>
+            <div class="puzzle-result" id="pr3">---</div>
+            <div style="font-size:18px; color:#888;">←</div>
+            <div class="puzzle-pieces">
+              <div class="puzzle-piece" onclick="addToPuzzle('pr3','ک')">ک</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr3','ھ')">ھ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr3','ٹ')">ٹ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr3','ٹ')">ٹ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr3','ے')">ے</div>
+            </div>
+            <button onclick="resetPuzzle('pr3')" style="background:var(--pink);color:white;border:none;padding:8px 16px;border-radius:20px;font-size:16px;cursor:pointer;min-height:44px;">ری سیٹ</button>
+          </div>
+
+          <div class="puzzle-row">
+            <div class="puzzle-label">۴</div>
+            <div class="puzzle-result" id="pr4">---</div>
+            <div style="font-size:18px; color:#888;">←</div>
+            <div class="puzzle-pieces">
+              <div class="puzzle-piece" onclick="addToPuzzle('pr4','خ')">خ</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr4','و')">و</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr4','ش')">ش</div>
+              <div class="puzzle-piece" onclick="addToPuzzle('pr4','ی')">ی</div>
+            </div>
+            <button onclick="resetPuzzle('pr4')" style="background:var(--pink);color:white;border:none;padding:8px 16px;border-radius:20px;font-size:16px;cursor:pointer;min-height:44px;">ری سیٹ</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Huroof Alag -->
+      <div class="card card-blue">
+        <h3 style="font-size:clamp(1.4rem,2.5vw,1.8rem); margin-bottom:20px; color:var(--blue);">ان الفاظ کے حروف الگ کر کے لکھیں</h3>
+        <div class="huroof-section">
+
+          <div class="huroof-row">
+            <button class="reveal-huroof-btn" onclick="revealHuroof(this, ['ہ','ن','س','ی'])">دیکھیں</button>
+            <div class="huroof-boxes">
+              <div class="huroof-box hidden-letter" data-letter="ہ">ہ</div>
+              <div class="huroof-box hidden-letter" data-letter="ن">ن</div>
+              <div class="huroof-box hidden-letter" data-letter="س">س</div>
+              <div class="huroof-box hidden-letter" data-letter="ی">ی</div>
+            </div>
+            <div class="huroof-word">ہنسی</div>
+          </div>
+
+          <div class="huroof-row">
+            <button class="reveal-huroof-btn" onclick="revealHuroof(this, ['م','خ','م','ل'])">دیکھیں</button>
+            <div class="huroof-boxes">
+              <div class="huroof-box hidden-letter" data-letter="م">م</div>
+              <div class="huroof-box hidden-letter" data-letter="خ">خ</div>
+              <div class="huroof-box hidden-letter" data-letter="م">م</div>
+              <div class="huroof-box hidden-letter" data-letter="ل">ل</div>
+            </div>
+            <div class="huroof-word">مخمل</div>
+          </div>
+
+          <div class="huroof-row">
+            <button class="reveal-huroof-btn" onclick="revealHuroof(this, ['د','و','ا','و','ئ','و','ں'])">دیکھیں</button>
+            <div class="huroof-boxes">
+              <div class="huroof-box hidden-letter" data-letter="د">د</div>
+              <div class="huroof-box hidden-letter" data-letter="و">و</div>
+              <div class="huroof-box hidden-letter" data-letter="ا">ا</div>
+              <div class="huroof-box hidden-letter" data-letter="و">و</div>
+              <div class="huroof-box hidden-letter" data-letter="ئ">ئ</div>
+              <div class="huroof-box hidden-letter" data-letter="و">و</div>
+              <div class="huroof-box hidden-letter" data-letter="ں">ں</div>
+            </div>
+            <div class="huroof-word">دواؤں</div>
+          </div>
+
+          <div class="huroof-row">
+            <button class="reveal-huroof-btn" onclick="revealHuroof(this, ['م','ی','ٹ','ھ','ے'])">دیکھیں</button>
+            <div class="huroof-boxes">
+              <div class="huroof-box hidden-letter" data-letter="م">م</div>
+              <div class="huroof-box hidden-letter" data-letter="ی">ی</div>
+              <div class="huroof-box hidden-letter" data-letter="ٹ">ٹ</div>
+              <div class="huroof-box hidden-letter" data-letter="ھ">ھ</div>
+              <div class="huroof-box hidden-letter" data-letter="ے">ے</div>
+            </div>
+            <div class="huroof-word">میٹھے</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORD SEARCH -->
+  <section class="lesson-section" id="wordsearch">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">الفاظ تلاش کریں</h2>
+        <div class="section-icon" style="background:#fff5ee;">🔍</div>
+      </div>
+      <div class="card card-orange">
+        <p style="font-size:20px; margin-bottom:20px; line-height:2; color:#666;">نیچے دی گئی گرڈ میں الفاظ تلاش کر کے رنگ بھریں۔ ایک لفظ پر کلک کریں اور الفاظ ڈھونڈیں۔</p>
+        <div class="wordsearch-wrap">
+          <div class="wordsearch-grid" id="wsGrid"></div>
+        </div>
+        <div class="ws-words-list" id="wsWordsList"></div>
+        <div id="wsScore" style="text-align:center; margin-top:20px; font-size:22px; font-weight:700; color:var(--teal); display:none;">
+          🎉 شاباش! آپ نے تمام الفاظ تلاش کر لیے!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="lesson-section" id="quiz">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">کوئز</h2>
+        <div class="section-icon" style="background:#e8fff5;">🏆</div>
+      </div>
+      <div class="quiz-container" id="quizContainer"></div>
+      <div class="quiz-score-display" id="quizScore"></div>
+      <div style="text-align:center; margin-top:24px;">
+        <button id="submitQuizBtn" onclick="submitQuiz()" style="background:linear-gradient(135deg,var(--orange),var(--purple));color:white;border:none;padding:16px 40px;border-radius:30px;font-family:'Noto Nastaliq Urdu',serif;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(255,159,67,0.4);min-height:60px;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          نتیجہ دیکھیں 🏆
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="lesson-section" id="writing">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">لکھائی کی مہارت</h2>
+        <div class="section-icon" style="background:#fff0f8;">✏️</div>
+      </div>
+      <div class="writing-card">
+        <p style="font-size:22px; line-height:2; color:var(--dark); font-weight:600;">باغ کی سیر دس جملے لکھیں</p>
+        <p style="font-size:18px; color:#666; margin-bottom:4px; direction:rtl;">باغ میں آپ نے کیا دیکھا؟ اپنے خیالات لکھیں۔</p>
+        <div class="writing-lines" id="writingLines"></div>
+        <div style="text-align:center; margin-top:20px;">
+          <button onclick="clearWriting()" style="background:var(--purple);color:white;border:none;padding:12px 28px;border-radius:20px;font-family:'Noto Nastaliq Urdu',serif;font-size:18px;cursor:pointer;min-height:48px;margin-left:12px;">صاف کریں</button>
+          <button onclick="saveWriting()" style="background:var(--teal);color:white;border:none;padding:12px 28px;border-radius:20px;font-family:'Noto Nastaliq Urdu',serif;font-size:18px;cursor:pointer;min-height:48px;">محفوظ کریں ✓</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-container -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // === LENIS SMOOTH SCROLL ===
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, smooth: true });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        }
+      } catch(e) {}
+    }
+  } catch(e) { console.warn('Lenis init failed:', e); }
+
+  // === PROGRESS BAR ===
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? Math.round((scrollTop / docH) * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // === GSAP ANIMATIONS ===
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  try {
+    if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+
+      // Hero title animation
+      const words = ['hw1', 'hw2'];
+      words.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) {
+          gsap.from(el, {
+            opacity: 0, y: 40, duration: 0.8,
+            delay: 0.5 + i * 0.3, ease: 'back.out(1.7)'
+          });
+        }
+      });
+
+      // ScrollTrigger for cards
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.card, .poem-container, .question-card, .huroof-row, .quiz-question-card, .writing-card').forEach((el) => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+            opacity: 0, y: 40, duration: 0.6, ease: 'power2.out'
+          });
+        });
+      }
+
+      // Curtain out with GSAP
+      gsap.to('#curtain', {
+        opacity: 0, duration: 0.8, delay: 0.5,
+        onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+
+    } else {
+      // No GSAP: just hide curtain
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // === READ POEM ===
+  window.readPoem = function() {
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const poemText = `سویرے جو کل آنکھ میری کھلی۔ عجب تھی بہار اور عجب سیر تھی۔
+یہی جی میں آئی کہ گھر سے نکل۔ ٹھہلتا ٹھہلتا ذرا باغ چل۔
+وہاں اور ہی جاکے دیکھی بہار۔ درختوں کی ہے ہر طرف اِک قطار۔
+کہیں ہے چنبیلی کہیں موتیا۔ گلاب اور گیندا کہیں ہے کھلا۔
+کہیں آم ہیں اور کہیں ہیں انار۔ کہیں کھٹے میٹھے ہیں دیتے بہار۔
+بیاں کیجیے کیا ہری گھاس کا۔ بچھونا ہے مخمل کا گویا بچھا۔
+خدا نے ہماری خوشی کے لیے۔ یہ سامان سارے ہیں پیدا کیے۔
+سویرے ہی اُٹھے گا جو آدمی۔ رہے گا وہ دن بھر ہنسی اور خوشی۔
+نہ آئے گی سستی کبھی نام کو۔ کرے گا خوشی سے ہر اک کام کو۔
+رہے گا وہ بیماریوں سے بچا۔ یہ ہے سو دواوٴں سے بہتر دوا۔`;
+        const utt = new SpeechSynthesisUtterance(poemText);
+        utt.lang = 'ur-PK';
+        utt.rate = 0.85;
+        utt.pitch = 1.1;
+        const voices = window.speechSynthesis.getVoices();
+        const urVoice = voices.find(v => v.lang.includes('ur') || v.lang.includes('hi'));
+        if (urVoice) utt.voice = urVoice;
+        window.speechSynthesis.speak(utt);
+        const btn = document.getElementById('readPoemBtn');
+        if (btn) {
+          btn.textContent = '⏸ رک جائیں';
+          btn.onclick = () => { window.speechSynthesis.cancel(); btn.textContent = '🔊 نظم سنیں'; btn.onclick = readPoem; };
+          utt.onend = () => { btn.textContent = '🔊 نظم سنیں'; btn.onclick = readPoem; };
+        }
+      } else {
+        alert('آپ کا براؤزر آواز کی سہولت نہیں دیتا۔');
+      }
+    } catch(e) { console.warn('Speech error:', e); }
+  };
+
+  // Load voices
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+  }
+
+  // === SHOW ANSWER ===
+  window.showAnswer = function(btn) {
+    const reveal = btn.nextElementSibling;
+    if (reveal) {
+      reveal.classList.toggle('visible');
+      try {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion && reveal.classList.contains('visible')) {
+          gsap.from(reveal, { opacity: 0, y: -10, duration: 0.4 });
+        }
+      } catch(e) {}
+      btn.textContent = reveal.classList.contains('visible') ? 'چھپائیں ✕' : 'جواب دیکھیں ✓';
+    }
+  };
+
+  // === PUZZLE ===
+  const puzzleState = { pr1: '', pr2: '', pr3: '', pr4: '' };
+  const puzzleTargets = { pr1: 'سویرے', pr2: 'ٹھہلتا', pr3: 'کھٹے', pr4: 'خوشی' };
+
+  window.addToPuzzle = function(id, letter) {
+    puzzleState[id] += letter;
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = puzzleState[id];
+      const correct = puzzleTargets[id];
+      if (puzzleState[id] === correct) {
+        el.style.background = '#e8fff5';
+        el.style.borderColor = 'var(--teal)';
+        el.style.color = '#00a67e';
+        try {
+          if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+            gsap.to(el, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 });
+          }
+        } catch(e) {}
+      }
+    }
+  };
+
+  window.resetPuzzle = function(id) {
+    puzzleState[id] = '';
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = '---';
+      el.style.background = '';
+      el.style.borderColor = '';
+      el.style.color = 'var(--purple)';
+    }
+  };
+
+  // === HUROOF ALAG ===
+  window.revealHuroof = function(btn, letters) {
+    const row = btn.closest('.huroof-row');
+    const boxes = row.querySelectorAll('.huroof-box.hidden-letter');
+    boxes.forEach((box, i) => {
+      box.classList.remove('hidden-letter');
+      box.style.color = 'var(--dark)';
+      try {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+          gsap.from(box, { opacity: 0, scale: 0.5, duration: 0.3, delay: i * 0.08 });
+        }
+      } catch(e) {}
+    });
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+  };
+
+  // === WORD SEARCH ===
+  const wsGridData = [
+    ['گ','ک','ب','ہ','ا','ر'],
+    ['س','ی','ر','ل','ن','ب'],
+    ['ل','س','د','گ','ا','م'],
+    ['ا','ش','ا','م','س','ڑ'],
+    ['ھ','ن','و','ب','ج','غ'],
+    ['و','ت','ص','ا','پ','ت'],
+    ['خ','و','ش','ی','ی','ط'],
+    ['س','ٹ','ی','س','و','ی'],
+    ['ر','ے','ص','ب','ح','ا']
+  ];
+
+  const wsWords = [
+    { word: 'گلاب', cells: [] },
+    { word: 'بہار', cells: [] },
+    { word: 'باغ', cells: [] },
+    { word: 'خوشی', cells: [] },
+    { word: 'سویرے', cells: [] },
+    { word: 'صبح', cells: [] },
+    { word: 'گھاس', cells: [] },
+    { word: 'سیر', cells: [] },
+    { word: 'موتیا', cells: [] },
+    { word: 'سستی', cells: [] }
+  ];
+
+  const wsContainer = document.getElementById('wsGrid');
+  const wsWordsList = document.getElementById('wsWordsList');
+  let selectedCells = [];
+  let foundWords = 0;
+
+  if (wsContainer) {
+    let cellCount = 0;
+    wsGridData.forEach((row, ri) => {
+      row.forEach((letter, ci) => {
+        const cell = document.createElement('div');
+        cell.className = 'ws-cell';
+        cell.textContent = letter;
+        cell.dataset.row = ri;
+        cell.dataset.col = ci;
+        cell.addEventListener('click', () => toggleWSCell(cell));
+        wsContainer.appendChild(cell);
+        cellCount++;
+      });
+    });
+  }
+
+  if (wsWordsList) {
+    wsWords.forEach((w) => {
+      const badge = document.createElement('div');
+      badge.className = 'ws-word-badge';
+      badge.id = 'wsbadge-' + w.word;
+      badge.textContent = w.word;
+      wsWordsList.appendChild(badge);
+    });
+  }
+
+  function toggleWSCell(cell) {
+    if (cell.classList.contains('found')) return;
+    if (cell.classList.contains('selected')) {
+      cell.classList.remove('selected');
+      selectedCells = selectedCells.filter(c => c !== cell);
+    } else {
+      cell.classList.add('selected');
+      selectedCells.push(cell);
+      checkWSWord();
+    }
+  }
+
+  function checkWSWord() {
+    const selectedText = selectedCells.map(c => c.textContent).join('');
+    const found = wsWords.find(w => w.word === selectedText || [...w.word].reverse().join('') === selectedText);
+    if (found) {
+      selectedCells.forEach(c => { c.classList.remove('selected'); c.classList.add('found'); });
+      selectedCells = [];
+      foundWords++;
+      const badge = document.getElementById('wsbadge-' + found.word);
+      if (badge) badge.classList.add('found');
+      if (foundWords >= wsWords.length) {
+        const sc = document.getElementById('wsScore');
+        if (sc) { sc.style.display = 'block'; }
+      }
+    } else if (selectedCells.length >= 8) {
+      selectedCells.forEach(c => c.classList.remove('selected'));
+      selectedCells = [];
+    }
+  }
+
+  // === QUIZ ===
+  const quizData = [
+    {
+      q: 'نظم میں کون سا پھول پہلے آیا ہے؟',
+      opts: ['گلاب', 'موتیا'],
+      correct: 0
+    },
+    {
+      q: 'صبح سویرے اُٹھنے سے آدمی کیسے رہتا ہے؟',
+      opts: ['اداس اور سست', 'ہنسی اور خوشی سے'],
+      correct: 1
+    },
+    {
+      q: 'باغ میں گھاس کو کس چیز سے تشبیہ دی گئی ہے؟',
+      opts: ['مخمل', 'ریشم'],
+      correct: 0
+    },
+    {
+      q: 'نظم کے مطابق یہ سامان کس نے پیدا کیا؟',
+      opts: ['انسان نے', 'خدا نے'],
+      correct: 1
+    },
+    {
+      q: 'اس نظم کے شاعر کون ہیں؟',
+      opts: ['علامہ اقبال', 'مولوی محمد حسین آزاد'],
+      correct: 1
+    },
+    {
+      q: 'سویرے اُٹھنا کس سے بہتر دوا ہے؟',
+      opts: ['سو دواؤں', 'دس دواؤں'],
+      correct: 0
+    }
+  ];
+
+  const quizContainer = document.getElementById('quizContainer');
+  if (quizContainer) {
+    quizData.forEach((q, qi) => {
+      const card = document.createElement('div');
+      card.className = 'quiz-question-card';
+      card.innerHTML = `
+        <div class="quiz-q-text">
+          <span class="quiz-q-num">${qi + 1}</span>
+          ${q.q}
+        </div>
+        <div class="quiz-options">
+          ${q.opts.map((opt, oi) => `
+            <button class="quiz-option" onclick="selectQuizOption(this, ${qi}, ${oi})" data-qi="${qi}" data-oi="${oi}">
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="qfeed-${qi}"></div>
+      `;
+      quizContainer.appendChild(card);
+    });
+  }
+
+  const userAnswers = {};
+  window.selectQuizOption = function(btn, qi, oi) {
+    const card = btn.closest('.quiz-question-card');
+    card.querySelectorAll('.quiz-option').forEach(b => {
+      b.classList.remove('correct', 'wrong');
+      b.disabled = false;
+    });
+    userAnswers[qi] = oi;
+    btn.classList.add(oi === quizData[qi].correct ? 'correct' : 'wrong');
+    try {
+      if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+        if (oi === quizData[qi].correct) {
+          gsap.to(btn, { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 });
+        } else {
+          gsap.to(btn, { rotation: -5, duration: 0.05, yoyo: true, repeat: 7, ease: 'power1.inOut', onComplete: () => gsap.set(btn, { rotation: 0 }) });
+        }
+      }
+    } catch(e) {}
+  };
+
+  window.submitQuiz = function() {
+    let score = 0;
+    quizData.forEach((q, qi) => {
+      const ua = userAnswers[qi];
+      const feed = document.getElementById('qfeed-' + qi);
+      if (ua === undefined) {
+        if (feed) { feed.className = 'quiz-feedback wrong'; feed.textContent = '❌ جواب نہیں دیا'; feed.style.display = 'block'; }
+      } else if (ua === q.correct) {
+        score++;
+        if (feed) { feed.className = 'quiz-feedback correct'; feed.textContent = '✅ صحیح جواب!'; feed.style.display = 'block'; }
+      } else {
+        if (feed) { feed.className = 'quiz-feedback wrong'; feed.textContent = `❌ غلط! صحیح جواب: ${q.opts[q.correct]}`; feed.style.display = 'block'; }
+      }
+    });
+    const sc = document.getElementById('quizScore');
+    if (sc) {
+      sc.style.display = 'block';
+      const pct = Math.round((score / quizData.length) * 100);
+      let msg = score >= 5 ? '🌟 بہت شاباش! آپ بہت ہوشیار ہیں!' : score >= 3 ? '👍 اچھا کیا! تھوڑی اور مشق کریں' : '💪 محنت جاری رکھیں!';
+      sc.innerHTML = `<div style="font-size:clamp(1.4rem,3vw,2rem); font-weight:700; margin-bottom:12px;">${msg}</div>
+        <div>آپ کا سکور: <strong>${score} / ${quizData.length}</strong> (${pct}%)</div>`;
+      try {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+          gsap.from(sc, { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(1.7)' });
+        }
+      } catch(e) {}
+    }
+    const btn = document.getElementById('submitQuizBtn');
+    if (btn) btn.style.display = 'none';
+  };
+
+  // === WRITING SECTION ===
+  const writingContainer = document.getElementById('writingLines');
+  if (writingContainer) {
+    for (let i = 0; i < 10; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'writing-line';
+      input.placeholder = `جملہ ${i + 1}...`;
+      input.dir = 'rtl';
+      writingContainer.appendChild(input);
+    }
+  }
+
+  window.clearWriting = function() {
+    document.querySelectorAll('.writing-line').forEach(el => el.value = '');
+  };
+
+  window.saveWriting = function() {
+    const lines = Array.from(document.querySelectorAll('.writing-line')).map(el => el.value).filter(v => v.trim());
+    if (lines.length === 0) { alert('پہلے کچھ لکھیں!'); return; }
+    alert(`✅ آپ کے ${lines.length} جملے محفوظ ہو گئے! شاباش!`);
+  };
+
+  // === ACTIVE NAV DOTS ===
+  const sections = document.querySelectorAll('section[id]');
+  const navDots = document.querySelectorAll('.nav-dot');
+  const observer2 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navDots.forEach(d => d.classList.remove('active'));
+        const active = document.querySelector(`.nav-dot[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer2.observe(s));
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Addition – Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;font-size:18px;background:#FAFAFA;color:#2d3436;scroll-behavior:auto;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--card-shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,0.95);padding:8px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+#progress-label{font-size:14px;font-weight:700;color:var(--dark);white-space:nowrap}
+#progress-track{flex:1;height:10px;background:#e0e0e0;border-radius:10px;overflow:hidden}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--orange));border-radius:10px;transition:width 0.4s ease}
+#progress-pct{font-size:14px;font-weight:800;color:var(--orange);white-space:nowrap}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#1DD1A1;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-title{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff}
+#curtain .c-sub{font-size:18px;color:rgba(255,255,255,0.85);font-weight:600}
+.c-spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HERO */
+.hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#1DD1A1 0%,#00b894 60%,#A29BFE 100%);display:flex;align-items:center;justify-content:center;padding:100px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero-bg-circle{position:absolute;border-radius:50%;opacity:0.12}
+.hero-bg-circle.c1{width:400px;height:400px;background:#fff;top:-100px;left:-80px}
+.hero-bg-circle.c2{width:300px;height:300px;background:#FF9F43;bottom:-60px;right:-40px}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-block;background:var(--orange);color:#fff;font-size:14px;font-weight:800;padding:6px 18px;border-radius:30px;margin-bottom:20px;letter-spacing:1px}
+.hero-title{font-size:clamp(3rem,8vw,5.5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px}
+.hero-title span{display:inline-block;opacity:1}
+.hero-subtitle{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.9);font-weight:600;max-width:600px;margin:0 auto 28px}
+.hero-emoji{font-size:clamp(3rem,8vw,5rem);margin-bottom:12px;display:block}
+
+/* SECTIONS */
+.page-wrap{width:100%;max-width:100%}
+.section{width:100%;padding:60px 0}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-left:20px;border-left:4px solid var(--teal)}
+.section-header.orange{border-left-color:var(--orange)}
+.section-header.purple{border-left-color:var(--purple)}
+.section-icon{font-size:2.2rem;line-height:1}
+.section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:var(--dark)}
+.section-subtitle{font-size:18px;color:#636e72;font-weight:600;margin-top:4px}
+
+/* CARDS */
+.card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:32px;width:100%;opacity:1;transform:none}
+.card+.card{margin-top:24px}
+
+/* CONCEPT BOX */
+.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.concept-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:28px;border-top:4px solid var(--teal);opacity:1;transform:none}
+.concept-card.orange{border-top-color:var(--orange)}
+.concept-card.purple{border-top-color:var(--purple)}
+.concept-card h3{font-size:clamp(1.2rem,2vw,1.5rem);font-weight:800;margin-bottom:12px}
+.concept-card p{font-size:18px;line-height:1.7;color:#636e72}
+
+/* BLACKBOARD */
+.blackboard{background:#2d6a4f;border:8px solid #8B5E3C;border-radius:16px;padding:32px;text-align:center;color:#fff;font-size:clamp(2rem,6vw,4rem);font-weight:900;margin:24px auto;max-width:500px}
+.blackboard .arrow-up{color:var(--orange);font-size:clamp(1.8rem,5vw,3rem);display:block;margin-top:8px}
+
+/* ADDITION TABLE */
+.addition-table-wrap{overflow-x:auto}
+table.addition-table{width:100%;border-collapse:collapse;font-size:18px}
+table.addition-table th{background:var(--teal);color:#fff;padding:14px 18px;font-weight:800;border-radius:0;text-align:center}
+table.addition-table th:first-child{border-radius:12px 0 0 0}
+table.addition-table th:last-child{border-radius:0 12px 0 0}
+table.addition-table td{padding:12px 18px;text-align:center;border-bottom:1px solid #f0f0f0;font-size:18px}
+table.addition-table tr:nth-child(even) td{background:#f8f9fa}
+table.addition-table .result-td{font-weight:900;color:var(--orange);font-size:20px}
+
+/* PLACE VALUE ADDITION */
+.pv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.pv-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:24px;text-align:center;opacity:1;transform:none}
+.pv-card .pv-title{font-size:14px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.pv-table{width:100%;border-collapse:collapse;font-size:20px;font-weight:800}
+.pv-table th{color:var(--orange);font-size:18px;padding:6px;border-bottom:2px solid #f0f0f0}
+.pv-table td{padding:8px 4px;font-size:22px;color:var(--dark)}
+.pv-table .plus-row td{color:var(--purple);border-top:2px solid var(--dark);border-bottom:none;padding-top:10px}
+.pv-table .result-row td{color:var(--teal);font-weight:900;font-size:24px;border-top:3px double var(--dark)}
+
+/* INTERACTIVE PRACTICE */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.practice-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:20px;text-align:center;opacity:1;transform:none}
+.practice-card .pc-label{font-size:13px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.practice-card .pc-sum{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:900;color:var(--dark);margin-bottom:12px;line-height:1.5}
+.practice-card input{width:90px;border:3px solid #dfe6e9;border-radius:12px;padding:8px 12px;font-size:22px;font-weight:800;text-align:center;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s}
+.practice-card input:focus{border-color:var(--teal)}
+.practice-card input.correct{border-color:var(--teal);background:#f0fff4}
+.practice-card input.wrong{border-color:#ff7675;background:#fff5f5}
+.check-btn{margin-top:10px;background:var(--orange);color:#fff;border:none;padding:8px 18px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.15s}
+.check-btn:hover{transform:scale(1.05)}
+.feedback{font-size:16px;font-weight:700;margin-top:8px;min-height:24px}
+
+/* WORD PROBLEMS */
+.wp-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:32px;margin-bottom:24px;border-left:4px solid var(--orange);opacity:1;transform:none}
+.wp-card .wp-question{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:20px;line-height:1.6}
+.wp-card .wp-board{background:#2d6a4f;border:6px solid #8B5E3C;border-radius:12px;padding:20px;margin:0 auto 20px;max-width:320px}
+.wp-board table{width:100%;color:#fff;font-size:22px;font-weight:900;text-align:center}
+.wp-board table td{padding:4px 8px}
+.wp-board .top-row td{border-bottom:2px solid rgba(255,255,255,0.3)}
+.wp-board .plus-cell{color:var(--orange);font-size:28px}
+.wp-board .result-row td{border-top:3px solid #fff;color:#1DD1A1;font-size:26px}
+.wp-answer-box{background:#f8f9fa;border-radius:12px;padding:14px 20px;font-size:18px;font-weight:700;display:flex;align-items:center;gap:12px}
+.wp-answer-box input{border:3px solid #dfe6e9;border-radius:10px;padding:6px 14px;font-size:20px;font-weight:800;text-align:center;font-family:'Nunito',sans-serif;outline:none;width:100px;transition:border-color 0.2s}
+.wp-answer-box input.correct{border-color:var(--teal);background:#f0fff4}
+.wp-answer-box input.wrong{border-color:#ff7675;background:#fff5f5}
+.wp-check-btn{background:var(--teal);color:#fff;border:none;padding:8px 20px;border-radius:10px;font-size:17px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.15s}
+.wp-check-btn:hover{transform:scale(1.05)}
+.wp-feedback{font-size:18px;font-weight:800;margin-top:10px;min-height:26px}
+
+/* READ ALOUD */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;padding:10px 22px;border-radius:30px;font-size:17px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:16px;transition:transform 0.15s}
+.read-aloud-btn:hover{transform:scale(1.04)}
+.read-aloud-btn svg{width:20px;height:20px;fill:#fff}
+
+/* QUIZ */
+.quiz-section{background:linear-gradient(135deg,#f8f9ff 0%,#fff3e6 100%);padding:60px 0}
+.quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.quiz-counter{font-size:18px;font-weight:800;color:var(--purple)}
+.quiz-score{font-size:18px;font-weight:800;color:var(--orange)}
+.quiz-question-card{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:36px;margin-bottom:24px}
+.quiz-q-text{font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:800;color:var(--dark);margin-bottom:24px;line-height:1.5}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quiz-opt{background:#f8f9fa;border:3px solid #e0e0e0;border-radius:16px;padding:18px 24px;font-size:20px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--dark);transition:all 0.18s;min-height:64px;display:flex;align-items:center;justify-content:center}
+.quiz-opt:hover{border-color:var(--teal);background:#f0fff9}
+.quiz-opt.selected-correct{background:#f0fff4;border-color:var(--teal);color:#00b894}
+.quiz-opt.selected-wrong{background:#fff0f0;border-color:#ff7675;color:#d63031}
+.quiz-opt:disabled{cursor:default}
+.quiz-next-btn{background:var(--orange);color:#fff;border:none;padding:14px 36px;border-radius:16px;font-size:20px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:16px;transition:transform 0.15s;display:none}
+.quiz-next-btn:hover{transform:scale(1.04)}
+.quiz-result{background:#fff;border-radius:20px;box-shadow:var(--card-shadow);padding:40px;text-align:center;display:none}
+.quiz-result .result-emoji{font-size:5rem;margin-bottom:16px}
+.quiz-result h3{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--dark);margin-bottom:12px}
+.quiz-result p{font-size:20px;color:#636e72;font-weight:600}
+.quiz-restart-btn{margin-top:24px;background:var(--teal);color:#fff;border:none;padding:14px 36px;border-radius:16px;font-size:20px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.15s}
+.quiz-restart-btn:hover{transform:scale(1.04)}
+
+/* STEPS CARD */
+.steps-list{list-style:none;counter-reset:steps}
+.steps-list li{counter-increment:steps;display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid #f0f0f0;font-size:18px;line-height:1.6}
+.steps-list li:last-child{border-bottom:none}
+.steps-list li::before{content:counter(steps);min-width:36px;height:36px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex-shrink:0}
+
+/* BOTTOM NAV MOBILE */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #f0f0f0;z-index:9998;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.bottom-nav-inner{display:flex;padding:8px 12px;gap:8px;min-width:max-content}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:800;color:var(--dark);text-decoration:none;min-height:52px;justify-content:center;white-space:nowrap}
+.bottom-nav a.active,.bottom-nav a:hover{background:var(--teal);color:#fff}
+
+/* ANIMATIONS - Canvas */
+.canvas-container{width:100%;border-radius:20px;overflow:hidden}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{min-height:60vh;padding:80px 20px 40px}
+  .container{padding:0 16px}
+  .concept-grid{grid-template-columns:1fr}
+  .pv-grid{grid-template-columns:1fr 1fr}
+  .practice-grid{grid-template-columns:1fr 1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .section{padding:40px 0}
+  .card{padding:20px}
+  .wp-card{padding:20px}
+  .quiz-question-card{padding:24px}
+}
+@media(max-width:480px){
+  .pv-grid{grid-template-columns:1fr}
+  .practice-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <span style="font-size:4rem">➕</span>
+  <div class="c-title">Addition</div>
+  <div class="c-sub">Class 2 · Math · Digital School</div>
+  <div class="c-spinner"></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap">
+  <span id="progress-label">📚 Lesson Progress</span>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <span id="progress-pct">0%</span>
+</div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" aria-label="Section navigation">
+  <div class="bottom-nav-inner">
+    <a href="#hero">🏠 Home</a>
+    <a href="#concept">💡 Concept</a>
+    <a href="#how-to">📋 Steps</a>
+    <a href="#practice">✏️ Practice</a>
+    <a href="#word-problems">📖 Problems</a>
+    <a href="#quiz">🏆 Quiz</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-circle c1"></div>
+    <div class="hero-bg-circle c2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Chapter 11 · Class 2 Math</div>
+      <span class="hero-emoji">➕</span>
+      <h1 class="hero-title">
+        <span>Learn</span> <span>Addition!</span>
+      </h1>
+      <p class="hero-subtitle">Putting numbers together to find the total — it's fun and easy!</p>
+      <button class="read-aloud-btn" onclick="speakText('Welcome to Chapter 11 — Addition! In this lesson, we will learn how to add numbers together using ones, tens, and hundreds.')">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        Read Aloud
+      </button>
+    </div>
+  </section>
+
+  <!-- CONCEPT SECTION -->
+  <section class="section" id="concept">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-icon">💡</span>
+        <div>
+          <div class="section-title">What is Addition?</div>
+          <div class="section-subtitle">Understanding the idea of putting numbers together</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px">
+        <button class="read-aloud-btn" onclick="speakText('Addition means putting two or more numbers together to get a bigger number called the total or sum. We use the plus sign to show addition.')">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          Read Aloud
+        </button>
+        <p style="font-size:20px;line-height:1.8;color:#636e72">
+          <strong style="color:var(--dark)">Addition</strong> means putting two or more numbers together to get a bigger number. 
+          The answer we get is called the <strong style="color:var(--teal)">sum</strong> or <strong style="color:var(--teal)">total</strong>. 
+          We use the <strong style="color:var(--orange)">+ (plus)</strong> sign to show addition!
+        </p>
+        <div class="blackboard">
+          2 + 2 = 4
+          <span class="arrow-up">⬆</span>
+        </div>
+        <p style="font-size:18px;text-align:center;color:#636e72;margin-top:8px">The arrow points to the <strong>sum</strong> (the answer)!</p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>🔢 Ones & Tens (2-digit)</h3>
+          <p>When we add two numbers with tens and ones, we line them up carefully and add from right to left — ones first, then tens!</p>
+        </div>
+        <div class="concept-card orange">
+          <h3>🏛️ Hundreds, Tens & Ones (3-digit)</h3>
+          <p>Bigger numbers have a hundreds place too! We still add from right to left — ones, then tens, then hundreds.</p>
+        </div>
+        <div class="concept-card purple">
+          <h3>📦 Carrying Over</h3>
+          <p>When ones add up to 10 or more, we "carry" the extra ten to the tens column. This is called <strong>regrouping</strong>!</p>
+        </div>
+        <div class="concept-card">
+          <h3>✅ Checking Your Answer</h3>
+          <p>Always check your work by adding again from the top. If you get the same answer — you're correct!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO ADD SECTION -->
+  <section class="section" id="how-to" style="background:#f8f9ff">
+    <div class="container">
+      <div class="section-header orange">
+        <span class="section-icon">📋</span>
+        <div>
+          <div class="section-title">How to Add Step by Step</div>
+          <div class="section-subtitle">Follow these steps every time you add</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:28px">
+        <button class="read-aloud-btn" onclick="speakText('Here are the steps to add numbers. Step 1: Write the numbers one under the other, lining up ones under ones, tens under tens, and hundreds under hundreds. Step 2: Always start from the ones column on the right. Step 3: Add the ones. If the answer is 10 or more, write the ones digit and carry the ten. Step 4: Add the tens. Do not forget the carried number. Step 5: Add the hundreds if there are any. Step 6: Write your final answer.')">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          Read Aloud
+        </button>
+        <ul class="steps-list">
+          <li>Write the numbers one under the other, lining up ones under ones, tens under tens, and hundreds under hundreds.</li>
+          <li>Always start from the <strong style="color:var(--orange)">ones column</strong> on the right side.</li>
+          <li>Add the ones digits. If the answer is 10 or more, write the ones digit and carry the ten to the tens column.</li>
+          <li>Add the tens digits. Don't forget to include any number you carried!</li>
+          <li>Add the hundreds digits (for 3-digit numbers). Again, carry if needed.</li>
+          <li>Write your final answer under the line. That's your <strong style="color:var(--teal)">sum!</strong></li>
+        </ul>
+      </div>
+
+      <!-- WORKED EXAMPLES -->
+      <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:20px;color:var(--dark)">📊 Worked Examples</h2>
+      <div class="pv-grid">
+
+        <!-- 75 + 42 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · No carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>7</td><td>5</td></tr>
+              <tr class="plus-row"><td>+ 4</td><td>2</td></tr>
+              <tr class="result-row"><td>1</td><td>7</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">75 + 42 = <strong style="color:var(--teal)">117</strong></p>
+        </div>
+
+        <!-- 83 + 27 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · With carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>8</td><td>3</td></tr>
+              <tr class="plus-row"><td>+ 2</td><td>7</td></tr>
+              <tr class="result-row"><td>1</td><td>0</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">83 + 27 = <strong style="color:var(--teal)">110</strong></p>
+        </div>
+
+        <!-- 15 + 61 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · No carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>5</td></tr>
+              <tr class="plus-row"><td>+ 6</td><td>1</td></tr>
+              <tr class="result-row"><td>7</td><td>6</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">15 + 61 = <strong style="color:var(--teal)">76</strong></p>
+        </div>
+
+        <!-- 78 + 13 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · No carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>7</td><td>8</td></tr>
+              <tr class="plus-row"><td>+ 1</td><td>3</td></tr>
+              <tr class="result-row"><td>9</td><td>1</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">78 + 13 = <strong style="color:var(--teal)">91</strong></p>
+        </div>
+
+        <!-- 89 + 55 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · With carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>8</td><td>9</td></tr>
+              <tr class="plus-row"><td>+ 5</td><td>5</td></tr>
+              <tr class="result-row"><td>1</td><td>4</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">89 + 55 = <strong style="color:var(--teal)">144</strong></p>
+        </div>
+
+        <!-- 48 + 54 -->
+        <div class="pv-card">
+          <div class="pv-title">Two-digit · With carry</div>
+          <table class="pv-table">
+            <thead><tr><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>4</td><td>8</td></tr>
+              <tr class="plus-row"><td>+ 5</td><td>4</td></tr>
+              <tr class="result-row"><td>1</td><td>0</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">48 + 54 = <strong style="color:var(--teal)">102</strong></p>
+        </div>
+
+        <!-- 815 + 66 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>8</td><td>1</td><td>5</td></tr>
+              <tr class="plus-row"><td></td><td>+ 6</td><td>6</td></tr>
+              <tr class="result-row"><td>8</td><td>8</td><td>1</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">815 + 66 = <strong style="color:var(--teal)">881</strong></p>
+        </div>
+
+        <!-- 436 + 204 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit · No carry</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>4</td><td>3</td><td>6</td></tr>
+              <tr class="plus-row"><td>+2</td><td>0</td><td>4</td></tr>
+              <tr class="result-row"><td>6</td><td>4</td><td>0</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">436 + 204 = <strong style="color:var(--teal)">640</strong></p>
+        </div>
+
+        <!-- 910 + 198 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit · With carry</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>9</td><td>1</td><td>0</td></tr>
+              <tr class="plus-row"><td>+1</td><td>9</td><td>8</td></tr>
+              <tr class="result-row"><td>1</td><td>0</td><td>8</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">910 + 198 = <strong style="color:var(--teal)">1108</strong></p>
+        </div>
+
+        <!-- 924 + 42 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>9</td><td>2</td><td>4</td></tr>
+              <tr class="plus-row"><td></td><td>+4</td><td>2</td></tr>
+              <tr class="result-row"><td>9</td><td>6</td><td>6</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">924 + 42 = <strong style="color:var(--teal)">966</strong></p>
+        </div>
+
+        <!-- 331 + 817 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit · With carry</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>3</td><td>3</td><td>1</td></tr>
+              <tr class="plus-row"><td>+8</td><td>1</td><td>7</td></tr>
+              <tr class="result-row"><td>1</td><td>1</td><td>4</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">331 + 817 = <strong style="color:var(--teal)">1148</strong></p>
+        </div>
+
+        <!-- 781 + 612 -->
+        <div class="pv-card">
+          <div class="pv-title">Three-digit · No carry</div>
+          <table class="pv-table">
+            <thead><tr><th>H</th><th>T</th><th>O</th></tr></thead>
+            <tbody>
+              <tr><td>7</td><td>8</td><td>1</td></tr>
+              <tr class="plus-row"><td>+6</td><td>1</td><td>2</td></tr>
+              <tr class="result-row"><td>1</td><td>3</td><td>9</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:17px;margin-top:10px;color:#636e72">781 + 612 = <strong style="color:var(--teal)">1393</strong></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE PRACTICE -->
+  <section class="section" id="practice">
+    <div class="container">
+      <div class="section-header purple">
+        <span class="section-icon">✏️</span>
+        <div>
+          <div class="section-title">Let's Practice!</div>
+          <div class="section-subtitle">Type the correct answer and check your work</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:28px">
+        <button class="read-aloud-btn" onclick="speakText('Now it is your turn to practice addition! Type the correct answer in the box and press Check to see if you are right.')">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          Read Aloud
+        </button>
+        <p style="font-size:18px;color:#636e72;line-height:1.7">Type the answer in the box, then click <strong>Check</strong>. You'll get a green tick if you're right and a red wobble if you need to try again!</p>
+      </div>
+
+      <div class="practice-grid" id="practice-grid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- WORD PROBLEMS -->
+  <section class="section" id="word-problems" style="background:#fff8f0">
+    <div class="container">
+      <div class="section-header orange">
+        <span class="section-icon">📖</span>
+        <div>
+          <div class="section-title">Word Problems</div>
+          <div class="section-subtitle">Read the problem and find the answer</div>
+        </div>
+      </div>
+
+      <button class="read-aloud-btn" onclick="speakText('Word Problems! Read each problem carefully, then set up your addition and find the answer.')">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        Read Aloud
+      </button>
+
+      <!-- Worked Example -->
+      <div class="wp-card">
+        <div class="wp-question">🍊 Ahmed has <strong>38</strong> oranges. He buys <strong>28</strong> more oranges. How many oranges does he have now?</div>
+        <div class="wp-board">
+          <table>
+            <thead><tr><td></td><td style="color:var(--orange)">T</td><td style="color:var(--orange)">O</td></tr></thead>
+            <tbody>
+              <tr class="top-row"><td></td><td>³3</td><td>8</td></tr>
+              <tr><td class="plus-cell">+</td><td>2</td><td>8</td></tr>
+              <tr class="result-row"><td></td><td>6</td><td>6</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wp-answer-box" style="background:#f0fff4;border:2px solid var(--teal)">
+          ✅ <strong>Answer:</strong> Ahmed has <strong style="color:var(--teal);font-size:22px">66</strong> oranges now.
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="wp-card">
+        <div class="wp-question">🐦 Q1: There are <strong>188</strong> birds on a tree. <strong>12</strong> more birds come. How many birds are there on the tree now?</div>
+        <div class="wp-board">
+          <table>
+            <thead><tr><td></td><td style="color:var(--orange)">H</td><td style="color:var(--orange)">T</td><td style="color:var(--orange)">O</td></tr></thead>
+            <tbody>
+              <tr class="top-row"><td></td><td>1</td><td>8</td><td>8</td></tr>
+              <tr><td class="plus-cell">+</td><td></td><td>1</td><td>2</td></tr>
+              <tr class="result-row"><td></td><td>?</td><td>?</td><td>?</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wp-answer-box">
+          <strong>Answer:</strong> There are
+          <input type="number" id="wp1" placeholder="?" min="0" oninput="checkWP('wp1',200,'wp1-fb')"/>
+          birds on the tree now.
+          <button class="wp-check-btn" onclick="checkWP('wp1',200,'wp1-fb')">Check ✓</button>
+        </div>
+        <div class="wp-feedback" id="wp1-fb"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="wp-card">
+        <div class="wp-question">📚 Q2: There are <strong>293</strong> books on the bookshelf and <strong>53</strong> more books on the floor. How many books are there in total?</div>
+        <div class="wp-board">
+          <table>
+            <thead><tr><td></td><td style="color:var(--orange)">H</td><td style="color:var(--orange)">T</td><td style="color:var(--orange)">O</td></tr></thead>
+            <tbody>
+              <tr class="top-row"><td></td><td>2</td><td>9</td><td>3</td></tr>
+              <tr><td class="plus-cell">+</td><td></td><td>5</td><td>3</td></tr>
+              <tr class="result-row"><td></td><td>?</td><td>?</td><td>?</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wp-answer-box">
+          <strong>Answer:</strong> There are
+          <input type="number" id="wp2" placeholder="?" min="0" oninput="checkWP('wp2',346,'wp2-fb')"/>
+          books in total.
+          <button class="wp-check-btn" onclick="checkWP('wp2',346,'wp2-fb')">Check ✓</button>
+        </div>
+        <div class="wp-feedback" id="wp2-fb"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="wp-card">
+        <div class="wp-question">🐟 Q3: There are <strong>94</strong> fish in a water tank. Sana puts in <strong>29</strong> more fish. How many fish are there?</div>
+        <div class="wp-board">
+          <table>
+            <thead><tr><td></td><td style="color:var(--orange)">H</td><td style="color:var(--orange)">T</td><td style="color:var(--orange)">O</td></tr></thead>
+            <tbody>
+              <tr class="top-row"><td></td><td></td><td>9</td><td>4</td></tr>
+              <tr><td class="plus-cell">+</td><td></td><td>2</td><td>9</td></tr>
+              <tr class="result-row"><td></td><td>1</td><td>?</td><td>?</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wp-answer-box">
+          <strong>Answer:</strong> There are
+          <input type="number" id="wp3" placeholder="?" min="0" oninput="checkWP('wp3',123,'wp3-fb')"/>
+          fish in the tank.
+          <button class="wp-check-btn" onclick="checkWP('wp3',123,'wp3-fb')">Check ✓</button>
+        </div>
+        <div class="wp-feedback" id="wp3-fb"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUIZ SECTION -->
+  <section class="quiz-section" id="quiz">
+    <div class="container">
+      <div class="section-header purple">
+        <span class="section-icon">🏆</span>
+        <div>
+          <div class="section-title">Quick Quiz</div>
+          <div class="section-subtitle">Test what you've learned — 6 questions!</div>
+        </div>
+      </div>
+
+      <div id="quiz-area">
+        <div class="quiz-question-card" id="quiz-card">
+          <div class="quiz-progress">
+            <span class="quiz-counter" id="quiz-counter">Question 1 of 6</span>
+            <span class="quiz-score" id="quiz-score">Score: 0</span>
+          </div>
+          <div class="quiz-q-text" id="quiz-q-text"></div>
+          <div class="quiz-options" id="quiz-options"></div>
+          <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuestion()">Next ➡</button>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-emoji" id="result-emoji">🏆</div>
+          <h3 id="result-title">Great job!</h3>
+          <p id="result-msg">You scored 6 out of 6!</p>
+          <button class="quiz-restart-btn" onclick="restartQuiz()">Try Again 🔄</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrap -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ─── CURTAIN FALLBACK ─────────────────────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.pointerEvents = 'none'; setTimeout(()=>{ c.style.display='none'; }, 400); }
+  }, 2500);
+
+  // ─── LENIS SMOOTH SCROLL ──────────────────────────────────────────────
+  let lenis;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      lenis = new Lenis({ lerp: 0.1, smooth: true });
+      if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+        requestAnimationFrame(lenisRaf);
+      }
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // ─── GSAP + SCROLL TRIGGER ────────────────────────────────────────────
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !reducedMotion) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title word animation
+      const heroSpans = document.querySelectorAll('.hero-title span');
+      gsap.from(heroSpans, { opacity: 0, y: 40, duration: 0.7, stagger: 0.18, ease: 'back.out(1.6)', delay: 0.5 });
+
+      // Fade-up cards on scroll
+      const fadeEls = document.querySelectorAll('.card, .concept-card, .pv-card, .practice-card, .wp-card, .quiz-question-card');
+      fadeEls.forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+          y: 40, opacity: 0, duration: 0.6, ease: 'power2.out'
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // ─── CURTAIN ANIMATE OUT ──────────────────────────────────────────────
+  try {
+    const curtain = document.getElementById('curtain');
+    if (typeof gsap !== 'undefined' && curtain) {
+      gsap.to(curtain, { opacity: 0, duration: 0.6, delay: 1.8, onComplete: () => { curtain.style.display = 'none'; } });
+    }
+  } catch(e) {}
+
+  // ─── PROGRESS BAR ─────────────────────────────────────────────────────
+  const fill = document.getElementById('progress-fill');
+  const pct = document.getElementById('progress-pct');
+  const sections = ['hero', 'concept', 'how-to', 'practice', 'word-problems', 'quiz'];
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const p = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+    fill.style.width = p + '%';
+    pct.textContent = p + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // ─── PRACTICE PROBLEMS ────────────────────────────────────────────────
+  const practiceProblems = [
+    { label: 'T O · 2-digit', sum: '75 + 42', answer: 117 },
+    { label: 'T O · 2-digit', sum: '83 + 27', answer: 110 },
+    { label: 'T O · 2-digit', sum: '15 + 61', answer: 76 },
+    { label: 'T O · 2-digit', sum: '78 + 13', answer: 91 },
+    { label: 'T O · 2-digit', sum: '89 + 55', answer: 144 },
+    { label: 'T O · 2-digit', sum: '48 + 54', answer: 102 },
+    { label: 'H T O · 3-digit', sum: '815 + 66', answer: 881 },
+    { label: 'H T O · 3-digit', sum: '436 + 204', answer: 640 },
+    { label: 'H T O · 3-digit', sum: '910 + 198', answer: 1108 },
+    { label: 'H T O · 3-digit', sum: '924 + 42', answer: 966 },
+    { label: 'H T O · 3-digit', sum: '331 + 817', answer: 1148 },
+    { label: 'H T O · 3-digit', sum: '781 + 612', answer: 1393 },
+  ];
+
+  const grid = document.getElementById('practice-grid');
+  practiceProblems.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'practice-card';
+    card.innerHTML = `
+      <div class="pc-label">${p.label}</div>
+      <div class="pc-sum">${p.sum} = ?</div>
+      <input type="number" id="pc-${i}" placeholder="?" min="0" aria-label="Answer for ${p.sum}"/>
+      <br/>
+      <button class="check-btn" onclick="checkPractice(${i},${p.answer})">Check ✓</button>
+      <div class="feedback" id="pc-fb-${i}"></div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // ─── QUIZ DATA & LOGIC ────────────────────────────────────────────────
+  window.quizData = [
+    { q: 'What is 75 + 42?', opts: ['117', '127'], correct: 0 },
+    { q: 'What is 83 + 27?', opts: ['100', '110'], correct: 1 },
+    { q: 'What is 15 + 61?', opts: ['76', '86'], correct: 0 },
+    { q: 'What is 48 + 54?', opts: ['92', '102'], correct: 1 },
+    { q: 'There are 188 birds and 12 more come. How many in total?', opts: ['190', '200'], correct: 1 },
+    { q: 'There are 293 books and 53 more. How many in total?', opts: ['346', '336'], correct: 0 },
+  ];
+  window.quizState = { current: 0, score: 0, answered: false };
+
+  function renderQuestion() {
+    const { current } = window.quizState;
+    const data = window.quizData[current];
+    document.getElementById('quiz-counter').textContent = `Question ${current + 1} of ${window.quizData.length}`;
+    document.getElementById('quiz-score').textContent = `Score: ${window.quizState.score}`;
+    document.getElementById('quiz-q-text').textContent = data.q;
+    const optContainer = document.getElementById('quiz-options');
+    optContainer.innerHTML = '';
+    data.opts.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        if (window.quizState.answered) return;
+        window.quizState.answered = true;
+        const allBtns = optContainer.querySelectorAll('.quiz-opt');
+        allBtns.forEach(b => b.disabled = true);
+        if (idx === data.correct) {
+          btn.classList.add('selected-correct');
+          window.quizState.score++;
+          document.getElementById('quiz-score').textContent = `Score: ${window.quizState.score}`;
+          try {
+            if (typeof gsap !== 'undefined' && !reducedMotion) {
+              gsap.to(btn, { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1 });
+            }
+          } catch(e) {}
+        } else {
+          btn.classList.add('selected-wrong');
+          allBtns[data.correct].classList.add('selected-correct');
+          try {
+            if (typeof gsap !== 'undefined' && !reducedMotion) {
+              gsap.to(btn, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, onComplete: () => gsap.set(btn, { rotation: 0 }) });
+            }
+          } catch(e) {}
+        }
+        document.getElementById('quiz-next-btn').style.display = 'inline-block';
+      });
+      optContainer.appendChild(btn);
+    });
+    document.getElementById('quiz-next-btn').style.display = 'none';
+    window.quizState.answered = false;
+  }
+
+  window.nextQuestion = function() {
+    window.quizState.current++;
+    if (window.quizState.current >= window.quizData.length) {
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  };
+
+  function showResult() {
+    document.getElementById('quiz-card').style.display = 'none';
+    const res = document.getElementById('quiz-result');
+    res.style.display = 'block';
+    const s = window.quizState.score;
+    const total = window.quizData.length;
+    document.getElementById('result-emoji').textContent = s >= 5 ? '🏆' : s >= 3 ? '😊' : '💪';
+    document.getElementById('result-title').textContent = s >= 5 ? 'Excellent Work!' : s >= 3 ? 'Good Job!' : 'Keep Practicing!';
+    document.getElementById('result-msg').textContent = `You scored ${s} out of ${total}!`;
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.from(res, { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.4)' });
+      }
+    } catch(e) {}
+  }
+
+  window.restartQuiz = function() {
+    window.quizState = { current: 0, score: 0, answered: false };
+    document.getElementById('quiz-card').style.display = 'block';
+    document.getElementById('quiz-result').style.display = 'none';
+    renderQuestion();
+  };
+
+  renderQuestion();
+
+  // ─── MOBILE BOTTOM NAV ACTIVE STATE ───────────────────────────────────
+  const navLinks = document.querySelectorAll('.bottom-nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+});
+
+// ─── PRACTICE CHECK ─────────────────────────────────────────────────────
+function checkPractice(idx, correct) {
+  const inp = document.getElementById('pc-' + idx);
+  const fb = document.getElementById('pc-fb-' + idx);
+  const val = parseInt(inp.value, 10);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (val === correct) {
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    fb.textContent = '✅ Correct! Well done!';
+    fb.style.color = '#00b894';
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.to(inp, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1 });
+      }
+    } catch(e) {}
+  } else if (!inp.value) {
+    fb.textContent = '✏️ Please type an answer!';
+    fb.style.color = '#636e72';
+  } else {
+    inp.classList.remove('correct');
+    inp.classList.add('wrong');
+    fb.textContent = '❌ Try again!';
+    fb.style.color = '#d63031';
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.to(inp, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, onComplete: () => gsap.set(inp, { rotation: 0 }) });
+      }
+    } catch(e) {}
+  }
+}
+
+// ─── WORD PROBLEM CHECK ─────────────────────────────────────────────────
+function checkWP(inputId, correct, fbId) {
+  const inp = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const val = parseInt(inp.value, 10);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (val === correct) {
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    fb.textContent = `✅ Correct! The answer is ${correct}.`;
+    fb.style.color = '#00b894';
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.to(inp, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 });
+      }
+    } catch(e) {}
+  } else if (!inp.value) {
+    fb.textContent = '✏️ Please type an answer!';
+    fb.style.color = '#636e72';
+  } else {
+    inp.classList.remove('correct');
+    inp.classList.add('wrong');
+    fb.textContent = '❌ Not quite — try again!';
+    fb.style.color = '#d63031';
+    try {
+      if (typeof gsap !== 'undefined' && !reducedMotion) {
+        gsap.to(inp, { rotation: -5, duration: 0.07, repeat: 5, yoyo: true, onComplete: () => gsap.set(inp, { rotation: 0 }) });
+      }
+    } catch(e) {}
+  }
+}
+
+// ─── READ ALOUD ─────────────────────────────────────────────────────────
+function speakText(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = 0.88;
+      utt.pitch = 1.1;
+      window.speechSynthesis.speak(utt);
+    } else {
+      alert('Read aloud: ' + text);
+    }
+  } catch(e) {
+    console.warn('Speech synthesis error', e);
+    try { alert('Read aloud: ' + text); } catch(e2) {}
+  }
+}
+</script>
+</body>
+</html>

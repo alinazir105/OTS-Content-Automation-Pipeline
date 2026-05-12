@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 2 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Multimedia – Working with Shapes | Class 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Nunito',sans-serif;background:#FAFAFA;color:#2d2d2d;font-size:18px;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d2d2d}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#FF9F43,#1DD1A1);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.6s ease}
+#curtain .logo{font-size:clamp(2rem,6vw,3.5rem);font-weight:900;color:#fff;margin-bottom:16px}
+#curtain .sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.85);font-weight:600}
+.curtain-spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;margin-top:24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,0.08);z-index:1000}
+#progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--teal));transition:width 0.3s ease}
+#progress-label{position:fixed;top:8px;right:16px;font-size:13px;font-weight:700;color:var(--dark);background:#fff;padding:2px 10px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:1001}
+
+/* HERO */
+.hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#1DD1A1 0%,#0abf8a 50%,#00b894 100%);display:flex;align-items:center;justify-content:center;padding:80px 40px 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:rgba(255,255,255,0.08);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:300px;height:300px;background:rgba(255,159,67,0.15);border-radius:50%}
+.hero-inner{max-width:1500px;width:100%;margin:0 auto;text-align:center;position:relative;z-index:2}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700;padding:6px 20px;border-radius:30px;margin-bottom:20px;letter-spacing:1px}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px}
+.hero-title span{display:inline-block;opacity:1}
+.hero-subtitle{font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,0.9);font-weight:600;margin-bottom:32px}
+.hero-icons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.hero-icon-chip{background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:16px;padding:12px 20px;color:#fff;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;display:flex;align-items:center;gap:8px}
+
+/* READ ALOUD */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--teal);border:none;border-radius:30px;padding:10px 22px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.12);transition:transform 0.2s,box-shadow 0.2s;margin-top:12px}
+.read-aloud-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
+.read-aloud-btn.speaking{background:var(--orange);color:#fff}
+
+/* SECTIONS */
+.section{width:100%;padding:60px 40px}
+.section-inner{max-width:1500px;margin:0 auto}
+.section-card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:40px;margin-bottom:32px;opacity:1;transform:none}
+.section-card.accent-orange{border-left:4px solid var(--orange)}
+.section-card.accent-teal{border-left:4px solid var(--teal)}
+.section-card.accent-purple{border-left:4px solid var(--purple)}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.section-icon{font-size:2.5rem;width:60px;height:60px;display:flex;align-items:center;justify-content:center;border-radius:16px;flex-shrink:0}
+.icon-orange{background:rgba(255,159,67,0.15)}
+.icon-teal{background:rgba(29,209,161,0.15)}
+.icon-purple{background:rgba(162,155,254,0.15)}
+.section-title{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:var(--dark)}
+.section-text{font-size:18px;line-height:1.8;color:#444;margin-bottom:16px}
+
+/* INTERFACE DIAGRAM */
+.interface-diagram{background:linear-gradient(135deg,#2d3436,#636e72);border-radius:16px;padding:24px;margin:24px 0;position:relative}
+.paint-toolbar{background:#3a3a3a;border-radius:10px;padding:14px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.toolbar-label{background:rgba(255,255,255,0.1);color:#fff;font-size:14px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:default;transition:background 0.2s}
+.toolbar-label:hover{background:rgba(29,209,161,0.4)}
+.paint-canvas-area{background:#fff;border-radius:10px;min-height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.canvas-label{font-size:18px;color:#aaa;font-weight:600}
+.paint-status{background:#222;border-radius:8px;padding:8px 16px;margin-top:10px;color:#aaa;font-size:14px;font-weight:600}
+.interface-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.legend-item{background:rgba(255,255,255,0.08);border-radius:10px;padding:8px 14px;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* SHAPES GRID */
+.shapes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;margin:24px 0}
+.shape-card{background:#fff;border:2px solid #f0f0f0;border-radius:16px;padding:20px;text-align:center;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
+.shape-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.12)}
+.shape-canvas{width:100%;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.shape-name{font-size:17px;font-weight:700;color:var(--dark)}
+.shape-desc{font-size:14px;color:#666;margin-top:4px}
+
+/* SVG Shapes */
+.svg-shape{width:80px;height:80px}
+
+/* FILL TOOL */
+.fill-demo{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin:20px 0}
+.fill-bucket{font-size:3rem;cursor:pointer;transition:transform 0.3s;display:inline-block}
+.fill-bucket:hover{transform:rotate(-20deg) scale(1.2)}
+.fill-shapes-row{display:flex;gap:16px;flex-wrap:wrap}
+.fill-target{width:80px;height:80px;border:3px solid #999;border-radius:12px;cursor:pointer;transition:background 0.4s;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#999}
+.fill-target.filled{color:transparent}
+
+/* BRUSHES */
+.brushes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin:20px 0}
+.brush-card{background:#f8f9fa;border-radius:14px;padding:20px;text-align:center;border:2px solid transparent;transition:border-color 0.2s,transform 0.2s;cursor:pointer}
+.brush-card:hover,.brush-card.selected{border-color:var(--teal);transform:scale(1.03)}
+.brush-preview{width:100%;height:40px;margin:10px 0;border-radius:8px}
+.brush-name{font-size:17px;font-weight:700;color:var(--dark)}
+
+/* SORTING ACTIVITY */
+.sorting-activity{margin:24px 0}
+.word-bank{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;min-height:60px;background:#f8f9fa;border-radius:14px;padding:16px}
+.drag-item{background:#fff;border:2px solid var(--orange);border-radius:10px;padding:10px 18px;font-size:17px;font-weight:700;cursor:grab;user-select:none;transition:transform 0.2s,box-shadow 0.2s;touch-action:none}
+.drag-item:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.drag-item.dragging{opacity:0.5;cursor:grabbing}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.bucket{border-radius:16px;padding:20px;min-height:140px;border:3px dashed #ddd;transition:border-color 0.2s,background 0.2s}
+.bucket.drag-over{border-color:var(--teal);background:rgba(29,209,161,0.06)}
+.bucket-title{font-size:18px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.bucket-items{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+.bucket-item{background:#fff;border:2px solid var(--purple);border-radius:8px;padding:8px 14px;font-size:17px;font-weight:700}
+.sort-feedback{font-size:18px;font-weight:700;margin-top:12px;min-height:28px}
+.sort-check-btn{background:var(--teal);color:#fff;border:none;border-radius:12px;padding:12px 28px;font-size:18px;font-weight:700;cursor:pointer;margin-top:16px;transition:transform 0.2s}
+.sort-check-btn:hover{transform:scale(1.04)}
+
+/* FILL IN BLANK */
+.fib-activity{margin:24px 0}
+.fib-sentence{font-size:18px;line-height:2.2;margin-bottom:16px;font-weight:600}
+.fib-blank{display:inline-block;min-width:120px;border-bottom:3px solid var(--orange);padding:2px 8px;cursor:pointer;border-radius:4px;background:rgba(255,159,67,0.08);color:var(--orange);font-weight:800;transition:background 0.2s;position:relative;vertical-align:middle}
+.fib-blank:hover{background:rgba(255,159,67,0.15)}
+.fib-blank.filled{color:var(--teal);border-bottom-color:var(--teal);background:rgba(29,209,161,0.08)}
+.fib-blank.wrong{color:#e74c3c;border-bottom-color:#e74c3c;background:rgba(231,76,60,0.08)}
+.word-popup{position:absolute;top:calc(100% + 6px);left:0;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);padding:12px;display:flex;flex-wrap:wrap;gap:8px;z-index:200;min-width:200px}
+.word-option{background:var(--offwhite);border:2px solid var(--purple);border-radius:8px;padding:8px 14px;font-size:17px;font-weight:700;cursor:pointer;transition:background 0.2s}
+.word-option:hover{background:var(--purple);color:#fff}
+.fib-result{font-size:18px;font-weight:700;margin-top:12px;min-height:28px}
+
+/* QUIZ */
+.quiz-section{padding:60px 40px;background:linear-gradient(135deg,#f8f9fa,#fff)}
+.quiz-inner{max-width:1500px;margin:0 auto}
+.quiz-card{background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.08);padding:40px;margin-bottom:32px}
+.quiz-progress{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.quiz-progress-bar{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--purple));transition:width 0.4s ease}
+.quiz-q-num{font-size:14px;font-weight:700;color:#666}
+.quiz-question{font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:800;color:var(--dark);margin-bottom:24px;line-height:1.5}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.quiz-option{background:#f8f9fa;border:3px solid transparent;border-radius:14px;padding:20px;font-size:18px;font-weight:700;cursor:pointer;transition:border-color 0.2s,background 0.2s,transform 0.2s;display:flex;align-items:center;gap:12px;min-height:48px}
+.quiz-option:hover{border-color:var(--purple);background:rgba(162,155,254,0.08)}
+.quiz-option.correct{border-color:var(--teal);background:rgba(29,209,161,0.12);color:#0abf8a}
+.quiz-option.wrong{border-color:#e74c3c;background:rgba(231,76,60,0.08);color:#e74c3c}
+.quiz-option.disabled{cursor:default;pointer-events:none}
+.quiz-option-icon{font-size:2rem}
+.quiz-feedback{font-size:18px;font-weight:700;margin-top:16px;min-height:28px}
+.quiz-nav{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.quiz-btn{background:var(--orange);color:#fff;border:none;border-radius:12px;padding:12px 28px;font-size:18px;font-weight:700;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s}
+.quiz-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,159,67,0.35)}
+.quiz-btn:disabled{background:#ccc;cursor:default;transform:none;box-shadow:none}
+.quiz-result{text-align:center;padding:40px;display:none}
+.quiz-score{font-size:clamp(3rem,8vw,5rem);font-weight:900;color:var(--teal)}
+.quiz-score-msg{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--dark);margin-top:12px}
+.quiz-retry-btn{background:var(--orange);color:#fff;border:none;border-radius:16px;padding:16px 40px;font-size:18px;font-weight:800;cursor:pointer;margin-top:24px;transition:transform 0.2s}
+.quiz-retry-btn:hover{transform:scale(1.05)}
+
+/* STEPS */
+.steps-list{counter-reset:step;display:flex;flex-direction:column;gap:16px;margin:20px 0}
+.step-item{display:flex;align-items:flex-start;gap:16px;background:#f8f9fa;border-radius:14px;padding:18px 20px}
+.step-num{width:40px;height:40px;background:var(--orange);color:#fff;font-size:18px;font-weight:900;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-text{font-size:18px;line-height:1.7;font-weight:600;padding-top:6px}
+.step-text strong{color:var(--orange)}
+
+/* HOUSE DEMO */
+.house-demo{background:linear-gradient(180deg,#87CEEB,#c8e6c9);border-radius:16px;padding:30px;display:flex;align-items:flex-end;justify-content:center;gap:0;min-height:220px;margin:20px 0;position:relative;overflow:hidden}
+.house-wrap{display:flex;flex-direction:column;align-items:center}
+.house-roof{width:0;height:0;border-left:80px solid transparent;border-right:80px solid transparent;border-bottom:70px solid #e74c3c}
+.house-body{width:140px;height:100px;background:#F0C040;display:flex;align-items:flex-end;justify-content:center;border-radius:0 0 8px 8px}
+.house-door{width:36px;height:54px;background:#8B4513;border-radius:8px 8px 0 0}
+.house-window{position:absolute;top:14px;left:14px;width:28px;height:28px;background:#87CEEB;border:3px solid #fff;border-radius:4px}
+.house-window2{position:absolute;top:14px;right:14px;width:28px;height:28px;background:#87CEEB;border:3px solid #fff;border-radius:4px}
+.house-body-inner{position:relative;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center}
+.house-label{font-size:14px;font-weight:700;color:rgba(0,0,0,0.5);margin-top:6px}
+.demo-label{font-size:18px;font-weight:700;color:var(--dark);text-align:center;margin-top:12px}
+
+/* LEARNING OBJECTIVES */
+.obj-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.obj-item{display:flex;align-items:center;gap:14px;background:#f8f9fa;border-radius:12px;padding:14px 18px;font-size:18px;font-weight:600}
+.obj-check{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+
+/* MOBILE NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,0.1);z-index:800;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mobile-nav-inner{display:flex;padding:8px 12px;gap:8px;min-width:max-content}
+.mobile-nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;color:#666;cursor:pointer;border:none;background:none;min-height:48px;white-space:nowrap}
+.mobile-nav-btn.active,.mobile-nav-btn:hover{color:var(--teal);background:rgba(29,209,161,0.08)}
+.mobile-nav-btn .nav-icon{font-size:1.3rem}
+
+/* DESKTOP NAV */
+.desktop-nav{position:fixed;top:50%;right:20px;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:800}
+.desktop-nav-item{width:12px;height:12px;border-radius:50%;background:#ddd;cursor:pointer;transition:background 0.2s,transform 0.2s}
+.desktop-nav-item.active,.desktop-nav-item:hover{background:var(--teal);transform:scale(1.4)}
+.desktop-nav-item[title]{position:relative}
+.desktop-nav-item:hover::after{content:attr(title);position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:4px 10px;border-radius:8px;font-size:13px;white-space:nowrap;font-family:'Nunito',sans-serif}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{min-height:60vh;padding:70px 20px 40px}
+  .section{padding:40px 16px}
+  .section-card{padding:24px 18px}
+  .quiz-section{padding:40px 16px}
+  .quiz-card{padding:24px 18px}
+  .quiz-options{grid-template-columns:1fr}
+  .buckets{grid-template-columns:1fr}
+  .shapes-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .brushes-grid{grid-template-columns:1fr 1fr}
+  .desktop-nav{display:none}
+  .mobile-nav{display:block}
+  body{padding-bottom:80px}
+  .word-popup{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:90vw;max-width:380px}
+  .paint-toolbar{gap:6px}
+  .toolbar-label{font-size:12px;padding:4px 10px}
+}
+@media(max-width:480px){
+  .hero-icons{gap:10px}
+  .hero-icon-chip{padding:8px 12px;font-size:0.9rem}
+  .shapes-grid{grid-template-columns:1fr 1fr}
+  .fill-shapes-row{gap:10px}
+  .fill-target{width:60px;height:60px}
+}
+
+/* COLOUR BURST ANIMATION */
+@keyframes colourBurst{0%{box-shadow:0 0 0 0 var(--teal)}50%{box-shadow:0 0 0 20px rgba(29,209,161,0)}100%{box-shadow:0 0 0 0 rgba(29,209,161,0)}}
+.correct-burst{animation:colourBurst 0.6s ease-out}
+@keyframes wobble{0%,100%{transform:rotate(0)}20%{transform:rotate(-5deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+.wobble-anim{animation:wobble 0.5s ease}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="logo">🎨 Digital School</div>
+  <div class="sub">Unit 4 · Multimedia: Working with Shapes</div>
+  <div class="curtain-spinner"></div>
+</div>
+
+<!-- PROGRESS -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- DESKTOP NAV -->
+<nav class="desktop-nav" id="desktopNav">
+  <div class="desktop-nav-item active" title="Home" onclick="scrollToSection('hero')"></div>
+  <div class="desktop-nav-item" title="MS Paint" onclick="scrollToSection('sec-mspaint')"></div>
+  <div class="desktop-nav-item" title="Shape Toolbox" onclick="scrollToSection('sec-shapes')"></div>
+  <div class="desktop-nav-item" title="Fill with Colour" onclick="scrollToSection('sec-fill')"></div>
+  <div class="desktop-nav-item" title="Brushes" onclick="scrollToSection('sec-brushes')"></div>
+  <div class="desktop-nav-item" title="Lab Activity" onclick="scrollToSection('sec-lab')"></div>
+  <div class="desktop-nav-item" title="Quiz" onclick="scrollToSection('sec-quiz')"></div>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" onclick="scrollToSection('hero')"><span class="nav-icon">🏠</span>Home</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-mspaint')"><span class="nav-icon">🖥️</span>MS Paint</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-shapes')"><span class="nav-icon">🔷</span>Shapes</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-fill')"><span class="nav-icon">🪣</span>Fill</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-brushes')"><span class="nav-icon">🖌️</span>Brushes</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-lab')"><span class="nav-icon">🧪</span>Lab</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('sec-quiz')"><span class="nav-icon">❓</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">📚 Unit 4 · Class 2 · Computer</div>
+    <h1 class="hero-title">
+      <span>Multimedia:</span> <span>Working</span> <span>with</span> <span>Shapes</span>
+    </h1>
+    <p class="hero-subtitle">Learn to draw shapes, add colours, and use brushes in MS Paint!</p>
+    <div class="hero-icons">
+      <div class="hero-icon-chip">🔷 Draw Shapes</div>
+      <div class="hero-icon-chip">🪣 Fill with Colour</div>
+      <div class="hero-icon-chip">🖌️ Use Brushes</div>
+      <div class="hero-icon-chip">✂️ Selection Tool</div>
+      <div class="hero-icon-chip">〰️ Curve Tool</div>
+    </div>
+    <br>
+    <button class="read-aloud-btn" id="heroRead" onclick="readAloud('Welcome to Unit 4! In this lesson, you will learn about Multimedia: Working with Shapes using MS Paint. You will learn to draw simple shapes, use the Fill with Colour tool, use different types of brushes, use the Rectangular Selection Tool, and use the Curve Tool!', this)">🔊 Read Aloud</button>
+  </div>
+</section>
+
+<!-- LEARNING OBJECTIVES -->
+<section class="section" id="sec-objectives">
+  <div class="section-inner">
+    <div class="section-card accent-teal gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🎯</div>
+        <h2 class="section-title">Learning Objectives</h2>
+      </div>
+      <p class="section-text">By the end of this lesson, you will be able to:</p>
+      <div class="obj-list">
+        <div class="obj-item"><div class="obj-check">✓</div>Draw simple shapes using the Shapes Toolbox</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Use the "Fill with Colour" tool to add colours to shapes</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Use different types of brushes in MS Paint</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Use the "Rectangular Selection Tool"</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Use the "Curve Tool" to draw curved lines</div>
+      </div>
+      <br>
+      <button class="read-aloud-btn" onclick="readAloud('By the end of this lesson, you will be able to: Draw simple shapes. Use the Fill with Colour tool. Use different types of brushes. Use the Rectangular Selection Tool. And use the Curve Tool.', this)">🔊 Read Aloud</button>
+    </div>
+  </div>
+</section>
+
+<!-- MS PAINT -->
+<section class="section" id="sec-mspaint">
+  <div class="section-inner">
+    <div class="section-card accent-orange gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-orange">🖥️</div>
+        <h2 class="section-title">What is MS Paint?</h2>
+      </div>
+      <p class="section-text">
+        MS Paint is a <strong>fun and easy-to-use</strong> computer program that helps you draw and colour pictures. With MS Paint, you can use different tools to make shapes, add colours, and write words on your drawings.
+      </p>
+      <p class="section-text">
+        It's like having a <strong>digital drawing pad</strong> where you can create your own art and make simple changes to pictures!
+      </p>
+
+      <!-- Interface Diagram -->
+      <h3 style="font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:800;margin:24px 0 12px;color:var(--dark)">The MS Paint Interface</h3>
+      <p class="section-text" style="margin-bottom:16px">Here are all the important parts of MS Paint. Hover over each part to learn more!</p>
+      <div class="interface-diagram">
+        <div class="paint-toolbar">
+          <div class="toolbar-label" title="Quick Access: Undo and Save buttons">⚡ Quick Access</div>
+          <div class="toolbar-label" title="Brushes: Choose your brush type">🖌️ Brushes</div>
+          <div class="toolbar-label" title="Shapes: Pick ovals, rectangles, triangles and more">🔷 Shapes</div>
+          <div class="toolbar-label" title="Colours: Choose your drawing colour">🎨 Colours</div>
+          <div class="toolbar-label" title="Layers: Manage drawing layers">📋 Layers</div>
+        </div>
+        <div class="paint-canvas-area">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            <div class="canvas-label">🖼️ Work Area</div>
+            <div style="font-size:14px;color:#bbb;font-weight:600">(This is where you draw!)</div>
+          </div>
+        </div>
+        <div class="paint-status">📊 Status Bar — Shows image size and zoom level</div>
+        <div class="interface-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#FF9F43"></div>Selection</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1DD1A1"></div>Image</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#A29BFE"></div>Tools</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#74b9ff"></div>Stroke Size</div>
+        </div>
+      </div>
+      <button class="read-aloud-btn" onclick="readAloud('MS Paint is a fun and easy to use computer program that helps you draw and colour pictures. With MS Paint, you can use different tools to make shapes, add colours, and write words on your drawings. It is like having a digital drawing pad where you can create your own art and make simple changes to pictures.', this)">🔊 Read Aloud</button>
+    </div>
+  </div>
+</section>
+
+<!-- SHAPES TOOLBOX -->
+<section class="section" id="sec-shapes" style="background:#f8f9fa">
+  <div class="section-inner">
+    <div class="section-card accent-teal gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🔷</div>
+        <h2 class="section-title">Drawing Objects Using the Shape Toolbox</h2>
+      </div>
+      <p class="section-text">
+        In this section, we will explore how to create different objects using the <strong>Shapes Toolbox</strong> in MS Paint. By learning how to combine these shapes, you can make creative and detailed drawings!
+      </p>
+      <p class="section-text">
+        The Shapes Toolbox offers a variety of shapes like <strong>ovals, rectangles, triangles, stars,</strong> and <strong>arrows</strong> that you can use to draw almost anything!
+      </p>
+      <p class="section-text">As an example, you can draw a <strong>house</strong> using rectangles and triangles:</p>
+
+      <!-- House Demo -->
+      <div class="house-demo">
+        <div class="house-wrap">
+          <div class="house-roof" title="Triangle = Roof"></div>
+          <div class="house-body">
+            <div class="house-body-inner">
+              <div class="house-window"></div>
+              <div class="house-window2"></div>
+              <div class="house-door"></div>
+            </div>
+          </div>
+          <div class="house-label">🏠 Made with shapes!</div>
+        </div>
+      </div>
+      <div class="demo-label">🔺 Triangle (roof) + 🟥 Rectangle (walls) = House!</div>
+
+      <!-- Shapes Grid -->
+      <h3 style="font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:800;margin:28px 0 12px;color:var(--dark)">Click a shape to learn about it!</h3>
+      <div class="shapes-grid" id="shapesGrid">
+        <div class="shape-card" onclick="showShapeInfo('oval')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><ellipse cx="40" cy="40" rx="35" ry="25" fill="none" stroke="#1DD1A1" stroke-width="3"/></svg>
+          </div>
+          <div class="shape-name">Oval Tool</div>
+          <div class="shape-desc">Draw circles and ovals</div>
+        </div>
+        <div class="shape-card" onclick="showShapeInfo('rectangle')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><rect x="10" y="20" width="60" height="40" fill="none" stroke="#FF9F43" stroke-width="3" rx="2"/></svg>
+          </div>
+          <div class="shape-name">Rectangle Tool</div>
+          <div class="shape-desc">Draw boxes and squares</div>
+        </div>
+        <div class="shape-card" onclick="showShapeInfo('triangle')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><polygon points="40,10 70,70 10,70" fill="none" stroke="#A29BFE" stroke-width="3"/></svg>
+          </div>
+          <div class="shape-name">Triangle Tool</div>
+          <div class="shape-desc">Draw triangles for roofs!</div>
+        </div>
+        <div class="shape-card" onclick="showShapeInfo('star')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><polygon points="40,8 49,30 73,30 54,46 61,70 40,56 19,70 26,46 7,30 31,30" fill="none" stroke="#FF9F43" stroke-width="2.5"/></svg>
+          </div>
+          <div class="shape-name">Star Tool</div>
+          <div class="shape-desc">Draw shining stars!</div>
+        </div>
+        <div class="shape-card" onclick="showShapeInfo('arrow')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><polygon points="40,8 65,38 52,38 52,70 28,70 28,38 15,38" fill="none" stroke="#1DD1A1" stroke-width="2.5"/></svg>
+          </div>
+          <div class="shape-name">Up Arrow Tool</div>
+          <div class="shape-desc">Draw arrows pointing up!</div>
+        </div>
+        <div class="shape-card" onclick="showShapeInfo('line')">
+          <div class="shape-canvas">
+            <svg class="svg-shape" viewBox="0 0 80 80"><line x1="10" y1="40" x2="70" y2="40" stroke="#A29BFE" stroke-width="3"/><line x1="10" y1="28" x2="70" y2="28" stroke="#FF9F43" stroke-width="2"/><line x1="10" y1="52" x2="70" y2="52" stroke="#1DD1A1" stroke-width="4"/></svg>
+          </div>
+          <div class="shape-name">Line Tool</div>
+          <div class="shape-desc">Draw straight lines</div>
+        </div>
+      </div>
+
+      <!-- Shape Info Box -->
+      <div id="shapeInfoBox" style="display:none;background:linear-gradient(135deg,rgba(29,209,161,0.1),rgba(162,155,254,0.1));border-radius:14px;padding:20px;margin-top:16px;border:2px solid var(--teal)">
+        <div id="shapeInfoText" style="font-size:18px;font-weight:700;color:var(--dark)"></div>
+      </div>
+
+      <br>
+      <button class="read-aloud-btn" onclick="readAloud('The Shapes Toolbox offers a variety of shapes like ovals, rectangles, triangles, stars, and arrows that you can use to draw almost anything! You can combine different shapes to create objects. For example, use a triangle and a rectangle to draw a house!', this)">🔊 Read Aloud</button>
+    </div>
+
+    <!-- FILL IN THE BLANK ACTIVITY -->
+    <div class="section-card accent-purple gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-purple">✏️</div>
+        <h2 class="section-title">Fill in the Blanks!</h2>
+      </div>
+      <p class="section-text">Click on each blank and choose the correct word from the list.</p>
+      <div class="fib-activity" id="fibActivity">
+        <div class="fib-sentence">
+          1. The <span class="fib-blank" id="fib1" data-answer="Shapes" onclick="openWordBank('fib1', this)">___</span> Toolbox is found in MS Paint.
+        </div>
+        <div class="fib-sentence">
+          2. You can draw a house using rectangles and <span class="fib-blank" id="fib2" data-answer="triangles" onclick="openWordBank('fib2', this)">___</span>.
+        </div>
+        <div class="fib-sentence">
+          3. The <span class="fib-blank" id="fib3" data-answer="Oval" onclick="openWordBank('fib3', this)">___</span> tool is used to draw circles.
+        </div>
+        <div class="fib-sentence">
+          4. MS Paint is a <span class="fib-blank" id="fib4" data-answer="digital" onclick="openWordBank('fib4', this)">___</span> drawing program.
+        </div>
+        <div class="fib-sentence">
+          5. You can draw stars using the <span class="fib-blank" id="fib5" data-answer="Star" onclick="openWordBank('fib5', this)">___</span> tool.
+        </div>
+        <div class="fib-result" id="fibResult"></div>
+        <button class="sort-check-btn" onclick="checkFib()" style="background:var(--purple)">Check Answers ✓</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILL WITH COLOUR -->
+<section class="section" id="sec-fill">
+  <div class="section-inner">
+    <div class="section-card accent-orange gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-orange">🪣</div>
+        <h2 class="section-title">The Fill with Colour Tool</h2>
+      </div>
+      <p class="section-text">
+        Use the <strong>Fill with Colour</strong> tool to fill shapes with colour. It's like a magic paint bucket — click inside any shape and it instantly fills with your chosen colour!
+      </p>
+      <p class="section-text">This tool is found in the <strong>Tools</strong> section of MS Paint.</p>
+
+      <!-- Interactive Fill Demo -->
+      <h3 style="font-size:clamp(1.2rem,2vw,1.4rem);font-weight:800;margin:20px 0 12px;color:var(--dark)">🎨 Try it! Click the bucket then click a shape to fill it with colour!</h3>
+      <div style="margin-bottom:16px">
+        <p style="font-size:17px;font-weight:600;color:#666;margin-bottom:12px">Choose a colour:</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="colour-btn" onclick="selectFillColour('#FF9F43',this)" style="width:44px;height:44px;background:#FF9F43;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#1DD1A1',this)" style="width:44px;height:44px;background:#1DD1A1;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#A29BFE',this)" style="width:44px;height:44px;background:#A29BFE;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#e74c3c',this)" style="width:44px;height:44px;background:#e74c3c;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#3498db',this)" style="width:44px;height:44px;background:#3498db;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#2ecc71',this)" style="width:44px;height:44px;background:#2ecc71;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#f1c40f',this)" style="width:44px;height:44px;background:#f1c40f;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+          <button class="colour-btn" onclick="selectFillColour('#e91e63',this)" style="width:44px;height:44px;background:#e91e63;border:3px solid transparent;border-radius:50%;cursor:pointer;transition:border-color 0.2s"></button>
+        </div>
+      </div>
+      <div class="fill-demo">
+        <div id="fillBucketIcon" class="fill-bucket" title="Fill Bucket — Click shapes!">🪣</div>
+        <div class="fill-shapes-row">
+          <div class="fill-target" id="ftCircle" onclick="fillShape(this)" style="border-radius:50%" title="Circle">⚪</div>
+          <div class="fill-target" id="ftRect" onclick="fillShape(this)" style="border-radius:8px" title="Rectangle">⬜</div>
+          <div class="fill-target" id="ftStar" onclick="fillShape(this)" style="clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)" title="Star">⭐</div>
+          <div class="fill-target" id="ftTri" onclick="fillShape(this)" style="clip-path:polygon(50% 0%,0% 100%,100% 100%)" title="Triangle">🔺</div>
+          <div class="fill-target" id="ftHex" onclick="fillShape(this)" style="clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)" title="Hexagon">⬡</div>
+        </div>
+      </div>
+      <button onclick="resetFillShapes()" style="background:var(--orange);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:17px;font-weight:700;cursor:pointer;margin-top:8px">🔄 Reset Shapes</button>
+      <br><br>
+      <button class="read-aloud-btn" onclick="readAloud('Use the Fill with Colour tool to fill shapes with colour. It is like a magic paint bucket. Click inside any shape and it instantly fills with your chosen colour. This tool is found in the Tools section of MS Paint.', this)">🔊 Read Aloud</button>
+    </div>
+  </div>
+</section>
+
+<!-- BRUSHES -->
+<section class="section" id="sec-brushes" style="background:#f8f9fa">
+  <div class="section-inner">
+    <div class="section-card accent-teal gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-teal">🖌️</div>
+        <h2 class="section-title">Using Different Types of Brushes</h2>
+      </div>
+      <p class="section-text">
+        MS Paint has different types of <strong>brushes</strong> you can choose from. Each brush creates a different type of stroke or texture on the canvas. Click a brush below to see what it looks like!
+      </p>
+      <div class="brushes-grid" id="brushesGrid">
+        <div class="brush-card" onclick="selectBrush(this,'Normal Pencil','A thin, sharp line — like drawing with a real pencil!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">✏️</div>
+          <canvas class="brush-preview" id="bp1"></canvas>
+          <div class="brush-name">Normal Pencil</div>
+        </div>
+        <div class="brush-card" onclick="selectBrush(this,'Calligraphy Brush','Makes thick and thin lines — like fancy writing!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">🖊️</div>
+          <canvas class="brush-preview" id="bp2"></canvas>
+          <div class="brush-name">Calligraphy Brush</div>
+        </div>
+        <div class="brush-card" onclick="selectBrush(this,'Airbrush','Sprays tiny dots like a can of spray paint!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">💨</div>
+          <canvas class="brush-preview" id="bp3"></canvas>
+          <div class="brush-name">Airbrush</div>
+        </div>
+        <div class="brush-card" onclick="selectBrush(this,'Oil Brush','Makes thick, colourful strokes like painting with oil paints!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">🎨</div>
+          <canvas class="brush-preview" id="bp4"></canvas>
+          <div class="brush-name">Oil Brush</div>
+        </div>
+        <div class="brush-card" onclick="selectBrush(this,'Marker','Makes wide, bold strokes like a felt-tip marker!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">🖍️</div>
+          <canvas class="brush-preview" id="bp5"></canvas>
+          <div class="brush-name">Marker</div>
+        </div>
+        <div class="brush-card" onclick="selectBrush(this,'Watercolour Brush','Makes soft, transparent strokes like watercolour paints!')">
+          <div style="font-size:2.5rem;margin-bottom:6px">💧</div>
+          <canvas class="brush-preview" id="bp6"></canvas>
+          <div class="brush-name">Watercolour Brush</div>
+        </div>
+      </div>
+      <div id="brushInfo" style="display:none;background:linear-gradient(135deg,rgba(29,209,161,0.1),rgba(255,159,67,0.1));border-radius:14px;padding:20px;margin-top:8px;border:2px solid var(--teal);font-size:18px;font-weight:700;color:var(--dark)"></div>
+      <br>
+      <button class="read-aloud-btn" onclick="readAloud('MS Paint has different types of brushes. Each brush creates a different type of stroke or texture on the canvas. You can choose from brushes like the Normal Pencil, Calligraphy Brush, Airbrush, Oil Brush, Marker, and Watercolour Brush!', this)">🔊 Read Aloud</button>
+    </div>
+
+    <!-- SELECTION & CURVE TOOL -->
+    <div class="section-card accent-purple gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-purple">✂️</div>
+        <h2 class="section-title">Rectangular Selection Tool &amp; Curve Tool</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" id="toolsGrid">
+        <div style="background:#f8f9fa;border-radius:14px;padding:20px;border:2px solid var(--purple)">
+          <div style="font-size:3rem;text-align:center;margin-bottom:12px">⬜</div>
+          <h3 style="font-size:clamp(1.1rem,2vw,1.3rem);font-weight:800;color:var(--dark);margin-bottom:10px;text-align:center">Rectangular Selection Tool</h3>
+          <p style="font-size:17px;line-height:1.7;color:#444;text-align:center">Click and drag to select a rectangular area of your drawing. You can then move, copy, or delete the selected part!</p>
+        </div>
+        <div style="background:#f8f9fa;border-radius:14px;padding:20px;border:2px solid var(--orange)">
+          <div style="font-size:3rem;text-align:center;margin-bottom:12px">〰️</div>
+          <h3 style="font-size:clamp(1.1rem,2vw,1.3rem);font-weight:800;color:var(--dark);margin-bottom:10px;text-align:center">Curve Tool</h3>
+          <p style="font-size:17px;line-height:1.7;color:#444;text-align:center">Draw smooth curved lines in your pictures. First draw a straight line, then drag it to create a beautiful curve!</p>
+        </div>
+      </div>
+      <br>
+      <button class="read-aloud-btn" onclick="readAloud('The Rectangular Selection Tool lets you click and drag to select a rectangular area of your drawing. You can then move, copy, or delete the selected part. The Curve Tool lets you draw smooth curved lines in your pictures. First draw a straight line, then drag it to create a beautiful curve!', this)">🔊 Read Aloud</button>
+    </div>
+  </div>
+</section>
+
+<!-- LAB ACTIVITY -->
+<section class="section" id="sec-lab">
+  <div class="section-inner">
+    <div class="section-card accent-orange gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-orange">🧪</div>
+        <h2 class="section-title">Lab Activity — Let's Draw in MS Paint!</h2>
+      </div>
+      <p class="section-text">Follow these steps to complete your lab activity in MS Paint. You will draw objects using different shapes and colour them!</p>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Open MS Paint</strong> on your computer.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Select Your Shapes:</strong> Use the Shapes Toolbox to select basic shapes like the <strong>Oval, Rectangle, Triangle,</strong> and <strong>Line</strong> tools.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Create Your Object:</strong> Follow the instructions to draw each object. Combine different shapes to represent different parts of each object.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Add Colours:</strong> Use the <strong>Fill with Colour</strong> tool to colour each part of your drawing.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-text"><strong>Save Your Work:</strong> Save each drawing with a different name (e.g., <strong>"My Clock," "My Ice-cream,"</strong> etc.).</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:clamp(1.1rem,2vw,1.4rem);font-weight:800;margin:28px 0 16px;color:var(--dark)">🎨 Ideas for What to Draw!</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
+        <div style="background:rgba(255,159,67,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--orange)">
+          <div style="font-size:3rem">🕐</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My Clock</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Circles + lines</div>
+        </div>
+        <div style="background:rgba(29,209,161,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--teal)">
+          <div style="font-size:3rem">🍦</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My Ice-cream</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Circle + triangle</div>
+        </div>
+        <div style="background:rgba(162,155,254,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--purple)">
+          <div style="font-size:3rem">🏠</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My House</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Rectangle + triangle</div>
+        </div>
+        <div style="background:rgba(255,159,67,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--orange)">
+          <div style="font-size:3rem">🚂</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My Train</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Rectangles + ovals</div>
+        </div>
+        <div style="background:rgba(29,209,161,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--teal)">
+          <div style="font-size:3rem">🌻</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My Flower</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Ovals + line</div>
+        </div>
+        <div style="background:rgba(162,155,254,0.1);border-radius:14px;padding:20px;text-align:center;border:2px solid var(--purple)">
+          <div style="font-size:3rem">🤖</div>
+          <div style="font-size:17px;font-weight:800;margin-top:8px">My Robot</div>
+          <div style="font-size:14px;color:#666;margin-top:4px">Rectangles + ovals</div>
+        </div>
+      </div>
+      <br>
+      <button class="read-aloud-btn" onclick="readAloud('Lab Activity! Open MS Paint on your computer. Select your shapes using the Shapes Toolbox. Create your object by combining different shapes. Add colours using the Fill with Colour tool. Save your work with a name like My Clock or My Ice-cream!', this)">🔊 Read Aloud</button>
+    </div>
+
+    <!-- SORTING ACTIVITY -->
+    <div class="section-card accent-purple gsap-card">
+      <div class="section-header">
+        <div class="section-icon icon-purple">🗂️</div>
+        <h2 class="section-title">Sorting Activity — Match the Tool!</h2>
+      </div>
+      <p class="section-text">Drag each word into the correct box. Which category does each tool or feature belong to?</p>
+      <div class="sorting-activity">
+        <div class="word-bank" id="sortWordBank"></div>
+        <div class="buckets">
+          <div class="bucket" id="bucket-shapes" ondragover="allowDrop(event)" ondrop="dropItem(event,'bucket-shapes')" style="background:rgba(29,209,161,0.05);border-color:#1DD1A1">
+            <div class="bucket-title" style="color:var(--teal)">🔷 Shapes / Drawing Tools</div>
+            <div class="bucket-items" id="bucket-shapes-items"></div>
+          </div>
+          <div class="bucket" id="bucket-tools" ondragover="allowDrop(event)" ondrop="dropItem(event,'bucket-tools')" style="background:rgba(255,159,67,0.05);border-color:#FF9F43">
+            <div class="bucket-title" style="color:var(--orange)">🛠️ Other Tools</div>
+            <div class="bucket-items" id="bucket-tools-items"></div>
+          </div>
+        </div>
+        <div class="sort-feedback" id="sortFeedback"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <button class="sort-check-btn" onclick="checkSort()">Check Answers ✓</button>
+          <button class="sort-check-btn" onclick="resetSort()" style="background:var(--purple)">Reset 🔄</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-section" id="sec-quiz">
+  <div class="quiz-inner">
+    <div class="section-header" style="margin-bottom:24px">
+      <div class="section-icon icon-orange" style="background:rgba(255,159,67,0.15)">🎯</div>
+      <h2 class="section-title">Knowledge Quiz — Let's Test What You Know!</h2>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="quiz-progress">
+        <div class="quiz-q-num" id="quizQNum">Question 1 of 6</div>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+      </div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <button class="quiz-btn" id="quizNextBtn" onclick="nextQuestion()" disabled>Next →</button>
+      </div>
+    </div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="quiz-score" id="quizScore"></div>
+      <div class="quiz-score-msg" id="quizScoreMsg"></div>
+      <div style="font-size:3rem;margin:16px 0" id="quizEmoji"></div>
+      <button class="quiz-retry-btn" onclick="resetQuiz()">🔄 Try Again!</button>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; setTimeout(() => c.style.display = 'none', 600); }
+  }, 2500);
+
+  init();
+});
+
+function init() {
+  try { initLenis(); } catch(e) { console.warn('Lenis init failed', e); }
+  try { initGSAP(); } catch(e) { console.warn('GSAP init failed', e); }
+  initProgress();
+  initFibActivity();
+  initSortActivity();
+  initQuiz();
+  initBrushPreviews();
+  initFillColour();
+
+  // Curtain dismiss
+  if (typeof gsap !== 'undefined') {
+    gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 1.8, onComplete: () => {
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }});
+    // Hero title animation
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) {
+      const spans = document.querySelectorAll('.hero-title span');
+      gsap.from(spans, { opacity: 0, y: 40, stagger: 0.12, duration: 0.6, ease: 'back.out(1.7)', delay: 2.0 });
+    }
+  }
+}
+
+// LENIS
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.1, smooth: true });
+  if (typeof gsap !== 'undefined' && gsap.ticker) {
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+}
+
+// GSAP ANIMATIONS
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  document.querySelectorAll('.gsap-card').forEach(card => {
+    gsap.from(card, {
+      scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
+      y: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
+    });
+  });
+}
+
+// PROGRESS BAR
+function initProgress() {
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+}
+function updateProgress() {
+  const h = document.documentElement;
+  const scrolled = h.scrollTop || document.body.scrollTop;
+  const total = h.scrollHeight - h.clientHeight;
+  const pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+  updateDesktopNav(scrolled);
+}
+
+function updateDesktopNav(scrolled) {
+  const sections = ['hero','sec-objectives','sec-mspaint','sec-shapes','sec-fill','sec-brushes','sec-lab','sec-quiz'];
+  const navItems = document.querySelectorAll('.desktop-nav-item');
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrolled) current = Math.min(i, navItems.length - 1);
+  });
+  navItems.forEach((n, i) => n.classList.toggle('active', i === current));
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// READ ALOUD
+function readAloud(text, btn) {
+  try {
+    if (!('speechSynthesis' in window)) {
+      if (btn) btn.title = text;
+      return;
+    }
+    window.speechSynthesis.cancel();
+    if (btn && btn.classList.contains('speaking')) {
+      btn.classList.remove('speaking');
+      btn.textContent = '🔊 Read Aloud';
+      return;
+    }
+    document.querySelectorAll('.read-aloud-btn.speaking').forEach(b => {
+      b.classList.remove('speaking');
+      b.textContent = '🔊 Read Aloud';
+    });
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.85;
+    utter.pitch = 1.1;
+    if (btn) {
+      btn.classList.add('speaking');
+      btn.textContent = '⏹ Stop';
+      utter.onend = () => { btn.classList.remove('speaking'); btn.textContent = '🔊 Read Aloud'; };
+      utter.onerror = () => { btn.classList.remove('speaking'); btn.textContent = '🔊 Read Aloud'; };
+    }
+    window.speechSynthesis.speak(utter);
+  } catch(e) {
+    if (btn) { btn.title = text; btn.textContent = '🔊 Read Aloud'; }
+  }
+}
+
+// SHAPE INFO
+const shapeInfoData = {
+  oval: '🔵 Oval Tool — Use this to draw circles, ovals, and round shapes! Great for drawing suns, balls, wheels, and faces!',
+  rectangle: '🟧 Rectangle Tool — Use this to draw rectangles and squares! Perfect for drawing windows, doors, and the body of a house!',
+  triangle: '🔺 Triangle Tool — Use this to draw triangles! Great for making roofs, mountains, and ice-cream cones!',
+  star: '⭐ Star Tool — Use this to draw shining stars! Perfect for decorating your drawings!',
+  arrow: '⬆️ Up Arrow Tool — Use this to draw arrows pointing up! Great for showing directions!',
+  line: '➖ Line Tool — Use this to draw straight lines! You can use lines to draw roads, fences, and more!'
+};
+function showShapeInfo(type) {
+  const box = document.getElementById('shapeInfoBox');
+  const text = document.getElementById('shapeInfoText');
+  box.style.display = 'block';
+  text.textContent = shapeInfoData[type] || '';
+  if (typeof gsap !== 'undefined') {
+    gsap.from(box, { scale: 0.95, opacity: 0, duration: 0.3, ease: 'back.out(1.5)' });
+  }
+}
+
+// FILL WITH COLOUR
+let currentFillColour = '#FF9F43';
+function initFillColour() {
+  const btns = document.querySelectorAll('.colour-btn');
+  if (btns.length > 0) {
+    btns[0].style.borderColor = '#333';
+  }
+}
+function selectFillColour(colour, btn) {
+  currentFillColour = colour;
+  document.querySelectorAll('.colour-btn').forEach(b => b.style.borderColor = 'transparent');
+  btn.style.borderColor = '#333';
+  const bucket = document.getElementById('fillBucketIcon');
+  if (bucket && typeof gsap !== 'undefined') {
+    gsap.to(bucket, { rotation: -30, duration: 0.15, yoyo: true, repeat: 1 });
+  }
+}
+function fillShape(el) {
+  el.style.background = currentFillColour;
+  el.classList.add('filled');
+  el.textContent = '';
+  if (typeof gsap !== 'undefined') {
+    gsap.fromTo(el, { scale: 0.8 }, { scale: 1, duration: 0.3, ease: 'back.out(1.7)' });
+  }
+  el.classList.add('correct-burst');
+  setTimeout(() => el.classList.remove('correct-burst'), 700);
+}
+function resetFillShapes() {
+  ['ftCircle','ftRect','ftStar','ftTri','ftHex'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.background = '';
+      el.classList.remove('filled');
+      const icons = { ftCircle:'⚪', ftRect:'⬜', ftStar:'⭐', ftTri:'🔺', ftHex:'⬡' };
+      el.textContent = icons[id] || '';
+    }
+  });
+}
+
+// BRUSHES
+function initBrushPreviews() {
+  const configs = [
+    { id:'bp1', type:'pencil', color:'#2d3436' },
+    { id:'bp2', type:'calli', color:'#6c5ce7' },
+    { id:'bp3', type:'air', color:'#0984e3' },
+    { id:'bp4', type:'oil', color:'#e17055' },
+    { id:'bp5', type:'marker', color:'#00b894' },
+    { id:'bp6', type:'water', color:'#74b9ff' }
+  ];
+  configs.forEach(cfg => {
+    const c = document.getElementById(cfg.id);
+    if (!c) return;
+    const w = c.offsetWidth || 150;
+    c.width = w; c.height = 40;
+    const ctx = c.getContext('2d');
+    drawBrushPreview(ctx, cfg.type, cfg.color, w);
+  });
+}
+function drawBrushPreview(ctx, type, color, w) {
+  ctx.clearRect(0, 0, w, 40);
+  ctx.strokeStyle = color;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  if (type === 'pencil') {
+    ctx.lineWidth = 1.5;
+    ctx.moveTo(10, 20); ctx.lineTo(w - 10, 20);
+  } else if (type === 'calli') {
+    ctx.lineWidth = 6;
+    ctx.moveTo(10, 28); ctx.lineTo(w - 10, 12);
+  } else if (type === 'air') {
+    for (let i = 0; i < 40; i++) {
+      const x = 10 + Math.random() * (w - 20);
+      const y = 10 + Math.random() * 20;
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.4;
+      ctx.fillRect(x, y, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+    return;
+  } else if (type === 'oil') {
+    ctx.lineWidth = 8;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 4;
+    ctx.moveTo(10, 20); ctx.lineTo(w - 10, 20);
+    ctx.shadowBlur = 0;
+  } else if (type === 'marker') {
+    ctx.lineWidth = 10;
+    ctx.globalAlpha = 0.7;
+    ctx.moveTo(10, 20); ctx.lineTo(w - 10, 20);
+    ctx.globalAlpha = 1;
+  } else if (type === 'water') {
+    ctx.lineWidth = 8;
+    ctx.globalAlpha = 0.45;
+    ctx.moveTo(10, 20); ctx.lineTo(w - 10, 20);
+    ctx.globalAlpha = 1;
+  }
+  ctx.stroke();
+}
+function selectBrush(el, name, desc) {
+  document.querySelectorAll('.brush-card').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  const info = document.getElementById('brushInfo');
+  info.style.display = 'block';
+  info.textContent = '🖌️ ' + name + ' — ' + desc;
+  if (typeof gsap !== 'undefined') {
+    gsap.from(info, { y: 10, opacity: 0, duration: 0.3 });
+  }
+}
+
+// FIB ACTIVITY
+const fibAnswers = { fib1: 'Shapes', fib2: 'triangles', fib3: 'Oval', fib4: 'digital', fib5: 'Star' };
+const fibOptions = {
+  fib1: ['Shapes','Colours','Brushes'],
+  fib2: ['triangles','circles','arrows'],
+  fib3: ['Oval','Rectangle','Star'],
+  fib4: ['digital','paper','wooden'],
+  fib5: ['Star','Arrow','Line']
+};
+let activeFibBlank = null;
+let activeFibEl = null;
+
+function initFibActivity() {
+  document.addEventListener('click', e => {
+    if (!e.target.classList.contains('fib-blank') && !e.target.classList.contains('word-option')) {
+      closeAllPopups();
+    }
+  });
+}
+
+function openWordBank(id, el) {
+  closeAllPopups();
+  activeFibBlank = id;
+  activeFibEl = el;
+  const opts = fibOptions[id];
+  if (!opts) return;
+  const popup = document.createElement('div');
+  popup.className = 'word-popup';
+  popup.id = 'fibPopup';
+  opts.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'word-option';
+    btn.textContent = opt;
+    btn.onclick = (e) => { e.stopPropagation(); chooseFibAnswer(opt); };
+    popup.appendChild(btn);
+  });
+  el.appendChild(popup);
+}
+
+function closeAllPopups() {
+  const p = document.getElementById('fibPopup');
+  if (p) p.remove();
+  activeFibBlank = null;
+  activeFibEl = null;
+}
+
+function chooseFibAnswer(word) {
+  if (!activeFibBlank || !activeFibEl) return;
+  activeFibEl.textContent = word;
+  activeFibEl.dataset.chosen = word;
+  activeFibEl.classList.remove('wrong');
+  activeFibEl.classList.add('filled');
+  closeAllPopups();
+}
+
+function checkFib() {
+  let correct = 0; let total = Object.keys(fibAnswers).length;
+  Object.entries(fibAnswers).forEach(([id, ans]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const chosen = el.dataset.chosen || '';
+    if (chosen.toLowerCase() === ans.toLowerCase()) {
+      correct++;
+      el.classList.add('filled'); el.classList.remove('wrong');
+      if (typeof gsap !== 'undefined') {
+        const prefR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefR) gsap.fromTo(el, { scale: 0.9 }, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 });
+      }
+    } else {
+      el.classList.add('wrong'); el.classList.remove('filled');
+      if (typeof gsap !== 'undefined') {
+        const prefR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefR) gsap.to(el, { rotation: -5, duration: 0.07, yoyo: true, repeat: 5, onComplete: () => gsap.set(el, {rotation:0}) });
+      }
+    }
+  });
+  const res = document.getElementById('fibResult');
+  if (correct === total) {
+    res.textContent = '🎉 Excellent! All ' + total + ' answers are correct!';
+    res.style.color = '#0abf8a';
+  } else {
+    res.textContent = `You got ${correct} out of ${total}. Keep trying! 💪`;
+    res.style.color = '#e74c3c';
+  }
+}
+
+// SORT ACTIVITY
+const sortItems = [
+  { text: '🔷 Oval Tool', cat: 'shapes' },
+  { text: '🔺 Triangle Tool', cat: 'shapes' },
+  { text: '⬜ Rectangle Tool', cat: 'shapes' },
+  { text: '⭐ Star Tool', cat: 'shapes' },
+  { text: '🪣 Fill with Colour', cat: 'tools' },
+  { text: '✂️ Selection Tool', cat: 'tools' },
+  { text: '〰️ Curve Tool', cat: 'tools' },
+  { text: '🖌️ Brush Tool', cat: 'tools' }
+];
+
+function initSortActivity() {
+  const wb = document.getElementById('sortWordBank');
+  if (!wb) return;
+  wb.innerHTML = '';
+  const shuffled = [...sortItems].sort(() => Math.random() - 0.5);
+  shuffled.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.textContent = item.text;
+    el.dataset.cat = item.cat;
+    el.dataset.idx = i;
+    el.setAttribute('draggable', true);
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ text: item.text, cat: item.cat, idx: i }));
+      el.classList.add('dragging');
+    });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    // Touch support
+    addTouchDrag(el);
+    wb.appendChild(el);
+  });
+  ['bucket-shapes','bucket-tools'].forEach(id => {
+    const el = document.getElementById(id + '-items');
+    if (el) el.innerHTML = '';
+  });
+  document.getElementById('sortFeedback').textContent = '';
+}
+
+function addTouchDrag(el) {
+  let startX, startY, clone;
+  el.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    clone = el.cloneNode(true);
+    clone.style.position = 'fixed';
+    clone.style.opacity = '0.7';
+    clone.style.pointerEvents = 'none';
+    clone.style.zIndex = '9999';
+    clone.style.width = el.offsetWidth + 'px';
+    document.body.appendChild(clone);
+    el.style.opacity = '0.4';
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    if (clone) {
+      clone.style.left = (t.clientX - el.offsetWidth / 2) + 'px';
+      clone.style.top = (t.clientY - 20) + 'px';
+    }
+  }, { passive: false });
+  el.addEventListener('touchend', e => {
+    el.style.opacity = '1';
+    if (clone) { clone.remove(); clone = null; }
+    const t = e.changedTouches[0];
+    const target = document.elementFromPoint(t.clientX, t.clientY);
+    const bucket = target ? target.closest('.bucket') : null;
+    if (bucket) {
+      const bucketId = bucket.id;
+      const cat = el.dataset.cat;
+      const text = el.textContent;
+      const itemsEl = document.getElementById(bucketId + '-items');
+      if (itemsEl) {
+        const bi = document.createElement('div');
+        bi.className = 'bucket-item';
+        bi.textContent = text;
+        bi.dataset.cat = cat;
+        bi.dataset.target = bucketId.replace('bucket-', '');
+        itemsEl.appendChild(bi);
+        el.remove();
+      }
+    }
+  });
+}
+
+function allowDrop(e) { e.preventDefault(); document.querySelectorAll('.bucket').forEach(b => b.classList.remove('drag-over')); e.currentTarget.classList.add('drag-over'); }
+function dropItem(e, bucketId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  try {
+    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+    const itemsEl = document.getElementById(bucketId + '-items');
+    const bi = document.createElement('div');
+    bi.className = 'bucket-item';
+    bi.textContent = data.text;
+    bi.dataset.cat = data.cat;
+    bi.dataset.target = bucketId.replace('bucket-', '');
+    itemsEl.appendChild(bi);
+    // Remove from word bank
+    const allDragItems = document.querySelectorAll('#sortWordBank .drag-item');
+    allDragItems.forEach(d => { if (d.dataset.cat === data.cat && d.textContent === data.text) d.remove(); });
+  } catch(err) {}
+}
+
+function checkSort() {
+  const allItems = document.querySelectorAll('.bucket-item');
+  let correct = 0, total = allItems.length;
+  if (total === 0) {
+    document.getElementById('sortFeedback').textContent = 'Drag some items into the boxes first! 😊';
+    document.getElementById('sortFeedback').style.color = '#666';
+    return;
+  }
+  allItems.forEach(item => {
+    const cat = item.dataset.cat;
+    const target = item.dataset.target;
+    if (cat === target) {
+      correct++;
+      item.style.background = 'rgba(29,209,161,0.15)';
+      item.style.borderColor = 'var(--teal)';
+    } else {
+      item.style.background = 'rgba(231,76,60,0.12)';
+      item.style.borderColor = '#e74c3c';
+    }
+  });
+  const fb = document.getElementById('sortFeedback');
+  if (correct === total) {
+    fb.textContent = '🎉 Amazing! All ' + total + ' items sorted correctly!';
+    fb.style.color = '#0abf8a';
+  } else {
+    fb.textContent = `${correct} out of ${total} correct. Check the red ones! 💪`;
+    fb.style.color = '#e74c3c';
+  }
+}
+
+function resetSort() {
+  initSortActivity();
+}
+
+// QUIZ
+const quizData = [
+  {
+    q: 'What is MS Paint used for?',
+    options: [
+      { text: '🎨 Drawing and colouring pictures', correct: true },
+      { text: '📧 Sending emails', correct: false }
+    ],
+    explain: '✅ Correct! MS Paint is a program used to draw and colour pictures.'
+  },
+  {
+    q: 'Which tool do you use to fill a shape with colour?',
+    options: [
+      { text: '✏️ Pencil Tool', correct: false },
+      { text: '🪣 Fill with Colour Tool', correct: true }
+    ],
+    explain: '✅ Correct! The Fill with Colour tool (bucket) fills shapes with colour.'
+  },
+  {
+    q: 'What shapes would you combine to draw a house?',
+    options: [
+      { text: '🔺 Triangle + 🟥 Rectangle', correct: true },
+      { text: '⭐ Star + ⚪ Circle', correct: false }
+    ],
+    explain: '✅ Correct! A triangle makes the roof and a rectangle makes the walls!'
+  },
+  {
+    q: 'Which tool draws smooth curved lines?',
+    options: [
+      { text: '〰️ Curve Tool', correct: true },
+      { text: '⬜ Rectangle Tool', correct: false }
+    ],
+    explain: '✅ Correct! The Curve Tool is used to draw smooth curved lines.'
+  },
+  {
+    q: 'Where can you find the Shapes Toolbox in MS Paint?',
+    options: [
+      { text: '📁 In the File menu', correct: false },
+      { text: '🔷 In the top toolbar (Shapes section)', correct: true }
+    ],
+    explain: '✅ Correct! The Shapes Toolbox is found in the top toolbar of MS Paint.'
+  },
+  {
+    q: 'Which part of MS Paint is the large white area where you draw?',
+    options: [
+      { text: '🖼️ Work Area', correct: true },
+      { text: '📊 Status Bar', correct: false }
+    ],
+    explain: '✅ Correct! The Work Area is the large white space where you create your drawings!'
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function initQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  renderQuestion();
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizCard').style.display = 'block';
+}
+
+function renderQuestion() {
+  const q = quizData[currentQ];
+  document.getElementById('quizQNum').textContent = `Question ${currentQ + 1} of ${quizData.length}`;
+  document.getElementById('quizProgressFill').style.width = (currentQ / quizData.length * 100) + '%';
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNextBtn').disabled = true;
+  answered = false;
+
+  const optsEl = document.getElementById('quizOptions');
+  optsEl.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.innerHTML = `<span class="quiz-option-icon">${opt.correct ? '🌟' : '🤔'}</span>${opt.text}`;
+    btn.style.setProperty('--opt-icon', opt.correct ? '🌟' : '🤔');
+    btn.onclick = () => handleAnswer(opt.correct, btn, q.explain);
+    optsEl.appendChild(btn);
+  });
+}
+
+function handleAnswer(isCorrect, btn, explain) {
+  if (answered) return;
+  answered = true;
+  const allBtns = document.querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.classList.add('disabled'));
+
+  if (isCorrect) {
+    score++;
+    btn.classList.add('correct');
+    document.getElementById('quizFeedback').textContent = explain;
+    document.getElementById('quizFeedback').style.color = '#0abf8a';
+    if (typeof gsap !== 'undefined') {
+      const prefR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefR) gsap.fromTo(btn, { scale: 1 }, { scale: 1.06, duration: 0.2, yoyo: true, repeat: 1 });
+    }
+    btn.classList.add('correct-burst');
+    setTimeout(() => btn.classList.remove('correct-burst'), 700);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('quizFeedback').textContent = '❌ Not quite! ' + explain;
+    document.getElementById('quizFeedback').style.color = '#e74c3c';
+    if (typeof gsap !== 'undefined') {
+      const prefR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefR) gsap.to(btn, { rotation: -5, duration: 0.07, yoyo: true, repeat: 5, onComplete: () => gsap.set(btn, {rotation:0}) });
+    }
+    // Show correct answer
+    allBtns.forEach(b => {
+      if (b !== btn && !b.classList.contains('wrong')) b.classList.add('correct');
+    });
+  }
+  document.getElementById('quizNextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizData.length) {
+    showQuizResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showQuizResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const res = document.getElementById('quizResult');
+  res.style.display = 'block';
+  document.getElementById('quizScore').textContent = score + ' / ' + quizData.length;
+  document.getElementById('quizProgressFill').style.width = '100%';
+  let msg, emoji;
+  if (score === quizData.length) { msg = 'Perfect! You are a MS Paint expert! 🌟'; emoji = '🏆'; }
+  else if (score >= 4) { msg = 'Great job! You know a lot about MS Paint!'; emoji = '🎉'; }
+  else if (score >= 2) { msg = 'Good try! Review the lesson and try again!'; emoji = '💪'; }
+  else { msg = 'Keep practising — you can do it!'; emoji = '😊'; }
+  document.getElementById('quizScoreMsg').textContent = msg;
+  document.getElementById('quizEmoji').textContent = emoji;
+  if (typeof gsap !== 'undefined') {
+    const prefR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefR) gsap.from(res, { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+  }
+}
+
+function resetQuiz() {
+  initQuiz();
+}
+
+// TOOLS GRID RESPONSIVE
+function fixToolsGrid() {
+  const tg = document.getElementById('toolsGrid');
+  if (!tg) return;
+  if (window.innerWidth < 600) {
+    tg.style.gridTemplateColumns = '1fr';
+  } else {
+    tg.style.gridTemplateColumns = '1fr 1fr';
+  }
+}
+window.addEventListener('resize', fixToolsGrid);
+fixToolsGrid();
+
+</script>
+</body>
+</html>

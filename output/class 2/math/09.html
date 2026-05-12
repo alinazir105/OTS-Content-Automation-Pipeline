@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<!-- CLASS: 2 | SUBJECT: math | VERSION: 1.0 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractions – Class 2 Math | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;background:#FAFAFA;font-family:'Nunito',sans-serif;font-size:18px;color:#333;overflow-x:hidden}
+:root{--orange:#FF9F43;--teal:#1DD1A1;--purple:#A29BFE;--offwhite:#FAFAFA;--dark:#2d3436;--shadow:0 8px 32px rgba(0,0,0,0.08)}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .loader-emoji{font-size:64px;animation:bounce 0.8s infinite alternate}
+#curtain p{font-size:20px;font-weight:700;color:var(--orange)}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+
+/* PROGRESS BAR */
+#progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:6px;background:#e0e0e0;z-index:1000}
+#progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--teal));transition:width 0.3s}
+#progress-label{position:fixed;top:8px;right:16px;font-size:13px;font-weight:700;color:var(--dark);z-index:1001;background:#fff;padding:2px 8px;border-radius:20px;box-shadow:var(--shadow)}
+
+/* HERO */
+.hero{width:100vw;min-height:70vh;background:linear-gradient(135deg,#FF9F43 0%,#ff6b35 40%,#1DD1A1 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:60px 24px 80px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.07'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat}
+.hero-badge{background:#fff;color:var(--orange);font-size:14px;font-weight:800;padding:6px 20px;border-radius:30px;margin-bottom:20px;display:inline-block;box-shadow:var(--shadow);letter-spacing:0.5px}
+.hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;text-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.hero h1 span{display:inline-block;opacity:1}
+.hero-sub{font-size:clamp(1.1rem,2.5vw,1.4rem);color:rgba(255,255,255,0.92);font-weight:600;max-width:600px;margin:0 auto 32px}
+.hero-fractions{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.hero-fraction-card{background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.4);border-radius:20px;padding:16px 24px;color:#fff;font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;text-align:center}
+.hero-fraction-card small{display:block;font-size:14px;font-weight:600;opacity:0.85;margin-top:4px}
+
+/* LAYOUT */
+.page-wrap{width:100%;max-width:1500px;margin:0 auto;padding:0 40px}
+.section{padding:60px 0;opacity:1;transform:none}
+
+/* SECTION HEADERS */
+.sec-header{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.sec-icon{font-size:36px;width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--dark)}
+.sec-sub{font-size:18px;font-weight:600;color:#666;margin-top:2px}
+
+/* CARDS */
+.card{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:32px;margin-bottom:28px;opacity:1;transform:none;width:100%;max-width:100%}
+.card-orange{border-left:4px solid var(--orange)}
+.card-teal{border-left:4px solid var(--teal)}
+.card-purple{border-left:4px solid var(--purple)}
+
+/* DEFINITION SECTION */
+.definition-text{font-size:20px;line-height:1.7;color:#444;margin-bottom:20px}
+.fraction-parts{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px}
+.part-box{flex:1;min-width:220px;border-radius:16px;padding:20px;text-align:center}
+.part-box.num{background:linear-gradient(135deg,#fff5e6,#ffe0b2);border:2px solid var(--orange)}
+.part-box.den{background:linear-gradient(135deg,#e0faf3,#b2f0df);border:2px solid var(--teal)}
+.part-box h3{font-size:clamp(1.1rem,2vw,1.4rem);font-weight:800;margin-bottom:8px}
+.part-box p{font-size:18px;color:#555;line-height:1.5}
+.fraction-display{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;text-align:center;margin:24px 0;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;gap:4px}
+.frac .num-n{color:var(--orange);font-weight:900}
+.frac .line{width:60px;height:4px;background:var(--dark);border-radius:2px}
+.frac .den-n{color:var(--teal);font-weight:900}
+.frac-label{font-size:18px;font-weight:700;color:#888}
+
+/* NUMERATOR/DENOMINATOR TABLE */
+.nd-table-wrap{overflow-x:auto}
+.nd-table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.nd-table th{background:linear-gradient(135deg,var(--orange),#ff6b35);color:#fff;font-size:18px;font-weight:800;padding:14px 20px;text-align:center}
+.nd-table th:first-child{border-radius:12px 0 0 12px}
+.nd-table th:last-child{border-radius:0 12px 12px 0}
+.nd-table td{background:#fff;border:2px solid #f0f0f0;font-size:18px;font-weight:600;padding:12px 20px;text-align:center}
+.nd-table td:first-child{border-radius:12px 0 0 12px;font-size:22px;font-weight:900;color:var(--dark)}
+.nd-table td:last-child{border-radius:0 12px 12px 0}
+.nd-table .frac-cell{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-size:24px;font-weight:900}
+.nd-table .frac-cell .fl{width:40px;height:3px;background:#333;border-radius:2px;display:block}
+
+/* FRACTION CIRCLES */
+.circles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.circle-item{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:28px;display:flex;flex-direction:column;align-items:center;gap:16px;opacity:1}
+.circle-svg-wrap{width:120px;height:120px}
+.circle-svg-wrap svg{width:100%;height:100%}
+.circle-answer{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800}
+.circle-answer .frac-ans{display:inline-flex;flex-direction:column;align-items:center;gap:2px;color:var(--teal)}
+.circle-answer .frac-ans .fl{width:36px;height:3px;background:var(--teal);border-radius:2px;display:block}
+.circle-hint{font-size:16px;color:#888;font-weight:600}
+
+/* FRACTION IN WORDS TABLE */
+.words-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.word-card{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:24px;display:flex;align-items:center;gap:20px;border-left:4px solid var(--purple);opacity:1}
+.word-card .frac-big{display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-size:28px;font-weight:900;min-width:60px}
+.word-card .frac-big .fl{width:44px;height:4px;background:var(--dark);border-radius:2px;display:block}
+.word-card .word-text{font-size:18px;font-weight:700;color:var(--purple);flex:1}
+
+/* ACTIVITIES */
+.activity-label{font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:800;color:var(--dark);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.activity-label::before{content:'✏️';font-size:1.2em}
+
+/* INTERACTIVE TABLE ACTIVITY */
+.int-table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.int-table th{background:var(--teal);color:#fff;font-size:18px;font-weight:800;padding:14px 20px;text-align:center}
+.int-table th:first-child{border-radius:12px 0 0 12px}
+.int-table th:last-child{border-radius:0 12px 12px 0}
+.int-table td{background:#f9f9f9;border:2px solid #eee;font-size:20px;font-weight:700;padding:12px 16px;text-align:center;vertical-align:middle}
+.int-table td:first-child{border-radius:12px 0 0 12px;font-size:24px}
+.int-table td:last-child{border-radius:0 12px 12px 0}
+.int-table .frac-disp{display:inline-flex;flex-direction:column;align-items:center;gap:2px}
+.int-table .frac-disp .fl{width:36px;height:3px;background:#333;border-radius:2px;display:block}
+.clickable-blank{display:inline-block;min-width:80px;min-height:44px;border:2px dashed var(--orange);border-radius:10px;background:#fff5e6;cursor:pointer;font-size:20px;font-weight:800;color:var(--orange);padding:8px 16px;transition:all 0.2s;position:relative;vertical-align:middle}
+.clickable-blank:hover{background:#ffe0b2;border-color:#e67e22}
+.clickable-blank.filled{border-style:solid;border-color:var(--teal);background:#e0faf3;color:var(--teal)}
+.clickable-blank.correct{border-color:#27ae60;background:#d5f5e3;color:#27ae60}
+.clickable-blank.wrong{border-color:#e74c3c;background:#fde8e8;color:#e74c3c}
+
+/* WORD BANK */
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;padding:16px;background:#f0f0f0;border-radius:14px}
+.wb-chip{background:#fff;border:2px solid var(--orange);border-radius:30px;padding:8px 18px;font-size:18px;font-weight:700;color:var(--orange);cursor:pointer;transition:all 0.2s;min-height:44px;display:flex;align-items:center}
+.wb-chip:hover{background:var(--orange);color:#fff}
+.wb-chip.used{opacity:0.4;pointer-events:none}
+.wb-popup{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border:2px solid var(--orange);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:200;min-width:160px;overflow:hidden}
+.wb-popup-item{padding:10px 18px;font-size:18px;font-weight:700;color:var(--dark);cursor:pointer;transition:background 0.15s}
+.wb-popup-item:hover{background:var(--orange);color:#fff}
+
+/* CIRCLES ACTIVITY */
+.circles-act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.circ-act-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;opacity:1}
+.circ-answer-row{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800}
+
+/* WORDS ACTIVITY */
+.words-act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.wa-card{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px;border-left:4px solid var(--purple);display:flex;align-items:center;gap:16px;opacity:1}
+.wa-card .frac-big2{display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-size:26px;font-weight:900;min-width:56px}
+.wa-card .frac-big2 .fl{width:40px;height:4px;background:var(--dark);border-radius:2px;display:block}
+.wa-input{border:2px solid #ddd;border-radius:10px;padding:8px 14px;font-size:18px;font-weight:700;font-family:'Nunito',sans-serif;width:100%;min-height:44px;color:var(--dark);outline:none;transition:border 0.2s}
+.wa-input:focus{border-color:var(--purple)}
+.wa-input.correct{border-color:#27ae60;background:#d5f5e3;color:#27ae60}
+.wa-input.wrong{border-color:#e74c3c;background:#fde8e8;color:#e74c3c}
+
+/* READ ALOUD */
+.read-aloud-btn{display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;border-radius:30px;padding:10px 22px;font-size:17px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:all 0.2s;min-height:44px}
+.read-aloud-btn:hover{background:#7f7fd5;transform:scale(1.04)}
+
+/* QUIZ */
+.quiz-wrap{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:36px;border-left:4px solid var(--orange)}
+.quiz-q{font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:800;color:var(--dark);margin-bottom:20px;line-height:1.5}
+.quiz-q-num{display:inline-block;background:var(--orange);color:#fff;border-radius:50%;width:32px;height:32px;line-height:32px;text-align:center;font-size:16px;font-weight:900;margin-right:10px;flex-shrink:0}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.quiz-opt{background:#f9f9f9;border:3px solid #eee;border-radius:16px;padding:18px 20px;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:64px;display:flex;align-items:center;justify-content:center;text-align:center;gap:8px}
+.quiz-opt:hover{border-color:var(--orange);background:#fff5e6}
+.quiz-opt.correct-opt{border-color:#27ae60;background:#d5f5e3;color:#27ae60}
+.quiz-opt.wrong-opt{border-color:#e74c3c;background:#fde8e8;color:#e74c3c}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-feedback{font-size:18px;font-weight:700;margin-bottom:16px;min-height:28px}
+.quiz-feedback.good{color:#27ae60}
+.quiz-feedback.bad{color:#e74c3c}
+.quiz-nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn-next{background:var(--orange);color:#fff;border:none;border-radius:30px;padding:12px 32px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:all 0.2s;min-height:48px}
+.btn-next:hover{background:#e67e22;transform:scale(1.05)}
+.quiz-score{font-size:20px;font-weight:800;color:var(--teal)}
+.quiz-complete{text-align:center;padding:40px 20px}
+.quiz-complete .big-emoji{font-size:72px;display:block;margin-bottom:16px}
+.quiz-complete h3{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--orange);margin-bottom:8px}
+.quiz-complete p{font-size:20px;color:#555;font-weight:600}
+.btn-restart{background:var(--teal);color:#fff;border:none;border-radius:30px;padding:12px 32px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;margin-top:20px;min-height:48px}
+
+/* FRACTION VISUAL */
+.frac-inline{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-size:inherit;font-weight:900;vertical-align:middle;margin:0 4px}
+.frac-inline .fl{width:28px;height:3px;background:currentColor;border-radius:2px;display:block}
+
+/* CONFIRM BTN */
+.btn-check{background:var(--teal);color:#fff;border:none;border-radius:30px;padding:12px 28px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:48px;margin-top:14px;transition:all 0.2s}
+.btn-check:hover{background:#16a085;transform:scale(1.04)}
+
+/* CELEBRATION */
+.confetti-burst{position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden}
+.confetti-piece{position:absolute;width:12px;height:12px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* MOBILE NAV */
+@media(max-width:768px){
+  .page-wrap{padding:0 16px}
+  .hero{min-height:60vh;padding:40px 16px 60px}
+  .card{padding:20px}
+  .circles-grid,.circles-act-grid,.words-act-grid,.words-grid{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .fraction-parts{flex-direction:column}
+  body{padding-bottom:80px}
+  .mobile-bottom-nav{display:flex!important}
+  .desktop-sidebar{display:none!important}
+}
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #eee;z-index:500;overflow-x:auto;padding:0;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+.mobile-bottom-nav-inner{display:flex;min-width:max-content;padding:8px 12px;gap:4px}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:700;color:#888;cursor:pointer;min-height:56px;justify-content:center;text-decoration:none;border:none;background:transparent;font-family:'Nunito',sans-serif;white-space:nowrap}
+.mobile-nav-item.active,.mobile-nav-item:hover{background:#fff5e6;color:var(--orange)}
+.mobile-nav-item .mn-icon{font-size:22px}
+
+/* COLOUR BURST */
+@keyframes colorburst{0%{box-shadow:0 0 0 0 rgba(29,209,161,0.5)}70%{box-shadow:0 0 0 20px rgba(29,209,161,0)}100%{box-shadow:0 0 0 0 rgba(29,209,161,0)}}
+.burst{animation:colorburst 0.5s ease-out}
+
+/* Section spacing */
+section{scroll-margin-top:40px}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="loader-emoji">🍕</div>
+  <p>Loading Fractions...</p>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="progress-label">0%</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Section Navigation">
+  <div class="mobile-bottom-nav-inner">
+    <a class="mobile-nav-item" href="#sec-intro"><span class="mn-icon">📖</span>Intro</a>
+    <a class="mobile-nav-item" href="#sec-definition"><span class="mn-icon">💡</span>Definition</a>
+    <a class="mobile-nav-item" href="#sec-nd-table"><span class="mn-icon">📋</span>Table</a>
+    <a class="mobile-nav-item" href="#sec-circles"><span class="mn-icon">⭕</span>Circles</a>
+    <a class="mobile-nav-item" href="#sec-words"><span class="mn-icon">📝</span>Words</a>
+    <a class="mobile-nav-item" href="#sec-quiz"><span class="mn-icon">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="sec-intro">
+  <div class="hero-badge">Chapter 9 · Class 2 Mathematics</div>
+  <h1>
+    <span id="hw1">Learning</span>&nbsp;<span id="hw2">Fractions</span>&nbsp;<span id="hw3">🍕</span>
+  </h1>
+  <p class="hero-sub">Parts of a whole — discover how to name, read, and write fractions!</p>
+  <div class="hero-fractions">
+    <div class="hero-fraction-card">
+      <span>3</span>
+      <span style="border-top:3px solid #fff;width:40px;display:block;margin:4px auto"></span>
+      <span>4</span>
+      <small>Three Fourths</small>
+    </div>
+    <div class="hero-fraction-card">
+      <span>5</span>
+      <span style="border-top:3px solid #fff;width:40px;display:block;margin:4px auto"></span>
+      <span>6</span>
+      <small>Five Sixths</small>
+    </div>
+    <div class="hero-fraction-card">
+      <span>4</span>
+      <span style="border-top:3px solid #fff;width:40px;display:block;margin:4px auto"></span>
+      <span>8</span>
+      <small>Four Eighths</small>
+    </div>
+  </div>
+  <button class="read-aloud-btn" style="margin-top:28px" onclick="readAloud('Welcome to Fractions! A fraction shows parts of a whole. We will learn what fractions are, how to read them, and how to write them.')">🔊 Read Aloud</button>
+</section>
+
+<!-- DEFINITION SECTION -->
+<section id="sec-definition" style="padding:60px 0">
+<div class="page-wrap">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fff5e6">💡</div>
+    <div>
+      <div class="sec-title">What is a Fraction?</div>
+      <div class="sec-sub">Understanding the parts</div>
+    </div>
+  </div>
+
+  <div class="card card-orange">
+    <p class="definition-text">Fractions represent the <strong>parts of a whole</strong> or a collection of objects. A fraction has <strong>two parts</strong> separated by a line.</p>
+    <button class="read-aloud-btn" onclick="readAloud('Fractions represent the parts of a whole or collection of objects. A fraction has two parts. The number on the top of the line is called the numerator. The number below the line is called the denominator.')">🔊 Read Definition</button>
+
+    <div class="fraction-parts" style="margin-top:28px">
+      <div class="part-box num">
+        <h3 style="color:var(--orange)">⬆️ Numerator</h3>
+        <p>The number <strong>on top</strong> of the line. It tells how many parts we have.</p>
+        <div style="font-size:48px;font-weight:900;color:var(--orange);margin-top:10px">3</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;flex-shrink:0">—</div>
+      <div class="part-box den">
+        <h3 style="color:var(--teal)">⬇️ Denominator</h3>
+        <p>The number <strong>below</strong> the line. It tells the total equal parts.</p>
+        <div style="font-size:48px;font-weight:900;color:var(--teal);margin-top:10px">4</div>
+      </div>
+    </div>
+
+    <div class="fraction-display">
+      <div style="text-align:center">
+        <div class="frac" style="font-size:clamp(2rem,5vw,3.5rem)">
+          <span class="num-n">2</span>
+          <span class="line"></span>
+          <span class="den-n">5</span>
+        </div>
+        <div class="frac-label" style="margin-top:8px">Two Fifths</div>
+      </div>
+      <div style="text-align:center">
+        <div class="frac" style="font-size:clamp(2rem,5vw,3.5rem)">
+          <span class="num-n">5</span>
+          <span class="line"></span>
+          <span class="den-n">9</span>
+        </div>
+        <div class="frac-label" style="margin-top:8px">Five Ninths</div>
+      </div>
+      <div style="text-align:center">
+        <div class="frac" style="font-size:clamp(2rem,5vw,3.5rem)">
+          <span class="num-n">3</span>
+          <span class="line"></span>
+          <span class="den-n">6</span>
+        </div>
+        <div class="frac-label" style="margin-top:8px">Three Sixths</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- NUMERATOR & DENOMINATOR TABLE ACTIVITY -->
+<section id="sec-nd-table" style="padding:60px 0;background:linear-gradient(135deg,#f0fff8,#fff5f0)">
+<div class="page-wrap">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#e0faf3">📋</div>
+    <div>
+      <div class="sec-title">Numerator &amp; Denominator</div>
+      <div class="sec-sub">Click the blanks to fill in the table</div>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="activity-label">Write the numerator and denominator in the table.</div>
+    
+    <!-- Popup word bank will appear near clicked blank -->
+    <div id="nd-popup" class="wb-popup" style="display:none;position:fixed;z-index:300"></div>
+
+    <div class="nd-table-wrap">
+      <table class="int-table" id="nd-table">
+        <thead>
+          <tr>
+            <th>Fraction</th>
+            <th>Numerator</th>
+            <th>Denominator</th>
+          </tr>
+        </thead>
+        <tbody id="nd-tbody">
+        </tbody>
+      </table>
+    </div>
+    <button class="btn-check" id="check-nd-btn" onclick="checkNDTable()">✅ Check Answers</button>
+    <div id="nd-feedback" style="margin-top:14px;font-size:18px;font-weight:700"></div>
+  </div>
+</div>
+</section>
+
+<!-- CIRCLES SECTION -->
+<section id="sec-circles" style="padding:60px 0">
+<div class="page-wrap">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fff0f6">⭕</div>
+    <div>
+      <div class="sec-title">Fraction Circles</div>
+      <div class="sec-sub">Look at the shaded parts</div>
+    </div>
+  </div>
+
+  <div class="card card-purple">
+    <p style="font-size:20px;line-height:1.6;margin-bottom:24px">Each circle is divided into equal parts. Some parts are shaded. The fraction shows <strong>shaded parts ÷ total parts</strong>.</p>
+    <button class="read-aloud-btn" onclick="readAloud('Look at the circles. Each circle has some parts shaded. Write the fraction that shows how many parts are shaded. Count the shaded parts for the numerator and the total parts for the denominator.')">🔊 Read Instructions</button>
+    <div class="circles-grid" id="circles-display" style="margin-top:28px"></div>
+  </div>
+
+  <!-- Interactive Circles Activity -->
+  <div class="card card-orange" style="margin-top:28px">
+    <div class="activity-label">Write the fraction for each circle below.</div>
+    <div class="circles-act-grid" id="circles-activity"></div>
+    <button class="btn-check" onclick="checkCircles()">✅ Check My Answers</button>
+    <div id="circles-feedback" style="margin-top:14px;font-size:18px;font-weight:700"></div>
+  </div>
+</div>
+</section>
+
+<!-- FRACTION IN WORDS SECTION -->
+<section id="sec-words" style="padding:60px 0;background:linear-gradient(135deg,#f5f0ff,#fff5f0)">
+<div class="page-wrap">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#ede8ff">📝</div>
+    <div>
+      <div class="sec-title">Fractions in Words</div>
+      <div class="sec-sub">Say the fraction out loud!</div>
+    </div>
+  </div>
+
+  <div class="card card-purple">
+    <p style="font-size:20px;line-height:1.6;margin-bottom:20px"><strong>Examples:</strong></p>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px">
+      <div style="background:#fff5e6;border:2px solid var(--orange);border-radius:16px;padding:20px 28px;text-align:center;flex:1;min-width:200px">
+        <div style="font-size:36px;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--orange)">
+          <span>1</span><span style="width:48px;height:4px;background:var(--orange);display:block;border-radius:2px"></span><span>3</span>
+        </div>
+        <div style="font-size:20px;font-weight:800;margin-top:10px;color:var(--dark)">= One Third</div>
+      </div>
+      <div style="background:#e0faf3;border:2px solid var(--teal);border-radius:16px;padding:20px 28px;text-align:center;flex:1;min-width:200px">
+        <div style="font-size:36px;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--teal)">
+          <span>1</span><span style="width:48px;height:4px;background:var(--teal);display:block;border-radius:2px"></span><span>4</span>
+        </div>
+        <div style="font-size:20px;font-weight:800;margin-top:10px;color:var(--dark)">= One Fourth</div>
+      </div>
+    </div>
+    <button class="read-aloud-btn" onclick="readAloud('One third means 1 out of 3 equal parts. One fourth means 1 out of 4 equal parts. One half means 1 out of 2 equal parts.')">🔊 Read Examples</button>
+  </div>
+
+  <div class="card card-teal" style="margin-top:28px">
+    <div class="activity-label">Write each fraction in words.</div>
+    <div class="words-act-grid" id="words-activity"></div>
+    <button class="btn-check" onclick="checkWords()">✅ Check My Answers</button>
+    <div id="words-feedback" style="margin-top:14px;font-size:18px;font-weight:700"></div>
+  </div>
+</div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section id="sec-quiz" style="padding:60px 0">
+<div class="page-wrap">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fff5e6">🎯</div>
+    <div>
+      <div class="sec-title">Quiz Time!</div>
+      <div class="sec-sub">Test your fraction knowledge</div>
+    </div>
+  </div>
+
+  <div class="quiz-wrap" id="quiz-container"></div>
+</div>
+</section>
+
+<!-- BOTTOM SPACER -->
+<div style="height:60px"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+// === CURTAIN FALLBACK (FIRST) ===
+setTimeout(() => {
+  const c = document.getElementById('curtain');
+  if (c) c.style.display = 'none';
+}, 3000);
+
+// === MAIN INIT ===
+try { init(); } catch(e) { console.error(e); }
+
+function init() {
+
+// ---- LENIS SMOOTH SCROLL ----
+try {
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.1, smooth: true });
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function rafLoop(time) { lenis.raf(time); requestAnimationFrame(rafLoop); }
+      requestAnimationFrame(rafLoop);
+    }
+  }
+} catch(e) { console.warn('Lenis failed:', e); }
+
+// ---- HIDE CURTAIN ----
+setTimeout(() => {
+  const c = document.getElementById('curtain');
+  if (c) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(c, { opacity: 0, duration: 0.5, onComplete: () => c.style.display = 'none' });
+      } else { c.style.display = 'none'; }
+    } catch(e) { c.style.display = 'none'; }
+  }
+}, 800);
+
+// ---- PROGRESS BAR ----
+function updateProgress() {
+  const scrolled = window.scrollY;
+  const total = document.body.scrollHeight - window.innerHeight;
+  const pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+
+// ---- GSAP HERO ANIMATION ----
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (typeof gsap !== 'undefined' && !prefersReduced) {
+  try {
+    gsap.registerPlugin(ScrollTrigger);
+    ['hw1','hw2','hw3'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) {
+        gsap.from(el, { opacity: 0, y: 40, duration: 0.6, delay: i * 0.18, ease: 'back.out(1.4)' });
+      }
+    });
+    // Card scroll animations
+    document.querySelectorAll('.card, .circ-act-card, .wa-card, .circle-item').forEach(card => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+        y: 40, opacity: 0, duration: 0.55, ease: 'power2.out'
+      });
+    });
+  } catch(e) { console.warn('GSAP err:', e); }
+}
+
+// ---- READ ALOUD ----
+window.readAloud = function(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = 0.9;
+      utt.pitch = 1.1;
+      window.speechSynthesis.speak(utt);
+    } else { alert(text); }
+  } catch(e) { console.warn('Speech failed:', e); alert(text); }
+};
+
+// ---- DATA ----
+const ndData = [
+  { frac: '1/2', num: 1, den: 2 },
+  { frac: '2/3', num: 2, den: 3 },
+  { frac: '3/4', num: 3, den: 4 },
+  { frac: '2/5', num: 2, den: 5 },
+  { frac: '5/6', num: 5, den: 6 },
+  { frac: '3/5', num: 3, den: 5 },
+  { frac: '9/10', num: 9, den: 10 }
+];
+
+const circleData = [
+  { shaded: 1, total: 2, color: '#FF9F43', label: '1/2' },
+  { shaded: 1, total: 6, color: '#74b9ff', label: '1/6' },
+  { shaded: 1, total: 4, color: '#a29bfe', label: '1/4' },
+  { shaded: 3, total: 6, color: '#81ecec', label: '3/6' },
+  { shaded: 4, total: 6, color: '#1DD1A1', label: '4/6' },
+  { shaded: 2, total: 6, color: '#55efc4', label: '2/6' },
+  { shaded: 1, total: 3, color: '#1DD1A1', label: '1/3' },
+  { shaded: 3, total: 4, color: '#74b9ff', label: '3/4' }
+];
+
+const actCircleData = [
+  { shaded: 2, total: 4, color: '#FF9F43', label: '2/4' },
+  { shaded: 3, total: 6, color: '#1DD1A1', label: '3/6' },
+  { shaded: 1, total: 3, color: '#A29BFE', label: '1/3' },
+  { shaded: 5, total: 6, color: '#ff6b81', label: '5/6' }
+];
+
+const wordsData = [
+  { frac: '1/2', num: 1, den: 2, word: 'One Half' },
+  { frac: '2/3', num: 2, den: 3, word: 'Two Thirds' },
+  { frac: '1/4', num: 1, den: 4, word: 'One Fourth' },
+  { frac: '1/6', num: 1, den: 6, word: 'One Sixth' },
+  { frac: '2/4', num: 2, den: 4, word: 'Two Fourths' },
+  { frac: '3/5', num: 3, den: 5, word: 'Three Fifths' },
+  { frac: '3/4', num: 3, den: 4, word: 'Three Fourths' },
+  { frac: '2/5', num: 2, den: 5, word: 'Two Fifths' }
+];
+
+// ---- BUILD ND TABLE ----
+const ndTbody = document.getElementById('nd-tbody');
+ndData.forEach((row, i) => {
+  const parts = row.frac.split('/');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>
+      <span class="int-table frac-disp">
+        <span>${parts[0]}</span>
+        <span class="fl" style="width:36px;height:3px;background:#333;border-radius:2px;display:block"></span>
+        <span>${parts[1]}</span>
+      </span>
+    </td>
+    <td>
+      <span class="clickable-blank" data-row="${i}" data-col="num" data-answer="${row.num}" tabindex="0" role="button" onclick="openNDPopup(this)">?</span>
+    </td>
+    <td>
+      <span class="clickable-blank" data-row="${i}" data-col="den" data-answer="${row.den}" tabindex="0" role="button" onclick="openNDPopup(this)">?</span>
+    </td>
+  `;
+  ndTbody.appendChild(tr);
+});
+
+// ND popup values (1–10)
+window.activeBlank = null;
+window.openNDPopup = function(el) {
+  const popup = document.getElementById('nd-popup');
+  window.activeBlank = el;
+  popup.innerHTML = '';
+  for (let n = 1; n <= 10; n++) {
+    const item = document.createElement('div');
+    item.className = 'wb-popup-item';
+    item.textContent = n;
+    item.onclick = () => { el.textContent = n; el.classList.add('filled'); popup.style.display = 'none'; window.activeBlank = null; };
+    popup.appendChild(item);
+  }
+  const rect = el.getBoundingClientRect();
+  popup.style.display = 'block';
+  popup.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+  popup.style.left = (rect.left + window.scrollX) + 'px';
+};
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('clickable-blank') && !e.target.classList.contains('wb-popup-item')) {
+    document.getElementById('nd-popup').style.display = 'none';
+  }
+});
+
+window.checkNDTable = function() {
+  const blanks = document.querySelectorAll('#nd-table .clickable-blank');
+  let correct = 0, total = blanks.length;
+  blanks.forEach(blank => {
+    const answer = parseInt(blank.dataset.answer);
+    const given = parseInt(blank.textContent);
+    if (!isNaN(given) && given === answer) {
+      blank.classList.add('correct');
+      blank.classList.remove('wrong','filled');
+      correct++;
+      animateCorrect(blank);
+    } else {
+      blank.classList.add('wrong');
+      blank.classList.remove('correct','filled');
+      animateWrong(blank);
+    }
+  });
+  const fb = document.getElementById('nd-feedback');
+  if (correct === total) {
+    fb.textContent = `🎉 Perfect! All ${total} answers correct!`;
+    fb.style.color = '#27ae60';
+    confettiBurst();
+  } else {
+    fb.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+    fb.style.color = '#e74c3c';
+  }
+};
+
+// ---- BUILD CIRCLES DISPLAY ----
+function makePieChart(shaded, total, color) {
+  const size = 120;
+  const cx = 60, cy = 60, r = 54;
+  const anglePerSlice = (Math.PI * 2) / total;
+  let paths = '';
+  for (let i = 0; i < total; i++) {
+    const startAngle = i * anglePerSlice - Math.PI / 2;
+    const endAngle = (i + 1) * anglePerSlice - Math.PI / 2;
+    const x1 = cx + r * Math.cos(startAngle);
+    const y1 = cy + r * Math.sin(startAngle);
+    const x2 = cx + r * Math.cos(endAngle);
+    const y2 = cy + r * Math.sin(endAngle);
+    const largeArc = (anglePerSlice > Math.PI) ? 1 : 0;
+    const fill = i < shaded ? color : '#f0f0f0';
+    const stroke = '#fff';
+    paths += `<path d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc},1 ${x2},${y2} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">${paths}<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#ddd" stroke-width="2"/></svg>`;
+}
+
+const circlesDisplay = document.getElementById('circles-display');
+circleData.forEach(d => {
+  const div = document.createElement('div');
+  div.className = 'circle-item';
+  const fracParts = d.label.split('/');
+  div.innerHTML = `
+    <div class="circle-svg-wrap">${makePieChart(d.shaded, d.total, d.color)}</div>
+    <div class="circle-answer">
+      <span>= </span>
+      <span class="frac-ans">
+        <span>${fracParts[0]}</span>
+        <span class="fl"></span>
+        <span>${fracParts[1]}</span>
+      </span>
+    </div>
+    <div class="circle-hint">${d.shaded} shaded out of ${d.total} equal parts</div>
+  `;
+  circlesDisplay.appendChild(div);
+});
+
+// ---- BUILD CIRCLES ACTIVITY ----
+const circlesAct = document.getElementById('circles-activity');
+actCircleData.forEach((d, i) => {
+  const fracParts = d.label.split('/');
+  const div = document.createElement('div');
+  div.className = 'circ-act-card';
+  div.innerHTML = `
+    <div class="circle-svg-wrap" style="width:110px;height:110px">${makePieChart(d.shaded, d.total, d.color)}</div>
+    <div class="circ-answer-row">
+      <span>= </span>
+      <input type="text" class="clickable-blank circ-num-input" data-idx="${i}" data-part="num" data-answer="${fracParts[0]}" placeholder="?" style="width:60px;text-align:center;font-size:22px;cursor:text">
+      <span style="font-size:28px;font-weight:900;line-height:1">/</span>
+      <input type="text" class="clickable-blank circ-den-input" data-idx="${i}" data-part="den" data-answer="${fracParts[1]}" placeholder="?" style="width:60px;text-align:center;font-size:22px;cursor:text">
+    </div>
+    <div style="font-size:16px;color:#888;font-weight:600">${d.shaded} shaded / ${d.total} total</div>
+  `;
+  circlesAct.appendChild(div);
+});
+
+window.checkCircles = function() {
+  const numInputs = document.querySelectorAll('.circ-num-input');
+  const denInputs = document.querySelectorAll('.circ-den-input');
+  let correct = 0, total = numInputs.length + denInputs.length;
+  numInputs.forEach(inp => {
+    if (inp.value.trim() === inp.dataset.answer) { inp.classList.add('correct'); inp.classList.remove('wrong'); correct++; animateCorrect(inp); }
+    else { inp.classList.add('wrong'); inp.classList.remove('correct'); animateWrong(inp); }
+  });
+  denInputs.forEach(inp => {
+    if (inp.value.trim() === inp.dataset.answer) { inp.classList.add('correct'); inp.classList.remove('wrong'); correct++; animateCorrect(inp); }
+    else { inp.classList.add('wrong'); inp.classList.remove('correct'); animateWrong(inp); }
+  });
+  const fb = document.getElementById('circles-feedback');
+  if (correct === total) { fb.textContent = '🎉 Amazing! All correct!'; fb.style.color = '#27ae60'; confettiBurst(); }
+  else { fb.textContent = `${correct} / ${total} correct. Keep trying!`; fb.style.color = '#e74c3c'; }
+};
+
+// ---- BUILD WORDS ACTIVITY ----
+const wordsFractionNames = {
+  '1/2': 'One Half', '2/3': 'Two Thirds', '1/4': 'One Fourth',
+  '1/6': 'One Sixth', '2/4': 'Two Fourths', '3/5': 'Three Fifths',
+  '3/4': 'Three Fourths', '2/5': 'Two Fifths', '1/3': 'One Third',
+  '5/6': 'Five Sixths', '4/6': 'Four Sixths', '2/6': 'Two Sixths',
+  '9/10': 'Nine Tenths', '3/6': 'Three Sixths'
+};
+const wordsAct = document.getElementById('words-activity');
+wordsData.forEach((d, i) => {
+  const parts = d.frac.split('/');
+  const div = document.createElement('div');
+  div.className = 'wa-card';
+  div.innerHTML = `
+    <div class="frac-big2">
+      <span>${parts[0]}</span>
+      <span class="fl"></span>
+      <span>${parts[1]}</span>
+    </div>
+    <div style="flex:1">
+      <input type="text" class="wa-input" data-answer="${d.word}" placeholder="Write in words..." aria-label="Write fraction ${d.frac} in words">
+    </div>
+    <button class="read-aloud-btn" style="padding:8px 14px;font-size:15px" onclick="readAloud('${d.word}')">🔊</button>
+  `;
+  wordsAct.appendChild(div);
+});
+
+window.checkWords = function() {
+  const inputs = document.querySelectorAll('.wa-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const userVal = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+    const correct_val = inp.dataset.answer.toLowerCase();
+    if (userVal === correct_val) {
+      inp.classList.add('correct'); inp.classList.remove('wrong');
+      correct++; animateCorrect(inp);
+    } else {
+      inp.classList.add('wrong'); inp.classList.remove('correct');
+      animateWrong(inp);
+    }
+  });
+  const fb = document.getElementById('words-feedback');
+  if (correct === inputs.length) { fb.textContent = '🌟 Excellent! All correct!'; fb.style.color = '#27ae60'; confettiBurst(); }
+  else { fb.textContent = `${correct} / ${inputs.length} correct. Hint: Check spelling carefully!`; fb.style.color = '#e74c3c'; }
+};
+
+// ---- QUIZ ----
+const quizData = [
+  {
+    q: 'What is the numerator in the fraction 3/4?',
+    opts: ['4','3'],
+    correct: 1,
+    hint: 'The numerator is the number on TOP of the line!'
+  },
+  {
+    q: 'What is the denominator in the fraction 2/5?',
+    opts: ['2','5'],
+    correct: 1,
+    hint: 'The denominator is the number BELOW the line!'
+  },
+  {
+    q: 'A circle is divided into 6 equal parts. 1 part is shaded. What fraction is shaded?',
+    opts: ['1/6','6/1'],
+    correct: 0,
+    hint: '1 shaded out of 6 total parts = 1/6'
+  },
+  {
+    q: 'How do you write 1/2 in words?',
+    opts: ['One Third','One Half'],
+    correct: 1,
+    hint: 'Half means 2 equal parts, so 1/2 = One Half'
+  },
+  {
+    q: 'A pizza is cut into 4 slices. You eat 3 slices. What fraction did you eat?',
+    opts: ['3/4','4/3'],
+    correct: 0,
+    hint: '3 slices eaten out of 4 total = 3/4'
+  },
+  {
+    q: 'Which fraction means "Two Thirds"?',
+    opts: ['3/2','2/3'],
+    correct: 1,
+    hint: 'Two = numerator (2), Thirds = denominator (3), so 2/3'
+  }
+];
+
+let quizIdx = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  if (quizIdx >= quizData.length) {
+    const pct = Math.round((quizScore / quizData.length) * 100);
+    let emoji = pct >= 80 ? '🌟' : pct >= 50 ? '😊' : '💪';
+    container.innerHTML = `
+      <div class="quiz-complete">
+        <span class="big-emoji">${emoji}</span>
+        <h3>Quiz Complete!</h3>
+        <p>You scored <strong>${quizScore} out of ${quizData.length}</strong> (${pct}%)</p>
+        <p style="margin-top:8px">${pct >= 80 ? 'Fantastic work! You are a fraction superstar!' : pct >= 50 ? 'Good effort! Review the tricky parts and try again.' : 'Keep practising — you can do it!'}</p>
+        <button class="btn-restart" onclick="restartQuiz()">🔄 Try Again</button>
+      </div>
+    `;
+    if (pct >= 80) confettiBurst();
+    return;
+  }
+  const q = quizData[quizIdx];
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+      <span class="quiz-q-num">${quizIdx + 1}</span>
+      <span style="font-size:17px;font-weight:700;color:#888">Question ${quizIdx + 1} of ${quizData.length}</span>
+      <span class="quiz-score" style="margin-left:auto">Score: ${quizScore}</span>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options" id="quiz-opts">
+      ${q.opts.map((opt, i) => `<button class="quiz-opt" data-idx="${i}" onclick="answerQuiz(${i})">${formatFrac(opt)}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quiz-fb"></div>
+    <div class="quiz-nav">
+      <button class="btn-next" id="quiz-next" onclick="nextQuiz()" style="display:none">Next →</button>
+    </div>
+  `;
+  quizAnswered = false;
+}
+
+function formatFrac(s) {
+  if (s.includes('/')) {
+    const p = s.split('/');
+    return `<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-weight:900"><span>${p[0]}</span><span style="width:28px;height:3px;background:currentColor;border-radius:2px;display:block"></span><span>${p[1]}</span></span>`;
+  }
+  return s;
+}
+
+window.answerQuiz = function(chosen) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('quiz-fb');
+  if (chosen === q.correct) {
+    opts[chosen].classList.add('correct-opt');
+    fb.textContent = '✅ Correct! ' + q.hint;
+    fb.className = 'quiz-feedback good';
+    quizScore++;
+    animateCorrect(opts[chosen]);
+  } else {
+    opts[chosen].classList.add('wrong-opt');
+    opts[q.correct].classList.add('correct-opt');
+    fb.textContent = '❌ Not quite. ' + q.hint;
+    fb.className = 'quiz-feedback bad';
+    animateWrong(opts[chosen]);
+  }
+  document.getElementById('quiz-next').style.display = 'inline-flex';
+};
+
+window.nextQuiz = function() { quizIdx++; renderQuiz(); };
+window.restartQuiz = function() { quizIdx = 0; quizScore = 0; quizAnswered = false; renderQuiz(); };
+
+renderQuiz();
+
+// ---- ANIMATION HELPERS ----
+function animateCorrect(el) {
+  if (typeof gsap === 'undefined' || prefersReduced) return;
+  try {
+    gsap.to(el, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out' });
+  } catch(e) {}
+}
+function animateWrong(el) {
+  if (typeof gsap === 'undefined' || prefersReduced) return;
+  try {
+    gsap.to(el, { rotation: -5, duration: 0.08, yoyo: true, repeat: 5, ease: 'power2.inOut', onComplete: () => gsap.set(el, { rotation: 0 }) });
+  } catch(e) {}
+}
+
+// ---- CONFETTI ----
+function confettiBurst() {
+  if (prefersReduced) return;
+  const burst = document.createElement('div');
+  burst.className = 'confetti-burst';
+  document.body.appendChild(burst);
+  const colors = ['#FF9F43','#1DD1A1','#A29BFE','#ff6b81','#ffd32a','#0fbcf9'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left:${Math.random()*100}vw;
+      top:-20px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${8+Math.random()*10}px;
+      height:${8+Math.random()*10}px;
+      border-radius:${Math.random()>0.5?'50%':'3px'};
+      animation-duration:${1.5+Math.random()*2}s;
+      animation-delay:${Math.random()*0.5}s;
+    `;
+    burst.appendChild(piece);
+  }
+  setTimeout(() => burst.remove(), 4000);
+}
+
+} // end init()
+});
+</script>
+</body>
+</html>
