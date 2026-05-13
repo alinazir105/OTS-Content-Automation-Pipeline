@@ -1,0 +1,1563 @@
+<!-- CLASS: 3 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 4: Multiplication | Class 3 Math</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--sunshine:#F9CA24;--sky:#48DBFB;--coral:#FF6B6B;--lightgray:#F8F9FA;
+--teal:#1abc9c;--purple:#a29bfe;--green:#55efc4;--orange:#fd9644;
+--text:#2d3436;--white:#fff;
+}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--lightgray);width:100%;margin:0;padding:0;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:700}
+h1{font-size:clamp(2.5rem,6vw,4.5rem)}
+h2{font-size:clamp(2rem,4vw,3rem)}
+h3{font-size:clamp(1.4rem,2.5vw,1.8rem)}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#1abc9c;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-logo{font-family:'Poppins',sans-serif;font-size:3rem;font-weight:800;color:#fff}
+#curtain .c-sub{font-family:'Inter',sans-serif;font-size:1.2rem;color:rgba(255,255,255,.8)}
+.spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PROGRESS BAR */
+#progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--sunshine),var(--coral));width:0%;z-index:1000;transition:width .1s}
+
+/* LAYOUT */
+.page-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column}
+.with-sidebar{display:flex;align-items:flex-start;width:100%}
+.main-content{flex:1;min-width:0}
+
+/* SIDEBAR */
+.sidebar{width:260px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:24px 16px;margin:24px 0 24px 24px}
+.sidebar h4{font-size:1rem;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--teal)}
+.sidebar ul{list-style:none}
+.sidebar ul li{margin-bottom:8px}
+.sidebar ul li a{display:block;padding:8px 12px;border-radius:8px;font-size:.95rem;color:var(--text);text-decoration:none;transition:all .2s;font-weight:500}
+.sidebar ul li a:hover,.sidebar ul li a.active{background:var(--teal);color:#fff}
+
+/* BOTTOM NAV (mobile) */
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--teal);z-index:900;overflow-x:auto;padding:0 4px}
+#bottom-nav ul{display:flex;list-style:none;gap:4px;padding:6px 4px;white-space:nowrap}
+#bottom-nav ul li a{display:block;padding:10px 14px;border-radius:8px;font-size:.8rem;color:var(--text);text-decoration:none;font-weight:600;min-height:48px;display:flex;align-items:center}
+#bottom-nav ul li a.active{background:var(--teal);color:#fff}
+
+/* BREADCRUMB */
+.breadcrumb{background:var(--white);padding:14px 40px;display:flex;gap:8px;align-items:center;font-size:.95rem;border-bottom:1px solid #e0e0e0;flex-wrap:wrap}
+.breadcrumb span{color:#999}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+.breadcrumb .current{font-weight:700;color:var(--text)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1abc9c 0%,#16a085 50%,#0f7a64 100%);min-height:80vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;width:100%}
+.hero-content{text-align:center;color:#fff;z-index:2;padding:40px}
+.hero-badge{background:rgba(255,255,255,.2);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.4);border-radius:50px;padding:8px 24px;font-size:1rem;font-weight:600;display:inline-block;margin-bottom:20px}
+.hero h1{color:#fff;margin-bottom:16px;line-height:1.1}
+.hero p{font-size:1.2rem;opacity:.9;max-width:600px;margin:0 auto 32px}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.hero-stat{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:12px;padding:16px 24px;text-align:center;border:1px solid rgba(255,255,255,.3)}
+.hero-stat .num{font-size:2.5rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--sunshine)}
+.hero-stat .lbl{font-size:.9rem;opacity:.9}
+
+/* SVG HERO ANIMATION */
+.hero-svg{position:absolute;bottom:0;left:0;right:0;width:100%;opacity:.15}
+.hero-circles{position:absolute;inset:0;overflow:hidden;z-index:1}
+.hero-circles span{position:absolute;border-radius:50%;background:rgba(255,255,255,.1)}
+
+/* SECTION BAND */
+.section-band{width:100%;padding:16px 40px;display:flex;align-items:center;gap:16px}
+.section-band h2{color:#fff;font-size:clamp(1.6rem,3vw,2.2rem)}
+.section-band .band-icon{font-size:2rem}
+.band-teal{background:linear-gradient(90deg,#1abc9c,#16a085)}
+.band-coral{background:linear-gradient(90deg,#FF6B6B,#ee5a24)}
+.band-sky{background:linear-gradient(90deg,#48DBFB,#0abde3)}
+.band-sunshine{background:linear-gradient(90deg,#F9CA24,#f0932b)}
+.band-purple{background:linear-gradient(90deg,#a29bfe,#6c5ce7)}
+.band-orange{background:linear-gradient(90deg,#fd9644,#e67e22)}
+
+/* SECTION PADDING */
+.section-content{max-width:1500px;margin:0 auto;padding:40px 40px}
+
+/* CARDS */
+.card{background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:28px;width:100%;opacity:1;transform:none}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;width:100%}
+.card-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;width:100%}
+.card-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;width:100%}
+
+/* MULTIPLICATION TABLE CARDS */
+.table-card{background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden;width:100%;opacity:1}
+.table-card-header{padding:20px;text-align:center;font-family:'Poppins',sans-serif;font-size:2.5rem;font-weight:800;color:#fff}
+.table-card-header.orange{background:linear-gradient(135deg,#fd9644,#e67e22)}
+.table-card-header.teal{background:linear-gradient(135deg,#1abc9c,#16a085)}
+.table-card-body{padding:16px}
+.table-row{display:flex;align-items:center;padding:10px 12px;border-radius:8px;font-size:1rem;font-weight:600;margin-bottom:6px;transition:background .2s;cursor:default}
+.table-row:hover{background:var(--lightgray)}
+.table-row .eq{flex:1;text-align:right;color:var(--teal);font-weight:800;font-size:1.1rem}
+
+/* MULTIPLICATION EXAMPLE */
+.example-box{background:linear-gradient(135deg,#f8f9fa,#e8f8f5);border-radius:12px;padding:28px;border-left:5px solid var(--teal);margin:16px 0;opacity:1}
+.vertical-calc{display:inline-flex;flex-direction:column;align-items:flex-end;background:#fff;border-radius:12px;padding:20px 28px;box-shadow:0 4px 16px rgba(0,0,0,.1);min-width:140px}
+.vertical-calc .top{font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--text)}
+.vertical-calc .multiplier{font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--teal);border-bottom:3px solid var(--text);padding-bottom:8px;width:100%;text-align:right}
+.vertical-calc .result{font-size:2.5rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--coral);margin-top:8px}
+.place-label{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center;margin-bottom:4px}
+.place-label span{font-size:.85rem;font-weight:700;color:var(--teal);text-transform:uppercase}
+
+/* STEP BOX */
+.step-box{background:var(--white);border-radius:12px;padding:20px;border-left:4px solid var(--coral);margin:12px 0;opacity:1}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--coral);color:#fff;border-radius:50%;font-weight:800;font-size:1.1rem;margin-right:12px;flex-shrink:0}
+.step-content{display:flex;align-items:flex-start;gap:0}
+
+/* PRACTICE SECTION */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:20px}
+.practice-item{background:var(--white);border-radius:12px;padding:20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.07);border:2px solid transparent;transition:all .2s;opacity:1}
+.practice-item.correct{border-color:#55efc4;background:#f0fffe}
+.practice-item.incorrect{border-color:var(--coral);background:#fff5f5}
+.practice-item span{font-size:1.1rem;font-weight:700;font-family:'Poppins',sans-serif}
+.practice-input{width:80px;padding:8px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:1rem;font-weight:700;text-align:center;font-family:'Poppins',sans-serif;transition:border-color .2s}
+.practice-input:focus{outline:none;border-color:var(--teal)}
+.check-btn{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform .1s;min-height:48px}
+.check-btn:hover{transform:scale(1.03)}
+.check-btn:active{transform:scale(.97)}
+
+/* QUIZ */
+.quiz-container{background:var(--white);border-radius:12px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.08);opacity:1}
+.quiz-question{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #f0f0f0}
+.quiz-question:last-child{border-bottom:none}
+.q-text{font-size:1.1rem;font-weight:700;margin-bottom:16px;font-family:'Poppins',sans-serif}
+.q-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--teal);color:#fff;border-radius:50%;font-size:.95rem;font-weight:800;margin-right:10px;flex-shrink:0}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.option{padding:14px 20px;border-radius:10px;border:2px solid #e0e0e0;cursor:pointer;font-size:1rem;font-weight:600;text-align:center;transition:all .2s;background:#fff;font-family:'Inter',sans-serif;min-height:48px;display:flex;align-items:center;justify-content:center}
+.option:hover{border-color:var(--teal);background:#f0fffe}
+.option.selected{border-color:var(--teal);background:#e8f8f5}
+.option.correct{border-color:#55efc4;background:#e8fdf5;color:#00b894}
+.option.wrong{border-color:var(--coral);background:#fff5f5;color:var(--coral)}
+.tf-options{display:flex;gap:16px}
+.tf-options .option{flex:1}
+.submit-quiz-btn{background:linear-gradient(135deg,var(--teal),#16a085);color:#fff;border:none;border-radius:12px;padding:16px 40px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:block;margin:32px auto 0;min-height:56px;transition:transform .2s}
+.submit-quiz-btn:hover{transform:translateY(-2px)}
+
+/* SCORE CARD */
+.score-card{display:none;text-align:center;padding:40px;background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);opacity:1}
+.score-card.show{display:block}
+.score-circle-wrap{position:relative;width:180px;height:180px;margin:0 auto 24px}
+.score-circle-wrap svg{transform:rotate(-90deg)}
+.score-circle-wrap .score-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-circle-wrap .score-text .score-num{font-size:2.5rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--teal)}
+.score-circle-wrap .score-text .score-label{font-size:.9rem;color:#666}
+.score-msg{font-size:1.4rem;font-weight:700;font-family:'Poppins',sans-serif;margin-bottom:8px}
+.score-sub{font-size:1rem;color:#666;margin-bottom:24px}
+.retry-btn{background:var(--coral);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;min-height:48px}
+
+/* WORD PROBLEMS */
+.wp-card{background:var(--white);border-radius:12px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,.08);border-top:4px solid var(--sunshine);opacity:1}
+.wp-number{font-size:.9rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.wp-text{font-size:1.05rem;line-height:1.7;margin-bottom:20px}
+.wp-answer-input{width:100%;padding:12px 16px;border:2px solid #e0e0e0;border-radius:8px;font-size:1rem;font-family:'Inter',sans-serif;transition:border-color .2s}
+.wp-answer-input:focus{outline:none;border-color:var(--teal)}
+.wp-hint{font-size:.9rem;color:#888;margin-top:8px;font-style:italic}
+.wp-result{margin-top:12px;padding:10px 16px;border-radius:8px;font-weight:700;font-size:1rem;display:none}
+.wp-result.correct{background:#e8fdf5;color:#00b894;display:block}
+.wp-result.wrong{background:#fff5f5;color:var(--coral);display:block}
+
+/* DRAG DROP */
+.drag-area{background:var(--lightgray);border-radius:12px;padding:24px;min-height:120px;border:2px dashed #ccc;text-align:center;transition:all .2s;margin-bottom:16px}
+.drag-area.over{border-color:var(--teal);background:#e8f8f5}
+.drag-label{display:inline-block;background:var(--white);border:2px solid var(--teal);border-radius:8px;padding:10px 20px;margin:6px;font-weight:700;font-size:1rem;cursor:grab;user-select:none;transition:all .2s;min-height:48px;display:inline-flex;align-items:center}
+.drag-label:active{cursor:grabbing;transform:scale(1.05);background:var(--teal);color:#fff}
+.drop-zone{display:flex;align-items:center;gap:12px;background:var(--white);border-radius:12px;padding:16px 20px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:12px}
+.drop-box{min-width:120px;min-height:48px;border:2px dashed #ccc;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;padding:8px;transition:all .2s;background:#fafafa}
+.drop-box.filled{border-style:solid;border-color:var(--teal);background:#e8f8f5}
+.drop-box.correct-drop{border-color:#55efc4;background:#e8fdf5}
+.drop-box.wrong-drop{border-color:var(--coral);background:#fff5f5}
+
+/* TIMES TABLE GRID */
+.times-table-grid{overflow-x:auto;margin-top:20px}
+.times-table-grid table{border-collapse:collapse;width:100%;min-width:400px}
+.times-table-grid td,.times-table-grid th{padding:10px 14px;text-align:center;border:1px solid #e0e0e0;font-size:1rem;font-weight:600;min-width:50px}
+.times-table-grid th{background:var(--teal);color:#fff;font-family:'Poppins',sans-serif}
+.times-table-grid tr:nth-child(even) td{background:#f8f9fa}
+.times-table-grid td:first-child{background:var(--teal);color:#fff;font-weight:700}
+.times-table-grid td.highlight{background:var(--sunshine);font-weight:800}
+
+/* INTERACTIVE COUNTER */
+.counter-card{background:linear-gradient(135deg,var(--teal),#16a085);border-radius:12px;padding:32px;text-align:center;color:#fff;opacity:1}
+.counter-num{font-size:4rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--sunshine)}
+
+/* PARALLAX SECTION */
+.parallax-section{position:relative;overflow:hidden}
+.parallax-bg{position:absolute;inset:-60px;background-size:cover;background-position:center;will-change:transform}
+
+/* CONCEPT REVEAL */
+.concept-step{opacity:1;transform:none;background:var(--white);border-radius:12px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:16px}
+.concept-step .cs-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.cs-icon{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.cs-icon.yellow{background:#fff9e6}
+.cs-icon.blue{background:#e8f8ff}
+.cs-icon.green{background:#e8fdf5}
+.cs-icon.red{background:#fff5f5}
+
+/* HIGHLIGHT CHIP */
+.chip{display:inline-block;padding:4px 12px;border-radius:50px;font-size:.85rem;font-weight:700;margin:4px}
+.chip-teal{background:#e8f8f5;color:#00b894}
+.chip-coral{background:#fff5f5;color:var(--coral)}
+.chip-yellow{background:#fff9e6;color:#f0932b}
+
+/* INFO BOX */
+.info-box{background:linear-gradient(135deg,#e8f8f5,#f0fffe);border-radius:12px;padding:24px;border-left:5px solid var(--teal);margin:20px 0}
+.info-box p{font-size:1rem;line-height:1.7;color:var(--text)}
+
+/* FOOTER */
+footer{background:#2d3436;color:#fff;padding:40px;text-align:center;margin-top:60px}
+footer p{font-size:1rem;opacity:.8}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  #bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .section-content{padding:24px 16px}
+  .section-band{padding:14px 16px}
+  .breadcrumb{padding:10px 16px}
+  .card-grid-2,.card-grid-4{grid-template-columns:1fr}
+  .hero{min-height:60vh}
+  .hero-content{padding:24px 16px}
+  .hero-stats{gap:12px}
+  .hero-stat{padding:12px 16px}
+  .practice-grid{grid-template-columns:1fr}
+  .options{grid-template-columns:1fr 1fr}
+  .tf-options{flex-direction:column}
+  .with-sidebar{flex-direction:column}
+  .times-table-grid{overflow-x:auto}
+  .drag-label{padding:8px 14px;font-size:.95rem}
+}
+@media(max-width:480px){
+  .card-grid{grid-template-columns:1fr}
+  .options{grid-template-columns:1fr}
+  h1{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="c-logo">✖️ Multiplication</div>
+  <div class="c-sub">Class 3 | Chapter 4</div>
+  <div class="spinner"></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav id="bottom-nav">
+  <ul>
+    <li><a href="#intro">🏠 Intro</a></li>
+    <li><a href="#tables-11-12">🔢 11 & 12</a></li>
+    <li><a href="#tables-13-15">🔢 13-15</a></li>
+    <li><a href="#concept">📖 Concept</a></li>
+    <li><a href="#practice">✏️ Practice</a></li>
+    <li><a href="#word-problems">📝 Word</a></li>
+    <li><a href="#quiz">🎯 Quiz</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="#">Home</a>
+    <span>›</span>
+    <a href="#">Class 3</a>
+    <span>›</span>
+    <a href="#">Mathematics</a>
+    <span>›</span>
+    <span class="current">Chapter 4: Multiplication</span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="intro">
+    <div class="hero-circles">
+      <span style="width:300px;height:300px;top:-100px;left:-100px;"></span>
+      <span style="width:200px;height:200px;top:50%;right:-80px;"></span>
+      <span style="width:150px;height:150px;bottom:20px;left:40%;"></span>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">📚 Chapter 4</div>
+      <h1>Multiplication</h1>
+      <p>Master multiplication tables 11–15, multiply 1, 2, and 3-digit numbers, and solve real-world problems!</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num" data-count="15">0</div>
+          <div class="lbl">Tables Covered</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" data-count="8">0</div>
+          <div class="lbl">Quiz Questions</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" data-count="6">0</div>
+          <div class="lbl">Word Problems</div>
+        </div>
+      </div>
+    </div>
+    <!-- Decorative SVG wave -->
+    <svg class="hero-svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path id="hero-path" d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,30 1440,60 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill-opacity="0.3"/>
+    </svg>
+  </section>
+
+  <!-- MAIN LAYOUT WITH SIDEBAR -->
+  <div class="with-sidebar">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h4>📋 Contents</h4>
+      <ul>
+        <li><a href="#intro" class="nav-link">🏠 Introduction</a></li>
+        <li><a href="#tables-11-12" class="nav-link">🔢 Tables of 11 & 12</a></li>
+        <li><a href="#tables-13-15" class="nav-link">🔢 Tables of 13, 14 & 15</a></li>
+        <li><a href="#concept" class="nav-link">📖 Multiplication Concept</a></li>
+        <li><a href="#visual-table" class="nav-link">📊 Times Table Grid</a></li>
+        <li><a href="#practice" class="nav-link">✏️ Guided Practice</a></li>
+        <li><a href="#activity" class="nav-link">🎮 Activity</a></li>
+        <li><a href="#word-problems" class="nav-link">📝 Word Problems</a></li>
+        <li><a href="#quiz" class="nav-link">🎯 Quiz</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- ============================
+           TABLES OF 11 AND 12
+      ============================= -->
+      <section id="tables-11-12">
+        <div class="section-band band-orange">
+          <span class="band-icon">🔢</span>
+          <h2>Tables of 11 and 12</h2>
+        </div>
+        <div class="section-content">
+          <div class="info-box">
+            <p>💡 <strong>Tip for Table of 11:</strong> When you multiply 11 by a single digit, you get a repeated digit! For example, 11 × 3 = 33, 11 × 7 = 77. Isn't that cool?</p>
+          </div>
+          <div class="card-grid-2">
+            <!-- Table of 11 -->
+            <div class="table-card">
+              <div class="table-card-header orange">11</div>
+              <div class="table-card-body">
+                <div class="table-row"><span>11 × 1</span><span class="eq">= 11</span></div>
+                <div class="table-row"><span>11 × 2</span><span class="eq">= 22</span></div>
+                <div class="table-row"><span>11 × 3</span><span class="eq">= 33</span></div>
+                <div class="table-row"><span>11 × 4</span><span class="eq">= 44</span></div>
+                <div class="table-row"><span>11 × 5</span><span class="eq">= 55</span></div>
+                <div class="table-row"><span>11 × 6</span><span class="eq">= 66</span></div>
+                <div class="table-row"><span>11 × 7</span><span class="eq">= 77</span></div>
+                <div class="table-row"><span>11 × 8</span><span class="eq">= 88</span></div>
+                <div class="table-row"><span>11 × 9</span><span class="eq">= 99</span></div>
+                <div class="table-row"><span>11 × 10</span><span class="eq">= 110</span></div>
+              </div>
+            </div>
+            <!-- Table of 12 -->
+            <div class="table-card">
+              <div class="table-card-header teal">12</div>
+              <div class="table-card-body">
+                <div class="table-row"><span>12 × 1</span><span class="eq">= 12</span></div>
+                <div class="table-row"><span>12 × 2</span><span class="eq">= 24</span></div>
+                <div class="table-row"><span>12 × 3</span><span class="eq">= 36</span></div>
+                <div class="table-row"><span>12 × 4</span><span class="eq">= 48</span></div>
+                <div class="table-row"><span>12 × 5</span><span class="eq">= 60</span></div>
+                <div class="table-row"><span>12 × 6</span><span class="eq">= 72</span></div>
+                <div class="table-row"><span>12 × 7</span><span class="eq">= 84</span></div>
+                <div class="table-row"><span>12 × 8</span><span class="eq">= 96</span></div>
+                <div class="table-row"><span>12 × 9</span><span class="eq">= 108</span></div>
+                <div class="table-row"><span>12 × 10</span><span class="eq">= 120</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Write the tables activity -->
+          <div class="card" style="margin-top:32px">
+            <h3 style="margin-bottom:20px;color:var(--teal)">✍️ Write the Tables of 11 and 12</h3>
+            <p style="margin-bottom:20px;font-size:1rem;color:#666">Fill in the blanks below by typing the missing answers:</p>
+            <div class="card-grid-2">
+              <div>
+                <h4 style="text-align:center;font-size:1.5rem;margin-bottom:16px;color:var(--orange,#fd9644)">11</h4>
+                <div id="write-table-11"></div>
+              </div>
+              <div>
+                <h4 style="text-align:center;font-size:1.5rem;margin-bottom:16px;color:var(--teal)">12</h4>
+                <div id="write-table-12"></div>
+              </div>
+            </div>
+            <button class="check-btn" style="margin-top:20px" onclick="checkWriteTables('11','12')">Check Answers ✅</button>
+            <div id="write-result-11-12" style="margin-top:12px;font-weight:700;font-size:1rem"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           TABLES OF 13, 14, 15
+      ============================= -->
+      <section id="tables-13-15">
+        <div class="section-band band-sky">
+          <span class="band-icon">🔢</span>
+          <h2>Tables of 13, 14 & 15</h2>
+        </div>
+        <div class="section-content">
+          <div class="info-box">
+            <p>💡 <strong>Tip for Table of 15:</strong> Answers always end in 0 or 5! For example, 15 × 2 = 30, 15 × 3 = 45, 15 × 4 = 60.</p>
+          </div>
+          <div class="card-grid-2">
+            <!-- Table of 13 -->
+            <div class="table-card">
+              <div class="table-card-header orange">13</div>
+              <div class="table-card-body">
+                <div class="table-row"><span>13 × 1</span><span class="eq">= 13</span></div>
+                <div class="table-row"><span>13 × 2</span><span class="eq">= 26</span></div>
+                <div class="table-row"><span>13 × 3</span><span class="eq">= 39</span></div>
+                <div class="table-row"><span>13 × 4</span><span class="eq">= 52</span></div>
+                <div class="table-row"><span>13 × 5</span><span class="eq">= 65</span></div>
+                <div class="table-row"><span>13 × 6</span><span class="eq">= 78</span></div>
+                <div class="table-row"><span>13 × 7</span><span class="eq">= 91</span></div>
+                <div class="table-row"><span>13 × 8</span><span class="eq">= 104</span></div>
+                <div class="table-row"><span>13 × 9</span><span class="eq">= 117</span></div>
+                <div class="table-row"><span>13 × 10</span><span class="eq">= 130</span></div>
+              </div>
+            </div>
+            <!-- Table of 14 -->
+            <div class="table-card">
+              <div class="table-card-header teal">14</div>
+              <div class="table-card-body">
+                <div class="table-row"><span>14 × 1</span><span class="eq">= 14</span></div>
+                <div class="table-row"><span>14 × 2</span><span class="eq">= 28</span></div>
+                <div class="table-row"><span>14 × 3</span><span class="eq">= 42</span></div>
+                <div class="table-row"><span>14 × 4</span><span class="eq">= 56</span></div>
+                <div class="table-row"><span>14 × 5</span><span class="eq">= 70</span></div>
+                <div class="table-row"><span>14 × 6</span><span class="eq">= 84</span></div>
+                <div class="table-row"><span>14 × 7</span><span class="eq">= 98</span></div>
+                <div class="table-row"><span>14 × 8</span><span class="eq">= 112</span></div>
+                <div class="table-row"><span>14 × 9</span><span class="eq">= 126</span></div>
+                <div class="table-row"><span>14 × 10</span><span class="eq">= 140</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Table of 15 -->
+          <div style="margin-top:24px">
+            <div class="table-card" style="max-width:400px;margin:0 auto">
+              <div class="table-card-header" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">15</div>
+              <div class="table-card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+                <div class="table-row"><span>15 × 1</span><span class="eq">= 15</span></div>
+                <div class="table-row"><span>15 × 2</span><span class="eq">= 30</span></div>
+                <div class="table-row"><span>15 × 3</span><span class="eq">= 45</span></div>
+                <div class="table-row"><span>15 × 4</span><span class="eq">= 60</span></div>
+                <div class="table-row"><span>15 × 5</span><span class="eq">= 75</span></div>
+                <div class="table-row"><span>15 × 6</span><span class="eq">= 90</span></div>
+                <div class="table-row"><span>15 × 7</span><span class="eq">= 105</span></div>
+                <div class="table-row"><span>15 × 8</span><span class="eq">= 120</span></div>
+                <div class="table-row"><span>15 × 9</span><span class="eq">= 135</span></div>
+                <div class="table-row"><span>15 × 10</span><span class="eq">= 150</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Write tables 13/14/15 activity -->
+          <div class="card" style="margin-top:32px">
+            <h3 style="margin-bottom:20px;color:var(--teal)">✍️ Write the Tables of 13, 14 and 15</h3>
+            <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+              <div>
+                <h4 style="text-align:center;font-size:1.5rem;margin-bottom:16px;color:#fd9644">13</h4>
+                <div id="write-table-13"></div>
+              </div>
+              <div>
+                <h4 style="text-align:center;font-size:1.5rem;margin-bottom:16px;color:var(--teal)">14</h4>
+                <div id="write-table-14"></div>
+              </div>
+              <div>
+                <h4 style="text-align:center;font-size:1.5rem;margin-bottom:16px;color:#6c5ce7">15</h4>
+                <div id="write-table-15"></div>
+              </div>
+            </div>
+            <button class="check-btn" style="margin-top:20px" onclick="checkWriteTables3('13','14','15')">Check Answers ✅</button>
+            <div id="write-result-13-15" style="margin-top:12px;font-weight:700;font-size:1rem"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           CONCEPT SECTION
+      ============================= -->
+      <section id="concept">
+        <div class="section-band band-coral">
+          <span class="band-icon">📖</span>
+          <h2>Multiplication Concept</h2>
+        </div>
+        <div class="section-content">
+          <div class="card-grid">
+            <div class="concept-step">
+              <div class="cs-header">
+                <div class="cs-icon yellow">🌟</div>
+                <h3>What is Multiplication?</h3>
+              </div>
+              <p style="font-size:1rem;line-height:1.7">Multiplication is <strong>repeated addition</strong>. When you multiply, you are adding the same number again and again!</p>
+              <div class="info-box" style="margin-top:16px">
+                <p>Example: <strong>3 × 4</strong> means adding 3 four times: 3 + 3 + 3 + 3 = <strong>12</strong></p>
+              </div>
+            </div>
+            <div class="concept-step">
+              <div class="cs-header">
+                <div class="cs-icon blue">🔤</div>
+                <h3>Parts of Multiplication</h3>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;padding:20px">
+                <div style="text-align:center;background:#e8f8f5;border-radius:12px;padding:16px 20px">
+                  <div style="font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--teal)">3</div>
+                  <div style="font-size:.9rem;font-weight:700;color:#666;margin-top:4px">Multiplicand</div>
+                </div>
+                <div style="font-size:2rem;font-weight:800">×</div>
+                <div style="text-align:center;background:#fff5f5;border-radius:12px;padding:16px 20px">
+                  <div style="font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;color:var(--coral)">4</div>
+                  <div style="font-size:.9rem;font-weight:700;color:#666;margin-top:4px">Multiplier</div>
+                </div>
+                <div style="font-size:2rem;font-weight:800">=</div>
+                <div style="text-align:center;background:#fff9e6;border-radius:12px;padding:16px 20px">
+                  <div style="font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;color:#f0932b">12</div>
+                  <div style="font-size:.9rem;font-weight:700;color:#666;margin-top:4px">Product</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1-digit example -->
+          <div style="margin-top:32px">
+            <h3 style="margin-bottom:20px;color:var(--text)">📐 Example 1: 1-Digit Multiplication</h3>
+            <div class="example-box">
+              <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+                <div style="text-align:center">
+                  <div class="vertical-calc">
+                    <div class="top">3</div>
+                    <div class="multiplier">× 2</div>
+                    <div class="result">6</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:200px">
+                  <div class="step-box">
+                    <div class="step-content">
+                      <span class="step-num">1</span>
+                      <div>
+                        <p style="font-size:1rem"><strong>3 ones × 2 = 6 ones</strong></p>
+                        <p style="font-size:.95rem;color:#666;margin-top:4px">Simply multiply the ones digit: 3 × 2 = 6</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-digit example -->
+          <div style="margin-top:32px">
+            <h3 style="margin-bottom:20px;color:var(--text)">📐 Example 2: 2-Digit Multiplication (24 × 2)</h3>
+            <div class="example-box">
+              <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+                <div style="text-align:center">
+                  <div style="text-align:center;margin-bottom:8px">
+                    <div class="place-label">
+                      <span></span><span style="color:var(--teal)">T</span><span style="color:var(--coral)">O</span>
+                    </div>
+                  </div>
+                  <div class="vertical-calc">
+                    <div class="top" style="font-size:1.8rem">2 4</div>
+                    <div class="multiplier" style="font-size:1.8rem">× 2</div>
+                    <div class="result" style="font-size:2rem">4 8</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:220px">
+                  <div class="step-box">
+                    <div class="step-content">
+                      <span class="step-num" style="background:var(--coral)">1</span>
+                      <div><p style="font-size:1rem">First multiply the <strong>ones</strong> by 2.<br>4 × 2 = 8. Write <strong>8</strong> under O.</p></div>
+                    </div>
+                  </div>
+                  <div class="step-box" style="border-left-color:var(--teal)">
+                    <div class="step-content">
+                      <span class="step-num" style="background:var(--teal)">2</span>
+                      <div><p style="font-size:1rem">Now multiply the <strong>tens</strong> by 2.<br>2 × 2 = 4. Write <strong>4</strong> under T.</p></div>
+                    </div>
+                  </div>
+                  <div style="padding:16px;background:#e8f8f5;border-radius:10px;margin-top:8px">
+                    <p style="font-size:1.1rem;font-weight:700;color:var(--teal)">✅ Thus, 24 × 2 = <strong>48</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3-digit example -->
+          <div style="margin-top:32px">
+            <h3 style="margin-bottom:20px;color:var(--text)">📐 Example 3: 3-Digit Multiplication (246 × 2)</h3>
+            <div class="example-box">
+              <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+                <div style="text-align:center">
+                  <div style="text-align:center;margin-bottom:8px">
+                    <div class="place-label">
+                      <span style="color:#a29bfe">H</span><span style="color:var(--teal)">T</span><span style="color:var(--coral)">O</span>
+                    </div>
+                  </div>
+                  <div class="vertical-calc">
+                    <div class="top" style="font-size:1.8rem">2 4 6</div>
+                    <div class="multiplier" style="font-size:1.8rem">× 2</div>
+                    <div class="result" style="font-size:2rem">4 9 2</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:240px">
+                  <div class="step-box">
+                    <div class="step-content">
+                      <span class="step-num" style="background:var(--coral)">1</span>
+                      <div><p style="font-size:1rem">Multiply the <strong>ones</strong>: 6 × 2 = 12 = 1 ten + 2 ones.<br>Write <strong>2</strong> in ones column, carry over <strong>1</strong> to tens.</p></div>
+                    </div>
+                  </div>
+                  <div class="step-box" style="border-left-color:var(--teal)">
+                    <div class="step-content">
+                      <span class="step-num" style="background:var(--teal)">2</span>
+                      <div><p style="font-size:1rem">Multiply the <strong>tens</strong>: 4 × 2 = 8 tens.<br>8 + 1 (carry over) = <strong>9</strong> tens.</p></div>
+                    </div>
+                  </div>
+                  <div class="step-box" style="border-left-color:#a29bfe">
+                    <div class="step-content">
+                      <span class="step-num" style="background:#a29bfe">3</span>
+                      <div><p style="font-size:1rem">Multiply the <strong>hundreds</strong>: 2 × 2 = <strong>4</strong> hundreds.</p></div>
+                    </div>
+                  </div>
+                  <div style="padding:16px;background:#e8f8f5;border-radius:10px;margin-top:8px">
+                    <p style="font-size:1.1rem;font-weight:700;color:var(--teal)">✅ Final Answer: 246 × 2 = <strong>492</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           VISUAL TIMES TABLE GRID
+      ============================= -->
+      <section id="visual-table">
+        <div class="section-band band-teal">
+          <span class="band-icon">📊</span>
+          <h2>Interactive Times Table Grid</h2>
+        </div>
+        <div class="section-content">
+          <p style="margin-bottom:20px;font-size:1rem;color:#666">👆 Click on any cell to highlight the row and column!</p>
+          <div class="card">
+            <div class="times-table-grid">
+              <table id="times-grid">
+                <thead>
+                  <tr>
+                    <th>×</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+                  </tr>
+                </thead>
+                <tbody id="times-grid-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin-top:24px" class="card-grid">
+            <div class="counter-card">
+              <div style="font-size:1rem;margin-bottom:8px;opacity:.9">Products in table 11–15</div>
+              <div class="counter-num" id="counter-products" data-count="50">0</div>
+              <div style="font-size:.9rem;opacity:.8;margin-top:4px">Facts to learn</div>
+            </div>
+            <div class="counter-card" style="background:linear-gradient(135deg,var(--coral),#ee5a24)">
+              <div style="font-size:1rem;margin-bottom:8px;opacity:.9">Largest product (15×10)</div>
+              <div class="counter-num" id="counter-max" data-count="150">0</div>
+              <div style="font-size:.9rem;opacity:.8;margin-top:4px">That's 150!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           GUIDED PRACTICE
+      ============================= -->
+      <section id="practice">
+        <div class="section-band band-sunshine" style="background:linear-gradient(90deg,#F9CA24,#f0932b)">
+          <span class="band-icon">✏️</span>
+          <h2 style="color:#2d3436">Guided Practice</h2>
+        </div>
+        <div class="section-content">
+          <div class="card" style="margin-bottom:28px">
+            <h3 style="margin-bottom:8px;color:var(--teal)">🔢 Multiply the Following (Single Digit)</h3>
+            <p style="font-size:1rem;color:#666;margin-bottom:20px">Type the answer and click Check!</p>
+            <div class="practice-grid" id="practice-single"></div>
+            <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+              <button class="check-btn" onclick="checkPractice('practice-single')">Check ✅</button>
+              <button class="check-btn" style="background:#a29bfe" onclick="resetPractice('practice-single')">Reset 🔄</button>
+            </div>
+            <div id="result-single" style="margin-top:12px;font-size:1rem;font-weight:700"></div>
+          </div>
+
+          <div class="card" style="margin-bottom:28px">
+            <h3 style="margin-bottom:8px;color:var(--teal)">🔢 Multiplying by 10</h3>
+            <p style="font-size:1rem;color:#666;margin-bottom:20px">Remember: just add a 0 at the end!</p>
+            <div class="practice-grid" id="practice-by10"></div>
+            <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+              <button class="check-btn" onclick="checkPractice('practice-by10')">Check ✅</button>
+              <button class="check-btn" style="background:#a29bfe" onclick="resetPractice('practice-by10')">Reset 🔄</button>
+            </div>
+            <div id="result-by10" style="margin-top:12px;font-size:1rem;font-weight:700"></div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom:8px;color:var(--teal)">🔢 3-Digit Multiplication</h3>
+            <p style="font-size:1rem;color:#666;margin-bottom:20px">Use the step method — ones, tens, hundreds!</p>
+            <div class="practice-grid" id="practice-3digit"></div>
+            <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+              <button class="check-btn" onclick="checkPractice('practice-3digit')">Check ✅</button>
+              <button class="check-btn" style="background:#a29bfe" onclick="resetPractice('practice-3digit')">Reset 🔄</button>
+            </div>
+            <div id="result-3digit" style="margin-top:12px;font-size:1rem;font-weight:700"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           ACTIVITY (Drag & Drop)
+      ============================= -->
+      <section id="activity">
+        <div class="section-band band-purple">
+          <span class="band-icon">🎮</span>
+          <h2>Match the Products Activity</h2>
+        </div>
+        <div class="section-content">
+          <div class="card">
+            <h3 style="margin-bottom:8px;color:var(--text)">🖱️ Drag the correct answer to each multiplication problem!</h3>
+            <p style="font-size:1rem;color:#666;margin-bottom:24px">Drag and drop the answer cards to match each problem.</p>
+
+            <!-- Drag Labels bank -->
+            <div style="margin-bottom:24px">
+              <p style="font-weight:700;margin-bottom:12px;font-size:1rem">Answer Bank:</p>
+              <div id="drag-bank" style="display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:#f8f9fa;border-radius:12px;min-height:70px"></div>
+            </div>
+
+            <!-- Drop Zones -->
+            <div id="drop-zones"></div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+              <button class="check-btn" onclick="checkDragDrop()">Check Answers ✅</button>
+              <button class="check-btn" style="background:#a29bfe" onclick="resetDragDrop()">Reset 🔄</button>
+            </div>
+            <div id="drag-result" style="margin-top:12px;font-size:1rem;font-weight:700"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           WORD PROBLEMS
+      ============================= -->
+      <section id="word-problems">
+        <div class="section-band band-coral">
+          <span class="band-icon">📝</span>
+          <h2>Word Problems</h2>
+        </div>
+        <div class="section-content">
+          <div class="card-grid">
+
+            <div class="wp-card">
+              <div class="wp-number">Q1</div>
+              <div class="wp-text">Sarah buys <strong>12 packets</strong> of pencils. Each packet has <strong>15 pencils</strong> inside. How many pencils does Sarah have in total?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">12 × 15 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp1" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(1,180)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: 12 × 15 = 12 × 10 + 12 × 5</div>
+              <div id="wp-result-1" class="wp-result"></div>
+            </div>
+
+            <div class="wp-card">
+              <div class="wp-number">Q2</div>
+              <div class="wp-text">A farmer plants <strong>23 rows</strong> of trees. Each row has <strong>14 trees</strong>. How many trees are there in total?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">23 × 14 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp2" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(2,322)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: Multiply ones first, then tens!</div>
+              <div id="wp-result-2" class="wp-result"></div>
+            </div>
+
+            <div class="wp-card">
+              <div class="wp-number">Q3</div>
+              <div class="wp-text">There are <strong>25 classrooms</strong> in a school. Each classroom has <strong>18 desks</strong>. How many desks are there in the entire school?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">25 × 18 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp3" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(3,450)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: 25 × 18 = 25 × 20 - 25 × 2</div>
+              <div id="wp-result-3" class="wp-result"></div>
+            </div>
+
+            <div class="wp-card">
+              <div class="wp-number">Q4</div>
+              <div class="wp-text">A bookstore receives <strong>16 boxes</strong> of books. Each box contains <strong>22 books</strong>. How many books does the bookstore receive in total?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">16 × 22 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp4" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(4,352)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: 16 × 22 = 16 × 20 + 16 × 2</div>
+              <div id="wp-result-4" class="wp-result"></div>
+            </div>
+
+            <div class="wp-card">
+              <div class="wp-number">Q5</div>
+              <div class="wp-text">In a library, there are <strong>24 shelves</strong>, and each shelf has <strong>13 books</strong>. How many books are there on all the shelves?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">24 × 13 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp5" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(5,312)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: 24 × 13 = 24 × 10 + 24 × 3</div>
+              <div id="wp-result-5" class="wp-result"></div>
+            </div>
+
+            <div class="wp-card">
+              <div class="wp-number">Q6</div>
+              <div class="wp-text">A bakery bakes <strong>35 loaves</strong> of bread every day. If the bakery is open for <strong>12 days</strong>, how many loaves of bread are baked in total?</div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-weight:700">35 × 12 =</span>
+                <input type="number" class="wp-answer-input" style="max-width:120px" placeholder="Answer" id="wp6" />
+                <button class="check-btn" style="padding:8px 16px;font-size:.95rem" onclick="checkWP(6,420)">Check</button>
+              </div>
+              <div class="wp-hint">Hint: 35 × 12 = 35 × 10 + 35 × 2</div>
+              <div id="wp-result-6" class="wp-result"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+           QUIZ
+      ============================= -->
+      <section id="quiz">
+        <div class="section-band band-teal">
+          <span class="band-icon">🎯</span>
+          <h2>Knowledge Quiz</h2>
+        </div>
+        <div class="section-content">
+          <div class="quiz-container" id="quiz-container">
+            <div style="margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+              <h3>Answer all 8 questions carefully!</h3>
+              <span style="background:#e8f8f5;color:var(--teal);padding:8px 16px;border-radius:50px;font-weight:700;font-size:1rem">8 Questions</span>
+            </div>
+
+            <!-- Q1 -->
+            <div class="quiz-question" data-q="1" data-answer="b">
+              <div class="q-text"><span class="q-num">1</span>What is 11 × 7?</div>
+              <div class="options">
+                <div class="option" data-val="a">70</div>
+                <div class="option" data-val="b">77</div>
+                <div class="option" data-val="c">78</div>
+                <div class="option" data-val="d">88</div>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question" data-q="2" data-answer="c">
+              <div class="q-text"><span class="q-num">2</span>What is 12 × 9?</div>
+              <div class="options">
+                <div class="option" data-val="a">99</div>
+                <div class="option" data-val="b">100</div>
+                <div class="option" data-val="c">108</div>
+                <div class="option" data-val="d">110</div>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question" data-q="3" data-answer="b">
+              <div class="q-text"><span class="q-num">3</span>What is 13 × 8?</div>
+              <div class="options">
+                <div class="option" data-val="a">96</div>
+                <div class="option" data-val="b">104</div>
+                <div class="option" data-val="c">112</div>
+                <div class="option" data-val="d">117</div>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-question" data-q="4" data-answer="a">
+              <div class="q-text"><span class="q-num">4</span>What is 15 × 6?</div>
+              <div class="options">
+                <div class="option" data-val="a">90</div>
+                <div class="option" data-val="b">85</div>
+                <div class="option" data-val="c">95</div>
+                <div class="option" data-val="d">80</div>
+              </div>
+            </div>
+
+            <!-- Q5 True/False -->
+            <div class="quiz-question" data-q="5" data-answer="b">
+              <div class="q-text"><span class="q-num">5</span>True or False: 14 × 5 = 65</div>
+              <div class="tf-options options">
+                <div class="option" data-val="a">True</div>
+                <div class="option" data-val="b">False</div>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-question" data-q="6" data-answer="c">
+              <div class="q-text"><span class="q-num">6</span>Multiply 246 × 2. What is the answer?</div>
+              <div class="options">
+                <div class="option" data-val="a">482</div>
+                <div class="option" data-val="b">498</div>
+                <div class="option" data-val="c">492</div>
+                <div class="option" data-val="d">486</div>
+              </div>
+            </div>
+
+            <!-- Q7 True/False -->
+            <div class="quiz-question" data-q="7" data-answer="a">
+              <div class="q-text"><span class="q-num">7</span>True or False: When multiplying any number by 10, we add a zero at the end.</div>
+              <div class="tf-options options">
+                <div class="option" data-val="a">True</div>
+                <div class="option" data-val="b">False</div>
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="quiz-question" data-q="8" data-answer="d">
+              <div class="q-text"><span class="q-num">8</span>Sarah has 12 packets, each with 15 pencils. How many pencils in total?</div>
+              <div class="options">
+                <div class="option" data-val="a">150</div>
+                <div class="option" data-val="b">165</div>
+                <div class="option" data-val="c">175</div>
+                <div class="option" data-val="d">180</div>
+              </div>
+            </div>
+
+            <button class="submit-quiz-btn" onclick="submitQuiz()">Submit Quiz 🚀</button>
+          </div>
+
+          <!-- Score Card -->
+          <div class="score-card" id="score-card">
+            <div class="score-circle-wrap">
+              <svg width="180" height="180" viewBox="0 0 180 180">
+                <circle cx="90" cy="90" r="80" fill="none" stroke="#e0e0e0" stroke-width="12"/>
+                <circle id="score-arc" cx="90" cy="90" r="80" fill="none" stroke="#1abc9c" stroke-width="12"
+                  stroke-dasharray="502.65" stroke-dashoffset="502.65" stroke-linecap="round"/>
+              </svg>
+              <div class="score-text">
+                <div class="score-num" id="score-display">0/8</div>
+                <div class="score-label">Score</div>
+              </div>
+            </div>
+            <div class="score-msg" id="score-msg">Great job!</div>
+            <div class="score-sub" id="score-sub">Keep practicing to improve!</div>
+            <button class="retry-btn" onclick="retryQuiz()">Try Again 🔄</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>📚 Digital School | Class 3 Mathematics | Chapter 4: Multiplication</p>
+    <p style="margin-top:8px;font-size:.9rem;opacity:.6">2 × 2 = 4 and much more! Keep multiplying!</p>
+  </footer>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ===== CURTAIN FALLBACK =====
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ===== INIT =====
+  try { initLenis(); } catch(e) { console.warn('Lenis failed', e); }
+  try { initGSAP(); } catch(e) { console.warn('GSAP failed', e); }
+  buildWriteTables();
+  buildPractice();
+  buildTimesGrid();
+  buildDragDrop();
+  initQuiz();
+  initProgressBar();
+  initSidebarObserver();
+  hideCurtain();
+});
+
+// ===== CURTAIN =====
+function hideCurtain() {
+  const c = document.getElementById('curtain');
+  if (!c) return;
+  if (typeof gsap !== 'undefined') {
+    try {
+      gsap.to(c, { opacity: 0, duration: 0.6, delay: 0.3, onComplete: () => c.style.display = 'none' });
+    } catch(e) { c.style.display = 'none'; }
+  } else {
+    c.style.display = 'none';
+  }
+}
+
+// ===== LENIS =====
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+
+// ===== GSAP =====
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Hero path drawing
+  try {
+    const path = document.getElementById('hero-path');
+    if (path) {
+      const len = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(path, { strokeDashoffset: 0, duration: 2, ease: 'power2.out', delay: 0.5 });
+    }
+  } catch(e) {}
+
+  // Hero counters
+  document.querySelectorAll('.hero-stat .num[data-count]').forEach(el => {
+    const target = parseInt(el.getAttribute('data-count'));
+    try {
+      gsap.from({ val: 0 }, {
+        val: target,
+        duration: 1.5,
+        delay: 0.8,
+        ease: 'power2.out',
+        onUpdate: function() { el.textContent = Math.round(this.targets()[0].val); },
+        onComplete: function() { el.textContent = target; }
+      });
+    } catch(e) { el.textContent = target; }
+  });
+
+  // Section band entrances
+  if (typeof ScrollTrigger !== 'undefined') {
+    try {
+      gsap.utils.toArray('.concept-step').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' },
+          opacity: 0, y: 30, duration: 0.6, delay: i * 0.1, ease: 'power2.out'
+        });
+      });
+
+      gsap.utils.toArray('.table-card').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+          opacity: 0, y: 40, duration: 0.7, delay: i * 0.15, ease: 'power2.out'
+        });
+      });
+
+      // Counter numbers
+      const cProducts = document.getElementById('counter-products');
+      const cMax = document.getElementById('counter-max');
+      if (cProducts) {
+        ScrollTrigger.create({
+          trigger: cProducts,
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.from({ val: 0 }, {
+              val: 50, duration: 1.5, ease: 'power2.out',
+              onUpdate: function() { cProducts.textContent = Math.round(this.targets()[0].val); },
+              onComplete: function() { cProducts.textContent = 50; }
+            });
+          }
+        });
+      }
+      if (cMax) {
+        ScrollTrigger.create({
+          trigger: cMax,
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.from({ val: 0 }, {
+              val: 150, duration: 1.5, ease: 'power2.out',
+              onUpdate: function() { cMax.textContent = Math.round(this.targets()[0].val); },
+              onComplete: function() { cMax.textContent = 150; }
+            });
+          }
+        });
+      }
+
+      // Parallax on hero circles
+      gsap.utils.toArray('.hero-circles span').forEach((el, i) => {
+        gsap.to(el, {
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+          y: (i % 2 === 0) ? -40 : 40
+        });
+      });
+    } catch(e) { console.warn('ScrollTrigger animations failed', e); }
+  }
+}
+
+// ===== PROGRESS BAR =====
+function initProgressBar() {
+  const bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = pct + '%';
+  });
+}
+
+// ===== SIDEBAR OBSERVER =====
+function initSidebarObserver() {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-link, #bottom-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => obs.observe(s));
+}
+
+// ===== BUILD WRITE TABLES =====
+const tableData = {};
+for (let n = 11; n <= 15; n++) {
+  tableData[n] = [];
+  for (let i = 1; i <= 10; i++) tableData[n].push({ a: n, b: i, p: n * i });
+}
+
+function buildWriteTableContainer(num, containerId, showFirst = true) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  tableData[num].forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#f8f9fa;border-radius:8px';
+    const label = document.createElement('span');
+    label.style.cssText = 'font-weight:700;font-size:1rem;white-space:nowrap;flex:1';
+    label.textContent = `${item.a} × ${item.b} = `;
+    if (showFirst && idx === 0) {
+      const ans = document.createElement('span');
+      ans.style.cssText = 'font-weight:800;font-size:1rem;color:var(--teal)';
+      ans.textContent = item.p;
+      row.appendChild(label);
+      row.appendChild(ans);
+    } else {
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'practice-input';
+      inp.setAttribute('data-answer', item.p);
+      inp.style.cssText = 'width:80px;padding:6px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1rem;font-weight:700;text-align:center';
+      row.appendChild(label);
+      row.appendChild(inp);
+    }
+    container.appendChild(row);
+  });
+}
+
+function buildWriteTables() {
+  buildWriteTableContainer(11, 'write-table-11');
+  buildWriteTableContainer(12, 'write-table-12');
+  buildWriteTableContainer(13, 'write-table-13');
+  buildWriteTableContainer(14, 'write-table-14');
+  buildWriteTableContainer(15, 'write-table-15');
+}
+
+function checkWriteTableContainer(containerId) {
+  const inputs = document.querySelectorAll('#' + containerId + ' input');
+  let correct = 0, total = 0;
+  inputs.forEach(inp => {
+    total++;
+    if (parseInt(inp.value) === parseInt(inp.getAttribute('data-answer'))) {
+      inp.style.borderColor = '#55efc4';
+      correct++;
+    } else {
+      inp.style.borderColor = 'var(--coral)';
+    }
+  });
+  return { correct, total };
+}
+
+function checkWriteTables(n1, n2) {
+  const r1 = checkWriteTableContainer('write-table-' + n1);
+  const r2 = checkWriteTableContainer('write-table-' + n2);
+  const total = r1.total + r2.total;
+  const correct = r1.correct + r2.correct;
+  const el = document.getElementById('write-result-' + n1 + '-' + n2);
+  if (el) {
+    el.textContent = `✅ ${correct} / ${total} correct!`;
+    el.style.color = correct === total ? '#00b894' : 'var(--coral)';
+  }
+}
+
+function checkWriteTables3(n1, n2, n3) {
+  const r1 = checkWriteTableContainer('write-table-' + n1);
+  const r2 = checkWriteTableContainer('write-table-' + n2);
+  const r3 = checkWriteTableContainer('write-table-' + n3);
+  const total = r1.total + r2.total + r3.total;
+  const correct = r1.correct + r2.correct + r3.correct;
+  const el = document.getElementById('write-result-13-15');
+  if (el) {
+    el.textContent = `✅ ${correct} / ${total} correct!`;
+    el.style.color = correct === total ? '#00b894' : 'var(--coral)';
+  }
+}
+
+// ===== BUILD PRACTICE =====
+const singleProblems = [
+  {a:5,b:3},{a:12,b:4},{a:6,b:7},{a:4,b:8},{a:9,b:7},{a:4,b:9},
+  {a:6,b:4},{a:8,b:5},{a:3,b:7},{a:7,b:6},{a:7,b:3},{a:8,b:4},
+  {a:4,b:7},{a:9,b:8},{a:7,b:7},{a:11,b:9},{a:15,b:4},{a:7,b:5}
+];
+const by10Problems = [
+  {a:12,b:10},{a:46,b:10},{a:250,b:10},{a:32,b:10},{a:100,b:10}
+];
+const threeDigitProblems = [
+  {a:432,b:7},{a:526,b:6},{a:145,b:8},{a:312,b:5},{a:178,b:9}
+];
+
+function buildPracticeSection(problems, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  problems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'practice-item';
+    div.setAttribute('data-answer', item.a * item.b);
+    div.innerHTML = `<span>${item.a} × ${item.b} =</span><input type="number" class="practice-input" placeholder="?"/>`;
+    container.appendChild(div);
+  });
+}
+
+function buildPractice() {
+  buildPracticeSection(singleProblems, 'practice-single');
+  buildPracticeSection(by10Problems, 'practice-by10');
+  buildPracticeSection(threeDigitProblems, 'practice-3digit');
+}
+
+function checkPractice(containerId) {
+  const items = document.querySelectorAll('#' + containerId + ' .practice-item');
+  let correct = 0;
+  items.forEach(item => {
+    const inp = item.querySelector('input');
+    const ans = parseInt(item.getAttribute('data-answer'));
+    item.classList.remove('correct','incorrect');
+    if (parseInt(inp.value) === ans) {
+      item.classList.add('correct');
+      correct++;
+    } else {
+      item.classList.add('incorrect');
+    }
+  });
+  const resultId = containerId.replace('practice-', 'result-');
+  const el = document.getElementById(resultId);
+  if (el) {
+    el.textContent = `${correct} / ${items.length} correct! ${correct === items.length ? '🎉' : '💪 Keep trying!'}`;
+    el.style.color = correct === items.length ? '#00b894' : 'var(--coral)';
+  }
+}
+
+function resetPractice(containerId) {
+  const items = document.querySelectorAll('#' + containerId + ' .practice-item');
+  items.forEach(item => {
+    item.classList.remove('correct','incorrect');
+    const inp = item.querySelector('input');
+    if (inp) inp.value = '';
+  });
+  const resultId = containerId.replace('practice-', 'result-');
+  const el = document.getElementById(resultId);
+  if (el) el.textContent = '';
+}
+
+// ===== TIMES TABLE GRID =====
+function buildTimesGrid() {
+  const tbody = document.getElementById('times-grid-body');
+  if (!tbody) return;
+  for (let r = 11; r <= 15; r++) {
+    const tr = document.createElement('tr');
+    const th = document.createElement('td');
+    th.textContent = r;
+    th.style.fontWeight = '800';
+    tr.appendChild(th);
+    for (let c = 1; c <= 10; c++) {
+      const td = document.createElement('td');
+      td.textContent = r * c;
+      td.setAttribute('data-row', r);
+      td.setAttribute('data-col', c);
+      td.style.cursor = 'pointer';
+      td.addEventListener('click', function() {
+        document.querySelectorAll('#times-grid td, #times-grid th').forEach(el => el.classList.remove('highlight'));
+        const rowNum = this.getAttribute('data-row');
+        const colNum = this.getAttribute('data-col');
+        document.querySelectorAll(`#times-grid td[data-row="${rowNum}"]`).forEach(el => el.classList.add('highlight'));
+        document.querySelectorAll(`#times-grid td[data-col="${colNum}"]`).forEach(el => el.classList.add('highlight'));
+        this.style.background = '#FF6B6B';
+        this.style.color = '#fff';
+      });
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+// ===== DRAG AND DROP =====
+const dragProblems = [
+  {q:'11 × 5', a: 55},
+  {q:'12 × 7', a: 84},
+  {q:'13 × 4', a: 52},
+  {q:'14 × 3', a: 42},
+  {q:'15 × 8', a: 120},
+  {q:'11 × 9', a: 99}
+];
+
+let dragState = {};
+
+function buildDragDrop() {
+  const bank = document.getElementById('drag-bank');
+  const zones = document.getElementById('drop-zones');
+  if (!bank || !zones) return;
+
+  // Shuffle answers
+  const answers = dragProblems.map(p => p.a).sort(() => Math.random() - 0.5);
+
+  bank.innerHTML = '';
+  zones.innerHTML = '';
+  dragState = {};
+
+  answers.forEach(a => {
+    const label = document.createElement('div');
+    label.className = 'drag-label';
+    label.draggable = true;
+    label.textContent = a;
+    label.id = 'drag-' + a;
+    label.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', a);
+      label.style.opacity = '0.5';
+    });
+    label.addEventListener('dragend', () => { label.style.opacity = '1'; });
+    // Touch support
+    label.addEventListener('touchstart', handleTouchStart, {passive:true});
+    label.addEventListener('touchmove', handleTouchMove, {passive:false});
+    label.addEventListener('touchend', handleTouchEnd);
+    bank.appendChild(label);
+  });
+
+  dragProblems.forEach(prob => {
+    const row = document.createElement('div');
+    row.className = 'drop-zone';
+    row.innerHTML = `
+      <span style="font-weight:700;font-size:1.1rem;min-width:100px">${prob.q} =</span>
+      <div class="drop-box" id="drop-${prob.a}" data-answer="${prob.a}">Drop here</div>
+    `;
+    const box = row.querySelector('.drop-box');
+    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('over'); box.style.borderColor='var(--teal)'; });
+    box.addEventListener('dragleave', () => { box.classList.remove('over'); box.style.borderColor=''; });
+    box.addEventListener('drop', e => {
+      e.preventDefault();
+      box.classList.remove('over');
+      const val = e.dataTransfer.getData('text/plain');
+      const prevHolder = dragState[val];
+      if (prevHolder && prevHolder !== box.id) {
+        const prevBox = document.getElementById(prevHolder);
+        if (prevBox) { prevBox.textContent = 'Drop here'; prevBox.classList.remove('filled'); delete dragState[val]; }
+      }
+      // Remove from bank if there
+      const bankEl = document.getElementById('drag-' + val);
+      if (bankEl) bankEl.style.display = 'none';
+      const prevVal = box.getAttribute('data-current');
+      if (prevVal) {
+        const prevBankEl = document.getElementById('drag-' + prevVal);
+        if (prevBankEl) prevBankEl.style.display = 'inline-flex';
+        delete dragState[prevVal];
+      }
+      box.textContent = val;
+      box.classList.add('filled');
+      box.setAttribute('data-current', val);
+      dragState[val] = box.id;
+    });
+    zones.appendChild(row);
+  });
+}
+
+// Simple touch drag
+let touchDragging = null;
+let touchClone = null;
+function handleTouchStart(e) {
+  touchDragging = e.currentTarget;
+}
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (!touchDragging) return;
+  const touch = e.touches[0];
+  if (!touchClone) {
+    touchClone = touchDragging.cloneNode(true);
+    touchClone.style.cssText = 'position:fixed;z-index:9999;opacity:0.8;pointer-events:none;background:var(--teal);color:#fff;border-radius:8px;padding:10px 20px;font-weight:700;font-size:1rem';
+    document.body.appendChild(touchClone);
+  }
+  touchClone.style.left = (touch.clientX - 30) + 'px';
+  touchClone.style.top = (touch.clientY - 20) + 'px';
+}
+function handleTouchEnd(e) {
+  if (!touchDragging || !touchClone) { touchDragging = null; return; }
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (el && el.classList.contains('drop-box')) {
+    const val = touchDragging.textContent.trim();
+    el.textContent = val;
+    el.classList.add('filled');
+    el.setAttribute('data-current', val);
+    dragState[val] = el.id;
+    touchDragging.style.display = 'none';
+  }
+  touchDragging = null;
+}
+
+function checkDragDrop() {
+  let correct = 0;
+  dragProblems.forEach(prob => {
+    const box = document.getElementById('drop-' + prob.a);
+    if (!box) return;
+    const current = parseInt(box.getAttribute('data-current'));
+    box.classList.remove('correct-drop','wrong-drop');
+    if (current === prob.a) { box.classList.add('correct-drop'); correct++; }
+    else { box.classList.add('wrong-drop'); }
+  });
+  const el = document.getElementById('drag-result');
+  if (el) {
+    el.textContent = `${correct} / ${dragProblems.length} correct! ${correct === dragProblems.length ? '🎉 Perfect!' : '💪 Try again!'}`;
+    el.style.color = correct === dragProblems.length ? '#00b894' : 'var(--coral)';
+  }
+}
+
+function resetDragDrop() {
+  buildDragDrop();
+  const el = document.getElementById('drag-result');
+  if (el) el.textContent = '';
+}
+
+// ===== WORD PROBLEMS =====
+function checkWP(num, answer) {
+  const inp = document.getElementById('wp' + num);
+  const res = document.getElementById('wp-result-' + num);
+  if (!inp || !res) return;
+  res.className = 'wp-result';
+  if (parseInt(inp.value) === answer) {
+    res.classList.add('correct');
+    res.textContent = '✅ Correct! The answer is ' + answer;
+  } else {
+    res.classList.add('wrong');
+    res.textContent = '❌ Not quite! The answer is ' + answer + '. Keep trying!';
+  }
+}
+
+// ===== QUIZ =====
+function initQuiz() {
+  document.querySelectorAll('.quiz-question .option').forEach(opt => {
+    opt.addEventListener('click', function() {
+      const question = this.closest('.quiz-question');
+      question.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+}
+
+function submitQuiz() {
+  const questions = document.querySelectorAll('.quiz-question');
+  let score = 0;
+  questions.forEach(q => {
+    const correct = q.getAttribute('data-answer');
+    const selected = q.querySelector('.option.selected');
+    q.querySelectorAll('.option').forEach(o => {
+      if (o.getAttribute('data-val') === correct) o.classList.add('correct');
+      else if (o.classList.contains('selected')) o.classList.add('wrong');
+      o.style.pointerEvents = 'none';
+    });
+    if (selected && selected.getAttribute('data-val') === correct) score++;
+  });
+
+  document.querySelector('.submit-quiz-btn').style.display = 'none';
+
+  const scoreCard = document.getElementById('score-card');
+  scoreCard.classList.add('show');
+  document.getElementById('score-display').textContent = score + '/8';
+
+  const msgs = ['Keep practicing! 💪', 'Good effort! 👍', 'Well done! 🌟', 'Excellent! 🎉', 'Perfect score! 🏆'];
+  const msgIdx = score <= 2 ? 0 : score <= 4 ? 1 : score <= 5 ? 2 : score <= 7 ? 3 : 4;
+  document.getElementById('score-msg').textContent = msgs[msgIdx];
+  document.getElementById('score-sub').textContent = `You got ${score} out of 8 questions right!`;
+
+  // Animate circle
+  const arc = document.getElementById('score-arc');
+  const circumference = 502.65;
+  const pct = score / 8;
+  const offset = circumference - (circumference * pct);
+
+  if (typeof gsap !== 'undefined') {
+    try {
+      gsap.to(arc, { strokeDashoffset: offset, duration: 1.5, ease: 'power2.out' });
+    } catch(e) { arc.style.strokeDashoffset = offset; }
+  } else {
+    arc.style.strokeDashoffset = offset;
+    arc.style.transition = 'stroke-dashoffset 1.5s ease';
+  }
+
+  if (score <= 4) arc.style.stroke = '#FF6B6B';
+  else if (score <= 6) arc.style.stroke = '#F9CA24';
+  else arc.style.stroke = '#1abc9c';
+
+  // Scroll to score card
+  scoreCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function retryQuiz() {
+  const questions = document.querySelectorAll('.quiz-question');
+  questions.forEach(q => {
+    q.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('selected','correct','wrong');
+      o.style.pointerEvents = '';
+    });
+  });
+  document.querySelector('.submit-quiz-btn').style.display = 'block';
+  const scoreCard = document.getElementById('score-card');
+  scoreCard.classList.remove('show');
+  const arc = document.getElementById('score-arc');
+  arc.style.strokeDashoffset = '502.65';
+  document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>

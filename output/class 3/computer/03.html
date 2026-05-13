@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Hardware | Class 3 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;scroll-behavior:smooth;background:#F8F9FA}
+body{font-family:'Inter',sans-serif;font-size:18px;color:#2d2d2d;overflow-x:hidden}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#48DBFB,#F9CA24);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain h2{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,3vw,2rem);color:#fff;font-weight:700}
+.curtain-spinner{width:60px;height:60px;border:6px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PROGRESS BAR */
+#progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#FF6B6B,#F9CA24);width:0%;z-index:1000;transition:width 0.2s}
+
+/* BREADCRUMB */
+.breadcrumb{background:#fff;padding:12px 40px;border-bottom:2px solid #F9CA24;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:500}
+.breadcrumb span{font-size:15px;color:#888}
+.breadcrumb a{font-size:15px;color:#FF6B6B;text-decoration:none;font-weight:600}
+.breadcrumb .sep{color:#ccc}
+
+/* LAYOUT */
+.page-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column}
+.content-area{display:flex;width:100%;gap:0}
+
+/* SIDEBAR */
+.sidebar{width:260px;min-width:260px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;background:#fff;border-right:2px solid #F8F9FA;padding:24px 16px;display:flex;flex-direction:column;gap:8px}
+.sidebar h3{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:#48DBFB;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.sidebar a{display:block;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:15px;color:#555;font-weight:500;transition:all 0.2s;border-left:3px solid transparent}
+.sidebar a:hover{background:#F8F9FA;color:#FF6B6B}
+.sidebar a.active{background:#FFF3CD;color:#F9CA24;border-left-color:#F9CA24;font-weight:700}
+
+/* MAIN CONTENT */
+.main-content{flex:1;min-width:0;padding-bottom:60px}
+
+/* HERO */
+.hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#0f3460 0%,#16213e 50%,#1a1a2e 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:60px 40px}
+.hero-content{max-width:1200px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-text h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-text h1 span{color:#F9CA24}
+.hero-text p{font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:30px}
+.hero-badges{display:flex;gap:12px;flex-wrap:wrap}
+.badge{padding:8px 18px;border-radius:50px;font-size:15px;font-weight:600}
+.badge-blue{background:#48DBFB;color:#0f3460}
+.badge-yellow{background:#F9CA24;color:#0f3460}
+.badge-coral{background:#FF6B6B;color:#fff}
+
+/* HERO SVG */
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.hero-svg{width:100%;max-width:440px}
+
+/* FLOATING PARTICLES */
+.particle{position:absolute;border-radius:50%;opacity:0.15;pointer-events:none}
+
+/* SECTION BANDS */
+.section-band{width:100%;padding:20px 40px;display:flex;align-items:center;gap:16px}
+.section-band h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff}
+.section-band .band-icon{font-size:2.5rem}
+.band-blue{background:linear-gradient(135deg,#48DBFB,#0984e3)}
+.band-yellow{background:linear-gradient(135deg,#F9CA24,#f39c12)}
+.band-coral{background:linear-gradient(135deg,#FF6B6B,#d63031)}
+.band-green{background:linear-gradient(135deg,#00b894,#00cec9)}
+.band-purple{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}
+
+/* SECTIONS */
+section{padding:60px 0}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* CARDS */
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:28px;width:100%;opacity:1;transform:none}
+.card-grid{display:grid;gap:24px}
+.card-grid-2{grid-template-columns:repeat(2,1fr)}
+.card-grid-3{grid-template-columns:repeat(3,1fr)}
+.card-grid-4{grid-template-columns:repeat(4,1fr)}
+
+/* HARDWARE CARDS */
+.hw-card{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;border-top:4px solid #48DBFB;transition:transform 0.2s,box-shadow 0.2s;opacity:1}
+.hw-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,0.14)}
+.hw-card .hw-emoji{font-size:3.5rem}
+.hw-card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460}
+.hw-card p{font-size:17px;color:#555;line-height:1.6}
+.hw-card.yellow{border-top-color:#F9CA24}
+.hw-card.coral{border-top-color:#FF6B6B}
+.hw-card.green{border-top-color:#00b894}
+.hw-card.purple{border-top-color:#a29bfe}
+
+/* STATS BAR */
+.stats-bar{background:linear-gradient(135deg,#0f3460,#16213e);padding:40px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap}
+.stat-item{text-align:center;color:#fff}
+.stat-number{font-family:'Poppins',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:#F9CA24}
+.stat-label{font-size:17px;color:rgba(255,255,255,0.8)}
+
+/* THREE.JS CANVAS WRAP */
+#three-wrap{width:100%;border-radius:12px;overflow:hidden;background:#1a1a2e;min-height:300px;position:relative}
+#three-fallback{display:none;width:100%;min-height:300px;background:#1a1a2e;border-radius:12px;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#fff;font-size:clamp(1.4rem,2.5vw,1.8rem);text-align:center;padding:40px}
+
+/* DRAG AND DROP */
+.dnd-container{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px}
+.dnd-diagram{width:100%;background:#F8F9FA;border-radius:12px;padding:32px;position:relative;min-height:320px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.drop-zone{background:#fff;border:3px dashed #48DBFB;border-radius:10px;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px;text-align:center;transition:all 0.2s;font-size:15px;color:#888;gap:6px}
+.drop-zone.filled{border-color:#00b894;background:#f0fff4;color:#00b894}
+.drop-zone.wrong{border-color:#FF6B6B;background:#fff5f5;animation:shake 0.4s}
+.drop-zone .zone-icon{font-size:2rem}
+.drop-zone .zone-label{font-size:13px;font-weight:600;color:#555}
+.drag-labels{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.drag-label{padding:12px 20px;background:#0f3460;color:#fff;border-radius:8px;cursor:grab;font-weight:600;font-size:17px;border:2px solid transparent;transition:all 0.2s;user-select:none;min-height:48px;display:flex;align-items:center}
+.drag-label:hover{background:#48DBFB;color:#0f3460}
+.drag-label.dragging{opacity:0.5;cursor:grabbing}
+.drag-label.used{opacity:0.3;pointer-events:none}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* QUIZ */
+.quiz-section{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:40px}
+.quiz-progress{width:100%;background:#F8F9FA;border-radius:50px;height:10px;margin-bottom:32px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,#48DBFB,#F9CA24);border-radius:50px;transition:width 0.4s}
+.question-card{display:none;animation:fadeIn 0.4s}
+.question-card.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.question-num{font-size:15px;color:#888;font-weight:600;margin-bottom:8px}
+.question-text{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:24px}
+.options{display:flex;flex-direction:column;gap:14px}
+.option{padding:16px 24px;border-radius:10px;border:2px solid #e9ecef;cursor:pointer;font-size:18px;font-weight:500;transition:all 0.2s;min-height:56px;display:flex;align-items:center}
+.option:hover{border-color:#48DBFB;background:#f0fbff}
+.option.correct{border-color:#00b894;background:#f0fff4;color:#00b894;font-weight:700}
+.option.wrong{border-color:#FF6B6B;background:#fff5f5;color:#FF6B6B}
+.tf-options{display:flex;gap:16px}
+.tf-btn{flex:1;padding:20px;border-radius:10px;border:2px solid #e9ecef;cursor:pointer;font-size:1.2rem;font-weight:700;text-align:center;transition:all 0.2s;min-height:56px}
+.tf-btn:hover{border-color:#48DBFB;background:#f0fbff}
+.quiz-nav{display:flex;gap:16px;margin-top:32px;justify-content:flex-end}
+.btn{padding:14px 28px;border-radius:8px;border:none;cursor:pointer;font-size:17px;font-weight:600;font-family:'Inter',sans-serif;transition:all 0.2s;min-height:48px}
+.btn-primary{background:#FF6B6B;color:#fff}
+.btn-primary:hover{background:#d63031}
+.btn-secondary{background:#F8F9FA;color:#555}
+.btn-secondary:hover{background:#e9ecef}
+
+/* SCORE CARD */
+.score-card{display:none;text-align:center;padding:40px}
+.score-card.show{display:block}
+.score-circle{width:160px;height:160px;margin:0 auto 24px;position:relative}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle .circle-bg{fill:none;stroke:#F8F9FA;stroke-width:12}
+.score-circle .circle-fill{fill:none;stroke:#F9CA24;stroke-width:12;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1s ease}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#0f3460}
+.score-message{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:12px}
+.score-detail{font-size:18px;color:#555;margin-bottom:24px}
+.score-emoji{font-size:4rem;margin-bottom:16px}
+
+/* COMPARISON TABLE */
+.compare-table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+.compare-table th{background:#0f3460;color:#fff;padding:16px 20px;font-size:18px;font-weight:600;text-align:left}
+.compare-table td{padding:16px 20px;font-size:17px;border-bottom:1px solid #e9ecef;vertical-align:top}
+.compare-table tr:nth-child(even) td{background:#F8F9FA}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px;overflow-x:auto}
+.mermaid{min-width:300px}
+
+/* INFO BOX */
+.info-box{border-radius:12px;padding:24px 28px;margin:24px 0;display:flex;gap:16px;align-items:flex-start}
+.info-box-blue{background:#e8f9ff;border-left:5px solid #48DBFB}
+.info-box-yellow{background:#fffde8;border-left:5px solid #F9CA24}
+.info-box-coral{background:#fff0f0;border-left:5px solid #FF6B6B}
+.info-box-green{background:#f0fff4;border-left:5px solid #00b894}
+.info-icon{font-size:1.8rem;flex-shrink:0}
+.info-text strong{font-weight:700;display:block;margin-bottom:4px;font-size:18px}
+.info-text p{font-size:17px;color:#555;line-height:1.6}
+
+/* FILL IN BLANKS */
+.fill-input{border:2px solid #48DBFB;border-radius:8px;padding:8px 14px;font-size:17px;font-family:'Inter',sans-serif;width:200px;outline:none;transition:border-color 0.2s}
+.fill-input:focus{border-color:#F9CA24}
+.fill-input.correct-ans{border-color:#00b894;background:#f0fff4}
+.fill-input.wrong-ans{border-color:#FF6B6B;background:#fff5f5}
+.fill-question{font-size:18px;margin-bottom:20px;line-height:2;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.check-btn{padding:14px 32px;background:#48DBFB;color:#0f3460;border:none;border-radius:8px;font-size:17px;font-weight:700;cursor:pointer;margin-top:16px;min-height:48px;transition:all 0.2s}
+.check-btn:hover{background:#0984e3;color:#fff}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#0f3460;z-index:600;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0}
+.bottom-nav-inner{display:flex;min-width:max-content;padding:0 8px}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 14px;color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:500;min-height:56px;justify-content:center;white-space:nowrap;min-width:60px}
+.bottom-nav a.active,.bottom-nav a:hover{color:#F9CA24}
+.bottom-nav .nav-icon{font-size:1.3rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .bottom-nav{display:block}
+  .main-content{padding-bottom:80px}
+  .hero{min-height:60vh;padding:40px 20px}
+  .hero-content{grid-template-columns:1fr;gap:32px;text-align:center}
+  .hero-visual{order:-1}
+  .hero-svg{max-width:260px}
+  .card-grid-2,.card-grid-3,.card-grid-4{grid-template-columns:1fr}
+  .container{padding:0 16px}
+  .section-band{padding:16px 20px}
+  .stats-bar{gap:32px;padding:32px 20px}
+  .dnd-diagram{grid-template-columns:1fr}
+  .tf-options{flex-direction:column}
+  .compare-table th,.compare-table td{padding:12px 14px;font-size:16px}
+  .breadcrumb{padding:10px 16px}
+  .hero-badges{justify-content:center}
+}
+@media(max-width:480px){
+  .drag-labels{justify-content:center}
+  .quiz-nav{flex-direction:column}
+  .score-circle{width:130px;height:130px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-spinner"></div>
+  <h2>🖥️ Loading Hardware Lesson...</h2>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<div class="page-wrapper">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb">
+    <a href="#">🏠 Home</a>
+    <span class="sep">›</span>
+    <a href="#">Class 3</a>
+    <span class="sep">›</span>
+    <a href="#">Computer</a>
+    <span class="sep">›</span>
+    <span>Unit 3: Hardware</span>
+  </nav>
+
+  <div class="content-area">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h3>📚 Contents</h3>
+      <a href="#intro" class="active">Introduction</a>
+      <a href="#concept">What is Hardware?</a>
+      <a href="#components">Hardware Components</a>
+      <a href="#storage">RAM vs Hard Disk</a>
+      <a href="#motherboard">Motherboard & Casing</a>
+      <a href="#diagram">System Diagram</a>
+      <a href="#activity">Drag & Drop</a>
+      <a href="#fillin">Fill in Blanks</a>
+      <a href="#quiz">Quiz</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- HERO -->
+      <section id="intro" class="hero">
+        <!-- Particles -->
+        <div class="particle" style="width:120px;height:120px;background:#F9CA24;top:10%;left:5%;animation:float1 6s ease-in-out infinite"></div>
+        <div class="particle" style="width:80px;height:80px;background:#48DBFB;top:60%;right:8%;animation:float2 8s ease-in-out infinite"></div>
+        <div class="particle" style="width:50px;height:50px;background:#FF6B6B;bottom:15%;left:15%;animation:float1 5s ease-in-out infinite 1s"></div>
+
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>Unit 3<br><span>Hardware</span> 🖥️</h1>
+            <p>Discover the physical parts of a computer — the things you can see and touch! Learn about keyboards, RAM, hard disks, and more.</p>
+            <div class="hero-badges">
+              <span class="badge badge-blue">⌨️ Input Devices</span>
+              <span class="badge badge-yellow">💾 Storage</span>
+              <span class="badge badge-coral">🔧 Motherboard</span>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <svg class="hero-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Monitor -->
+              <rect x="80" y="60" width="240" height="170" rx="16" fill="#1e3a5f" stroke="#48DBFB" stroke-width="3" class="hero-path"/>
+              <rect x="96" y="76" width="208" height="138" rx="8" fill="#0f2d4a" class="hero-path"/>
+              <!-- Screen content -->
+              <rect x="110" y="90" width="80" height="50" rx="6" fill="#F9CA24" opacity="0.8"/>
+              <rect x="210" y="90" width="80" height="50" rx="6" fill="#48DBFB" opacity="0.8"/>
+              <rect x="110" y="155" width="180" height="40" rx="6" fill="#FF6B6B" opacity="0.6"/>
+              <!-- Stand -->
+              <rect x="176" y="230" width="8" height="40" rx="4" fill="#48DBFB"/>
+              <rect x="140" y="268" width="80" height="12" rx="6" fill="#1e3a5f"/>
+              <!-- Keyboard -->
+              <rect x="90" y="300" width="220" height="60" rx="10" fill="#1e3a5f" stroke="#F9CA24" stroke-width="2"/>
+              <rect x="104" y="314" width="192" height="32" rx="6" fill="#0f2d4a"/>
+              <!-- Keys -->
+              <rect x="112" y="320" width="20" height="14" rx="3" fill="#48DBFB" opacity="0.8"/>
+              <rect x="138" y="320" width="20" height="14" rx="3" fill="#48DBFB" opacity="0.8"/>
+              <rect x="164" y="320" width="20" height="14" rx="3" fill="#48DBFB" opacity="0.8"/>
+              <rect x="190" y="320" width="20" height="14" rx="3" fill="#F9CA24" opacity="0.8"/>
+              <rect x="216" y="320" width="20" height="14" rx="3" fill="#48DBFB" opacity="0.8"/>
+              <rect x="242" y="320" width="20" height="14" rx="3" fill="#48DBFB" opacity="0.8"/>
+              <rect x="268" y="320" width="20" height="14" rx="3" fill="#FF6B6B" opacity="0.8"/>
+              <rect x="130" y="338" width="130" height="8" rx="4" fill="#48DBFB" opacity="0.5"/>
+              <!-- Mouse -->
+              <ellipse cx="350" cy="340" rx="28" ry="36" fill="#1e3a5f" stroke="#F9CA24" stroke-width="2"/>
+              <line x1="350" y1="310" x2="350" y2="360" stroke="#F9CA24" stroke-width="2" opacity="0.6"/>
+              <circle cx="350" cy="325" r="6" fill="#F9CA24" opacity="0.8"/>
+              <!-- CPU chip indicator -->
+              <rect x="18" y="140" width="50" height="60" rx="8" fill="#1e3a5f" stroke="#FF6B6B" stroke-width="2"/>
+              <rect x="26" y="150" width="34" height="40" rx="4" fill="#0f2d4a"/>
+              <text x="43" y="174" fill="#FF6B6B" font-size="12" text-anchor="middle" font-family="Poppins" font-weight="700">CPU</text>
+              <line x1="68" y1="160" x2="80" y2="160" stroke="#FF6B6B" stroke-width="2"/>
+              <line x1="68" y1="170" x2="80" y2="170" stroke="#FF6B6B" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS BAR -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-number" data-target="8">0</div>
+          <div class="stat-label">Hardware Parts</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="4">0</div>
+          <div class="stat-label">Device Categories</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="8">0</div>
+          <div class="stat-label">Quiz Questions</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="3">0</div>
+          <div class="stat-label">Activities</div>
+        </div>
+      </div>
+
+      <!-- CONCEPT SECTION -->
+      <section id="concept">
+        <div class="section-band band-blue">
+          <span class="band-icon">💡</span>
+          <h2>What is Hardware?</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="card-grid card-grid-2">
+            <div class="card">
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:16px">🖥️ Definition</h3>
+              <p style="font-size:18px;line-height:1.8;color:#444">A computer is made up of various components, some of which we can <strong>see and touch</strong>, while others are not visible. The parts we can touch are known as <strong style="color:#FF6B6B">hardware</strong>.</p>
+              <div class="info-box info-box-blue" style="margin-top:20px">
+                <span class="info-icon">ℹ️</span>
+                <div class="info-text">
+                  <strong>Key Idea</strong>
+                  <p>If you can pick it up or touch it, it's hardware! Think of the keyboard, mouse, monitor — all hardware.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:20px">🗂️ Four Categories</h3>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:14px;padding:12px;background:#e8f9ff;border-radius:10px">
+                  <span style="font-size:1.8rem">⌨️</span>
+                  <div><strong style="font-size:17px">Input Devices</strong><br><span style="font-size:15px;color:#555">Keyboard, Mouse, Scanner, Mic, Camera, Joystick</span></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:12px;background:#fffde8;border-radius:10px">
+                  <span style="font-size:1.8rem">⚙️</span>
+                  <div><strong style="font-size:17px">Processing Devices</strong><br><span style="font-size:15px;color:#555">Processor (CPU), Motherboard</span></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:12px;background:#f0fff4;border-radius:10px">
+                  <span style="font-size:1.8rem">🖨️</span>
+                  <div><strong style="font-size:17px">Output Devices</strong><br><span style="font-size:15px;color:#555">Monitor, Speakers, Printer</span></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:12px;background:#fff0f0;border-radius:10px">
+                  <span style="font-size:1.8rem">💾</span>
+                  <div><strong style="font-size:17px">Storage & Memory</strong><br><span style="font-size:15px;color:#555">Hard Disk, RAM, USB, DVD</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HARDWARE COMPONENTS -->
+      <section id="components">
+        <div class="section-band band-yellow">
+          <span class="band-icon">🔧</span>
+          <h2>Hardware Components</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="card-grid card-grid-3">
+
+            <div class="hw-card">
+              <div class="hw-emoji">⌨️</div>
+              <h3>Keyboard</h3>
+              <p>The most commonly used device. It helps us enter <strong>letters, numbers, and instructions</strong> into the computer.</p>
+              <span style="background:#e8f9ff;color:#0984e3;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">INPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card yellow">
+              <div class="hw-emoji">🖨️</div>
+              <h3>Scanner</h3>
+              <p>Lets us take a <strong>printed picture or document</strong> and turn it into a digital file on the computer.</p>
+              <span style="background:#e8f9ff;color:#0984e3;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">INPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card coral">
+              <div class="hw-emoji">🎙️</div>
+              <h3>Microphone</h3>
+              <p>Captures <strong>sound</strong> and sends it to the computer. It is also called a <strong>Mic</strong>.</p>
+              <span style="background:#e8f9ff;color:#0984e3;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">INPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card green">
+              <div class="hw-emoji">🕹️</div>
+              <h3>Joystick</h3>
+              <p>Used mostly for <strong>playing games</strong>. It has a handle that can move in all directions to control the game.</p>
+              <span style="background:#e8f9ff;color:#0984e3;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">INPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card purple">
+              <div class="hw-emoji">📷</div>
+              <h3>Digital Camera</h3>
+              <p>Used to <strong>take pictures</strong> that can be saved and viewed on a computer.</p>
+              <span style="background:#e8f9ff;color:#0984e3;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">INPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card">
+              <div class="hw-emoji">🖥️</div>
+              <h3>Monitor / LCD</h3>
+              <p>Displays the output from the computer. It shows text, images, and videos on its screen.</p>
+              <span style="background:#fff0f0;color:#d63031;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">OUTPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card yellow">
+              <div class="hw-emoji">🔊</div>
+              <h3>Speakers</h3>
+              <p>Produce <strong>sound</strong> from the computer. Used to listen to music, videos, and audio output.</p>
+              <span style="background:#fff0f0;color:#d63031;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">OUTPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card coral">
+              <div class="hw-emoji">🖨️</div>
+              <h3>Printer</h3>
+              <p>Produces a <strong>paper copy</strong> of documents and images from the computer.</p>
+              <span style="background:#fff0f0;color:#d63031;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">OUTPUT DEVICE</span>
+            </div>
+
+            <div class="hw-card green">
+              <div class="hw-emoji">⚙️</div>
+              <h3>Processor (CPU)</h3>
+              <p>The <strong>brain of the computer</strong>. It processes all instructions and data.</p>
+              <span style="background:#fffde8;color:#f39c12;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700">PROCESSING DEVICE</span>
+            </div>
+
+          </div>
+
+          <!-- CONNECTORS & PORTS -->
+          <div class="info-box info-box-blue" style="margin-top:40px">
+            <span class="info-icon">🔌</span>
+            <div class="info-text">
+              <strong>Connectors and Ports</strong>
+              <p>Each part of the computer connects to the motherboard using special points called <strong>ports</strong>. The cables or ends of devices we use to connect to the ports are called <strong>connectors</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RAM vs HARD DISK -->
+      <section id="storage">
+        <div class="section-band band-coral">
+          <span class="band-icon">💾</span>
+          <h2>RAM vs Hard Disk</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="card-grid card-grid-2" style="margin-bottom:40px">
+            <div class="card" style="border-top:6px solid #48DBFB;text-align:center">
+              <div style="font-size:4rem;margin-bottom:16px">🧠</div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:12px">RAM</h3>
+              <p style="font-size:18px;font-weight:700;color:#0984e3;margin-bottom:8px">Random Access Memory</p>
+              <p style="font-size:17px;color:#555;line-height:1.7">RAM stores data <strong>temporarily</strong>. It is called "temporary memory" because it only keeps information when the computer is ON. When you turn the computer OFF, everything in RAM is lost!</p>
+              <div style="margin-top:20px;padding:16px;background:#e8f9ff;border-radius:10px">
+                <p style="font-size:15px;color:#0984e3;font-weight:700">⚡ Fast but Temporary</p>
+              </div>
+            </div>
+            <div class="card" style="border-top:6px solid #F9CA24;text-align:center">
+              <div style="font-size:4rem;margin-bottom:16px">💽</div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:12px">Hard Disk</h3>
+              <p style="font-size:18px;font-weight:700;color:#f39c12;margin-bottom:8px">Permanent Storage</p>
+              <p style="font-size:17px;color:#555;line-height:1.7">The hard disk is the computer's <strong>permanent storage</strong>. It stores all the files and information, even when the computer is turned OFF. Your games, photos, and documents are safe here!</p>
+              <div style="margin-top:20px;padding:16px;background:#fffde8;border-radius:10px">
+                <p style="font-size:15px;color:#f39c12;font-weight:700">📦 Large & Permanent</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparison Table -->
+          <div style="overflow-x:auto">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>🧠 RAM</th>
+                  <th>💽 Hard Disk</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Storage Type</strong></td>
+                  <td>Temporary</td>
+                  <td>Permanent</td>
+                </tr>
+                <tr>
+                  <td><strong>Data Lost When OFF?</strong></td>
+                  <td>✅ Yes — data is lost</td>
+                  <td>❌ No — data is saved</td>
+                </tr>
+                <tr>
+                  <td><strong>Speed</strong></td>
+                  <td>Very fast ⚡</td>
+                  <td>Slower than RAM</td>
+                </tr>
+                <tr>
+                  <td><strong>Capacity</strong></td>
+                  <td>Smaller (4GB–32GB)</td>
+                  <td>Much larger (500GB–4TB)</td>
+                </tr>
+                <tr>
+                  <td><strong>Purpose</strong></td>
+                  <td>Running active programs</td>
+                  <td>Storing files, photos, games</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MOTHERBOARD & CASING -->
+      <section id="motherboard">
+        <div class="section-band band-green">
+          <span class="band-icon">🔩</span>
+          <h2>Motherboard & Computer Casing</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+
+          <!-- 3D Canvas or Fallback -->
+          <div id="three-wrap" style="margin-bottom:40px">
+            <canvas id="hw-canvas"></canvas>
+          </div>
+          <div id="three-fallback" style="display:none;flex-direction:column">
+            <span style="font-size:5rem">🔲</span>
+            <p>3D Motherboard Visualization</p>
+            <p style="font-size:17px;opacity:0.7">Rotate & explore in a WebGL-capable browser</p>
+          </div>
+
+          <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:6px solid #00b894">
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:16px">🖥️ Motherboard</h3>
+              <p style="font-size:18px;line-height:1.8;color:#444;margin-bottom:16px">The motherboard is the <strong>main circuit board</strong> inside the computer. All the important parts of the computer, like the keyboard, mouse, and hard disk, are connected to the motherboard.</p>
+              <div class="info-box info-box-coral" style="margin:0">
+                <span class="info-icon">⚠️</span>
+                <div class="info-text">
+                  <strong>Important!</strong>
+                  <p>If the motherboard stops working, the computer will <strong>not be able to function properly</strong>.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="border-left:6px solid #48DBFB">
+              <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#0f3460;margin-bottom:16px">📦 Computer Casing</h3>
+              <p style="font-size:18px;line-height:1.8;color:#444;margin-bottom:16px">The computer casing is the <strong>box</strong> that holds important parts like the motherboard, hard disk, RAM, and processor.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">
+                <span style="padding:8px 14px;background:#e8f9ff;border-radius:8px;font-size:15px;font-weight:600;color:#0984e3">🔩 Motherboard</span>
+                <span style="padding:8px 14px;background:#fffde8;border-radius:8px;font-size:15px;font-weight:600;color:#f39c12">⚙️ Processor</span>
+                <span style="padding:8px 14px;background:#f0fff4;border-radius:8px;font-size:15px;font-weight:600;color:#00b894">🧠 RAM</span>
+                <span style="padding:8px 14px;background:#fff0f0;border-radius:8px;font-size:15px;font-weight:600;color:#d63031">💽 Hard Disk</span>
+                <span style="padding:8px 14px;background:#f5f0ff;border-radius:8px;font-size:15px;font-weight:600;color:#6c5ce7">🔌 Power Supply</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SYSTEM DIAGRAM -->
+      <section id="diagram">
+        <div class="section-band band-purple">
+          <span class="band-icon">📊</span>
+          <h2>Computer System Diagram</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="mermaid-wrap">
+            <div class="mermaid">
+graph TD
+    MB[🔩 Motherboard\nMain Circuit Board]
+    MB --> ID[⌨️ Input Devices]
+    MB --> PD[⚙️ Processing Devices]
+    MB --> OD[🖨️ Output Devices]
+    MB --> SM[💾 Storage & Memory]
+    ID --> KB[Keyboard]
+    ID --> MO[Mouse]
+    ID --> SC[Scanner]
+    ID --> MI[Microphone]
+    ID --> CA[Camera]
+    ID --> JS[Joystick]
+    PD --> CPU[Processor / CPU]
+    OD --> MON[Monitor / LCD]
+    OD --> SP[Speakers]
+    OD --> PR[Printer]
+    SM --> HD[Hard Disk]
+    SM --> RAM[RAM]
+    SM --> USB[USB Drive]
+    SM --> DVD[DVD / Blu-ray]
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DRAG AND DROP ACTIVITY -->
+      <section id="activity">
+        <div class="section-band band-blue">
+          <span class="band-icon">🎯</span>
+          <h2>Drag & Drop Activity</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="dnd-container">
+            <p style="font-size:18px;margin-bottom:8px;font-weight:600;color:#0f3460">Drag each hardware label to the correct category box!</p>
+            <p style="font-size:17px;color:#777;margin-bottom:28px">Place each device in its correct category.</p>
+
+            <div class="dnd-diagram" id="dnd-diagram">
+              <div class="drop-zone" data-accept="input" id="zone-input">
+                <span class="zone-icon">⌨️</span>
+                <span class="zone-label">INPUT DEVICES</span>
+                <div id="input-dropped" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+              </div>
+              <div class="drop-zone" data-accept="output" id="zone-output">
+                <span class="zone-icon">🖨️</span>
+                <span class="zone-label">OUTPUT DEVICES</span>
+                <div id="output-dropped" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+              </div>
+              <div class="drop-zone" data-accept="storage" id="zone-storage">
+                <span class="zone-icon">💾</span>
+                <span class="zone-label">STORAGE & MEMORY</span>
+                <div id="storage-dropped" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+              </div>
+            </div>
+
+            <div class="drag-labels" id="drag-labels">
+              <div class="drag-label" draggable="true" data-category="input" data-name="Keyboard">⌨️ Keyboard</div>
+              <div class="drag-label" draggable="true" data-category="output" data-name="Monitor">🖥️ Monitor</div>
+              <div class="drag-label" draggable="true" data-category="storage" data-name="Hard Disk">💽 Hard Disk</div>
+              <div class="drag-label" draggable="true" data-category="input" data-name="Scanner">🖨️ Scanner</div>
+              <div class="drag-label" draggable="true" data-category="output" data-name="Speakers">🔊 Speakers</div>
+              <div class="drag-label" draggable="true" data-category="storage" data-name="RAM">🧠 RAM</div>
+              <div class="drag-label" draggable="true" data-category="input" data-name="Joystick">🕹️ Joystick</div>
+              <div class="drag-label" draggable="true" data-category="output" data-name="Printer">🖨️ Printer</div>
+              <div class="drag-label" draggable="true" data-category="input" data-name="Microphone">🎙️ Microphone</div>
+            </div>
+
+            <div id="dnd-result" style="display:none;margin-top:24px;padding:20px;border-radius:10px;text-align:center;font-size:18px;font-weight:700"></div>
+            <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
+              <button class="check-btn" onclick="checkDnD()">✅ Check Answers</button>
+              <button class="check-btn" style="background:#F9CA24" onclick="resetDnD()">🔄 Reset</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FILL IN THE BLANKS -->
+      <section id="fillin">
+        <div class="section-band band-yellow">
+          <span class="band-icon">✏️</span>
+          <h2>Fill in the Blanks</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="card">
+            <p style="font-size:18px;font-weight:600;color:#0f3460;margin-bottom:28px">Complete each sentence with the correct word:</p>
+
+            <div id="fill-questions">
+              <div class="fill-question" data-answer="hardware">
+                1. All the parts of a computer which can be touched are collectively called
+                <input type="text" class="fill-input" placeholder="type here...">
+              </div>
+              <div class="fill-question" data-answer="temporary">
+                2. RAM is also known as
+                <input type="text" class="fill-input" placeholder="type here...">
+                memory.
+              </div>
+              <div class="fill-question" data-answer="mic">
+                3. Microphone is also called a
+                <input type="text" class="fill-input" placeholder="type here...">
+              </div>
+              <div class="fill-question" data-answer="motherboard">
+                4. We attach all the components of a computer to the
+                <input type="text" class="fill-input" placeholder="type here...">
+              </div>
+              <div class="fill-question" data-answer="hard disk">
+                5.
+                <input type="text" class="fill-input" placeholder="type here...">
+                is the computer's permanent storage.
+              </div>
+            </div>
+
+            <button class="check-btn" onclick="checkFillIn()">✅ Check My Answers</button>
+            <div id="fill-result" style="display:none;margin-top:20px;padding:16px;border-radius:10px;font-size:18px;font-weight:700;text-align:center"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz">
+        <div class="section-band band-coral">
+          <span class="band-icon">🧠</span>
+          <h2>Quiz Time!</h2>
+        </div>
+        <div class="container" style="padding-top:48px">
+          <div class="quiz-section">
+            <div class="quiz-progress">
+              <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+            </div>
+
+            <div id="quiz-questions">
+              <!-- Q1 -->
+              <div class="question-card active" data-q="0">
+                <div class="question-num">Question 1 of 8</div>
+                <div class="question-text">Which of the following is used mostly for playing games?</div>
+                <div class="options">
+                  <div class="option" onclick="selectOption(this,'wrong')">A) RAM</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">B) Hardware</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">C) Hard Disk</div>
+                  <div class="option" onclick="selectOption(this,'correct')">D) Joystick</div>
+                </div>
+              </div>
+              <!-- Q2 -->
+              <div class="question-card" data-q="1">
+                <div class="question-num">Question 2 of 8</div>
+                <div class="question-text">Which device is used to take pictures that can be saved on a computer?</div>
+                <div class="options">
+                  <div class="option" onclick="selectOption(this,'correct')">A) Digital Camera</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">B) Joystick</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">C) Hard Disk</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">D) Motherboard</div>
+                </div>
+              </div>
+              <!-- Q3 -->
+              <div class="question-card" data-q="2">
+                <div class="question-num">Question 3 of 8</div>
+                <div class="question-text">Which of these is an INPUT device?</div>
+                <div class="options">
+                  <div class="option" onclick="selectOption(this,'correct')">A) Keyboard</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">B) Monitor</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">C) Speaker</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">D) Printer</div>
+                </div>
+              </div>
+              <!-- Q4 -->
+              <div class="question-card" data-q="3">
+                <div class="question-num">Question 4 of 8</div>
+                <div class="question-text">RAM stores data:</div>
+                <div class="options">
+                  <div class="option" onclick="selectOption(this,'correct')">A) Temporarily</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">B) Permanently</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">C) Manually</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">D) Collectively</div>
+                </div>
+              </div>
+              <!-- Q5 True/False -->
+              <div class="question-card" data-q="4">
+                <div class="question-num">Question 5 of 8 — True or False</div>
+                <div class="question-text">Hardware refers to the physical parts of a computer.</div>
+                <div class="tf-options">
+                  <div class="tf-btn option" onclick="selectOption(this,'correct')">✅ TRUE</div>
+                  <div class="tf-btn option" onclick="selectOption(this,'wrong')">❌ FALSE</div>
+                </div>
+              </div>
+              <!-- Q6 True/False -->
+              <div class="question-card" data-q="5">
+                <div class="question-num">Question 6 of 8 — True or False</div>
+                <div class="question-text">Motherboard is also called a Hard Disk Drive.</div>
+                <div class="tf-options">
+                  <div class="tf-btn option" onclick="selectOption(this,'wrong')">✅ TRUE</div>
+                  <div class="tf-btn option" onclick="selectOption(this,'correct')">❌ FALSE</div>
+                </div>
+              </div>
+              <!-- Q7 True/False -->
+              <div class="question-card" data-q="6">
+                <div class="question-num">Question 7 of 8 — True or False</div>
+                <div class="question-text">A joystick is used to edit documents.</div>
+                <div class="tf-options">
+                  <div class="tf-btn option" onclick="selectOption(this,'wrong')">✅ TRUE</div>
+                  <div class="tf-btn option" onclick="selectOption(this,'correct')">❌ FALSE</div>
+                </div>
+              </div>
+              <!-- Q8 -->
+              <div class="question-card" data-q="7">
+                <div class="question-num">Question 8 of 8</div>
+                <div class="question-text">What is the role of the motherboard?</div>
+                <div class="options">
+                  <div class="option" onclick="selectOption(this,'wrong')">A) It stores files permanently</div>
+                  <div class="option" onclick="selectOption(this,'correct')">B) It is the main circuit board connecting all parts</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">C) It displays images on screen</div>
+                  <div class="option" onclick="selectOption(this,'wrong')">D) It captures sound from the environment</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-nav">
+              <button class="btn btn-secondary" id="prev-btn" onclick="quizNav(-1)" disabled>← Previous</button>
+              <button class="btn btn-primary" id="next-btn" onclick="quizNav(1)">Next →</button>
+            </div>
+
+            <!-- SCORE CARD -->
+            <div class="score-card" id="score-card">
+              <div id="score-emoji" class="score-emoji">🎉</div>
+              <div class="score-circle">
+                <svg viewBox="0 0 160 160" width="160" height="160">
+                  <circle class="circle-bg" cx="80" cy="80" r="70"/>
+                  <circle class="circle-fill" id="score-circle-fill" cx="80" cy="80" r="70"/>
+                </svg>
+                <div class="score-num" id="score-num">0/8</div>
+              </div>
+              <div class="score-message" id="score-message">Great job!</div>
+              <div class="score-detail" id="score-detail">You answered questions correctly!</div>
+              <button class="btn btn-primary" onclick="restartQuiz()">🔄 Try Again</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer style="background:#0f3460;color:rgba(255,255,255,0.7);text-align:center;padding:32px 20px;font-size:17px">
+        <p style="margin-bottom:8px">🖥️ <strong style="color:#F9CA24">Unit 3: Hardware</strong> — Class 3 Computer</p>
+        <p>Digital School | Keep exploring and learning! 🚀</p>
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="#intro"><span class="nav-icon">🏠</span>Intro</a>
+    <a href="#concept"><span class="nav-icon">💡</span>Concept</a>
+    <a href="#components"><span class="nav-icon">🔧</span>Parts</a>
+    <a href="#storage"><span class="nav-icon">💾</span>Storage</a>
+    <a href="#motherboard"><span class="nav-icon">🔩</span>Board</a>
+    <a href="#diagram"><span class="nav-icon">📊</span>Diagram</a>
+    <a href="#activity"><span class="nav-icon">🎯</span>Activity</a>
+    <a href="#fillin"><span class="nav-icon">✏️</span>Fill In</a>
+    <a href="#quiz"><span class="nav-icon">🧠</span>Quiz</a>
+  </div>
+</nav>
+
+<style>
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(20px)}}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) { console.warn('Mermaid init failed', e); }
+
+  // LENIS
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed', e); }
+
+  // THREE.JS - 3D Motherboard visualization
+  const threeWrap = document.getElementById('three-wrap');
+  const fallback = document.getElementById('three-fallback');
+  let threeRenderer = null;
+
+  try {
+    if (typeof THREE !== 'undefined') {
+      const canvas = document.getElementById('hw-canvas');
+
+      // Test WebGL
+      const testCanvas = document.createElement('canvas');
+      const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+      if (!gl) throw new Error('No WebGL');
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      renderer.setClearColor(0x1a1a2e, 1);
+      threeRenderer = renderer;
+
+      const scene = new THREE.Scene();
+
+      // Camera
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+      camera.position.set(0, 3, 7);
+      camera.lookAt(0, 0, 0);
+
+      // Lights
+      const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambient);
+      const dirLight = new THREE.DirectionalLight(0x48DBFB, 1);
+      dirLight.position.set(5, 10, 5);
+      scene.add(dirLight);
+      const pointLight = new THREE.PointLight(0xF9CA24, 1, 20);
+      pointLight.position.set(-4, 3, 2);
+      scene.add(pointLight);
+
+      // Motherboard base
+      const boardGeo = new THREE.BoxGeometry(6, 0.15, 4);
+      const boardMat = new THREE.MeshPhongMaterial({ color: 0x1a5c1a });
+      const board = new THREE.Mesh(boardGeo, boardMat);
+      scene.add(board);
+
+      // CPU chip
+      const cpuGeo = new THREE.BoxGeometry(1, 0.25, 1);
+      const cpuMat = new THREE.MeshPhongMaterial({ color: 0x888888 });
+      const cpu = new THREE.Mesh(cpuGeo, cpuMat);
+      cpu.position.set(-1.5, 0.2, -0.8);
+      scene.add(cpu);
+
+      // RAM sticks
+      const ramMat = new THREE.MeshPhongMaterial({ color: 0x00b894 });
+      for (let i = 0; i < 2; i++) {
+        const ramGeo = new THREE.BoxGeometry(1.4, 0.6, 0.18);
+        const ram = new THREE.Mesh(ramGeo, ramMat);
+        ram.position.set(0.5 + i * 0.3, 0.38, -1.2);
+        ram.rotation.y = 0;
+        scene.add(ram);
+      }
+
+      // Capacitors
+      const capMat = new THREE.MeshPhongMaterial({ color: 0xF9CA24 });
+      const capPositions = [[-2.2, 0.18, 1.2], [-1.7, 0.18, 1.2], [2, 0.18, 0.8], [2.3, 0.18, -0.5]];
+      capPositions.forEach(pos => {
+        const capGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.35, 8);
+        const cap = new THREE.Mesh(capGeo, capMat);
+        cap.position.set(...pos);
+        scene.add(cap);
+      });
+
+      // PCIe slots
+      const slotMat = new THREE.MeshPhongMaterial({ color: 0xFF6B6B });
+      for (let i = 0; i < 3; i++) {
+        const slotGeo = new THREE.BoxGeometry(2.5, 0.08, 0.14);
+        const slot = new THREE.Mesh(slotGeo, slotMat);
+        slot.position.set(0.8, 0.12, 0.6 + i * 0.5);
+        scene.add(slot);
+      }
+
+      // Grid lines on board
+      const gridMat = new THREE.LineBasicMaterial({ color: 0x00ff88, opacity: 0.3, transparent: true });
+      for (let i = -3; i <= 3; i++) {
+        const geoH = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-3, 0.08, i * 0.4), new THREE.Vector3(3, 0.08, i * 0.4)]);
+        scene.add(new THREE.Line(geoH, gridMat));
+      }
+      for (let i = -3; i <= 3; i++) {
+        const geoV = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i, 0.08, -2), new THREE.Vector3(i, 0.08, 2)]);
+        scene.add(new THREE.Line(geoV, gridMat));
+      }
+
+      // Mouse orbit
+      let isDragging = false, prevMouse = { x: 0, y: 0 };
+      let rotY = 0, rotX = 0;
+
+      canvas.addEventListener('mousedown', e => { isDragging = true; prevMouse = { x: e.clientX, y: e.clientY }; });
+      window.addEventListener('mouseup', () => isDragging = false);
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        rotY += (e.clientX - prevMouse.x) * 0.01;
+        rotX += (e.clientY - prevMouse.y) * 0.005;
+        rotX = Math.max(-0.6, Math.min(0.6, rotX));
+        prevMouse = { x: e.clientX, y: e.clientY };
+      });
+
+      canvas.addEventListener('touchstart', e => { isDragging = true; prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY }; });
+      window.addEventListener('touchend', () => isDragging = false);
+      window.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        rotY += (e.touches[0].clientX - prevMouse.x) * 0.01;
+        prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      });
+
+      // Animate
+      function animate3D() {
+        requestAnimationFrame(animate3D);
+        if (!isDragging) rotY += 0.005;
+        scene.rotation.y = rotY;
+        scene.rotation.x = rotX;
+        renderer.render(scene, camera);
+      }
+      animate3D();
+
+      // Resize via ResizeObserver
+      const obs = new ResizeObserver(entries => {
+        const w = entries[0].contentRect.width;
+        const h = Math.min(500, Math.max(260, w * 0.42));
+        renderer.setSize(w, h);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      });
+      obs.observe(threeWrap);
+
+    } else {
+      throw new Error('THREE not loaded');
+    }
+  } catch(e) {
+    console.warn('Three.js failed:', e);
+    if (threeWrap) threeWrap.style.display = 'none';
+    if (fallback) fallback.style.display = 'flex';
+  }
+
+  // CURTAIN DISMISS
+  try {
+    const curtain = document.getElementById('curtain');
+    if (curtain) {
+      setTimeout(() => { curtain.style.opacity = '0'; curtain.style.transition = 'opacity 0.5s'; setTimeout(() => curtain.style.display = 'none', 500); }, 800);
+    }
+  } catch(e) {}
+
+  // PROGRESS BAR
+  window.addEventListener('scroll', () => {
+    try {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = (scrollTop / docHeight) * 100;
+      const pb = document.getElementById('progress-bar');
+      if (pb) pb.style.width = pct + '%';
+    } catch(e) {}
+  });
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero text
+      gsap.from('.hero-text h1', { duration: 1, y: 40, opacity: 0, ease: 'power3.out', delay: 0.5 });
+      gsap.from('.hero-text p', { duration: 1, y: 30, opacity: 0, ease: 'power3.out', delay: 0.8 });
+      gsap.from('.hero-badges .badge', { duration: 0.6, y: 20, opacity: 0, stagger: 0.15, ease: 'back.out', delay: 1 });
+      gsap.from('.hero-svg', { duration: 1.2, scale: 0.7, opacity: 0, ease: 'elastic.out(1,0.5)', delay: 0.6 });
+
+      // ScrollTrigger for cards
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.hw-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            y: 40, opacity: 0, duration: 0.6, delay: i * 0.08, ease: 'power2.out'
+          });
+        });
+
+        gsap.utils.toArray('.card').forEach(card => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 88%' },
+            y: 30, opacity: 0, duration: 0.7, ease: 'power2.out'
+          });
+        });
+
+        // Number counters
+        document.querySelectorAll('[data-target]').forEach(el => {
+          const target = parseInt(el.getAttribute('data-target'));
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 80%' },
+            duration: 1.5,
+            innerText: target,
+            snap: { innerText: 1 },
+            ease: 'power2.out'
+          });
+        });
+
+        // Section band parallax
+        gsap.utils.toArray('.section-band').forEach(band => {
+          gsap.fromTo(band, { y: -20 }, {
+            scrollTrigger: { trigger: band, scrub: true, start: 'top bottom', end: 'bottom top' },
+            y: 20
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // SIDEBAR ACTIVE STATE (IntersectionObserver)
+  try {
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const sideLinks = document.querySelectorAll('.sidebar a');
+    const bottomLinks = document.querySelectorAll('.bottom-nav a');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          sideLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+          bottomLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => observer.observe(s));
+  } catch(e) {}
+
+  // DRAG AND DROP
+  initDnD();
+
+  // QUIZ INIT
+  updateQuizProgress();
+});
+
+// ---- DRAG AND DROP ----
+function initDnD() {
+  try {
+    let draggedEl = null;
+
+    document.querySelectorAll('.drag-label').forEach(label => {
+      label.addEventListener('dragstart', e => {
+        draggedEl = label;
+        label.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      label.addEventListener('dragend', () => {
+        label.classList.remove('dragging');
+      });
+
+      // Touch support
+      label.addEventListener('touchstart', e => {
+        draggedEl = label;
+        label.style.opacity = '0.5';
+      }, { passive: true });
+      label.addEventListener('touchend', e => {
+        label.style.opacity = '';
+        const touch = e.changedTouches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        const zone = el && el.closest('.drop-zone');
+        if (zone && draggedEl) {
+          handleDrop(zone, draggedEl);
+        }
+        draggedEl = null;
+      });
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.background = '#e8f9ff'; });
+      zone.addEventListener('dragleave', () => { zone.style.background = ''; });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.style.background = '';
+        if (draggedEl) handleDrop(zone, draggedEl);
+        draggedEl = null;
+      });
+    });
+  } catch(e) { console.warn('DnD init error', e); }
+}
+
+function handleDrop(zone, label) {
+  const accept = zone.getAttribute('data-accept');
+  const cat = label.getAttribute('data-category');
+  const name = label.getAttribute('data-name');
+  const containerId = accept + '-dropped';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const chip = document.createElement('span');
+  chip.textContent = label.textContent;
+  chip.style.cssText = 'background:#0f3460;color:#fff;padding:6px 10px;border-radius:6px;font-size:13px;font-weight:600;display:inline-flex;align-items:center';
+  container.appendChild(chip);
+  label.classList.add('used');
+  label.setAttribute('data-placed', accept);
+}
+
+function checkDnD() {
+  try {
+    const labels = document.querySelectorAll('.drag-label');
+    let correct = 0, total = 0;
+    labels.forEach(label => {
+      const cat = label.getAttribute('data-category');
+      const placed = label.getAttribute('data-placed');
+      if (placed !== null) {
+        total++;
+        if (placed === cat) correct++;
+      }
+    });
+
+    const res = document.getElementById('dnd-result');
+    res.style.display = 'block';
+    if (correct === labels.length) {
+      res.style.background = '#f0fff4'; res.style.color = '#00b894';
+      res.textContent = '🎉 Perfect! All ' + labels.length + ' items placed correctly!';
+    } else {
+      res.style.background = '#fff5f5'; res.style.color = '#FF6B6B';
+      res.textContent = '📝 ' + correct + ' out of ' + total + ' placed correctly. Try again!';
+    }
+  } catch(e) {}
+}
+
+function resetDnD() {
+  try {
+    document.querySelectorAll('.drag-label').forEach(l => {
+      l.classList.remove('used');
+      l.removeAttribute('data-placed');
+      l.style.opacity = '';
+    });
+    ['input-dropped','output-dropped','storage-dropped'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '';
+    });
+    const res = document.getElementById('dnd-result');
+    if (res) res.style.display = 'none';
+    initDnD();
+  } catch(e) {}
+}
+
+// ---- FILL IN THE BLANKS ----
+function checkFillIn() {
+  try {
+    const questions = document.querySelectorAll('.fill-question');
+    let correct = 0;
+    questions.forEach(q => {
+      const expected = q.getAttribute('data-answer').toLowerCase().trim();
+      const input = q.querySelector('.fill-input');
+      const val = input.value.toLowerCase().trim();
+      if (val === expected) {
+        input.classList.add('correct-ans');
+        input.classList.remove('wrong-ans');
+        correct++;
+      } else {
+        input.classList.add('wrong-ans');
+        input.classList.remove('correct-ans');
+      }
+    });
+    const res = document.getElementById('fill-result');
+    res.style.display = 'block';
+    if (correct === questions.length) {
+      res.style.background = '#f0fff4'; res.style.color = '#00b894';
+      res.textContent = '🎉 All ' + correct + ' answers correct! Excellent!';
+    } else {
+      res.style.background = '#fff5f5'; res.style.color = '#FF6B6B';
+      res.textContent = correct + ' out of ' + questions.length + ' correct. Keep trying!';
+    }
+  } catch(e) {}
+}
+
+// ---- QUIZ ----
+let currentQ = 0;
+let answers = {};
+const totalQuestions = 8;
+
+function updateQuizProgress() {
+  try {
+    const fill = document.getElementById('quiz-progress-fill');
+    if (fill) fill.style.width = ((currentQ + 1) / totalQuestions * 100) + '%';
+    document.getElementById('prev-btn').disabled = currentQ === 0;
+    document.getElementById('next-btn').textContent = currentQ === totalQuestions - 1 ? 'Finish 🏁' : 'Next →';
+  } catch(e) {}
+}
+
+function selectOption(el, result) {
+  try {
+    const card = el.closest('.question-card');
+    const opts = card.querySelectorAll('.option, .tf-btn');
+    opts.forEach(o => o.style.pointerEvents = 'none');
+
+    if (result === 'correct') {
+      el.classList.add('correct');
+      answers[currentQ] = true;
+    } else {
+      el.classList.add('wrong');
+      answers[currentQ] = false;
+      // Show correct answer
+      opts.forEach(o => { if (o.onclick && o.onclick.toString().includes("'correct'")) o.classList.add('correct'); });
+    }
+  } catch(e) {}
+}
+
+function quizNav(dir) {
+  try {
+    const cards = document.querySelectorAll('.question-card');
+    cards[currentQ].classList.remove('active');
+    currentQ = Math.max(0, Math.min(totalQuestions - 1, currentQ + dir));
+
+    if (dir > 0 && currentQ === 0 && dir === 1) {
+      // already at end handled below
+    }
+
+    // Check if we're finishing
+    if (dir === 1 && currentQ === totalQuestions - 1 && document.getElementById('next-btn').textContent.includes('Finish')) {
+      // Actually finish
+      showScore();
+      return;
+    }
+
+    if (dir === 1 && currentQ < totalQuestions - 1) {
+      cards[currentQ].classList.add('active');
+      updateQuizProgress();
+    } else if (dir === 1 && currentQ === totalQuestions - 1) {
+      cards[currentQ].classList.add('active');
+      updateQuizProgress();
+    } else if (dir === -1) {
+      cards[currentQ].classList.add('active');
+      updateQuizProgress();
+    }
+
+    // Override: if next button says Finish and we click it
+  } catch(e) {}
+}
+
+// Fix quiz navigation to handle finish properly
+document.addEventListener('DOMContentLoaded', () => {
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.onclick = () => {
+      if (currentQ === totalQuestions - 1) {
+        showScore();
+      } else {
+        const cards = document.querySelectorAll('.question-card');
+        cards[currentQ].classList.remove('active');
+        currentQ++;
+        cards[currentQ].classList.add('active');
+        updateQuizProgress();
+      }
+    };
+    const prevBtn = document.getElementById('prev-btn');
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        if (currentQ > 0) {
+          const cards = document.querySelectorAll('.question-card');
+          cards[currentQ].classList.remove('active');
+          currentQ--;
+          cards[currentQ].classList.add('active');
+          updateQuizProgress();
+        }
+      };
+    }
+  }
+});
+
+function showScore() {
+  try {
+    let score = 0;
+    for (let i = 0; i < totalQuestions; i++) {
+      if (answers[i] === true) score++;
+    }
+
+    document.getElementById('quiz-questions').style.display = 'none';
+    document.querySelector('.quiz-nav').style.display = 'none';
+    const scoreCard = document.getElementById('score-card');
+    scoreCard.classList.add('show');
+
+    const pct = score / totalQuestions;
+    document.getElementById('score-num').textContent = score + '/' + totalQuestions;
+
+    let emoji = '😊', message = 'Good effort!';
+    if (pct === 1) { emoji = '🏆'; message = 'Perfect Score! Amazing!'; }
+    else if (pct >= 0.75) { emoji = '🎉'; message = 'Great job! Well done!'; }
+    else if (pct >= 0.5) { emoji = '👍'; message = 'Good effort! Keep learning!'; }
+    else { emoji = '📚'; message = 'Keep studying and try again!'; }
+
+    document.getElementById('score-emoji').textContent = emoji;
+    document.getElementById('score-message').textContent = message;
+    document.getElementById('score-detail').textContent = 'You answered ' + score + ' out of ' + totalQuestions + ' questions correctly!';
+
+    // Animate circle
+    setTimeout(() => {
+      const circumference = 2 * Math.PI * 70;
+      const offset = circumference - (pct * circumference);
+      const circleFill = document.getElementById('score-circle-fill');
+      if (circleFill) circleFill.style.strokeDashoffset = offset;
+    }, 200);
+
+    // GSAP score animation
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from('#score-card', { scale: 0.7, opacity: 0, duration: 0.8, ease: 'elastic.out(1,0.5)' });
+      }
+    } catch(e) {}
+  } catch(e) {}
+}
+
+function restartQuiz() {
+  try {
+    currentQ = 0;
+    answers = {};
+    document.getElementById('quiz-questions').style.display = 'block';
+    document.querySelector('.quiz-nav').style.display = '';
+    document.getElementById('score-card').classList.remove('show');
+
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((c, i) => {
+      c.classList.remove('active');
+      c.querySelectorAll('.option, .tf-btn').forEach(o => {
+        o.classList.remove('correct', 'wrong');
+        o.style.pointerEvents = '';
+      });
+    });
+    cards[0].classList.add('active');
+    updateQuizProgress();
+
+    const circleFill = document.getElementById('score-circle-fill');
+    if (circleFill) circleFill.style.strokeDashoffset = 440;
+  } catch(e) {}
+}
+</script>
+</body>
+</html>

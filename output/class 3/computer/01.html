@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1: Know Your Computer | Class 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;font-family:'Inter',sans-serif;font-size:18px;background:#F8F9FA;color:#222;overflow-x:hidden}
+:root{--sunshine:#F9CA24;--sky:#48DBFB;--coral:#FF6B6B;--light-gray:#F8F9FA;--teal:#1ABC9C;--purple:#A29BFE;--dark:#2D3436;--white:#fff}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#48DBFB,#F9CA24);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#curtain .logo{font-family:'Poppins',sans-serif;font-size:2.2rem;font-weight:800;color:#fff;text-align:center}
+#curtain .sub{font-size:1.1rem;color:rgba(255,255,255,0.85)}
+.loader-bar{width:200px;height:6px;background:rgba(255,255,255,0.3);border-radius:99px;overflow:hidden}
+.loader-fill{height:100%;background:#fff;border-radius:99px;animation:loadfill 2s ease forwards}
+@keyframes loadfill{from{width:0}to{width:100%}}
+
+/* LAYOUT */
+.page-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column}
+.content-area{display:flex;width:100%;position:relative}
+.sidebar{width:260px;flex-shrink:0;position:sticky;top:80px;height:calc(100vh - 80px);overflow-y:auto;background:#fff;border-right:2px solid #eee;padding:24px 16px}
+.main-content{flex:1;min-width:0}
+
+/* PROGRESS BAR */
+.progress-bar-top{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#48DBFB,#F9CA24,#FF6B6B);z-index:500;transition:width 0.2s}
+
+/* BREADCRUMB */
+.breadcrumb{background:#fff;padding:14px 40px;border-bottom:2px solid #eee;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.breadcrumb span{color:#888}
+.breadcrumb a{color:#48DBFB;font-weight:600;text-decoration:none}
+.breadcrumb .current{color:#FF6B6B;font-weight:700}
+
+/* SIDEBAR NAV */
+.sidebar h3{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:4px}
+.sidebar-nav a{display:block;padding:10px 14px;border-radius:8px;text-decoration:none;color:#555;font-size:15px;font-weight:500;transition:all 0.2s;border-left:3px solid transparent}
+.sidebar-nav a:hover{background:#F8F9FA;color:#48DBFB}
+.sidebar-nav a.active{background:linear-gradient(90deg,#e8fbff,#fff);color:#48DBFB;border-left-color:#48DBFB;font-weight:700}
+
+/* SECTION HEADERS */
+.section-header{width:100%;padding:28px 40px;display:flex;align-items:center;gap:16px}
+.section-header h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#fff;margin:0}
+.section-header .icon{font-size:2.2rem}
+.sh-blue{background:linear-gradient(135deg,#48DBFB,#0abde3)}
+.sh-yellow{background:linear-gradient(135deg,#F9CA24,#f0932b)}
+.sh-coral{background:linear-gradient(135deg,#FF6B6B,#ee5a24)}
+.sh-teal{background:linear-gradient(135deg,#1ABC9C,#079992)}
+.sh-purple{background:linear-gradient(135deg,#A29BFE,#6c5ce7)}
+.sh-green{background:linear-gradient(135deg,#6ab04c,#badc58)}
+
+/* CONTENT CONTAINERS */
+.container{max-width:1500px;margin:0 auto;padding:40px 40px}
+
+/* CARDS */
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;opacity:1;transform:none}
+.card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:12px}
+.card p{font-size:18px;line-height:1.7;color:#444}
+
+/* HERO */
+.hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#48DBFB 0%,#F9CA24 50%,#FF6B6B 100%);display:flex;align-items:center;justify-content:center;padding:60px 40px;position:relative;overflow:hidden}
+.hero-content{text-align:center;z-index:2;position:relative}
+.hero h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,0.15);margin-bottom:16px}
+.hero p{font-size:clamp(1.1rem,2vw,1.4rem);color:rgba(255,255,255,0.92);max-width:700px;margin:0 auto 32px}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.25);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.5);color:#fff;padding:10px 28px;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:24px}
+.hero-svg{position:absolute;bottom:0;left:0;right:0;opacity:0.15}
+.floating-icon{position:absolute;font-size:3rem;opacity:0.3;animation:float 6s ease-in-out infinite}
+.fi1{top:15%;left:8%;animation-delay:0s}
+.fi2{top:20%;right:10%;animation-delay:1.5s}
+.fi3{bottom:25%;left:15%;animation-delay:3s}
+.fi4{bottom:30%;right:8%;animation-delay:4.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+/* SVG HERO ANIMATION */
+#hero-svg-path{stroke-dasharray:800;stroke-dashoffset:800}
+
+/* INTRO */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:0}
+.intro-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;display:flex;align-items:flex-start;gap:20px}
+.intro-icon{font-size:2.8rem;flex-shrink:0}
+.intro-card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#333;margin-bottom:8px}
+.intro-card p{font-size:18px;color:#555;line-height:1.7}
+
+/* IPO SECTION */
+.ipo-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:center;margin:32px 0}
+.ipo-box{background:#fff;border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,0.1);padding:32px 20px;text-align:center}
+.ipo-box.input{border-top:6px solid #48DBFB}
+.ipo-box.process{border-top:6px solid #F9CA24}
+.ipo-box.output{border-top:6px solid #FF6B6B}
+.ipo-icon{font-size:3rem;margin-bottom:12px}
+.ipo-box h3{font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:8px}
+.ipo-box p{font-size:17px;color:#555;line-height:1.6}
+.ipo-arrow{font-size:2.5rem;color:#aaa;flex-shrink:0;padding:0 8px}
+.ipo-example{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;margin-top:28px}
+.ipo-example h3{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;color:#333;margin-bottom:20px;text-align:center}
+.example-row{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.example-step{text-align:center;background:#F8F9FA;border-radius:12px;padding:20px 24px;min-width:140px}
+.example-step .emoji{font-size:2.5rem;margin-bottom:8px}
+.example-step .label{font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.example-step .name{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;color:#333;margin-top:4px}
+.example-arrow{font-size:2rem;color:#aaa}
+
+/* ADVANTAGES */
+.adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.adv-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;text-align:center;opacity:1;transform:none;border-bottom:4px solid #48DBFB}
+.adv-card:nth-child(2){border-bottom-color:#F9CA24}
+.adv-card:nth-child(3){border-bottom-color:#FF6B6B}
+.adv-card:nth-child(4){border-bottom-color:#1ABC9C}
+.adv-card:nth-child(5){border-bottom-color:#A29BFE}
+.adv-card:nth-child(6){border-bottom-color:#6ab04c}
+.adv-icon{font-size:3rem;margin-bottom:16px}
+.adv-card h3{font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:10px;color:#333}
+.adv-card p{font-size:17px;color:#555;line-height:1.6}
+
+/* LIMITATIONS */
+.lim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.lim-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:24px;display:flex;align-items:flex-start;gap:16px;border-left:5px solid #FF6B6B;opacity:1}
+.lim-card:nth-child(2){border-left-color:#F9CA24}
+.lim-card:nth-child(3){border-left-color:#A29BFE}
+.lim-card:nth-child(4){border-left-color:#1ABC9C}
+.lim-card:nth-child(5){border-left-color:#48DBFB}
+.lim-icon{font-size:2.2rem;flex-shrink:0}
+.lim-card h3{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:6px;color:#333}
+.lim-card p{font-size:17px;color:#555;line-height:1.6}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:32px 0}
+.stat-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;text-align:center}
+.stat-num{font-family:'Poppins',sans-serif;font-size:3rem;font-weight:800;background:linear-gradient(135deg,#48DBFB,#A29BFE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:17px;color:#666;margin-top:8px}
+
+/* DRAG AND DROP */
+.dnd-section{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;margin-top:0}
+.dnd-title{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:8px;color:#333}
+.dnd-subtitle{font-size:17px;color:#666;margin-bottom:24px}
+.dnd-labels{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;min-height:60px;padding:12px;background:#F8F9FA;border-radius:8px;border:2px dashed #ddd}
+.dnd-label{background:linear-gradient(135deg,#48DBFB,#0abde3);color:#fff;padding:10px 20px;border-radius:8px;cursor:grab;font-weight:600;font-size:17px;font-family:'Poppins',sans-serif;user-select:none;transition:transform 0.2s,box-shadow 0.2s;min-height:48px;display:flex;align-items:center}
+.dnd-label:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(72,219,251,0.4)}
+.dnd-label.dragging{opacity:0.5;transform:scale(0.95)}
+.dnd-targets{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.dnd-target{background:#F8F9FA;border:3px dashed #ddd;border-radius:12px;padding:20px;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;transition:border-color 0.2s,background 0.2s;text-align:center}
+.dnd-target.over{border-color:#48DBFB;background:#e8fbff}
+.dnd-target.correct{border-color:#1ABC9C;background:#e8f8f5}
+.dnd-target.wrong{border-color:#FF6B6B;background:#fff5f5}
+.dnd-target-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;color:#333}
+.dnd-target-desc{font-size:15px;color:#888}
+.dnd-dropped{background:linear-gradient(135deg,#1ABC9C,#079992);color:#fff;padding:8px 16px;border-radius:6px;font-weight:600;font-size:17px;font-family:'Poppins',sans-serif}
+.dnd-btn{margin-top:20px;padding:14px 32px;background:linear-gradient(135deg,#48DBFB,#0abde3);color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:transform 0.2s;min-height:48px}
+.dnd-btn:hover{transform:scale(1.05)}
+
+/* ACTIVITY TICK */
+.activity-section{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px}
+.activity-title{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:8px;color:#333}
+.activity-subtitle{font-size:17px;color:#666;margin-bottom:24px}
+.tick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.tick-item{background:#F8F9FA;border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;border:3px solid transparent;min-height:70px}
+.tick-item:hover{border-color:#48DBFB;background:#e8fbff}
+.tick-item.ticked{background:#e8f8f5;border-color:#1ABC9C}
+.tick-item.wrong-tick{background:#fff5f5;border-color:#FF6B6B}
+.tick-checkbox{width:32px;height:32px;border:3px solid #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;transition:all 0.2s}
+.tick-item.ticked .tick-checkbox{background:#1ABC9C;border-color:#1ABC9C;color:#fff}
+.tick-item.wrong-tick .tick-checkbox{background:#FF6B6B;border-color:#FF6B6B;color:#fff}
+.tick-label{font-size:18px;font-weight:500;color:#333}
+
+/* QUIZ */
+.quiz-section{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:gap:16px}
+.quiz-title{font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:800;color:#333}
+.quiz-progress{font-size:15px;color:#888;font-weight:600}
+.question-card{background:#F8F9FA;border-radius:12px;padding:28px;margin-bottom:20px;opacity:1}
+.question-num{font-size:13px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.question-text{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:#333;margin-bottom:20px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#fff;border:2px solid #eee;border-radius:8px;padding:14px 20px;cursor:pointer;font-size:18px;color:#444;transition:all 0.2s;display:flex;align-items:center;gap:12px;min-height:48px}
+.option:hover{border-color:#48DBFB;background:#e8fbff;color:#0abde3}
+.option.selected{border-color:#48DBFB;background:#e8fbff;color:#0abde3;font-weight:600}
+.option.correct{border-color:#1ABC9C;background:#e8f8f5;color:#079992;font-weight:600}
+.option.wrong{border-color:#FF6B6B;background:#fff5f5;color:#ee5a24;font-weight:600}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;transition:all 0.2s}
+.option.selected .option-letter{background:#48DBFB;color:#fff}
+.option.correct .option-letter{background:#1ABC9C;color:#fff}
+.option.wrong .option-letter{background:#FF6B6B;color:#fff}
+.tf-options{display:flex;gap:16px}
+.tf-btn{flex:1;padding:18px;border-radius:8px;border:2px solid #eee;background:#fff;font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:56px}
+.tf-btn:hover{border-color:#48DBFB;background:#e8fbff}
+.tf-btn.selected{border-color:#48DBFB;background:#48DBFB;color:#fff}
+.tf-btn.correct{border-color:#1ABC9C;background:#1ABC9C;color:#fff}
+.tf-btn.wrong{border-color:#FF6B6B;background:#FF6B6B;color:#fff}
+.quiz-nav{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+.quiz-btn{padding:14px 32px;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:48px}
+.quiz-btn.next{background:linear-gradient(135deg,#48DBFB,#0abde3);color:#fff}
+.quiz-btn.next:hover{transform:scale(1.05)}
+.quiz-btn.prev{background:#F8F9FA;color:#555;border:2px solid #eee}
+.quiz-btn.submit{background:linear-gradient(135deg,#1ABC9C,#079992);color:#fff}
+.quiz-btn.submit:hover{transform:scale(1.05)}
+
+/* SCORE CARD */
+.score-card{display:none;text-align:center;padding:40px 20px}
+.score-card.show{display:block}
+.score-circle-wrap{position:relative;width:200px;height:200px;margin:0 auto 32px}
+.score-circle-bg{fill:none;stroke:#eee;stroke-width:12}
+.score-circle-progress{fill:none;stroke:url(#scoreGrad);stroke-width:12;stroke-linecap:round;transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 1s ease}
+.score-num{font-family:'Poppins',sans-serif;font-size:2.5rem;font-weight:800;color:#333}
+.score-label{font-size:17px;color:#888;margin-top:4px}
+.score-message{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin:20px 0;color:#333}
+.score-emoji{font-size:3rem;margin-bottom:16px}
+.retake-btn{padding:14px 40px;background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform 0.2s;min-height:48px}
+.retake-btn:hover{transform:scale(1.05)}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;margin-top:0;overflow-x:auto}
+.mermaid-wrap h3{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:20px;color:#333;text-align:center}
+.mermaid{max-width:100%;overflow-x:auto}
+
+/* FILL IN BLANKS */
+.fib-section{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px}
+.fib-title{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:20px;color:#333}
+.fib-item{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;font-size:18px;color:#444;line-height:1.8}
+.fib-num{background:#48DBFB;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Poppins',sans-serif;flex-shrink:0;font-size:17px}
+.fib-input{border:none;border-bottom:3px solid #48DBFB;background:transparent;font-size:18px;font-family:'Inter',sans-serif;padding:4px 8px;min-width:140px;outline:none;color:#0abde3;font-weight:600;transition:border-color 0.2s}
+.fib-input:focus{border-bottom-color:#F9CA24}
+.fib-input.correct-ans{border-bottom-color:#1ABC9C;color:#1ABC9C}
+.fib-input.wrong-ans{border-bottom-color:#FF6B6B;color:#FF6B6B}
+.fib-btn{margin-top:16px;padding:14px 32px;background:linear-gradient(135deg,#F9CA24,#f0932b);color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;min-height:48px;transition:transform 0.2s}
+.fib-btn:hover{transform:scale(1.05)}
+
+/* PARALLAX */
+.parallax-bg{position:relative;overflow:hidden}
+.parallax-inner{will-change:transform}
+
+/* SECTION */
+section{margin-bottom:0}
+
+/* MOBILE BOTTOM NAV */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #eee;z-index:200;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mobile-bottom-nav-inner{display:flex;min-width:max-content;gap:0}
+.mobile-bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 16px;text-decoration:none;color:#888;font-size:13px;font-weight:600;white-space:nowrap;transition:color 0.2s;min-height:56px;justify-content:center}
+.mobile-bottom-nav a:hover,.mobile-bottom-nav a.active{color:#48DBFB}
+.mobile-bottom-nav .nav-icon{font-size:1.3rem}
+
+/* FEEDBACK */
+.feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:17px;font-weight:600;display:none}
+.feedback.show{display:block}
+.feedback.good{background:#e8f8f5;color:#079992}
+.feedback.bad{background:#fff5f5;color:#ee5a24}
+
+/* TOOLTIP */
+.badge{display:inline-block;background:#48DBFB;color:#fff;padding:4px 12px;border-radius:99px;font-size:13px;font-weight:700;font-family:'Poppins',sans-serif;margin-left:8px}
+.badge.yellow{background:#F9CA24;color:#333}
+.badge.coral{background:#FF6B6B}
+.badge.green{background:#1ABC9C}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .adv-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobile-bottom-nav{display:flex}
+  body{padding-bottom:80px}
+  .hero{min-height:60vh;padding:40px 20px}
+  .container{padding:24px 16px}
+  .section-header{padding:20px 16px}
+  .intro-grid,.adv-grid,.lim-grid,.stats-row,.ipo-flow{grid-template-columns:1fr}
+  .ipo-flow{display:flex;flex-direction:column}
+  .ipo-arrow{transform:rotate(90deg)}
+  .dnd-targets{grid-template-columns:1fr}
+  .tick-grid{grid-template-columns:1fr}
+  .tf-options{flex-direction:column}
+  .breadcrumb{padding:10px 16px;font-size:13px}
+  .quiz-header{flex-direction:column;align-items:flex-start;gap:8px}
+  .quiz-nav{flex-direction:column}
+  .quiz-btn{width:100%;text-align:center}
+  .example-row{gap:8px}
+}
+@media(max-width:480px){
+  .adv-grid{grid-template-columns:1fr}
+  .example-step{min-width:100px}
+  .dnd-labels{gap:8px}
+}
+
+/* SECTION SPACING */
+.section-block{padding-bottom:20px}
+
+/* SCROLL INDICATOR */
+.scroll-indicator{position:fixed;right:24px;bottom:100px;display:flex;flex-direction:column;gap:8px;z-index:100}
+.scroll-dot{width:12px;height:12px;border-radius:50%;background:#ddd;transition:all 0.3s;cursor:pointer}
+.scroll-dot.active{background:#48DBFB;transform:scale(1.3)}
+
+/* HIGHLIGHT BOXES */
+.highlight-box{background:linear-gradient(135deg,#e8fbff,#f0e6ff);border-left:5px solid #48DBFB;border-radius:0 12px 12px 0;padding:20px 24px;margin:20px 0;font-size:18px;color:#333;line-height:1.7}
+.highlight-box strong{color:#0abde3}
+
+/* DEFINITION */
+.def-box{background:#fff;border:2px solid #F9CA24;border-radius:12px;padding:24px;margin:20px 0}
+.def-box .def-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;color:#f0932b;margin-bottom:8px}
+.def-box p{font-size:18px;color:#444;line-height:1.7}
+
+/* SECTION GAPS */
+.gap{height:40px}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="logo">💻 Digital School</div>
+  <div class="sub">Class 3 · Computer Science</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- PROGRESS BAR TOP -->
+<div class="progress-bar-top" id="progressBar" style="width:0%"></div>
+
+<div class="page-wrapper">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb">
+    <a href="#">Home</a><span>›</span>
+    <a href="#">Class 3</a><span>›</span>
+    <a href="#">Computer</a><span>›</span>
+    <span class="current">Unit 1: Know Your Computer</span>
+  </nav>
+
+  <div class="content-area">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h3>Contents</h3>
+      <ul class="sidebar-nav">
+        <li><a href="#hero-section" data-section="hero-section">🏠 Introduction</a></li>
+        <li><a href="#what-section" data-section="what-section">💻 What is a Computer?</a></li>
+        <li><a href="#ipo-section" data-section="ipo-section">⚙️ How It Works</a></li>
+        <li><a href="#adv-section" data-section="adv-section">✅ Advantages</a></li>
+        <li><a href="#lim-section" data-section="lim-section">⚠️ Limitations</a></li>
+        <li><a href="#activity-section" data-section="activity-section">🎮 Activity</a></li>
+        <li><a href="#practice-section" data-section="practice-section">✏️ Practice</a></li>
+        <li><a href="#quiz-section" data-section="quiz-section">🧠 Quiz</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- HERO -->
+      <section id="hero-section" class="section-block">
+        <div class="hero">
+          <span class="floating-icon fi1">🖥️</span>
+          <span class="floating-icon fi2">⌨️</span>
+          <span class="floating-icon fi3">🖱️</span>
+          <span class="floating-icon fi4">🖨️</span>
+          <div class="hero-content">
+            <div class="hero-badge">Unit 1 · Class 3 Computer Science</div>
+            <h1>Know Your Computer</h1>
+            <p>Discover how computers work, their amazing advantages, and where they have limits. Let's explore the world of technology together!</p>
+            <svg width="120" height="120" viewBox="0 0 120 120" style="margin:0 auto;display:block">
+              <path id="hero-svg-path" d="M10,60 Q30,20 60,20 Q90,20 110,60 Q90,100 60,100 Q30,100 10,60 Z" stroke="#fff" stroke-width="3" fill="none"/>
+              <text x="60" y="68" text-anchor="middle" font-size="36" fill="white">💻</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEARNING OBJECTIVES -->
+      <section id="obj-section" class="section-block">
+        <div class="section-header sh-blue">
+          <span class="icon">🎯</span>
+          <h2>Learning Objectives</h2>
+        </div>
+        <div class="container">
+          <div class="intro-grid">
+            <div class="intro-card">
+              <div class="intro-icon">⚙️</div>
+              <div>
+                <h3>Input-Process-Output</h3>
+                <p>Understand how computers work using the IPO cycle — the foundation of all computing.</p>
+              </div>
+            </div>
+            <div class="intro-card">
+              <div class="intro-icon">⚡</div>
+              <div>
+                <h3>Key Advantages</h3>
+                <p>Learn key advantages like speed, storage, multitasking, and communication abilities.</p>
+              </div>
+            </div>
+            <div class="intro-card">
+              <div class="intro-icon">🚧</div>
+              <div>
+                <h3>Recognize Limitations</h3>
+                <p>Understand what computers cannot do — like thinking independently or working without power.</p>
+              </div>
+            </div>
+            <div class="intro-card">
+              <div class="intro-icon">📝</div>
+              <div>
+                <h3>Apply Through Exercises</h3>
+                <p>Practice with fun interactive activities, drag-and-drop, and a full quiz at the end!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT IS A COMPUTER -->
+      <section id="what-section" class="section-block parallax-bg">
+        <div class="section-header sh-yellow">
+          <span class="icon">💻</span>
+          <h2>What is a Computer?</h2>
+        </div>
+        <div class="container parallax-inner">
+          <div class="def-box">
+            <div class="def-title">📖 Definition</div>
+            <p>A <strong>computer</strong> is an <strong>electronic machine</strong> which can do a variety of tasks at the same time. This is the reason why a computer is being used in different areas — at home, in schools, in hospitals, in banks, and much more!</p>
+          </div>
+          <div class="highlight-box">
+            🤔 <strong>Think about it:</strong> Did you know a computer can play music, do your maths homework, send a message to a friend, AND show a movie — all at the same time? That's the magic of multitasking!
+          </div>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-num" data-target="1000000">0</div>
+              <div class="stat-label">Calculations per second 🔢</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" data-target="100">0</div>
+              <div class="stat-label">Tasks simultaneously 📋</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" data-target="24">0</div>
+              <div class="stat-label">Hours it can work non-stop ⏰</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW DOES A COMPUTER WORK -->
+      <section id="ipo-section" class="section-block">
+        <div class="section-header sh-teal">
+          <span class="icon">⚙️</span>
+          <h2>How Does a Computer Work?</h2>
+        </div>
+        <div class="container">
+          <div class="highlight-box">
+            A computer is an electronic machine that takes <strong>data (instructions) as input</strong>, <strong>processes it</strong>, and provides the result as <strong>output</strong>. Computers follow the <strong>"Input → Process → Output"</strong> cycle.
+          </div>
+
+          <!-- IPO FLOW -->
+          <div class="ipo-flow">
+            <div class="ipo-box input">
+              <div class="ipo-icon">⌨️</div>
+              <h3 style="color:#0abde3">INPUT</h3>
+              <p>You enter data and instructions using <strong>input devices</strong> like keyboard or mouse. Instructions tell the computer what to do with the data.</p>
+            </div>
+            <div class="ipo-arrow">➡️</div>
+            <div class="ipo-box process">
+              <div class="ipo-icon">🧠</div>
+              <h3 style="color:#f0932b">PROCESSING</h3>
+              <p>The computer processes the input data with the help of its <strong>CPU (Central Processing Unit)</strong> — the brain of the computer — which executes instructions and performs calculations.</p>
+            </div>
+            <div class="ipo-arrow">➡️</div>
+            <div class="ipo-box output">
+              <div class="ipo-icon">🖥️</div>
+              <h3 style="color:#ee5a24">OUTPUT</h3>
+              <p>After processing, the computer gives the result on <strong>output devices</strong> like monitor/LCD or printer.</p>
+            </div>
+          </div>
+
+          <!-- EXAMPLES -->
+          <div class="ipo-example">
+            <h3>🍞 Real-World Example: Making Dough</h3>
+            <div class="example-row">
+              <div class="example-step">
+                <div class="emoji">🌾</div>
+                <div class="label">Input</div>
+                <div class="name">Flour</div>
+              </div>
+              <div class="example-arrow">➡️</div>
+              <div class="example-step">
+                <div class="emoji">👐</div>
+                <div class="label">Process</div>
+                <div class="name">Knead</div>
+              </div>
+              <div class="example-arrow">➡️</div>
+              <div class="example-step">
+                <div class="emoji">🥖</div>
+                <div class="label">Output</div>
+                <div class="name">Dough</div>
+              </div>
+            </div>
+            <h3 style="text-align:center;font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;margin:20px 0 16px;color:#333">🔢 Computer Example: Adding Numbers</h3>
+            <div class="example-row">
+              <div class="example-step">
+                <div class="emoji">📝</div>
+                <div class="label">Input</div>
+                <div class="name">5 + 10</div>
+              </div>
+              <div class="example-arrow">➡️</div>
+              <div class="example-step">
+                <div class="emoji">⚙️</div>
+                <div class="label">Process</div>
+                <div class="name">CPU Adds</div>
+              </div>
+              <div class="example-arrow">➡️</div>
+              <div class="example-step">
+                <div class="emoji">✅</div>
+                <div class="label">Output</div>
+                <div class="name">15</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gap"></div>
+
+          <!-- MERMAID FLOWCHART -->
+          <div class="mermaid-wrap">
+            <h3>📊 IPO Cycle Diagram</h3>
+            <div class="mermaid">
+graph LR
+    A["⌨️ INPUT\nKeyboard / Mouse\nData & Instructions"] --> B["🧠 PROCESSING\nCPU - Brain of Computer\nExecutes & Calculates"]
+    B --> C["🖥️ OUTPUT\nMonitor / Printer\nResults Displayed"]
+    style A fill:#48DBFB,stroke:#0abde3,color:#fff,rx:12
+    style B fill:#F9CA24,stroke:#f0932b,color:#333,rx:12
+    style C fill:#FF6B6B,stroke:#ee5a24,color:#fff,rx:12
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADVANTAGES -->
+      <section id="adv-section" class="section-block parallax-bg">
+        <div class="section-header sh-green">
+          <span class="icon">✅</span>
+          <h2>Advantages of a Computer</h2>
+        </div>
+        <div class="container parallax-inner">
+          <div class="adv-grid">
+            <div class="adv-card">
+              <div class="adv-icon">⚡</div>
+              <h3>Works Fast</h3>
+              <p>Computers perform tasks like calculations or writing <strong>faster than humans</strong>. What takes us hours, a computer can do in seconds!</p>
+            </div>
+            <div class="adv-card">
+              <div class="adv-icon">💾</div>
+              <h3>Stores Information</h3>
+              <p>Computers can <strong>store a lot of files, pictures, and videos</strong> — millions of documents in a tiny space!</p>
+            </div>
+            <div class="adv-card">
+              <div class="adv-icon">📚</div>
+              <h3>Helps in Learning</h3>
+              <p>Computers <strong>help students learn new subjects and skills</strong> through videos, interactive lessons, and online resources.</p>
+            </div>
+            <div class="adv-card">
+              <div class="adv-icon">🔄</div>
+              <h3>Performs Multiple Tasks</h3>
+              <p>Computers can <strong>perform many tasks at the same time</strong> — like playing games, typing, and browsing the internet simultaneously!</p>
+            </div>
+            <div class="adv-card">
+              <div class="adv-icon">📧</div>
+              <h3>Helps in Communication</h3>
+              <p>Computers allow us to <strong>send and receive emails</strong>, making communication faster and easier across the world.</p>
+            </div>
+            <div class="adv-card">
+              <div class="adv-icon">🎯</div>
+              <h3>Accurate</h3>
+              <p>Computers can <strong>perform all calculations accurately</strong> without making mistakes, as long as correct data is given.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIMITATIONS -->
+      <section id="lim-section" class="section-block">
+        <div class="section-header sh-coral">
+          <span class="icon">⚠️</span>
+          <h2>Limitations of a Computer</h2>
+        </div>
+        <div class="container">
+          <div class="highlight-box">
+            Even though computers are very powerful, they have some <strong>important limitations</strong>. Understanding these helps us use computers wisely!
+          </div>
+          <div class="lim-grid">
+            <div class="lim-card">
+              <div class="lim-icon">📋</div>
+              <div>
+                <h3>Needs Instructions</h3>
+                <p>A computer <strong>cannot work on its own</strong>. It needs instructions from a user to do any task.</p>
+              </div>
+            </div>
+            <div class="lim-card">
+              <div class="lim-icon">⚡</div>
+              <div>
+                <h3>Needs Electricity</h3>
+                <p>A computer <strong>only works when it has power</strong>. Without electricity, it cannot function at all.</p>
+              </div>
+            </div>
+            <div class="lim-card">
+              <div class="lim-icon">🤔</div>
+              <div>
+                <h3>Cannot Think</h3>
+                <p>Computers <strong>cannot make decisions or solve problems on their own</strong> without human guidance or programming.</p>
+              </div>
+            </div>
+            <div class="lim-card">
+              <div class="lim-icon">🔧</div>
+              <div>
+                <h3>Requires Maintenance</h3>
+                <p>Computers need <strong>regular updates and maintenance</strong> to function properly and stay secure.</p>
+              </div>
+            </div>
+            <div class="lim-card" style="grid-column:span 2">
+              <div class="lim-icon">🔒</div>
+              <div>
+                <h3>Limited by Programming</h3>
+                <p>A computer can only do <strong>what it is programmed to do</strong>. It cannot perform tasks outside its programming — it has no creativity of its own.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY SECTION -->
+      <section id="activity-section" class="section-block">
+        <div class="section-header sh-purple">
+          <span class="icon">🎮</span>
+          <h2>Interactive Activity</h2>
+        </div>
+        <div class="container">
+
+          <!-- TICK ACTIVITY -->
+          <div class="activity-section" style="margin-bottom:32px">
+            <div class="activity-title">✅ Activity 1: What Can You Do on a Computer?</div>
+            <div class="activity-subtitle">Click on all the tasks you CAN do on a computer. Be careful — one option is a trick!</div>
+            <div class="tick-grid" id="tickGrid">
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">🎮 Play Games</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">🎨 Draw and Colour</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">📝 Type Letters</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">📚 Learn About Various Subjects</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">🎬 Watch Movies</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">📧 Send and Receive E-mails</span>
+              </div>
+              <div class="tick-item" data-correct="true" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">📁 Store Files</span>
+              </div>
+              <div class="tick-item" data-correct="false" onclick="toggleTick(this)">
+                <div class="tick-checkbox"></div>
+                <span class="tick-label">🍳 Make Food</span>
+              </div>
+            </div>
+            <button class="dnd-btn" onclick="checkTick()" style="margin-top:20px">Check My Answers 🔍</button>
+            <div class="feedback" id="tickFeedback"></div>
+          </div>
+
+          <!-- DRAG AND DROP -->
+          <div class="dnd-section">
+            <div class="dnd-title">🏷️ Activity 2: Classify the Devices</div>
+            <div class="dnd-subtitle">Drag each device to the correct category — Input, Processing, or Output.</div>
+            <div class="dnd-labels" id="dndLabels">
+              <div class="dnd-label" draggable="true" data-device="Keyboard" data-type="Input">⌨️ Keyboard</div>
+              <div class="dnd-label" draggable="true" data-device="Mouse" data-type="Input">🖱️ Mouse</div>
+              <div class="dnd-label" draggable="true" data-device="CPU" data-type="Processing">🧠 CPU</div>
+              <div class="dnd-label" draggable="true" data-device="Monitor/LCD" data-type="Output">🖥️ Monitor/LCD</div>
+              <div class="dnd-label" draggable="true" data-device="Printer" data-type="Output">🖨️ Printer</div>
+              <div class="dnd-label" draggable="true" data-device="Microphone" data-type="Input">🎤 Microphone</div>
+            </div>
+            <div class="dnd-targets">
+              <div class="dnd-target" data-type="Input">
+                <div class="dnd-target-title">⌨️ Input Devices</div>
+                <div class="dnd-target-desc">Devices used to enter data</div>
+              </div>
+              <div class="dnd-target" data-type="Processing">
+                <div class="dnd-target-title">🧠 Processing Unit</div>
+                <div class="dnd-target-desc">Processes data and instructions</div>
+              </div>
+              <div class="dnd-target" data-type="Output">
+                <div class="dnd-target-title" style="grid-column:span 1">🖥️ Output Devices</div>
+                <div class="dnd-target-desc">Devices that show results</div>
+              </div>
+              <div class="dnd-target" data-type="reset" style="border-style:solid;border-color:#ddd;background:#fafafa">
+                <div class="dnd-target-title">🔄 Reset Zone</div>
+                <div class="dnd-target-desc">Drop here to remove</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button class="dnd-btn" onclick="checkDnd()">Check Answers ✅</button>
+              <button class="dnd-btn" onclick="resetDnd()" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24)">Reset 🔄</button>
+            </div>
+            <div class="feedback" id="dndFeedback"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRACTICE SECTION -->
+      <section id="practice-section" class="section-block">
+        <div class="section-header sh-blue">
+          <span class="icon">✏️</span>
+          <h2>Practice Exercises</h2>
+        </div>
+        <div class="container">
+
+          <!-- FILL IN BLANKS -->
+          <div class="fib-section" style="margin-bottom:32px">
+            <div class="fib-title">Exercise 1: Fill in the Blanks</div>
+            <div class="fib-item">
+              <div class="fib-num">1</div>
+              <span>A computer works by following the</span>
+              <input class="fib-input" type="text" placeholder="...instructions..." data-answer="instructions" id="fib1">
+              <span>given by the user.</span>
+            </div>
+            <div class="fib-item">
+              <div class="fib-num">2</div>
+              <span>After the data is processed, the computer gives the result on</span>
+              <input class="fib-input" type="text" placeholder="...output..." data-answer="output" id="fib2">
+              <span>devices.</span>
+            </div>
+            <div class="fib-item">
+              <div class="fib-num">3</div>
+              <span>Computers can store a large amount of</span>
+              <input class="fib-input" type="text" placeholder="...information..." data-answer="information" id="fib3">
+              <span>.</span>
+            </div>
+            <div class="fib-item">
+              <div class="fib-num">4</div>
+              <span>The processing unit of a computer is called the</span>
+              <input class="fib-input" type="text" placeholder="...CPU..." data-answer="cpu" id="fib4">
+              <span>.</span>
+            </div>
+            <div class="fib-item">
+              <div class="fib-num">5</div>
+              <span>A computer can only work when it has</span>
+              <input class="fib-input" type="text" placeholder="...electricity..." data-answer="electricity" id="fib5">
+              <span>.</span>
+            </div>
+            <div class="fib-item">
+              <div class="fib-num">6</div>
+              <span>To enter data into the computer, we use</span>
+              <input class="fib-input" type="text" placeholder="...input..." data-answer="input" id="fib6">
+              <span>devices like a keyboard.</span>
+            </div>
+            <button class="fib-btn" onclick="checkFib()">Check Answers 🔍</button>
+            <div class="feedback" id="fibFeedback"></div>
+          </div>
+
+          <!-- TRUE OR FALSE -->
+          <div class="quiz-section">
+            <div class="fib-title" style="margin-bottom:20px">Exercise 2: True or False</div>
+            <div id="tfExercise">
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">A computer can work without any instructions.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'False',0)" data-correct="False">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'False',0)" data-correct="False">FALSE</button>
+                </div>
+              </div>
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">A computer can process and show results on output devices like a monitor.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'True',1)" data-correct="True">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'True',1)" data-correct="True">FALSE</button>
+                </div>
+              </div>
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">You can draw and colour using a computer.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'True',2)" data-correct="True">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'True',2)" data-correct="True">FALSE</button>
+                </div>
+              </div>
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">A computer can work even if there is no electricity.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'False',3)" data-correct="False">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'False',3)" data-correct="False">FALSE</button>
+                </div>
+              </div>
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">Computers work faster than humans when doing tasks like calculations.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'True',4)" data-correct="True">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'True',4)" data-correct="True">FALSE</button>
+                </div>
+              </div>
+              <div class="question-card" style="margin-bottom:16px">
+                <div class="question-text">Computers are used in only one field of work.</div>
+                <div class="tf-options">
+                  <button class="tf-btn" onclick="checkTF(this,'False',5)" data-correct="False">TRUE</button>
+                  <button class="tf-btn" onclick="checkTF(this,'False',5)" data-correct="False">FALSE</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUIZ SECTION -->
+      <section id="quiz-section" class="section-block">
+        <div class="section-header sh-coral">
+          <span class="icon">🧠</span>
+          <h2>Final Quiz</h2>
+        </div>
+        <div class="container">
+          <div class="quiz-section">
+            <div class="quiz-header">
+              <div class="quiz-title">Test Your Knowledge!</div>
+              <div class="quiz-progress" id="quizProgress">Question 1 of 8</div>
+            </div>
+            <div id="quizContainer">
+              <!-- Questions rendered by JS -->
+            </div>
+            <div class="quiz-nav">
+              <button class="quiz-btn prev" onclick="prevQuestion()" id="prevBtn" style="display:none">← Previous</button>
+              <button class="quiz-btn next" onclick="nextQuestion()" id="nextBtn">Next →</button>
+              <button class="quiz-btn submit" onclick="submitQuiz()" id="submitBtn" style="display:none">Submit Quiz 🎯</button>
+            </div>
+            <!-- SCORE CARD -->
+            <div class="score-card" id="scoreCard">
+              <div class="score-emoji" id="scoreEmoji">🎉</div>
+              <div class="score-circle-wrap">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                  <defs>
+                    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style="stop-color:#48DBFB"/>
+                      <stop offset="100%" style="stop-color:#1ABC9C"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="score-circle-bg" cx="100" cy="100" r="88"/>
+                  <circle class="score-circle-progress" id="scoreCircle" cx="100" cy="100" r="88" stroke-dasharray="553" stroke-dashoffset="553"/>
+                </svg>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
+                  <div class="score-num" id="scoreNum">0/8</div>
+                  <div class="score-label">Your Score</div>
+                </div>
+              </div>
+              <div class="score-message" id="scoreMsg">Great job!</div>
+              <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz 🔄</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="gap"></div>
+    </main>
+  </div>
+</div>
+
+<!-- SCROLL DOTS (desktop) -->
+<div class="scroll-indicator" id="scrollDots">
+  <div class="scroll-dot active" onclick="scrollToSection('hero-section')" title="Intro"></div>
+  <div class="scroll-dot" onclick="scrollToSection('what-section')" title="What is Computer"></div>
+  <div class="scroll-dot" onclick="scrollToSection('ipo-section')" title="How it Works"></div>
+  <div class="scroll-dot" onclick="scrollToSection('adv-section')" title="Advantages"></div>
+  <div class="scroll-dot" onclick="scrollToSection('lim-section')" title="Limitations"></div>
+  <div class="scroll-dot" onclick="scrollToSection('activity-section')" title="Activity"></div>
+  <div class="scroll-dot" onclick="scrollToSection('practice-section')" title="Practice"></div>
+  <div class="scroll-dot" onclick="scrollToSection('quiz-section')" title="Quiz"></div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="mobile-bottom-nav-inner">
+    <a href="#hero-section" onclick="smoothScrollTo('hero-section')"><span class="nav-icon">🏠</span>Intro</a>
+    <a href="#what-section" onclick="smoothScrollTo('what-section')"><span class="nav-icon">💻</span>Computer</a>
+    <a href="#ipo-section" onclick="smoothScrollTo('ipo-section')"><span class="nav-icon">⚙️</span>IPO</a>
+    <a href="#adv-section" onclick="smoothScrollTo('adv-section')"><span class="nav-icon">✅</span>Advantages</a>
+    <a href="#lim-section" onclick="smoothScrollTo('lim-section')"><span class="nav-icon">⚠️</span>Limits</a>
+    <a href="#activity-section" onclick="smoothScrollTo('activity-section')"><span class="nav-icon">🎮</span>Activity</a>
+    <a href="#practice-section" onclick="smoothScrollTo('practice-section')"><span class="nav-icon">✏️</span>Practice</a>
+    <a href="#quiz-section" onclick="smoothScrollTo('quiz-section')"><span class="nav-icon">🧠</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid error:', e); }
+
+  // LENIS SMOOTH SCROLL
+  let lenis = null;
+  try {
+    if (typeof Lenis !== 'undefined') {
+      lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // GSAP INIT
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // HERO SVG PATH ANIMATION
+      gsap.to('#hero-svg-path', {
+        strokeDashoffset: 0,
+        duration: 2,
+        ease: 'power2.inOut'
+      });
+
+      // CURTAIN DISMISS
+      gsap.to('#curtain', {
+        opacity: 0,
+        duration: 0.6,
+        delay: 2.2,
+        onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+
+      // CARDS SCROLL ANIMATION
+      gsap.utils.toArray('.adv-card, .lim-card, .intro-card, .stat-card').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          delay: i * 0.08,
+          ease: 'power2.out'
+        });
+      });
+
+      // PARALLAX
+      gsap.utils.toArray('.parallax-inner').forEach(el => {
+        gsap.to(el, {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el.closest('.parallax-bg') || el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
+      });
+
+      // IPO BOX REVEALS
+      gsap.utils.toArray('.ipo-box').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          x: i === 0 ? -40 : i === 2 ? 40 : 0,
+          y: i === 1 ? -20 : 0,
+          opacity: 0,
+          duration: 0.7,
+          delay: i * 0.15,
+          ease: 'back.out(1.2)'
+        });
+      });
+
+      // FLOATING ICONS
+      gsap.utils.toArray('.floating-icon').forEach((el, i) => {
+        gsap.to(el, {
+          y: -25,
+          duration: 2 + i * 0.5,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: i * 0.4
+        });
+      });
+
+      // NUMBER COUNTERS
+      document.querySelectorAll('.stat-num').forEach(el => {
+        const target = parseInt(el.dataset.target) || 0;
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 90%',
+          once: true,
+          onEnter: () => {
+            gsap.to({ val: 0 }, {
+              val: target,
+              duration: 2,
+              ease: 'power1.out',
+              onUpdate: function() {
+                el.textContent = Math.round(this.targets()[0].val).toLocaleString();
+              }
+            });
+          }
+        });
+      });
+
+    } else {
+      // No GSAP — dismiss curtain with plain JS
+      setTimeout(() => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }, 2500);
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // PROGRESS BAR
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+    const bar = document.getElementById('progressBar');
+    if (bar) bar.style.width = pct + '%';
+  });
+
+  // INTERSECTION OBSERVER FOR SIDEBAR + SCROLL DOTS
+  const sections = ['hero-section','what-section','ipo-section','adv-section','lim-section','activity-section','practice-section','quiz-section'];
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+  const scrollDots = document.querySelectorAll('.scroll-dot');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sidebarLinks.forEach(a => {
+          a.classList.toggle('active', a.dataset.section === id);
+        });
+        const idx = sections.indexOf(id);
+        scrollDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+
+  // QUIZ SETUP
+  initQuiz();
+
+  // DND SETUP
+  initDnd();
+
+});
+
+// SMOOTH SCROLL
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+function smoothScrollTo(id) {
+  event.preventDefault();
+  scrollToSection(id);
+}
+
+// TICK ACTIVITY
+function toggleTick(el) {
+  el.classList.toggle('ticked');
+  el.querySelector('.tick-checkbox').textContent = el.classList.contains('ticked') ? '✓' : '';
+  document.getElementById('tickFeedback').classList.remove('show');
+  el.classList.remove('wrong-tick');
+}
+
+function checkTick() {
+  const items = document.querySelectorAll('.tick-item');
+  let correct = 0;
+  items.forEach(item => {
+    const shouldBeTicked = item.dataset.correct === 'true';
+    const isTicked = item.classList.contains('ticked');
+    item.classList.remove('wrong-tick');
+    if (shouldBeTicked && isTicked) { correct++; }
+    else if (!shouldBeTicked && isTicked) {
+      item.classList.add('wrong-tick');
+      item.querySelector('.tick-checkbox').textContent = '✗';
+    } else if (shouldBeTicked && !isTicked) {
+      // missed
+    }
+  });
+  const fb = document.getElementById('tickFeedback');
+  fb.classList.add('show');
+  if (correct === 7) {
+    fb.className = 'feedback show good';
+    fb.textContent = '🎉 Perfect! You correctly identified all 7 tasks a computer can do! "Make Food" is not something a computer can do directly!';
+  } else {
+    fb.className = 'feedback show bad';
+    fb.textContent = `You got ${correct} out of 7 correct. Remember, "Make Food" is NOT a computer task!`;
+  }
+}
+
+// DND
+function initDnd() {
+  const labels = document.querySelectorAll('.dnd-label');
+  const targets = document.querySelectorAll('.dnd-target');
+  let dragged = null;
+
+  labels.forEach(label => {
+    label.addEventListener('dragstart', e => {
+      dragged = label;
+      setTimeout(() => label.classList.add('dragging'), 0);
+    });
+    label.addEventListener('dragend', () => {
+      label.classList.remove('dragging');
+    });
+  });
+
+  targets.forEach(target => {
+    target.addEventListener('dragover', e => {
+      e.preventDefault();
+      target.classList.add('over');
+    });
+    target.addEventListener('dragleave', () => {
+      target.classList.remove('over');
+    });
+    target.addEventListener('drop', e => {
+      e.preventDefault();
+      target.classList.remove('over');
+      if (!dragged) return;
+      const ttype = target.dataset.type;
+      if (ttype === 'reset') {
+        const bank = document.getElementById('dndLabels');
+        bank.appendChild(dragged);
+        dragged.style.opacity = '1';
+      } else {
+        target.appendChild(dragged);
+        dragged.style.opacity = '1';
+      }
+      document.getElementById('dndFeedback').classList.remove('show');
+    });
+  });
+}
+
+function checkDnd() {
+  const targets = document.querySelectorAll('.dnd-target[data-type]');
+  let allCorrect = true;
+  let placed = 0;
+  targets.forEach(target => {
+    const ttype = target.dataset.type;
+    if (ttype === 'reset') return;
+    const dropped = target.querySelectorAll('.dnd-label');
+    dropped.forEach(lbl => {
+      placed++;
+      const ltype = lbl.dataset.type;
+      if (ltype === ttype) {
+        target.classList.add('correct');
+        target.classList.remove('wrong');
+      } else {
+        target.classList.add('wrong');
+        target.classList.remove('correct');
+        allCorrect = false;
+      }
+    });
+  });
+  const fb = document.getElementById('dndFeedback');
+  fb.classList.add('show');
+  if (placed === 0) {
+    fb.className = 'feedback show bad';
+    fb.textContent = '⚠️ Please drag some devices into the categories first!';
+  } else if (allCorrect && placed >= 4) {
+    fb.className = 'feedback show good';
+    fb.textContent = '🎉 Excellent! All devices correctly classified! Keyboard & Mouse & Microphone = Input | CPU = Processing | Monitor & Printer = Output!';
+  } else {
+    fb.className = 'feedback show bad';
+    fb.textContent = '🤔 Some devices are in wrong places. Keyboard/Mouse/Microphone → Input | CPU → Processing | Monitor/Printer → Output. Try again!';
+  }
+}
+
+function resetDnd() {
+  const bank = document.getElementById('dndLabels');
+  document.querySelectorAll('.dnd-label').forEach(lbl => {
+    bank.appendChild(lbl);
+    lbl.style.opacity = '1';
+  });
+  document.querySelectorAll('.dnd-target').forEach(t => {
+    t.classList.remove('correct','wrong','over');
+  });
+  const fb = document.getElementById('dndFeedback');
+  fb.classList.remove('show');
+}
+
+// TRUE/FALSE EXERCISE
+const tfAnswered = {};
+function checkTF(btn, correctAnswer, idx) {
+  if (tfAnswered[idx]) return;
+  tfAnswered[idx] = true;
+  const container = btn.closest('.tf-options');
+  const buttons = container.querySelectorAll('.tf-btn');
+  const clickedText = btn.textContent.trim();
+  const isCorrect = clickedText === correctAnswer;
+  buttons.forEach(b => {
+    if (b.textContent.trim() === correctAnswer) b.classList.add('correct');
+    else if (b === btn && !isCorrect) b.classList.add('wrong');
+  });
+}
+
+// FILL IN BLANKS
+function checkFib() {
+  const fields = document.querySelectorAll('.fib-input');
+  let correct = 0;
+  fields.forEach(f => {
+    f.classList.remove('correct-ans','wrong-ans');
+    const ans = f.value.trim().toLowerCase();
+    const exp = f.dataset.answer.toLowerCase();
+    if (ans === exp || ans.includes(exp.substring(0,4))) {
+      f.classList.add('correct-ans');
+      correct++;
+    } else {
+      f.classList.add('wrong-ans');
+    }
+  });
+  const fb = document.getElementById('fibFeedback');
+  fb.classList.add('show');
+  if (correct === fields.length) {
+    fb.className = 'feedback show good';
+    fb.textContent = '🌟 Perfect! All blanks filled correctly!';
+  } else {
+    fb.className = 'feedback show bad';
+    fb.textContent = `You got ${correct} out of ${fields.length} correct. Hints: instructions, output, information, CPU, electricity, input.`;
+  }
+}
+
+// QUIZ DATA
+const quizQuestions = [
+  {
+    type: 'mcq',
+    q: 'What does "IPO" stand for in computing?',
+    options: ['Input-Program-Output','Input-Process-Output','Instruction-Process-Outcome','Input-Power-Output'],
+    correct: 1
+  },
+  {
+    type: 'mcq',
+    q: 'Which device is an example of an INPUT device?',
+    options: ['Monitor','Printer','Keyboard','Speaker'],
+    correct: 2
+  },
+  {
+    type: 'mcq',
+    q: 'What is the "brain" of the computer that processes data?',
+    options: ['RAM','Hard Drive','Monitor','CPU'],
+    correct: 3
+  },
+  {
+    type: 'mcq',
+    q: 'Which of the following is an OUTPUT device?',
+    options: ['Keyboard','Mouse','Microphone','Monitor/LCD'],
+    correct: 3
+  },
+  {
+    type: 'tf',
+    q: 'A computer can think and make decisions on its own without any human guidance.',
+    correct: 'False'
+  },
+  {
+    type: 'mcq',
+    q: 'Which of the following is a LIMITATION of a computer?',
+    options: ['Works fast','Stores information','Needs electricity to work','Helps in communication'],
+    correct: 2
+  },
+  {
+    type: 'tf',
+    q: 'Computers can perform multiple tasks at the same time, like playing music and typing a document.',
+    correct: 'True'
+  },
+  {
+    type: 'mcq',
+    q: 'In the example "Flour → Knead → Dough", what does "Knead" represent in the IPO cycle?',
+    options: ['Input','Output','Processing','Storage'],
+    correct: 2
+  }
+];
+
+let currentQ = 0;
+let answers = new Array(quizQuestions.length).fill(null);
+let quizSubmitted = false;
+
+function initQuiz() {
+  renderQuestion(0);
+}
+
+function renderQuestion(idx) {
+  const q = quizQuestions[idx];
+  const container = document.getElementById('quizContainer');
+  document.getElementById('quizProgress').textContent = `Question ${idx+1} of ${quizQuestions.length}`;
+  document.getElementById('prevBtn').style.display = idx > 0 ? 'block' : 'none';
+  document.getElementById('nextBtn').style.display = idx < quizQuestions.length - 1 ? 'block' : 'none';
+  document.getElementById('submitBtn').style.display = idx === quizQuestions.length - 1 ? 'block' : 'none';
+
+  let html = `<div class="question-card">
+    <div class="question-num">Question ${idx+1} of ${quizQuestions.length} ${q.type === 'tf' ? '<span class="badge yellow">True/False</span>' : '<span class="badge">MCQ</span>'}</div>
+    <div class="question-text">${q.q}</div>`;
+
+  if (q.type === 'mcq') {
+    html += `<div class="options">`;
+    const letters = ['A','B','C','D'];
+    q.options.forEach((opt, i) => {
+      let cls = '';
+      if (quizSubmitted) {
+        if (i === q.correct) cls = 'correct';
+        else if (answers[idx] === i && i !== q.correct) cls = 'wrong';
+      } else if (answers[idx] === i) cls = 'selected';
+      html += `<div class="option ${cls}" onclick="selectAnswer(${idx},${i})" style="${quizSubmitted?'pointer-events:none':''}">
+        <div class="option-letter">${letters[i]}</div>${opt}
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="tf-options">`;
+    ['True','False'].forEach(val => {
+      let cls = '';
+      if (quizSubmitted) {
+        if (val === q.correct) cls = 'correct';
+        else if (answers[idx] === val && val !== q.correct) cls = 'wrong';
+      } else if (answers[idx] === val) cls = 'selected';
+      html += `<button class="tf-btn ${cls}" onclick="selectTFAnswer(${idx},'${val}')" style="${quizSubmitted?'pointer-events:none':''}">${val.toUpperCase()}</button>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function selectAnswer(qIdx, optIdx) {
+  if (quizSubmitted) return;
+  answers[qIdx] = optIdx;
+  renderQuestion(qIdx);
+}
+
+function selectTFAnswer(qIdx, val) {
+  if (quizSubmitted) return;
+  answers[qIdx] = val;
+  renderQuestion(qIdx);
+}
+
+function nextQuestion() {
+  if (currentQ < quizQuestions.length - 1) {
+    currentQ++;
+    renderQuestion(currentQ);
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion(currentQ);
+  }
+}
+
+function submitQuiz() {
+  quizSubmitted = true;
+  let score = 0;
+  quizQuestions.forEach((q, i) => {
+    if (q.type === 'mcq' && answers[i] === q.correct) score++;
+    else if (q.type === 'tf' && answers[i] === q.correct) score++;
+  });
+  renderQuestion(currentQ);
+  document.getElementById('quizContainer').style.display = 'none';
+  document.querySelectorAll('.quiz-nav button').forEach(b => b.style.display = 'none');
+  const sc = document.getElementById('scoreCard');
+  sc.classList.add('show');
+  const pct = score / quizQuestions.length;
+  const circumference = 553;
+  const offset = circumference - (circumference * pct);
+  document.getElementById('scoreCircle').style.strokeDashoffset = offset;
+  document.getElementById('scoreNum').textContent = `${score}/${quizQuestions.length}`;
+  let msg = '', emoji = '';
+  if (score === quizQuestions.length) { msg = "Perfect Score! You're a Computer Expert! 🏆"; emoji = "🌟"; }
+  else if (score >= 6) { msg = "Excellent work! Almost there! 🎉"; emoji = "😄"; }
+  else if (score >= 4) { msg = "Good job! Keep practising! 💪"; emoji = "😊"; }
+  else { msg = "Keep learning! Review the lesson again. 📚"; emoji = "🤓"; }
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('scoreEmoji').textContent = emoji;
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('#scoreCard', { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
+    }
+  } catch(e) {}
+}
+
+function retakeQuiz() {
+  quizSubmitted = false;
+  currentQ = 0;
+  answers = new Array(quizQuestions.length).fill(null);
+  document.getElementById('quizContainer').style.display = 'block';
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('prevBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'block';
+  renderQuestion(0);
+}
+</script>
+</body>
+</html>

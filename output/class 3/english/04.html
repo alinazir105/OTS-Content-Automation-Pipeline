@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demonstratives | Class 3 English | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sunshine: #F9CA24;
+    --sky: #48DBFB;
+    --coral: #FF6B6B;
+    --lightgray: #F8F9FA;
+    --white: #ffffff;
+    --dark: #2d3436;
+    --mid: #636e72;
+    --green: #6BCB77;
+    --purple: #9B59B6;
+    --sidebar-w: 260px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    background: var(--lightgray);
+    color: var(--dark);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #FF6B6B, #F9CA24);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+  }
+  #curtain h2 { color: white; font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 4vw, 2.5rem); }
+  .curtain-dots { display: flex; gap: 12px; }
+  .curtain-dot {
+    width: 14px; height: 14px; border-radius: 50%; background: white;
+    animation: bounce 0.8s infinite alternate;
+  }
+  .curtain-dot:nth-child(2) { animation-delay: 0.2s; }
+  .curtain-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { from { transform: translateY(0); opacity:0.5; } to { transform: translateY(-12px); opacity:1; } }
+
+  /* PROGRESS TRACKER */
+  .progress-bar-top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .breadcrumb-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500;
+    color: var(--mid); cursor: pointer; transition: color 0.3s;
+    padding: 4px 8px; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .breadcrumb-item.active { color: var(--coral); background: #fff0f0; }
+  .breadcrumb-item span.dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--mid); display: inline-block;
+  }
+  .breadcrumb-item.active span.dot { background: var(--coral); }
+  .breadcrumb-sep { color: var(--mid); font-size: 13px; }
+  .progress-fill-bar {
+    position: absolute; bottom: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--coral), var(--sunshine));
+    transition: width 0.3s;
+  }
+
+  /* LAYOUT */
+  .page-wrapper {
+    width: 100%;
+    display: flex;
+    padding-top: 56px;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.06);
+    padding: 24px 16px;
+    z-index: 100;
+  }
+  .sidebar h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: var(--mid); text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 16px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    cursor: pointer; transition: all 0.3s;
+    font-size: 15px; font-weight: 500; color: var(--dark);
+    margin-bottom: 4px; text-decoration: none;
+  }
+  .toc-item:hover { background: var(--lightgray); color: var(--coral); }
+  .toc-item.active { background: #fff0f0; color: var(--coral); font-weight: 700; }
+  .toc-item .toc-icon { font-size: 18px; }
+
+  /* MAIN CONTENT */
+  .main-content { flex: 1; min-width: 0; }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    background: linear-gradient(135deg, #FF6B6B 0%, #F9CA24 50%, #48DBFB 100%);
+    min-height: 70vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 60px 40px;
+  }
+  .hero-content {
+    text-align: center; color: white; position: relative; z-index: 2;
+    max-width: 800px; margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 30px; padding: 6px 20px;
+    font-size: 15px; font-weight: 600; margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 16px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .hero p {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    opacity: 0.95; line-height: 1.6; margin-bottom: 30px;
+  }
+  .hero-svg {
+    position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+    pointer-events: none; opacity: 0.15;
+  }
+  .hero-bubbles { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+  .bubble {
+    position: absolute; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    animation: floatBubble 6s infinite ease-in-out;
+  }
+  @keyframes floatBubble {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    width: 100%;
+    padding: 28px 40px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-header.coral { background: var(--coral); }
+  .section-header.sky { background: #00b8d4; }
+  .section-header.sunshine { background: #e6b800; color: var(--dark); }
+  .section-header.green { background: #27ae60; }
+  .section-header.purple { background: var(--purple); }
+  .section-header.dark { background: #2d3436; }
+
+  /* SECTIONS */
+  section {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  .section-inner {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 40px;
+  }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 28px;
+    width: 100%;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* CONCEPT GRID */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 30px;
+  }
+  .concept-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 28px;
+    border-top: 5px solid var(--coral);
+    position: relative;
+    overflow: hidden;
+    opacity: 1; transform: none;
+  }
+  .concept-card.sky-border { border-top-color: #00b8d4; }
+  .concept-card.sunshine-border { border-top-color: var(--sunshine); }
+  .concept-card.green-border { border-top-color: var(--green); }
+  .concept-card .emoji-big { font-size: 48px; margin-bottom: 12px; display: block; }
+  .concept-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 700; margin-bottom: 8px;
+  }
+  .concept-card p { font-size: 18px; color: var(--mid); line-height: 1.6; }
+  .demo-word {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--coral), #ff8e53);
+    color: white; border-radius: 8px;
+    padding: 4px 14px; font-weight: 700;
+    font-size: 20px; margin-right: 6px;
+  }
+  .demo-word.sky { background: linear-gradient(135deg, #00b8d4, #48DBFB); }
+  .demo-word.sun { background: linear-gradient(135deg, #e6b800, #F9CA24); color: var(--dark); }
+  .demo-word.green { background: linear-gradient(135deg, #27ae60, #6BCB77); }
+
+  /* NEAR/FAR VISUAL */
+  .near-far-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 40px;
+    margin-top: 30px;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    min-height: 300px;
+    position: relative;
+  }
+  .near-zone, .far-zone {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; padding: 30px 20px;
+    border-radius: 12px; text-align: center;
+  }
+  .near-zone { background: linear-gradient(135deg, #fff0f0, #ffe4e4); border: 3px solid var(--coral); margin-right: 16px; }
+  .far-zone { background: linear-gradient(135deg, #e8f9ff, #c8f0fb); border: 3px solid #00b8d4; }
+  .zone-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+  }
+  .near-zone .zone-label { color: var(--coral); }
+  .far-zone .zone-label { color: #00b8d4; }
+  .zone-words { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .zone-word {
+    padding: 8px 18px; border-radius: 20px;
+    font-weight: 700; font-size: 18px;
+  }
+  .near-zone .zone-word { background: var(--coral); color: white; }
+  .far-zone .zone-word { background: #00b8d4; color: white; }
+  .zone-example { font-size: 17px; color: var(--mid); font-style: italic; line-height: 1.5; }
+  .zone-divider {
+    display: flex; align-items: center; justify-content: center;
+    width: 50px; font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  /* TYPE CARDS */
+  .types-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 30px;
+  }
+  .type-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    opacity: 1; transform: none;
+    border-left: 6px solid var(--coral);
+  }
+  .type-card.sky-left { border-left-color: #00b8d4; }
+  .type-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.4rem, 2vw, 1.6rem);
+    font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .type-card p { font-size: 18px; line-height: 1.7; color: var(--mid); margin-bottom: 16px; }
+  .example-list { list-style: none; padding: 0; }
+  .example-list li {
+    font-size: 18px; padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.5;
+  }
+  .example-list li::before { content: '→'; color: var(--coral); font-weight: 700; flex-shrink: 0; }
+  .type-card.sky-left .example-list li::before { color: #00b8d4; }
+
+  /* 4 WORDS TABLE */
+  .four-words {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .word-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 24px 20px;
+    text-align: center;
+    opacity: 1; transform: none;
+    transition: transform 0.3s;
+    cursor: default;
+  }
+  .word-card:hover { transform: translateY(-4px); }
+  .word-card .word-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800; margin-bottom: 8px;
+  }
+  .word-card .word-rule { font-size: 15px; font-weight: 600; color: var(--mid); margin-bottom: 12px; }
+  .word-card .word-example {
+    font-size: 17px; color: var(--dark);
+    font-style: italic; line-height: 1.5;
+  }
+  .word-card.w1 { border-top: 5px solid var(--coral); }
+  .word-card.w1 .word-title { color: var(--coral); }
+  .word-card.w2 { border-top: 5px solid #00b8d4; }
+  .word-card.w2 .word-title { color: #00b8d4; }
+  .word-card.w3 { border-top: 5px solid #27ae60; }
+  .word-card.w3 .word-title { color: #27ae60; }
+  .word-card.w4 { border-top: 5px solid var(--purple); }
+  .word-card.w4 .word-title { color: var(--purple); }
+
+  /* ACTIVITY SECTION */
+  .activity-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 24px;
+    opacity: 1; transform: none;
+  }
+  .activity-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.3rem, 2vw, 1.5rem);
+    font-weight: 700; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .activity-card .activity-desc {
+    font-size: 18px; color: var(--mid); margin-bottom: 20px;
+  }
+
+  /* FILL IN BLANKS */
+  .sentence-list { list-style: none; padding: 0; }
+  .sentence-item {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    padding: 14px 0; border-bottom: 1px solid #f0f0f0;
+    font-size: 18px; line-height: 1.6;
+  }
+  .sentence-item:last-child { border-bottom: none; }
+  .sentence-item .s-num {
+    background: var(--coral); color: white;
+    border-radius: 50%; width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .blank-select {
+    border: 2px solid #ddd; border-radius: 8px;
+    padding: 6px 12px; font-size: 17px;
+    font-family: 'Inter', sans-serif;
+    background: var(--lightgray); cursor: pointer;
+    transition: border-color 0.3s;
+    min-height: 48px;
+  }
+  .blank-select:focus { border-color: var(--coral); outline: none; }
+  .blank-select.correct { border-color: #27ae60; background: #f0fff4; }
+  .blank-select.wrong { border-color: var(--coral); background: #fff0f0; }
+
+  /* CHOOSE CORRECT */
+  .choose-grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .choose-item {
+    background: var(--lightgray);
+    border-radius: 10px; padding: 16px 20px;
+    font-size: 18px; line-height: 1.6;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .choose-item .c-num {
+    background: #00b8d4; color: white;
+    border-radius: 50%; width: 28px; height: 28px; min-width: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .choose-opts {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;
+  }
+  .choose-btn {
+    padding: 8px 18px; border-radius: 20px; border: 2px solid #ddd;
+    background: white; cursor: pointer; font-size: 17px;
+    font-weight: 600; transition: all 0.2s;
+    min-height: 48px;
+    font-family: 'Inter', sans-serif;
+  }
+  .choose-btn:hover { border-color: #00b8d4; color: #00b8d4; }
+  .choose-btn.selected-correct { background: #27ae60; color: white; border-color: #27ae60; }
+  .choose-btn.selected-wrong { background: var(--coral); color: white; border-color: var(--coral); }
+
+  /* CHECK BUTTON */
+  .check-btn {
+    margin-top: 20px;
+    background: linear-gradient(135deg, var(--coral), #ff8e53);
+    color: white; border: none; border-radius: 10px;
+    padding: 14px 32px; font-size: 18px; font-weight: 700;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 52px;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.4); }
+  .check-btn.sky-btn { background: linear-gradient(135deg, #00b8d4, #48DBFB); }
+  .check-btn.sky-btn:hover { box-shadow: 0 6px 20px rgba(72,219,251,0.4); }
+  .result-msg {
+    margin-top: 14px; padding: 14px 20px;
+    border-radius: 10px; font-size: 18px; font-weight: 600;
+    display: none;
+  }
+  .result-msg.show { display: block; }
+  .result-msg.correct-msg { background: #f0fff4; color: #27ae60; border: 2px solid #27ae60; }
+  .result-msg.partial-msg { background: #fffbf0; color: #e6b800; border: 2px solid #e6b800; }
+
+  /* DRAG AND DROP */
+  .dnd-container {
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .dnd-words-pool {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    padding: 20px; background: var(--lightgray);
+    border-radius: 12px; min-height: 70px;
+    border: 2px dashed #ddd;
+  }
+  .dnd-chip {
+    background: white; border: 2px solid var(--coral);
+    color: var(--coral); border-radius: 20px;
+    padding: 8px 20px; font-size: 17px; font-weight: 700;
+    cursor: grab; user-select: none;
+    transition: all 0.2s; min-height: 48px;
+    display: flex; align-items: center;
+  }
+  .dnd-chip:hover { background: var(--coral); color: white; }
+  .dnd-chip.dragging { opacity: 0.5; cursor: grabbing; }
+  .dnd-sentences { display: flex; flex-direction: column; gap: 12px; }
+  .dnd-sentence {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    font-size: 18px; padding: 14px 18px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    line-height: 1.8;
+  }
+  .dnd-drop-zone {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 90px; height: 38px;
+    border: 2px dashed #00b8d4; border-radius: 8px;
+    background: #e8f9ff; padding: 0 10px;
+    font-weight: 700; color: #00b8d4; font-size: 17px;
+    transition: all 0.2s; vertical-align: middle;
+  }
+  .dnd-drop-zone.drag-over { background: #c8f0fb; border-color: #0097b2; }
+  .dnd-drop-zone.filled { background: #f0fff4; border-color: #27ae60; color: #27ae60; border-style: solid; }
+  .dnd-drop-zone.filled-wrong { background: #fff0f0; border-color: var(--coral); color: var(--coral); border-style: solid; }
+
+  /* QUIZ */
+  .quiz-container { display: flex; flex-direction: column; gap: 24px; }
+  .quiz-q {
+    background: white; border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 24px; opacity: 1; transform: none;
+  }
+  .quiz-q-text {
+    font-size: 19px; font-weight: 600;
+    margin-bottom: 16px; line-height: 1.5;
+    display: flex; gap: 12px;
+  }
+  .q-num {
+    background: var(--purple); color: white;
+    border-radius: 8px; padding: 2px 10px;
+    font-size: 15px; font-weight: 700;
+    flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 10px;
+    border: 2px solid #eee; cursor: pointer;
+    font-size: 18px; transition: all 0.2s;
+    background: var(--lightgray); min-height: 52px;
+  }
+  .quiz-opt:hover { border-color: var(--purple); background: #f5eeff; }
+  .quiz-opt.correct { border-color: #27ae60; background: #f0fff4; }
+  .quiz-opt.wrong { border-color: var(--coral); background: #fff0f0; }
+  .quiz-opt.disabled { pointer-events: none; }
+  .opt-letter {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #ddd; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; flex-shrink: 0;
+  }
+  .quiz-opt.correct .opt-letter { background: #27ae60; color: white; }
+  .quiz-opt.wrong .opt-letter { background: var(--coral); color: white; }
+
+  /* SCORE CARD */
+  .score-card {
+    background: white; border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    padding: 40px; text-align: center;
+    display: none;
+  }
+  .score-card.show { display: block; }
+  .score-circle-wrap {
+    position: relative; width: 160px; height: 160px;
+    margin: 0 auto 24px;
+  }
+  .score-svg { width: 160px; height: 160px; transform: rotate(-90deg); }
+  .score-track { fill: none; stroke: #eee; stroke-width: 12; }
+  .score-fill { fill: none; stroke: var(--coral); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s ease; }
+  .score-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 2.5rem;
+    font-weight: 800; color: var(--coral);
+  }
+  .score-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 10px;
+  }
+  .score-card p { font-size: 18px; color: var(--mid); }
+  .score-submit-btn {
+    margin-top: 24px;
+    background: linear-gradient(135deg, var(--purple), #8e44ad);
+    color: white; border: none; border-radius: 10px;
+    padding: 14px 36px; font-size: 18px; font-weight: 700;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    transition: transform 0.2s;
+    min-height: 52px;
+  }
+  .score-submit-btn:hover { transform: translateY(-2px); }
+  .retry-btn {
+    margin-top: 14px; margin-left: 12px;
+    background: white; color: var(--coral);
+    border: 2px solid var(--coral); border-radius: 10px;
+    padding: 14px 36px; font-size: 18px; font-weight: 700;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    transition: all 0.2s; min-height: 52px;
+  }
+  .retry-btn:hover { background: #fff0f0; }
+
+  /* REMEMBER BOX */
+  .remember-box {
+    background: linear-gradient(135deg, #fff9e6, #fff3cc);
+    border: 3px solid var(--sunshine);
+    border-radius: 12px; padding: 24px 28px;
+    margin-top: 30px; display: flex; gap: 16px;
+    align-items: flex-start;
+  }
+  .remember-box .rem-icon { font-size: 36px; flex-shrink: 0; }
+  .remember-box h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px; font-weight: 700; color: #b8860b;
+    margin-bottom: 8px;
+  }
+  .remember-box ul { padding-left: 18px; }
+  .remember-box ul li { font-size: 18px; line-height: 1.7; color: var(--dark); }
+
+  /* SUMMARY TABLE */
+  .summary-table-wrap { overflow-x: auto; margin-top: 24px; }
+  .summary-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 18px; min-width: 400px;
+  }
+  .summary-table th {
+    background: var(--coral); color: white;
+    padding: 14px 18px; font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 17px; text-align: left;
+  }
+  .summary-table th:first-child { border-radius: 8px 0 0 0; }
+  .summary-table th:last-child { border-radius: 0 8px 0 0; }
+  .summary-table td { padding: 12px 18px; border-bottom: 1px solid #f0f0f0; font-size: 17px; }
+  .summary-table tr:nth-child(even) td { background: #fafafa; }
+  .summary-table tr:hover td { background: #fff0f0; }
+  .tag { display: inline-block; border-radius: 12px; padding: 3px 10px; font-size: 14px; font-weight: 700; }
+  .tag.near { background: #ffe4e4; color: var(--coral); }
+  .tag.far { background: #e8f9ff; color: #00b8d4; }
+  .tag.sing { background: #f0fff4; color: #27ae60; }
+  .tag.plur { background: #f5eeff; color: var(--purple); }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -2px 20px rgba(0,0,0,0.12);
+    z-index: 800;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-bottom-nav-inner {
+    display: flex; min-width: max-content;
+    padding: 8px 12px;
+  }
+  .mobile-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 3px; padding: 8px 14px;
+    font-size: 11px; font-weight: 600; color: var(--mid);
+    cursor: pointer; text-decoration: none;
+    min-height: 56px; justify-content: center;
+    border-radius: 8px; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .mobile-nav-item .mn-icon { font-size: 20px; }
+  .mobile-nav-item.active { color: var(--coral); background: #fff0f0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .four-words { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .mobile-bottom-nav { display: flex; }
+    body { padding-bottom: 80px; }
+    .page-wrapper { padding-top: 52px; }
+    .hero { min-height: 60vh; padding: 40px 20px; }
+    .section-inner { padding: 24px 16px; }
+    .section-header { padding: 20px 16px; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .types-grid { grid-template-columns: 1fr; }
+    .four-words { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .near-far-container { flex-direction: column; min-height: auto; }
+    .near-zone { margin-right: 0; margin-bottom: 16px; }
+    .zone-divider { width: 100%; justify-content: center; }
+    .progress-bar-top { padding: 8px 12px; gap: 4px; }
+    .breadcrumb-item { font-size: 12px; padding: 3px 6px; }
+    .card { padding: 20px; }
+    .activity-card { padding: 20px; }
+  }
+  @media (max-width: 480px) {
+    .four-words { grid-template-columns: 1fr; }
+    .choose-opts { flex-direction: column; }
+    .choose-btn { width: 100%; }
+  }
+  @media (max-width: 320px) {
+    .section-header { font-size: 1.2rem; }
+    .hero h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <h2>✨ Loading Lesson...</h2>
+  <div class="curtain-dots">
+    <div class="curtain-dot"></div>
+    <div class="curtain-dot"></div>
+    <div class="curtain-dot"></div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR TOP -->
+<div class="progress-bar-top" id="progressBar">
+  <div class="breadcrumb-item active" data-sec="intro" onclick="scrollToSection('intro')">
+    <span class="dot"></span> Introduction
+  </div>
+  <span class="breadcrumb-sep">›</span>
+  <div class="breadcrumb-item" data-sec="concept" onclick="scrollToSection('concept')">
+    <span class="dot"></span> Concept
+  </div>
+  <span class="breadcrumb-sep">›</span>
+  <div class="breadcrumb-item" data-sec="visual" onclick="scrollToSection('visual')">
+    <span class="dot"></span> Visual
+  </div>
+  <span class="breadcrumb-sep">›</span>
+  <div class="breadcrumb-item" data-sec="practice" onclick="scrollToSection('practice')">
+    <span class="dot"></span> Practice
+  </div>
+  <span class="breadcrumb-sep">›</span>
+  <div class="breadcrumb-item" data-sec="activity" onclick="scrollToSection('activity')">
+    <span class="dot"></span> Activity
+  </div>
+  <span class="breadcrumb-sep">›</span>
+  <div class="breadcrumb-item" data-sec="quiz" onclick="scrollToSection('quiz')">
+    <span class="dot"></span> Quiz
+  </div>
+  <div class="progress-fill-bar" id="progressFill" style="width:0%"></div>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrapper">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <h3>Contents</h3>
+    <a class="toc-item active" href="#intro" data-sec="intro">
+      <span class="toc-icon">🏠</span> Introduction
+    </a>
+    <a class="toc-item" href="#concept" data-sec="concept">
+      <span class="toc-icon">💡</span> What Are Demonstratives?
+    </a>
+    <a class="toc-item" href="#visual" data-sec="visual">
+      <span class="toc-icon">👁️</span> Visual Explanation
+    </a>
+    <a class="toc-item" href="#types" data-sec="types">
+      <span class="toc-icon">📋</span> Two Types
+    </a>
+    <a class="toc-item" href="#words" data-sec="words">
+      <span class="toc-icon">🔤</span> The Four Words
+    </a>
+    <a class="toc-item" href="#practice" data-sec="practice">
+      <span class="toc-icon">✏️</span> Guided Practice
+    </a>
+    <a class="toc-item" href="#activity" data-sec="activity">
+      <span class="toc-icon">🎯</span> Activity 4.1
+    </a>
+    <a class="toc-item" href="#activity2" data-sec="activity2">
+      <span class="toc-icon">🧩</span> Activity 4.2
+    </a>
+    <a class="toc-item" href="#summary" data-sec="summary">
+      <span class="toc-icon">📝</span> Summary
+    </a>
+    <a class="toc-item" href="#quiz" data-sec="quiz">
+      <span class="toc-icon">🏆</span> Quiz
+    </a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <section id="intro">
+      <div class="hero">
+        <svg class="hero-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice">
+          <circle cx="100" cy="100" r="80" fill="white"/>
+          <circle cx="1100" cy="300" r="120" fill="white"/>
+          <circle cx="600" cy="50" r="60" fill="white"/>
+          <path id="hero-path" d="M 50 200 Q 300 50 600 200 Q 900 350 1150 200" fill="none" stroke="white" stroke-width="3"/>
+        </svg>
+        <div class="hero-bubbles">
+          <div class="bubble" style="width:60px;height:60px;top:10%;left:5%;animation-delay:0s;"></div>
+          <div class="bubble" style="width:40px;height:40px;top:70%;left:15%;animation-delay:1s;"></div>
+          <div class="bubble" style="width:80px;height:80px;top:20%;right:10%;animation-delay:0.5s;"></div>
+          <div class="bubble" style="width:50px;height:50px;bottom:15%;right:20%;animation-delay:1.5s;"></div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-badge">📚 Class 3 English · Chapter 4</div>
+          <h1 id="heroTitle">Demonstratives</h1>
+          <p>Learn to point to people, animals, and things using the right words — <strong>this, that, these,</strong> and <strong>those!</strong></p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <span style="background:rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-weight:700;font-size:17px;">📍 THIS</span>
+            <span style="background:rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-weight:700;font-size:17px;">📍 THAT</span>
+            <span style="background:rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-weight:700;font-size:17px;">📍 THESE</span>
+            <span style="background:rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-weight:700;font-size:17px;">📍 THOSE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT -->
+    <section id="concept">
+      <div class="section-header coral">
+        <span>💡</span> What Are Demonstratives?
+      </div>
+      <div class="section-inner">
+        <div class="card">
+          <p style="font-size:20px;line-height:1.8;color:var(--dark);">
+            <strong>Demonstratives</strong> are words that <strong>point to</strong> people, animals, or things. They help us show <em>which one</em> we are talking about.
+          </p>
+          <p style="margin-top:16px;font-size:18px;color:var(--mid);line-height:1.7;">
+            Think of them as a "pointing finger" in language! Instead of physically pointing, we use words to show if something is <span style="color:var(--coral);font-weight:700;">near us</span> or <span style="color:#00b8d4;font-weight:700;">far from us</span>, and whether it's <span style="color:#27ae60;font-weight:700;">one thing</span> or <span style="color:var(--purple);font-weight:700;">many things</span>.
+          </p>
+        </div>
+
+        <div class="concept-grid">
+          <div class="concept-card">
+            <span class="emoji-big">👆</span>
+            <h3>Pointing Near</h3>
+            <p>When something is <strong>close to you</strong>, use <span class="demo-word">this</span> or <span class="demo-word">these</span>.</p>
+            <p style="margin-top:10px;font-style:italic;color:var(--mid);">"<strong>This</strong> apple is sweet." (apple is in your hand)</p>
+          </div>
+          <div class="concept-card sky-border">
+            <span class="emoji-big">👉</span>
+            <h3>Pointing Far</h3>
+            <p>When something is <strong>far from you</strong>, use <span class="demo-word sky">that</span> or <span class="demo-word sky">those</span>.</p>
+            <p style="margin-top:10px;font-style:italic;color:var(--mid);">"<strong>That</strong> mountain is tall." (mountain is far away)</p>
+          </div>
+          <div class="concept-card sunshine-border">
+            <span class="emoji-big">1️⃣</span>
+            <h3>One Thing (Singular)</h3>
+            <p>For <strong>one</strong> person, animal, or thing, use <span class="demo-word sun">this</span> (near) or <span class="demo-word sky">that</span> (far).</p>
+            <p style="margin-top:10px;font-style:italic;color:var(--mid);">"<strong>This</strong> dog is mine." / "<strong>That</strong> car is fast."</p>
+          </div>
+          <div class="concept-card green-border">
+            <span class="emoji-big">🔢</span>
+            <h3>Many Things (Plural)</h3>
+            <p>For <strong>many</strong> people, animals, or things, use <span class="demo-word green">these</span> (near) or <span class="demo-word sky">those</span> (far).</p>
+            <p style="margin-top:10px;font-style:italic;color:var(--mid);">"<strong>These</strong> books are heavy." / "<strong>Those</strong> birds sing."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL EXPLANATION -->
+    <section id="visual">
+      <div class="section-header sky">
+        <span>👁️</span> Visual Explanation
+      </div>
+      <div class="section-inner">
+        <p style="font-size:18px;color:var(--mid);margin-bottom:0;">See how the demonstratives work based on <strong>distance</strong> from you!</p>
+
+        <div class="near-far-container">
+          <div class="near-zone">
+            <div class="zone-label">🤏 NEAR (Close to you)</div>
+            <div class="zone-words">
+              <span class="zone-word">this</span>
+              <span class="zone-word">these</span>
+            </div>
+            <div style="font-size:60px;margin:8px 0;">🧍</div>
+            <p class="zone-example">
+              <strong>"This pencil is mine."</strong><br>
+              (pencil is near me)<br><br>
+              <strong>"These toys are fun!"</strong><br>
+              (toys are near me)
+            </p>
+          </div>
+          <div class="zone-divider">↔️</div>
+          <div class="far-zone">
+            <div class="zone-label">👀 FAR (Away from you)</div>
+            <div class="zone-words">
+              <span class="zone-word">that</span>
+              <span class="zone-word">those</span>
+            </div>
+            <div style="font-size:60px;margin:8px 0;">🏔️</div>
+            <p class="zone-example">
+              <strong>"That bag is hers."</strong><br>
+              (bag is not near me)<br><br>
+              <strong>"Those birds are flying."</strong><br>
+              (birds are far from me)
+            </p>
+          </div>
+        </div>
+
+        <div class="remember-box">
+          <span class="rem-icon">💡</span>
+          <div>
+            <h4>REMEMBER!</h4>
+            <ul>
+              <li>Use <strong>this / these</strong> for things <strong>near</strong> you.</li>
+              <li>Use <strong>that / those</strong> for things <strong>far</strong> from you.</li>
+              <li><strong>This</strong> and <strong>that</strong> are for ONE thing (singular).</li>
+              <li><strong>These</strong> and <strong>those</strong> are for MANY things (plural).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TWO TYPES -->
+    <section id="types">
+      <div class="section-header green">
+        <span>📋</span> Two Types of Demonstratives
+      </div>
+      <div class="section-inner">
+        <div class="types-grid">
+          <div class="type-card">
+            <h3>🔵 Demonstrative Pronouns</h3>
+            <p>These are used <strong>on their own</strong> to refer to something specific and <strong>replace the noun</strong> in a sentence. They show which person or thing is being talked about.</p>
+            <ul class="example-list">
+              <li><strong>This</strong> is my favorite book. (Refers to something near)</li>
+              <li><strong>That</strong> looks amazing! (Refers to something far)</li>
+              <li><strong>These</strong> are delicious cookies. (Refers to things near)</li>
+              <li><strong>Those</strong> are the shoes I like. (Refers to things far)</li>
+            </ul>
+          </div>
+          <div class="type-card sky-left">
+            <h3>🟦 Demonstrative Adjectives</h3>
+            <p>These words are used <strong>before a noun</strong> to show which one is being referred to. They <strong>describe a noun</strong> by pointing it out.</p>
+            <ul class="example-list">
+              <li><strong>This</strong> chair is comfortable. (near chair)</li>
+              <li><strong>That</strong> book is old. (far book)</li>
+              <li><strong>These</strong> pens are new. (near pens)</li>
+              <li><strong>Those</strong> apples are fresh. (far apples)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:24px;background:linear-gradient(135deg,#f5eeff,#ede0ff);border:none;">
+          <h3 style="font-family:'Poppins',sans-serif;font-size:1.3rem;margin-bottom:12px;color:var(--purple);">🔑 Quick Difference</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div>
+              <p style="font-weight:700;color:var(--coral);margin-bottom:6px;">Demonstrative PRONOUN:</p>
+              <p style="font-size:18px;font-style:italic;">"<strong>This</strong> is my book." <br><span style="font-size:16px;color:var(--mid);">(This = the book itself)</span></p>
+            </div>
+            <div>
+              <p style="font-weight:700;color:#00b8d4;margin-bottom:6px;">Demonstrative ADJECTIVE:</p>
+              <p style="font-size:18px;font-style:italic;">"<strong>This</strong> book is mine." <br><span style="font-size:16px;color:var(--mid);">(This describes 'book')</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE FOUR WORDS -->
+    <section id="words">
+      <div class="section-header sunshine">
+        <span>🔤</span> The Four Demonstrative Words
+      </div>
+      <div class="section-inner">
+        <div class="four-words">
+          <div class="word-card w1">
+            <div class="word-title">THIS</div>
+            <div class="word-rule">📍 Near · 1 thing</div>
+            <div class="word-example">"<em>This pencil is mine.</em>"<br><small style="color:var(--mid);">(The pencil is near me.)</small></div>
+          </div>
+          <div class="word-card w2">
+            <div class="word-title">THAT</div>
+            <div class="word-rule">📍 Far · 1 thing</div>
+            <div class="word-example">"<em>That bag is hers.</em>"<br><small style="color:var(--mid);">(The bag is not near me.)</small></div>
+          </div>
+          <div class="word-card w3">
+            <div class="word-title">THESE</div>
+            <div class="word-rule">📍 Near · Many things</div>
+            <div class="word-example">"<em>These toys are fun!</em>"<br><small style="color:var(--mid);">(The toys are near me.)</small></div>
+          </div>
+          <div class="word-card w4">
+            <div class="word-title">THOSE</div>
+            <div class="word-rule">📍 Far · Many things</div>
+            <div class="word-example">"<em>Those birds are flying.</em>"<br><small style="color:var(--mid);">(The birds are far from me.)</small></div>
+          </div>
+        </div>
+
+        <div class="summary-table-wrap">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Distance</th>
+                <th>Number</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color:var(--coral);">This</strong></td>
+                <td><span class="tag near">Near</span></td>
+                <td><span class="tag sing">Singular</span></td>
+                <td>"<em>This tree is tall.</em>"</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#00b8d4;">That</strong></td>
+                <td><span class="tag far">Far</span></td>
+                <td><span class="tag sing">Singular</span></td>
+                <td>"<em>That house looks old.</em>"</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#27ae60;">These</strong></td>
+                <td><span class="tag near">Near</span></td>
+                <td><span class="tag plur">Plural</span></td>
+                <td>"<em>These mushrooms are interesting.</em>"</td>
+              </tr>
+              <tr>
+                <td><strong style="color:var(--purple);">Those</strong></td>
+                <td><span class="tag far">Far</span></td>
+                <td><span class="tag plur">Plural</span></td>
+                <td>"<em>Those birds are beautiful.</em>"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUIDED PRACTICE -->
+    <section id="practice">
+      <div class="section-header purple">
+        <span>✏️</span> Guided Practice
+      </div>
+      <div class="section-inner">
+        <p style="font-size:18px;color:var(--mid);margin-bottom:24px;">Let's practice using demonstratives with drag-and-drop! Drag the correct word to fill each blank.</p>
+
+        <div class="activity-card">
+          <h3>🎯 Drag the Right Word!</h3>
+          <p class="activity-desc">Drag a word chip below to the correct blank in each sentence.</p>
+
+          <div class="dnd-container">
+            <div class="dnd-words-pool" id="dndPool">
+              <div class="dnd-chip" draggable="true" data-word="This" id="chip-This1">This</div>
+              <div class="dnd-chip" draggable="true" data-word="That" id="chip-That1">That</div>
+              <div class="dnd-chip" draggable="true" data-word="These" id="chip-These1">These</div>
+              <div class="dnd-chip" draggable="true" data-word="Those" id="chip-Those1">Those</div>
+              <div class="dnd-chip" draggable="true" data-word="This" id="chip-This2">This</div>
+              <div class="dnd-chip" draggable="true" data-word="That" id="chip-That2">That</div>
+            </div>
+
+            <div class="dnd-sentences" id="dndSentences">
+              <div class="dnd-sentence" data-answer="This">
+                <span class="dnd-drop-zone" data-answer="This">___</span>
+                <span>pencil right here is mine.</span>
+                <span style="font-size:14px;color:var(--mid);">(pencil is near)</span>
+              </div>
+              <div class="dnd-sentence" data-answer="That">
+                <span class="dnd-drop-zone" data-answer="That">___</span>
+                <span>bag over there is hers.</span>
+                <span style="font-size:14px;color:var(--mid);">(bag is far)</span>
+              </div>
+              <div class="dnd-sentence" data-answer="These">
+                <span class="dnd-drop-zone" data-answer="These">___</span>
+                <span>toys near me are fun!</span>
+                <span style="font-size:14px;color:var(--mid);">(many toys, near)</span>
+              </div>
+              <div class="dnd-sentence" data-answer="Those">
+                <span class="dnd-drop-zone" data-answer="Those">___</span>
+                <span>birds far away are flying.</span>
+                <span style="font-size:14px;color:var(--mid);">(many birds, far)</span>
+              </div>
+              <div class="dnd-sentence" data-answer="This">
+                <span class="dnd-drop-zone" data-answer="This">___</span>
+                <span>is my favorite book.</span>
+                <span style="font-size:14px;color:var(--mid);">(one thing, near)</span>
+              </div>
+              <div class="dnd-sentence" data-answer="That">
+                <span class="dnd-drop-zone" data-answer="That">___</span>
+                <span>looks amazing in the distance!</span>
+                <span style="font-size:14px;color:var(--mid);">(one thing, far)</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="check-btn sky-btn" onclick="checkDND()">Check My Answers ✓</button>
+          <button class="check-btn" style="margin-left:12px;background:linear-gradient(135deg,#636e72,#b2bec3);" onclick="resetDND()">Reset ↺</button>
+          <div class="result-msg" id="dndResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY 4.1 -->
+    <section id="activity">
+      <div class="section-header coral">
+        <span>🎯</span> Exercise 4.1 — Fill in the Blanks
+      </div>
+      <div class="section-inner">
+        <div class="activity-card">
+          <h3>📝 Fill in the Blanks</h3>
+          <p class="activity-desc">Fill in the blanks with the correct demonstrative: <strong>this, that, these,</strong> or <strong>those</strong>.</p>
+
+          <ul class="sentence-list" id="fillBlanks">
+            <li class="sentence-item">
+              <span class="s-num">1</span>
+              <select class="blank-select" data-answer="Those">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>footprints are far away from us.</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">2</span>
+              <span>Can you hear</span>
+              <select class="blank-select" data-answer="that">
+                <option value="">— choose —</option>
+                <option>this</option><option>that</option><option>these</option><option>those</option>
+              </select>
+              <span>noise in the distance?</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">3</span>
+              <select class="blank-select" data-answer="These">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>mushrooms look interesting. Should we pick them?</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">4</span>
+              <select class="blank-select" data-answer="This">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>tree right here is so tall!</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">5</span>
+              <span>Look at</span>
+              <select class="blank-select" data-answer="those">
+                <option value="">— choose —</option>
+                <option>this</option><option>that</option><option>these</option><option>those</option>
+              </select>
+              <span>clouds in the sky over there.</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">6</span>
+              <select class="blank-select" data-answer="These">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>pens on my desk are mine.</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">7</span>
+              <span>What is</span>
+              <select class="blank-select" data-answer="that">
+                <option value="">— choose —</option>
+                <option>this</option><option>that</option><option>these</option><option>those</option>
+              </select>
+              <span>sound you hear in the distance?</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">8</span>
+              <select class="blank-select" data-answer="These">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>birds are flying so close to us!</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">9</span>
+              <select class="blank-select" data-answer="These">
+                <option value="">— choose —</option>
+                <option>This</option><option>That</option><option>These</option><option>Those</option>
+              </select>
+              <span>books on the table belong to me.</span>
+            </li>
+            <li class="sentence-item">
+              <span class="s-num">10</span>
+              <span>Is</span>
+              <select class="blank-select" data-answer="that">
+                <option value="">— choose —</option>
+                <option>this</option><option>that</option><option>these</option><option>those</option>
+              </select>
+              <span>your car parked far away?</span>
+            </li>
+          </ul>
+
+          <button class="check-btn" onclick="checkFillBlanks()">Check Answers ✓</button>
+          <button class="check-btn" style="margin-left:12px;background:linear-gradient(135deg,#636e72,#b2bec3);" onclick="resetFillBlanks()">Reset ↺</button>
+          <div class="result-msg" id="fillResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY 4.2 -->
+    <section id="activity2">
+      <div class="section-header sky">
+        <span>🧩</span> Exercise 4.2 — Choose the Correct Demonstrative
+      </div>
+      <div class="section-inner">
+        <div class="activity-card">
+          <h3>🔍 Choose the Correct Word</h3>
+          <p class="activity-desc">Choose the correct demonstrative. Pay attention to the <strong>distance</strong> and <strong>number</strong> of objects!</p>
+
+          <div class="choose-grid" id="chooseGrid">
+            <div class="choose-item">
+              <span class="c-num">1</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> tree near me is very tall.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="1" data-val="This" data-correct="This" onclick="chooseAnswer(this)">This</button>
+                  <button class="choose-btn" data-q="1" data-val="That" data-correct="This" onclick="chooseAnswer(this)">That</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">2</span>
+              <div>
+                <div>Look at <span style="color:var(--mid);">___</span> flowers over there. Aren't they beautiful?</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="2" data-val="these" data-correct="those" onclick="chooseAnswer(this)">these</button>
+                  <button class="choose-btn" data-q="2" data-val="those" data-correct="those" onclick="chooseAnswer(this)">those</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">3</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> sound is coming from the forest far away.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="3" data-val="This" data-correct="That" onclick="chooseAnswer(this)">This</button>
+                  <button class="choose-btn" data-q="3" data-val="That" data-correct="That" onclick="chooseAnswer(this)">That</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">4</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> footprints close to us are from a dog.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="4" data-val="These" data-correct="These" onclick="chooseAnswer(this)">These</button>
+                  <button class="choose-btn" data-q="4" data-val="Those" data-correct="These" onclick="chooseAnswer(this)">Those</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">5</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> house across the street looks old.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="5" data-val="This" data-correct="That" onclick="chooseAnswer(this)">This</button>
+                  <button class="choose-btn" data-q="5" data-val="That" data-correct="That" onclick="chooseAnswer(this)">That</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">6</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> footprints lead to the cave far away.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="6" data-val="These" data-correct="Those" onclick="chooseAnswer(this)">These</button>
+                  <button class="choose-btn" data-q="6" data-val="Those" data-correct="Those" onclick="chooseAnswer(this)">Those</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">7</span>
+              <div>
+                <div>Look at <span style="color:var(--mid);">___</span> mushrooms growing near my feet!</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="7" data-val="this" data-correct="these" onclick="chooseAnswer(this)">this</button>
+                  <button class="choose-btn" data-q="7" data-val="these" data-correct="these" onclick="chooseAnswer(this)">these</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">8</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> noise is annoying, and it's very far from us.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="8" data-val="This" data-correct="That" onclick="chooseAnswer(this)">This</button>
+                  <button class="choose-btn" data-q="8" data-val="That" data-correct="That" onclick="chooseAnswer(this)">That</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">9</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> children are playing over there in the park.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="9" data-val="Those" data-correct="Those" onclick="chooseAnswer(this)">Those</button>
+                  <button class="choose-btn" data-q="9" data-val="These" data-correct="Those" onclick="chooseAnswer(this)">These</button>
+                </div>
+              </div>
+            </div>
+            <div class="choose-item">
+              <span class="c-num">10</span>
+              <div>
+                <div><span style="color:var(--mid);">___</span> apples in my hand are fresh.</div>
+                <div class="choose-opts">
+                  <button class="choose-btn" data-q="10" data-val="This" data-correct="These" onclick="chooseAnswer(this)">This</button>
+                  <button class="choose-btn" data-q="10" data-val="These" data-correct="These" onclick="chooseAnswer(this)">These</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="check-btn sky-btn" style="margin-top:24px;" onclick="checkChoose()">Check Answers ✓</button>
+          <button class="check-btn" style="margin-left:12px;background:linear-gradient(135deg,#636e72,#b2bec3);margin-top:24px;" onclick="resetChoose()">Reset ↺</button>
+          <div class="result-msg" id="chooseResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="summary">
+      <div class="section-header dark">
+        <span>📝</span> Summary
+      </div>
+      <div class="section-inner">
+        <div class="card">
+          <h3 style="font-family:'Poppins',sans-serif;font-size:1.5rem;margin-bottom:20px;">What We Learned Today</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div style="background:var(--lightgray);border-radius:10px;padding:20px;">
+              <p style="font-weight:700;color:var(--coral);font-size:18px;margin-bottom:10px;">🔵 Demonstrative Pronouns</p>
+              <p style="font-size:18px;line-height:1.7;">Stand <strong>alone</strong> and replace the noun. They refer to something specific without naming it directly.</p>
+              <p style="font-style:italic;color:var(--mid);font-size:17px;margin-top:8px;">e.g. "<strong>This</strong> is my book."</p>
+            </div>
+            <div style="background:var(--lightgray);border-radius:10px;padding:20px;">
+              <p style="font-weight:700;color:#00b8d4;font-size:18px;margin-bottom:10px;">🟦 Demonstrative Adjectives</p>
+              <p style="font-size:18px;line-height:1.7;">Come <strong>before a noun</strong> to describe which one. They modify the noun directly.</p>
+              <p style="font-style:italic;color:var(--mid);font-size:17px;margin-top:8px;">e.g. "<strong>This</strong> book is mine."</p>
+            </div>
+          </div>
+
+          <div class="summary-table-wrap" style="margin-top:24px;">
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th>Word</th><th>Number</th><th>Distance</th><th>Example (Adjective)</th><th>Example (Pronoun)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:var(--coral);">this</strong></td>
+                  <td>singular</td>
+                  <td>near</td>
+                  <td><em>"This cat is cute."</em></td>
+                  <td><em>"This is cute."</em></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#00b8d4;">that</strong></td>
+                  <td>singular</td>
+                  <td>far</td>
+                  <td><em>"That house is big."</em></td>
+                  <td><em>"That is big."</em></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#27ae60;">these</strong></td>
+                  <td>plural</td>
+                  <td>near</td>
+                  <td><em>"These flowers smell nice."</em></td>
+                  <td><em>"These smell nice."</em></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--purple);">those</strong></td>
+                  <td>plural</td>
+                  <td>far</td>
+                  <td><em>"Those mountains are tall."</em></td>
+                  <td><em>"Those are tall."</em></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz">
+      <div class="section-header purple">
+        <span>🏆</span> Quiz — Test Your Knowledge!
+      </div>
+      <div class="section-inner">
+        <div class="quiz-container" id="quizContainer">
+
+          <div class="quiz-q" data-q="1">
+            <div class="quiz-q-text"><span class="q-num">Q1</span> Which demonstrative do you use for ONE thing that is NEAR you?</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,1)"><span class="opt-letter">A</span> Those</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,1)"><span class="opt-letter">B</span> This</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,1)"><span class="opt-letter">C</span> That</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,1)"><span class="opt-letter">D</span> These</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="2">
+            <div class="quiz-q-text"><span class="q-num">Q2</span> "________ birds are flying far away." — Which word fits best?</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,2)"><span class="opt-letter">A</span> This</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,2)"><span class="opt-letter">B</span> These</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,2)"><span class="opt-letter">C</span> Those</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,2)"><span class="opt-letter">D</span> That</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="3">
+            <div class="quiz-q-text"><span class="q-num">Q3</span> True or False: "That" is used for MANY things that are near you.</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,3)"><span class="opt-letter">A</span> True</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,3)"><span class="opt-letter">B</span> False</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="4">
+            <div class="quiz-q-text"><span class="q-num">Q4</span> In the sentence "These are delicious cookies," what type of demonstrative is "These"?</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,4)"><span class="opt-letter">A</span> Demonstrative Adjective</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,4)"><span class="opt-letter">B</span> Demonstrative Pronoun</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,4)"><span class="opt-letter">C</span> Noun</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,4)"><span class="opt-letter">D</span> Verb</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="5">
+            <div class="quiz-q-text"><span class="q-num">Q5</span> "________ pencil right here is mine." — Fill in the correct demonstrative.</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,5)"><span class="opt-letter">A</span> This</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,5)"><span class="opt-letter">B</span> Those</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,5)"><span class="opt-letter">C</span> That</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,5)"><span class="opt-letter">D</span> These</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="6">
+            <div class="quiz-q-text"><span class="q-num">Q6</span> True or False: "This book is old" uses "this" as a Demonstrative Adjective.</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,6)"><span class="opt-letter">A</span> True</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,6)"><span class="opt-letter">B</span> False</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="7">
+            <div class="quiz-q-text"><span class="q-num">Q7</span> Which word do you use for MANY things that are FAR from you?</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,7)"><span class="opt-letter">A</span> This</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,7)"><span class="opt-letter">B</span> That</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,7)"><span class="opt-letter">C</span> These</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,7)"><span class="opt-letter">D</span> Those</div>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="8">
+            <div class="quiz-q-text"><span class="q-num">Q8</span> "Look at ________ clouds in the sky over there." — What is the correct word?</div>
+            <div class="quiz-options">
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,8)"><span class="opt-letter">A</span> This</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,8)"><span class="opt-letter">B</span> These</div>
+              <div class="quiz-opt" data-correct="true" onclick="selectQuizOpt(this,8)"><span class="opt-letter">C</span> Those</div>
+              <div class="quiz-opt" data-correct="false" onclick="selectQuizOpt(this,8)"><span class="opt-letter">D</span> That</div>
+            </div>
+          </div>
+
+          <button class="score-submit-btn" onclick="submitQuiz()">Submit Quiz 🏆</button>
+        </div>
+
+        <!-- SCORE CARD -->
+        <div class="score-card" id="scoreCard">
+          <div class="score-circle-wrap">
+            <svg class="score-svg" viewBox="0 0 160 160">
+              <circle class="score-track" cx="80" cy="80" r="70"/>
+              <circle class="score-fill" id="scoreFill" cx="80" cy="80" r="70"/>
+            </svg>
+            <div class="score-num" id="scoreNum">0/8</div>
+          </div>
+          <h2 id="scoreTitle">Well Done!</h2>
+          <p id="scoreMsg">You completed the Demonstratives quiz.</p>
+          <div style="margin-top:16px;">
+            <button class="retry-btn" onclick="retryQuiz()">Try Again ↺</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="mobile-bottom-nav-inner">
+    <a class="mobile-nav-item active" href="#intro" data-sec="intro">
+      <span class="mn-icon">🏠</span><span>Intro</span>
+    </a>
+    <a class="mobile-nav-item" href="#concept" data-sec="concept">
+      <span class="mn-icon">💡</span><span>Concept</span>
+    </a>
+    <a class="mobile-nav-item" href="#visual" data-sec="visual">
+      <span class="mn-icon">👁️</span><span>Visual</span>
+    </a>
+    <a class="mobile-nav-item" href="#types" data-sec="types">
+      <span class="mn-icon">📋</span><span>Types</span>
+    </a>
+    <a class="mobile-nav-item" href="#words" data-sec="words">
+      <span class="mn-icon">🔤</span><span>Words</span>
+    </a>
+    <a class="mobile-nav-item" href="#practice" data-sec="practice">
+      <span class="mn-icon">✏️</span><span>Practice</span>
+    </a>
+    <a class="mobile-nav-item" href="#activity" data-sec="activity">
+      <span class="mn-icon">🎯</span><span>Ex 4.1</span>
+    </a>
+    <a class="mobile-nav-item" href="#activity2" data-sec="activity2">
+      <span class="mn-icon">🧩</span><span>Ex 4.2</span>
+    </a>
+    <a class="mobile-nav-item" href="#quiz" data-sec="quiz">
+      <span class="mn-icon">🏆</span><span>Quiz</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => { c.style.display = 'none'; }, 500); }
+  }, 2500);
+
+  // LENIS
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      // Hero path drawing
+      const path = document.getElementById('hero-path');
+      if (path) {
+        const len = path.getTotalLength ? path.getTotalLength() : 600;
+        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(path, { strokeDashoffset: 0, duration: 2.5, ease: 'power2.out', delay: 0.5 });
+      }
+
+      // Hero title
+      gsap.from('#heroTitle', { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.3 });
+
+      // Register ScrollTrigger
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Concept cards
+        gsap.utils.toArray('.concept-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            y: 30, opacity: 0, duration: 0.6, delay: i * 0.1, ease: 'power2.out'
+          });
+        });
+
+        // Word cards
+        gsap.utils.toArray('.word-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            y: 30, opacity: 0, duration: 0.5, delay: i * 0.1, ease: 'power2.out'
+          });
+        });
+
+        // Type cards
+        gsap.utils.toArray('.type-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            x: i % 2 === 0 ? -30 : 30, opacity: 0, duration: 0.6, ease: 'power2.out'
+          });
+        });
+
+        // Quiz questions
+        gsap.utils.toArray('.quiz-q').forEach((q, i) => {
+          gsap.from(q, {
+            scrollTrigger: { trigger: q, start: 'top 90%' },
+            y: 20, opacity: 0, duration: 0.5, delay: i * 0.08, ease: 'power2.out'
+          });
+        });
+
+        // Parallax section headers
+        gsap.utils.toArray('.section-header').forEach(header => {
+          gsap.fromTo(header, 
+            { backgroundPositionY: '-30px' },
+            { backgroundPositionY: '30px', scrollTrigger: { trigger: header, scrub: true, start: 'top bottom', end: 'bottom top' } }
+          );
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // INTERSECTION OBSERVER for TOC + breadcrumbs
+  const sections = ['intro','concept','visual','types','words','practice','activity','activity2','summary','quiz'];
+  const observerOpts = { rootMargin: '-20% 0px -60% 0px' };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        updateActive(id);
+        updateProgress(id);
+      }
+    });
+  }, observerOpts);
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+
+  function updateActive(id) {
+    // Sidebar
+    document.querySelectorAll('.toc-item').forEach(item => {
+      item.classList.toggle('active', item.getAttribute('data-sec') === id);
+    });
+    // Breadcrumbs
+    document.querySelectorAll('.breadcrumb-item').forEach(item => {
+      item.classList.toggle('active', item.getAttribute('data-sec') === id);
+    });
+    // Mobile nav
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      item.classList.toggle('active', item.getAttribute('data-sec') === id);
+    });
+  }
+
+  function updateProgress(id) {
+    const idx = sections.indexOf(id);
+    if (idx >= 0) {
+      const pct = Math.round(((idx + 1) / sections.length) * 100);
+      const fill = document.getElementById('progressFill');
+      if (fill) fill.style.width = pct + '%';
+    }
+  }
+
+  // SCROLL TO SECTION
+  window.scrollToSection = function(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // DND (Drag and Drop)
+  let draggedWord = null;
+  let draggedChip = null;
+
+  const chips = document.querySelectorAll('.dnd-chip');
+  chips.forEach(chip => {
+    chip.addEventListener('dragstart', (e) => {
+      draggedWord = chip.getAttribute('data-word');
+      draggedChip = chip;
+      chip.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', draggedWord);
+    });
+    chip.addEventListener('dragend', () => {
+      chip.classList.remove('dragging');
+    });
+  });
+
+  const dropZones = document.querySelectorAll('.dnd-drop-zone');
+  dropZones.forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (draggedWord && !zone.classList.contains('filled')) {
+        zone.textContent = draggedWord;
+        zone.classList.add('filled');
+        zone.setAttribute('data-dropped', draggedWord);
+        // Hide chip
+        if (draggedChip) draggedChip.style.display = 'none';
+      }
+      draggedWord = null;
+      draggedChip = null;
+    });
+  });
+
+  // Mobile touch-based DND alternative: tap chip then tap zone
+  let selectedChipMobile = null;
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (selectedChipMobile) selectedChipMobile.style.outline = 'none';
+      selectedChipMobile = chip;
+      chip.style.outline = '3px solid #27ae60';
+    });
+  });
+  dropZones.forEach(zone => {
+    zone.addEventListener('click', () => {
+      if (selectedChipMobile && !zone.classList.contains('filled')) {
+        zone.textContent = selectedChipMobile.getAttribute('data-word');
+        zone.classList.add('filled');
+        zone.setAttribute('data-dropped', selectedChipMobile.getAttribute('data-word'));
+        selectedChipMobile.style.display = 'none';
+        selectedChipMobile.style.outline = 'none';
+        selectedChipMobile = null;
+      }
+    });
+  });
+
+  window.checkDND = function() {
+    const zones = document.querySelectorAll('.dnd-drop-zone');
+    let correct = 0; let total = zones.length; let filled = 0;
+    zones.forEach(zone => {
+      const answer = zone.getAttribute('data-answer');
+      const dropped = zone.getAttribute('data-dropped') || '';
+      if (dropped) {
+        filled++;
+        if (dropped.toLowerCase() === answer.toLowerCase()) {
+          correct++;
+          zone.classList.remove('filled-wrong');
+          zone.classList.add('filled');
+          zone.style.background = '#f0fff4'; zone.style.borderColor = '#27ae60'; zone.style.color = '#27ae60';
+        } else {
+          zone.classList.remove('filled');
+          zone.classList.add('filled-wrong');
+          zone.style.background = '#fff0f0'; zone.style.borderColor = '#FF6B6B'; zone.style.color = '#FF6B6B';
+        }
+      }
+    });
+    const res = document.getElementById('dndResult');
+    res.classList.add('show');
+    if (filled < total) {
+      res.className = 'result-msg show partial-msg';
+      res.textContent = `⚠️ Please fill all ${total} blanks! (${filled}/${total} filled so far)`;
+    } else if (correct === total) {
+      res.className = 'result-msg show correct-msg';
+      res.textContent = `🎉 Excellent! All ${correct}/${total} answers are correct!`;
+    } else {
+      res.className = 'result-msg show partial-msg';
+      res.textContent = `👍 ${correct}/${total} correct. Check the highlighted ones!`;
+    }
+  };
+
+  window.resetDND = function() {
+    const zones = document.querySelectorAll('.dnd-drop-zone');
+    zones.forEach(zone => {
+      zone.textContent = '___';
+      zone.classList.remove('filled','filled-wrong','drag-over');
+      zone.removeAttribute('data-dropped');
+      zone.style.cssText = '';
+    });
+    chips.forEach(chip => { chip.style.display = ''; chip.classList.remove('dragging'); chip.style.outline = 'none'; });
+    const res = document.getElementById('dndResult');
+    res.className = 'result-msg'; res.textContent = '';
+    selectedChipMobile = null;
+  };
+
+  // FILL BLANKS
+  window.checkFillBlanks = function() {
+    const selects = document.querySelectorAll('#fillBlanks .blank-select');
+    let correct = 0;
+    selects.forEach(sel => {
+      const ans = sel.getAttribute('data-answer').toLowerCase();
+      const val = sel.value.toLowerCase();
+      sel.classList.remove('correct','wrong');
+      if (!val) { return; }
+      if (val === ans) { sel.classList.add('correct'); correct++; }
+      else { sel.classList.add('wrong'); }
+    });
+    const res = document.getElementById('fillResult');
+    res.classList.add('show');
+    if (correct === selects.length) {
+      res.className = 'result-msg show correct-msg';
+      res.textContent = `🎉 Perfect! All ${correct}/${selects.length} correct!`;
+    } else {
+      res.className = 'result-msg show partial-msg';
+      res.textContent = `👍 ${correct}/${selects.length} correct. Review the red ones!`;
+    }
+  };
+
+  window.resetFillBlanks = function() {
+    const selects = document.querySelectorAll('#fillBlanks .blank-select');
+    selects.forEach(sel => { sel.value = ''; sel.classList.remove('correct','wrong'); });
+    const res = document.getElementById('fillResult');
+    res.className = 'result-msg'; res.textContent = '';
+  };
+
+  // CHOOSE ACTIVITY
+  const chooseAnswers = {};
+  window.chooseAnswer = function(btn) {
+    const q = btn.getAttribute('data-q');
+    if (chooseAnswers[q]) return; // already answered
+    const correct = btn.getAttribute('data-correct');
+    const val = btn.getAttribute('data-val');
+    const siblings = document.querySelectorAll(`[data-q="${q}"]`);
+    siblings.forEach(s => s.classList.add('disabled'));
+    if (val.toLowerCase() === correct.toLowerCase()) {
+      btn.classList.add('selected-correct');
+      chooseAnswers[q] = 'correct';
+    } else {
+      btn.classList.add('selected-wrong');
+      chooseAnswers[q] = 'wrong';
+      siblings.forEach(s => { if (s.getAttribute('data-val').toLowerCase() === correct.toLowerCase()) s.classList.add('selected-correct'); });
+    }
+  };
+
+  window.checkChoose = function() {
+    const total = 10;
+    const answered = Object.keys(chooseAnswers).length;
+    const correct = Object.values(chooseAnswers).filter(v => v === 'correct').length;
+    const res = document.getElementById('chooseResult');
+    res.classList.add('show');
+    if (answered < total) {
+      res.className = 'result-msg show partial-msg';
+      res.textContent = `⚠️ You answered ${answered}/${total}. ${correct} correct so far.`;
+    } else if (correct === total) {
+      res.className = 'result-msg show correct-msg';
+      res.textContent = `🎉 Amazing! All ${correct}/${total} correct!`;
+    } else {
+      res.className = 'result-msg show partial-msg';
+      res.textContent = `👍 ${correct}/${total} correct! Review the highlighted answers.`;
+    }
+  };
+
+  window.resetChoose = function() {
+    Object.keys(chooseAnswers).forEach(k => delete chooseAnswers[k]);
+    document.querySelectorAll('.choose-btn').forEach(btn => {
+      btn.classList.remove('selected-correct','selected-wrong','disabled');
+    });
+    const res = document.getElementById('chooseResult');
+    res.className = 'result-msg'; res.textContent = '';
+  };
+
+  // QUIZ
+  const quizAnswers = {};
+  window.selectQuizOpt = function(el, q) {
+    if (quizAnswers[q] !== undefined) return;
+    const qBlock = document.querySelector(`.quiz-q[data-q="${q}"]`);
+    const opts = qBlock.querySelectorAll('.quiz-opt');
+    const isCorrect = el.getAttribute('data-correct') === 'true';
+    opts.forEach(o => o.classList.add('disabled'));
+    if (isCorrect) {
+      el.classList.add('correct');
+      quizAnswers[q] = 1;
+    } else {
+      el.classList.add('wrong');
+      quizAnswers[q] = 0;
+      opts.forEach(o => { if (o.getAttribute('data-correct') === 'true') o.classList.add('correct'); });
+    }
+  };
+
+  window.submitQuiz = function() {
+    const total = 8;
+    const answered = Object.keys(quizAnswers).length;
+    if (answered < total) {
+      alert(`Please answer all ${total} questions first! (${answered}/${total} answered)`);
+      return;
+    }
+    const correct = Object.values(quizAnswers).reduce((a, b) => a + b, 0);
+    document.getElementById('quizContainer').style.display = 'none';
+    const card = document.getElementById('scoreCard');
+    card.classList.add('show');
+
+    document.getElementById('scoreNum').textContent = `${correct}/${total}`;
+    let title = '', msg = '';
+    if (correct === total) { title = '🌟 Perfect Score!'; msg = 'Outstanding! You mastered demonstratives!'; }
+    else if (correct >= 6) { title = '🎉 Well Done!'; msg = 'Great job! You have a strong understanding of demonstratives.'; }
+    else if (correct >= 4) { title = '👍 Good Try!'; msg = 'You are getting there! Review the concept and try again.'; }
+    else { title = '💪 Keep Going!'; msg = 'Read through the lesson again — you can do it!'; }
+    document.getElementById('scoreTitle').textContent = title;
+    document.getElementById('scoreMsg').textContent = msg;
+
+    // Animate circle
+    const fill = document.getElementById('scoreFill');
+    const circumference = 2 * Math.PI * 70;
+    const offset = circumference - (correct / total) * circumference;
+    fill.style.strokeDasharray = circumference;
+    fill.style.strokeDashoffset = circumference;
+    setTimeout(() => { fill.style.strokeDashoffset = offset; }, 100);
+
+    // Animate number with GSAP
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from('#scoreCard', { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  };
+
+  window.retryQuiz = function() {
+    Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+    document.querySelectorAll('.quiz-opt').forEach(opt => {
+      opt.classList.remove('correct','wrong','disabled');
+    });
+    document.getElementById('quizContainer').style.display = 'flex';
+    document.getElementById('scoreCard').classList.remove('show');
+    document.getElementById('quizContainer').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Dismiss curtain via GSAP if available
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.8, delay: 1.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {}
+
+});
+</script>
+</body>
+</html>

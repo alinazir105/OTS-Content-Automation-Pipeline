@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<!-- CLASS: 3 | SUBJECT: urdu | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خوشی کا دن - اردو سبق ۱۵</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --sunshine: #F9CA24;
+    --sky: #48DBFB;
+    --coral: #FF6B6B;
+    --lightgray: #F8F9FA;
+    --green: #6BCB77;
+    --purple: #9B59B6;
+    --white: #ffffff;
+    --dark: #2d3436;
+    --font-urdu: 'Noto Nastaliq Urdu', serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 18px; }
+  body {
+    font-family: var(--font-urdu);
+    background: var(--lightgray);
+    color: var(--dark);
+    direction: rtl;
+    width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 0;
+  }
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: linear-gradient(135deg, #F9CA24, #FF6B6B);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-text { font-family: var(--font-urdu); font-size: clamp(1.8rem,4vw,2.8rem); color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+  #curtain .curtain-sub { font-family: var(--font-urdu); font-size: clamp(1rem,2vw,1.4rem); color: rgba(255,255,255,0.9); }
+  .loader-ring { width: 60px; height: 60px; border: 6px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; max-width: 100%; }
+  .content-container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--dark); padding: 14px 0; }
+  .breadcrumb .content-container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .breadcrumb a, .breadcrumb span { font-family: 'Inter', sans-serif; font-size: 15px; color: rgba(255,255,255,0.7); text-decoration: none; }
+  .breadcrumb span.active { color: var(--sunshine); font-weight: 600; }
+  .breadcrumb .sep { color: rgba(255,255,255,0.4); }
+
+  /* HERO */
+  .hero {
+    width: 100vw; min-height: 80vh; background: linear-gradient(135deg, #2d3436 0%, #6c5ce7 50%, #a29bfe 100%);
+    display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+  }
+  .hero-bg-pattern { position: absolute; inset: 0; opacity: 0.1; }
+  .hero-content { position: relative; z-index: 2; text-align: center; padding: 40px 20px; }
+  .hero-badge { display: inline-block; background: var(--sunshine); color: var(--dark); padding: 8px 24px; border-radius: 50px; font-family: var(--font-urdu); font-size: clamp(1rem,2vw,1.3rem); font-weight: 700; margin-bottom: 20px; }
+  .hero h1 { font-family: var(--font-urdu); font-size: clamp(2.8rem,7vw,5rem); color: white; line-height: 1.4; margin-bottom: 20px; text-shadow: 3px 3px 20px rgba(0,0,0,0.5); }
+  .hero p { font-family: var(--font-urdu); font-size: clamp(1.1rem,2.5vw,1.5rem); color: rgba(255,255,255,0.85); max-width: 700px; margin: 0 auto 30px; line-height: 2; }
+  .hero-svg { width: 100%; max-width: 400px; margin: 0 auto; display: block; }
+
+  /* SIDEBAR + MAIN LAYOUT */
+  .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; align-items: start; max-width: 1500px; margin: 0 auto; padding: 40px 40px; }
+  .sidebar { position: sticky; top: 80px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 24px; }
+  .sidebar h3 { font-family: var(--font-urdu); font-size: 1.3rem; color: var(--coral); margin-bottom: 16px; text-align: center; border-bottom: 2px solid var(--coral); padding-bottom: 10px; }
+  .sidebar ul { list-style: none; }
+  .sidebar ul li { margin-bottom: 8px; }
+  .sidebar ul li a { font-family: var(--font-urdu); font-size: 1rem; color: var(--dark); text-decoration: none; display: block; padding: 10px 14px; border-radius: 8px; transition: all 0.3s; border-right: 3px solid transparent; }
+  .sidebar ul li a:hover, .sidebar ul li a.active { background: rgba(255,107,107,0.1); color: var(--coral); border-right-color: var(--coral); }
+  .main-content { min-width: 0; }
+
+  /* SECTION HEADERS */
+  .section-header { width: 100%; padding: 20px 40px; margin-bottom: 30px; border-radius: 12px; }
+  .section-header.sunshine { background: linear-gradient(135deg, var(--sunshine), #f0b90b); }
+  .section-header.sky { background: linear-gradient(135deg, var(--sky), #0abde3); }
+  .section-header.coral { background: linear-gradient(135deg, var(--coral), #ee5a24); }
+  .section-header.green { background: linear-gradient(135deg, var(--green), #27ae60); }
+  .section-header.purple { background: linear-gradient(135deg, var(--purple), #8e44ad); }
+  .section-header h2 { font-family: var(--font-urdu); font-size: clamp(2rem,4vw,2.8rem); color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+  .section-header p { font-family: var(--font-urdu); font-size: clamp(1rem,2vw,1.3rem); color: rgba(255,255,255,0.9); margin-top: 8px; }
+
+  /* CARDS */
+  .card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 28px; width: 100%; opacity: 1; transform: none; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+
+  /* STORY SECTION */
+  .story-text { font-family: var(--font-urdu); font-size: clamp(1.1rem,2vw,1.4rem); line-height: 2.5; color: var(--dark); text-align: right; }
+  .story-highlight { background: linear-gradient(120deg, rgba(249,202,36,0.3), rgba(249,202,36,0.1)); padding: 2px 6px; border-radius: 4px; }
+
+  /* VOCABULARY TABLE */
+  .vocab-table { width: 100%; border-collapse: collapse; font-family: var(--font-urdu); }
+  .vocab-table th { background: var(--coral); color: white; padding: 14px 18px; font-size: clamp(1rem,2vw,1.2rem); }
+  .vocab-table td { padding: 12px 18px; font-size: clamp(0.95rem,1.8vw,1.15rem); border-bottom: 1px solid #eee; }
+  .vocab-table tr:nth-child(even) { background: rgba(72,219,251,0.08); }
+  .vocab-table tr:hover { background: rgba(249,202,36,0.15); }
+  .table-wrap { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+  /* MAQASID */
+  .maqasid-list { list-style: none; }
+  .maqasid-list li { display: flex; align-items: flex-start; gap: 14px; padding: 14px; border-radius: 10px; margin-bottom: 12px; background: rgba(72,219,251,0.08); border-right: 4px solid var(--sky); font-family: var(--font-urdu); font-size: clamp(1rem,2vw,1.25rem); line-height: 1.8; }
+  .maqasid-list li .icon { font-size: 1.6rem; flex-shrink: 0; }
+
+  /* Q&A SECTION */
+  .qa-card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px; border-right: 5px solid var(--sunshine); }
+  .qa-question { font-family: var(--font-urdu); font-size: clamp(1.05rem,2vw,1.3rem); color: var(--dark); font-weight: 700; margin-bottom: 12px; }
+  .qa-answer { font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); color: #555; line-height: 2; background: rgba(249,202,36,0.1); padding: 12px; border-radius: 8px; }
+  .qa-num { display: inline-block; background: var(--coral); color: white; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; margin-left: 10px; flex-shrink: 0; }
+
+  /* MUTAZAD (OPPOSITES) */
+  .mutazad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .mutazad-card { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .mutazad-word { font-family: var(--font-urdu); font-size: clamp(1.1rem,2vw,1.35rem); padding: 10px 16px; border-radius: 8px; text-align: center; min-width: 100px; }
+  .mutazad-word.original { background: rgba(72,219,251,0.2); color: #0abde3; }
+  .mutazad-word.opposite { background: rgba(255,107,107,0.15); color: var(--coral); }
+  .arrow-icon { font-size: 1.4rem; color: #aaa; }
+
+  /* DRAG DROP */
+  .drag-area { min-height: 120px; border: 3px dashed #ccc; border-radius: 12px; padding: 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; transition: background 0.3s; }
+  .drag-area.over { background: rgba(72,219,251,0.2); border-color: var(--sky); }
+  .drag-item { background: white; border: 2px solid var(--sunshine); border-radius: 8px; padding: 10px 18px; font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); cursor: grab; user-select: none; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .drag-item:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .drag-item:active { cursor: grabbing; }
+  .drag-item.placed { background: rgba(107,203,119,0.2); border-color: var(--green); }
+  .drop-slot { min-width: 140px; min-height: 50px; border: 2px dashed #aaa; border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-urdu); font-size: clamp(0.9rem,1.5vw,1.1rem); color: #aaa; text-align: center; }
+  .drop-slot.filled { border-style: solid; border-color: var(--green); color: var(--dark); background: rgba(107,203,119,0.1); }
+  .timeline-items { display: flex; flex-direction: column; gap: 12px; }
+  .timeline-item { display: flex; align-items: center; gap: 14px; background: white; border-radius: 10px; padding: 14px 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); cursor: grab; border-right: 4px solid var(--sky); font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); transition: all 0.2s; }
+  .timeline-item:hover { transform: translateX(-4px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .timeline-item.dragging { opacity: 0.5; }
+  .tl-num { background: var(--coral); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; flex-shrink: 0; }
+
+  /* QUIZ */
+  .quiz-progress { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 24px; overflow: hidden; }
+  .quiz-progress-bar { height: 100%; background: linear-gradient(90deg, var(--sky), var(--coral)); border-radius: 4px; transition: width 0.5s ease; }
+  .quiz-question { font-family: var(--font-urdu); font-size: clamp(1.1rem,2vw,1.4rem); color: var(--dark); margin-bottom: 20px; line-height: 2; font-weight: 700; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quiz-opt { padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 10px; font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); background: white; cursor: pointer; transition: all 0.2s; text-align: right; min-height: 48px; display: flex; align-items: center; }
+  .quiz-opt:hover { border-color: var(--sky); background: rgba(72,219,251,0.08); }
+  .quiz-opt.correct { background: rgba(107,203,119,0.2); border-color: var(--green); color: #27ae60; }
+  .quiz-opt.wrong { background: rgba(255,107,107,0.2); border-color: var(--coral); color: #c0392b; }
+  .quiz-opt.disabled { pointer-events: none; }
+  .quiz-feedback { font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); padding: 12px; border-radius: 8px; margin-top: 14px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(107,203,119,0.2); color: #27ae60; }
+  .quiz-feedback.wrong { background: rgba(255,107,107,0.2); color: #c0392b; }
+  .quiz-nav { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-start; }
+  .btn { padding: 12px 28px; border: none; border-radius: 8px; font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.15rem); cursor: pointer; transition: all 0.2s; min-height: 48px; font-weight: 700; }
+  .btn-primary { background: var(--coral); color: white; }
+  .btn-primary:hover { background: #ee5a24; transform: translateY(-2px); }
+  .btn-secondary { background: var(--sky); color: white; }
+  .btn-secondary:hover { background: #0abde3; }
+  .btn-success { background: var(--green); color: white; }
+
+  /* SCORECARD */
+  .scorecard { text-align: center; padding: 40px; }
+  .score-circle-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 24px; }
+  .score-circle { transform: rotate(-90deg); }
+  .score-circle-bg { fill: none; stroke: #eee; stroke-width: 12; }
+  .score-circle-progress { fill: none; stroke: var(--coral); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1.5s ease; }
+  .score-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--dark); }
+  .score-msg { font-family: var(--font-urdu); font-size: clamp(1.2rem,2.5vw,1.6rem); color: var(--dark); margin-bottom: 16px; }
+  .score-detail { font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); color: #777; }
+
+  /* SENTENCE BUILDER */
+  .sentence-task { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .sentence-task .word-label { font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); color: var(--dark); margin-bottom: 14px; font-weight: 700; }
+  .sentence-input { width: 100%; border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 16px; font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); direction: rtl; transition: border-color 0.3s; min-height: 48px; }
+  .sentence-input:focus { outline: none; border-color: var(--sky); }
+  .sentence-feedback { font-family: var(--font-urdu); font-size: 1rem; color: #aaa; margin-top: 8px; }
+
+  /* SECTION SPACING */
+  section { padding: 50px 0; }
+  .section-inner { margin-bottom: 40px; }
+
+  /* CALLIGRAPHY DECORATION */
+  .cal-deco { text-align: center; margin: 20px 0; }
+  .cal-deco svg { max-width: 300px; }
+
+  /* MERMAID */
+  .mermaid-wrap { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: auto; }
+  .mermaid { font-family: var(--font-urdu) !important; }
+
+  /* STATS BAR */
+  .stats-bar { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; background: var(--dark); padding: 30px; border-radius: 12px; margin-bottom: 32px; }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Inter', sans-serif; font-size: clamp(2rem,4vw,3rem); font-weight: 800; color: var(--sunshine); }
+  .stat-label { font-family: var(--font-urdu); font-size: clamp(0.9rem,1.5vw,1.1rem); color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+  /* MOBILE NAV */
+  .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); z-index: 1000; padding: 8px 4px; overflow-x: auto; }
+  .mobile-nav ul { display: flex; list-style: none; gap: 4px; width: max-content; min-width: 100%; }
+  .mobile-nav ul li a { font-family: var(--font-urdu); font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; border-radius: 8px; min-height: 48px; justify-content: center; white-space: nowrap; }
+  .mobile-nav ul li a:hover { background: rgba(255,255,255,0.1); }
+  .mobile-nav ul li a .m-icon { font-size: 1.2rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .main-layout { grid-template-columns: 1fr; padding: 20px 16px; }
+    .sidebar { display: none; }
+    .mobile-nav { display: block; }
+    body { padding-bottom: 80px; }
+    .content-container { padding: 0 16px; }
+    .hero { min-height: 60vh; }
+    .stats-bar { gap: 20px; padding: 20px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .section-header { padding: 16px 20px; }
+    .card { padding: 18px; }
+    .mutazad-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2rem; }
+    .stats-bar { flex-direction: column; align-items: center; gap: 16px; }
+    .qa-card { padding: 16px; }
+  }
+
+  /* PARALLAX SECTION BG */
+  .parallax-bg { position: relative; overflow: hidden; }
+  .parallax-bg::before { content: ''; position: absolute; inset: -30px; background: inherit; z-index: 0; }
+
+  /* FILL BLANK */
+  .fill-blank { display: inline-block; border-bottom: 2px solid var(--coral); min-width: 80px; height: 28px; vertical-align: middle; }
+  .imla-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .imla-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .imla-word { font-family: var(--font-urdu); font-size: clamp(1.1rem,2vw,1.3rem); font-weight: 700; color: var(--coral); }
+  .imla-write { flex: 1; border: none; border-bottom: 2px solid #ccc; padding: 6px 4px; font-family: var(--font-urdu); font-size: clamp(1rem,1.8vw,1.2rem); direction: rtl; background: transparent; min-height: 40px; }
+  .imla-write:focus { outline: none; border-bottom-color: var(--sky); }
+
+  /* STORY CARD SPECIAL */
+  .story-card { background: linear-gradient(135deg, #fff9e6, #fff); border: 2px solid rgba(249,202,36,0.3); }
+  .story-ornament { text-align: center; font-size: 2rem; margin-bottom: 16px; }
+
+  /* HIDDEN initially for quiz sections */
+  #quiz-section { display: block; }
+  #scorecard-section { display: none; }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="curtain-text">🌙 خوشی کا دن</div>
+  <div class="curtain-sub">سبق نمبر ۱۵ لوڈ ہو رہا ہے...</div>
+  <div class="loader-ring"></div>
+</div>
+
+<div class="page-wrapper">
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <div class="content-container">
+      <a href="#">🏠 گھر</a>
+      <span class="sep">›</span>
+      <a href="#">اردو</a>
+      <span class="sep">›</span>
+      <a href="#">جماعت سوم</a>
+      <span class="sep">›</span>
+      <span class="active">سبق ۱۵: خوشی کا دن</span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="hero">
+    <!-- Calligraphic SVG decoration -->
+    <svg class="hero-bg-pattern" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="100" y="200" font-size="180" fill="white" opacity="0.07" font-family="serif" transform="rotate(-10,500,200)">عید</text>
+      <text x="500" y="350" font-size="120" fill="white" opacity="0.05" font-family="serif">خوشی</text>
+      <circle cx="200" cy="80" r="60" fill="rgba(255,255,255,0.05)"/>
+      <circle cx="800" cy="320" r="90" fill="rgba(255,255,255,0.04)"/>
+      <circle cx="900" cy="60" r="40" fill="rgba(255,255,255,0.06)"/>
+    </svg>
+    <div class="hero-content">
+      <div class="hero-badge">📚 سبق نمبر ۱۵ | جماعت سوم</div>
+      <h1>خوشی کا دن</h1>
+      <p>عید کی خوشیاں، خاندان کی محبت، اور دوستی کی مٹھاس — آج کے سبق میں ہم یہ سب سیکھیں گے!</p>
+      <!-- Hero SVG path drawing animation -->
+      <svg class="hero-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path id="hero-path" d="M20,60 Q100,20 200,60 Q300,100 380,60" stroke="#F9CA24" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="20" cy="60" r="8" fill="#FF6B6B"/>
+        <circle cx="200" cy="60" r="12" fill="#48DBFB"/>
+        <circle cx="380" cy="60" r="8" fill="#6BCB77"/>
+        <text x="80" y="40" font-size="28" fill="rgba(255,255,255,0.8)">🌙</text>
+        <text x="190" y="30" font-size="32" fill="rgba(255,255,255,0.9)">⭐</text>
+        <text x="280" y="50" font-size="28" fill="rgba(255,255,255,0.8)">🎉</text>
+      </svg>
+    </div>
+  </header>
+
+  <!-- STATS BAR -->
+  <div class="content-container" style="padding-top:40px">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num" data-target="5">0</div>
+        <div class="stat-label">مقاصد</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="4">0</div>
+        <div class="stat-label">الفاظ و معنی</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="5">0</div>
+        <div class="stat-label">سوالات</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="8">0</div>
+        <div class="stat-label">کوئز سوالات</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT: SIDEBAR + CONTENT -->
+  <div class="main-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="فہرست مضامین">
+      <h3>📋 فہرست</h3>
+      <ul id="toc">
+        <li><a href="#maqasid">🎯 مقاصد</a></li>
+        <li><a href="#matn">📖 متن سبق</a></li>
+        <li><a href="#alfaz">📝 الفاظ و معنی</a></li>
+        <li><a href="#sawalat">❓ سوالات</a></li>
+        <li><a href="#jumle">✍️ جملے بنائیں</a></li>
+        <li><a href="#imla">🔤 املا کے الفاظ</a></li>
+        <li><a href="#mutazad">🔄 الفاظ متضاد</a></li>
+        <li><a href="#activity">🎮 سرگرمیاں</a></li>
+        <li><a href="#quiz">🧠 کوئز</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- MAQASID SECTION -->
+      <section id="maqasid">
+        <div class="section-header sky">
+          <h2>🎯 مقاصد</h2>
+          <p>اس سبق کو پڑھنے کے بعد طلبہ قابل ہو جائیں گے کہ وہ:</p>
+        </div>
+        <div class="card section-inner">
+          <ul class="maqasid-list">
+            <li>
+              <span class="icon">🌟</span>
+              <span>عید کی خوشیوں اور خاندان کے رشتوں کی اہمیت کو سمجھ سکیں۔</span>
+            </li>
+            <li>
+              <span class="icon">🎊</span>
+              <span>عید کے تہوار کی قدر کو جان سکیں۔</span>
+            </li>
+            <li>
+              <span class="icon">🤝</span>
+              <span>معافی اور دوستی کو فروغ دے سکیں۔</span>
+            </li>
+            <li>
+              <span class="icon">📚</span>
+              <span>نئے الفاظ سیکھ کر جملوں میں استعمال کر سکیں۔</span>
+            </li>
+            <li>
+              <span class="icon">✍️</span>
+              <span>الفاظ کے متضاد معنی بتا سکیں۔</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Concept Map via Mermaid -->
+        <div class="mermaid-wrap section-inner">
+          <h3 style="font-family:var(--font-urdu);font-size:1.4rem;margin-bottom:16px;color:var(--coral);text-align:center;">سبق کا خلاصہ (تصویری نقشہ)</h3>
+          <div class="mermaid">
+graph TD
+    A[خوشی کا دن] --> B[عید کی تیاری]
+    A --> C[خاندان کا اجتماع]
+    A --> D[دوستی اور معافی]
+    B --> E[مہندی لگانا]
+    B --> F[نئے کپڑے]
+    B --> G[نماز عید]
+    C --> H[دادا جان اور ابو جان]
+    C --> I[تایا جان اور چچو]
+    D --> J[علی اور راحیل]
+    D --> K[عیدی لینا]
+    style A fill:#FF6B6B,color:white
+    style B fill:#48DBFB,color:white
+    style C fill:#F9CA24,color:#333
+    style D fill:#6BCB77,color:white
+          </div>
+        </div>
+      </section>
+
+      <!-- MATN SECTION -->
+      <section id="matn">
+        <div class="section-header sunshine">
+          <h2>📖 متن سبق — خوشی کا دن</h2>
+          <p>غور سے پڑھیں اور سمجھیں</p>
+        </div>
+
+        <div class="cal-deco">
+          <svg viewBox="0 0 300 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10,20 Q75,5 150,20 Q225,35 290,20" stroke="#F9CA24" stroke-width="3" fill="none"/>
+            <circle cx="10" cy="20" r="5" fill="#FF6B6B"/>
+            <circle cx="150" cy="20" r="7" fill="#48DBFB"/>
+            <circle cx="290" cy="20" r="5" fill="#6BCB77"/>
+          </svg>
+        </div>
+
+        <div class="card story-card section-inner">
+          <div class="story-ornament">🌙 ✨ 🌙</div>
+          <p class="story-text">
+            <span class="story-highlight">آنکھیں کتنا چار تک آیا ہے</span>! زارا صبح آنکھ کھلتے ہی اٹھی کے پاس بھاگتی ہوئی گئی اور اپنی مہندی لگے ہاتھ دکھائے۔ اٹھی نے اسے پیار کیا اور <span class="story-highlight">عید مبارک</span> کہا۔ زارا اور علی تیار ہونے لگے۔ دونوں تیار ہو کر آئے تو بہت پیارے لگ رہے تھے۔
+            <br><br>
+            زارا نے گلابی فراک پہنی جس میں ستارے لگے تھے۔ علی نے کرتا شلوار پہنا تھا۔ اس کی ٹوپی پر شیشے لگے تھے۔ دادا جان اور ابو جان بھی تیار تھے۔ تایا جان اور ان کا بیٹا فوزان بھی آ گئے تھے۔ سب نے سوئیاں کھائیں اور نماز پڑھنے عید گاہ چلے گئے۔
+            <br><br>
+            نماز کے بعد سب عید ملے۔ واپسی پر ابو نے بچوں کو <span class="story-highlight">گبارے دلوائے اور مٹھائی خریدی</span>۔ گھر آ کر اٹھی اور دادی جان کو سب نے عید مبارک کہا۔ داداجان، ابوجان، تایا جان سب سے عیدی ملی۔ زارا اور علی نے ان کو سلام کیا۔ زارا نے اپنے ستاروں والے پرس میں پیسے رکھے اور علی نے اپنی جیب میں۔
+            <br><br>
+            علی باہر اپنے دوستوں سے عید ملنے گیا۔ راحیل سے اس کی دو تین دن سے لڑائی تھی لیکن آج دونوں نے غصہ ختم کر کے خوشی ایک دوسرے سے عید ملے۔ پھر علی اور زارا چچو جان کے گھر سوئیاں دینے گئے۔ پچھو جان نے بہت پیار کیا اور عیدی دی۔
+            <br><br>
+            دو پہر کے کھانے کے بعد وہ دونوں اپنے اٹھی ابو کے ساتھ ناناجان کے گھر گئے۔ وہاں اپنے ماموں جان اور خالہ جان کے بچوں کے ساتھ خوب کھیلے۔ رات کا کھانا کھا کر واپس آئے۔ دونوں کو بہت ساری عیدی ملنے کی خوشی تھی مگر سب رشتے داروں سے ملنے کی <span class="story-highlight">خوشی اس سے بڑھ کر تھی</span>۔
+          </p>
+          <div class="story-ornament" style="margin-top:20px;">✨ 🌟 ✨</div>
+        </div>
+      </section>
+
+      <!-- ALFAZ SECTION -->
+      <section id="alfaz">
+        <div class="section-header coral">
+          <h2>📝 الفاظ اور معنی</h2>
+          <p>نئے الفاظ سیکھیں</p>
+        </div>
+        <div class="table-wrap section-inner">
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th>الفاظ</th>
+                <th>معنی</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>مہندی</td>
+                <td>ہاتھوں پر لگانے والا رنگ</td>
+              </tr>
+              <tr>
+                <td>عید مبارک</td>
+                <td>عید کی مبارکباد</td>
+              </tr>
+              <tr>
+                <td>لڑائی</td>
+                <td>جھگڑا</td>
+              </tr>
+              <tr>
+                <td>رشتے دار</td>
+                <td>خاندان کے افراد</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SAWALAT SECTION -->
+      <section id="sawalat">
+        <div class="section-header green">
+          <h2>❓ مندرجہ ذیل سوالات کے جوابات لکھیں</h2>
+          <p>سوالات غور سے پڑھیں اور جوابات دیں</p>
+        </div>
+
+        <div class="section-inner">
+          <div class="qa-card">
+            <div class="qa-question">
+              <span class="qa-num">1</span>
+              کس چیز کا رنگ اچھا آیا تھا؟
+            </div>
+            <div class="qa-answer">
+              زارا کی مہندی کا رنگ اچھا آیا تھا۔ صبح آنکھ کھلتے ہی زارا اٹھی کے پاس بھاگتی ہوئی گئی اور اپنی مہندی لگے ہاتھ دکھائے۔
+            </div>
+          </div>
+
+          <div class="qa-card" style="border-color:var(--sky)">
+            <div class="qa-question">
+              <span class="qa-num" style="background:var(--sky)">2</span>
+              اٹھی نے زارا کو پیار کر کے کیا کہا؟
+            </div>
+            <div class="qa-answer">
+              اٹھی نے زارا کو پیار کیا اور "عید مبارک" کہا۔
+            </div>
+          </div>
+
+          <div class="qa-card" style="border-color:var(--green)">
+            <div class="qa-question">
+              <span class="qa-num" style="background:var(--green)">3</span>
+              علی نے کیا پہنا تھا؟
+            </div>
+            <div class="qa-answer">
+              علی نے کرتا شلوار پہنا تھا اور اس کی ٹوپی پر شیشے لگے تھے۔
+            </div>
+          </div>
+
+          <div class="qa-card" style="border-color:var(--purple)">
+            <div class="qa-question">
+              <span class="qa-num" style="background:var(--purple)">4</span>
+              علی اور راحیل لڑائی کے باوجود عید کیوں ملے؟
+            </div>
+            <div class="qa-answer">
+              علی اور راحیل کی دو تین دن سے لڑائی تھی لیکن عید کے موقع پر دونوں نے غصہ ختم کر کے ایک دوسرے سے خوشی سے عید ملے۔ عید معافی اور محبت کا موقع ہے۔
+            </div>
+          </div>
+
+          <div class="qa-card" style="border-color:var(--coral)">
+            <div class="qa-question">
+              <span class="qa-num">5</span>
+              علی اور زارا کو عیدی ملنے سے زیادہ کس بات کی خوشی تھی؟
+            </div>
+            <div class="qa-answer">
+              دونوں کو بہت ساری عیدی ملنے کی خوشی تھی مگر سب رشتے داروں سے ملنے کی خوشی اس سے بڑھ کر تھی۔
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JUMLE SECTION -->
+      <section id="jumle">
+        <div class="section-header purple">
+          <h2>✍️ مندرجہ ذیل الفاظ کے جملے بنائیں</h2>
+          <p>ہر لفظ کو جملے میں استعمال کریں</p>
+        </div>
+
+        <div class="section-inner">
+          <div class="sentence-task">
+            <div class="word-label">📌 لفظ: <strong style="color:var(--coral)">عید</strong></div>
+            <input class="sentence-input" type="text" placeholder="یہاں جملہ لکھیں..." dir="rtl" id="j1">
+            <div class="sentence-feedback" id="j1-fb">مثال: عید کا دن بہت خوشی کا دن ہوتا ہے۔</div>
+            <button class="btn btn-secondary" onclick="showHint('j1-fb')" style="margin-top:10px">💡 مثال دیکھیں</button>
+          </div>
+
+          <div class="sentence-task">
+            <div class="word-label">📌 لفظ: <strong style="color:var(--sky)">مٹھائی</strong></div>
+            <input class="sentence-input" type="text" placeholder="یہاں جملہ لکھیں..." dir="rtl" id="j2">
+            <div class="sentence-feedback" id="j2-fb">مثال: عید پر ابو نے بچوں کو مٹھائی دلوائی۔</div>
+            <button class="btn btn-secondary" onclick="showHint('j2-fb')" style="margin-top:10px">💡 مثال دیکھیں</button>
+          </div>
+
+          <div class="sentence-task">
+            <div class="word-label">📌 لفظ: <strong style="color:var(--green)">نماز</strong></div>
+            <input class="sentence-input" type="text" placeholder="یہاں جملہ لکھیں..." dir="rtl" id="j3">
+            <div class="sentence-feedback" id="j3-fb">مثال: ہم نے عید گاہ میں نماز پڑھی۔</div>
+            <button class="btn btn-secondary" onclick="showHint('j3-fb')" style="margin-top:10px">💡 مثال دیکھیں</button>
+          </div>
+
+          <div class="sentence-task">
+            <div class="word-label">📌 لفظ: <strong style="color:var(--purple)">لڑائی</strong></div>
+            <input class="sentence-input" type="text" placeholder="یہاں جملہ لکھیں..." dir="rtl" id="j4">
+            <div class="sentence-feedback" id="j4-fb">مثال: لڑائی کرنا اچھی بات نہیں ہے۔</div>
+            <button class="btn btn-secondary" onclick="showHint('j4-fb')" style="margin-top:10px">💡 مثال دیکھیں</button>
+          </div>
+
+          <div class="sentence-task">
+            <div class="word-label">📌 لفظ: <strong style="color:var(--coral)">مہندی</strong></div>
+            <input class="sentence-input" type="text" placeholder="یہاں جملہ لکھیں..." dir="rtl" id="j5">
+            <div class="sentence-feedback" id="j5-fb">مثال: زارا نے عید پر مہندی لگوائی۔</div>
+            <button class="btn btn-secondary" onclick="showHint('j5-fb')" style="margin-top:10px">💡 مثال دیکھیں</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMLA SECTION -->
+      <section id="imla">
+        <div class="section-header sky">
+          <h2>🔤 املا کے الفاظ</h2>
+          <p>مندرجہ ذیل الفاظ لکھیں اور درست املا سیکھیں</p>
+        </div>
+
+        <div class="section-inner">
+          <div class="imla-grid">
+            <div class="imla-card">
+              <div class="imla-word">مہندی</div>
+              <input class="imla-write" type="text" placeholder="لکھیں..." dir="rtl" aria-label="مہندی لکھیں">
+            </div>
+            <div class="imla-card">
+              <div class="imla-word">رشتے دار</div>
+              <input class="imla-write" type="text" placeholder="لکھیں..." dir="rtl" aria-label="رشتے دار لکھیں">
+            </div>
+            <div class="imla-card">
+              <div class="imla-word">لڑائی</div>
+              <input class="imla-write" type="text" placeholder="لکھیں..." dir="rtl" aria-label="لڑائی لکھیں">
+            </div>
+            <div class="imla-card">
+              <div class="imla-word">عید مبارک</div>
+              <input class="imla-write" type="text" placeholder="لکھیں..." dir="rtl" aria-label="عید مبارک لکھیں">
+            </div>
+          </div>
+          <div style="text-align:center; margin-top:20px;">
+            <button class="btn btn-primary" onclick="checkImla()">✅ چیک کریں</button>
+            <button class="btn btn-secondary" onclick="clearImla()" style="margin-right:12px;">🔄 دوبارہ کریں</button>
+          </div>
+          <div id="imla-result" style="font-family:var(--font-urdu);font-size:1.1rem;text-align:center;margin-top:16px;"></div>
+        </div>
+      </section>
+
+      <!-- MUTAZAD SECTION -->
+      <section id="mutazad">
+        <div class="section-header coral">
+          <h2>🔄 الفاظ متضاد</h2>
+          <p>ان الفاظ کے متضاد لکھیں</p>
+        </div>
+
+        <div class="section-inner">
+          <h3 style="font-family:var(--font-urdu);font-size:1.4rem;margin-bottom:20px;color:var(--dark);">سوال ۷: ان الفاظ کے متضاد لکھیں</h3>
+          <div class="mutazad-grid" id="mutazad-grid-7">
+            <!-- آغاز -->
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آغاز</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="انجام" id="m7-1">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آہستہ</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="تیز" id="m7-2">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">اضافہ</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="کمی" id="m7-3">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">اسلام</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="کفر" id="m7-4">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آسمان</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="زمین" id="m7-5">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آخرت</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="دنیا" id="m7-6">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آرام</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="تکلیف" id="m7-7">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">اصل</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="نقل" id="m7-8">
+            </div>
+            <div class="mutazad-card">
+              <div class="mutazad-word original">آسمان</div>
+              <span class="arrow-icon">↔</span>
+              <input type="text" placeholder="متضاد لکھیں" dir="rtl" style="font-family:var(--font-urdu);font-size:1.1rem;border:2px solid #e0e0e0;border-radius:8px;padding:10px;flex:1;text-align:center;" data-answer="زمین" id="m7-9">
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:20px;">
+            <button class="btn btn-primary" onclick="checkMutazad7()">✅ جواب چیک کریں</button>
+          </div>
+          <div id="mutazad7-result" style="font-family:var(--font-urdu);font-size:1.1rem;text-align:center;margin-top:16px;"></div>
+
+          <hr style="margin:40px 0;border:none;border-top:2px dashed #eee;">
+
+          <h3 style="font-family:var(--font-urdu);font-size:1.4rem;margin-bottom:20px;color:var(--dark);">سوال ۸: الفاظ کو متضاد (الٹ) سے ملائیں</h3>
+          <div class="card">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+              <div>
+                <h4 style="font-family:var(--font-urdu);font-size:1.2rem;color:var(--sky);margin-bottom:16px;text-align:center;">الفاظ</h4>
+                <div id="match-words" style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="match-word" data-word="نیکی" style="background:rgba(72,219,251,0.15);border:2px solid var(--sky);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="selectMatch(this)">نیکی</div>
+                  <div class="match-word" data-word="وہاں" style="background:rgba(72,219,251,0.15);border:2px solid var(--sky);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="selectMatch(this)">وہاں</div>
+                  <div class="match-word" data-word="ہار" style="background:rgba(72,219,251,0.15);border:2px solid var(--sky);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="selectMatch(this)">ہار</div>
+                  <div class="match-word" data-word="ہاں" style="background:rgba(72,219,251,0.15);border:2px solid var(--sky);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="selectMatch(this)">ہاں</div>
+                  <div class="match-word" data-word="ہدایت" style="background:rgba(72,219,251,0.15);border:2px solid var(--sky);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="selectMatch(this)">ہدایت</div>
+                </div>
+              </div>
+              <div>
+                <h4 style="font-family:var(--font-urdu);font-size:1.2rem;color:var(--coral);margin-bottom:16px;text-align:center;">متضاد</h4>
+                <div id="match-opp" style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="match-opp" data-opp="نہیں" data-match="وہاں" style="background:rgba(255,107,107,0.1);border:2px solid var(--coral);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="tryMatch(this)">نہیں</div>
+                  <div class="match-opp" data-opp="جیت" data-match="ہار" style="background:rgba(255,107,107,0.1);border:2px solid var(--coral);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="tryMatch(this)">جیت</div>
+                  <div class="match-opp" data-opp="بدی" data-match="نیکی" style="background:rgba(255,107,107,0.1);border:2px solid var(--coral);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="tryMatch(this)">بدی</div>
+                  <div class="match-opp" data-opp="یہاں" data-match="وہاں" style="background:rgba(255,107,107,0.1);border:2px solid var(--coral);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="tryMatch(this)">یہاں</div>
+                  <div class="match-opp" data-opp="گمراہی" data-match="ہدایت" style="background:rgba(255,107,107,0.1);border:2px solid var(--coral);border-radius:8px;padding:12px;font-family:var(--font-urdu);font-size:1.15rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="tryMatch(this)">گمراہی</div>
+                </div>
+              </div>
+            </div>
+            <div id="match-result" style="font-family:var(--font-urdu);font-size:1.1rem;text-align:center;margin-top:16px;padding:12px;border-radius:8px;display:none;"></div>
+            <div style="text-align:center;margin-top:16px;">
+              <button class="btn btn-secondary" onclick="resetMatch()">🔄 دوبارہ کریں</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY SECTION -->
+      <section id="activity">
+        <div class="section-header sunshine">
+          <h2>🎮 سرگرمیاں</h2>
+          <p>مزے دار سرگرمیاں کریں</p>
+        </div>
+
+        <!-- Timeline Activity -->
+        <div class="card section-inner">
+          <h3 style="font-family:var(--font-urdu);font-size:1.4rem;color:var(--coral);margin-bottom:8px;">⏱️ واقعات کی ترتیب</h3>
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;color:#777;margin-bottom:20px;">عید کے دن کے واقعات کو درست ترتیب میں لگائیں (گھسیٹ کر ترتیب بنائیں)</p>
+          <div id="timeline-container" class="timeline-items">
+            <div class="timeline-item" draggable="true" data-order="3" id="tl-3">
+              <div class="tl-num">?</div>
+              <span>نماز عید کے لیے عید گاہ جانا</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="1" id="tl-1">
+              <div class="tl-num">?</div>
+              <span>صبح اٹھ کر مہندی کے ہاتھ دکھانا</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="5" id="tl-5">
+              <div class="tl-num">?</div>
+              <span>ناناجان کے گھر جانا</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="2" id="tl-2">
+              <div class="tl-num">?</div>
+              <span>نئے کپڑے پہن کر تیار ہونا</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="4" id="tl-4">
+              <div class="tl-num">?</div>
+              <span>علی کا دوستوں سے عید ملنا اور راحیل سے صلح کرنا</span>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="checkTimeline()">✅ ترتیب چیک کریں</button>
+            <button class="btn btn-secondary" onclick="shuffleTimeline()">🔀 ملاؤ</button>
+          </div>
+          <div id="timeline-result" style="font-family:var(--font-urdu);font-size:1.1rem;text-align:center;margin-top:16px;"></div>
+        </div>
+
+        <!-- Drag Drop Activity -->
+        <div class="card section-inner">
+          <h3 style="font-family:var(--font-urdu);font-size:1.4rem;color:var(--sky);margin-bottom:8px;">🎯 خانہ پری کریں</h3>
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;color:#777;margin-bottom:20px;">الفاظ کو صحیح جگہ پر ڈریگ کریں</p>
+
+          <div style="background:rgba(249,202,36,0.1);border:2px solid rgba(249,202,36,0.3);border-radius:12px;padding:20px;margin-bottom:20px;">
+            <p style="font-family:var(--font-urdu);font-size:1.15rem;line-height:2.5;text-align:right;">
+              زارا نے اٹھی کو 
+              <span class="drop-slot" id="slot1" ondragover="dragOver(event)" ondrop="dropItem(event,'slot1')">یہاں ڈریگ کریں</span>
+              کے ہاتھ دکھائے۔ علی نے 
+              <span class="drop-slot" id="slot2" ondragover="dragOver(event)" ondrop="dropItem(event,'slot2')">یہاں ڈریگ کریں</span>
+              پہنی۔ سب نے 
+              <span class="drop-slot" id="slot3" ondragover="dragOver(event)" ondrop="dropItem(event,'slot3')">یہاں ڈریگ کریں</span>
+              پڑھی اور 
+              <span class="drop-slot" id="slot4" ondragover="dragOver(event)" ondrop="dropItem(event,'slot4')">یہاں ڈریگ کریں</span>
+              ملے۔
+            </p>
+          </div>
+
+          <div class="drag-area" id="drag-bank">
+            <div class="drag-item" draggable="true" data-val="مہندی" id="di-1" ondragstart="dragStart(event)">مہندی</div>
+            <div class="drag-item" draggable="true" data-val="کرتا شلوار" id="di-2" ondragstart="dragStart(event)">کرتا شلوار</div>
+            <div class="drag-item" draggable="true" data-val="نماز" id="di-3" ondragstart="dragStart(event)">نماز</div>
+            <div class="drag-item" draggable="true" data-val="عید" id="di-4" ondragstart="dragStart(event)">عید</div>
+          </div>
+
+          <div style="text-align:center;margin-top:16px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="checkDragDrop()">✅ چیک کریں</button>
+            <button class="btn btn-secondary" onclick="resetDragDrop()">🔄 دوبارہ کریں</button>
+          </div>
+          <div id="drag-result" style="font-family:var(--font-urdu);font-size:1.1rem;text-align:center;margin-top:16px;"></div>
+        </div>
+      </section>
+
+      <!-- QUIZ SECTION -->
+      <section id="quiz">
+        <div class="section-header purple">
+          <h2>🧠 کوئز — اپنی سمجھ کو جانچیں</h2>
+          <p>آٹھ سوالات کے جوابات دیں</p>
+        </div>
+
+        <div class="card" id="quiz-section">
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar" id="quiz-prog" style="width:0%"></div>
+          </div>
+          <div id="quiz-qnum" style="font-family:'Inter';font-size:15px;color:#aaa;margin-bottom:8px;text-align:left;">سوال 1 / 8</div>
+          <div class="quiz-question" id="quiz-q"></div>
+          <div class="quiz-options" id="quiz-opts"></div>
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+          <div class="quiz-nav">
+            <button class="btn btn-primary" id="quiz-next" onclick="nextQuestion()" style="display:none;">اگلا سوال ←</button>
+          </div>
+        </div>
+
+        <!-- SCORECARD -->
+        <div class="card" id="scorecard-section" style="display:none;">
+          <div class="scorecard">
+            <h3 style="font-family:var(--font-urdu);font-size:clamp(1.5rem,3vw,2rem);color:var(--dark);margin-bottom:20px;">🎉 شاندار! آپ کا نتیجہ</h3>
+            <div class="score-circle-wrap">
+              <svg class="score-circle" width="160" height="160" viewBox="0 0 160 160">
+                <circle class="score-circle-bg" cx="80" cy="80" r="68"/>
+                <circle class="score-circle-progress" id="score-ring" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
+              </svg>
+              <div class="score-num" id="score-num">0%</div>
+            </div>
+            <div class="score-msg" id="score-msg"></div>
+            <div class="score-detail" id="score-detail"></div>
+            <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:24px;">🔄 دوبارہ کوشش کریں</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav" aria-label="موبائل نیویگیشن">
+    <ul>
+      <li><a href="#maqasid"><span class="m-icon">🎯</span>مقاصد</a></li>
+      <li><a href="#matn"><span class="m-icon">📖</span>متن</a></li>
+      <li><a href="#alfaz"><span class="m-icon">📝</span>الفاظ</a></li>
+      <li><a href="#sawalat"><span class="m-icon">❓</span>سوالات</a></li>
+      <li><a href="#jumle"><span class="m-icon">✍️</span>جملے</a></li>
+      <li><a href="#imla"><span class="m-icon">🔤</span>املا</a></li>
+      <li><a href="#mutazad"><span class="m-icon">🔄</span>متضاد</a></li>
+      <li><a href="#activity"><span class="m-icon">🎮</span>سرگرمی</a></li>
+      <li><a href="#quiz"><span class="m-icon">🧠</span>کوئز</a></li>
+    </ul>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK — MUST BE FIRST
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ===== LENIS SMOOTH SCROLL =====
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis init failed:', e); }
+
+  // ===== MERMAID =====
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', fontFamily: 'Noto Nastaliq Urdu, serif' });
+    }
+  } catch(e) { console.warn('Mermaid init failed:', e); }
+
+  // ===== GSAP ANIMATIONS =====
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero SVG path drawing
+      const heroPath = document.getElementById('hero-path');
+      if (heroPath) {
+        const len = heroPath.getTotalLength ? heroPath.getTotalLength() : 400;
+        gsap.set(heroPath, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(heroPath, { strokeDashoffset: 0, duration: 2, ease: 'power2.out', delay: 0.5 });
+      }
+
+      // Curtain dismiss with GSAP
+      const curtain = document.getElementById('curtain');
+      if (curtain) {
+        gsap.to(curtain, { opacity: 0, duration: 0.8, delay: 1.5, onComplete: () => { curtain.style.display = 'none'; } });
+      }
+
+      // Hero content animation
+      gsap.from('.hero-badge', { y: -30, opacity: 0, duration: 0.8, delay: 0.3 });
+      gsap.from('.hero h1', { y: 40, opacity: 0, duration: 1, delay: 0.5 });
+      gsap.from('.hero p', { y: 30, opacity: 0, duration: 0.8, delay: 0.8 });
+      gsap.from('.hero-svg', { scale: 0.8, opacity: 0, duration: 1, delay: 1 });
+
+      // Stats counters
+      document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+        const target = parseInt(el.getAttribute('data-target'));
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: target, duration: 2, delay: 0.5,
+          ease: 'power2.out',
+          onUpdate: () => { el.textContent = Math.round(obj.val); }
+        });
+      });
+
+      // ScrollTrigger card reveals
+      if (typeof ScrollTrigger !== 'undefined') {
+        document.querySelectorAll('.card, .qa-card, .mutazad-card, .imla-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' },
+            y: 20, opacity: 0, duration: 0.6, delay: (i % 4) * 0.1
+          });
+        });
+
+        // Section header reveals
+        document.querySelectorAll('.section-header').forEach(hdr => {
+          gsap.from(hdr, {
+            scrollTrigger: { trigger: hdr, start: 'top 85%' },
+            x: -30, opacity: 0, duration: 0.7
+          });
+        });
+
+        // Parallax on hero
+        gsap.to('.hero', {
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+          backgroundPositionY: '30%'
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+
+  // ===== TOC INTERSECTION OBSERVER =====
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('#toc a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => observer.observe(s));
+  } catch(e) { console.warn('IntersectionObserver failed:', e); }
+
+  // ===== QUIZ INIT =====
+  initQuiz();
+
+  // ===== TIMELINE INIT =====
+  initTimeline();
+});
+
+// ===== HINT FUNCTION =====
+function showHint(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'block';
+    el.style.background = 'rgba(107,203,119,0.15)';
+    el.style.padding = '10px';
+    el.style.borderRadius = '8px';
+    el.style.color = '#27ae60';
+    el.style.marginTop = '8px';
+  }
+}
+
+// ===== IMLA =====
+const imlaAnswers = ['مہندی', 'رشتے دار', 'لڑائی', 'عید مبارک'];
+function checkImla() {
+  const inputs = document.querySelectorAll('.imla-write');
+  let correct = 0;
+  inputs.forEach((inp, i) => {
+    if (inp.value.trim() === imlaAnswers[i]) {
+      inp.style.borderBottomColor = '#27ae60';
+      inp.style.background = 'rgba(107,203,119,0.1)';
+      correct++;
+    } else {
+      inp.style.borderBottomColor = '#FF6B6B';
+      inp.style.background = 'rgba(255,107,107,0.1)';
+    }
+  });
+  const res = document.getElementById('imla-result');
+  if (res) {
+    res.textContent = `آپ نے ${correct} / ${imlaAnswers.length} درست لکھے!`;
+    res.style.color = correct === imlaAnswers.length ? '#27ae60' : '#e17055';
+  }
+}
+function clearImla() {
+  document.querySelectorAll('.imla-write').forEach(inp => {
+    inp.value = '';
+    inp.style.borderBottomColor = '#ccc';
+    inp.style.background = 'transparent';
+  });
+  const res = document.getElementById('imla-result');
+  if (res) res.textContent = '';
+}
+
+// ===== MUTAZAD 7 =====
+const mutazad7Answers = {
+  'm7-1': 'انجام', 'm7-2': 'تیز', 'm7-3': 'کمی',
+  'm7-4': 'کفر', 'm7-5': 'زمین', 'm7-6': 'دنیا',
+  'm7-7': 'تکلیف', 'm7-8': 'نقل', 'm7-9': 'زمین'
+};
+function checkMutazad7() {
+  let correct = 0, total = 0;
+  Object.entries(mutazad7Answers).forEach(([id, ans]) => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    total++;
+    if (inp.value.trim() === ans) {
+      inp.style.borderColor = '#27ae60'; inp.style.background = 'rgba(107,203,119,0.1)'; correct++;
+    } else {
+      inp.style.borderColor = '#FF6B6B'; inp.style.background = 'rgba(255,107,107,0.1)';
+    }
+  });
+  const r = document.getElementById('mutazad7-result');
+  if (r) { r.textContent = `${correct} / ${total} درست جوابات`; r.style.color = correct === total ? '#27ae60' : '#e17055'; }
+}
+
+// ===== MATCH =====
+let selectedWord = null;
+let matchResults = {};
+const correctMatches = { 'نیکی': 'بدی', 'وہاں': 'یہاں', 'ہار': 'جیت', 'ہاں': 'نہیں', 'ہدایت': 'گمراہی' };
+
+function selectMatch(el) {
+  document.querySelectorAll('.match-word').forEach(w => w.style.background = 'rgba(72,219,251,0.15)');
+  el.style.background = 'rgba(249,202,36,0.4)';
+  selectedWord = el.getAttribute('data-word');
+}
+
+function tryMatch(el) {
+  if (!selectedWord) { alert('پہلے بائیں طرف سے لفظ منتخب کریں'); return; }
+  const opp = el.getAttribute('data-opp');
+  const expectedWord = el.getAttribute('data-match');
+  if (selectedWord === expectedWord) {
+    el.style.background = 'rgba(107,203,119,0.3)';
+    el.style.borderColor = '#27ae60';
+    const wordEl = document.querySelector(`.match-word[data-word="${selectedWord}"]`);
+    if (wordEl) { wordEl.style.background = 'rgba(107,203,119,0.3)'; wordEl.style.borderColor = '#27ae60'; wordEl.style.pointerEvents = 'none'; }
+    el.style.pointerEvents = 'none';
+    matchResults[selectedWord] = opp;
+    selectedWord = null;
+    if (Object.keys(matchResults).length === 5) {
+      const r = document.getElementById('match-result');
+      if (r) { r.textContent = '🎉 شاباش! تمام الفاظ درست ملائے!'; r.style.background = 'rgba(107,203,119,0.2)'; r.style.color = '#27ae60'; r.style.display = 'block'; }
+    }
+  } else {
+    el.style.background = 'rgba(255,107,107,0.3)';
+    setTimeout(() => { el.style.background = 'rgba(255,107,107,0.1)'; }, 500);
+    selectedWord = null;
+    document.querySelectorAll('.match-word').forEach(w => w.style.background = 'rgba(72,219,251,0.15)');
+  }
+}
+
+function resetMatch() {
+  matchResults = {};
+  selectedWord = null;
+  document.querySelectorAll('.match-word').forEach(w => {
+    w.style.background = 'rgba(72,219,251,0.15)'; w.style.borderColor = 'var(--sky)'; w.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.match-opp').forEach(w => {
+    w.style.background = 'rgba(255,107,107,0.1)'; w.style.borderColor = 'var(--coral)'; w.style.pointerEvents = 'auto';
+  });
+  const r = document.getElementById('match-result');
+  if (r) r.style.display = 'none';
+}
+
+// ===== DRAG DROP =====
+let draggedItem = null;
+const slotAnswers = { 'slot1': 'مہندی', 'slot2': 'کرتا شلوار', 'slot3': 'نماز', 'slot4': 'عید' };
+const slotContents = {};
+
+function dragStart(event) {
+  draggedItem = event.target;
+  event.dataTransfer.setData('text/plain', event.target.getAttribute('data-val'));
+  event.dataTransfer.setData('id', event.target.id);
+  setTimeout(() => { if (draggedItem) draggedItem.style.opacity = '0.5'; }, 0);
+}
+
+function dragOver(event) {
+  event.preventDefault();
+  event.currentTarget.style.background = 'rgba(72,219,251,0.2)';
+}
+
+function dropItem(event, slotId) {
+  event.preventDefault();
+  const val = event.dataTransfer.getData('text/plain');
+  const srcId = event.dataTransfer.getData('id');
+  const slot = document.getElementById(slotId);
+  if (!slot) return;
+  slot.textContent = val;
+  slot.classList.add('filled');
+  slot.style.background = '';
+  slotContents[slotId] = val;
+  const src = document.getElementById(srcId);
+  if (src) { src.style.opacity = '0.3'; src.style.pointerEvents = 'none'; }
+  draggedItem = null;
+}
+
+function checkDragDrop() {
+  let correct = 0;
+  Object.entries(slotAnswers).forEach(([id, ans]) => {
+    const slot = document.getElementById(id);
+    if (!slot) return;
+    if (slotContents[id] === ans) {
+      slot.style.background = 'rgba(107,203,119,0.3)';
+      slot.style.borderColor = '#27ae60';
+      correct++;
+    } else {
+      slot.style.background = 'rgba(255,107,107,0.2)';
+      slot.style.borderColor = '#FF6B6B';
+    }
+  });
+  const r = document.getElementById('drag-result');
+  if (r) {
+    r.textContent = correct === 4 ? '🎉 شاباش! تمام جوابات درست ہیں!' : `${correct} / 4 درست جوابات۔ دوبارہ کوشش کریں!`;
+    r.style.color = correct === 4 ? '#27ae60' : '#e17055';
+  }
+}
+
+function resetDragDrop() {
+  ['slot1','slot2','slot3','slot4'].forEach(id => {
+    const s = document.getElementById(id);
+    if (s) { s.textContent = 'یہاں ڈریگ کریں'; s.classList.remove('filled'); s.style.background = ''; s.style.borderColor = ''; }
+    delete slotContents[id];
+  });
+  document.querySelectorAll('.drag-item').forEach(el => { el.style.opacity = '1'; el.style.pointerEvents = 'auto'; });
+  const r = document.getElementById('drag-result');
+  if (r) r.textContent = '';
+}
+
+// ===== TIMELINE =====
+function initTimeline() {
+  const container = document.getElementById('timeline-container');
+  if (!container) return;
+  let dragSrc = null;
+  container.querySelectorAll('.timeline-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); dragSrc = null; });
+    item.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc && dragSrc !== item) {
+        const items = [...container.querySelectorAll('.timeline-item')];
+        const srcIdx = items.indexOf(dragSrc);
+        const tgtIdx = items.indexOf(item);
+        if (srcIdx < tgtIdx) container.insertBefore(dragSrc, item.nextSibling);
+        else container.insertBefore(dragSrc, item);
+      }
+    });
+  });
+}
+
+function checkTimeline() {
+  const container = document.getElementById('timeline-container');
+  if (!container) return;
+  const items = [...container.querySelectorAll('.timeline-item')];
+  const correctOrder = [1, 2, 3, 4, 5];
+  let correct = true;
+  items.forEach((item, i) => {
+    const order = parseInt(item.getAttribute('data-order'));
+    item.querySelector('.tl-num').textContent = i + 1;
+    if (order !== correctOrder[i]) { correct = false; item.style.borderColor = '#FF6B6B'; item.style.background = 'rgba(255,107,107,0.05)'; }
+    else { item.style.borderColor = '#27ae60'; item.style.background = 'rgba(107,203,119,0.05)'; }
+  });
+  const r = document.getElementById('timeline-result');
+  if (r) {
+    r.textContent = correct ? '🎉 شاباش! ترتیب بالکل درست ہے!' : '❌ ترتیب درست نہیں۔ دوبارہ کوشش کریں!';
+    r.style.color = correct ? '#27ae60' : '#e17055';
+  }
+}
+
+function shuffleTimeline() {
+  const container = document.getElementById('timeline-container');
+  if (!container) return;
+  const items = [...container.querySelectorAll('.timeline-item')];
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    container.appendChild(items[j]);
+    items.splice(j, 1);
+    items.splice(i, 0, items[j]);
+  }
+  items.forEach(item => {
+    item.querySelector('.tl-num').textContent = '?';
+    item.style.borderColor = 'var(--sky)';
+    item.style.background = 'white';
+  });
+  // Re-shuffle properly
+  const allItems = [...container.querySelectorAll('.timeline-item')];
+  for (let i = allItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    container.insertBefore(allItems[j], allItems[i]);
+    [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+  }
+  const r = document.getElementById('timeline-result');
+  if (r) r.textContent = '';
+}
+
+// ===== QUIZ =====
+const quizData = [
+  {
+    q: 'زارا نے اٹھی کو صبح کیا دکھایا؟',
+    opts: ['نئے کپڑے', 'مہندی لگے ہاتھ', 'عیدی کے پیسے', 'مٹھائی'],
+    ans: 1, type: 'mcq',
+    fb: 'زارا صبح اٹھ کر اٹھی کے پاس بھاگتی ہوئی گئی اور مہندی لگے ہاتھ دکھائے۔'
+  },
+  {
+    q: 'زارا نے کیا پہنی تھی؟',
+    opts: ['نیلی قمیض', 'گلابی فراک جس میں ستارے تھے', 'سبز سوٹ', 'سفید شلوار'],
+    ans: 1, type: 'mcq',
+    fb: 'زارا نے گلابی فراک پہنی تھی جس میں ستارے لگے تھے۔'
+  },
+  {
+    q: 'علی کی ٹوپی پر کیا لگے تھے؟',
+    opts: ['پھول', 'ستارے', 'شیشے', 'دھاریاں'],
+    ans: 2, type: 'mcq',
+    fb: 'علی کی ٹوپی پر شیشے لگے تھے۔'
+  },
+  {
+    q: 'سب نے کہاں نماز پڑھی؟',
+    opts: ['گھر میں', 'مسجد میں', 'عید گاہ میں', 'اسکول میں'],
+    ans: 2, type: 'mcq',
+    fb: 'سب نے نماز پڑھنے کے لیے عید گاہ گئے۔'
+  },
+  {
+    q: 'کیا علی اور راحیل کی لڑائی پہلے سے تھی؟ (درست / غلط)',
+    opts: ['درست', 'غلط'],
+    ans: 0, type: 'tf',
+    fb: 'درست! علی اور راحیل کی دو تین دن سے لڑائی تھی لیکن عید پر انہوں نے صلح کر لی۔'
+  },
+  {
+    q: 'عید کے بعد علی اور زارا کہاں گئے؟',
+    opts: ['دادی جان کے گھر', 'اسکول', 'ناناجان کے گھر', 'بازار'],
+    ans: 2, type: 'mcq',
+    fb: 'دو پہر کو وہ دونوں ابو کے ساتھ ناناجان کے گھر گئے۔'
+  },
+  {
+    q: 'کیا رشتے داروں سے ملنے کی خوشی عیدی سے زیادہ تھی؟ (درست / غلط)',
+    opts: ['درست', 'غلط'],
+    ans: 0, type: 'tf',
+    fb: 'درست! دونوں کو بہت ساری عیدی ملنے کی خوشی تھی مگر رشتے داروں سے ملنے کی خوشی اس سے بڑھ کر تھی۔'
+  },
+  {
+    q: '"رشتے دار" کا کیا مطلب ہے؟',
+    opts: ['دوست', 'استاد', 'خاندان کے افراد', 'پڑوسی'],
+    ans: 2, type: 'mcq',
+    fb: '"رشتے دار" کا مطلب ہے خاندان کے افراد، جیسے چچا، خالہ، ناناجان وغیرہ۔'
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function initQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  showQuestion();
+}
+
+function showQuestion() {
+  const data = quizData[currentQ];
+  document.getElementById('quiz-qnum').textContent = `سوال ${currentQ + 1} / ${quizData.length}`;
+  document.getElementById('quiz-prog').style.width = `${(currentQ / quizData.length) * 100}%`;
+  document.getElementById('quiz-q').textContent = data.q;
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = 'quiz-feedback'; fb.textContent = '';
+  const next = document.getElementById('quiz-next');
+  next.style.display = 'none';
+  answered = false;
+
+  const optsEl = document.getElementById('quiz-opts');
+  optsEl.innerHTML = '';
+  data.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const data = quizData[currentQ];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('quiz-feedback');
+  const next = document.getElementById('quiz-next');
+
+  if (idx === data.ans) {
+    score++;
+    opts[idx].classList.add('correct');
+    fb.textContent = '✅ شاباش! جواب درست ہے! ' + data.fb;
+    fb.className = 'quiz-feedback correct show';
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[data.ans].classList.add('correct');
+    fb.textContent = '❌ جواب غلط ہے۔ ' + data.fb;
+    fb.className = 'quiz-feedback wrong show';
+  }
+
+  next.textContent = currentQ < quizData.length - 1 ? 'اگلا سوال ←' : '📊 نتیجہ دیکھیں';
+  next.style.display = 'inline-flex';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < quizData.length) {
+    showQuestion();
+  } else {
+    showScorecard();
+  }
+}
+
+function showScorecard() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('scorecard-section').style.display = 'block';
+  const pct = Math.round((score / quizData.length) * 100);
+  document.getElementById('score-detail').textContent = `${score} / ${quizData.length} سوالات درست`;
+  let msg = '';
+  if (pct >= 90) msg = '🏆 بہت زبردست! آپ نے شاندار کارکردگی دکھائی!';
+  else if (pct >= 70) msg = '😊 بہت اچھے! آپ نے اچھی کوشش کی!';
+  else if (pct >= 50) msg = '🙂 ٹھیک ہے! مزید مطالعہ کریں!';
+  else msg = '📚 دوبارہ سبق پڑھیں اور کوشش کریں!';
+  document.getElementById('score-msg').textContent = msg;
+
+  // Animated score
+  try {
+    if (typeof gsap !== 'undefined') {
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: pct, duration: 1.5, ease: 'power2.out',
+        onUpdate: () => { document.getElementById('score-num').textContent = Math.round(obj.val) + '%'; }
+      });
+      const ring = document.getElementById('score-ring');
+      if (ring) {
+        const dashoffset = 427 - (427 * pct / 100);
+        gsap.to(ring, { strokeDashoffset: dashoffset, duration: 1.5, ease: 'power2.out' });
+        ring.style.stroke = pct >= 70 ? '#6BCB77' : pct >= 50 ? '#F9CA24' : '#FF6B6B';
+      }
+    } else {
+      document.getElementById('score-num').textContent = pct + '%';
+    }
+  } catch(e) {
+    document.getElementById('score-num').textContent = pct + '%';
+  }
+}
+
+function restartQuiz() {
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('scorecard-section').style.display = 'none';
+  initQuiz();
+}
+</script>
+</body>
+</html>

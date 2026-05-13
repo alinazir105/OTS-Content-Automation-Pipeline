@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Software | Class 3 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;margin:0;padding:0;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;font-size:18px;background:#F8F9FA;color:#222;line-height:1.7}
+
+:root{
+  --sunshine:#F9CA24;
+  --sky:#48DBFB;
+  --coral:#FF6B6B;
+  --light:#F8F9FA;
+  --white:#fff;
+  --dark:#1a1a2e;
+  --green:#6BCB77;
+  --purple:#845EC2;
+}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#curtain .logo{font-family:'Poppins',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--sunshine)}
+#curtain .sub{color:var(--sky);font-size:clamp(1rem,2vw,1.4rem)}
+.loader-bar{width:200px;height:6px;background:rgba(255,255,255,0.2);border-radius:10px;overflow:hidden}
+.loader-fill{height:100%;background:var(--sunshine);border-radius:10px;animation:load 2s ease forwards}
+@keyframes load{from{width:0}to{width:100%}}
+
+/* PROGRESS BREADCRUMB */
+.breadcrumb{background:#fff;border-bottom:2px solid #eee;padding:12px 40px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.breadcrumb span{font-size:14px;color:#888}
+.breadcrumb a{font-size:14px;color:var(--purple);text-decoration:none;font-weight:600}
+.breadcrumb .sep{color:#ccc}
+.progress-steps{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.progress-steps .step{width:32px;height:8px;border-radius:4px;background:#eee;transition:background 0.3s}
+.progress-steps .step.active{background:var(--coral)}
+.progress-steps .step.done{background:var(--green)}
+
+/* LAYOUT */
+.page-wrapper{width:100%;display:flex}
+.sidebar{width:260px;min-width:260px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;background:#fff;border-right:2px solid #eee;padding:24px 16px}
+.sidebar h3{font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.sidebar ul{list-style:none}
+.sidebar ul li{margin-bottom:4px}
+.sidebar ul li a{display:block;padding:10px 14px;border-radius:8px;text-decoration:none;color:#555;font-size:15px;font-weight:500;transition:all 0.2s}
+.sidebar ul li a:hover,.sidebar ul li a.active{background:var(--sky);color:#fff}
+.sidebar ul li a.active{background:var(--purple);color:#fff}
+
+.main-content{flex:1;min-width:0}
+
+/* HERO */
+#hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:60px 40px}
+.hero-inner{max-width:1500px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-text h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-text h1 span{color:var(--sunshine)}
+.hero-text p{font-size:clamp(1rem,2vw,1.3rem);color:rgba(255,255,255,0.8);margin-bottom:30px;line-height:1.8}
+.hero-badges{display:flex;gap:12px;flex-wrap:wrap}
+.badge{padding:8px 20px;border-radius:30px;font-size:14px;font-weight:700;font-family:'Poppins',sans-serif}
+.badge.yellow{background:var(--sunshine);color:#1a1a2e}
+.badge.blue{background:var(--sky);color:#1a1a2e}
+.badge.coral{background:var(--coral);color:#fff}
+
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.hero-svg-wrap{width:100%;max-width:400px}
+
+/* SVG HERO ANIMATION */
+.hero-svg{width:100%;height:auto}
+.draw-path{stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 0.1s}
+
+/* SECTION STYLES */
+section{padding:80px 0;position:relative}
+.section-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-header{width:100%;padding:28px 40px;margin-bottom:50px;display:flex;align-items:center;gap:20px}
+.section-header h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#fff;margin:0}
+.section-header .icon{font-size:3rem}
+.sh-sky{background:linear-gradient(135deg,#0abde3,#48DBFB)}
+.sh-coral{background:linear-gradient(135deg,#ff4757,#FF6B6B)}
+.sh-sunshine{background:linear-gradient(135deg,#f0932b,#F9CA24)}
+.sh-green{background:linear-gradient(135deg,#20bf6b,#6BCB77)}
+.sh-purple{background:linear-gradient(135deg,#8854d0,#845EC2)}
+.sh-dark{background:linear-gradient(135deg,#2d3436,#636e72)}
+
+/* CARDS */
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;opacity:1;transform:none;width:100%;max-width:100%}
+.card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:12px}
+.card p{font-size:18px;line-height:1.8;color:#444}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+/* DEFINITION BOX */
+.def-box{background:linear-gradient(135deg,var(--sky),#0abde3);border-radius:16px;padding:40px;color:#fff;margin-bottom:40px}
+.def-box h2{font-family:'Poppins',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:16px}
+.def-box p{font-size:20px;line-height:1.8}
+.def-box .highlight{background:rgba(255,255,255,0.3);padding:4px 12px;border-radius:6px;font-weight:700}
+
+/* SOFTWARE TYPE CARDS */
+.type-card{border-radius:16px;padding:32px;color:#fff;opacity:1;transform:none}
+.type-card.system{background:linear-gradient(135deg,#845EC2,#b39ddb)}
+.type-card.app{background:linear-gradient(135deg,#FF6B6B,#ff8a80)}
+.type-card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:16px;color:#fff}
+.type-card ul{list-style:none;margin-top:12px}
+.type-card ul li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.2);font-size:18px;display:flex;align-items:center;gap:10px}
+.type-card ul li::before{content:'▶';font-size:12px;opacity:0.7}
+
+/* WINDOWS VERSIONS */
+.windows-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:30px}
+.win-card{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.08);border-top:5px solid var(--sky);opacity:1;transform:none}
+.win-card .win-icon{font-size:3rem;margin-bottom:12px}
+.win-card h4{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:#333}
+.win-card p{font-size:16px;color:#888;margin-top:6px}
+
+/* DEVICE DRIVER */
+.driver-box{background:linear-gradient(135deg,#f0932b,#F9CA24);border-radius:16px;padding:40px;margin:30px 0}
+.driver-box h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:#1a1a2e;margin-bottom:16px}
+.driver-box p{font-size:18px;color:#1a1a2e;line-height:1.8}
+.driver-example{background:rgba(255,255,255,0.6);border-radius:12px;padding:20px;margin-top:20px}
+.driver-example p{font-size:18px;font-weight:600}
+
+/* DIAGRAM */
+.diagram-section{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.mermaid{font-size:18px}
+
+/* APP SOFTWARE GRID */
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:30px}
+.app-card{background:#fff;border-radius:12px;padding:28px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:transform 0.2s,box-shadow 0.2s;opacity:1;transform:none}
+.app-card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,0,0,0.15)}
+.app-card .app-icon{font-size:3.5rem;margin-bottom:14px;display:block}
+.app-card h4{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:#333;margin-bottom:8px}
+.app-card p{font-size:16px;color:#666;line-height:1.6}
+
+/* DRAG AND DROP */
+.drag-activity{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.drag-activity h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:8px}
+.drag-activity p{font-size:18px;color:#666;margin-bottom:30px}
+.drag-labels{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px;padding:20px;background:#f0f0f0;border-radius:12px;min-height:70px}
+.drag-label{padding:10px 20px;background:var(--purple);color:#fff;border-radius:30px;font-size:17px;font-weight:600;cursor:grab;user-select:none;transition:all 0.2s;font-family:'Poppins',sans-serif}
+.drag-label:active{cursor:grabbing;transform:scale(0.95)}
+.drag-label.used{opacity:0.3;cursor:not-allowed}
+.drop-zones{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.drop-zone{border:3px dashed #ccc;border-radius:12px;padding:20px;min-height:80px;transition:all 0.2s;position:relative}
+.drop-zone.hover{border-color:var(--purple);background:rgba(132,94,194,0.1)}
+.drop-zone.correct{border-color:var(--green);background:rgba(107,203,119,0.15)}
+.drop-zone.wrong{border-color:var(--coral);background:rgba(255,107,107,0.15)}
+.drop-zone-label{font-size:15px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.drop-zone-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;color:#333;margin-bottom:10px}
+.dropped-items{display:flex;flex-wrap:wrap;gap:8px;min-height:40px}
+.dropped-tag{padding:6px 14px;background:var(--sunshine);color:#1a1a2e;border-radius:20px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.dropped-tag .remove{font-size:18px;line-height:1;cursor:pointer}
+.drag-btn{margin-top:20px;padding:14px 32px;background:var(--purple);color:#fff;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.drag-btn:hover{background:#6c3fa8;transform:translateY(-2px)}
+.drag-result{margin-top:20px;font-size:18px;font-weight:700;color:var(--green);display:none}
+
+/* TIMELINE */
+.timeline-activity{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.timeline-activity h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:8px}
+.timeline-activity p{font-size:18px;color:#666;margin-bottom:30px}
+.timeline-items{display:flex;flex-direction:column;gap:12px}
+.timeline-item{background:#f8f9fa;border:2px solid #eee;border-radius:12px;padding:16px 24px;cursor:grab;display:flex;align-items:center;gap:16px;transition:all 0.2s;font-size:18px;font-weight:500}
+.timeline-item:active{cursor:grabbing}
+.timeline-item .tl-num{width:36px;height:36px;background:#eee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Poppins',sans-serif;color:#888;flex-shrink:0}
+.timeline-item .tl-icon{font-size:2rem;flex-shrink:0}
+.timeline-item.dragging{opacity:0.5;transform:scale(0.98)}
+.timeline-item.drag-over{border-color:var(--sky);background:rgba(72,219,251,0.1)}
+.tl-check-btn{margin-top:20px;padding:14px 32px;background:var(--sky);color:#1a1a2e;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.tl-check-btn:hover{background:#0abde3;transform:translateY(-2px)}
+.tl-result{margin-top:20px;font-size:18px;font-weight:700;display:none}
+
+/* QUIZ */
+.quiz-container{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;flex-wrap:wrap;gap:16px}
+.quiz-header h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800}
+.quiz-progress{font-size:17px;color:#888;font-weight:600}
+.quiz-question{display:none;animation:fadeIn 0.4s ease}
+.quiz-question.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.quiz-question h4{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2vw,1.4rem);font-weight:700;margin-bottom:24px;color:#333;line-height:1.5}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quiz-option{padding:16px 20px;border:2px solid #eee;border-radius:12px;background:#f8f9fa;cursor:pointer;transition:all 0.2s;font-size:17px;font-weight:500;text-align:left;min-height:48px}
+.quiz-option:hover{border-color:var(--purple);background:rgba(132,94,194,0.08)}
+.quiz-option.correct{border-color:var(--green);background:rgba(107,203,119,0.2);color:#1a6b2a}
+.quiz-option.wrong{border-color:var(--coral);background:rgba(255,107,107,0.2);color:#c0392b}
+.quiz-option.disabled{cursor:not-allowed}
+.quiz-tf{display:flex;gap:16px}
+.quiz-tf .quiz-option{flex:1}
+.quiz-feedback{margin-top:20px;padding:16px 20px;border-radius:12px;font-size:17px;font-weight:600;display:none}
+.quiz-feedback.correct{background:rgba(107,203,119,0.2);color:#1a6b2a}
+.quiz-feedback.wrong{background:rgba(255,107,107,0.2);color:#c0392b}
+.quiz-nav{display:flex;gap:14px;margin-top:24px;justify-content:flex-end;flex-wrap:wrap}
+.quiz-btn{padding:14px 32px;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:48px}
+.quiz-btn.next{background:var(--purple);color:#fff}
+.quiz-btn.next:hover{background:#6c3fa8;transform:translateY(-2px)}
+.quiz-btn.submit{background:var(--coral);color:#fff}
+.quiz-btn.submit:hover{background:#e55055;transform:translateY(-2px)}
+
+/* SCORECARD */
+.scorecard{display:none;text-align:center;padding:60px 40px}
+.scorecard h3{font-family:'Poppins',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:20px}
+.score-circle-wrap{position:relative;width:200px;height:200px;margin:0 auto 30px}
+.score-circle-bg{fill:none;stroke:#eee;stroke-width:12}
+.score-circle-fill{fill:none;stroke:var(--green);stroke-width:12;stroke-linecap:round;stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset 1.5s ease;transform:rotate(-90deg);transform-origin:center}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Poppins',sans-serif;font-size:3rem;font-weight:800;color:#333}
+.score-msg{font-size:20px;color:#555;margin-bottom:30px;line-height:1.8}
+.retake-btn{padding:16px 40px;background:var(--purple);color:#fff;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.2s;min-height:48px}
+.retake-btn:hover{background:#6c3fa8;transform:translateY(-2px)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
+.stat-card{background:#fff;border-radius:16px;padding:32px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.stat-num{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:var(--coral)}
+.stat-label{font-size:18px;color:#666;margin-top:8px;font-weight:500}
+
+/* PARALLAX BG */
+.parallax-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.parallax-bg .bg-blob{position:absolute;border-radius:50%;opacity:0.07;pointer-events:none}
+
+/* FILL BLANKS */
+.fill-blanks{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.fill-blanks h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:24px}
+.fill-item{margin-bottom:24px;font-size:18px;line-height:2}
+.fill-item input{border:none;border-bottom:3px solid var(--sky);background:transparent;font-size:18px;font-family:'Inter',sans-serif;color:#333;width:180px;padding:4px 8px;outline:none;transition:border-color 0.2s}
+.fill-item input:focus{border-color:var(--purple)}
+.fill-check-btn{padding:14px 32px;background:var(--green);color:#fff;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:20px;min-height:48px}
+.fill-check-btn:hover{background:#4aa95a;transform:translateY(-2px)}
+.fill-result{margin-top:20px;font-size:18px;font-weight:700;display:none}
+
+/* TRUE FALSE */
+.tf-activity{background:#fff;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.tf-activity h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:24px}
+.tf-item{display:flex;align-items:center;gap:20px;padding:18px;border:2px solid #eee;border-radius:12px;margin-bottom:14px;font-size:17px;flex-wrap:wrap}
+.tf-item p{flex:1;min-width:200px}
+.tf-buttons{display:flex;gap:10px}
+.tf-btn{padding:10px 24px;border:2px solid #eee;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;background:#f8f9fa;min-height:48px}
+.tf-btn:hover{transform:translateY(-1px)}
+.tf-btn.true-btn.selected-true{background:var(--green);color:#fff;border-color:var(--green)}
+.tf-btn.false-btn.selected-false{background:var(--coral);color:#fff;border-color:var(--coral)}
+.tf-btn.correct-ans{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+.tf-btn.wrong-ans{background:var(--coral)!important;color:#fff!important;border-color:var(--coral)!important}
+.tf-check-btn{padding:14px 32px;background:var(--sunshine);color:#1a1a2e;border:none;border-radius:30px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:20px;min-height:48px}
+.tf-check-btn:hover{background:#e6b800;transform:translateY(-2px)}
+.tf-result{margin-top:20px;font-size:18px;font-weight:700;display:none}
+
+/* INFO CALLOUT */
+.callout{border-radius:12px;padding:24px 28px;margin:24px 0;display:flex;gap:16px;align-items:flex-start}
+.callout.info{background:rgba(72,219,251,0.15);border-left:5px solid var(--sky)}
+.callout.warning{background:rgba(249,202,36,0.2);border-left:5px solid var(--sunshine)}
+.callout .callout-icon{font-size:2rem;flex-shrink:0;margin-top:2px}
+.callout p{font-size:18px;line-height:1.8;color:#333}
+.callout strong{color:#0abde3}
+
+/* LAB ACTIVITY */
+.lab-card{background:linear-gradient(135deg,var(--dark),#16213e);border-radius:16px;padding:40px;color:#fff}
+.lab-card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;color:var(--sunshine);margin-bottom:16px}
+.lab-card p{font-size:18px;line-height:1.8;margin-bottom:20px;color:rgba(255,255,255,0.85)}
+.lab-steps{list-style:none;counter-reset:step}
+.lab-steps li{counter-increment:step;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.1);font-size:18px;color:rgba(255,255,255,0.85);display:flex;align-items:flex-start;gap:16px}
+.lab-steps li::before{content:counter(step);width:32px;height:32px;background:var(--sunshine);color:#1a1a2e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;margin-top:2px}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:var(--purple);color:#fff;padding:16px 20px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;text-align:left}
+td{padding:14px 20px;border-bottom:1px solid #eee;font-size:17px;color:#444}
+tr:hover td{background:#f8f9fa}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #eee;z-index:200;overflow-x:auto;padding:0}
+.mobile-nav-inner{display:flex;min-width:max-content;padding:8px 12px;gap:4px}
+.mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:8px;text-decoration:none;color:#666;font-size:13px;font-weight:600;white-space:nowrap;min-height:48px;justify-content:center;transition:all 0.2s;min-width:48px}
+.mobile-nav a.active{background:var(--purple);color:#fff}
+.mobile-nav .nav-icon{font-size:1.4rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobile-nav{display:block}
+  body{padding-bottom:80px}
+  .hero-inner{grid-template-columns:1fr;gap:30px;text-align:center}
+  .hero-visual{display:none}
+  #hero{min-height:60vh;padding:40px 20px}
+  .hero-badges{justify-content:center}
+  .section-inner{padding:0 16px}
+  .section-header{padding:20px 16px}
+  .grid-2,.grid-3,.grid-4,.windows-grid,.app-grid,.stats-row{grid-template-columns:1fr}
+  .drop-zones{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .quiz-nav{justify-content:center}
+  .breadcrumb{padding:10px 16px}
+  .progress-steps{display:none}
+  .card{padding:20px}
+  .type-card{padding:24px}
+  .drag-activity,.timeline-activity,.quiz-container,.fill-blanks,.tf-activity,.lab-card{padding:24px 20px}
+  .tf-item{flex-direction:column;align-items:flex-start}
+  section{padding:50px 0}
+  .def-box{padding:28px 20px}
+  .driver-box{padding:28px 20px}
+  .diagram-section{padding:24px 16px}
+}
+@media(max-width:480px){
+  .quiz-tf{flex-direction:column}
+  .hero-badges{gap:8px}
+  .badge{font-size:13px;padding:6px 14px}
+}
+
+/* CANVAS 2D for diagram fallback */
+#softwareDiagramCanvas{width:100%;border-radius:12px;background:#fff}
+
+/* Scroll reveal defaults */
+.reveal{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="logo">💻 Unit 4</div>
+  <div class="sub">SOFTWARE</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb">
+  <a href="#">Home</a>
+  <span class="sep">›</span>
+  <a href="#">Class 3</a>
+  <span class="sep">›</span>
+  <a href="#">Computer</a>
+  <span class="sep">›</span>
+  <span>Unit 4: Software</span>
+  <div class="progress-steps">
+    <div class="step done" id="ps1"></div>
+    <div class="step active" id="ps2"></div>
+    <div class="step" id="ps3"></div>
+    <div class="step" id="ps4"></div>
+    <div class="step" id="ps5"></div>
+    <div class="step" id="ps6"></div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3>Table of Contents</h3>
+    <ul id="toc">
+      <li><a href="#hero" class="toc-link">🏠 Introduction</a></li>
+      <li><a href="#concept" class="toc-link">📖 What is Software?</a></li>
+      <li><a href="#system" class="toc-link">⚙️ System Software</a></li>
+      <li><a href="#drivers" class="toc-link">🔌 Device Drivers</a></li>
+      <li><a href="#application" class="toc-link">📱 Application Software</a></li>
+      <li><a href="#diagram" class="toc-link">🗺️ Diagram</a></li>
+      <li><a href="#activity" class="toc-link">🎮 Activities</a></li>
+      <li><a href="#quiz" class="toc-link">❓ Quiz</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="parallax-bg" id="heroBg">
+        <div class="bg-blob" style="width:600px;height:600px;background:#48DBFB;top:-200px;right:-100px"></div>
+        <div class="bg-blob" style="width:400px;height:400px;background:#F9CA24;bottom:-100px;left:-80px"></div>
+      </div>
+      <div class="hero-inner" style="position:relative;z-index:1">
+        <div class="hero-text">
+          <h1>Unit 4:<br><span>SOFTWARE</span></h1>
+          <p>Discover the invisible force that makes your computer work! Learn about system software, application software, and device drivers in this exciting unit.</p>
+          <div class="hero-badges">
+            <span class="badge yellow">💡 Class 3</span>
+            <span class="badge blue">⚙️ System Software</span>
+            <span class="badge coral">📱 Application Software</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <svg class="hero-svg" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Monitor -->
+            <rect x="60" y="40" width="280" height="180" rx="14" fill="#16213e" stroke="#48DBFB" stroke-width="3" class="draw-path" id="monitorRect"/>
+            <rect x="80" y="58" width="240" height="144" rx="6" fill="#0f3460"/>
+            <!-- Screen content -->
+            <rect x="100" y="75" width="80" height="50" rx="6" fill="#845EC2" opacity="0.9"/>
+            <text x="140" y="105" text-anchor="middle" fill="white" font-family="Poppins,sans-serif" font-size="11" font-weight="700">SYSTEM</text>
+            <rect x="200" y="75" width="80" height="50" rx="6" fill="#FF6B6B" opacity="0.9"/>
+            <text x="240" y="105" text-anchor="middle" fill="white" font-family="Poppins,sans-serif" font-size="11" font-weight="700">APPS</text>
+            <rect x="100" y="140" width="180" height="40" rx="6" fill="#F9CA24" opacity="0.8"/>
+            <text x="190" y="165" text-anchor="middle" fill="#1a1a2e" font-family="Poppins,sans-serif" font-size="12" font-weight="700">HARDWARE</text>
+            <!-- Stand -->
+            <rect x="175" y="220" width="50" height="30" fill="#2d3436"/>
+            <rect x="140" y="248" width="120" height="12" rx="6" fill="#2d3436"/>
+            <!-- Labels -->
+            <text x="200" y="296" text-anchor="middle" fill="#F9CA24" font-family="Poppins,sans-serif" font-size="16" font-weight="800">SOFTWARE</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT: WHAT IS SOFTWARE -->
+    <section id="concept">
+      <div class="section-header sh-sky">
+        <span class="icon">📖</span>
+        <h2>What is Software?</h2>
+      </div>
+      <div class="section-inner">
+        <div class="def-box reveal">
+          <h2>🖥️ Software Defined</h2>
+          <p><span class="highlight">Software</span> is a set of instructions given to a computer to perform a specific task. The games we play and the programs we run on a computer are examples of software.</p>
+        </div>
+
+        <div class="grid-2 reveal" style="margin-top:30px">
+          <div class="type-card system">
+            <h3>⚙️ System Software</h3>
+            <p style="font-size:18px;opacity:0.9;margin-bottom:16px">Designed to operate the hardware and provide an environment for running other software.</p>
+            <ul>
+              <li>Operating Systems</li>
+              <li>Device Drivers</li>
+              <li>Utilities</li>
+              <li>MS Windows</li>
+            </ul>
+          </div>
+          <div class="type-card app">
+            <h3>📱 Application Software</h3>
+            <p style="font-size:18px;opacity:0.9;margin-bottom:16px">Designed for the end user to perform specific tasks on the computer.</p>
+            <ul>
+              <li>MS Word / Excel</li>
+              <li>MS Paint</li>
+              <li>PowerPoint</li>
+              <li>Internet Browsers</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stats-row reveal">
+          <div class="stat-card">
+            <div class="stat-num" id="counter1">0</div>
+            <div class="stat-label">Types of Software</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="counter2">0</div>
+            <div class="stat-label">Windows Versions Listed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="counter3">0</div>
+            <div class="stat-label">App Software Examples</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM SOFTWARE -->
+    <section id="system" style="background:#f0f4ff">
+      <div class="section-header sh-purple">
+        <span class="icon">⚙️</span>
+        <h2>System Software</h2>
+      </div>
+      <div class="section-inner">
+        <div class="card reveal">
+          <h3>⚙️ What is System Software?</h3>
+          <p>System software is designed to <strong>operate the hardware</strong> and provide an environment for running other software. It includes device drivers, utilities, and an operating system.</p>
+          <p style="margin-top:16px"><strong>MS Windows</strong> is an example of an operating system. It is the most commonly used system software.</p>
+        </div>
+
+        <div class="callout info reveal" style="margin-top:30px">
+          <span class="callout-icon">💡</span>
+          <p>An <strong>operating system</strong> is the master software that manages all other programs and hardware resources on your computer.</p>
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:700;margin:40px 0 20px;color:#333">Versions of MS Windows</h3>
+        <div class="windows-grid reveal">
+          <div class="win-card">
+            <div class="win-icon">🪟</div>
+            <h4>Windows XP</h4>
+            <p>Released 2001</p>
+          </div>
+          <div class="win-card">
+            <div class="win-icon">🪟</div>
+            <h4>Windows 7</h4>
+            <p>Released 2009</p>
+          </div>
+          <div class="win-card">
+            <div class="win-icon">🪟</div>
+            <h4>Windows 10</h4>
+            <p>Released 2015</p>
+          </div>
+          <div class="win-card">
+            <div class="win-icon">🪟</div>
+            <h4>Windows 11</h4>
+            <p>Released 2021</p>
+          </div>
+        </div>
+
+        <div class="table-wrap reveal" style="margin-top:40px">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>System Software</th>
+                <th>Application Software</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Purpose</td>
+                <td>Operates hardware & manages resources</td>
+                <td>Helps users perform specific tasks</td>
+              </tr>
+              <tr>
+                <td>Example</td>
+                <td>MS Windows, Linux, macOS</td>
+                <td>MS Word, Paint, Excel</td>
+              </tr>
+              <tr>
+                <td>User</td>
+                <td>Computer system itself</td>
+                <td>End user (you!)</td>
+              </tr>
+              <tr>
+                <td>Can run without?</td>
+                <td>No — it is the foundation</td>
+                <td>Needs system software to run</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEVICE DRIVERS -->
+    <section id="drivers">
+      <div class="section-header sh-sunshine">
+        <span class="icon">🔌</span>
+        <h2>Device Drivers</h2>
+      </div>
+      <div class="section-inner">
+        <div class="driver-box reveal">
+          <h3>🔌 What is a Device Driver?</h3>
+          <p>When we buy a new computer part, it comes with its own software, which helps the operating system communicate with and use the new part. This software is called a <strong>device driver</strong>.</p>
+          <div class="driver-example">
+            <p>📠 For example: The device driver for a <strong>printer</strong> tells the computer how to communicate and operate the printer.</p>
+          </div>
+        </div>
+
+        <div class="grid-3 reveal" style="margin-top:30px">
+          <div class="card">
+            <h3>🖨️ Printer Driver</h3>
+            <p>Tells the computer how to send documents to the printer and manage print jobs.</p>
+          </div>
+          <div class="card">
+            <h3>🖥️ Display Driver</h3>
+            <p>Controls how images are shown on your computer screen with correct colours and resolution.</p>
+          </div>
+          <div class="card">
+            <h3>🔊 Sound Driver</h3>
+            <p>Manages audio output so you can hear sounds and music from your computer speakers.</p>
+          </div>
+        </div>
+
+        <div class="callout warning reveal" style="margin-top:30px">
+          <span class="callout-icon">⚠️</span>
+          <p>Without a device driver, the hardware <strong>will not work properly</strong>. The operating system cannot communicate with the new device!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLICATION SOFTWARE -->
+    <section id="application" style="background:#fff5f5">
+      <div class="section-header sh-coral">
+        <span class="icon">📱</span>
+        <h2>Application Software</h2>
+      </div>
+      <div class="section-inner">
+        <div class="card reveal">
+          <h3>📱 What is Application Software?</h3>
+          <p>Application software is designed for the <strong>user of the computer</strong>, also called the <strong>end user</strong>. These programs help users perform specific tasks such as creating documents, editing images, or browsing the internet.</p>
+        </div>
+
+        <div class="app-grid reveal" style="margin-top:30px">
+          <div class="app-card">
+            <span class="app-icon">🎨</span>
+            <h4>MS Paint</h4>
+            <p>Draw and create colourful pictures and digital art on your computer.</p>
+          </div>
+          <div class="app-card">
+            <span class="app-icon">📝</span>
+            <h4>MS Word</h4>
+            <p>Write and format documents, letters, stories and reports easily.</p>
+          </div>
+          <div class="app-card">
+            <span class="app-icon">📊</span>
+            <h4>MS Excel</h4>
+            <p>Work with numbers, create tables and make calculations quickly.</p>
+          </div>
+          <div class="app-card">
+            <span class="app-icon">📽️</span>
+            <h4>MS PowerPoint</h4>
+            <p>Create beautiful slide presentations with text, images and effects.</p>
+          </div>
+          <div class="app-card">
+            <span class="app-icon">🎵</span>
+            <h4>Media Players</h4>
+            <p>Play music, videos and movies on your computer screen.</p>
+          </div>
+          <div class="app-card">
+            <span class="app-icon">🌐</span>
+            <h4>Internet Browsers</h4>
+            <p>Browse websites and explore the internet to find information.</p>
+          </div>
+        </div>
+
+        <div class="callout info reveal" style="margin-top:30px">
+          <span class="callout-icon">💡</span>
+          <p><strong>Hardware and software</strong> work together and cannot be used alone. You need both to make a computer work properly!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIAGRAM -->
+    <section id="diagram" style="background:#f0f4ff">
+      <div class="section-header sh-dark">
+        <span class="icon">🗺️</span>
+        <h2>Computer Components Diagram</h2>
+      </div>
+      <div class="section-inner">
+        <div class="diagram-section reveal">
+          <p style="font-size:18px;color:#555;margin-bottom:24px">We can understand the components of a computer with this diagram showing how Hardware, System Software, Application Software and End Users are connected:</p>
+          <div class="mermaid">
+graph TD
+    A["🔧 HARDWARE<br/>CPU, Disks, Mouse, Printer"] --> B["⚙️ SYSTEM SOFTWARE"]
+    B --> C["🖥️ Operating System<br/>(e.g. MS Windows)"]
+    B --> D["🔌 Device Drivers"]
+    B --> E["🛠️ Utilities"]
+    C --> F["📱 APPLICATION SOFTWARE"]
+    D --> F
+    E --> F
+    F --> G["📝 Word Processors"]
+    F --> H["📊 Spreadsheets"]
+    F --> I["🗄️ Databases"]
+    F --> J["🎮 Computer Games"]
+    F --> K["🌐 Internet Browsers"]
+    G --> L["👤 END USERS"]
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+    style A fill:#2d3436,color:#fff,stroke:#2d3436
+    style B fill:#845EC2,color:#fff,stroke:#845EC2
+    style C fill:#9b7dd4,color:#fff,stroke:#9b7dd4
+    style D fill:#b39ddb,color:#fff,stroke:#b39ddb
+    style E fill:#c5b4e3,color:#1a1a2e,stroke:#c5b4e3
+    style F fill:#FF6B6B,color:#fff,stroke:#FF6B6B
+    style G fill:#ff8a80,color:#fff,stroke:#ff8a80
+    style H fill:#ffab91,color:#1a1a2e,stroke:#ffab91
+    style I fill:#ffcc80,color:#1a1a2e,stroke:#ffcc80
+    style J fill:#a5d6a7,color:#1a1a2e,stroke:#a5d6a7
+    style K fill:#81d4fa,color:#1a1a2e,stroke:#81d4fa
+    style L fill:#F9CA24,color:#1a1a2e,stroke:#F9CA24
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITIES -->
+    <section id="activity">
+      <div class="section-header sh-green">
+        <span class="icon">🎮</span>
+        <h2>Practice Activities</h2>
+      </div>
+      <div class="section-inner">
+
+        <!-- DRAG AND DROP -->
+        <div class="drag-activity reveal" style="margin-bottom:40px">
+          <h3>🎯 Activity 1: Sort the Software!</h3>
+          <p>Drag each software name into the correct category box below.</p>
+          <div class="drag-labels" id="dragLabels">
+            <div class="drag-label" draggable="true" data-item="MS Windows" data-category="system">MS Windows</div>
+            <div class="drag-label" draggable="true" data-item="MS Word" data-category="app">MS Word</div>
+            <div class="drag-label" draggable="true" data-item="Device Driver" data-category="system">Device Driver</div>
+            <div class="drag-label" draggable="true" data-item="MS Paint" data-category="app">MS Paint</div>
+            <div class="drag-label" draggable="true" data-item="Windows 11" data-category="system">Windows 11</div>
+            <div class="drag-label" draggable="true" data-item="Excel" data-category="app">Excel</div>
+            <div class="drag-label" draggable="true" data-item="Utilities" data-category="system">Utilities</div>
+            <div class="drag-label" draggable="true" data-item="Internet Browser" data-category="app">Internet Browser</div>
+          </div>
+          <div class="drop-zones">
+            <div class="drop-zone" id="dz-system" data-category="system">
+              <div class="drop-zone-label">Category 1</div>
+              <div class="drop-zone-title">⚙️ System Software</div>
+              <div class="dropped-items" id="dropped-system"></div>
+            </div>
+            <div class="drop-zone" id="dz-app" data-category="app">
+              <div class="drop-zone-label">Category 2</div>
+              <div class="drop-zone-title">📱 Application Software</div>
+              <div class="dropped-items" id="dropped-app"></div>
+            </div>
+          </div>
+          <button class="drag-btn" id="checkDrag">✅ Check Answers</button>
+          <div class="drag-result" id="dragResult"></div>
+        </div>
+
+        <!-- FILL IN THE BLANKS -->
+        <div class="fill-blanks reveal" style="margin-bottom:40px">
+          <h3>✏️ Activity 2: Fill in the Blanks</h3>
+          <div class="fill-item">1. System software includes device drivers, utilities, and an <input type="text" id="fb1" placeholder="?????????">.</div>
+          <div class="fill-item">2. <input type="text" id="fb2" placeholder="?????????"> is the most commonly used system software.</div>
+          <div class="fill-item">3. End user means the <input type="text" id="fb3" placeholder="?????????"> of the computer.</div>
+          <div class="fill-item">4. Hardware and <input type="text" id="fb4" placeholder="?????????"> work with each other.</div>
+          <div class="fill-item">5. Application software includes Media Players, Internet Browsers, and <input type="text" id="fb5" placeholder="?????????">.</div>
+          <div class="fill-item">6. Application software is designed for the <input type="text" id="fb6" placeholder="?????????">.</div>
+          <button class="fill-check-btn" id="checkFill">✅ Check Answers</button>
+          <div class="fill-result" id="fillResult"></div>
+        </div>
+
+        <!-- TRUE / FALSE -->
+        <div class="tf-activity reveal" style="margin-bottom:40px">
+          <h3>✔️ Activity 3: True or False?</h3>
+          <div class="tf-item" data-answer="true">
+            <p>System software includes the operating system and device drivers.</p>
+            <div class="tf-buttons">
+              <button class="tf-btn true-btn" data-val="true">✅ True</button>
+              <button class="tf-btn false-btn" data-val="false">❌ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-answer="true">
+            <p>Application software is used for performing specific tasks like writing documents.</p>
+            <div class="tf-buttons">
+              <button class="tf-btn true-btn" data-val="true">✅ True</button>
+              <button class="tf-btn false-btn" data-val="false">❌ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-answer="false">
+            <p>MS Windows is an example of application software.</p>
+            <div class="tf-buttons">
+              <button class="tf-btn true-btn" data-val="true">✅ True</button>
+              <button class="tf-btn false-btn" data-val="false">❌ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-answer="true">
+            <p>Hardware and software cannot work independently — they need each other.</p>
+            <div class="tf-buttons">
+              <button class="tf-btn true-btn" data-val="true">✅ True</button>
+              <button class="tf-btn false-btn" data-val="false">❌ False</button>
+            </div>
+          </div>
+          <div class="tf-item" data-answer="true">
+            <p>Device drivers help computers communicate with external hardware.</p>
+            <div class="tf-buttons">
+              <button class="tf-btn true-btn" data-val="true">✅ True</button>
+              <button class="tf-btn false-btn" data-val="false">❌ False</button>
+            </div>
+          </div>
+          <button class="tf-check-btn" id="checkTF">✅ Check Answers</button>
+          <div class="tf-result" id="tfResult"></div>
+        </div>
+
+        <!-- TIMELINE: ARRANGE WINDOWS VERSIONS -->
+        <div class="timeline-activity reveal">
+          <h3>⏱️ Activity 4: Put Windows Versions in Order!</h3>
+          <p>Drag the Windows versions to arrange them in the correct chronological order (oldest to newest).</p>
+          <div class="timeline-items" id="timelineItems">
+            <div class="timeline-item" draggable="true" data-order="3" id="tl-win10">
+              <div class="tl-num">?</div>
+              <span class="tl-icon">🪟</span>
+              <span>Windows 10</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="1" id="tl-winxp">
+              <div class="tl-num">?</div>
+              <span class="tl-icon">🪟</span>
+              <span>Windows XP</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="4" id="tl-win11">
+              <div class="tl-num">?</div>
+              <span class="tl-icon">🪟</span>
+              <span>Windows 11</span>
+            </div>
+            <div class="timeline-item" draggable="true" data-order="2" id="tl-win7">
+              <div class="tl-num">?</div>
+              <span class="tl-icon">🪟</span>
+              <span>Windows 7</span>
+            </div>
+          </div>
+          <button class="tl-check-btn" id="checkTimeline">✅ Check Order</button>
+          <div class="tl-result" id="tlResult"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" style="background:#f0f4ff">
+      <div class="section-header sh-coral">
+        <span class="icon">❓</span>
+        <h2>Knowledge Quiz</h2>
+      </div>
+      <div class="section-inner">
+        <div class="quiz-container reveal">
+          <div id="quizContent">
+            <div class="quiz-header">
+              <h3>🎯 Test Your Knowledge!</h3>
+              <span class="quiz-progress" id="quizProgress">Question 1 of 8</span>
+            </div>
+
+            <!-- Q1 -->
+            <div class="quiz-question active" id="q1">
+              <h4>1. What does a device driver do?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="false">A) Plays games on the computer</button>
+                <button class="quiz-option" data-correct="true">B) Helps the OS communicate with hardware</button>
+                <button class="quiz-option" data-correct="false">C) Manages internet connections</button>
+                <button class="quiz-option" data-correct="false">D) Runs spreadsheets</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q1"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(1)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question" id="q2">
+              <h4>2. Which of these is NOT application software?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="false">A) MS Word</button>
+                <button class="quiz-option" data-correct="true">B) Windows XP</button>
+                <button class="quiz-option" data-correct="false">C) Excel</button>
+                <button class="quiz-option" data-correct="false">D) PowerPoint</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q2"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(2)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question" id="q3">
+              <h4>3. Why do end users need application software?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="false">A) To run system drivers</button>
+                <button class="quiz-option" data-correct="true">B) To perform specific tasks like writing documents or creating images</button>
+                <button class="quiz-option" data-correct="false">C) To install the operating system</button>
+                <button class="quiz-option" data-correct="false">D) To control CPU performance</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q3"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(3)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-question" id="q4">
+              <h4>4. If a computer has no operating system installed, what will happen when you turn it on?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="true">A) The computer will show an error or fail to start</button>
+                <button class="quiz-option" data-correct="false">B) It will automatically run Paint</button>
+                <button class="quiz-option" data-correct="false">C) It will load application software</button>
+                <button class="quiz-option" data-correct="false">D) Nothing different will happen</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q4"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(4)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-question" id="q5">
+              <h4>5. Which software category does 'Word Processor' belong to?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="false">A) System Software</button>
+                <button class="quiz-option" data-correct="true">B) Application Software</button>
+                <button class="quiz-option" data-correct="false">C) Utilities</button>
+                <button class="quiz-option" data-correct="false">D) Device Drivers</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q5"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(5)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-question" id="q6">
+              <h4>6. A user needs to browse the internet and write reports. What software will they use?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="false">A) Device driver and utilities</button>
+                <button class="quiz-option" data-correct="true">B) Application software (Browser + Word)</button>
+                <button class="quiz-option" data-correct="false">C) Only the operating system</button>
+                <button class="quiz-option" data-correct="false">D) CPU software</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q6"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(6)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="quiz-question" id="q7">
+              <h4>7. True or False: Hardware and software can work independently without each other.</h4>
+              <div class="quiz-tf">
+                <button class="quiz-option" data-correct="false">✅ True</button>
+                <button class="quiz-option" data-correct="true">❌ False</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q7"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn next" onclick="nextQuestion(7)">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="quiz-question" id="q8">
+              <h4>8. What happens if there is no device driver for new hardware?</h4>
+              <div class="quiz-options">
+                <button class="quiz-option" data-correct="true">A) The hardware will not work properly</button>
+                <button class="quiz-option" data-correct="false">B) The system software will automatically fix it</button>
+                <button class="quiz-option" data-correct="false">C) Application software will install the required drivers</button>
+                <button class="quiz-option" data-correct="false">D) The computer will shut down permanently</button>
+              </div>
+              <div class="quiz-feedback" id="fb-q8"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn submit" onclick="submitQuiz()">🎉 See Results!</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCORECARD -->
+          <div class="scorecard" id="scorecard">
+            <h3>🎉 Quiz Complete!</h3>
+            <div class="score-circle-wrap">
+              <svg viewBox="0 0 180 180" width="200" height="200">
+                <circle class="score-circle-bg" cx="90" cy="90" r="80"/>
+                <circle class="score-circle-fill" id="scoreFill" cx="90" cy="90" r="80"/>
+              </svg>
+              <div class="score-num" id="scoreNum">0/8</div>
+            </div>
+            <p class="score-msg" id="scoreMsg">Loading your results...</p>
+            <button class="retake-btn" onclick="retakeQuiz()">🔄 Try Again!</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAB ACTIVITY -->
+    <section id="lab">
+      <div class="section-header sh-dark">
+        <span class="icon">🔬</span>
+        <h2>Lab Activity</h2>
+      </div>
+      <div class="section-inner">
+        <div class="lab-card reveal">
+          <h3>💻 Computer Lab Practice</h3>
+          <p>Go to your computer lab and practise opening and closing different application software like MS Paint and MS Word. Follow these steps:</p>
+          <ul class="lab-steps">
+            <li>Turn on the computer and wait for the operating system (Windows) to load.</li>
+            <li>Click on the Start button (🪟) at the bottom left of your screen.</li>
+            <li>Find and click on <strong>MS Paint</strong> to open it. Explore its tools!</li>
+            <li>Draw something using the paint tools — try different colours and shapes.</li>
+            <li>Close MS Paint by clicking the ✕ button at the top right.</li>
+            <li>Now open <strong>MS Word</strong> from the Start menu.</li>
+            <li>Type your name and your school name in the document.</li>
+            <li>Close MS Word and observe what happens (save prompt!).</li>
+          </ul>
+        </div>
+
+        <div class="callout info reveal" style="margin-top:30px">
+          <span class="callout-icon">👨‍🏫</span>
+          <p><strong>Teacher's Note:</strong> Enhance the student's knowledge about software and its types through this hands-on lab activity. Encourage students to identify which software is system software and which is application software while exploring.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="#hero" class="mob-link"><span class="nav-icon">🏠</span>Intro</a>
+    <a href="#concept" class="mob-link"><span class="nav-icon">📖</span>Concept</a>
+    <a href="#system" class="mob-link"><span class="nav-icon">⚙️</span>System</a>
+    <a href="#drivers" class="mob-link"><span class="nav-icon">🔌</span>Drivers</a>
+    <a href="#application" class="mob-link"><span class="nav-icon">📱</span>Apps</a>
+    <a href="#diagram" class="mob-link"><span class="nav-icon">🗺️</span>Diagram</a>
+    <a href="#activity" class="mob-link"><span class="nav-icon">🎮</span>Activity</a>
+    <a href="#quiz" class="mob-link"><span class="nav-icon">❓</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK — MUST BE FIRST
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // MERMAID INIT
+  // =====================
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid error:', e); }
+
+  // =====================
+  // LENIS SMOOTH SCROLL
+  // =====================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // =====================
+  // CURTAIN GSAP DISMISS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', {
+        opacity: 0,
+        duration: 0.8,
+        delay: 2,
+        onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // =====================
+  // GSAP ANIMATIONS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero text
+      gsap.from('.hero-text h1', { opacity: 0, y: 60, duration: 1, delay: 2.2 });
+      gsap.from('.hero-text p', { opacity: 0, y: 40, duration: 1, delay: 2.5 });
+      gsap.from('.hero-badges', { opacity: 0, y: 30, duration: 1, delay: 2.8 });
+      gsap.from('.hero-visual', { opacity: 0, x: 60, duration: 1.2, delay: 2.4 });
+
+      // SVG path drawing
+      const paths = document.querySelectorAll('.draw-path');
+      if (paths.length) {
+        gsap.to(paths, {
+          strokeDashoffset: 0,
+          duration: 2,
+          delay: 2.5,
+          stagger: 0.2,
+          ease: 'power2.out'
+        });
+      }
+
+      // Parallax
+      gsap.to('#heroBg', {
+        y: -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+
+      // Scroll reveal for cards
+      document.querySelectorAll('.reveal').forEach(el => {
+        gsap.from(el, {
+          opacity: 0,
+          y: 40,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true
+          }
+        });
+      });
+
+      // Windows cards stagger
+      gsap.from('.win-card', {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.windows-grid',
+          start: 'top 85%',
+          once: true
+        }
+      });
+
+      // App cards stagger
+      gsap.from('.app-card', {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: 'back.out(1.7)',
+        scrollTrigger: {
+          trigger: '.app-grid',
+          start: 'top 85%',
+          once: true
+        }
+      });
+
+      // Counter animations
+      const counters = [
+        { id: 'counter1', end: 2 },
+        { id: 'counter2', end: 4 },
+        { id: 'counter3', end: 6 }
+      ];
+      counters.forEach(c => {
+        const el = document.getElementById(c.id);
+        if (el) {
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+              gsap.to({ val: 0 }, {
+                val: c.end,
+                duration: 1.5,
+                ease: 'power2.out',
+                onUpdate: function() {
+                  el.textContent = Math.round(this.targets()[0].val);
+                }
+              });
+            }
+          });
+        }
+      });
+
+    }
+  } catch(e) { console.warn('GSAP error:', e); }
+
+  // =====================
+  // INTERSECTION OBSERVER FOR TOC
+  // =====================
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const mobLinks = document.querySelectorAll('.mob-link');
+    const progressSteps = document.querySelectorAll('.progress-steps .step');
+    const sectionIds = ['hero','concept','system','drivers','application','diagram','activity','quiz'];
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          tocLinks.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+          mobLinks.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+          const idx = sectionIds.indexOf(id);
+          if (idx !== -1) {
+            progressSteps.forEach((s, i) => {
+              s.classList.remove('active','done');
+              if (i < idx) s.classList.add('done');
+              else if (i === idx) s.classList.add('active');
+            });
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => observer.observe(s));
+  } catch(e) { console.warn('Observer error:', e); }
+
+  // =====================
+  // DRAG AND DROP ACTIVITY
+  // =====================
+  try {
+    let draggedItem = null;
+    const dragLabels = document.querySelectorAll('.drag-label');
+    const dropZones = document.querySelectorAll('.drop-zone');
+
+    dragLabels.forEach(label => {
+      label.addEventListener('dragstart', (e) => {
+        if (label.classList.contains('used')) { e.preventDefault(); return; }
+        draggedItem = label;
+        setTimeout(() => label.style.opacity = '0.5', 0);
+      });
+      label.addEventListener('dragend', () => {
+        if (draggedItem) draggedItem.style.opacity = '1';
+        draggedItem = null;
+      });
+      // Touch support
+      label.addEventListener('touchstart', (e) => {
+        if (label.classList.contains('used')) return;
+        draggedItem = label;
+      }, { passive: true });
+    });
+
+    dropZones.forEach(zone => {
+      zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('hover');
+      });
+      zone.addEventListener('dragleave', () => zone.classList.remove('hover'));
+      zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('hover');
+        if (!draggedItem || draggedItem.classList.contains('used')) return;
+        const category = zone.dataset.category;
+        const itemCat = draggedItem.dataset.category;
+        const itemName = draggedItem.dataset.item;
+        addDroppedItem(zone, itemName, draggedItem);
+      });
+      zone.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove')) {
+          const tag = e.target.closest('.dropped-tag');
+          if (tag) {
+            const itemName = tag.dataset.item;
+            // Re-enable original label
+            document.querySelectorAll('.drag-label').forEach(l => {
+              if (l.dataset.item === itemName) l.classList.remove('used');
+            });
+            tag.remove();
+          }
+        }
+      });
+    });
+
+    function addDroppedItem(zone, itemName, sourceLabel) {
+      const container = zone.querySelector('.dropped-items');
+      const tag = document.createElement('div');
+      tag.className = 'dropped-tag';
+      tag.dataset.item = itemName;
+      tag.innerHTML = `${itemName} <span class="remove">×</span>`;
+      container.appendChild(tag);
+      sourceLabel.classList.add('used');
+      sourceLabel.style.opacity = '1';
+    }
+
+    document.getElementById('checkDrag').addEventListener('click', () => {
+      const systemDropped = Array.from(document.querySelectorAll('#dropped-system .dropped-tag')).map(t => t.dataset.item);
+      const appDropped = Array.from(document.querySelectorAll('#dropped-app .dropped-tag')).map(t => t.dataset.item);
+
+      const systemCorrect = ['MS Windows', 'Device Driver', 'Windows 11', 'Utilities'];
+      const appCorrect = ['MS Word', 'MS Paint', 'Excel', 'Internet Browser'];
+
+      let correct = 0;
+      let total = 8;
+
+      systemDropped.forEach(item => {
+        if (systemCorrect.includes(item)) correct++;
+      });
+      appDropped.forEach(item => {
+        if (appCorrect.includes(item)) correct++;
+      });
+
+      const res = document.getElementById('dragResult');
+      res.style.display = 'block';
+      if (correct === total) {
+        res.style.color = 'var(--green)';
+        res.textContent = '🎉 Perfect! All ' + total + '/' + total + ' items placed correctly!';
+        document.getElementById('dz-system').classList.add('correct');
+        document.getElementById('dz-app').classList.add('correct');
+      } else {
+        res.style.color = 'var(--coral)';
+        res.textContent = '📝 You got ' + correct + '/' + total + ' correct. Try again! Check which category each software belongs to.';
+      }
+    });
+  } catch(e) { console.warn('Drag error:', e); }
+
+  // =====================
+  // FILL IN THE BLANKS
+  // =====================
+  try {
+    const fillAnswers = {
+      fb1: ['operating system', 'os'],
+      fb2: ['ms windows', 'windows'],
+      fb3: ['user'],
+      fb4: ['software'],
+      fb5: ['media players', 'word processors', 'ms word', 'paint'],
+      fb6: ['end user', 'user']
+    };
+
+    document.getElementById('checkFill').addEventListener('click', () => {
+      let correct = 0;
+      let total = 6;
+      ['fb1','fb2','fb3','fb4','fb5','fb6'].forEach(id => {
+        const input = document.getElementById(id);
+        const val = input.value.trim().toLowerCase();
+        const accepted = fillAnswers[id];
+        const isCorrect = accepted.some(a => val === a || val.includes(a) || a.includes(val) && val.length > 2);
+        input.style.borderColor = isCorrect ? 'var(--green)' : 'var(--coral)';
+        if (isCorrect) correct++;
+      });
+      const res = document.getElementById('fillResult');
+      res.style.display = 'block';
+      if (correct === total) {
+        res.style.color = 'var(--green)';
+        res.textContent = '🎉 Excellent! All ' + correct + '/' + total + ' answers correct!';
+      } else {
+        res.style.color = 'var(--coral)';
+        res.textContent = '📝 You got ' + correct + '/' + total + ' correct. Check the highlighted boxes!';
+      }
+    });
+  } catch(e) { console.warn('Fill error:', e); }
+
+  // =====================
+  // TRUE / FALSE ACTIVITY
+  // =====================
+  try {
+    const tfItems = document.querySelectorAll('.tf-item');
+    tfItems.forEach(item => {
+      const trueBtn = item.querySelector('.true-btn');
+      const falseBtn = item.querySelector('.false-btn');
+      trueBtn.addEventListener('click', () => {
+        trueBtn.classList.add('selected-true');
+        falseBtn.classList.remove('selected-false');
+        trueBtn.dataset.selected = 'true';
+        falseBtn.dataset.selected = '';
+      });
+      falseBtn.addEventListener('click', () => {
+        falseBtn.classList.add('selected-false');
+        trueBtn.classList.remove('selected-true');
+        falseBtn.dataset.selected = 'false';
+        trueBtn.dataset.selected = '';
+      });
+    });
+
+    document.getElementById('checkTF').addEventListener('click', () => {
+      let correct = 0;
+      tfItems.forEach(item => {
+        const answer = item.dataset.answer;
+        const trueBtn = item.querySelector('.true-btn');
+        const falseBtn = item.querySelector('.false-btn');
+        const selectedTrue = trueBtn.dataset.selected === 'true';
+        const selectedFalse = falseBtn.dataset.selected === 'false';
+        const selected = selectedTrue ? 'true' : (selectedFalse ? 'false' : null);
+
+        trueBtn.disabled = true;
+        falseBtn.disabled = true;
+
+        if (selected === null) return;
+
+        if (selected === answer) {
+          correct++;
+          (answer === 'true' ? trueBtn : falseBtn).classList.add('correct-ans');
+        } else {
+          (selected === 'true' ? trueBtn : falseBtn).classList.add('wrong-ans');
+          (answer === 'true' ? trueBtn : falseBtn).classList.add('correct-ans');
+        }
+      });
+
+      const res = document.getElementById('tfResult');
+      res.style.display = 'block';
+      if (correct >= 4) {
+        res.style.color = 'var(--green)';
+        res.textContent = '🎉 Great job! ' + correct + '/5 correct!';
+      } else {
+        res.style.color = 'var(--coral)';
+        res.textContent = '📝 ' + correct + '/5 correct. Review the lesson and try again!';
+      }
+    });
+  } catch(e) { console.warn('TF error:', e); }
+
+  // =====================
+  // TIMELINE DRAG ACTIVITY
+  // =====================
+  try {
+    const tlContainer = document.getElementById('timelineItems');
+    let tlDragSrc = null;
+
+    function updateTLNumbers() {
+      const items = tlContainer.querySelectorAll('.timeline-item');
+      items.forEach((item, i) => {
+        item.querySelector('.tl-num').textContent = i + 1;
+      });
+    }
+
+    tlContainer.querySelectorAll('.timeline-item').forEach(item => {
+      item.addEventListener('dragstart', () => {
+        tlDragSrc = item;
+        setTimeout(() => item.classList.add('dragging'), 0);
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        tlContainer.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('drag-over'));
+        updateTLNumbers();
+        tlDragSrc = null;
+      });
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (item !== tlDragSrc) item.classList.add('drag-over');
+      });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (item !== tlDragSrc) {
+          const items = Array.from(tlContainer.querySelectorAll('.timeline-item'));
+          const srcIndex = items.indexOf(tlDragSrc);
+          const tgtIndex = items.indexOf(item);
+          if (srcIndex < tgtIndex) {
+            tlContainer.insertBefore(tlDragSrc, item.nextSibling);
+          } else {
+            tlContainer.insertBefore(tlDragSrc, item);
+          }
+        }
+        item.classList.remove('drag-over');
+      });
+    });
+    updateTLNumbers();
+
+    document.getElementById('checkTimeline').addEventListener('click', () => {
+      const items = Array.from(tlContainer.querySelectorAll('.timeline-item'));
+      const correctOrder = ['tl-winxp', 'tl-win7', 'tl-win10', 'tl-win11'];
+      let correct = true;
+      items.forEach((item, i) => {
+        if (item.id !== correctOrder[i]) correct = false;
+      });
+      const res = document.getElementById('tlResult');
+      res.style.display = 'block';
+      if (correct) {
+        res.style.color = 'var(--green)';
+        res.textContent = '🎉 Perfect order! Windows XP → Windows 7 → Windows 10 → Windows 11. Correct!';
+        items.forEach(i => i.style.borderColor = 'var(--green)');
+      } else {
+        res.style.color = 'var(--coral)';
+        res.textContent = '📝 Not quite right! Hint: XP came first (2001), then 7, 10, and finally 11 (2021).';
+        items.forEach(i => i.style.borderColor = 'var(--coral)');
+      }
+    });
+  } catch(e) { console.warn('Timeline error:', e); }
+
+  // =====================
+  // QUIZ
+  // =====================
+  try {
+    let currentQ = 1;
+    let totalQ = 8;
+    let score = 0;
+    let answered = {};
+
+    function selectOption(questionNum, btn, isCorrect) {
+      if (answered[questionNum]) return;
+      answered[questionNum] = true;
+
+      const qEl = document.getElementById('q' + questionNum);
+      const options = qEl.querySelectorAll('.quiz-option');
+      options.forEach(o => {
+        o.classList.add('disabled');
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+
+      const fb = document.getElementById('fb-q' + questionNum);
+      if (fb) {
+        fb.style.display = 'block';
+        if (isCorrect) {
+          fb.className = 'quiz-feedback correct';
+          fb.textContent = '✅ Correct! Well done!';
+          score++;
+        } else {
+          fb.className = 'quiz-feedback wrong';
+          fb.textContent = '❌ Not quite! The correct answer is highlighted in green.';
+        }
+      }
+
+      // Update progress
+      document.getElementById('quizProgress').textContent = 'Question ' + questionNum + ' of ' + totalQ;
+    }
+
+    // Attach option listeners
+    for (let i = 1; i <= totalQ; i++) {
+      const qEl = document.getElementById('q' + i);
+      if (qEl) {
+        qEl.querySelectorAll('.quiz-option').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const isCorrect = btn.dataset.correct === 'true';
+            selectOption(i, btn, isCorrect);
+          });
+        });
+      }
+    }
+
+    window.nextQuestion = function(current) {
+      if (!answered[current]) {
+        // Allow skip but warn
+        const fb = document.getElementById('fb-q' + current);
+        if (fb) {
+          fb.style.display = 'block';
+          fb.className = 'quiz-feedback wrong';
+          fb.textContent = '⚠️ Please select an answer first!';
+          setTimeout(() => fb.style.display = 'none', 2000);
+        }
+        return;
+      }
+      const currentEl = document.getElementById('q' + current);
+      const nextEl = document.getElementById('q' + (current + 1));
+      if (currentEl) currentEl.classList.remove('active');
+      if (nextEl) {
+        nextEl.classList.add('active');
+        currentQ = current + 1;
+        document.getElementById('quizProgress').textContent = 'Question ' + currentQ + ' of ' + totalQ;
+      }
+    };
+
+    window.submitQuiz = function() {
+      if (!answered[8]) {
+        const fb = document.getElementById('fb-q8');
+        if (fb) {
+          fb.style.display = 'block';
+          fb.className = 'quiz-feedback wrong';
+          fb.textContent = '⚠️ Please select an answer first!';
+          setTimeout(() => fb.style.display = 'none', 2000);
+        }
+        return;
+      }
+      document.getElementById('quizContent').style.display = 'none';
+      const sc = document.getElementById('scorecard');
+      sc.style.display = 'block';
+
+      const pct = (score / totalQ) * 100;
+      const circumference = 2 * Math.PI * 80; // r=80
+      const offset = circumference - (pct / 100) * circumference;
+
+      document.getElementById('scoreNum').textContent = score + '/' + totalQ;
+
+      const fill = document.getElementById('scoreFill');
+      fill.style.strokeDasharray = circumference;
+      fill.style.strokeDashoffset = circumference;
+
+      setTimeout(() => {
+        fill.style.strokeDashoffset = offset;
+        if (pct >= 80) fill.style.stroke = 'var(--green)';
+        else if (pct >= 50) fill.style.stroke = 'var(--sunshine)';
+        else fill.style.stroke = 'var(--coral)';
+      }, 200);
+
+      const msg = document.getElementById('scoreMsg');
+      if (score === 8) msg.textContent = '🌟 Perfect score! You are a Software Expert! Amazing work!';
+      else if (score >= 6) msg.textContent = '🎉 Excellent! You know a lot about software. Keep it up!';
+      else if (score >= 4) msg.textContent = '👍 Good job! Review the lesson a bit more to improve!';
+      else msg.textContent = '📚 Keep practising! Read the lesson again and try once more!';
+
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.from('#scorecard', { opacity: 0, scale: 0.9, duration: 0.6, ease: 'back.out(1.7)' });
+        }
+      } catch(e) {}
+    };
+
+    window.retakeQuiz = function() {
+      score = 0;
+      answered = {};
+      currentQ = 1;
+
+      document.getElementById('scorecard').style.display = 'none';
+      document.getElementById('quizContent').style.display = 'block';
+
+      for (let i = 1; i <= totalQ; i++) {
+        const qEl = document.getElementById('q' + i);
+        if (!qEl) continue;
+        qEl.classList.remove('active');
+        qEl.querySelectorAll('.quiz-option').forEach(btn => {
+          btn.classList.remove('correct','wrong','disabled');
+        });
+        const fb = document.getElementById('fb-q' + i);
+        if (fb) fb.style.display = 'none';
+      }
+      document.getElementById('q1').classList.add('active');
+      document.getElementById('quizProgress').textContent = 'Question 1 of 8';
+    };
+
+  } catch(e) { console.warn('Quiz error:', e); }
+
+  // =====================
+  // SMOOTH SCROLL FOR NAV LINKS
+  // =====================
+  try {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  } catch(e) {}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

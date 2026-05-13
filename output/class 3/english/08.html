@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patterns with Make | Class 3 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{width:100%;scroll-behavior:smooth}
+body{width:100%;font-family:'Inter',sans-serif;font-size:18px;background:#F8F9FA;color:#2d2d2d;overflow-x:hidden}
+
+/* Curtain */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#F9CA24,#FF6B6B);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain h2{font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);color:#fff;font-weight:800}
+.curtain-dots{display:flex;gap:10px}
+.curtain-dots span{width:14px;height:14px;border-radius:50%;background:#fff;animation:dotBounce 0.9s ease-in-out infinite}
+.curtain-dots span:nth-child(2){animation-delay:0.2s}
+.curtain-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dotBounce{0%,80%,100%{transform:scale(0.8);opacity:0.5}40%{transform:scale(1.3);opacity:1}}
+
+/* Layout */
+.page-wrapper{width:100%;max-width:100%;position:relative}
+.content-container{max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* Progress bar */
+.progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:5px;background:#e0e0e0;z-index:1000}
+.progress-bar{height:100%;background:linear-gradient(90deg,#F9CA24,#FF6B6B);width:0%;transition:width 0.2s}
+
+/* Breadcrumb */
+.breadcrumb{background:#fff;border-bottom:2px solid #F9CA24;padding:12px 40px;display:flex;gap:8px;align-items:center;font-size:15px;color:#666;flex-wrap:wrap;position:sticky;top:5px;z-index:900}
+.breadcrumb span{color:#FF6B6B;font-weight:600}
+.breadcrumb a{color:#48DBFB;text-decoration:none;font-weight:500}
+
+/* Desktop sidebar */
+.main-layout{display:flex;gap:0;align-items:flex-start;position:relative}
+.sidebar{width:260px;flex-shrink:0;position:sticky;top:80px;padding:20px 0 20px 40px;max-height:90vh;overflow-y:auto}
+.sidebar-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:20px;border-left:4px solid #F9CA24}
+.sidebar-card h3{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;color:#2d2d2d}
+.sidebar-card a{display:block;padding:8px 10px;border-radius:8px;color:#555;text-decoration:none;font-size:15px;margin-bottom:4px;transition:all 0.2s;border-left:3px solid transparent}
+.sidebar-card a:hover,.sidebar-card a.active{background:#F8F9FA;color:#FF6B6B;border-left-color:#FF6B6B;font-weight:600}
+.main-content{flex:1;min-width:0;padding:0 40px 100px 40px}
+
+/* Hero */
+.hero-section{width:100%;min-height:80vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-bg-shapes{position:absolute;inset:0;pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;padding:40px 20px}
+.hero-badge{display:inline-block;background:rgba(249,202,36,0.2);border:2px solid #F9CA24;color:#F9CA24;padding:8px 20px;border-radius:30px;font-size:15px;font-weight:600;margin-bottom:20px;letter-spacing:1px}
+.hero-title{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-title .highlight{color:#F9CA24}
+.hero-subtitle{font-size:clamp(1.1rem,2vw,1.4rem);color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 30px}
+.hero-chips{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.hero-chip{background:rgba(72,219,251,0.2);border:1px solid #48DBFB;color:#48DBFB;padding:8px 18px;border-radius:20px;font-size:15px;font-weight:500}
+
+/* SVG hero animation */
+.hero-svg{position:absolute;bottom:0;left:0;right:0;width:100%;height:120px}
+
+/* Section headers */
+.section-header{width:100%;padding:22px 40px;margin:40px 0 0 0;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:14px}
+.section-header.sunshine{background:linear-gradient(135deg,#F9CA24,#f0a500)}
+.section-header.sky{background:linear-gradient(135deg,#48DBFB,#0fbcf9)}
+.section-header.coral{background:linear-gradient(135deg,#FF6B6B,#ee5a24)}
+.section-header.purple{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}
+.section-header.green{background:linear-gradient(135deg,#00b894,#00cec9)}
+.section-header h2{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);color:#fff;font-weight:700;margin:0}
+.section-icon{font-size:2rem}
+
+/* Cards */
+.card{background:#fff;border-radius:0 0 12px 12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:30px;margin-bottom:40px;opacity:1;transform:none}
+
+/* Concept boxes */
+.concept-box{background:linear-gradient(135deg,#fff9e6,#fff3cd);border:2px solid #F9CA24;border-radius:12px;padding:24px;margin:20px 0}
+.concept-box h3{font-family:'Poppins',sans-serif;font-size:clamp(1.2rem,2vw,1.5rem);color:#d68910;margin-bottom:12px}
+.concept-box p{font-size:18px;line-height:1.7;color:#555}
+.example-tag{display:inline-block;background:#F9CA24;color:#333;padding:4px 12px;border-radius:6px;font-size:15px;font-weight:600;margin-right:8px}
+
+/* Pattern display */
+.pattern-display{background:linear-gradient(135deg,#48DBFB15,#48DBFB30);border:2px solid #48DBFB;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.pattern-formula{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:700;color:#0fbcf9;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.pattern-part{background:#fff;border:2px solid #48DBFB;border-radius:8px;padding:8px 16px;color:#2d2d2d}
+.pattern-part.verb{background:#48DBFB;color:#fff;border-color:#48DBFB}
+.pattern-part.adj{background:#FF6B6B;color:#fff;border-color:#FF6B6B}
+.pattern-part.noun{background:#a29bfe;color:#fff;border-color:#a29bfe}
+.pattern-plus{color:#555;font-size:1.2rem}
+
+/* Example sentences */
+.example-list{list-style:none;padding:0}
+.example-list li{padding:14px 20px;border-left:4px solid #48DBFB;background:#f0fdff;border-radius:0 8px 8px 0;margin-bottom:12px;font-size:18px;line-height:1.6}
+.example-list li .em{color:#FF6B6B;font-weight:700}
+.example-list li .adj-em{color:#a29bfe;font-weight:700}
+
+/* Comic strip */
+.comic-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+.comic-panel{background:linear-gradient(135deg,#48DBFB15,#48DBFB25);border:3px solid #48DBFB;border-radius:12px;padding:20px;text-align:center;position:relative}
+.comic-emoji{font-size:3rem;margin-bottom:10px;display:block}
+.comic-bubble{background:#fff;border:2px solid #333;border-radius:12px;padding:10px 14px;font-size:16px;font-style:italic;margin-top:10px;position:relative}
+.comic-bubble::before{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#333}
+
+/* Activity grids */
+.activity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:20px 0}
+.activity-item{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:20px;transition:all 0.3s}
+.activity-item:hover{border-color:#48DBFB;box-shadow:0 4px 16px rgba(72,219,251,0.2)}
+
+/* Fill in blanks */
+.fill-blank{border:none;border-bottom:3px solid #FF6B6B;background:transparent;font-size:18px;font-family:'Inter',sans-serif;color:#2d2d2d;width:130px;padding:4px 8px;outline:none;text-align:center}
+.fill-blank:focus{border-bottom-color:#F9CA24}
+.sentence-row{padding:16px 0;border-bottom:1px solid #f0f0f0;font-size:18px;line-height:1.8;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sentence-row:last-child{border-bottom:none}
+
+/* Drag-and-drop */
+.drag-bank{display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#F8F9FA;border-radius:10px;margin-bottom:20px;min-height:60px;border:2px dashed #ccc}
+.drag-item{background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;padding:10px 18px;border-radius:30px;font-size:17px;font-weight:600;cursor:grab;user-select:none;transition:transform 0.2s,box-shadow 0.2s}
+.drag-item:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(255,107,107,0.4)}
+.drag-item.dragging{opacity:0.5;cursor:grabbing}
+.drop-zone{border:3px dashed #48DBFB;border-radius:8px;min-width:120px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;background:#f0fdff;padding:4px 8px;vertical-align:middle;transition:all 0.2s;font-size:17px;color:#999}
+.drop-zone.over{background:#e0f9ff;border-color:#0fbcf9}
+.drop-zone.filled{background:#d4edda;border-color:#28a745;color:#155724;font-weight:600}
+.drop-zone.wrong{background:#fde8e8;border-color:#FF6B6B}
+
+/* Word order activity */
+.word-order-row{margin-bottom:20px;padding:20px;background:#fff9e6;border-radius:10px;border:2px solid #F9CA24}
+.word-order-words{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.word-chip{background:#F9CA24;color:#333;padding:8px 16px;border-radius:20px;font-size:17px;font-weight:600;cursor:pointer;user-select:none;transition:all 0.2s}
+.word-chip:hover{background:#f0a500;transform:translateY(-2px)}
+.word-chip.selected{background:#FF6B6B;color:#fff;transform:translateY(-2px)}
+.word-chip.used{background:#ccc;color:#999;cursor:not-allowed}
+.answer-area{min-height:50px;border:3px dashed #FF6B6B;border-radius:8px;padding:10px;background:#fff;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.placed-word{background:#FF6B6B;color:#fff;padding:8px 16px;border-radius:20px;font-size:17px;font-weight:600;cursor:pointer}
+.placed-word:hover{background:#ee5a24}
+.word-order-result{margin-top:10px;font-size:16px;font-weight:600;min-height:24px}
+
+/* Made-of matching */
+.material-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+.material-card{background:#fff;border:3px solid #e0e0e0;border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all 0.3s}
+.material-card:hover{border-color:#a29bfe;transform:translateY(-3px)}
+.material-card.selected-item{border-color:#FF6B6B;background:#fde8e8}
+.material-card.selected-mat{border-color:#48DBFB;background:#e0f9ff}
+.material-card.matched{border-color:#28a745;background:#d4edda}
+.material-emoji{font-size:2.5rem;display:block;margin-bottom:8px}
+.material-label{font-size:15px;font-weight:600;color:#555}
+
+/* Quiz */
+.quiz-section{margin:20px 0}
+.quiz-question{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 16px rgba(0,0,0,0.07);border-left:5px solid #48DBFB;opacity:1;transform:none}
+.quiz-question h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);margin-bottom:16px;color:#2d2d2d}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quiz-option{background:#F8F9FA;border:2px solid #e0e0e0;border-radius:8px;padding:14px 18px;cursor:pointer;font-size:17px;transition:all 0.2s;text-align:left;min-height:48px}
+.quiz-option:hover{border-color:#48DBFB;background:#f0fdff}
+.quiz-option.correct{background:#d4edda;border-color:#28a745;color:#155724;font-weight:600}
+.quiz-option.wrong{background:#fde8e8;border-color:#FF6B6B;color:#721c24;font-weight:600}
+.quiz-option.disabled{cursor:not-allowed}
+.quiz-tf{display:flex;gap:16px}
+.tf-btn{flex:1;padding:14px;border:2px solid #e0e0e0;border-radius:8px;font-size:18px;font-weight:600;cursor:pointer;background:#F8F9FA;transition:all 0.2s;min-height:48px}
+.tf-btn:hover{transform:scale(1.02)}
+.quiz-feedback{margin-top:10px;font-size:16px;font-weight:600;min-height:22px}
+
+/* Score card */
+.score-card{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;padding:40px;text-align:center;margin:20px 0;display:none}
+.score-card.show{display:block}
+.score-circle-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px}
+.score-circle-svg{width:160px;height:160px}
+.score-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-number{font-family:'Poppins',sans-serif;font-size:2.5rem;font-weight:800;color:#F9CA24}
+.score-label{font-size:14px;color:rgba(255,255,255,0.7)}
+.score-title{font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,3vw,2rem);color:#fff;margin-bottom:12px}
+.score-msg{font-size:18px;color:rgba(255,255,255,0.8);margin-bottom:24px}
+.retry-btn{background:linear-gradient(135deg,#F9CA24,#f0a500);color:#333;border:none;border-radius:30px;padding:14px 32px;font-size:18px;font-weight:700;cursor:pointer;transition:transform 0.2s;min-height:48px}
+.retry-btn:hover{transform:scale(1.05)}
+
+/* Buttons */
+.btn{display:inline-block;padding:12px 28px;border-radius:30px;font-size:17px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;min-height:48px;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,0.4)}
+.btn-secondary{background:linear-gradient(135deg,#48DBFB,#0fbcf9);color:#fff}
+.btn-secondary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(72,219,251,0.4)}
+.btn-check{background:linear-gradient(135deg,#F9CA24,#f0a500);color:#333;margin-top:12px}
+
+/* Feedback badges */
+.feedback-good{color:#28a745;font-weight:700}
+.feedback-bad{color:#FF6B6B;font-weight:700}
+
+/* Table */
+.content-table{width:100%;border-collapse:collapse;margin:16px 0}
+.content-table th{background:#FF6B6B;color:#fff;padding:14px 16px;font-size:16px;font-weight:700;text-align:left}
+.content-table td{padding:12px 16px;font-size:17px;border-bottom:1px solid #f0f0f0}
+.content-table tr:nth-child(even) td{background:#f9f9f9}
+.table-wrap{overflow-x:auto}
+
+/* Rules boxes */
+.rule-box{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;background:#fff;border-radius:10px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+.rule-icon{font-size:1.6rem;flex-shrink:0}
+.rule-text{font-size:18px;line-height:1.6}
+
+/* Parallax sections */
+.parallax-section{position:relative;overflow:hidden}
+
+/* Result badge */
+.result-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:15px;font-weight:700;margin-top:8px}
+.result-badge.correct{background:#d4edda;color:#155724}
+.result-badge.incorrect{background:#fde8e8;color:#721c24}
+
+/* Mobile bottom nav */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #F9CA24;z-index:950;overflow-x:auto;padding:8px 0;-webkit-overflow-scrolling:touch}
+.mobile-nav-inner{display:flex;gap:4px;padding:0 12px;min-width:max-content}
+.mobile-nav-link{padding:10px 16px;font-size:14px;font-weight:600;color:#555;text-decoration:none;border-radius:8px;white-space:nowrap;min-height:48px;display:flex;align-items:center}
+.mobile-nav-link.active{background:#FF6B6B;color:#fff}
+
+/* Animations */
+.fade-in{opacity:1;transform:translateY(0)}
+
+/* Section spacing */
+section{scroll-margin-top:80px}
+
+/* highlight pill */
+.pill{display:inline-block;padding:3px 12px;border-radius:14px;font-size:15px;font-weight:700}
+.pill-yellow{background:#FFF3CD;color:#856404}
+.pill-blue{background:#d1ecf1;color:#0c5460}
+.pill-red{background:#fde8e8;color:#721c24}
+.pill-purple{background:#e8e0ff;color:#4527a0}
+
+/* Check result style */
+.check-result{margin-top:12px;padding:10px 16px;border-radius:8px;font-size:17px;font-weight:600;display:none}
+.check-result.show{display:block}
+.check-result.pass{background:#d4edda;color:#155724;border:1px solid #28a745}
+.check-result.fail{background:#fde8e8;color:#721c24;border:1px solid #FF6B6B}
+
+@media (max-width:768px){
+  .sidebar{display:none}
+  .mobile-nav{display:block}
+  .main-content{padding:0 16px 100px 16px}
+  .content-container{padding:0 16px}
+  .breadcrumb{padding:10px 16px}
+  .hero-section{min-height:60vh}
+  .comic-strip{grid-template-columns:1fr}
+  .activity-grid{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .material-grid{grid-template-columns:repeat(2,1fr)}
+  .section-header{padding:16px 20px}
+  .card{padding:20px}
+  .main-layout{flex-direction:column}
+  .hero-chips{gap:8px}
+}
+@media (max-width:480px){
+  .material-grid{grid-template-columns:repeat(2,1fr)}
+  .pattern-formula{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- Curtain -->
+<div id="curtain">
+  <h2>🌟 Loading Lesson...</h2>
+  <div class="curtain-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="#">🏠 Home</a> &rsaquo;
+  <a href="#">Class 3</a> &rsaquo;
+  <a href="#">English</a> &rsaquo;
+  <span>Chapter 8: Patterns with Make</span>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero-section parallax-section" id="hero">
+    <div class="hero-bg-shapes">
+      <svg id="heroSvg" width="100%" height="100%" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="150" r="80" fill="rgba(249,202,36,0.1)"/>
+        <circle cx="1200" cy="400" r="120" fill="rgba(72,219,251,0.1)"/>
+        <circle cx="700" cy="500" r="60" fill="rgba(255,107,107,0.1)"/>
+        <path id="heroPath" d="M0,300 Q350,100 700,300 Q1050,500 1400,200" stroke="#F9CA24" stroke-width="3" fill="none" stroke-dasharray="2000" stroke-dashoffset="2000" opacity="0.4"/>
+        <path d="M0,400 Q350,200 700,400 Q1050,600 1400,300" stroke="#48DBFB" stroke-width="2" fill="none" stroke-dasharray="2000" stroke-dashoffset="2000" opacity="0.3" id="heroPath2"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">📚 Chapter 8 · English · Class 3</div>
+      <h1 class="hero-title">Patterns with <span class="highlight">MAKE</span></h1>
+      <p class="hero-subtitle">Learn how to use <strong>make</strong> to describe feelings, actions, and materials in English!</p>
+      <div class="hero-chips">
+        <div class="hero-chip">✨ Make + Adjective</div>
+        <div class="hero-chip">⚡ Make + Verb</div>
+        <div class="hero-chip">🧱 Made of + Noun</div>
+      </div>
+    </div>
+    <svg class="hero-svg" viewBox="0 0 1400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 Q350,120 700,60 Q1050,0 1400,60 L1400,120 L0,120 Z" fill="#F8F9FA"/>
+    </svg>
+  </section>
+
+  <div class="main-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-card">
+        <h3>📋 Table of Contents</h3>
+        <a href="#intro" class="toc-link">1. Introduction</a>
+        <a href="#concept1" class="toc-link">2. Make + Adjective</a>
+        <a href="#concept2" class="toc-link">3. Make + Verb</a>
+        <a href="#concept3" class="toc-link">4. Made of + Noun</a>
+        <a href="#practice1" class="toc-link">5. Fill in the Blanks</a>
+        <a href="#practice2" class="toc-link">6. Word Order</a>
+        <a href="#practice3" class="toc-link">7. Matching Activity</a>
+        <a href="#practice4" class="toc-link">8. Error Correction</a>
+        <a href="#quiz" class="toc-link">9. Quiz</a>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+
+      <!-- INTRO -->
+      <section id="intro">
+        <div class="section-header sunshine">
+          <span class="section-icon">🌟</span>
+          <h2>Introduction</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;line-height:1.8;margin-bottom:16px">
+            The word <strong style="color:#FF6B6B">make</strong> is a very useful English word! We use it in <strong>three main patterns</strong> to talk about:
+          </p>
+          <div class="activity-grid">
+            <div class="activity-item" style="border-color:#F9CA24">
+              <div style="font-size:2rem;margin-bottom:8px">😊</div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:1.1rem;color:#856404;margin-bottom:8px">Make + Adjective</h3>
+              <p style="font-size:17px;color:#555">How things change how someone <strong>feels</strong> or <strong>looks</strong>.</p>
+              <p style="margin-top:8px"><span class="pill pill-yellow">e.g. makes me happy</span></p>
+            </div>
+            <div class="activity-item" style="border-color:#48DBFB">
+              <div style="font-size:2rem;margin-bottom:8px">⚡</div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:1.1rem;color:#0c5460;margin-bottom:8px">Make + Verb</h3>
+              <p style="font-size:17px;color:#555">How one action causes another <strong>action</strong> to happen.</p>
+              <p style="margin-top:8px"><span class="pill pill-blue">e.g. made me jump</span></p>
+            </div>
+            <div class="activity-item" style="border-color:#a29bfe">
+              <div style="font-size:2rem;margin-bottom:8px">🧱</div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:1.1rem;color:#4527a0;margin-bottom:8px">Made of + Noun</h3>
+              <p style="font-size:17px;color:#555">What <strong>material</strong> something is made from.</p>
+              <p style="margin-top:8px"><span class="pill pill-purple">e.g. made of plastic</span></p>
+            </div>
+          </div>
+
+          <!-- Comic strip -->
+          <h3 style="font-family:'Poppins',sans-serif;margin:24px 0 14px;font-size:1.2rem">🎭 Story: The Plastic Spider!</h3>
+          <div class="comic-strip">
+            <div class="comic-panel">
+              <span class="comic-emoji">🕷️😱</span>
+              <div class="comic-bubble">"Oh no! That <strong>made me jump</strong>!"</div>
+            </div>
+            <div class="comic-panel">
+              <span class="comic-emoji">🕷️🎭</span>
+              <div class="comic-bubble">"It isn't real. It's <strong>made of plastic</strong>."</div>
+            </div>
+            <div class="comic-panel">
+              <span class="comic-emoji">😤</span>
+              <div class="comic-bubble">"But it <strong>made me scared</strong>. Don't do that again!"</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONCEPT 1: Make + Adjective -->
+      <section id="concept1">
+        <div class="section-header sky">
+          <span class="section-icon">😊</span>
+          <h2>Pattern 1: Make + Somebody/Something + Adjective</h2>
+        </div>
+        <div class="card">
+          <div class="concept-box">
+            <h3>📖 What does it mean?</h3>
+            <p>We use <strong>make somebody or something + adjective</strong> to describe how an event, action, person or object <strong>changes</strong> another person or object.</p>
+          </div>
+
+          <div class="pattern-display">
+            <div class="pattern-formula">
+              <span class="pattern-part verb">make / makes / made</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part">somebody / something</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part adj">adjective</span>
+            </div>
+          </div>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">✅ Examples:</h3>
+          <ul class="example-list">
+            <li>This music is <span class="em">making</span> me <span class="adj-em">happy</span>.</li>
+            <li>Salty food <span class="em">makes</span> people <span class="adj-em">thirsty</span>.</li>
+            <li>That spider <span class="em">made</span> me <span class="adj-em">scared</span>.</li>
+            <li>Exercise <span class="em">makes</span> me <span class="adj-em">tired</span>.</li>
+            <li>Hot weather <span class="em">makes</span> me <span class="adj-em">tired</span>.</li>
+            <li>Yoga <span class="em">makes</span> people <span class="adj-em">calm and relaxed</span>.</li>
+          </ul>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">📝 Common adjectives used with MAKE:</h3>
+          <div class="table-wrap">
+            <table class="content-table">
+              <thead><tr><th>Feeling</th><th>Example sentence</th></tr></thead>
+              <tbody>
+                <tr><td>happy 😊</td><td>Music <em>makes</em> me <strong>happy</strong>.</td></tr>
+                <tr><td>sad 😢</td><td>Failure <em>makes</em> me <strong>sad</strong>.</td></tr>
+                <tr><td>angry 😠</td><td>Bad drivers <em>make</em> him <strong>angry</strong>.</td></tr>
+                <tr><td>scared 😨</td><td>Spiders <em>make</em> her <strong>scared</strong>.</td></tr>
+                <tr><td>tired 😴</td><td>Exercise <em>makes</em> me <strong>tired</strong>.</td></tr>
+                <tr><td>relaxed 😌</td><td>Music <em>makes</em> her <strong>relaxed</strong>.</td></tr>
+                <tr><td>thirsty 🥤</td><td>Salty food <em>makes</em> people <strong>thirsty</strong>.</td></tr>
+                <tr><td>yellow 🟡</td><td>They <em>make</em> everything <strong>yellow</strong>.</td></tr>
+                <tr><td>wet 💧</td><td>Water <em>makes</em> things <strong>wet</strong>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="rule-box">
+            <span class="rule-icon">💡</span>
+            <span class="rule-text"><strong>Remember:</strong> Use <strong>makes</strong> with he/she/it/singular nouns, and <strong>make</strong> with I/you/we/they/plural nouns.</span>
+          </div>
+          <div class="rule-box">
+            <span class="rule-icon">📌</span>
+            <span class="rule-text">The adjective comes <strong>after</strong> the object: "This music makes <u>me</u> <u>happy</u>" — NOT "This music makes happy me."</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONCEPT 2: Make + Verb -->
+      <section id="concept2">
+        <div class="section-header coral">
+          <span class="section-icon">⚡</span>
+          <h2>Pattern 2: Make + Somebody/Something + Verb</h2>
+        </div>
+        <div class="card">
+          <div class="concept-box">
+            <h3>📖 What does it mean?</h3>
+            <p>We use <strong>make somebody or something + verb</strong> to describe how an event or action <strong>creates a second event or action</strong>. The verb after the object is always the <strong>base form</strong> (no "to", no "-ing").</p>
+          </div>
+
+          <div class="pattern-display">
+            <div class="pattern-formula">
+              <span class="pattern-part verb">make / makes / made / is making</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part">somebody / something</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part adj">base verb</span>
+            </div>
+          </div>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">✅ Examples:</h3>
+          <ul class="example-list">
+            <li>That <span class="em">made</span> me <span class="adj-em">jump</span>. <span style="color:#999;font-size:16px">(NOT: made me to jump / made me jumping)</span></li>
+            <li>The book <span class="em">is making</span> her <span class="adj-em">smile</span>.</li>
+            <li>The clowns <span class="em">are making</span> them <span class="adj-em">laugh</span>.</li>
+            <li>The onions <span class="em">are making</span> the wheel <span class="adj-em">spin</span>.</li>
+            <li>The flowers <span class="em">are making</span> her <span class="adj-em">sneeze</span>.</li>
+            <li>Chocolate <span class="em">makes</span> me <span class="adj-em">ill</span>. <span style="color:#999;font-size:16px">(ill = adjective here)</span></li>
+          </ul>
+
+          <div class="rule-box">
+            <span class="rule-icon">⚠️</span>
+            <span class="rule-text"><strong>Common mistake:</strong> Never say "make me <u>to jump</u>" or "make me <u>jumping</u>". Always use the <strong>base form</strong>: "make me jump".</span>
+          </div>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">🎬 Common verbs used:</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px">
+            <span class="pill pill-blue">cry</span>
+            <span class="pill pill-blue">laugh</span>
+            <span class="pill pill-blue">dance</span>
+            <span class="pill pill-blue">smile</span>
+            <span class="pill pill-blue">sneeze</span>
+            <span class="pill pill-blue">spin</span>
+            <span class="pill pill-blue">jump</span>
+            <span class="pill pill-blue">scream</span>
+            <span class="pill pill-blue">sing</span>
+            <span class="pill pill-blue">run</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONCEPT 3: Made of -->
+      <section id="concept3">
+        <div class="section-header purple">
+          <span class="section-icon">🧱</span>
+          <h2>Pattern 3: Be Made of + Noun (Material)</h2>
+        </div>
+        <div class="card">
+          <div class="concept-box">
+            <h3>📖 What does it mean?</h3>
+            <p>We use <strong>be made of + noun</strong> to describe objects and the <strong>material</strong> they are made from.</p>
+          </div>
+
+          <div class="pattern-display">
+            <div class="pattern-formula">
+              <span class="pattern-part">It / They</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part verb">is / are</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part adj">made of</span>
+              <span class="pattern-plus">+</span>
+              <span class="pattern-part noun">material</span>
+            </div>
+          </div>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">✅ Examples:</h3>
+          <ul class="example-list">
+            <li>It's <span class="em">made of</span> <span class="adj-em">plastic</span>. 🕷️</li>
+            <li>The table is <span class="em">made of</span> <span class="adj-em">wood</span>. 🪵</li>
+            <li>The keys are <span class="em">made of</span> <span class="adj-em">metal</span>. 🔑</li>
+            <li>The gloves are <span class="em">made of</span> <span class="adj-em">wool</span>. 🧤</li>
+            <li>The jacket is <span class="em">made of</span> <span class="adj-em">leather</span>. 🧥</li>
+            <li>The glass is <span class="em">made of</span> <span class="adj-em">glass</span>. 🥃</li>
+          </ul>
+
+          <h3 style="font-family:'Poppins',sans-serif;margin:20px 0 12px;font-size:1.2rem">🏗️ Materials to know:</h3>
+          <div class="material-grid" id="materialsDisplay">
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🪵</div><div style="font-size:17px;font-weight:600;margin-top:8px">wood</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">table, pencil, door</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🔩</div><div style="font-size:17px;font-weight:600;margin-top:8px">metal</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">key, coin, pan</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🧴</div><div style="font-size:17px;font-weight:600;margin-top:8px">plastic</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">bottle, toy, bag</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🥃</div><div style="font-size:17px;font-weight:600;margin-top:8px">glass</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">cup, window, mirror</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🧤</div><div style="font-size:17px;font-weight:600;margin-top:8px">wool</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">jumper, scarf, hat</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">🧥</div><div style="font-size:17px;font-weight:600;margin-top:8px">leather</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">jacket, shoes, bag</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">📄</div><div style="font-size:17px;font-weight:600;margin-top:8px">paper</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">book, boat, card</div>
+            </div>
+            <div class="activity-item" style="text-align:center;border-color:#a29bfe">
+              <div style="font-size:2.5rem">❄️</div><div style="font-size:17px;font-weight:600;margin-top:8px">snow</div>
+              <div style="font-size:15px;color:#888;margin-top:4px">snowman, snowball</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRACTICE 1: Fill in Blanks -->
+      <section id="practice1">
+        <div class="section-header sunshine">
+          <span class="section-icon">✏️</span>
+          <h2>Activity 8.1 – Fill in the Blanks</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;margin-bottom:8px">Complete the sentences. Use <strong>make</strong> or <strong>makes</strong> and the adjective from the box. Drag each adjective into the correct sentence!</p>
+
+          <!-- Drag bank -->
+          <div class="drag-bank" id="dragBank">
+            <div class="drag-item" draggable="true" data-word="wet" id="di-wet">wet</div>
+            <div class="drag-item" draggable="true" data-word="tired" id="di-tired">tired</div>
+            <div class="drag-item" draggable="true" data-word="relaxed" id="di-relaxed">relaxed</div>
+            <div class="drag-item" draggable="true" data-word="angry" id="di-angry">angry</div>
+            <div class="drag-item" draggable="true" data-word="calm" id="di-calm">calm</div>
+          </div>
+
+          <div>
+            <!-- Example done -->
+            <div class="sentence-row">
+              <span>They</span>
+              <span style="background:#F9CA24;color:#333;padding:4px 12px;border-radius:6px;font-weight:700">make</span>
+              <span>everything</span>
+              <span style="background:#F9CA24;color:#333;padding:4px 12px;border-radius:6px;font-weight:700">yellow</span>
+              <span>.</span>
+              <span style="background:#d4edda;color:#155724;padding:4px 10px;border-radius:6px;font-size:15px;font-weight:600">✅ Example</span>
+            </div>
+
+            <!-- Row 1: Water + wet -->
+            <div class="sentence-row" data-correct-make="makes" data-correct-adj="wet">
+              <span>Water</span>
+              <select class="fill-blank" style="width:110px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="make-sel-1">
+                <option value="">make/makes</option>
+                <option value="make">make</option>
+                <option value="makes">makes</option>
+              </select>
+              <span>things</span>
+              <span class="drop-zone" data-accept="wet" id="dz-wet">drop here</span>
+              <span>.</span>
+              <span class="quiz-feedback" id="fb-wet"></span>
+            </div>
+
+            <!-- Row 2: Exercise + tired -->
+            <div class="sentence-row" data-correct-make="makes" data-correct-adj="tired">
+              <span>Exercise</span>
+              <select class="fill-blank" style="width:110px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="make-sel-2">
+                <option value="">make/makes</option>
+                <option value="make">make</option>
+                <option value="makes">makes</option>
+              </select>
+              <span>me</span>
+              <span class="drop-zone" data-accept="tired" id="dz-tired">drop here</span>
+              <span>.</span>
+              <span class="quiz-feedback" id="fb-tired"></span>
+            </div>
+
+            <!-- Row 3: Yoga + relaxed -->
+            <div class="sentence-row" data-correct-make="makes" data-correct-adj="relaxed">
+              <span>Yoga</span>
+              <select class="fill-blank" style="width:110px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="make-sel-3">
+                <option value="">make/makes</option>
+                <option value="make">make</option>
+                <option value="makes">makes</option>
+              </select>
+              <span>people</span>
+              <span class="drop-zone" data-accept="relaxed" id="dz-relaxed">drop here</span>
+              <span>.</span>
+              <span class="quiz-feedback" id="fb-relaxed"></span>
+            </div>
+
+            <!-- Row 4: Bad drivers + angry -->
+            <div class="sentence-row" data-correct-make="make" data-correct-adj="angry">
+              <span>Bad drivers</span>
+              <select class="fill-blank" style="width:110px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="make-sel-4">
+                <option value="">make/makes</option>
+                <option value="make">make</option>
+                <option value="makes">makes</option>
+              </select>
+              <span>him</span>
+              <span class="drop-zone" data-accept="angry" id="dz-angry">drop here</span>
+              <span>.</span>
+              <span class="quiz-feedback" id="fb-angry"></span>
+            </div>
+
+            <!-- Row 5: The music + calm -->
+            <div class="sentence-row" data-correct-make="makes" data-correct-adj="calm">
+              <span>The music</span>
+              <select class="fill-blank" style="width:110px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="make-sel-5">
+                <option value="">make/makes</option>
+                <option value="make">make</option>
+                <option value="makes">makes</option>
+              </select>
+              <span>her</span>
+              <span class="drop-zone" data-accept="calm" id="dz-calm">drop here</span>
+              <span>.</span>
+              <span class="quiz-feedback" id="fb-calm"></span>
+            </div>
+          </div>
+
+          <button class="btn btn-check" onclick="checkActivity1()">✅ Check Answers</button>
+          <div class="check-result" id="result-activity1"></div>
+        </div>
+      </section>
+
+      <!-- PRACTICE 2: Word Order -->
+      <section id="practice2">
+        <div class="section-header sky">
+          <span class="section-icon">🔀</span>
+          <h2>Activity 8.2 – Write in the Correct Order</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;margin-bottom:20px">Tap the words in the correct order to build the sentence. Tap a placed word to remove it.</p>
+
+          <!-- Example -->
+          <div style="background:#d4edda;border-radius:10px;padding:16px;margin-bottom:20px;border:2px solid #28a745">
+            <p style="font-size:17px;color:#155724;font-weight:600">📌 Example: hungry / makes / swimming / me</p>
+            <p style="font-size:18px;color:#155724;font-weight:700;margin-top:8px">✅ Swimming makes me hungry.</p>
+          </div>
+
+          <!-- Word order activities -->
+          <div id="wordOrderContainer"></div>
+
+          <button class="btn btn-check" onclick="checkAllWordOrder()">✅ Check All Sentences</button>
+          <div class="check-result" id="result-wordorder"></div>
+        </div>
+      </section>
+
+      <!-- PRACTICE 3: Make + Verb Matching -->
+      <section id="practice3">
+        <div class="section-header coral">
+          <span class="section-icon">🎯</span>
+          <h2>Activity 8.3 – Make + Verb: Match the Picture</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;margin-bottom:20px">Select the correct object and verb from the box to complete each sentence about the pictures.</p>
+
+          <div id="verbMatchContainer"></div>
+        </div>
+      </section>
+
+      <!-- PRACTICE 4: Error Correction -->
+      <section id="practice4">
+        <div class="section-header green">
+          <span class="section-icon">🔍</span>
+          <h2>Activity 8.5 – Spot the Error!</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;margin-bottom:20px">Read each sentence. Click <strong>✅ Correct</strong> if it is right, or <strong>❌ Wrong</strong> if it has an error. If wrong, you will see the correction.</p>
+
+          <div id="errorCorrectionContainer"></div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz">
+        <div class="section-header purple">
+          <span class="section-icon">🏆</span>
+          <h2>Quiz – Test Your Knowledge!</h2>
+        </div>
+        <div class="card">
+          <p style="font-size:18px;margin-bottom:24px">Answer all 8 questions. Good luck! 🌟</p>
+          <div class="quiz-section" id="quizContainer"></div>
+          <div style="text-align:center;margin-top:20px">
+            <button class="btn btn-primary" onclick="submitQuiz()" id="submitQuizBtn">🏁 Submit Quiz</button>
+          </div>
+          <div class="score-card" id="scoreCard">
+            <div class="score-circle-wrap">
+              <svg class="score-circle-svg" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="12"/>
+                <circle cx="80" cy="80" r="70" fill="none" stroke="#F9CA24" stroke-width="12" stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-linecap="round" transform="rotate(-90 80 80)" id="scoreCircle"/>
+              </svg>
+              <div class="score-text">
+                <span class="score-number" id="scoreNum">0/8</span>
+                <span class="score-label">Score</span>
+              </div>
+            </div>
+            <h3 class="score-title" id="scoreTitle">Well done!</h3>
+            <p class="score-msg" id="scoreMsg">Keep practicing!</p>
+            <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- end main-content -->
+  </div><!-- end main-layout -->
+</div><!-- end page-wrapper -->
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="#intro" class="mobile-nav-link">🌟 Intro</a>
+    <a href="#concept1" class="mobile-nav-link">😊 Make+Adj</a>
+    <a href="#concept2" class="mobile-nav-link">⚡ Make+Verb</a>
+    <a href="#concept3" class="mobile-nav-link">🧱 Made of</a>
+    <a href="#practice1" class="mobile-nav-link">✏️ Activity 1</a>
+    <a href="#practice2" class="mobile-nav-link">🔀 Activity 2</a>
+    <a href="#practice3" class="mobile-nav-link">🎯 Activity 3</a>
+    <a href="#practice4" class="mobile-nav-link">🔍 Activity 4</a>
+    <a href="#quiz" class="mobile-nav-link">🏆 Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // =====================
+  // GSAP ANIMATIONS
+  // =====================
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Dismiss curtain
+      gsap.to('#curtain', {opacity:0, duration:0.8, delay:0.5, onComplete:() => {
+        const c = document.getElementById('curtain');
+        if(c) c.style.display = 'none';
+      }});
+
+      // Hero SVG path drawing
+      gsap.to('#heroPath', {strokeDashoffset: 0, duration: 2.5, ease: 'power2.out', delay: 0.8});
+      gsap.to('#heroPath2', {strokeDashoffset: 0, duration: 2.8, ease: 'power2.out', delay: 1.2});
+
+      // Hero content animation
+      gsap.from('.hero-badge', {y:30, opacity:0, duration:0.8, delay:0.6});
+      gsap.from('.hero-title', {y:40, opacity:0, duration:0.8, delay:0.8});
+      gsap.from('.hero-subtitle', {y:30, opacity:0, duration:0.8, delay:1.0});
+      gsap.from('.hero-chips > *', {y:20, opacity:0, stagger:0.15, duration:0.6, delay:1.2});
+
+      // Card reveals
+      gsap.utils.toArray('.card').forEach(card => {
+        gsap.from(card, {
+          y: 40,
+          opacity: 0.5,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+
+      // Parallax
+      gsap.utils.toArray('.parallax-section').forEach(section => {
+        gsap.to(section, {
+          backgroundPositionY: '+=30',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            scrub: true
+          }
+        });
+      });
+    } else {
+      const c = document.getElementById('curtain');
+      if(c) c.style.display = 'none';
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+    const c = document.getElementById('curtain');
+    if(c) c.style.display = 'none';
+  }
+
+  // =====================
+  // LENIS SMOOTH SCROLL
+  // =====================
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({lerp: 0.1, duration: 1.2});
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) {
+    console.warn('Lenis error:', e);
+  }
+
+  // =====================
+  // PROGRESS BAR
+  // =====================
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+    const bar = document.getElementById('progressBar');
+    if(bar) bar.style.width = pct + '%';
+  });
+
+  // =====================
+  // INTERSECTION OBSERVER (TOC)
+  // =====================
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link, .mobile-nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        const id = e.target.id;
+        tocLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {rootMargin: '-30% 0px -60% 0px'});
+  sections.forEach(s => observer.observe(s));
+
+  // =====================
+  // DRAG AND DROP (Activity 8.1)
+  // =====================
+  let draggedWord = null;
+
+  document.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedWord = e.target.dataset.word;
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', e => {
+      e.target.classList.remove('dragging');
+    });
+  });
+
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('over');
+    });
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('over');
+    });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      const accept = zone.dataset.accept;
+      if(draggedWord === accept) {
+        zone.textContent = draggedWord;
+        zone.classList.add('filled');
+        zone.classList.remove('wrong');
+        const src = document.getElementById('di-' + draggedWord);
+        if(src) src.style.opacity = '0.4';
+      } else {
+        zone.classList.add('wrong');
+        setTimeout(() => zone.classList.remove('wrong'), 1000);
+      }
+    });
+  });
+
+  // =====================
+  // CHECK ACTIVITY 1
+  // =====================
+  window.checkActivity1 = function() {
+    const answers = [
+      {selId:'make-sel-1', dzId:'dz-wet', fbId:'fb-wet', correctMake:'makes', correctAdj:'wet'},
+      {selId:'make-sel-2', dzId:'dz-tired', fbId:'fb-tired', correctMake:'makes', correctAdj:'tired'},
+      {selId:'make-sel-3', dzId:'dz-relaxed', fbId:'fb-relaxed', correctMake:'makes', correctAdj:'relaxed'},
+      {selId:'make-sel-4', dzId:'dz-angry', fbId:'fb-angry', correctMake:'make', correctAdj:'angry'},
+      {selId:'make-sel-5', dzId:'dz-calm', fbId:'fb-calm', correctMake:'makes', correctAdj:'calm'}
+    ];
+    let correct = 0;
+    answers.forEach(a => {
+      const sel = document.getElementById(a.selId);
+      const dz = document.getElementById(a.dzId);
+      const fb = document.getElementById(a.fbId);
+      const makeOk = sel && sel.value === a.correctMake;
+      const adjOk = dz && dz.textContent.trim() === a.correctAdj;
+      if(makeOk && adjOk) {
+        correct++;
+        if(fb) fb.innerHTML = '<span class="feedback-good">✅ Correct!</span>';
+      } else {
+        if(fb) fb.innerHTML = `<span class="feedback-bad">❌ ${a.correctMake} ... ${a.correctAdj}</span>`;
+      }
+    });
+    const res = document.getElementById('result-activity1');
+    if(res) {
+      res.classList.add('show');
+      if(correct === 5) {
+        res.className = 'check-result show pass';
+        res.textContent = '🎉 Perfect! All 5 correct!';
+      } else {
+        res.className = 'check-result show fail';
+        res.textContent = `${correct}/5 correct. Check the highlighted answers.`;
+      }
+    }
+  };
+
+  // =====================
+  // WORD ORDER ACTIVITY
+  // =====================
+  const wordOrderSets = [
+    {words:['makes','chocolate','ill','me'], correct:'Chocolate makes me ill.', canonical:['chocolate','makes','me','ill']},
+    {words:['angry','makes','pollution','me'], correct:'Pollution makes me angry.', canonical:['pollution','makes','me','angry']},
+    {words:['sad','Failure','me','makes'], correct:'Failure makes me sad.', canonical:['failure','makes','me','sad']},
+    {words:['happy','football','me','makes'], correct:'Football makes me happy.', canonical:['football','makes','me','happy']},
+    {words:['me','hot weather','makes','tired'], correct:'Hot weather makes me tired.', canonical:['hot weather','makes','me','tired']},
+    {words:['me','makes','calm and relaxed','yoga'], correct:'Yoga makes me calm and relaxed.', canonical:['yoga','makes','me','calm and relaxed']}
+  ];
+
+  const woContainer = document.getElementById('wordOrderContainer');
+  const woStates = [];
+
+  wordOrderSets.forEach((set,i) => {
+    woStates.push({placed:[], available:[...set.words]});
+    const div = document.createElement('div');
+    div.className = 'word-order-row';
+    div.innerHTML = `
+      <p style="font-size:17px;color:#555;margin-bottom:8px">Sentence ${i+1}: Arrange the words:</p>
+      <div class="word-order-words" id="wordbank-${i}">
+        ${set.words.map((w,wi) => `<span class="word-chip" data-setidx="${i}" data-widx="${wi}">${w}</span>`).join('')}
+      </div>
+      <div class="answer-area" id="answer-${i}"></div>
+      <div class="word-order-result" id="wo-result-${i}"></div>
+    `;
+    woContainer.appendChild(div);
+  });
+
+  woContainer.addEventListener('click', e => {
+    const chip = e.target.closest('.word-chip');
+    const placed = e.target.closest('.placed-word');
+
+    if(chip && !chip.classList.contains('used')) {
+      const i = parseInt(chip.dataset.setidx);
+      const w = chip.textContent;
+      woStates[i].placed.push(w);
+      chip.classList.add('used');
+      const area = document.getElementById('answer-' + i);
+      const pw = document.createElement('span');
+      pw.className = 'placed-word';
+      pw.textContent = w;
+      pw.dataset.setidx = i;
+      pw.dataset.word = w;
+      area.appendChild(pw);
+    }
+
+    if(placed) {
+      const i = parseInt(placed.dataset.setidx);
+      const w = placed.dataset.word;
+      woStates[i].placed = woStates[i].placed.filter((x,idx) => {
+        if(x === w) { w._removed = true; return false; }
+        return true;
+      }).concat(); // just remove first occurrence
+      // Actually need to remove first occurrence properly:
+      let removed = false;
+      woStates[i].placed = woStates[i].placed.filter(x => {
+        if(!removed && x === w) { removed = true; return false; }
+        return true;
+      });
+      placed.remove();
+      // Re-enable in word bank
+      const chips = document.querySelectorAll(`#wordbank-${i} .word-chip`);
+      chips.forEach(c => {
+        if(c.textContent === w && c.classList.contains('used')) {
+          // check if still in placed
+          const stillUsed = woStates[i].placed.filter(x => x === w).length;
+          const totalInBank = [...chips].filter(c2 => c2.textContent === w).length;
+          if(stillUsed < totalInBank) {
+            c.classList.remove('used');
+          }
+        }
+      });
+    }
+  });
+
+  window.checkAllWordOrder = function() {
+    let correct = 0;
+    wordOrderSets.forEach((set,i) => {
+      const placed = woStates[i].placed;
+      const canonical = set.canonical;
+      const placedNorm = placed.map(w => w.toLowerCase().trim());
+      const isCorrect = placedNorm.length === canonical.length &&
+        placedNorm.every((w,idx) => w === canonical[idx]);
+      const res = document.getElementById('wo-result-' + i);
+      if(isCorrect) {
+        correct++;
+        res.innerHTML = `<span class="feedback-good">✅ Correct!</span>`;
+      } else {
+        res.innerHTML = `<span class="feedback-bad">❌ Correct answer: <em>${set.correct}</em></span>`;
+      }
+    });
+    const res = document.getElementById('result-wordorder');
+    if(res) {
+      res.classList.add('show');
+      if(correct === wordOrderSets.length) {
+        res.className = 'check-result show pass';
+        res.textContent = `🎉 All ${wordOrderSets.length} correct! Amazing!`;
+      } else {
+        res.className = 'check-result show fail';
+        res.textContent = `${correct}/${wordOrderSets.length} correct. Keep trying!`;
+      }
+    }
+  };
+
+  // =====================
+  // ACTIVITY 8.3: Make + Verb
+  // =====================
+  const verbMatchData = [
+    {id:1, subject:'The book', emoji:'📖', object:'her', verb:'smile'},
+    {id:2, subject:'The onions', emoji:'🧅', object:'him', verb:'cry'},
+    {id:3, subject:'The clowns', emoji:'🤡', object:'them', verb:'laugh'},
+    {id:4, subject:'The boy', emoji:'🎭', object:'the puppet', verb:'dance'},
+    {id:5, subject:'The flowers', emoji:'🌸', object:'her', verb:'sneeze'},
+    {id:6, subject:'The man', emoji:'👨', object:'the wheel', verb:'spin'},
+  ];
+
+  const objects = ['her','him','them','the puppet','the wheel'];
+  const verbs = ['cry','dance','laugh','sneeze','spin'];
+
+  const vmContainer = document.getElementById('verbMatchContainer');
+  const vmStates = {};
+
+  verbMatchData.forEach(d => {
+    vmStates[d.id] = {object: d.id === 1 ? d.object : '', verb: d.id === 1 ? d.verb : ''};
+    const div = document.createElement('div');
+    div.style.cssText = 'margin-bottom:20px;padding:20px;background:#fff0f0;border-radius:10px;border:2px solid #FF6B6B';
+
+    if(d.id === 1) {
+      div.innerHTML = `
+        <p style="font-size:18px"><span style="font-size:1.6rem">${d.emoji}</span> <strong>${d.subject}</strong> 
+        <span style="background:#d4edda;color:#155724;padding:4px 12px;border-radius:6px;font-weight:700">is making</span>
+        <span style="background:#d4edda;color:#155724;padding:4px 12px;border-radius:6px;font-weight:700">${d.object}</span>
+        <span style="background:#d4edda;color:#155724;padding:4px 12px;border-radius:6px;font-weight:700">${d.verb}</span>. 
+        <span style="background:#d4edda;padding:4px 10px;border-radius:6px;font-size:15px;font-weight:600;color:#155724">✅ Example</span></p>
+      `;
+    } else {
+      const isPlural = ['The onions','The clowns','The flowers'].includes(d.subject);
+      const makeWord = isPlural ? 'are making' : 'is making';
+      div.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:18px">
+          <span style="font-size:1.6rem">${d.emoji}</span>
+          <strong>${d.subject}</strong>
+          <span style="background:#48DBFB;color:#fff;padding:4px 12px;border-radius:6px;font-weight:700">${makeWord}</span>
+          <select class="fill-blank" style="width:140px;border:2px solid #a29bfe;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="vm-obj-${d.id}">
+            <option value="">object...</option>
+            ${objects.map(o => `<option value="${o}">${o}</option>`).join('')}
+          </select>
+          <select class="fill-blank" style="width:130px;border:2px solid #FF6B6B;border-radius:6px;padding:6px;font-size:17px;background:#fff" id="vm-verb-${d.id}">
+            <option value="">verb...</option>
+            ${verbs.map(v => `<option value="${v}">${v}</option>`).join('')}
+          </select>
+          <span>.</span>
+          <span id="vm-fb-${d.id}" style="font-size:16px;font-weight:600"></span>
+        </div>
+      `;
+    }
+    vmContainer.appendChild(div);
+  });
+
+  const checkVmBtn = document.createElement('button');
+  checkVmBtn.className = 'btn btn-check';
+  checkVmBtn.textContent = '✅ Check Answers';
+  checkVmBtn.onclick = function() {
+    let correct = 0;
+    verbMatchData.forEach(d => {
+      if(d.id === 1) { correct++; return; }
+      const objSel = document.getElementById('vm-obj-' + d.id);
+      const verbSel = document.getElementById('vm-verb-' + d.id);
+      const fb = document.getElementById('vm-fb-' + d.id);
+      const objOk = objSel && objSel.value === d.object;
+      const verbOk = verbSel && verbSel.value === d.verb;
+      if(objOk && verbOk) {
+        correct++;
+        if(fb) fb.innerHTML = '<span class="feedback-good">✅</span>';
+      } else {
+        if(fb) fb.innerHTML = `<span class="feedback-bad">❌ ${d.object} + ${d.verb}</span>`;
+      }
+    });
+    alert(`You got ${correct}/${verbMatchData.length} correct!`);
+  };
+  vmContainer.appendChild(checkVmBtn);
+
+  // =====================
+  // ACTIVITY 8.5: Error Correction
+  // =====================
+  const errorData = [
+    {sentence:'Is he making the children crying?', isCorrect:false, correction:'Is he making the children cry?', explanation:'After "make", use the base form of the verb (no -ing).'},
+    {sentence:'Will it make you ill?', isCorrect:true, correction:'', explanation:'Correct! "make you ill" — verb + object + adjective.'},
+    {sentence:'Is it made in glass?', isCorrect:false, correction:'Is it made of glass?', explanation:'We say "made of" (not "made in") for materials.'},
+    {sentence:'Did I make you to jump?', isCorrect:false, correction:'Did I make you jump?', explanation:'After "make", use the base form without "to".'},
+    {sentence:'Is it make people laugh?', isCorrect:false, correction:'Does it make people laugh?', explanation:'"Is it make" is wrong. Use "Does it make" for questions.'},
+    {sentence:'Does it make food hot?', isCorrect:true, correction:'', explanation:'Correct! "make food hot" — verb + object + adjective.'},
+  ];
+
+  const ecContainer = document.getElementById('errorCorrectionContainer');
+  errorData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'margin-bottom:20px;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.06);border-left:4px solid #ccc';
+    div.innerHTML = `
+      <p style="font-size:18px;margin-bottom:14px"><strong>${i+1}.</strong> <em>"${item.sentence}"</em></p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-secondary" style="min-width:120px" onclick="checkError(${i}, true)">✅ Correct</button>
+        <button class="btn btn-primary" style="min-width:120px" onclick="checkError(${i}, false)">❌ Wrong</button>
+      </div>
+      <div id="ec-result-${i}" style="margin-top:12px;font-size:17px;display:none"></div>
+    `;
+    ecContainer.appendChild(div);
+  });
+
+  window.checkError = function(i, userSaysCorrect) {
+    const item = errorData[i];
+    const res = document.getElementById('ec-result-' + i);
+    if(!res) return;
+    res.style.display = 'block';
+    if(userSaysCorrect === item.isCorrect) {
+      if(item.isCorrect) {
+        res.innerHTML = `<span class="feedback-good">✅ Well done! This sentence is correct. ${item.explanation}</span>`;
+      } else {
+        res.innerHTML = `<span class="feedback-good">✅ Yes! It is wrong. <br>Correction: <strong>${item.correction}</strong><br><em>${item.explanation}</em></span>`;
+      }
+    } else {
+      if(item.isCorrect) {
+        res.innerHTML = `<span class="feedback-bad">❌ Actually, this sentence is <strong>correct</strong>! ${item.explanation}</span>`;
+      } else {
+        res.innerHTML = `<span class="feedback-bad">❌ This sentence is actually <strong>wrong</strong>.<br>Correction: <strong>${item.correction}</strong><br><em>${item.explanation}</em></span>`;
+      }
+    }
+  };
+
+  // =====================
+  // QUIZ
+  // =====================
+  const quizData = [
+    {
+      type:'mcq',
+      q:'Which sentence is correct?',
+      options:[
+        'This music is making me happy.',
+        'This music is making me to happy.',
+        'This music is making me happiness.',
+        'This music is making happy me.'
+      ],
+      answer:0
+    },
+    {
+      type:'mcq',
+      q:'Complete: "Salty food _____ people thirsty."',
+      options:['make','makes','made','making'],
+      answer:1
+    },
+    {
+      type:'tf',
+      q:'"That made me to jump." — Is this sentence correct?',
+      answer:false
+    },
+    {
+      type:'mcq',
+      q:'Which word correctly completes: "The table is made _____ wood."',
+      options:['from','in','of','by'],
+      answer:2
+    },
+    {
+      type:'mcq',
+      q:'The clowns _____ them _____ . (make + laugh)',
+      options:[
+        'are making / laugh',
+        'is making / laugh',
+        'are making / laughing',
+        'make / to laugh'
+      ],
+      answer:0
+    },
+    {
+      type:'tf',
+      q:'"Does hot weather make people tired?" — Is this sentence correct?',
+      answer:true
+    },
+    {
+      type:'mcq',
+      q:'What is the correct order? (angry / makes / pollution / me)',
+      options:[
+        'Angry makes pollution me.',
+        'Pollution makes me angry.',
+        'Me makes pollution angry.',
+        'Makes pollution me angry.'
+      ],
+      answer:1
+    },
+    {
+      type:'mcq',
+      q:'The gloves are made of _____.',
+      options:['metal','plastic','wool','snow'],
+      answer:2
+    }
+  ];
+
+  const quizContainer = document.getElementById('quizContainer');
+  const userAnswers = new Array(quizData.length).fill(null);
+
+  quizData.forEach((q,i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.innerHTML = `<h4>Q${i+1}. ${q.q}</h4>`;
+    if(q.type === 'mcq') {
+      const opts = document.createElement('div');
+      opts.className = 'quiz-options';
+      q.options.forEach((opt,oi) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = function() {
+          userAnswers[i] = oi;
+          opts.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected-opt'));
+          btn.style.borderColor = '#F9CA24';
+          btn.style.background = '#fffde7';
+        };
+        opts.appendChild(btn);
+      });
+      div.appendChild(opts);
+    } else {
+      const tf = document.createElement('div');
+      tf.className = 'quiz-tf';
+      ['True ✅','False ❌'].forEach((label,ti) => {
+        const btn = document.createElement('button');
+        btn.className = 'tf-btn';
+        btn.textContent = label;
+        btn.onclick = function() {
+          userAnswers[i] = ti === 0;
+          tf.querySelectorAll('.tf-btn').forEach(b => {b.style.borderColor='#e0e0e0';b.style.background='#F8F9FA';});
+          btn.style.borderColor = '#F9CA24';
+          btn.style.background = '#fffde7';
+        };
+        tf.appendChild(btn);
+      });
+      div.appendChild(tf);
+    }
+    div.appendChild(document.createElement('div')).className = 'quiz-feedback';
+    quizContainer.appendChild(div);
+  });
+
+  window.submitQuiz = function() {
+    let score = 0;
+    const questions = quizContainer.querySelectorAll('.quiz-question');
+    quizData.forEach((q,i) => {
+      const qDiv = questions[i];
+      const fb = qDiv.querySelector('.quiz-feedback');
+      const ua = userAnswers[i];
+
+      if(q.type === 'mcq') {
+        const opts = qDiv.querySelectorAll('.quiz-option');
+        opts.forEach((btn,oi) => {
+          btn.classList.add('disabled');
+          btn.style.borderColor = '';
+          btn.style.background = '';
+          if(oi === q.answer) btn.classList.add('correct');
+          if(ua !== null && oi === ua && oi !== q.answer) btn.classList.add('wrong');
+        });
+        if(ua === q.answer) {
+          score++;
+          if(fb) fb.innerHTML = '<span class="feedback-good">✅ Correct!</span>';
+        } else {
+          if(fb) fb.innerHTML = `<span class="feedback-bad">❌ Correct answer: "${q.options[q.answer]}"</span>`;
+        }
+      } else {
+        const btns = qDiv.querySelectorAll('.tf-btn');
+        btns.forEach(b => {
+          b.style.borderColor = '';
+          b.style.background = '';
+          b.disabled = true;
+        });
+        if(q.answer === true) btns[0].classList.add('correct');
+        else btns[1].classList.add('correct');
+        if(ua === q.answer) {
+          score++;
+          if(fb) fb.innerHTML = '<span class="feedback-good">✅ Correct!</span>';
+        } else {
+          if(fb) fb.innerHTML = `<span class="feedback-bad">❌ Answer: ${q.answer ? 'True' : 'False'}</span>`;
+        }
+      }
+    });
+
+    // Show score
+    document.getElementById('submitQuizBtn').style.display = 'none';
+    const scoreCard = document.getElementById('scoreCard');
+    scoreCard.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/8';
+
+    // Animate circle
+    const pct = score / 8;
+    const circ = 439.8;
+    const offset = circ - (pct * circ);
+    const circle = document.getElementById('scoreCircle');
+
+    try {
+      if(typeof gsap !== 'undefined') {
+        gsap.to(circle, {strokeDashoffset: offset, duration: 1.5, ease: 'power2.out'});
+      } else {
+        circle.style.strokeDashoffset = offset;
+      }
+    } catch(e) {
+      circle.style.strokeDashoffset = offset;
+    }
+
+    let title, msg;
+    if(score === 8) { title = '🏆 Perfect Score!'; msg = 'Outstanding! You know all patterns with MAKE!'; }
+    else if(score >= 6) { title = '🌟 Great Job!'; msg = 'Well done! You understand patterns with MAKE very well!'; }
+    else if(score >= 4) { title = '👍 Good Try!'; msg = 'Good effort! Review the concepts and try again.'; }
+    else { title = '💪 Keep Practicing!'; msg = 'Read through the lesson again and you\'ll do better!'; }
+
+    document.getElementById('scoreTitle').textContent = title;
+    document.getElementById('scoreMsg').textContent = msg;
+
+    scoreCard.scrollIntoView({behavior:'smooth', block:'center'});
+  };
+
+  window.retryQuiz = function() {
+    userAnswers.fill(null);
+    const questions = quizContainer.querySelectorAll('.quiz-question');
+    quizData.forEach((q,i) => {
+      const qDiv = questions[i];
+      if(q.type === 'mcq') {
+        qDiv.querySelectorAll('.quiz-option').forEach(btn => {
+          btn.classList.remove('correct','wrong','disabled');
+          btn.style.borderColor = '';
+          btn.style.background = '';
+          btn.disabled = false;
+        });
+      } else {
+        qDiv.querySelectorAll('.tf-btn').forEach(btn => {
+          btn.classList.remove('correct','wrong');
+          btn.style.borderColor = '';
+          btn.style.background = '';
+          btn.disabled = false;
+        });
+      }
+      const fb = qDiv.querySelector('.quiz-feedback');
+      if(fb) fb.innerHTML = '';
+    });
+    document.getElementById('scoreCard').classList.remove('show');
+    document.getElementById('submitQuizBtn').style.display = '';
+    document.getElementById('scoreCircle').style.strokeDashoffset = '439.8';
+    quizContainer.scrollIntoView({behavior:'smooth'});
+  };
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

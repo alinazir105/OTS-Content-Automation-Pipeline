@@ -1,0 +1,1385 @@
+<!-- CLASS: 3 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 8: Time | Class 3 Math</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sunshine:#F9CA24;
+  --sky:#48DBFB;
+  --coral:#FF6B6B;
+  --mint:#1dd1a1;
+  --purple:#a29bfe;
+  --light-gray:#F8F9FA;
+  --white:#fff;
+  --dark:#2d3436;
+  --shadow:0 4px 24px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;width:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;font-size:18px;background:#F8F9FA;color:var(--dark);width:100%;margin:0;padding:0;overflow-x:hidden}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#48DBFB,#F9CA24);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .clock-icon{font-size:72px;animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+#curtain p{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:#fff}
+
+/* PROGRESS BREADCRUMB */
+.progress-bar-wrap{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(8px);padding:10px 40px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow-x:auto;flex-wrap:nowrap}
+.breadcrumb-item{font-size:13px;font-family:'Poppins',sans-serif;font-weight:600;padding:6px 14px;border-radius:20px;white-space:nowrap;cursor:pointer;color:#888;background:#F8F9FA;transition:all .3s;border:none;text-decoration:none}
+.breadcrumb-item.active{background:var(--sky);color:#fff}
+.breadcrumb-sep{color:#ccc;font-size:13px;flex-shrink:0}
+
+/* PAGE WRAPPER */
+.page-wrapper{width:100%;max-width:100%;padding-top:58px}
+
+/* LAYOUT WITH SIDEBAR */
+.main-layout{display:flex;width:100%;max-width:1500px;margin:0 auto;padding:0 40px;gap:40px}
+
+/* SIDEBAR */
+.sidebar{width:220px;flex-shrink:0}
+.sidebar-inner{position:sticky;top:80px;background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:20px 0;overflow:hidden}
+.sidebar-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#888;padding:0 20px 12px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #f0f0f0;margin-bottom:8px}
+.toc-link{display:block;padding:10px 20px;font-size:15px;font-family:'Poppins',sans-serif;font-weight:500;color:#555;text-decoration:none;border-left:3px solid transparent;transition:all .3s}
+.toc-link:hover,.toc-link.active{color:var(--coral);border-left-color:var(--coral);background:#fff5f5}
+
+/* MAIN CONTENT */
+.main-content{flex:1;min-width:0}
+
+/* HERO */
+.hero-section{width:100%;min-height:80vh;background:linear-gradient(135deg,#48DBFB 0%,#F9CA24 60%,#FF6B6B 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:60px 40px}
+.hero-section .hero-inner{max-width:1500px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:280px}
+.chapter-badge{display:inline-block;background:rgba(255,255,255,.3);backdrop-filter:blur(6px);border-radius:20px;padding:8px 20px;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:20px}
+.hero-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(2.8rem,6vw,5rem);color:#fff;line-height:1.1;text-shadow:0 4px 20px rgba(0,0,0,.15)}
+.hero-subtitle{font-size:clamp(1.1rem,2vw,1.4rem);color:rgba(255,255,255,.9);margin-top:16px;max-width:500px}
+.hero-cta{margin-top:30px;display:inline-block;background:#fff;color:var(--coral);font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;padding:14px 32px;border-radius:30px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.15);transition:transform .2s}
+.hero-cta:hover{transform:translateY(-3px)}
+.hero-visual{flex:1;min-width:280px;display:flex;align-items:center;justify-content:center}
+
+/* ANIMATED CLOCK SVG */
+.clock-svg-wrap{width:280px;height:280px;position:relative}
+
+/* SECTION HEADERS */
+.section-header{width:100%;padding:24px 40px;margin-bottom:0;display:flex;align-items:center;gap:16px}
+.section-header.sky{background:linear-gradient(90deg,#48DBFB,#0abde3)}
+.section-header.coral{background:linear-gradient(90deg,#FF6B6B,#ee5a24)}
+.section-header.sunshine{background:linear-gradient(90deg,#F9CA24,#f0932b)}
+.section-header.mint{background:linear-gradient(90deg,#1dd1a1,#10ac84)}
+.section-header.purple{background:linear-gradient(90deg,#a29bfe,#6c5ce7)}
+.section-header h2{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.6rem,3vw,2.2rem);color:#fff}
+.section-header .section-icon{font-size:36px}
+
+/* SECTIONS */
+.lesson-section{width:100%;opacity:1;transform:none;margin-bottom:0}
+.section-content{max-width:1500px;margin:0 auto;padding:40px 40px}
+
+/* CARDS */
+.card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:28px;opacity:1;transform:none;width:100%;max-width:100%}
+.card h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.4rem,2.5vw,1.8rem);margin-bottom:12px}
+.card p,.card li{font-size:18px;line-height:1.7}
+
+/* CONCEPT GRID */
+.concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}
+.concept-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:28px;text-align:center;opacity:1;transform:none;width:100%;max-width:100%}
+.concept-card .icon{font-size:48px;margin-bottom:12px}
+.concept-card h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.2rem,2vw,1.5rem);margin-bottom:8px}
+.concept-card p{font-size:17px;line-height:1.6;color:#666}
+.concept-card.sky{border-top:4px solid var(--sky)}
+.concept-card.coral{border-top:4px solid var(--coral)}
+.concept-card.sunshine{border-top:4px solid var(--sunshine)}
+
+/* CONVERSION BOX */
+.conversion-box{background:linear-gradient(135deg,#F9CA24,#f0932b);border-radius:12px;padding:28px;text-align:center;margin:16px 0;opacity:1;transform:none}
+.conversion-box .conv-formula{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);color:#fff}
+.conversion-box .conv-sub{font-size:17px;color:rgba(255,255,255,.9);margin-top:8px}
+
+.arrow-box{display:flex;align-items:center;justify-content:center;gap:20px;margin:24px 0;flex-wrap:wrap}
+.arrow-box .val-box{background:var(--sky);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.1rem,2vw,1.4rem);padding:14px 28px;border-radius:12px;min-width:120px;text-align:center}
+.arrow-box .arrow{font-size:32px;color:var(--coral)}
+.arrow-box .op-label{font-family:'Poppins',sans-serif;font-weight:700;font-size:16px;color:#555;text-align:center}
+
+/* CLOCK INTERACTIVE */
+.clock-interactive-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0}
+.analog-clock-canvas{display:block;border-radius:50%;box-shadow:0 8px 40px rgba(0,0,0,.18);background:#fff}
+.clock-display{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.5rem);color:var(--coral);text-align:center;letter-spacing:2px}
+.clock-controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.clock-btn{padding:12px 24px;border-radius:20px;border:none;font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;cursor:pointer;transition:all .2s;background:var(--sky);color:#fff}
+.clock-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.clock-btn.active{background:var(--coral)}
+
+/* PRACTICE SECTION */
+.practice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+.practice-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:24px;opacity:1;transform:none;width:100%;max-width:100%}
+.practice-card h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.1rem,2vw,1.4rem);margin-bottom:16px;color:var(--dark)}
+.input-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.input-row label{font-size:18px;font-weight:500;min-width:140px}
+.input-row input{border:2px solid #ddd;border-radius:8px;padding:10px 14px;font-size:18px;font-family:'Inter',sans-serif;width:100px;transition:border .2s;text-align:center}
+.input-row input:focus{outline:none;border-color:var(--sky)}
+.input-row .unit{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;color:#555}
+.check-btn{background:var(--mint);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px}
+.check-btn:hover{background:#10ac84;transform:translateY(-2px)}
+.feedback{font-size:17px;font-weight:600;margin-top:8px;min-height:24px}
+.feedback.correct{color:var(--mint)}
+.feedback.wrong{color:var(--coral)}
+
+/* ACTIVITY — CONVERSION TABLE */
+.conv-table-wrap{overflow-x:auto;margin-top:24px}
+.conv-table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.conv-table th{background:var(--sky);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;padding:16px;text-align:center}
+.conv-table td{background:#fff;font-size:17px;padding:14px 16px;text-align:center;border-bottom:1px solid #f0f0f0}
+.conv-table tr:last-child td{border-bottom:none}
+.conv-table td input{border:2px solid #ddd;border-radius:6px;padding:8px 10px;font-size:17px;width:100px;text-align:center;font-family:'Inter',sans-serif}
+.conv-table td input.correct{border-color:var(--mint);background:#f0fff8}
+.conv-table td input.wrong{border-color:var(--coral);background:#fff5f5}
+
+/* TIME ADDITION/SUBTRACTION */
+.time-calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.time-calc-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:24px;opacity:1;transform:none;width:100%;max-width:100%}
+.time-calc-card .op-sign{font-family:'Poppins',sans-serif;font-weight:800;font-size:28px;color:var(--coral);margin-right:8px}
+.time-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:20px;font-family:'Poppins',sans-serif;font-weight:600}
+.time-row .spacer{width:28px}
+.time-row.result{border-top:3px solid var(--dark);padding-top:8px;margin-top:8px}
+.time-row input{width:70px;border:2px solid #ddd;border-radius:6px;padding:8px;font-size:18px;text-align:center;font-family:'Poppins',sans-serif;font-weight:600}
+.time-row input.correct{border-color:var(--mint);background:#f0fff8}
+.time-row input.wrong{border-color:var(--coral);background:#fff5f5}
+.time-header{font-size:15px;color:#888;text-align:right;font-family:'Poppins',sans-serif;margin-bottom:4px}
+
+/* QUIZ */
+.quiz-wrap{margin-top:24px}
+.quiz-question{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:28px;margin-bottom:20px;opacity:1;transform:none;width:100%;max-width:100%}
+.quiz-q-num{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--sky);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.quiz-q-text{font-size:20px;font-family:'Poppins',sans-serif;font-weight:600;margin-bottom:16px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quiz-opt{background:#F8F9FA;border:2px solid #e0e0e0;border-radius:10px;padding:14px 18px;font-size:18px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;min-height:48px;text-align:left}
+.quiz-opt:hover{border-color:var(--sky);background:#f0fbff}
+.quiz-opt.selected{border-color:var(--sky);background:#e8f8ff}
+.quiz-opt.correct{border-color:var(--mint);background:#e8fff5;color:var(--mint)}
+.quiz-opt.wrong{border-color:var(--coral);background:#fff0f0;color:var(--coral)}
+.quiz-tf{display:flex;gap:16px}
+.quiz-tf .quiz-opt{flex:1;text-align:center}
+.quiz-submit-btn{background:var(--coral);color:#fff;border:none;border-radius:12px;padding:16px 40px;font-size:20px;font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;margin-top:12px;display:block;width:100%}
+.quiz-submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,.4)}
+.quiz-submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* SCORE CARD */
+.score-card{background:linear-gradient(135deg,#48DBFB,#1dd1a1);border-radius:20px;padding:40px;text-align:center;display:none;margin-top:20px}
+.score-card.show{display:block}
+.score-circle{width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.25);display:inline-flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.score-num{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3rem);color:#fff;position:relative;z-index:2}
+.score-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2rem);color:#fff}
+.score-msg{font-size:18px;color:rgba(255,255,255,.9);margin-top:8px}
+.retry-btn{margin-top:20px;background:#fff;color:var(--coral);border:none;border-radius:20px;padding:14px 32px;font-size:18px;font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer;transition:all .2s}
+.retry-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+
+/* COUNTER STATS */
+.stats-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px;justify-content:center}
+.stat-box{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:28px 36px;text-align:center;flex:1;min-width:160px}
+.stat-num{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3rem);color:var(--coral)}
+.stat-label{font-size:17px;color:#666;margin-top:4px}
+
+/* PARALLAX BG */
+.parallax-section{position:relative;overflow:hidden}
+.parallax-bg{position:absolute;inset:-30px;opacity:.07;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+
+/* MOBILE BOTTOM NAV */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);box-shadow:0 -2px 12px rgba(0,0,0,.1);overflow-x:auto;padding:10px 12px;gap:8px;flex-wrap:nowrap}
+.mobile-nav-link{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px;border-radius:10px;text-decoration:none;font-size:13px;font-family:'Poppins',sans-serif;font-weight:600;color:#888;white-space:nowrap;min-height:48px;min-width:64px;justify-content:center;transition:all .2s;background:#F8F9FA}
+.mobile-nav-link.active{background:var(--sky);color:#fff}
+.mobile-nav-link .nav-icon{font-size:20px}
+
+/* DRAG DROP */
+.drag-drop-area{margin-top:24px}
+.drag-targets{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.drag-target{background:#F8F9FA;border:3px dashed #ccc;border-radius:12px;min-height:80px;min-width:180px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;transition:border .2s;position:relative}
+.drag-target.over{border-color:var(--sky);background:#f0fbff}
+.drag-target.filled{border-color:var(--mint);border-style:solid;background:#e8fff5}
+.drag-target .target-label{font-size:15px;color:#888;font-weight:600;margin-bottom:6px}
+.drag-labels{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.drag-label{background:var(--sky);color:#fff;padding:12px 20px;border-radius:20px;font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;cursor:grab;transition:all .2s;user-select:none;min-height:48px;display:flex;align-items:center}
+.drag-label:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.drag-label.dragging{opacity:.4}
+.drag-drop-feedback{text-align:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;margin-top:16px;min-height:30px}
+
+/* INFO BOX */
+.info-box{background:linear-gradient(135deg,var(--sky),#0abde3);border-radius:12px;padding:24px 28px;color:#fff;margin:20px 0}
+.info-box h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.2rem,2vw,1.5rem);margin-bottom:8px}
+.info-box p,.info-box li{font-size:18px;line-height:1.7}
+
+/* HERO SVG CLOCK */
+.hero-clock{width:260px;height:260px}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .concept-grid{grid-template-columns:repeat(2,1fr)}
+  .time-calc-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .progress-bar-wrap{padding:8px 12px}
+  .sidebar{display:none}
+  .mobile-bottom-nav{display:flex}
+  body{padding-bottom:80px}
+  .main-layout{padding:0 16px}
+  .section-content{padding:24px 16px}
+  .section-header{padding:20px 16px}
+  .hero-section{min-height:60vh;padding:40px 16px}
+  .hero-section .hero-inner{flex-direction:column;text-align:center}
+  .hero-visual{display:none}
+  .concept-grid{grid-template-columns:1fr}
+  .practice-grid{grid-template-columns:1fr}
+  .time-calc-grid{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .stats-row{gap:12px}
+  .drag-targets{flex-direction:column;align-items:center}
+  .arrow-box{flex-direction:column;gap:8px}
+  .conv-table-wrap{overflow-x:auto}
+}
+@media(max-width:480px){
+  .hero-title{font-size:clamp(2rem,8vw,3rem)}
+  .time-calc-grid{grid-template-columns:1fr}
+  .input-row{flex-wrap:wrap}
+  .clock-controls{gap:8px}
+  .clock-btn{padding:10px 16px;font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="clock-icon">🕐</div>
+  <p>Loading Time Lesson...</p>
+</div>
+
+<!-- PROGRESS BREADCRUMB -->
+<nav class="progress-bar-wrap" id="breadcrumb" role="navigation" aria-label="Page sections">
+  <a href="#intro" class="breadcrumb-item active" data-section="intro">🏠 Intro</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#concept" class="breadcrumb-item" data-section="concept">🕐 Concepts</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#visual" class="breadcrumb-item" data-section="visual">👁 Visual</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#converting" class="breadcrumb-item" data-section="converting">🔄 Converting</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#guided" class="breadcrumb-item" data-section="guided">✏️ Practice</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#activity" class="breadcrumb-item" data-section="activity">🎯 Activity</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#quiz" class="breadcrumb-item" data-section="quiz">🏆 Quiz</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section id="intro" class="hero-section lesson-section" aria-label="Introduction">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="chapter-badge">📚 Chapter 8 · Class 3 Math</div>
+        <h1 class="hero-title">Time</h1>
+        <p class="hero-subtitle">Learn to read clocks, convert between hours, minutes and seconds, and calculate time differences like a pro!</p>
+        <a href="#concept" class="hero-cta">Start Learning ⏱</a>
+      </div>
+      <div class="hero-visual">
+        <svg class="hero-clock" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" id="hero-svg">
+          <circle cx="130" cy="130" r="120" fill="white" stroke="#48DBFB" stroke-width="8"/>
+          <circle cx="130" cy="130" r="108" fill="#F8F9FA" stroke="#a29bfe" stroke-width="2"/>
+          <!-- Hour markers -->
+          <line x1="130" y1="28" x2="130" y2="44" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+          <line x1="182" y1="43" x2="174" y2="57" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="217" y1="78" x2="203" y2="86" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="232" y1="130" x2="216" y2="130" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+          <line x1="217" y1="182" x2="203" y2="174" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="182" y1="217" x2="174" y2="203" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="130" y1="232" x2="130" y2="216" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+          <line x1="78" y1="217" x2="86" y2="203" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="43" y1="182" x2="57" y2="174" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="28" y1="130" x2="44" y2="130" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+          <line x1="43" y1="78" x2="57" y2="86" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <line x1="78" y1="43" x2="86" y2="57" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/>
+          <!-- Numbers -->
+          <text x="126" y="70" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">12</text>
+          <text x="190" y="100" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">1</text>
+          <text x="215" y="135" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">3</text>
+          <text x="190" y="172" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">5</text>
+          <text x="126" y="200" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">6</text>
+          <text x="62" y="172" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">7</text>
+          <text x="40" y="135" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">9</text>
+          <text x="62" y="100" font-family="Poppins" font-weight="700" font-size="18" fill="#2d3436" text-anchor="middle">11</text>
+          <!-- Hour hand -->
+          <line id="hero-hour-hand" x1="130" y1="130" x2="130" y2="78" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" transform-origin="130 130"/>
+          <!-- Minute hand -->
+          <line id="hero-min-hand" x1="130" y1="130" x2="130" y2="55" stroke="#2d3436" stroke-width="4" stroke-linecap="round" transform-origin="130 130"/>
+          <!-- Second hand -->
+          <line id="hero-sec-hand" x1="130" y1="148" x2="130" y2="52" stroke="#F9CA24" stroke-width="2" stroke-linecap="round" transform-origin="130 130"/>
+          <circle cx="130" cy="130" r="7" fill="#FF6B6B"/>
+          <!-- SVG path for draw animation -->
+          <circle id="draw-path" cx="130" cy="130" r="110" stroke="#48DBFB" stroke-width="3" fill="none" stroke-dasharray="692" stroke-dashoffset="692"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" role="complementary">
+      <div class="sidebar-inner">
+        <div class="sidebar-title">Contents</div>
+        <a href="#concept" class="toc-link" data-toc="concept">🕐 What is Time?</a>
+        <a href="#visual" class="toc-link" data-toc="visual">👁 Clock Hands</a>
+        <a href="#converting" class="toc-link" data-toc="converting">🔄 Converting Time</a>
+        <a href="#guided" class="toc-link" data-toc="guided">✏️ Guided Practice</a>
+        <a href="#activity" class="toc-link" data-toc="activity">🎯 Activity</a>
+        <a href="#quiz" class="toc-link" data-toc="quiz">🏆 Quiz</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+
+      <!-- ===== CONCEPT SECTION ===== -->
+      <section id="concept" class="lesson-section parallax-section" aria-label="Concept">
+        <div class="parallax-bg"></div>
+        <div class="section-header sky">
+          <span class="section-icon">🕐</span>
+          <h2>What is Time?</h2>
+        </div>
+        <div class="section-content">
+          <div class="card">
+            <h3>Understanding Time</h3>
+            <p>Time is measured in <strong>hours</strong>, <strong>minutes</strong>, and <strong>seconds</strong>. Clocks help us keep track of time with their hour, minute, and second hands.</p>
+          </div>
+          <div class="concept-grid">
+            <div class="concept-card sky">
+              <div class="icon">⏰</div>
+              <h3>Hour Hand</h3>
+              <p>The <strong>shortest</strong> hand. Moves slowly, completing <strong>one full rotation every 12 hours</strong>.</p>
+            </div>
+            <div class="concept-card coral">
+              <div class="icon">🕐</div>
+              <h3>Minute Hand</h3>
+              <p>The <strong>longest</strong> hand. Moves faster, completing <strong>one full rotation every hour</strong> (60 minutes).</p>
+            </div>
+            <div class="concept-card sunshine">
+              <div class="icon">⚡</div>
+              <h3>Second Hand</h3>
+              <p>The <strong>thinnest</strong> hand. Moves the fastest, completing <strong>one full rotation every minute</strong> (60 seconds).</p>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-num" data-target="60" data-suffix="">0</div>
+              <div class="stat-label">Seconds in a Minute</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" data-target="60" data-suffix="">0</div>
+              <div class="stat-label">Minutes in an Hour</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" data-target="24" data-suffix="">0</div>
+              <div class="stat-label">Hours in a Day</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" data-target="3600" data-suffix="">0</div>
+              <div class="stat-label">Seconds in an Hour</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VISUAL SECTION (Interactive Clock) ===== -->
+      <section id="visual" class="lesson-section" aria-label="Visual Clock">
+        <div class="section-header coral">
+          <span class="section-icon">👁</span>
+          <h2>Interactive Clock</h2>
+        </div>
+        <div class="section-content">
+          <div class="card">
+            <p>Watch the clock and learn how each hand moves! Use the buttons to see different times.</p>
+            <div class="clock-interactive-wrap">
+              <canvas id="clockCanvas" class="analog-clock-canvas" width="280" height="280"></canvas>
+              <div class="clock-display" id="clockDisplay">12:00:00</div>
+              <div class="clock-controls">
+                <button class="clock-btn active" onclick="setClockMode('live')">⏱ Live Time</button>
+                <button class="clock-btn" onclick="setClockMode('3:45')">3:45</button>
+                <button class="clock-btn" onclick="setClockMode('6:30')">6:30</button>
+                <button class="clock-btn" onclick="setClockMode('9:15')">9:15</button>
+                <button class="clock-btn" onclick="setClockMode('11:55')">11:55</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CONVERTING TIME ===== -->
+      <section id="converting" class="lesson-section parallax-section" aria-label="Converting Time">
+        <div class="parallax-bg"></div>
+        <div class="section-header sunshine">
+          <span class="section-icon">🔄</span>
+          <h2>Converting Time</h2>
+        </div>
+        <div class="section-content">
+
+          <!-- Seconds to Minutes -->
+          <div class="card" style="margin-bottom:24px">
+            <h3>⚡ Seconds to Minutes</h3>
+            <p>To convert seconds to minutes: <strong>Divide by 60</strong><br>To convert minutes to seconds: <strong>Multiply by 60</strong></p>
+            <div class="arrow-box">
+              <div style="text-align:center">
+                <div class="val-box">60 Seconds</div>
+                <div class="op-label">÷ 60</div>
+              </div>
+              <div class="arrow">⇄</div>
+              <div style="text-align:center">
+                <div class="val-box" style="background:var(--coral)">1 Minute</div>
+                <div class="op-label">× 60</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hours to Minutes -->
+          <div class="card" style="margin-bottom:24px">
+            <h3>⏰ Hours to Minutes</h3>
+            <p>To convert hours to minutes: <strong>Multiply by 60</strong></p>
+            <div class="conversion-box">
+              <div class="conv-formula">1 HOUR = 60 MINUTES</div>
+              <div class="conv-sub">4 HOURS = 4 × 60 = 240 MINUTES</div>
+            </div>
+            <div class="info-box">
+              <h4>💡 Remember</h4>
+              <p>To convert <strong>hours → minutes</strong>: multiply by <strong>60</strong><br>
+              To convert <strong>minutes → hours</strong>: divide by <strong>60</strong></p>
+            </div>
+          </div>
+
+          <!-- Minutes to Hours -->
+          <div class="card">
+            <h3>🕐 Minutes to Hours</h3>
+            <p>To convert minutes to hours: <strong>Divide by 60</strong></p>
+            <div class="conversion-box" style="background:linear-gradient(135deg,#48DBFB,#0abde3)">
+              <div class="conv-formula">60 MINUTES = 1 HOUR</div>
+              <div class="conv-sub">180 MINUTES = 180 ÷ 60 = 3 HOURS</div>
+            </div>
+            <div style="margin-top:20px;background:#F8F9FA;border-radius:12px;padding:24px">
+              <p style="font-weight:600;font-size:19px;margin-bottom:12px">Step-by-step: Convert 180 minutes to hours</p>
+              <ol style="padding-left:24px;font-size:18px;line-height:2">
+                <li>60 MINUTES = 1 HOUR</li>
+                <li>1 MINUTE = 1/60 HOURS</li>
+                <li>180 MINUTES = 180 × (1/60) HOURS</li>
+                <li>= 180/60 HOURS</li>
+                <li><strong>= 3 HOURS ✅</strong></li>
+              </ol>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== GUIDED PRACTICE ===== -->
+      <section id="guided" class="lesson-section" aria-label="Guided Practice">
+        <div class="section-header mint">
+          <span class="section-icon">✏️</span>
+          <h2>Guided Practice</h2>
+        </div>
+        <div class="section-content">
+          <p style="font-size:19px;margin-bottom:24px">Try converting between hours and minutes. Type your answer and click <strong>Check</strong>!</p>
+
+          <div class="practice-grid">
+            <div class="practice-card">
+              <h4>Hours → Minutes</h4>
+              <div class="input-row">
+                <label>3 hr =</label>
+                <input type="number" id="p1" placeholder="?" min="0"/>
+                <span class="unit">min</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p1',180,'feedback1')">Check ✓</button>
+              <div class="feedback" id="feedback1"></div>
+            </div>
+            <div class="practice-card">
+              <h4>Minutes → Hours</h4>
+              <div class="input-row">
+                <label>240 min =</label>
+                <input type="number" id="p2" placeholder="?" min="0"/>
+                <span class="unit">hr</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p2',4,'feedback2')">Check ✓</button>
+              <div class="feedback" id="feedback2"></div>
+            </div>
+            <div class="practice-card">
+              <h4>Hours → Minutes</h4>
+              <div class="input-row">
+                <label>5 hr =</label>
+                <input type="number" id="p3" placeholder="?" min="0"/>
+                <span class="unit">min</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p3',300,'feedback3')">Check ✓</button>
+              <div class="feedback" id="feedback3"></div>
+            </div>
+            <div class="practice-card">
+              <h4>Minutes → Hours</h4>
+              <div class="input-row">
+                <label>90 min =</label>
+                <input type="number" id="p4" placeholder="?" min="0" step="0.5"/>
+                <span class="unit">hr</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p4',1.5,'feedback4')">Check ✓</button>
+              <div class="feedback" id="feedback4"></div>
+            </div>
+            <div class="practice-card">
+              <h4>Hours → Minutes</h4>
+              <div class="input-row">
+                <label>12 hr =</label>
+                <input type="number" id="p5" placeholder="?" min="0"/>
+                <span class="unit">min</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p5',720,'feedback5')">Check ✓</button>
+              <div class="feedback" id="feedback5"></div>
+            </div>
+            <div class="practice-card">
+              <h4>Hours → Minutes</h4>
+              <div class="input-row">
+                <label>24 hr =</label>
+                <input type="number" id="p6" placeholder="?" min="0"/>
+                <span class="unit">min</span>
+              </div>
+              <button class="check-btn" onclick="checkPractice('p6',1440,'feedback6')">Check ✓</button>
+              <div class="feedback" id="feedback6"></div>
+            </div>
+          </div>
+
+          <!-- Time Addition/Subtraction -->
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(1.4rem,2.5vw,1.8rem);margin-top:40px;margin-bottom:16px">➕➖ Adding & Subtracting Time</h3>
+          <p style="font-size:18px;margin-bottom:24px">Calculate the sum or difference of each pair of times. Enter your answers below!</p>
+
+          <div class="time-calc-grid" id="timeCalcGrid">
+            <!-- Cards will be generated by JS -->
+          </div>
+
+          <button class="check-btn" style="margin-top:24px;font-size:18px;padding:14px 32px" onclick="checkAllTimeCalc()">Check All Answers ✓</button>
+          <div class="feedback" id="timeCalcFeedback" style="font-size:20px;margin-top:12px"></div>
+        </div>
+      </section>
+
+      <!-- ===== ACTIVITY SECTION ===== -->
+      <section id="activity" class="lesson-section parallax-section" aria-label="Activity">
+        <div class="parallax-bg"></div>
+        <div class="section-header purple">
+          <span class="section-icon">🎯</span>
+          <h2>Activity: Drag & Drop Clock Labels</h2>
+        </div>
+        <div class="section-content">
+          <div class="card">
+            <p style="font-size:19px;margin-bottom:20px">Drag each label to the correct hand of the clock!</p>
+            <div class="drag-drop-area">
+              <div class="drag-targets">
+                <div class="drag-target" id="dt-hour" data-accept="hour-hand">
+                  <span class="target-label">Shortest Hand</span>
+                  <span id="dt-hour-content" style="color:#555;font-size:17px">Drop here...</span>
+                </div>
+                <div class="drag-target" id="dt-minute" data-accept="minute-hand">
+                  <span class="target-label">Longest Hand</span>
+                  <span id="dt-minute-content" style="color:#555;font-size:17px">Drop here...</span>
+                </div>
+                <div class="drag-target" id="dt-second" data-accept="second-hand">
+                  <span class="target-label">Thinnest/Fastest Hand</span>
+                  <span id="dt-second-content" style="color:#555;font-size:17px">Drop here...</span>
+                </div>
+              </div>
+              <div class="drag-labels" id="dragLabels">
+                <div class="drag-label" draggable="true" data-value="hour-hand" id="dl-hour">⏰ Hour Hand</div>
+                <div class="drag-label" draggable="true" data-value="minute-hand" id="dl-minute" style="background:var(--coral)">🕐 Minute Hand</div>
+                <div class="drag-label" draggable="true" data-value="second-hand" id="dl-second" style="background:var(--mint)">⚡ Second Hand</div>
+              </div>
+              <div class="drag-drop-feedback" id="dragFeedback"></div>
+              <button class="check-btn" style="margin:16px auto;display:block;font-size:18px;padding:12px 28px" onclick="resetDragDrop()">Reset 🔄</button>
+            </div>
+          </div>
+
+          <!-- Conversion Table Activity -->
+          <div class="card" style="margin-top:24px">
+            <h3>📋 Conversion Table Challenge</h3>
+            <p style="margin-bottom:16px;font-size:18px">Complete the table by converting between hours and minutes.</p>
+            <div class="conv-table-wrap">
+              <table class="conv-table">
+                <thead>
+                  <tr>
+                    <th>Hours (hr)</th>
+                    <th>Minutes (min)</th>
+                  </tr>
+                </thead>
+                <tbody id="convTableBody">
+                  <!-- Generated by JS -->
+                </tbody>
+              </table>
+            </div>
+            <button class="check-btn" style="margin-top:16px;font-size:18px;padding:12px 28px" onclick="checkConvTable()">Check Table ✓</button>
+            <div class="feedback" id="convTableFeedback" style="font-size:18px;margin-top:12px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== QUIZ ===== -->
+      <section id="quiz" class="lesson-section" aria-label="Quiz">
+        <div class="section-header coral">
+          <span class="section-icon">🏆</span>
+          <h2>Quiz: Test Your Knowledge!</h2>
+        </div>
+        <div class="section-content">
+          <div class="quiz-wrap" id="quizWrap">
+            <!-- Generated by JS -->
+          </div>
+          <button class="quiz-submit-btn" id="quizSubmitBtn" onclick="submitQuiz()">Submit Quiz 🏆</button>
+          <div class="score-card" id="scoreCard">
+            <h2 class="score-title" id="scoreTitle">Great Job!</h2>
+            <div class="score-circle">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="12"/>
+                <circle id="scoreProgressCircle" cx="80" cy="80" r="70" fill="none" stroke="white" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round"/>
+              </svg>
+              <div class="score-num" id="scoreNum">0/8</div>
+            </div>
+            <p class="score-msg" id="scoreMsg">Keep practising!</p>
+            <button class="retry-btn" onclick="resetQuiz()">Try Again 🔄</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav" role="navigation" aria-label="Mobile navigation">
+  <a href="#intro" class="mobile-nav-link active" data-section="intro"><span class="nav-icon">🏠</span>Intro</a>
+  <a href="#concept" class="mobile-nav-link" data-section="concept"><span class="nav-icon">🕐</span>Concepts</a>
+  <a href="#visual" class="mobile-nav-link" data-section="visual"><span class="nav-icon">👁</span>Visual</a>
+  <a href="#converting" class="mobile-nav-link" data-section="converting"><span class="nav-icon">🔄</span>Convert</a>
+  <a href="#guided" class="mobile-nav-link" data-section="guided"><span class="nav-icon">✏️</span>Practice</a>
+  <a href="#activity" class="mobile-nav-link" data-section="activity"><span class="nav-icon">🎯</span>Activity</a>
+  <a href="#quiz" class="mobile-nav-link" data-section="quiz"><span class="nav-icon">🏆</span>Quiz</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ---- CURTAIN FALLBACK (FIRST!) ----
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ---- INIT ----
+  try { initAll(); } catch(e) { console.error('Init error:', e); }
+
+  function initAll() {
+    initCurtain();
+    initLenis();
+    initGSAP();
+    initClock();
+    initTimeCalcGrid();
+    initConvTable();
+    initDragDrop();
+    initQuiz();
+    initIntersectionObserver();
+  }
+
+  // ---- CURTAIN ----
+  function initCurtain() {
+    const c = document.getElementById('curtain');
+    if (!c) return;
+    setTimeout(() => { c.style.transition='opacity .5s'; c.style.opacity='0'; setTimeout(()=>c.style.display='none',500); }, 1200);
+  }
+
+  // ---- LENIS ----
+  function initLenis() {
+    try {
+      if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+    } catch(e) { console.warn('Lenis error:', e); }
+  }
+
+  // ---- GSAP ----
+  function initGSAP() {
+    try {
+      if (typeof gsap === 'undefined') return;
+      if (typeof ScrollTrigger !== 'undefined') { gsap.registerPlugin(ScrollTrigger); }
+
+      // Hero SVG draw animation
+      const drawPath = document.getElementById('draw-path');
+      if (drawPath) {
+        gsap.to(drawPath, { strokeDashoffset: 0, duration: 2, ease: 'power2.out', delay: 1.5 });
+      }
+
+      // Hero text
+      gsap.from('.hero-text .chapter-badge', { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
+      gsap.from('.hero-title', { opacity: 0, y: 40, duration: 0.9, delay: 0.5 });
+      gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.8, delay: 0.7 });
+      gsap.from('.hero-cta', { opacity: 0, y: 20, duration: 0.7, delay: 0.9 });
+
+      // Concept cards scroll animation
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.concept-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            opacity: 0, y: 40, duration: 0.6, delay: i * 0.12, ease: 'power2.out'
+          });
+        });
+
+        // Stats counter
+        gsap.utils.toArray('.stat-num[data-target]').forEach(el => {
+          const target = parseInt(el.getAttribute('data-target'));
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 90%',
+            onEnter: () => {
+              gsap.to({ val: 0 }, {
+                val: target,
+                duration: 1.5,
+                ease: 'power2.out',
+                onUpdate: function() { el.textContent = Math.round(this.targets()[0].val).toLocaleString(); }
+              });
+            },
+            once: true
+          });
+        });
+
+        // Parallax backgrounds
+        gsap.utils.toArray('.parallax-bg').forEach(bg => {
+          gsap.to(bg, {
+            scrollTrigger: { trigger: bg.parentElement, scrub: 1 },
+            y: 60, ease: 'none'
+          });
+        });
+
+        // Cards reveal
+        gsap.utils.toArray('.practice-card, .time-calc-card, .quiz-question').forEach(card => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 88%' },
+            opacity: 0, y: 30, duration: 0.5, ease: 'power2.out'
+          });
+        });
+      }
+
+    } catch(e) { console.warn('GSAP error:', e); }
+  }
+
+  // ---- ANALOG CLOCK ----
+  let clockMode = 'live';
+  let clockInterval = null;
+  let fixedH = 0, fixedM = 0, fixedS = 0;
+
+  window.setClockMode = function(mode) {
+    document.querySelectorAll('.clock-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    clockMode = mode;
+    if (mode !== 'live') {
+      const parts = mode.split(':');
+      fixedH = parseInt(parts[0]);
+      fixedM = parseInt(parts[1]);
+      fixedS = 0;
+    }
+    drawClock();
+  };
+
+  function drawClock() {
+    const canvas = document.getElementById('clockCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    const cx = w / 2, cy = h / 2;
+    const r = Math.min(w, h) / 2 - 10;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Face
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.strokeStyle = '#48DBFB';
+    ctx.lineWidth = 6;
+    ctx.stroke();
+
+    // Inner ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, r - 8, 0, Math.PI * 2);
+    ctx.strokeStyle = '#a29bfe';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Hour marks & numbers
+    for (let i = 1; i <= 12; i++) {
+      const angle = (i * 30 - 90) * Math.PI / 180;
+      const x1 = cx + (r - 20) * Math.cos(angle);
+      const y1 = cy + (r - 20) * Math.sin(angle);
+      const x2 = cx + (r - 10) * Math.cos(angle);
+      const y2 = cy + (r - 10) * Math.sin(angle);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = '#2d3436';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      // numbers
+      ctx.fillStyle = '#2d3436';
+      ctx.font = 'bold 16px Poppins,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const nx = cx + (r - 32) * Math.cos(angle);
+      const ny = cy + (r - 32) * Math.sin(angle);
+      ctx.fillText(i.toString(), nx, ny);
+    }
+
+    // Minute marks
+    for (let i = 0; i < 60; i++) {
+      if (i % 5 === 0) continue;
+      const angle = (i * 6 - 90) * Math.PI / 180;
+      const x1 = cx + (r - 12) * Math.cos(angle);
+      const y1 = cy + (r - 12) * Math.sin(angle);
+      const x2 = cx + (r - 6) * Math.cos(angle);
+      const y2 = cy + (r - 6) * Math.sin(angle);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = '#aaa';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    let nowH, nowM, nowS;
+    if (clockMode === 'live') {
+      const now = new Date();
+      nowH = now.getHours() % 12;
+      nowM = now.getMinutes();
+      nowS = now.getSeconds();
+    } else {
+      nowH = fixedH % 12;
+      nowM = fixedM;
+      nowS = fixedS;
+    }
+
+    // Update display
+    const dispH = clockMode === 'live' ? (new Date()).getHours() : fixedH;
+    const displayEl = document.getElementById('clockDisplay');
+    if (displayEl) {
+      displayEl.textContent =
+        String(dispH).padStart(2,'0') + ':' +
+        String(nowM).padStart(2,'0') + ':' +
+        String(nowS).padStart(2,'0');
+    }
+
+    // Hour hand
+    const hourAngle = ((nowH * 60 + nowM) / 720) * Math.PI * 2 - Math.PI / 2;
+    drawHand(ctx, cx, cy, r * 0.5, hourAngle, '#FF6B6B', 7);
+
+    // Minute hand
+    const minAngle = ((nowM * 60 + nowS) / 3600) * Math.PI * 2 - Math.PI / 2;
+    drawHand(ctx, cx, cy, r * 0.72, minAngle, '#2d3436', 5);
+
+    // Second hand
+    const secAngle = (nowS / 60) * Math.PI * 2 - Math.PI / 2;
+    drawHand(ctx, cx, cy, r * 0.78, secAngle, '#F9CA24', 2, true);
+
+    // Center dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+    ctx.fillStyle = '#FF6B6B';
+    ctx.fill();
+  }
+
+  function drawHand(ctx, cx, cy, length, angle, color, width, hasEnd) {
+    ctx.beginPath();
+    if (hasEnd) {
+      ctx.moveTo(cx - 20 * Math.cos(angle), cy - 20 * Math.sin(angle));
+    } else {
+      ctx.moveTo(cx, cy);
+    }
+    ctx.lineTo(cx + length * Math.cos(angle), cy + length * Math.sin(angle));
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+  }
+
+  function initClock() {
+    drawClock();
+    setInterval(drawClock, 1000);
+    // Animate hero clock hands
+    animateHeroClock();
+  }
+
+  function animateHeroClock() {
+    function updateHero() {
+      const now = new Date();
+      const h = now.getHours() % 12;
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const hourDeg = (h * 30) + (m * 0.5);
+      const minDeg = m * 6;
+      const secDeg = s * 6;
+      const hh = document.getElementById('hero-hour-hand');
+      const mh = document.getElementById('hero-min-hand');
+      const sh = document.getElementById('hero-sec-hand');
+      if (hh) hh.setAttribute('transform', `rotate(${hourDeg}, 130, 130)`);
+      if (mh) mh.setAttribute('transform', `rotate(${minDeg}, 130, 130)`);
+      if (sh) sh.setAttribute('transform', `rotate(${secDeg}, 130, 130)`);
+    }
+    updateHero();
+    setInterval(updateHero, 1000);
+  }
+
+  // ---- PRACTICE CHECK ----
+  window.checkPractice = function(inputId, correct, feedbackId) {
+    const val = parseFloat(document.getElementById(inputId).value);
+    const fb = document.getElementById(feedbackId);
+    if (isNaN(val)) { fb.textContent = '⚠️ Please enter a number!'; fb.className = 'feedback wrong'; return; }
+    if (Math.abs(val - correct) < 0.001) {
+      fb.textContent = '✅ Correct! Well done!';
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `❌ Not quite. The answer is ${correct}. Try again!`;
+      fb.className = 'feedback wrong';
+    }
+  };
+
+  // ---- TIME CALC GRID ----
+  const timeCalcProblems = [
+    { op: '+', h1: 13, m1: 34, h2: 25, m2: 25, rh: 38, rm: 59 },
+    { op: '-', h1: 18, m1: 43, h2: 7, m2: 3, rh: 11, rm: 40 },
+    { op: '+', h1: 12, m1: 4, h2: 13, m2: 41, rh: 25, rm: 45 },
+    { op: '-', h1: 19, m1: 47, h2: 16, m2: 41, rh: 3, rm: 6 },
+    { op: '+', h1: 4, m1: 43, h2: 16, m2: 36, rh: 21, rm: 19 },
+    { op: '+', h1: 21, m1: 30, h2: 7, m2: 13, rh: 28, rm: 43 },
+    { op: '-', h1: 16, m1: 39, h2: 9, m2: 57, rh: 6, rm: 42 },
+    { op: '-', h1: 17, m1: 46, h2: 8, m2: 43, rh: 9, rm: 3 },
+  ];
+
+  function initTimeCalcGrid() {
+    const grid = document.getElementById('timeCalcGrid');
+    if (!grid) return;
+    timeCalcProblems.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'time-calc-card';
+      card.innerHTML = `
+        <div class="time-header">hr &nbsp;&nbsp;&nbsp; min</div>
+        <div class="time-row">
+          <span class="spacer"></span>
+          <span style="min-width:50px;text-align:right">${String(p.h1).padStart(2,'0')}</span>
+          <span style="min-width:20px;text-align:center">:</span>
+          <span style="min-width:50px;text-align:left">${String(p.m1).padStart(2,'0')}</span>
+        </div>
+        <div class="time-row">
+          <span class="op-sign">${p.op}</span>
+          <span style="min-width:50px;text-align:right">${String(p.h2).padStart(2,'0')}</span>
+          <span style="min-width:20px;text-align:center">:</span>
+          <span style="min-width:50px;text-align:left">${String(p.m2).padStart(2,'0')}</span>
+        </div>
+        <div class="time-row result">
+          <span class="spacer"></span>
+          <input type="number" id="tc-h-${i}" class="tc-hr" data-idx="${i}" placeholder="hr" min="0"/>
+          <span style="min-width:20px;text-align:center;font-size:20px">:</span>
+          <input type="number" id="tc-m-${i}" class="tc-min" data-idx="${i}" placeholder="min" min="0"/>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  window.checkAllTimeCalc = function() {
+    let correct = 0;
+    timeCalcProblems.forEach((p, i) => {
+      const hInput = document.getElementById(`tc-h-${i}`);
+      const mInput = document.getElementById(`tc-m-${i}`);
+      if (!hInput || !mInput) return;
+      const hv = parseInt(hInput.value);
+      const mv = parseInt(mInput.value);
+      if (hv === p.rh && mv === p.rm) {
+        hInput.className = 'correct'; mInput.className = 'correct'; correct++;
+      } else {
+        hInput.className = 'wrong'; mInput.className = 'wrong';
+      }
+    });
+    const fb = document.getElementById('timeCalcFeedback');
+    if (correct === timeCalcProblems.length) {
+      fb.textContent = `🎉 All ${correct}/${timeCalcProblems.length} correct! Excellent!`;
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `${correct}/${timeCalcProblems.length} correct. Keep trying! Check wrong ones (shown in red).`;
+      fb.className = 'feedback wrong';
+    }
+  };
+
+  // ---- CONVERSION TABLE ----
+  const convTableData = [
+    { hr: 1, min: null },
+    { hr: null, min: 120 },
+    { hr: 3, min: null },
+    { hr: null, min: 300 },
+    { hr: 6, min: null },
+    { hr: null, min: 420 },
+    { hr: 8, min: null },
+    { hr: null, min: 600 },
+  ];
+
+  function initConvTable() {
+    const tbody = document.getElementById('convTableBody');
+    if (!tbody) return;
+    convTableData.forEach((row, i) => {
+      const tr = document.createElement('tr');
+      if (row.hr !== null) {
+        tr.innerHTML = `<td style="font-weight:600">${row.hr}</td><td><input type="number" id="ctb-${i}" class="ctb-input" placeholder="?" min="0" style="border:2px solid #ddd;border-radius:6px;padding:8px 10px;font-size:17px;width:100px;text-align:center" data-answer="${row.hr * 60}" data-type="min"/></td>`;
+      } else {
+        tr.innerHTML = `<td><input type="number" id="ctb-${i}" class="ctb-input" placeholder="?" min="0" style="border:2px solid #ddd;border-radius:6px;padding:8px 10px;font-size:17px;width:100px;text-align:center" data-answer="${row.min / 60}" data-type="hr"/></td><td style="font-weight:600">${row.min}</td>`;
+      }
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.checkConvTable = function() {
+    let correct = 0, total = 0;
+    document.querySelectorAll('.ctb-input').forEach(inp => {
+      total++;
+      const val = parseFloat(inp.value);
+      const ans = parseFloat(inp.getAttribute('data-answer'));
+      if (!isNaN(val) && Math.abs(val - ans) < 0.001) {
+        inp.className = 'correct';
+        correct++;
+      } else {
+        inp.className = 'wrong';
+      }
+    });
+    const fb = document.getElementById('convTableFeedback');
+    if (correct === total) {
+      fb.textContent = `🎉 Perfect! All ${total}/${total} answers correct!`;
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `${correct}/${total} correct. Red cells need fixing!`;
+      fb.className = 'feedback wrong';
+    }
+  };
+
+  // ---- DRAG & DROP ----
+  function initDragDrop() {
+    const labels = document.querySelectorAll('.drag-label');
+    const targets = document.querySelectorAll('.drag-target');
+
+    labels.forEach(label => {
+      label.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', label.getAttribute('data-value'));
+        e.dataTransfer.setData('id', label.id);
+        label.classList.add('dragging');
+      });
+      label.addEventListener('dragend', () => label.classList.remove('dragging'));
+    });
+
+    targets.forEach(target => {
+      target.addEventListener('dragover', e => { e.preventDefault(); target.classList.add('over'); });
+      target.addEventListener('dragleave', () => target.classList.remove('over'));
+      target.addEventListener('drop', e => {
+        e.preventDefault();
+        target.classList.remove('over');
+        const val = e.dataTransfer.getData('text/plain');
+        const labelId = e.dataTransfer.getData('id');
+        const accept = target.getAttribute('data-accept');
+        const contentEl = target.querySelector('[id$="-content"]');
+        const labelEl = document.getElementById(labelId);
+
+        if (val === accept) {
+          target.classList.add('filled');
+          if (contentEl) contentEl.textContent = labelEl ? labelEl.textContent : val;
+          if (labelEl) labelEl.style.display = 'none';
+          checkDragDrop();
+        } else {
+          target.style.borderColor = 'var(--coral)';
+          const fb = document.getElementById('dragFeedback');
+          fb.textContent = '❌ That\'s not right! Try a different hand.';
+          fb.style.color = 'var(--coral)';
+          setTimeout(() => { target.style.borderColor = ''; }, 1000);
+        }
+      });
+    });
+
+    // Touch support
+    labels.forEach(label => {
+      label.addEventListener('touchstart', e => { label._touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }, { passive: true });
+      label.addEventListener('touchend', e => {
+        const touch = e.changedTouches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        const target = el ? el.closest('.drag-target') : null;
+        if (target) {
+          const accept = target.getAttribute('data-accept');
+          const val = label.getAttribute('data-value');
+          const contentEl = target.querySelector('[id$="-content"]');
+          if (val === accept) {
+            target.classList.add('filled');
+            if (contentEl) contentEl.textContent = label.textContent;
+            label.style.display = 'none';
+            checkDragDrop();
+          } else {
+            const fb = document.getElementById('dragFeedback');
+            fb.textContent = '❌ That\'s not right! Try a different hand.';
+            fb.style.color = 'var(--coral)';
+          }
+        }
+      }, { passive: true });
+    });
+  }
+
+  function checkDragDrop() {
+    const filled = document.querySelectorAll('.drag-target.filled').length;
+    const fb = document.getElementById('dragFeedback');
+    if (filled === 3) {
+      fb.textContent = '🎉 Excellent! You matched all clock hands correctly!';
+      fb.style.color = 'var(--mint)';
+    }
+  }
+
+  window.resetDragDrop = function() {
+    document.querySelectorAll('.drag-target').forEach(t => {
+      t.classList.remove('filled', 'over');
+      t.style.borderColor = '';
+      const content = t.querySelector('[id$="-content"]');
+      if (content) content.textContent = 'Drop here...';
+    });
+    document.querySelectorAll('.drag-label').forEach(l => l.style.display = '');
+    const fb = document.getElementById('dragFeedback');
+    fb.textContent = '';
+  };
+
+  // ---- QUIZ ----
+  const quizData = [
+    {
+      type: 'mcq',
+      q: 'How many minutes are there in 1 hour?',
+      opts: ['30 minutes', '60 minutes', '100 minutes', '24 minutes'],
+      answer: 1
+    },
+    {
+      type: 'mcq',
+      q: 'How many seconds are in 1 minute?',
+      opts: ['100 seconds', '30 seconds', '60 seconds', '120 seconds'],
+      answer: 2
+    },
+    {
+      type: 'mcq',
+      q: 'Convert 3 hours into minutes.',
+      opts: ['120 minutes', '180 minutes', '240 minutes', '300 minutes'],
+      answer: 1
+    },
+    {
+      type: 'mcq',
+      q: 'Convert 240 minutes into hours.',
+      opts: ['2 hours', '3 hours', '4 hours', '6 hours'],
+      answer: 2
+    },
+    {
+      type: 'tf',
+      q: 'The minute hand completes one full rotation every hour.',
+      answer: true
+    },
+    {
+      type: 'mcq',
+      q: 'Which hand on a clock is the SHORTEST?',
+      opts: ['Second hand', 'Minute hand', 'Hour hand', 'They are all the same'],
+      answer: 2
+    },
+    {
+      type: 'tf',
+      q: 'The second hand moves the SLOWEST of all clock hands.',
+      answer: false
+    },
+    {
+      type: 'mcq',
+      q: 'How many minutes are in 5 hours?',
+      opts: ['250 minutes', '350 minutes', '300 minutes', '360 minutes'],
+      answer: 2
+    }
+  ];
+
+  let userAnswers = new Array(quizData.length).fill(null);
+
+  function initQuiz() {
+    const wrap = document.getElementById('quizWrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    userAnswers = new Array(quizData.length).fill(null);
+
+    quizData.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-question';
+      div.id = `qq-${i}`;
+
+      let optsHtml = '';
+      if (q.type === 'mcq') {
+        optsHtml = `<div class="quiz-options">`;
+        q.opts.forEach((opt, j) => {
+          optsHtml += `<button class="quiz-opt" onclick="selectQuizOpt(${i},${j},this)">${opt}</button>`;
+        });
+        optsHtml += `</div>`;
+      } else {
+        optsHtml = `<div class="quiz-tf">
+          <button class="quiz-opt" onclick="selectQuizTF(${i},true,this)">✅ True</button>
+          <button class="quiz-opt" onclick="selectQuizTF(${i},false,this)">❌ False</button>
+        </div>`;
+      }
+
+      div.innerHTML = `
+        <div class="quiz-q-num">Question ${i + 1} of ${quizData.length}</div>
+        <div class="quiz-q-text">${q.q}</div>
+        ${optsHtml}
+      `;
+      wrap.appendChild(div);
+    });
+  }
+
+  window.selectQuizOpt = function(qIdx, optIdx, btn) {
+    const container = document.getElementById(`qq-${qIdx}`);
+    container.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    userAnswers[qIdx] = optIdx;
+  };
+
+  window.selectQuizTF = function(qIdx, val, btn) {
+    const container = document.getElementById(`qq-${qIdx}`);
+    container.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    userAnswers[qIdx] = val;
+  };
+
+  window.submitQuiz = function() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+      alert(`Please answer all questions! You have ${unanswered} unanswered.`);
+      return;
+    }
+
+    let score = 0;
+    quizData.forEach((q, i) => {
+      const container = document.getElementById(`qq-${i}`);
+      const btns = container.querySelectorAll('.quiz-opt');
+      btns.forEach(b => b.disabled = true);
+
+      if (q.type === 'mcq') {
+        if (userAnswers[i] === q.answer) {
+          score++;
+          btns[q.answer].classList.add('correct');
+        } else {
+          btns[userAnswers[i]].classList.add('wrong');
+          btns[q.answer].classList.add('correct');
+        }
+      } else {
+        if (userAnswers[i] === q.answer) {
+          score++;
+          btns[userAnswers[i] === true ? 0 : 1].classList.add('correct');
+        } else {
+          btns[userAnswers[i] === true ? 0 : 1].classList.add('wrong');
+          btns[q.answer === true ? 0 : 1].classList.add('correct');
+        }
+      }
+    });
+
+    const submitBtn = document.getElementById('quizSubmitBtn');
+    if (submitBtn) submitBtn.disabled = true;
+
+    showScoreCard(score);
+  };
+
+  function showScoreCard(score) {
+    const card = document.getElementById('scoreCard');
+    const numEl = document.getElementById('scoreNum');
+    const titleEl = document.getElementById('scoreTitle');
+    const msgEl = document.getElementById('scoreMsg');
+    const circle = document.getElementById('scoreProgressCircle');
+
+    if (!card) return;
+    card.classList.add('show');
+    numEl.textContent = `${score}/${quizData.length}`;
+
+    const pct = score / quizData.length;
+    if (pct >= 0.875) { titleEl.textContent = '🏆 Outstanding!'; msgEl.textContent = 'You are a Time Master!'; }
+    else if (pct >= 0.625) { titleEl.textContent = '🌟 Great Job!'; msgEl.textContent = 'You know your time well!'; }
+    else if (pct >= 0.375) { titleEl.textContent = '👍 Good Try!'; msgEl.textContent = 'Review the lesson and try again!'; }
+    else { titleEl.textContent = '💪 Keep Going!'; msgEl.textContent = 'Read the lesson again — you\'ll get it!'; }
+
+    // Animate circle
+    const circumference = 440;
+    const offset = circumference - (pct * circumference);
+    if (circle) {
+      circle.style.transition = 'stroke-dashoffset 1.5s ease';
+      setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+    }
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(card, { opacity: 0, y: 40, duration: 0.7, ease: 'back.out(1.4)' });
+        gsap.to({ n: 0 }, { n: score, duration: 1.5, onUpdate: function() { numEl.textContent = `${Math.round(this.targets()[0].n)}/${quizData.length}`; } });
+      }
+    } catch(e) {}
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  window.resetQuiz = function() {
+    const card = document.getElementById('scoreCard');
+    if (card) card.classList.remove('show');
+    const submitBtn = document.getElementById('quizSubmitBtn');
+    if (submitBtn) submitBtn.disabled = false;
+    const circle = document.getElementById('scoreProgressCircle');
+    if (circle) { circle.style.strokeDashoffset = '440'; }
+    initQuiz();
+  };
+
+  // ---- INTERSECTION OBSERVER ----
+  function initIntersectionObserver() {
+    const sections = ['intro','concept','visual','converting','guided','activity','quiz'];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          // Sidebar
+          document.querySelectorAll('.toc-link').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('data-toc') === id);
+          });
+          // Breadcrumb
+          document.querySelectorAll('.breadcrumb-item').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('data-section') === id);
+          });
+          // Mobile nav
+          document.querySelectorAll('.mobile-nav-link').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('data-section') === id);
+          });
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '-60px 0px -60px 0px' });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+});
+</script>
+</body>
+</html>

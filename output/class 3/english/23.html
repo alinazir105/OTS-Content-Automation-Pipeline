@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 23 – Composition | Class 3 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sunshine: #F9CA24;
+    --sky: #48DBFB;
+    --coral: #FF6B6B;
+    --green: #6BCB77;
+    --purple: #A29BFE;
+    --light-gray: #F8F9FA;
+    --dark: #2D3436;
+    --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  html { scroll-behavior: smooth; font-size: 18px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: var(--dark);
+    background: var(--light-gray);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: #2D3436;
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  #curtain .logo { font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; color: #F9CA24; }
+  #curtain .sub { color: #fff; font-size: 18px; opacity: 0.8; }
+  .curtain-bar { width: 200px; height: 6px; background: #444; border-radius: 3px; overflow: hidden; }
+  .curtain-fill { height: 100%; background: var(--sunshine); border-radius: 3px; width: 0%; transition: width 2s ease; }
+
+  /* PROGRESS BREADCRUMB */
+  .breadcrumb {
+    position: sticky; top: 0; z-index: 100;
+    background: #fff; border-bottom: 2px solid #eee;
+    padding: 12px 40px; display: flex; align-items: center; gap: 8px;
+    overflow-x: auto; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .breadcrumb a {
+    font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 500;
+    color: #636e72; text-decoration: none; padding: 6px 12px; border-radius: 20px;
+    transition: all 0.3s; min-height: 48px; display: flex; align-items: center;
+  }
+  .breadcrumb a.active { background: var(--coral); color: #fff; }
+  .breadcrumb a:hover { background: var(--sky); color: #fff; }
+  .breadcrumb-sep { color: #ccc; font-size: 15px; }
+
+  /* PAGE WRAPPER */
+  .page-wrapper { display: flex; width: 100%; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px; min-width: 260px; position: sticky; top: 61px;
+    height: calc(100vh - 61px); overflow-y: auto; background: #fff;
+    border-right: 1px solid #eee; padding: 24px 16px;
+    flex-shrink: 0;
+  }
+  .sidebar h3 { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; color: #636e72; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .sidebar a {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    color: var(--dark); text-decoration: none; font-size: 15px; font-weight: 500;
+    border-radius: 8px; margin-bottom: 4px; transition: all 0.3s; min-height: 48px;
+  }
+  .sidebar a .dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; flex-shrink: 0; transition: background 0.3s; }
+  .sidebar a.active { background: var(--light-gray); color: var(--coral); }
+  .sidebar a.active .dot { background: var(--coral); }
+  .sidebar a:hover { background: var(--light-gray); }
+
+  /* MAIN CONTENT */
+  .main-content { flex: 1; min-width: 0; }
+
+  /* HERO */
+  .hero {
+    width: 100%; min-height: 70vh;
+    background: linear-gradient(135deg, #2D3436 0%, #636e72 50%, #2D3436 100%);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 40px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg-shapes { position: absolute; inset: 0; pointer-events: none; }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .hero-badge {
+    display: inline-block; background: var(--sunshine); color: var(--dark);
+    font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700;
+    padding: 6px 20px; border-radius: 20px; margin-bottom: 20px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem,6vw,4.5rem);
+    font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--sunshine); }
+  .hero p { font-size: clamp(1rem,2vw,1.25rem); color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 30px; }
+  .hero-svg { width: 100%; max-width: 500px; margin: 0 auto; display: block; }
+
+  /* SECTION STRIP */
+  .section-strip {
+    width: 100%; padding: 20px 40px;
+    font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem,2.5vw,1.8rem);
+    font-weight: 700; color: #fff; display: flex; align-items: center; gap: 12px;
+  }
+  .strip-coral { background: var(--coral); }
+  .strip-sky { background: #0984e3; }
+  .strip-sun { background: #e17055; }
+  .strip-green { background: #00b894; }
+  .strip-purple { background: #6c5ce7; }
+  .strip-teal { background: #00cec9; }
+  .strip-pink { background: #fd79a8; }
+
+  /* CONTENT SECTION */
+  .content-section { padding: 50px 40px; }
+  .container { max-width: 1500px; margin: 0 auto; }
+
+  /* CARDS */
+  .card {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    padding: 28px 32px; width: 100%; max-width: 100%;
+    opacity: 1; transform: none;
+  }
+  .card h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem,2.5vw,1.8rem); font-weight: 700; margin-bottom: 12px; }
+  .card p, .card li { font-size: 18px; line-height: 1.7; }
+  .card ul { padding-left: 24px; }
+  .card ul li { margin-bottom: 8px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+
+  /* INTRO CARDS */
+  .intro-card {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    padding: 28px; text-align: center; width: 100%; opacity: 1; transform: none;
+  }
+  .intro-card .icon { font-size: 48px; margin-bottom: 12px; }
+  .intro-card h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.2rem,2vw,1.5rem); font-weight: 700; margin-bottom: 8px; }
+  .intro-card p { font-size: 17px; color: #636e72; line-height: 1.6; }
+
+  /* COMPOSITION TYPES */
+  .comp-type-card {
+    border-radius: 12px; padding: 28px; color: #fff; width: 100%;
+    opacity: 1; transform: none;
+  }
+  .comp-type-card h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.2rem,2vw,1.5rem); font-weight: 700; margin-bottom: 10px; }
+  .comp-type-card p { font-size: 17px; line-height: 1.6; opacity: 0.95; }
+  .comp-type-card .tag { display: inline-block; background: rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 12px; font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .bg-coral { background: linear-gradient(135deg, var(--coral), #d63031); }
+  .bg-sky { background: linear-gradient(135deg, var(--sky), #0984e3); }
+  .bg-green { background: linear-gradient(135deg, var(--green), #00b894); }
+  .bg-purple { background: linear-gradient(135deg, var(--purple), #6c5ce7); }
+  .bg-sun { background: linear-gradient(135deg, var(--sunshine), #fdcb6e); color: var(--dark) !important; }
+  .bg-sun .tag { color: var(--dark); }
+  .bg-pink { background: linear-gradient(135deg, #fd79a8, #e84393); }
+
+  /* LETTER FORMAT */
+  .letter-format {
+    background: #fff8e1; border: 2px dashed var(--sunshine);
+    border-radius: 12px; padding: 32px; font-family: 'Inter', sans-serif;
+    font-size: 18px; line-height: 1.8;
+  }
+  .letter-format .label { font-weight: 700; color: var(--coral); font-size: 15px; text-transform: uppercase; letter-spacing: 1px; }
+  .letter-format .line { margin-bottom: 12px; }
+
+  /* WRITING TIPS */
+  .tip-card {
+    background: #fff; border-left: 5px solid var(--coral);
+    border-radius: 0 12px 12px 0; padding: 20px 24px;
+    box-shadow: var(--card-shadow); width: 100%; opacity: 1;
+  }
+  .tip-card .tip-num { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .tip-card h4 { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem,2vw,1.3rem); font-weight: 700; margin-bottom: 6px; }
+  .tip-card p { font-size: 17px; color: #636e72; line-height: 1.6; }
+
+  /* GUIDED PRACTICE */
+  .practice-card {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    padding: 32px; width: 100%; opacity: 1; transform: none;
+  }
+  .practice-card h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.3rem,2.5vw,1.7rem); font-weight: 700; margin-bottom: 16px; }
+  .practice-card p { font-size: 18px; line-height: 1.7; margin-bottom: 12px; }
+  .practice-card .prompt { background: var(--light-gray); border-radius: 8px; padding: 16px 20px; font-size: 18px; font-style: italic; color: #636e72; margin-bottom: 16px; }
+  textarea.practice-input {
+    width: 100%; min-height: 160px; border: 2px solid #eee; border-radius: 10px;
+    padding: 16px; font-size: 18px; font-family: 'Inter', sans-serif; resize: vertical;
+    transition: border-color 0.3s; outline: none;
+  }
+  textarea.practice-input:focus { border-color: var(--coral); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--coral); color: #fff; border: none;
+    padding: 12px 24px; border-radius: 8px; font-size: 17px; font-family: 'Poppins', sans-serif;
+    font-weight: 600; cursor: pointer; transition: all 0.3s; min-height: 48px;
+    text-decoration: none;
+  }
+  .btn:hover { background: #d63031; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.3); }
+  .btn-sky { background: #0984e3; }
+  .btn-sky:hover { background: #0773c5; box-shadow: 0 6px 20px rgba(9,132,227,0.3); }
+  .btn-green { background: #00b894; }
+  .btn-green:hover { background: #00a381; box-shadow: 0 6px 20px rgba(0,184,148,0.3); }
+  .btn-sun { background: var(--sunshine); color: var(--dark); }
+  .btn-sun:hover { background: #f0b90b; }
+
+  /* ACTIVITY: DRAG AND DROP */
+  .drag-container { display: flex; flex-direction: column; gap: 20px; }
+  .drag-words { display: flex; flex-wrap: wrap; gap: 12px; padding: 20px; background: var(--light-gray); border-radius: 12px; min-height: 80px; }
+  .drag-word {
+    padding: 10px 18px; background: var(--sky); color: #fff; border-radius: 8px;
+    font-size: 17px; font-weight: 600; cursor: grab; user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s; min-height: 48px; display: flex; align-items: center;
+  }
+  .drag-word:active { cursor: grabbing; transform: scale(1.05); }
+  .drag-word.dragging { opacity: 0.5; }
+  .drop-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .drop-zone {
+    border: 2px dashed #ccc; border-radius: 12px; padding: 16px 20px;
+    min-height: 100px; transition: all 0.3s; background: #fff;
+  }
+  .drop-zone.over { border-color: var(--coral); background: #fff5f5; }
+  .drop-zone.correct { border-color: var(--green); background: #f0fff4; }
+  .drop-zone.wrong { border-color: var(--coral); background: #fff5f5; }
+  .drop-zone h4 { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: #636e72; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .drop-zone .dropped-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; }
+  .dropped-tag { padding: 6px 14px; background: var(--purple); color: #fff; border-radius: 20px; font-size: 15px; font-weight: 600; }
+
+  /* TIMELINE */
+  .timeline-activity { display: flex; flex-direction: column; gap: 12px; }
+  .timeline-item {
+    background: #fff; border: 2px solid #eee; border-radius: 10px;
+    padding: 16px 20px; cursor: grab; display: flex; align-items: center; gap: 14px;
+    font-size: 18px; transition: all 0.3s; user-select: none; min-height: 64px;
+  }
+  .timeline-item:hover { border-color: var(--sky); }
+  .timeline-item.dragging-tl { opacity: 0.4; background: #f0f4ff; }
+  .timeline-handle { font-size: 22px; color: #ccc; }
+  .timeline-num { width: 36px; height: 36px; border-radius: 50%; background: var(--coral); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+  #timeline-result { margin-top: 16px; padding: 16px; border-radius: 10px; font-size: 18px; font-weight: 600; display: none; }
+  #timeline-result.correct { background: #d4edda; color: #155724; }
+  #timeline-result.wrong { background: #f8d7da; color: #721c24; }
+
+  /* QUIZ */
+  .quiz-card {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    padding: 32px; width: 100%; opacity: 1;
+  }
+  .question-num { font-size: 14px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .question-text { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem,2vw,1.4rem); font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 12px; }
+  .option-btn {
+    padding: 16px 20px; border: 2px solid #eee; border-radius: 10px; background: #fff;
+    font-size: 18px; font-family: 'Inter', sans-serif; text-align: left; cursor: pointer;
+    transition: all 0.3s; min-height: 56px; width: 100%;
+  }
+  .option-btn:hover { border-color: var(--sky); background: #f0fbff; }
+  .option-btn.selected { border-color: var(--sky); background: #e8f8ff; }
+  .option-btn.correct-ans { border-color: var(--green); background: #d4edda; color: #155724; }
+  .option-btn.wrong-ans { border-color: var(--coral); background: #f8d7da; color: #721c24; }
+  .quiz-nav { display: flex; gap: 12px; margin-top: 24px; align-items: center; flex-wrap: wrap; }
+  .quiz-progress-bar { background: #eee; border-radius: 4px; height: 6px; width: 100%; margin-bottom: 24px; }
+  .quiz-progress-fill { height: 100%; background: var(--coral); border-radius: 4px; transition: width 0.5s; }
+
+  /* SCORE CARD */
+  #score-card {
+    display: none; background: #fff; border-radius: 12px;
+    box-shadow: var(--card-shadow); padding: 48px 32px; text-align: center;
+  }
+  #score-card h2 { font-family: 'Poppins', sans-serif; font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 16px; }
+  .score-circle-container { position: relative; width: 160px; height: 160px; margin: 0 auto 24px; }
+  .score-circle-svg { transform: rotate(-90deg); }
+  .score-circle-bg { fill: none; stroke: #eee; stroke-width: 10; }
+  .score-circle-fill { fill: none; stroke: var(--coral); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s ease; }
+  .score-number { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--coral); }
+  .score-message { font-size: 18px; color: #636e72; margin-bottom: 24px; }
+
+  /* VOCABULARY */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .vocab-card {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    padding: 20px 24px; border-top: 4px solid var(--coral); cursor: pointer;
+    transition: all 0.3s; opacity: 1;
+  }
+  .vocab-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+  .vocab-word { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem,2vw,1.3rem); font-weight: 700; color: var(--coral); margin-bottom: 6px; }
+  .vocab-def { font-size: 17px; color: #636e72; line-height: 1.5; }
+  .vocab-example { font-size: 16px; color: #b2bec3; font-style: italic; margin-top: 6px; }
+
+  /* MERMAID */
+  .mermaid-wrap { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 32px; overflow-x: auto; }
+  .mermaid { font-size: 17px !important; }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box { background: linear-gradient(135deg, #fff9e6, #fff3cd); border-left: 5px solid var(--sunshine); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 16px 0; }
+  .highlight-box p { font-size: 18px; line-height: 1.7; }
+
+  /* STORY BUILDER */
+  .story-parts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .story-part {
+    background: #fff; border: 2px solid #eee; border-radius: 12px;
+    padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; min-height: 80px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  }
+  .story-part.selected { border-color: var(--coral); background: #fff5f5; }
+  .story-part h4 { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: var(--dark); }
+  .story-part p { font-size: 16px; color: #636e72; line-height: 1.5; }
+  .story-part .part-icon { font-size: 32px; }
+  #story-output { background: var(--light-gray); border-radius: 12px; padding: 24px; font-size: 18px; line-height: 1.8; min-height: 100px; border: 2px dashed #ccc; }
+
+  /* ANIMATED COUNTER */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
+  .stat-card { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 28px; text-align: center; }
+  .stat-num { font-family: 'Poppins', sans-serif; font-size: 3rem; font-weight: 800; color: var(--coral); }
+  .stat-label { font-size: 17px; color: #636e72; margin-top: 4px; }
+
+  /* PARALLAX BG */
+  .parallax-section { position: relative; overflow: hidden; }
+  .parallax-bg { position: absolute; inset: -60px; background-size: cover; opacity: 0.06; z-index: 0; }
+  .parallax-section .container { position: relative; z-index: 1; }
+
+  /* ACCORDION */
+  .accordion-item { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); margin-bottom: 12px; overflow: hidden; }
+  .accordion-header {
+    padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Poppins', sans-serif; font-size: clamp(1rem,2vw,1.2rem); font-weight: 600; min-height: 64px;
+  }
+  .accordion-arrow { font-size: 20px; transition: transform 0.3s; }
+  .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; padding: 0 24px; }
+  .accordion-body.open { max-height: 600px; padding: 0 24px 20px; }
+  .accordion-body p { font-size: 18px; line-height: 1.7; }
+  .accordion-body ul { padding-left: 24px; }
+  .accordion-body ul li { font-size: 18px; line-height: 1.7; margin-bottom: 6px; }
+  .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+
+  /* WORD BANK */
+  .word-bank { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; background: var(--light-gray); border-radius: 12px; margin-bottom: 16px; }
+  .word-chip { padding: 8px 16px; background: var(--purple); color: #fff; border-radius: 20px; font-size: 16px; font-weight: 600; }
+
+  /* SECTION SPACING */
+  section { scroll-margin-top: 80px; }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+  .badge-coral { background: #ffe5e5; color: var(--coral); }
+  .badge-sky { background: #e0f7ff; color: #0984e3; }
+  .badge-green { background: #e0fff4; color: #00b894; }
+
+  /* FEEDBACK */
+  .feedback-msg { padding: 14px 18px; border-radius: 10px; font-size: 18px; font-weight: 600; margin-top: 12px; display: none; }
+  .feedback-msg.show { display: block; }
+  .feedback-msg.success { background: #d4edda; color: #155724; }
+  .feedback-msg.error { background: #f8d7da; color: #721c24; }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 2px solid #eee; z-index: 200;
+    overflow-x: auto; padding: 8px 8px;
+    flex-direction: row; gap: 4px; white-space: nowrap;
+  }
+  .mobile-nav a {
+    display: inline-flex; align-items: center; padding: 8px 14px;
+    color: #636e72; text-decoration: none; font-size: 13px; font-weight: 600;
+    border-radius: 8px; transition: all 0.3s; min-height: 48px; white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+  .mobile-nav a.active { background: var(--coral); color: #fff; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .mobile-nav { display: flex; }
+    .main-content { padding-bottom: 80px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .drop-zones { grid-template-columns: 1fr; }
+    .story-parts { grid-template-columns: 1fr; }
+    .hero { min-height: 60vh; padding: 60px 20px; }
+    .content-section { padding: 40px 20px; }
+    .section-strip { padding: 16px 20px; }
+    .breadcrumb { padding: 10px 16px; }
+    .card { padding: 20px; }
+    .practice-card { padding: 20px; }
+    .letter-format { padding: 20px; }
+    .quiz-card { padding: 20px; }
+    #score-card { padding: 32px 20px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .vocab-grid { grid-template-columns: 1fr; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+  /* HERO SVG */
+  .hero-path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+  }
+
+  /* Color accents for diff sections */
+  .tip-card.sky-border { border-left-color: #0984e3; }
+  .tip-card.green-border { border-left-color: #00b894; }
+  .tip-card.purple-border { border-left-color: #6c5ce7; }
+  .tip-card.sun-border { border-left-color: var(--sunshine); }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="logo">✏️ Digital School</div>
+  <div class="sub">Class 3 English – Chapter 23</div>
+  <div class="curtain-bar"><div class="curtain-fill" id="curtain-fill"></div></div>
+</div>
+
+<!-- BREADCRUMB / PROGRESS -->
+<nav class="breadcrumb" id="breadcrumb">
+  <a href="#intro" class="active">🏠 Intro</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#concept">📖 Concept</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#types">📝 Types</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#letter-writing">✉️ Letter Writing</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#tips">💡 Tips</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#practice">✍️ Practice</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#activity">🎮 Activity</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#quiz">🧠 Quiz</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <h3>Contents</h3>
+    <a href="#intro" class="active"><span class="dot"></span>Introduction</a>
+    <a href="#concept"><span class="dot"></span>What is Composition?</a>
+    <a href="#types"><span class="dot"></span>Types of Writing</a>
+    <a href="#sea-creatures"><span class="dot"></span>Sea Creatures</a>
+    <a href="#letter-writing"><span class="dot"></span>Letter Writing</a>
+    <a href="#healthy-tips"><span class="dot"></span>Staying Healthy</a>
+    <a href="#community"><span class="dot"></span>Community Helpers</a>
+    <a href="#festivals"><span class="dot"></span>Festivals & Eid</a>
+    <a href="#tips"><span class="dot"></span>Writing Tips</a>
+    <a href="#practice"><span class="dot"></span>Guided Practice</a>
+    <a href="#activity"><span class="dot"></span>Activity</a>
+    <a href="#vocabulary"><span class="dot"></span>Vocabulary</a>
+    <a href="#quiz"><span class="dot"></span>Quiz</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <section id="intro" class="hero">
+      <div class="hero-bg-shapes">
+        <svg width="100%" height="100%" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="80" fill="#F9CA24" opacity="0.15"/>
+          <circle cx="1100" cy="400" r="120" fill="#48DBFB" opacity="0.12"/>
+          <circle cx="600" cy="50" r="60" fill="#FF6B6B" opacity="0.1"/>
+          <circle cx="200" cy="450" r="90" fill="#A29BFE" opacity="0.1"/>
+          <circle cx="950" cy="80" r="50" fill="#6BCB77" opacity="0.12"/>
+        </svg>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">Chapter 23 · English · Class 3</div>
+        <h1>✍️ <span>Composition</span><br>Writing</h1>
+        <p>Learn to express your ideas through creative writing — letters, stories, descriptions, and more!</p>
+        <svg class="hero-svg" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+          <path class="hero-path" d="M20,80 Q80,20 140,60 Q200,100 260,40 Q320,-20 380,60 Q440,120 480,50" fill="none" stroke="#F9CA24" stroke-width="4" stroke-linecap="round"/>
+          <path class="hero-path" d="M20,100 Q100,50 180,80 Q260,110 340,60 Q420,10 480,80" fill="none" stroke="#48DBFB" stroke-width="3" stroke-linecap="round" style="stroke-dasharray:1800;stroke-dashoffset:1800;"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section style="background:#fff; padding:40px;">
+      <div class="container">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-num" data-count="8">0</div>
+            <div class="stat-label">Composition Topics</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" data-count="3">0</div>
+            <div class="stat-label">Writing Formats</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" data-count="5">0</div>
+            <div class="stat-label">Writing Tips</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" data-count="8">0</div>
+            <div class="stat-label">Quiz Questions</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT -->
+    <section id="concept">
+      <div class="section-strip strip-coral">📖 What is Composition?</div>
+      <div class="content-section parallax-section">
+        <div class="parallax-bg" style="background: radial-gradient(circle, #FF6B6B 0%, transparent 70%);"></div>
+        <div class="container">
+          <div class="grid-2" style="align-items:start;">
+            <div class="card">
+              <h3>📝 Composition Explained</h3>
+              <p>A <strong>composition</strong> is a piece of writing where you use your own words to express ideas, tell a story, describe something, or share your feelings.</p>
+              <br>
+              <p>Good composition involves:</p>
+              <ul style="margin-top:10px;">
+                <li>Choosing a topic and thinking about what to write</li>
+                <li>Organising your ideas in a clear order</li>
+                <li>Using correct grammar and punctuation</li>
+                <li>Including interesting details and examples</li>
+                <li>Writing a proper beginning, middle and end</li>
+              </ul>
+            </div>
+            <div>
+              <div class="mermaid-wrap">
+                <div class="mermaid">
+graph TD
+    A[🌟 Composition] --> B[📖 Descriptive Writing]
+    A --> C[✉️ Letter Writing]
+    A --> D[📚 Story Writing]
+    B --> B1[Sea Creatures]
+    B --> B2[Festivals & Eid]
+    C --> C1[Friendly Letter]
+    C --> C2[Letter to a Friend]
+    D --> D1[The Kindness Chain]
+    D --> D2[The Little Bird's Adventure]
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:24px;" class="highlight-box">
+            <p>💡 <strong>Remember:</strong> Every piece of writing tells the reader something. Think about <em>who</em> you are writing for (your audience) and <em>what</em> you want them to learn or feel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPES OF WRITING -->
+    <section id="types">
+      <div class="section-strip strip-sky">📝 Types of Writing in This Chapter</div>
+      <div class="content-section">
+        <div class="container">
+          <div class="grid-3">
+            <div class="comp-type-card bg-coral">
+              <div class="tag">Type 1</div>
+              <h3>🐠 Descriptive Writing</h3>
+              <p>You describe a person, place, animal or thing using vivid details. You tell the reader what it looks like, how it moves, and why it is special.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: Writing about your favourite sea creature.</em></p>
+            </div>
+            <div class="comp-type-card bg-sky">
+              <div class="tag">Type 2</div>
+              <h3>✉️ Letter Writing</h3>
+              <p>You write a letter to a friend or family member. A friendly letter has a special format: address, date, greeting, body, closing, and signature.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: Writing about a day at the seaside.</em></p>
+            </div>
+            <div class="comp-type-card bg-green">
+              <div class="tag">Type 3</div>
+              <h3>📚 Creative Story</h3>
+              <p>You create an imaginary story with characters, a setting, a problem and a solution. Stories have a beginning, a middle and an end.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: The Kindness Chain story.</em></p>
+            </div>
+            <div class="comp-type-card bg-purple">
+              <div class="tag">Type 4</div>
+              <h3>💭 Reflective Writing</h3>
+              <p>You think deeply about a topic — a festival, a person, or an experience — and share what it means to you personally.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: Reflecting on festivals in Pakistan.</em></p>
+            </div>
+            <div class="comp-type-card bg-sun">
+              <div class="tag">Type 5</div>
+              <h3>🌟 Informative Writing</h3>
+              <p>You share facts and useful information about a topic clearly and in an organised way so the reader learns something new.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: Writing tips on how to stay healthy.</em></p>
+            </div>
+            <div class="comp-type-card bg-pink">
+              <div class="tag">Type 6</div>
+              <h3>🦸 Character Writing</h3>
+              <p>You write about a real or imaginary person — what they do, what they look like, and why they are important or inspiring to you.</p>
+              <p style="margin-top:10px;font-size:15px;opacity:0.85;"><em>Example: Writing about a community helper.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEA CREATURES -->
+    <section id="sea-creatures">
+      <div class="section-strip strip-sky">🐠 Topic 23.1 – My Favourite Sea Creature</div>
+      <div class="content-section" style="background:#f0fbff;">
+        <div class="container">
+          <div class="grid-2">
+            <div class="card">
+              <h3>🌊 What to Write About</h3>
+              <p>Choose a sea creature you love — a dolphin, an octopus, a clownfish, a sea turtle, or a whale!</p>
+              <br>
+              <p>Think about these questions as you write:</p>
+              <ul style="margin-top:10px;">
+                <li>What does it look like? (colour, size, shape)</li>
+                <li>Where does it live in the ocean?</li>
+                <li>What does it eat?</li>
+                <li>What is interesting or special about it?</li>
+                <li>Why is it your favourite?</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>🐬 Sample Sea Creatures</h3>
+              <div class="vocab-grid" style="grid-template-columns:1fr 1fr;">
+                <div class="vocab-card" style="border-top-color:#48DBFB; cursor:default;">
+                  <div class="vocab-word">🐬 Dolphin</div>
+                  <div class="vocab-def">Playful, intelligent mammal that leaps out of water.</div>
+                </div>
+                <div class="vocab-card" style="border-top-color:#6BCB77; cursor:default;">
+                  <div class="vocab-word">🐢 Sea Turtle</div>
+                  <div class="vocab-def">Ancient reptile that swims slowly and lives for 100+ years.</div>
+                </div>
+                <div class="vocab-card" style="border-top-color:#FF6B6B; cursor:default;">
+                  <div class="vocab-word">🐙 Octopus</div>
+                  <div class="vocab-def">Eight-armed creature that can change colour to hide!</div>
+                </div>
+                <div class="vocab-card" style="border-top-color:#A29BFE; cursor:default;">
+                  <div class="vocab-word">🐠 Clownfish</div>
+                  <div class="vocab-def">Bright orange fish that lives among sea anemones.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:28px;" class="card">
+            <h3>✨ Example Paragraph: My Favourite Sea Creature</h3>
+            <div class="highlight-box">
+              <p>My favourite sea creature is the <strong>dolphin</strong>. Dolphins are beautiful, silver-grey animals that live in warm oceans all around the world. They are very intelligent — they can even communicate with each other using special clicks and whistles! Dolphins love to swim in groups called <em>pods</em> and they often leap gracefully out of the water. I admire dolphins because they are friendly, playful and always seem to be happy. One day, I hope to see a real dolphin swimming in the sea!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LETTER WRITING -->
+    <section id="letter-writing">
+      <div class="section-strip strip-sun">✉️ Topic 23.2 – Letter Writing: A Day at the Seaside</div>
+      <div class="content-section">
+        <div class="container">
+          <p style="font-size:18px; margin-bottom:24px; line-height:1.7;">A <strong>friendly letter</strong> is a letter you write to someone you know — like a friend or a family member. It has a special format that you must follow.</p>
+
+          <div class="grid-2" style="align-items:start; margin-bottom:28px;">
+            <div>
+              <h3 style="font-family:'Poppins',sans-serif; font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:700; margin-bottom:16px;">📋 Parts of a Friendly Letter</h3>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="tip-card sky-border">
+                  <div class="tip-num">Part 1</div>
+                  <h4>📍 Address & Date</h4>
+                  <p>Write your address at the top right, then the date below it. Example: <em>12 Garden Street, Lahore. 10th June 2024</em></p>
+                </div>
+                <div class="tip-card green-border">
+                  <div class="tip-num">Part 2</div>
+                  <h4>👋 Greeting (Salutation)</h4>
+                  <p>Begin with "Dear [Name]," — always use a comma after the name.</p>
+                </div>
+                <div class="tip-card purple-border">
+                  <div class="tip-num">Part 3</div>
+                  <h4>📝 Body</h4>
+                  <p>The main part of the letter — share your news, experiences, and what you want to say.</p>
+                </div>
+                <div class="tip-card sun-border">
+                  <div class="tip-num">Part 4</div>
+                  <h4>💌 Closing & Signature</h4>
+                  <p>End with "Your friend," or "With love," then sign your name below.</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-family:'Poppins',sans-serif; font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:700; margin-bottom:16px;">📄 Sample Letter</h3>
+              <div class="letter-format">
+                <div class="line"><span class="label">Address:</span> 5 Blue Wave Lane, Karachi.</div>
+                <div class="line"><span class="label">Date:</span> 15th July 2024</div>
+                <br>
+                <div class="line"><span class="label">Greeting:</span> Dear Fatima,</div>
+                <br>
+                <div class="line">I hope you are well! I am writing to tell you about the most wonderful day I had at the seaside last weekend.</div>
+                <br>
+                <div class="line">We arrived early in the morning when the sky was still a soft pink colour. The beach was covered in golden sand and tiny, shiny shells. I collected lots of shells and built a big sandcastle with my little brother. The waves kept crashing into it and we laughed every time!</div>
+                <br>
+                <div class="line">We also saw colourful fish swimming near the rocks. Mum bought us coconut ice cream and we sat watching the sunset. It was truly magical!</div>
+                <br>
+                <div class="line">I really wish you could have been there. Would you like to come with us next time? We could collect even more shells and play in the waves together. Please say yes!</div>
+                <br>
+                <div class="line"><span class="label">Closing:</span> Your loving friend,</div>
+                <div class="line"><span class="label">Signature:</span> Sara 💙</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAYING HEALTHY -->
+    <section id="healthy-tips">
+      <div class="section-strip strip-green">💚 Topic 23.3 – Staying Healthy</div>
+      <div class="content-section" style="background:#f0fff8;">
+        <div class="container">
+          <p style="font-size:18px; margin-bottom:24px; line-height:1.7;">In this composition, you write a letter to a friend sharing fun, useful tips on how to stay healthy. Include activities, foods, and hygiene habits.</p>
+          <div class="grid-3">
+            <div class="intro-card" style="border-top:4px solid #00b894;">
+              <div class="icon">🏃</div>
+              <h3>Play Outside</h3>
+              <p>Running, cycling, swimming, and playing games keep your body strong and your mind happy.</p>
+            </div>
+            <div class="intro-card" style="border-top:4px solid var(--sunshine);">
+              <div class="icon">🥗</div>
+              <h3>Eat Healthy Foods</h3>
+              <p>Fruits, vegetables, whole grains, and dairy give your body the energy and nutrients it needs.</p>
+            </div>
+            <div class="intro-card" style="border-top:4px solid var(--coral);">
+              <div class="icon">🧼</div>
+              <h3>Wash Your Hands</h3>
+              <p>Washing hands before eating and after using the toilet keeps germs away and stops you from getting sick.</p>
+            </div>
+            <div class="intro-card" style="border-top:4px solid var(--sky);">
+              <div class="icon">😴</div>
+              <h3>Sleep Well</h3>
+              <p>Children need 9–11 hours of sleep every night. Good sleep helps your brain and body grow.</p>
+            </div>
+            <div class="intro-card" style="border-top:4px solid var(--purple);">
+              <div class="icon">💧</div>
+              <h3>Drink Water</h3>
+              <p>Drink at least 6–8 glasses of water every day to keep your body hydrated and energised.</p>
+            </div>
+            <div class="intro-card" style="border-top:4px solid #fd79a8;">
+              <div class="icon">😊</div>
+              <h3>Stay Happy</h3>
+              <p>Spend time with family and friends, laugh, read books, and do things you enjoy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY HELPERS -->
+    <section id="community">
+      <div class="section-strip strip-purple">🦸 Topic 23.4 – Community Helpers</div>
+      <div class="content-section">
+        <div class="container">
+          <p style="font-size:18px; margin-bottom:24px; line-height:1.7;">Write about your <strong>favourite community helper</strong> — someone who works hard to make your community safe, healthy, and happy. Describe what they do, why you admire them, and give an example of them helping someone.</p>
+          <div class="grid-2" style="margin-bottom:28px; align-items:start;">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div class="tip-card">
+                <div class="tip-num">Helper 1</div>
+                <h4>👮 Police Officer</h4>
+                <p>Keeps people safe, helps in emergencies, directs traffic, and maintains law and order in the community.</p>
+              </div>
+              <div class="tip-card sky-border">
+                <div class="tip-num">Helper 2</div>
+                <h4>🚒 Firefighter</h4>
+                <p>Puts out dangerous fires, rescues people trapped in buildings, and teaches fire safety.</p>
+              </div>
+              <div class="tip-card green-border">
+                <div class="tip-num">Helper 3</div>
+                <h4>👨‍⚕️ Doctor / Nurse</h4>
+                <p>Treats sick and injured people, gives medicines, and checks children's health at school.</p>
+              </div>
+              <div class="tip-card purple-border">
+                <div class="tip-num">Helper 4</div>
+                <h4>👩‍🏫 Teacher</h4>
+                <p>Educates children, helps them learn new skills, and prepares them for the future.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>🌟 How to Write About a Community Helper</h3>
+              <div class="mermaid-wrap" style="padding:16px;">
+                <div class="mermaid">
+graph TD
+    A[🌟 Your Essay] --> B[Who are they?]
+    B --> C[What do they do?]
+    C --> D[Why do you admire them?]
+    D --> E[Tell a story or example]
+    E --> F[What can you learn from them?]
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>✨ Example: My Favourite Community Helper — The Doctor</h3>
+            <div class="highlight-box">
+              <p>My favourite community helper is the <strong>doctor</strong>. Doctors work very hard every day to keep people healthy and safe. They examine patients, give medicines, and help people recover from illnesses and injuries.</p>
+              <p style="margin-top:12px;">I admire doctors because they are always kind, calm and caring — even in very difficult situations. Once, when my little sister was very ill with a high fever, our family doctor came to see her late at night. She was so gentle and patient. She examined my sister carefully, gave her the right medicine, and told us what to do. By morning, my sister was already feeling better!</p>
+              <p style="margin-top:12px;">I think doctors are true heroes. They save lives every single day. When I grow up, I would love to become a doctor and help people in my community, just like she helped my sister.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FESTIVALS -->
+    <section id="festivals">
+      <div class="section-strip strip-pink" style="background:linear-gradient(135deg,#fd79a8,#e84393);">🌙 Topics 23.5 & 23.6 – Festivals in Pakistan</div>
+      <div class="content-section" style="background:#fff5f9;">
+        <div class="container">
+          <div class="grid-2" style="margin-bottom:28px; align-items:start;">
+            <div class="comp-type-card bg-coral">
+              <div class="tag">Topic 23.5</div>
+              <h3>🌙 Eid-ul-Fitr & Eid-ul-Adha</h3>
+              <p>Describe how your family prepares for Eid. Think about:</p>
+              <ul style="margin-top:12px; padding-left:20px;">
+                <li>🛍️ Shopping for new clothes</li>
+                <li>🕌 Going to mosque for Eid prayers</li>
+                <li>🍬 Making or buying special sweets (mithai, sheer khurma)</li>
+                <li>👨‍👩‍👧‍👦 Visiting relatives and friends</li>
+                <li>🎁 Giving and receiving Eidi (gifts/money)</li>
+                <li>🐑 On Eid-ul-Adha: the Qurbani (sacrifice)</li>
+                <li>🥩 Distributing meat to neighbours and the poor</li>
+              </ul>
+            </div>
+            <div class="comp-type-card bg-purple">
+              <div class="tag">Topic 23.6</div>
+              <h3>🎉 Festivals Bring Joy & Unity</h3>
+              <p>Reflect on what Pakistani festivals mean to your community:</p>
+              <ul style="margin-top:12px; padding-left:20px;">
+                <li>🤝 People come together and forget differences</li>
+                <li>🏡 Neighbours share food and greetings</li>
+                <li>👨‍👩‍👧 Families reunite from far away</li>
+                <li>🎊 Streets and homes are decorated</li>
+                <li>🥁 Traditional music and cultural celebrations</li>
+                <li>💖 Acts of generosity and giving to the poor</li>
+                <li>🌟 A sense of shared identity and pride</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ACCORDION -->
+          <h3 style="font-family:'Poppins',sans-serif; font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:700; margin-bottom:16px;">📚 Key Festivals in Pakistan</h3>
+          <div id="festival-accordion">
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>🌙 Eid-ul-Fitr — The Festival of Breaking Fast</span>
+                <span class="accordion-arrow">▼</span>
+              </div>
+              <div class="accordion-body">
+                <p>Eid-ul-Fitr is celebrated at the end of Ramadan, the holy month of fasting. Families wake up early, dress in new clothes, and go to the mosque for special Eid prayers. Afterwards, everyone visits relatives and friends, exchanging sweets and gifts. Children receive <em>Eidi</em> — money given as a gift. Special foods like <em>sheer khurma</em> (sweet vermicelli pudding) and <em>sewaiyan</em> are prepared. The whole community gathers to celebrate with joy and gratitude.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>🐑 Eid-ul-Adha — The Festival of Sacrifice</span>
+                <span class="accordion-arrow">▼</span>
+              </div>
+              <div class="accordion-body">
+                <p>Eid-ul-Adha commemorates the willingness of Prophet Ibrahim (AS) to sacrifice his son as an act of obedience to Allah. Families who can afford it perform <em>Qurbani</em> — the sacrifice of an animal such as a goat, cow, or camel. The meat is divided into three parts: one for family, one for relatives and friends, and one for those in need. This act teaches generosity and sharing. Eid prayers are offered in congregation and the whole community comes together to celebrate.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>🎊 Independence Day — 14th August</span>
+                <span class="accordion-arrow">▼</span>
+              </div>
+              <div class="accordion-body">
+                <p>Pakistan's Independence Day is celebrated on 14th August every year. On this day in 1947, Pakistan became an independent country. Schools and public places are decorated with green and white flags. Children wear traditional clothes and paint their faces with the national flag's colours. Parades, cultural shows, and fireworks take place all over the country. It is a day of national pride and unity.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATIVE STORIES -->
+    <section id="stories">
+      <div class="section-strip strip-sky">📚 Topics 23.7 & 23.8 – Creative Story Writing</div>
+      <div class="content-section">
+        <div class="container">
+          <div class="grid-2" style="margin-bottom:28px; align-items:start;">
+            <div class="card">
+              <div class="badge badge-coral" style="margin-bottom:12px;">Topic 23.7</div>
+              <h3>🤝 The Kindness Chain</h3>
+              <p>Hassan's act of generosity in <em>"The Generous Boy and the Hungry Stranger"</em> inspires his whole village. Imagine how one small act leads to a chain reaction of kindness.</p>
+              <br>
+              <p><strong>Story ideas to include:</strong></p>
+              <ul style="margin-top:10px;">
+                <li>Hassan shares his food with a hungry stranger</li>
+                <li>The baker sees this and gives free bread to poor children</li>
+                <li>A farmer plants extra crops to donate to neighbours</li>
+                <li>Children help an old woman carry her shopping</li>
+                <li>The whole village becomes a happier, kinder place</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="badge badge-sky" style="margin-bottom:12px;">Topic 23.8</div>
+              <h3>🐦 The Little Bird's Adventure</h3>
+              <p>A little bird is released back into the garden by the kind gardener. Now it must explore the world, meet new friends, and help others — just as it was helped.</p>
+              <br>
+              <p><strong>Story ideas to include:</strong></p>
+              <ul style="margin-top:10px;">
+                <li>The bird flies across gardens and forests</li>
+                <li>It meets a lonely rabbit and sings to cheer it up</li>
+                <li>It warns animals about a coming storm</li>
+                <li>It befriends a wise old owl who teaches it about kindness</li>
+                <li>The bird learns that helping others makes you happy too</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- STORY STRUCTURE -->
+          <div class="card">
+            <h3>🏗️ How to Structure a Story</h3>
+            <div class="grid-3" style="margin-top:16px;">
+              <div style="background:#fff9e6; border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:40px; margin-bottom:10px;">🌅</div>
+                <h4 style="font-family:'Poppins',sans-serif; font-size:clamp(1.1rem,2vw,1.3rem); font-weight:700; margin-bottom:8px; color:var(--coral);">Beginning</h4>
+                <p style="font-size:17px; color:#636e72;">Introduce your character, where they are, and what life is like. Set the scene!</p>
+              </div>
+              <div style="background:#e8f8ff; border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:40px; margin-bottom:10px;">⚡</div>
+                <h4 style="font-family:'Poppins',sans-serif; font-size:clamp(1.1rem,2vw,1.3rem); font-weight:700; margin-bottom:8px; color:#0984e3;">Middle</h4>
+                <p style="font-size:17px; color:#636e72;">Something happens — a problem, a challenge, an adventure. This is the exciting part!</p>
+              </div>
+              <div style="background:#e0fff4; border-radius:12px; padding:20px; text-align:center;">
+                <div style="font-size:40px; margin-bottom:10px;">🌈</div>
+                <h4 style="font-family:'Poppins',sans-serif; font-size:clamp(1.1rem,2vw,1.3rem); font-weight:700; margin-bottom:8px; color:#00b894;">End</h4>
+                <p style="font-size:17px; color:#636e72;">The problem is solved. Your character learns something. The story ends happily.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WRITING TIPS -->
+    <section id="tips">
+      <div class="section-strip strip-green">💡 Top Writing Tips</div>
+      <div class="content-section parallax-section" style="background:#f0fff8;">
+        <div class="parallax-bg" style="background: radial-gradient(circle, #6BCB77 0%, transparent 70%);"></div>
+        <div class="container">
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div class="tip-card">
+              <div class="tip-num">Tip 1</div>
+              <h4>🧠 Plan Before You Write</h4>
+              <p>Before you start writing, spend a few minutes thinking about your topic. Write down a few key words or ideas. This makes your writing better organised and easier to read.</p>
+            </div>
+            <div class="tip-card sky-border">
+              <div class="tip-num">Tip 2</div>
+              <h4>🎨 Use Describing Words (Adjectives)</h4>
+              <p>Instead of "The fish was big," write "The enormous, silver fish glittered in the deep blue water." Adjectives make your writing come alive! Use colours, sizes, textures and feelings.</p>
+            </div>
+            <div class="tip-card green-border">
+              <div class="tip-num">Tip 3</div>
+              <h4>📐 Write in Paragraphs</h4>
+              <p>Each paragraph should have one main idea. Start a new paragraph when you talk about something different. Use a topic sentence at the beginning of each paragraph.</p>
+            </div>
+            <div class="tip-card purple-border">
+              <div class="tip-num">Tip 4</div>
+              <h4>✅ Check Your Work</h4>
+              <p>Always re-read your writing when you finish. Check for spelling mistakes, missing capital letters, and incorrect punctuation. Reading your work aloud helps you find errors!</p>
+            </div>
+            <div class="tip-card sun-border">
+              <div class="tip-num">Tip 5</div>
+              <h4>💬 Use Connectives</h4>
+              <p>Connect your sentences and ideas using words like: <strong>because, however, therefore, firstly, then, finally, in addition, as a result</strong>. These make your writing flow smoothly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUIDED PRACTICE -->
+    <section id="practice">
+      <div class="section-strip strip-sky">✍️ Guided Practice</div>
+      <div class="content-section">
+        <div class="container">
+          <div style="display:flex; flex-direction:column; gap:28px;">
+
+            <!-- Practice 1 -->
+            <div class="practice-card">
+              <div class="badge badge-coral" style="margin-bottom:12px;">Practice 23.1</div>
+              <h3>🐠 Describe a Sea Creature</h3>
+              <div class="prompt">Think of your favourite sea creature. Write 5–7 sentences describing it. Include: its appearance, where it lives, what it eats, and why you love it!</div>
+              <textarea class="practice-input" id="practice1" placeholder="My favourite sea creature is..."></textarea>
+              <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+                <button class="btn" onclick="checkPractice('practice1', 'feedback1', 10)">✅ Check My Writing</button>
+                <button class="btn btn-sky" onclick="clearPractice('practice1','feedback1')">🗑️ Clear</button>
+              </div>
+              <div class="feedback-msg" id="feedback1"></div>
+            </div>
+
+            <!-- Practice 2: Story Builder -->
+            <div class="practice-card">
+              <div class="badge badge-sky" style="margin-bottom:12px;">Practice 23.7</div>
+              <h3>🤝 Story Builder: The Kindness Chain</h3>
+              <p>Build your kindness chain story by choosing one option from each column. Then write the story in the box below!</p>
+              <div class="story-parts" id="story-builder">
+                <div class="story-part" data-col="character" data-val="Hassan, a generous boy," onclick="selectStoryPart(this)">
+                  <div class="part-icon">👦</div>
+                  <h4>Character A</h4>
+                  <p>Hassan, a generous boy</p>
+                </div>
+                <div class="story-part" data-col="character" data-val="Amina, a kind baker," onclick="selectStoryPart(this)">
+                  <div class="part-icon">👩‍🍳</div>
+                  <h4>Character B</h4>
+                  <p>Amina, a kind baker</p>
+                </div>
+                <div class="story-part" data-col="character" data-val="Old Tariq, a wise farmer," onclick="selectStoryPart(this)">
+                  <div class="part-icon">👴</div>
+                  <h4>Character C</h4>
+                  <p>Old Tariq, a wise farmer</p>
+                </div>
+                <div class="story-part" data-col="action" data-val="shared his lunch with a hungry stranger" onclick="selectStoryPart(this)">
+                  <div class="part-icon">🍱</div>
+                  <h4>Action A</h4>
+                  <p>shared lunch with a hungry stranger</p>
+                </div>
+                <div class="story-part" data-col="action" data-val="gave free bread to poor children in the village" onclick="selectStoryPart(this)">
+                  <div class="part-icon">🍞</div>
+                  <h4>Action B</h4>
+                  <p>gave free bread to poor children</p>
+                </div>
+                <div class="story-part" data-col="action" data-val="planted extra crops to share with hungry neighbours" onclick="selectStoryPart(this)">
+                  <div class="part-icon">🌾</div>
+                  <h4>Action C</h4>
+                  <p>planted crops to share with neighbours</p>
+                </div>
+                <div class="story-part" data-col="result" data-val="This inspired others to be kind too, and the village became a much happier place." onclick="selectStoryPart(this)">
+                  <div class="part-icon">🌟</div>
+                  <h4>Result A</h4>
+                  <p>Inspired others; village became happier</p>
+                </div>
+                <div class="story-part" data-col="result" data-val="Everyone learned that one small act of kindness can change the world." onclick="selectStoryPart(this)">
+                  <div class="part-icon">💫</div>
+                  <h4>Result B</h4>
+                  <p>Learned: one act changes the world</p>
+                </div>
+                <div class="story-part" data-col="result" data-val="The whole community worked together, and nobody was ever hungry again." onclick="selectStoryPart(this)">
+                  <div class="part-icon">🤝</div>
+                  <h4>Result C</h4>
+                  <p>Community worked together happily</p>
+                </div>
+              </div>
+              <button class="btn btn-green" onclick="generateStory()" style="margin-bottom:16px;">✨ Generate My Story</button>
+              <div id="story-output">Select one card from each row above, then click "Generate My Story"! 🌟</div>
+            </div>
+
+            <!-- Practice 3: Letter opener -->
+            <div class="practice-card">
+              <div class="badge badge-green" style="margin-bottom:12px;">Practice 23.2</div>
+              <h3>✉️ Write Your Letter Opening</h3>
+              <div class="prompt">Write the opening paragraph of a letter to your friend about a day at the seaside. Use the letter format you learned — address, date, greeting, and first paragraph!</div>
+              <textarea class="practice-input" id="practice3" placeholder="[Your Address]&#10;[Date]&#10;&#10;Dear [Friend's Name],&#10;&#10;I am writing to tell you about..."></textarea>
+              <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+                <button class="btn" onclick="checkPractice('practice3', 'feedback3', 50)">✅ Check My Letter</button>
+                <button class="btn btn-sky" onclick="clearPractice('practice3','feedback3')">🗑️ Clear</button>
+              </div>
+              <div class="feedback-msg" id="feedback3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section id="activity">
+      <div class="section-strip strip-purple">🎮 Interactive Activities</div>
+      <div class="content-section" style="background:#f8f0ff;">
+        <div class="container">
+
+          <!-- DRAG AND DROP -->
+          <div class="card" style="margin-bottom:28px;">
+            <h3>🎯 Activity 1: Sort the Writing Tips</h3>
+            <p style="margin-bottom:16px; font-size:18px;">Drag each writing tip into the correct category below!</p>
+            <div class="drag-container">
+              <div>
+                <p style="font-size:17px; font-weight:600; margin-bottom:10px; color:#636e72;">📦 DRAG FROM HERE:</p>
+                <div class="drag-words" id="drag-bank">
+                  <div class="drag-word" draggable="true" data-id="d1" data-cat="plan">Plan your ideas first</div>
+                  <div class="drag-word" draggable="true" data-id="d2" data-cat="structure">Write in paragraphs</div>
+                  <div class="drag-word" draggable="true" data-id="d3" data-cat="style">Use vivid adjectives</div>
+                  <div class="drag-word" draggable="true" data-id="d4" data-cat="check">Re-read your work</div>
+                  <div class="drag-word" draggable="true" data-id="d5" data-cat="plan">Write key words down</div>
+                  <div class="drag-word" draggable="true" data-id="d6" data-cat="structure">Use topic sentences</div>
+                  <div class="drag-word" draggable="true" data-id="d7" data-cat="style">Use connective words</div>
+                  <div class="drag-word" draggable="true" data-id="d8" data-cat="check">Check your spelling</div>
+                </div>
+              </div>
+              <div class="drop-zones">
+                <div class="drop-zone" data-cat="plan" ondragover="event.preventDefault(); this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event, this)">
+                  <h4>🧠 Planning</h4>
+                  <div class="dropped-items" id="drop-plan"></div>
+                </div>
+                <div class="drop-zone" data-cat="structure" ondragover="event.preventDefault(); this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event, this)">
+                  <h4>📐 Structure</h4>
+                  <div class="dropped-items" id="drop-structure"></div>
+                </div>
+                <div class="drop-zone" data-cat="style" ondragover="event.preventDefault(); this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event, this)">
+                  <h4>🎨 Style & Language</h4>
+                  <div class="dropped-items" id="drop-style"></div>
+                </div>
+                <div class="drop-zone" data-cat="check" ondragover="event.preventDefault(); this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event, this)">
+                  <h4>✅ Checking</h4>
+                  <div class="dropped-items" id="drop-check"></div>
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <button class="btn" onclick="checkDragDrop()">🔍 Check Answers</button>
+                <button class="btn btn-sky" onclick="resetDragDrop()">🔄 Reset</button>
+              </div>
+              <div class="feedback-msg" id="drag-feedback"></div>
+            </div>
+          </div>
+
+          <!-- TIMELINE -->
+          <div class="card">
+            <h3>📅 Activity 2: Order the Letter Parts</h3>
+            <p style="margin-bottom:16px; font-size:18px;">These parts of a friendly letter are mixed up! Drag them into the correct order (1 = first, 5 = last).</p>
+            <div class="timeline-activity" id="timeline-list">
+              <div class="timeline-item" draggable="true" data-order="3" data-original="3">
+                <span class="timeline-handle">⠿</span>
+                <div class="timeline-num" id="tl-num-0">?</div>
+                <span>📝 <strong>Body</strong> — the main paragraphs of your letter</span>
+              </div>
+              <div class="timeline-item" draggable="true" data-order="1" data-original="1">
+                <span class="timeline-handle">⠿</span>
+                <div class="timeline-num" id="tl-num-1">?</div>
+                <span>📍 <strong>Address & Date</strong> — your address at the top right</span>
+              </div>
+              <div class="timeline-item" draggable="true" data-order="5" data-original="5">
+                <span class="timeline-handle">⠿</span>
+                <div class="timeline-num" id="tl-num-2">?</div>
+                <span>✍️ <strong>Signature</strong> — your name at the very end</span>
+              </div>
+              <div class="timeline-item" draggable="true" data-order="2" data-original="2">
+                <span class="timeline-handle">⠿</span>
+                <div class="timeline-num" id="tl-num-3">?</div>
+                <span>👋 <strong>Greeting</strong> — "Dear [Name],"</span>
+              </div>
+              <div class="timeline-item" draggable="true" data-order="4" data-original="4">
+                <span class="timeline-handle">⠿</span>
+                <div class="timeline-num" id="tl-num-4">?</div>
+                <span>💌 <strong>Closing</strong> — "Your friend," or "With love,"</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
+              <button class="btn" onclick="checkTimeline()">✅ Check Order</button>
+              <button class="btn btn-sky" onclick="resetTimeline()">🔄 Reset</button>
+            </div>
+            <div id="timeline-result"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOCABULARY -->
+    <section id="vocabulary">
+      <div class="section-strip strip-teal" style="background:linear-gradient(135deg,#00cec9,#0984e3);">📚 Key Vocabulary</div>
+      <div class="content-section">
+        <div class="container">
+          <p style="font-size:18px; margin-bottom:24px;">These are important words for your composition writing. Click on any card to see an example sentence!</p>
+          <div class="vocab-grid">
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">✏️ Composition</div>
+              <div class="vocab-def">A piece of writing where you express ideas in your own words.</div>
+              <div class="vocab-example" style="display:none;">The teacher asked us to write a composition about our summer holidays.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">📖 Descriptive</div>
+              <div class="vocab-def">Writing that uses details to paint a picture with words.</div>
+              <div class="vocab-example" style="display:none;">Her descriptive writing made me feel like I was really at the beach!</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">📝 Paragraph</div>
+              <div class="vocab-def">A group of sentences about one main idea, starting on a new line.</div>
+              <div class="vocab-example" style="display:none;">Each paragraph in your essay should have one clear main idea.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🎨 Adjective</div>
+              <div class="vocab-def">A describing word that tells you more about a noun.</div>
+              <div class="vocab-example" style="display:none;">The enormous, silver fish swam in the crystal-clear water.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🔗 Connective</div>
+              <div class="vocab-def">A word that joins sentences or ideas together.</div>
+              <div class="vocab-example" style="display:none;">I love swimming because the water is refreshing and cool.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">✉️ Salutation</div>
+              <div class="vocab-def">The greeting at the beginning of a letter, e.g. "Dear Ali,"</div>
+              <div class="vocab-example" style="display:none;">Always begin your friendly letter with a warm salutation.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🏗️ Structure</div>
+              <div class="vocab-def">The organised way a piece of writing is arranged.</div>
+              <div class="vocab-example" style="display:none;">A good story has a clear structure: beginning, middle and end.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🌟 Generosity</div>
+              <div class="vocab-def">The quality of being kind, giving, and willing to share.</div>
+              <div class="vocab-example" style="display:none;">Hassan's generosity inspired everyone in his village to help others.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🤝 Community</div>
+              <div class="vocab-def">A group of people who live and work together in the same place.</div>
+              <div class="vocab-example" style="display:none;">The doctor plays an important role in keeping our community healthy.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🌙 Commemorate</div>
+              <div class="vocab-def">To honour and remember an important event or person.</div>
+              <div class="vocab-example" style="display:none;">Eid-ul-Adha commemorates the faith of Prophet Ibrahim (AS).</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">💧 Hydrated</div>
+              <div class="vocab-def">Having enough water in your body to stay healthy.</div>
+              <div class="vocab-example" style="display:none;">Drinking 8 glasses of water a day helps you stay hydrated.</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocabExample(this)">
+              <div class="vocab-word">🐬 Intelligent</div>
+              <div class="vocab-def">Very clever and able to learn things quickly.</div>
+              <div class="vocab-example" style="display:none;">Dolphins are intelligent animals that can solve puzzles.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz">
+      <div class="section-strip strip-coral">🧠 Quiz Time!</div>
+      <div class="content-section" style="background:#fff5f5;">
+        <div class="container">
+          <p style="font-size:18px; margin-bottom:24px;">Test your knowledge of Chapter 23 – Composition! Answer all 8 questions to get your score.</p>
+          <div class="quiz-card" id="quiz-container">
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
+            </div>
+            <div id="question-area"></div>
+          </div>
+          <div id="score-card">
+            <h2>🎉 Quiz Complete!</h2>
+            <div class="score-circle-container">
+              <svg class="score-circle-svg" width="160" height="160" viewBox="0 0 160 160">
+                <circle class="score-circle-bg" cx="80" cy="80" r="70"/>
+                <circle class="score-circle-fill" id="score-circle" cx="80" cy="80" r="70"/>
+              </svg>
+              <div class="score-number" id="score-display">0/8</div>
+            </div>
+            <div class="score-message" id="score-msg"></div>
+            <button class="btn" onclick="resetQuiz()">🔄 Try Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="#intro">🏠</a>
+  <a href="#concept">📖</a>
+  <a href="#types">📝</a>
+  <a href="#sea-creatures">🐠</a>
+  <a href="#letter-writing">✉️</a>
+  <a href="#healthy-tips">💚</a>
+  <a href="#community">🦸</a>
+  <a href="#festivals">🌙</a>
+  <a href="#tips">💡</a>
+  <a href="#practice">✍️</a>
+  <a href="#activity">🎮</a>
+  <a href="#vocabulary">📚</a>
+  <a href="#quiz">🧠</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN DISMISSAL — GUARANTEED FALLBACK FIRST
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // Animate curtain fill
+  const fill = document.getElementById('curtain-fill');
+  if (fill) { setTimeout(() => { fill.style.width = '100%'; }, 100); }
+
+  // Dismiss curtain after animation
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) {
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(c, { opacity: 0, duration: 0.5, onComplete: () => { c.style.display = 'none'; } });
+        } else {
+          c.style.opacity = '0';
+          setTimeout(() => { c.style.display = 'none'; }, 500);
+        }
+      } catch(e) {
+        c.style.display = 'none';
+      }
+    }
+  }, 2200);
+
+  // ─── LENIS SMOOTH SCROLL ───
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) {}
+
+  // ─── MERMAID ───
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) {}
+
+  // ─── GSAP ANIMATIONS ───
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero path animation
+      const paths = document.querySelectorAll('.hero-path');
+      paths.forEach((path, i) => {
+        gsap.to(path, { strokeDashoffset: 0, duration: 2.5, delay: 0.3 + i * 0.5, ease: 'power2.inOut' });
+      });
+
+      // Cards fade in on scroll
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.card, .intro-card, .comp-type-card, .tip-card, .vocab-card').forEach(el => {
+          gsap.fromTo(el,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1, y: 0, duration: 0.6, ease: 'power2.out',
+              scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+            }
+          );
+        });
+
+        // Parallax backgrounds
+        gsap.utils.toArray('.parallax-bg').forEach(bg => {
+          gsap.fromTo(bg,
+            { y: -30 },
+            {
+              y: 30,
+              scrollTrigger: {
+                trigger: bg.parentElement,
+                start: 'top bottom', end: 'bottom top',
+                scrub: true
+              }
+            }
+          );
+        });
+
+        // Stats counter
+        document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+          const target = parseInt(el.getAttribute('data-count'));
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 90%',
+            once: true,
+            onEnter: () => {
+              try {
+                gsap.to({ val: 0 }, {
+                  val: target, duration: 1.5, ease: 'power2.out',
+                  onUpdate: function() { el.textContent = Math.round(this.targets()[0].val); },
+                  onComplete: () => { el.textContent = target; }
+                });
+              } catch(e) { el.textContent = target; }
+            }
+          });
+        });
+      } else {
+        // No ScrollTrigger: just set stats directly
+        document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+          el.textContent = el.getAttribute('data-count');
+        });
+      }
+    } else {
+      document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+        el.textContent = el.getAttribute('data-count');
+      });
+    }
+  } catch(e) {
+    document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+      el.textContent = el.getAttribute('data-count');
+    });
+  }
+
+  // ─── INTERSECTION OBSERVER FOR SIDEBAR ───
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    const breadcrumbLinks = document.querySelectorAll('.breadcrumb a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          sidebarLinks.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+          breadcrumbLinks.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+          document.querySelectorAll('.mobile-nav a').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '-80px 0px -40% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  } catch(e) {}
+
+  // ─── DRAG AND DROP ───
+  let draggedItem = null;
+  let draggedId = null;
+
+  function initDragDrop() {
+    document.querySelectorAll('.drag-word').forEach(el => {
+      el.addEventListener('dragstart', (e) => {
+        draggedItem = el;
+        draggedId = el.getAttribute('data-id');
+        setTimeout(() => el.classList.add('dragging'), 0);
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+      });
+    });
+  }
+  initDragDrop();
+
+  window.handleDrop = function(e, zone) {
+    e.preventDefault();
+    zone.classList.remove('over');
+    if (!draggedItem) return;
+    const cat = zone.getAttribute('data-cat');
+    const itemCat = draggedItem.getAttribute('data-cat');
+    const id = draggedId;
+
+    // Clone and place
+    const tag = document.createElement('div');
+    tag.className = 'dropped-tag';
+    tag.textContent = draggedItem.textContent;
+    tag.setAttribute('data-id', id);
+    tag.setAttribute('data-cat', itemCat);
+
+    const dropArea = zone.querySelector('.dropped-items');
+    dropArea.appendChild(tag);
+    draggedItem.style.display = 'none';
+  };
+
+  window.checkDragDrop = function() {
+    const zones = document.querySelectorAll('.drop-zone');
+    let allCorrect = true;
+    zones.forEach(zone => {
+      const cat = zone.getAttribute('data-cat');
+      const tags = zone.querySelectorAll('.dropped-tag');
+      tags.forEach(tag => {
+        if (tag.getAttribute('data-cat') !== cat) allCorrect = false;
+      });
+    });
+    const fb = document.getElementById('drag-feedback');
+    fb.className = 'feedback-msg show ' + (allCorrect ? 'success' : 'error');
+    fb.textContent = allCorrect
+      ? '🎉 Perfect! All writing tips are in the correct categories!'
+      : '❌ Some tips are in the wrong category. Try again! Remember: Planning = before you write, Structure = how you organise, Style = word choices, Checking = after you finish.';
+  };
+
+  window.resetDragDrop = function() {
+    const bank = document.getElementById('drag-bank');
+    document.querySelectorAll('.drag-word').forEach(el => el.style.display = '');
+    document.querySelectorAll('.dropped-items').forEach(area => area.innerHTML = '');
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('correct','wrong'));
+    const fb = document.getElementById('drag-feedback');
+    fb.className = 'feedback-msg';
+    fb.textContent = '';
+  };
+
+  // ─── TIMELINE DRAG ───
+  let dragSrcEl = null;
+
+  function initTimeline() {
+    const items = document.querySelectorAll('.timeline-item');
+    items.forEach(item => {
+      item.addEventListener('dragstart', function(e) {
+        dragSrcEl = this;
+        this.classList.add('dragging-tl');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', function() { this.classList.remove('dragging-tl'); });
+      item.addEventListener('dragover', function(e) {
+        e.preventDefault(); e.dataTransfer.dropEffect = 'move'; return false;
+      });
+      item.addEventListener('drop', function(e) {
+        e.stopPropagation();
+        if (dragSrcEl !== this) {
+          const list = document.getElementById('timeline-list');
+          const allItems = [...list.querySelectorAll('.timeline-item')];
+          const srcIdx = allItems.indexOf(dragSrcEl);
+          const dstIdx = allItems.indexOf(this);
+          if (srcIdx < dstIdx) {
+            list.insertBefore(dragSrcEl, this.nextSibling);
+          } else {
+            list.insertBefore(dragSrcEl, this);
+          }
+        }
+        return false;
+      });
+    });
+  }
+  initTimeline();
+
+  window.checkTimeline = function() {
+    const list = document.getElementById('timeline-list');
+    const items = [...list.querySelectorAll('.timeline-item')];
+    const orders = items.map(i => parseInt(i.getAttribute('data-order')));
+    const isOrdered = orders.every((v, i) => i === 0 || orders[i-1] <= v);
+    const result = document.getElementById('timeline-result');
+    result.style.display = 'block';
+    if (isOrdered) {
+      result.className = 'correct';
+      result.textContent = '🎉 Correct! The letter parts are in the right order: Address & Date → Greeting → Body → Closing → Signature!';
+    } else {
+      result.className = 'wrong';
+      result.textContent = '❌ Not quite! Remember the order: 1. Address & Date, 2. Greeting (Dear...), 3. Body, 4. Closing, 5. Signature.';
+    }
+  };
+
+  window.resetTimeline = function() {
+    const list = document.getElementById('timeline-list');
+    const items = [...list.querySelectorAll('.timeline-item')];
+    // shuffle
+    items.sort(() => Math.random() - 0.5);
+    items.forEach(i => list.appendChild(i));
+    document.getElementById('timeline-result').style.display = 'none';
+  };
+
+  // ─── PRACTICE AREA ───
+  window.checkPractice = function(id, fbId, minLen) {
+    const val = document.getElementById(id).value.trim();
+    const fb = document.getElementById(fbId);
+    if (val.length < minLen) {
+      fb.className = 'feedback-msg show error';
+      fb.textContent = `✍️ Keep going! Try to write at least ${minLen} characters. You have ${val.length} so far.`;
+    } else {
+      fb.className = 'feedback-msg show success';
+      fb.textContent = '🌟 Great writing! You have expressed your ideas clearly. Well done!';
+    }
+  };
+
+  window.clearPractice = function(id, fbId) {
+    document.getElementById(id).value = '';
+    const fb = document.getElementById(fbId);
+    fb.className = 'feedback-msg';
+    fb.textContent = '';
+  };
+
+  // ─── STORY BUILDER ───
+  const storySelections = { character: null, action: null, result: null };
+
+  window.selectStoryPart = function(el) {
+    const col = el.getAttribute('data-col');
+    const val = el.getAttribute('data-val');
+    // Deselect others in same column
+    document.querySelectorAll(`.story-part[data-col="${col}"]`).forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    storySelections[col] = val;
+  };
+
+  window.generateStory = function() {
+    const output = document.getElementById('story-output');
+    if (!storySelections.character || !storySelections.action || !storySelections.result) {
+      output.textContent = '⚠️ Please select one card from each row (Character, Action, and Result) first!';
+      return;
+    }
+    output.innerHTML = `
+      <p>🌟 <strong>The Kindness Chain</strong></p>
+      <br>
+      <p>In a small, peaceful village, <strong>${storySelections.character}</strong> ${storySelections.action}.</p>
+      <br>
+      <p>The people who saw this act of kindness were deeply moved. They began to think about how they could help others too. Soon, acts of kindness began spreading through the village like a warm, golden light.</p>
+      <br>
+      <p>${storySelections.result}</p>
+      <br>
+      <p>🌈 The end — <em>and it was a very happy one indeed!</em></p>
+    `;
+  };
+
+  // ─── ACCORDION ───
+  window.toggleAccordion = function(header) {
+    const item = header.parentElement;
+    const body = item.querySelector('.accordion-body');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.accordion-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.accordion-body').classList.remove('open');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      body.classList.add('open');
+    }
+  };
+
+  // ─── VOCABULARY TOGGLE ───
+  window.toggleVocabExample = function(card) {
+    const ex = card.querySelector('.vocab-example');
+    if (ex) ex.style.display = ex.style.display === 'none' ? 'block' : 'none';
+  };
+
+  // ─── QUIZ ───
+  const questions = [
+    {
+      q: 'What is a composition?',
+      type: 'mcq',
+      options: [
+        'A picture you draw in art class',
+        'A piece of writing where you express ideas in your own words',
+        'A type of maths problem',
+        'A song you sing in music class'
+      ],
+      correct: 1
+    },
+    {
+      q: 'Which part of a friendly letter comes FIRST?',
+      type: 'mcq',
+      options: [
+        'The greeting (Dear...)',
+        'The closing (Your friend,...)',
+        'The address and date',
+        'The body paragraphs'
+      ],
+      correct: 2
+    },
+    {
+      q: 'True or False: In descriptive writing, you use adjectives (describing words) to make your writing more vivid and interesting.',
+      type: 'truefalse',
+      options: ['True', 'False'],
+      correct: 0
+    },
+    {
+      q: 'Which of these is a CONNECTIVE word that joins ideas in sentences?',
+      type: 'mcq',
+      options: ['Dolphin', 'Because', 'Running', 'Beautiful'],
+      correct: 1
+    },
+    {
+      q: 'In a story, what should you include after the "Beginning"?',
+      type: 'mcq',
+      options: [
+        'The title of the story',
+        'The author\'s name',
+        'The Middle — where something exciting happens',
+        'A list of characters'
+      ],
+      correct: 2
+    },
+    {
+      q: 'True or False: Eid-ul-Adha celebrates the end of the holy month of Ramadan.',
+      type: 'truefalse',
+      options: ['True', 'False'],
+      correct: 1
+    },
+    {
+      q: 'Which of these is the BEST tip for improving your composition writing?',
+      type: 'mcq',
+      options: [
+        'Write as fast as possible without thinking',
+        'Never re-read your work',
+        'Plan your ideas first, then write in paragraphs',
+        'Use only very short sentences'
+      ],
+      correct: 2
+    },
+    {
+      q: 'In "The Kindness Chain", what does Hassan\'s act of generosity lead to?',
+      type: 'mcq',
+      options: [
+        'Everyone in the village becomes angry',
+        'Nothing changes in the village',
+        'A chain of kindness spreading through the village',
+        'Hassan gets into trouble'
+      ],
+      correct: 2
+    }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+  let answered = [];
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    const progress = ((currentQ) / questions.length) * 100;
+    document.getElementById('quiz-progress').style.width = progress + '%';
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+      <div class="question-num">Question ${currentQ + 1} of ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="options-container">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-nav">
+        ${currentQ > 0 ? '<button class="btn btn-sky" onclick="prevQuestion()">← Back</button>' : ''}
+        <button class="btn" id="next-btn" onclick="nextQuestion()" style="display:none;">Next →</button>
+      </div>
+    `;
+  }
+
+  window.selectAnswer = function(idx) {
+    if (answered[currentQ] !== undefined) return;
+    answered[currentQ] = idx;
+    const correct = questions[currentQ].correct;
+    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+      btn.style.pointerEvents = 'none';
+      if (i === correct) btn.classList.add('correct-ans');
+      if (i === idx && idx !== correct) btn.classList.add('wrong-ans');
+    });
+    if (idx === correct) score++;
+    document.getElementById('next-btn').style.display = 'inline-flex';
+  };
+
+  window.nextQuestion = function() {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+    } else {
+      showScore();
+    }
+  };
+
+  window.prevQuestion = function() {
+    if (currentQ > 0) { currentQ--; renderQuestion(); }
+  };
+
+  function showScore() {
+    document.getElementById('quiz-container').style.display = 'none';
+    const sc = document.getElementById('score-card');
+    sc.style.display = 'block';
+    document.getElementById('score-display').textContent = score + '/' + questions.length;
+
+    const pct = score / questions.length;
+    const circumference = 440;
+    const offset = circumference - (pct * circumference);
+    setTimeout(() => {
+      document.getElementById('score-circle').style.strokeDashoffset = offset;
+    }, 200);
+
+    let msg = '';
+    if (score === 8) msg = '🌟 Outstanding! Perfect score! You are a composition expert!';
+    else if (score >= 6) msg = '🎉 Excellent work! You really understand composition writing!';
+    else if (score >= 4) msg = '👍 Good effort! Review the tips and try again to improve!';
+    else msg = '💪 Keep practising! Re-read the lesson and try the quiz again!';
+    document.getElementById('score-msg').textContent = msg;
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(sc, { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  }
+
+  window.resetQuiz = function() {
+    currentQ = 0; score = 0; answered = [];
+    document.getElementById('quiz-container').style.display = 'block';
+    document.getElementById('score-card').style.display = 'none';
+    document.getElementById('score-circle').style.strokeDashoffset = '440';
+    document.getElementById('quiz-progress').style.width = '0%';
+    renderQuestion();
+  };
+
+  renderQuestion();
+
+});
+
+// ─── ACCORDION (global, in case called before DOMContentLoaded completes) ───
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.accordion-body');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.accordion-body').classList.remove('open');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    body.classList.add('open');
+  }
+}
+</script>
+</body>
+</html>

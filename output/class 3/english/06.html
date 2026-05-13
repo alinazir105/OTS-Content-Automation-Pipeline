@@ -1,0 +1,1463 @@
+<!-- CLASS: 3 | SUBJECT: english | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Imperatives – Class 3 English</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<!-- Lenis -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+
+<!-- Mermaid -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 18px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  background: #F8F9FA;
+  color: #2d2d2d;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; }
+h2 { font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; }
+h4 { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 600; }
+
+p, li { font-size: 18px; line-height: 1.7; }
+
+/* ===== LOADING CURTAIN ===== */
+#curtain {
+  position: fixed; inset: 0; background: #FF6B6B;
+  z-index: 9999; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; color: white;
+}
+#curtain h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: white; margin-bottom: 16px; }
+.curtain-spinner {
+  width: 60px; height: 60px;
+  border: 5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== LAYOUT ===== */
+.page-wrapper { width: 100%; max-width: 100%; }
+
+.with-sidebar {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 40px;
+  align-items: start;
+}
+
+.main-content { min-width: 0; }
+
+/* ===== PROGRESS BAR ===== */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 4px;
+  background: linear-gradient(90deg, #FF6B6B, #F9CA24, #48DBFB);
+  width: 0%; z-index: 1000; transition: width 0.1s;
+}
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb {
+  background: white; padding: 14px 40px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; color: #666; border-bottom: 2px solid #eee;
+  flex-wrap: wrap;
+}
+.breadcrumb span { color: #FF6B6B; font-weight: 600; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: sticky; top: 80px;
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 24px 20px; margin-top: 40px;
+  margin-right: 32px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+.sidebar h4 { color: #FF6B6B; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-link {
+  display: block; padding: 10px 14px;
+  color: #555; text-decoration: none;
+  border-radius: 8px; margin-bottom: 4px;
+  font-size: 15px; font-weight: 500;
+  transition: all 0.2s; border-left: 3px solid transparent;
+}
+.sidebar-link:hover { background: #FFF3CD; color: #FF6B6B; }
+.sidebar-link.active { background: #FFF3CD; color: #FF6B6B; border-left-color: #FF6B6B; font-weight: 600; }
+
+/* ===== SECTION BANDS ===== */
+.section-band {
+  width: 100%; padding: 20px 40px;
+  color: white; font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700;
+  margin-bottom: 0;
+}
+.band-coral { background: #FF6B6B; }
+.band-sky { background: #48DBFB; }
+.band-sunshine { background: #F9CA24; color: #2d2d2d; }
+.band-purple { background: #a29bfe; }
+.band-green { background: #55efc4; color: #2d2d2d; }
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 50px 0;
+  opacity: 1; transform: none;
+}
+
+.section-inner {
+  max-width: 1500px; margin: 0 auto; padding: 0 40px;
+}
+
+/* ===== HERO ===== */
+#hero {
+  background: linear-gradient(135deg, #FF6B6B 0%, #F9CA24 50%, #48DBFB 100%);
+  min-height: 90vh; display: flex; align-items: center;
+  padding: 0; position: relative; overflow: hidden;
+  width: 100vw;
+}
+
+.hero-inner {
+  max-width: 1500px; margin: 0 auto; padding: 60px 40px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center; width: 100%;
+}
+
+.hero-text h1 { color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.2); margin-bottom: 20px; }
+.hero-text p { font-size: clamp(1.1rem, 2vw, 1.3rem); color: rgba(255,255,255,0.95); margin-bottom: 32px; }
+
+.hero-badge {
+  display: inline-block; background: rgba(255,255,255,0.25);
+  color: white; padding: 8px 20px; border-radius: 50px;
+  font-size: 15px; font-weight: 600; backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+}
+
+.hero-svg-wrap { display: flex; justify-content: center; align-items: center; }
+
+.hero-stats {
+  display: flex; gap: 24px; margin-top: 32px; flex-wrap: wrap;
+}
+.stat-card {
+  background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);
+  border-radius: 12px; padding: 16px 24px; text-align: center; color: white;
+}
+.stat-number { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; display: block; }
+.stat-label { font-size: 14px; opacity: 0.9; }
+
+/* ===== CARDS ===== */
+.card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 28px; width: 100%; max-width: 100%;
+  opacity: 1; transform: none;
+}
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+
+/* ===== CONCEPT CARDS ===== */
+.concept-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 28px; border-top: 5px solid;
+  width: 100%; max-width: 100%;
+  opacity: 1; transform: none;
+}
+.concept-card.coral { border-top-color: #FF6B6B; }
+.concept-card.sky { border-top-color: #48DBFB; }
+.concept-card.sunshine { border-top-color: #F9CA24; }
+.concept-card.purple { border-top-color: #a29bfe; }
+
+.concept-card .icon { font-size: 3rem; margin-bottom: 16px; }
+.concept-card h3 { margin-bottom: 12px; }
+.concept-card p { font-size: 17px; color: #555; }
+
+.example-box {
+  background: #F8F9FA; border-left: 4px solid #FF6B6B;
+  border-radius: 8px; padding: 14px 18px;
+  margin-top: 14px; font-style: italic; font-size: 17px;
+}
+
+/* ===== IMPERATIVE HIGHLIGHT ===== */
+.imp-word {
+  display: inline-block; background: #FF6B6B; color: white;
+  padding: 2px 10px; border-radius: 6px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+.neg-word {
+  display: inline-block; background: #48DBFB; color: #2d2d2d;
+  padding: 2px 10px; border-radius: 6px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+.polite-word {
+  display: inline-block; background: #F9CA24; color: #2d2d2d;
+  padding: 2px 10px; border-radius: 6px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== VISUAL EXPLANATION ===== */
+.vis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+
+.vis-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 24px; text-align: center;
+  opacity: 1; transform: none;
+}
+.vis-card .big-emoji { font-size: 3.5rem; margin-bottom: 14px; display: block; }
+.vis-card h4 { margin-bottom: 10px; }
+.vis-card p { font-size: 17px; color: #555; }
+
+.sentence-demo {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 32px; margin-top: 32px;
+}
+
+.sentence-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid #eee; flex-wrap: wrap;
+}
+.sentence-row:last-child { border-bottom: none; }
+
+.sentence-tag {
+  display: inline-block; padding: 6px 16px;
+  border-radius: 50px; font-size: 14px; font-weight: 600;
+  white-space: nowrap; min-width: 100px; text-align: center;
+}
+.tag-order { background: #FFE3E3; color: #FF6B6B; }
+.tag-request { background: #D1F5FF; color: #0984e3; }
+.tag-suggest { background: #FFF9DB; color: #e17055; }
+.tag-advice { background: #E8F5E9; color: #00b894; }
+.tag-negative { background: #EDE7F6; color: #6c5ce7; }
+
+.sentence-text { font-size: 18px; flex: 1; }
+
+/* ===== MERMAID CONTAINER ===== */
+.mermaid-wrap {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 32px; overflow-x: auto;
+}
+.mermaid { font-size: 16px; }
+
+/* ===== GUIDED PRACTICE ===== */
+.practice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+.practice-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 28px; opacity: 1; transform: none;
+}
+
+.practice-sentence {
+  font-size: 20px; font-weight: 600;
+  padding: 20px; background: #F8F9FA;
+  border-radius: 10px; margin-bottom: 20px;
+  text-align: center; line-height: 1.5;
+}
+
+.answer-choices { display: flex; flex-direction: column; gap: 10px; }
+
+.choice-btn {
+  padding: 12px 20px; border-radius: 8px;
+  border: 2px solid #eee; background: white;
+  font-size: 17px; cursor: pointer; font-family: 'Inter', sans-serif;
+  text-align: left; transition: all 0.2s;
+  min-height: 48px;
+}
+.choice-btn:hover { border-color: #48DBFB; background: #f0fdff; }
+.choice-btn.correct { background: #E8F5E9; border-color: #00b894; color: #00b894; font-weight: 600; }
+.choice-btn.wrong { background: #FFE3E3; border-color: #FF6B6B; color: #FF6B6B; }
+
+.feedback {
+  margin-top: 12px; font-size: 17px; font-weight: 600;
+  min-height: 28px; text-align: center;
+}
+.feedback.good { color: #00b894; }
+.feedback.bad { color: #FF6B6B; }
+
+/* ===== ACTIVITY 6.1 ===== */
+.activity-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 32px; opacity: 1;
+}
+
+.activity-sentence-wrap {
+  background: #F8F9FA; border-radius: 10px;
+  padding: 20px 24px; margin-bottom: 24px;
+}
+.activity-sentence-wrap .sentence { font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+
+.radio-group { display: flex; flex-wrap: wrap; gap: 12px; }
+.radio-label {
+  display: flex; align-items: center; gap: 8px;
+  background: white; border: 2px solid #eee;
+  border-radius: 50px; padding: 8px 18px;
+  cursor: pointer; font-size: 17px;
+  transition: all 0.2s; min-height: 48px;
+}
+.radio-label input { accent-color: #FF6B6B; width: 18px; height: 18px; }
+.radio-label:hover { border-color: #FF6B6B; background: #FFF3F3; }
+.radio-label.selected-correct { background: #E8F5E9; border-color: #00b894; color: #00b894; font-weight: 600; }
+.radio-label.selected-wrong { background: #FFE3E3; border-color: #FF6B6B; color: #FF6B6B; }
+
+.check-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #FF6B6B; color: white; border: none;
+  padding: 12px 28px; border-radius: 50px; font-size: 17px;
+  font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif;
+  transition: all 0.2s; margin-top: 16px; min-height: 48px;
+}
+.check-btn:hover { background: #e55a5a; transform: translateY(-2px); }
+
+/* ===== ACTIVITY 6.2 – DIRECTIONS MATCH ===== */
+.directions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
+
+.dir-picture-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 20px; text-align: center;
+  border: 3px solid transparent; transition: all 0.2s;
+}
+.dir-picture-card.drop-hover { border-color: #48DBFB; background: #f0fdff; }
+.dir-picture-card.matched { border-color: #00b894; background: #E8F5E9; }
+.dir-picture-card.wrong-drop { border-color: #FF6B6B; background: #FFE3E3; }
+
+.dir-emoji { font-size: 4rem; display: block; margin-bottom: 10px; }
+.dir-pic-label { font-size: 15px; color: #888; margin-bottom: 10px; }
+.dir-answer-slot {
+  min-height: 40px; background: #F8F9FA; border-radius: 8px;
+  padding: 8px; font-size: 16px; color: #555; font-weight: 500;
+}
+
+.drag-chips-wrap { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+.drag-chip {
+  background: #FF6B6B; color: white;
+  padding: 10px 20px; border-radius: 50px;
+  font-size: 16px; font-weight: 600; cursor: grab;
+  user-select: none; transition: all 0.2s; min-height: 48px;
+  display: flex; align-items: center;
+}
+.drag-chip:active { cursor: grabbing; transform: scale(1.05); }
+.drag-chip.used { opacity: 0.35; pointer-events: none; }
+
+/* ===== QUIZ ===== */
+.quiz-wrap { max-width: 900px; margin: 0 auto; }
+
+.quiz-progress-bar-wrap {
+  background: #eee; border-radius: 50px; height: 12px; margin-bottom: 32px;
+  overflow: hidden;
+}
+.quiz-progress-fill { height: 100%; background: linear-gradient(90deg, #FF6B6B, #F9CA24); transition: width 0.4s; border-radius: 50px; }
+
+.question-card {
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 32px; display: none;
+}
+.question-card.active { display: block; }
+
+.q-number { font-size: 14px; color: #888; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
+.q-text { font-size: 20px; font-weight: 600; margin-bottom: 24px; line-height: 1.5; }
+
+.q-options { display: flex; flex-direction: column; gap: 12px; }
+.q-option {
+  padding: 14px 20px; border-radius: 10px;
+  border: 2px solid #eee; background: white;
+  font-size: 18px; cursor: pointer; text-align: left;
+  transition: all 0.2s; font-family: 'Inter', sans-serif;
+  min-height: 54px; display: flex; align-items: center;
+}
+.q-option:hover { border-color: #48DBFB; background: #f0fdff; }
+.q-option.correct { background: #E8F5E9; border-color: #00b894; color: #00b894; font-weight: 700; }
+.q-option.wrong { background: #FFE3E3; border-color: #FF6B6B; color: #FF6B6B; }
+.q-option.reveal-correct { background: #E8F5E9; border-color: #00b894; }
+.q-option:disabled, .q-option[disabled] { pointer-events: none; }
+
+.q-feedback { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 28px; }
+.q-feedback.good { color: #00b894; }
+.q-feedback.bad { color: #FF6B6B; }
+
+.quiz-nav { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+.quiz-nav-btn {
+  padding: 12px 28px; border-radius: 50px; border: none;
+  font-size: 17px; font-weight: 600; cursor: pointer;
+  font-family: 'Poppins', sans-serif; min-height: 48px;
+  transition: all 0.2s;
+}
+.btn-next { background: #FF6B6B; color: white; }
+.btn-next:hover { background: #e55a5a; }
+.btn-prev { background: #eee; color: #555; }
+.btn-prev:hover { background: #ddd; }
+
+/* ===== SCORE CARD ===== */
+#score-card {
+  display: none; text-align: center;
+  background: white; border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 48px 32px;
+}
+#score-card h2 { margin-bottom: 8px; }
+
+.score-circle-wrap { margin: 32px auto; width: 180px; height: 180px; position: relative; }
+.score-svg { width: 180px; height: 180px; }
+.score-bg { fill: none; stroke: #eee; stroke-width: 14; }
+.score-fill { fill: none; stroke: #FF6B6B; stroke-width: 14; stroke-linecap: round; transition: stroke-dashoffset 1.5s ease; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.score-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; color: #FF6B6B; font-family: 'Poppins', sans-serif; }
+
+.score-message { font-size: 22px; font-weight: 600; color: #555; margin-bottom: 24px; }
+.retry-btn { background: #FF6B6B; color: white; border: none; padding: 14px 36px; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; min-height: 54px; transition: all 0.2s; }
+.retry-btn:hover { background: #e55a5a; transform: translateY(-2px); }
+
+/* ===== MOBILE BOTTOM NAV ===== */
+#mobile-bottom-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 2px solid #eee;
+  overflow-x: auto; z-index: 900; padding: 10px 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+#mobile-bottom-nav .mob-nav-inner { display: flex; gap: 8px; padding: 0 12px; min-width: max-content; }
+#mobile-bottom-nav a {
+  display: flex; flex-direction: column; align-items: center;
+  text-decoration: none; color: #555; font-size: 13px; padding: 6px 14px;
+  border-radius: 8px; min-height: 48px; justify-content: center;
+  white-space: nowrap; transition: all 0.2s; font-weight: 500;
+}
+#mobile-bottom-nav a:hover, #mobile-bottom-nav a.active { background: #FFF3CD; color: #FF6B6B; }
+#mobile-bottom-nav .mob-icon { font-size: 1.3rem; margin-bottom: 2px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .with-sidebar { grid-template-columns: 1fr; padding: 0 16px; }
+  .sidebar { display: none; }
+  #mobile-bottom-nav { display: flex; }
+  body { padding-bottom: 80px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px; }
+  .hero-svg-wrap { display: none; }
+  #hero { min-height: 60vh; }
+  .section-inner { padding: 0 16px; }
+  .breadcrumb { padding: 12px 16px; }
+  .section-band { padding: 16px 20px; }
+  .hero-stats { gap: 16px; }
+  section { padding: 32px 0; }
+  .card, .practice-card, .activity-card { padding: 20px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .vis-grid { grid-template-columns: 1fr; }
+  .practice-grid { grid-template-columns: 1fr; }
+  .directions-grid { grid-template-columns: repeat(2, 1fr); }
+  table { font-size: 16px; }
+  .quiz-wrap { padding: 0 4px; }
+}
+
+@media (max-width: 480px) {
+  .directions-grid { grid-template-columns: 1fr; }
+  .radio-group { flex-direction: column; }
+  .drag-chips-wrap { gap: 8px; }
+  .drag-chip { font-size: 14px; padding: 8px 14px; }
+}
+
+/* ===== UTILITIES ===== */
+.mt-24 { margin-top: 24px; }
+.mb-24 { margin-bottom: 24px; }
+.text-center { text-align: center; }
+.color-coral { color: #FF6B6B; }
+.bold { font-weight: 700; }
+
+/* ===== LIBRARY SCENE SVG ===== */
+.library-scene { width: 100%; max-width: 500px; }
+.library-scene path, .library-scene line, .library-scene rect, .library-scene circle {
+  opacity: 1;
+}
+/* Drawn path animation */
+.draw-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+/* ===== IMPERATIVE BUBBLE ===== */
+.bubble-wrap { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+.bubble {
+  background: white; border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 14px 24px; font-size: 18px; font-weight: 500;
+  border-left: 5px solid;
+  opacity: 1;
+}
+.bubble.b-coral { border-left-color: #FF6B6B; }
+.bubble.b-sky { border-left-color: #48DBFB; }
+.bubble.b-sunshine { border-left-color: #F9CA24; }
+.bubble.b-purple { border-left-color: #a29bfe; }
+
+/* Timer (not used but defined) */
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <h2>Loading Imperatives...</h2>
+  <div class="curtain-spinner"></div>
+</div>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  🏠 Home &rsaquo; Class 3 &rsaquo; English &rsaquo; <span>Chapter 6: Imperatives</span>
+</div>
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">📚 Class 3 · English · Chapter 6</div>
+        <h1>Imperatives</h1>
+        <p>Learn how to give orders, make requests, offer suggestions, and give advice using imperative sentences!</p>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number" data-target="4">0</span>
+            <span class="stat-label">Uses</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-target="3">0</span>
+            <span class="stat-label">Forms</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-target="8">0</span>
+            <span class="stat-label">Quiz Qs</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-svg-wrap">
+        <!-- Animated SVG Library Scene -->
+        <svg class="library-scene" viewBox="0 0 460 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Bookshelf background -->
+          <rect x="10" y="20" width="440" height="320" rx="20" fill="#FFF3E0"/>
+          <!-- Shelf 1 -->
+          <rect x="30" y="60" width="400" height="12" rx="4" fill="#D7A86E"/>
+          <!-- Books row 1 -->
+          <rect x="40" y="25" width="28" height="35" rx="3" fill="#FF6B6B"/>
+          <rect x="72" y="30" width="22" height="30" rx="3" fill="#48DBFB"/>
+          <rect x="98" y="22" width="30" height="38" rx="3" fill="#F9CA24"/>
+          <rect x="132" y="28" width="24" height="32" rx="3" fill="#a29bfe"/>
+          <rect x="160" y="25" width="20" height="35" rx="3" fill="#55efc4"/>
+          <rect x="184" y="32" width="26" height="28" rx="3" fill="#fd79a8"/>
+          <rect x="214" y="26" width="22" height="34" rx="3" fill="#fdcb6e"/>
+          <rect x="240" y="20" width="30" height="40" rx="3" fill="#6c5ce7"/>
+          <rect x="274" y="28" width="20" height="32" rx="3" fill="#00cec9"/>
+          <rect x="298" y="25" width="28" height="35" rx="3" fill="#e17055"/>
+          <!-- Shelf 2 -->
+          <rect x="30" y="140" width="400" height="12" rx="4" fill="#D7A86E"/>
+          <!-- Books row 2 -->
+          <rect x="40" y="105" width="26" height="35" rx="3" fill="#74b9ff"/>
+          <rect x="70" y="110" width="30" height="30" rx="3" fill="#fd79a8"/>
+          <rect x="104" y="100" width="22" height="40" rx="3" fill="#55efc4"/>
+          <rect x="130" y="108" width="28" height="32" rx="3" fill="#F9CA24"/>
+          <rect x="162" y="104" width="24" height="36" rx="3" fill="#FF6B6B"/>
+          <rect x="190" y="112" width="20" height="28" rx="3" fill="#a29bfe"/>
+          <rect x="214" y="100" width="32" height="40" rx="3" fill="#48DBFB"/>
+          <rect x="250" y="108" width="22" height="32" rx="3" fill="#fdcb6e"/>
+          <!-- Speech bubble 1 -->
+          <rect x="240" y="175" width="170" height="70" rx="14" fill="#FF6B6B"/>
+          <polygon points="260,245 240,260 280,245" fill="#FF6B6B"/>
+          <text x="325" y="208" text-anchor="middle" font-family="Poppins,sans-serif" font-weight="700" font-size="15" fill="white">Be quiet!</text>
+          <text x="325" y="228" text-anchor="middle" font-family="Poppins,sans-serif" font-weight="600" font-size="13" fill="rgba(255,255,255,0.9)">Don't shout!</text>
+          <!-- Speech bubble 2 -->
+          <rect x="50" y="185" width="150" height="55" rx="14" fill="#48DBFB"/>
+          <polygon points="100,240 80,260 120,240" fill="#48DBFB"/>
+          <text x="125" y="218" text-anchor="middle" font-family="Poppins,sans-serif" font-weight="700" font-size="15" fill="#2d2d2d">Look Out!</text>
+          <!-- Boy 1 (simple) -->
+          <circle cx="100" cy="290" r="20" fill="#FFD09B"/>
+          <rect x="82" y="310" width="36" height="40" rx="8" fill="#6c5ce7"/>
+          <rect x="82" y="350" width="14" height="20" rx="4" fill="#555"/>
+          <rect x="104" y="350" width="14" height="20" rx="4" fill="#555"/>
+          <!-- Boy 2 (simple) -->
+          <circle cx="350" cy="285" r="20" fill="#F4A261"/>
+          <rect x="332" y="305" width="36" height="40" rx="8" fill="#e17055"/>
+          <rect x="332" y="345" width="14" height="20" rx="4" fill="#555"/>
+          <rect x="354" y="345" width="14" height="20" rx="4" fill="#555"/>
+          <!-- Animated border path -->
+          <rect class="draw-path" x="10" y="20" width="440" height="320" rx="20" fill="none" stroke="#FF6B6B" stroke-width="4"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Layout -->
+  <div class="with-sidebar">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <h4>📋 Contents</h4>
+      <a class="sidebar-link" href="#concept">What Are Imperatives?</a>
+      <a class="sidebar-link" href="#forms">Types of Imperatives</a>
+      <a class="sidebar-link" href="#visual">Visual Examples</a>
+      <a class="sidebar-link" href="#guided">Guided Practice</a>
+      <a class="sidebar-link" href="#activity61">Activity 6.1</a>
+      <a class="sidebar-link" href="#activity62">Activity 6.2</a>
+      <a class="sidebar-link" href="#quiz">Quiz Time!</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- ===== CONCEPT ===== -->
+      <section id="concept">
+        <div class="section-band band-coral">📖 What Are Imperatives?</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <div class="card mb-24">
+            <h3 style="color:#FF6B6B; margin-bottom:16px;">Definition</h3>
+            <p>We use <strong>imperatives</strong> to <strong>order</strong>, <strong>request</strong>, <strong>suggest</strong>, and <strong>advise</strong>. Imperatives use the <strong>base form</strong> of the verb — no subject needed!</p>
+            <div class="bubble-wrap mt-24">
+              <div class="bubble b-coral">🛑 <span class="imp-word">Eat</span> this.</div>
+              <div class="bubble b-sky">⚠️ <span class="imp-word">Be</span> careful!</div>
+              <div class="bubble b-sunshine">🚶 <span class="imp-word">Always cross</span> the road carefully.</div>
+              <div class="bubble b-purple">📚 <span class="imp-word">Be</span> quiet!</div>
+            </div>
+          </div>
+
+          <div class="card-grid">
+            <div class="concept-card coral">
+              <div class="icon">👑</div>
+              <h3>Order</h3>
+              <p>Used to command someone to do something firmly.</p>
+              <div class="example-box">"<span class="imp-word">Clean</span> your room now!"</div>
+            </div>
+            <div class="concept-card sky">
+              <div class="icon">🙏</div>
+              <h3>Request</h3>
+              <p>Used politely with <strong>please</strong> or <strong>kindly</strong>.</p>
+              <div class="example-box">"<span class="polite-word">Please</span> <span class="imp-word">pass</span> me the book."</div>
+            </div>
+            <div class="concept-card sunshine">
+              <div class="icon">💡</div>
+              <h3>Suggestion</h3>
+              <p>Used to propose an idea, often with <strong>Let's</strong>.</p>
+              <div class="example-box">"<span class="imp-word">Let's go</span> to the park."</div>
+            </div>
+            <div class="concept-card purple">
+              <div class="icon">💬</div>
+              <h3>Advice</h3>
+              <p>Used to recommend something helpful.</p>
+              <div class="example-box">"<span class="imp-word">Always cross</span> the road carefully."</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FORMS ===== -->
+      <section id="forms">
+        <div class="section-band band-sky">🔤 Types of Imperatives</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <div class="card-grid">
+            <div class="card">
+              <h3 style="color:#00b894; margin-bottom:16px;">✅ Positive Imperatives</h3>
+              <p style="margin-bottom:16px;">Start directly with the <strong>base verb</strong>.</p>
+              <div class="sentence-row"><span class="sentence-tag tag-order">Order</span><span class="sentence-text"><span class="imp-word">Eat</span> this.</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-advice">Advice</span><span class="sentence-text"><span class="imp-word">Be</span> careful!</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-advice">Advice</span><span class="sentence-text"><span class="imp-word">Always cross</span> the road carefully.</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-request">Request</span><span class="sentence-text"><span class="polite-word">Please</span> <span class="imp-word">come</span> here.</span></div>
+            </div>
+            <div class="card">
+              <h3 style="color:#FF6B6B; margin-bottom:16px;">❌ Negative Imperatives</h3>
+              <p style="margin-bottom:16px;">Start with <strong>Do not / Don't</strong> or <strong>Never</strong>.</p>
+              <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Don't say</span> that!</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Do not open</span> this window.</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Never touch</span> that plant.</span></div>
+              <div class="sentence-row"><span class="sentence-tag tag-request">Request</span><span class="sentence-text"><span class="neg-word">Don't</span> do that, <span class="polite-word">please</span>.</span></div>
+            </div>
+          </div>
+
+          <div class="card mt-24">
+            <h3 style="color:#F9CA24; margin-bottom:20px;">🗺️ Structure Map</h3>
+            <div class="mermaid-wrap">
+              <div class="mermaid">
+graph TD
+    A["🗣️ Imperative Sentence"] --> B["✅ Positive"]
+    A --> C["❌ Negative"]
+    B --> D["Base Verb<br/>e.g. Eat · Go · Be"]
+    B --> E["Please / Kindly + Verb<br/>e.g. Please come here"]
+    C --> F["Do not / Don't + Verb<br/>e.g. Don't shout"]
+    C --> G["Never + Verb<br/>e.g. Never touch"]
+    D --> H["Order / Advice / Suggestion"]
+    E --> I["Polite Request"]
+    F --> J["Negative Command"]
+    G --> K["Strong Warning"]
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-24">
+            <h3 style="color:#a29bfe; margin-bottom:16px;">🔑 Key Words Summary</h3>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:17px;">
+                <thead>
+                  <tr style="background:#F8F9FA;">
+                    <th style="padding:14px 16px; text-align:left; border-bottom:2px solid #eee; font-family:'Poppins',sans-serif;">Type</th>
+                    <th style="padding:14px 16px; text-align:left; border-bottom:2px solid #eee; font-family:'Poppins',sans-serif;">Starter Words</th>
+                    <th style="padding:14px 16px; text-align:left; border-bottom:2px solid #eee; font-family:'Poppins',sans-serif;">Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:12px 16px; border-bottom:1px solid #eee;">Positive</td><td style="padding:12px 16px; border-bottom:1px solid #eee;"><span class="imp-word">Base verb</span></td><td style="padding:12px 16px; border-bottom:1px solid #eee;">Sit down.</td></tr>
+                  <tr style="background:#FFF8F8;"><td style="padding:12px 16px; border-bottom:1px solid #eee;">Negative</td><td style="padding:12px 16px; border-bottom:1px solid #eee;"><span class="neg-word">Don't / Do not / Never</span></td><td style="padding:12px 16px; border-bottom:1px solid #eee;">Don't run.</td></tr>
+                  <tr><td style="padding:12px 16px; border-bottom:1px solid #eee;">Polite Request</td><td style="padding:12px 16px; border-bottom:1px solid #eee;"><span class="polite-word">Please / Kindly</span></td><td style="padding:12px 16px; border-bottom:1px solid #eee;">Please sit here.</td></tr>
+                  <tr style="background:#FFF8F8;"><td style="padding:12px 16px;">Suggestion</td><td style="padding:12px 16px;"><span class="imp-word">Let's</span></td><td style="padding:12px 16px;">Let's play outside.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VISUAL EXPLANATION ===== -->
+      <section id="visual">
+        <div class="section-band band-sunshine">🎨 Visual Examples</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <div class="vis-grid">
+            <div class="vis-card">
+              <span class="big-emoji">📢</span>
+              <span class="sentence-tag tag-order" style="margin-bottom:10px; display:inline-block;">Order</span>
+              <h4>"Clean your room now!"</h4>
+              <p>The verb <strong>Clean</strong> comes first. It's a direct command — no 'please'.</p>
+            </div>
+            <div class="vis-card">
+              <span class="big-emoji">🙏</span>
+              <span class="sentence-tag tag-request" style="margin-bottom:10px; display:inline-block;">Request</span>
+              <h4>"Please pass me the book."</h4>
+              <p><strong>Please</strong> makes it polite. We use it to ask nicely.</p>
+            </div>
+            <div class="vis-card">
+              <span class="big-emoji">💡</span>
+              <span class="sentence-tag tag-suggest" style="margin-bottom:10px; display:inline-block;">Suggestion</span>
+              <h4>"Let's go to the park."</h4>
+              <p><strong>Let's</strong> includes the speaker too — we're suggesting together!</p>
+            </div>
+            <div class="vis-card">
+              <span class="big-emoji">🩺</span>
+              <span class="sentence-tag tag-advice" style="margin-bottom:10px; display:inline-block;">Advice</span>
+              <h4>"You should drink more water."</h4>
+              <p>This advises someone for their own benefit. It's helpful, not commanding.</p>
+            </div>
+            <div class="vis-card">
+              <span class="big-emoji">🚫</span>
+              <span class="sentence-tag tag-negative" style="margin-bottom:10px; display:inline-block;">Negative</span>
+              <h4>"Don't touch that plant!"</h4>
+              <p><strong>Don't</strong> or <strong>Never</strong> begin negative imperatives to stop an action.</p>
+            </div>
+            <div class="vis-card">
+              <span class="big-emoji">⚠️</span>
+              <span class="sentence-tag tag-negative" style="margin-bottom:10px; display:inline-block;">Warning</span>
+              <h4>"Never open this window."</h4>
+              <p><strong>Never</strong> is stronger than <strong>Don't</strong> — used for serious warnings.</p>
+            </div>
+          </div>
+
+          <div class="sentence-demo mt-24">
+            <h3 style="margin-bottom:24px; color:#FF6B6B;">📝 More Examples from the Lesson</h3>
+            <div class="sentence-row"><span class="sentence-tag tag-order">Order</span><span class="sentence-text"><span class="imp-word">Eat</span> this.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-advice">Advice</span><span class="sentence-text"><span class="imp-word">Be</span> careful!</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-advice">Advice</span><span class="sentence-text"><span class="imp-word">Always cross</span> the road carefully.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Don't say</span> that!</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Do not open</span> this window.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-negative">Negative</span><span class="sentence-text"><span class="neg-word">Never touch</span> that plant.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-request">Request</span><span class="sentence-text"><span class="polite-word">Please</span> <span class="imp-word">come</span> here.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-request">Request</span><span class="sentence-text"><span class="neg-word">Don't</span> do that, <span class="polite-word">please</span>.</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-order">Order</span><span class="sentence-text"><span class="imp-word">Be</span> quiet!</span></div>
+            <div class="sentence-row"><span class="sentence-tag tag-order">Order</span><span class="sentence-text"><span class="neg-word">Don't</span> <span class="imp-word">shout</span> in the library!</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== GUIDED PRACTICE ===== -->
+      <section id="guided">
+        <div class="section-band band-purple">✏️ Guided Practice</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <p style="margin-bottom:28px; color:#555;">Click the correct type for each imperative sentence. See if you get it right!</p>
+          <div class="practice-grid" id="practice-grid">
+            <!-- JS populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ACTIVITY 6.1 ===== -->
+      <section id="activity61">
+        <div class="section-band band-coral">📋 Activity 6.1 – Order, Request, Suggestion or Advice?</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <p style="margin-bottom:28px; color:#555;">Read each sentence and select whether it is an <strong>order</strong>, <strong>request</strong>, <strong>suggestion</strong>, or <strong>advice</strong>.</p>
+          <div class="activity-card" id="activity61-card">
+            <!-- JS populated -->
+          </div>
+          <div style="text-align:center; margin-top:20px;">
+            <button class="check-btn" id="check-act61">✔ Check Answers</button>
+          </div>
+          <div id="act61-result" style="margin-top:20px; font-size:20px; font-weight:700; text-align:center; min-height:32px;"></div>
+        </div>
+      </section>
+
+      <!-- ===== ACTIVITY 6.2 ===== -->
+      <section id="activity62">
+        <div class="section-band band-sky">🗺️ Activity 6.2 – Match Directions to Pictures</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <p style="margin-bottom:12px; color:#555;">Drag the correct direction from the chips below and drop it onto the matching picture. You don't have to use all directions!</p>
+          <div class="drag-chips-wrap" id="drag-chips"></div>
+          <div class="directions-grid" id="dir-grid"></div>
+          <div style="text-align:center; margin-top:12px;">
+            <button class="check-btn" id="check-dir">✔ Check Matches</button>
+          </div>
+          <div id="dir-result" style="margin-top:16px; font-size:20px; font-weight:700; text-align:center; min-height:32px;"></div>
+        </div>
+      </section>
+
+      <!-- ===== QUIZ ===== -->
+      <section id="quiz">
+        <div class="section-band band-green">🎯 Quiz Time! – 8 Questions</div>
+        <div class="section-inner" style="padding-top:32px;">
+          <div class="quiz-wrap">
+            <div class="quiz-progress-bar-wrap">
+              <div class="quiz-progress-fill" id="quiz-prog" style="width:0%"></div>
+            </div>
+            <div id="quiz-questions"></div>
+            <div id="score-card">
+              <h2>🎉 Quiz Complete!</h2>
+              <p style="color:#888; font-size:18px; margin-bottom:8px;">Here's how you did:</p>
+              <div class="score-circle-wrap">
+                <svg class="score-svg" viewBox="0 0 180 180">
+                  <circle class="score-bg" cx="90" cy="90" r="75"/>
+                  <circle class="score-fill" id="score-circle" cx="90" cy="90" r="75" stroke-dasharray="471" stroke-dashoffset="471"/>
+                </svg>
+                <div class="score-text" id="score-text">0/8</div>
+              </div>
+              <div class="score-message" id="score-msg"></div>
+              <button class="retry-btn" id="retry-btn">🔄 Try Again</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- end .with-sidebar -->
+</div><!-- end .page-wrapper -->
+
+<!-- Mobile Bottom Nav -->
+<nav id="mobile-bottom-nav">
+  <div class="mob-nav-inner">
+    <a href="#concept"><span class="mob-icon">📖</span>Concept</a>
+    <a href="#forms"><span class="mob-icon">🔤</span>Types</a>
+    <a href="#visual"><span class="mob-icon">🎨</span>Visual</a>
+    <a href="#guided"><span class="mob-icon">✏️</span>Practice</a>
+    <a href="#activity61"><span class="mob-icon">📋</span>Act 6.1</a>
+    <a href="#activity62"><span class="mob-icon">🗺️</span>Act 6.2</a>
+    <a href="#quiz"><span class="mob-icon">🎯</span>Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== CURTAIN FAILSAFE =====
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ===== MERMAID =====
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) {}
+
+  // ===== LENIS =====
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) {}
+
+  // ===== PROGRESS BAR =====
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    const bar = document.getElementById('progress-bar');
+    if (bar) bar.style.width = pct + '%';
+  });
+
+  // ===== GSAP =====
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero SVG draw
+      const drawPath = document.querySelector('.draw-path');
+      if (drawPath) {
+        gsap.to(drawPath, { strokeDashoffset: 0, duration: 2.5, ease: 'power2.out', delay: 0.5 });
+      }
+
+      // Hero text slide-in
+      gsap.from('.hero-text h1', { x: -60, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.3 });
+      gsap.from('.hero-text p', { x: -40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.6 });
+      gsap.from('.hero-badge', { y: -20, opacity: 0, duration: 0.8, ease: 'back.out', delay: 0.2 });
+      gsap.from('.hero-stats .stat-card', { y: 30, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out', delay: 0.8 });
+
+      // Section cards scroll reveal
+      document.querySelectorAll('.concept-card, .vis-card, .practice-card').forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+          y: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
+        });
+      });
+
+      // Parallax on hero
+      gsap.to('#hero', {
+        backgroundPositionY: '30%',
+        scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+
+      // Bubble animation
+      gsap.from('.bubble', {
+        scrollTrigger: { trigger: '.bubble-wrap', start: 'top 85%' },
+        scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.12, ease: 'back.out(1.5)'
+      });
+
+    }
+  } catch(e) {}
+
+  // ===== COUNTERS =====
+  function animateCounters() {
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const target = parseInt(el.getAttribute('data-target'));
+      let current = 0;
+      const step = Math.ceil(target / 20);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current >= target) clearInterval(timer);
+      }, 60);
+    });
+  }
+  setTimeout(animateCounters, 800);
+
+  // ===== SIDEBAR INTERSECTION =====
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  const mobLinks = document.querySelectorAll('#mobile-bottom-nav a');
+  const sectionIds = ['concept','forms','visual','guided','activity61','activity62','quiz'];
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sidebarLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#'+id); });
+        mobLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#'+id); });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // ===== DISMISS CURTAIN =====
+  function dismissCurtain() {
+    const c = document.getElementById('curtain');
+    if (!c) return;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(c, { opacity: 0, duration: 0.6, onComplete: () => { c.style.display = 'none'; } });
+      } else {
+        c.style.display = 'none';
+      }
+    } catch(e) { c.style.display = 'none'; }
+  }
+  setTimeout(dismissCurtain, 1200);
+
+  // ===== GUIDED PRACTICE DATA =====
+  const practiceData = [
+    { sentence: "Eat your vegetables!", choices: ["Order","Request","Suggestion","Advice"], answer: "Order" },
+    { sentence: "Please close the door.", choices: ["Order","Request","Suggestion","Advice"], answer: "Request" },
+    { sentence: "Let's play football after school.", choices: ["Order","Request","Suggestion","Advice"], answer: "Suggestion" },
+    { sentence: "Always wash your hands before eating.", choices: ["Order","Request","Suggestion","Advice"], answer: "Advice" },
+    { sentence: "Don't run in the corridor!", choices: ["Order","Negative","Suggestion","Request"], answer: "Negative" },
+    { sentence: "Never touch a live wire.", choices: ["Order","Suggestion","Negative","Advice"], answer: "Negative" },
+  ];
+
+  const practiceGrid = document.getElementById('practice-grid');
+  practiceData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'practice-card';
+    card.innerHTML = `
+      <div class="practice-sentence">${item.sentence}</div>
+      <div class="answer-choices">
+        ${item.choices.map(c => `<button class="choice-btn" data-idx="${i}" data-val="${c}">${c}</button>`).join('')}
+      </div>
+      <div class="feedback" id="pf-${i}"></div>
+    `;
+    practiceGrid.appendChild(card);
+  });
+
+  document.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const idx = parseInt(this.dataset.idx);
+      const val = this.dataset.val;
+      const correct = practiceData[idx].answer;
+      const siblings = document.querySelectorAll(`.choice-btn[data-idx="${idx}"]`);
+      siblings.forEach(s => { s.classList.remove('correct','wrong'); });
+      this.classList.add(val === correct ? 'correct' : 'wrong');
+      if (val !== correct) {
+        siblings.forEach(s => { if (s.dataset.val === correct) s.classList.add('correct'); });
+      }
+      const fb = document.getElementById(`pf-${idx}`);
+      if (fb) {
+        fb.textContent = val === correct ? '✅ Correct! Well done!' : `❌ Not quite! It's "${correct}".`;
+        fb.className = 'feedback ' + (val === correct ? 'good' : 'bad');
+      }
+    });
+  });
+
+  // ===== ACTIVITY 6.1 =====
+  const act61Data = [
+    { sentence: "Please pass me the book.", options: ["Order","Request","Suggestion","Advice"], answer: "Request" },
+    { sentence: "Clean your room now!", options: ["Order","Request","Suggestion","Advice"], answer: "Order" },
+    { sentence: "You should drink more water.", options: ["Order","Request","Suggestion","Advice"], answer: "Advice" },
+    { sentence: "Let's go to the park.", options: ["Order","Request","Suggestion","Advice"], answer: "Suggestion" },
+  ];
+
+  const act61Card = document.getElementById('activity61-card');
+  act61Data.forEach((item, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'activity-sentence-wrap';
+    wrap.innerHTML = `
+      <div class="sentence">${i+1}. "${item.sentence}"</div>
+      <div class="radio-group" id="rg-${i}">
+        ${item.options.map(o => `
+          <label class="radio-label" data-qidx="${i}" data-val="${o}">
+            <input type="radio" name="q61_${i}" value="${o}"> ${o}
+          </label>
+        `).join('')}
+      </div>
+    `;
+    act61Card.appendChild(wrap);
+  });
+
+  // Radio label highlight
+  document.querySelectorAll('.radio-label input').forEach(inp => {
+    inp.addEventListener('change', function() {
+      const qidx = this.closest('.radio-label').dataset.qidx;
+      document.querySelectorAll(`#rg-${qidx} .radio-label`).forEach(l => {
+        l.classList.remove('selected-correct','selected-wrong');
+      });
+      this.closest('.radio-label').style.borderColor = '#F9CA24';
+    });
+  });
+
+  document.getElementById('check-act61').addEventListener('click', () => {
+    let score = 0;
+    act61Data.forEach((item, i) => {
+      const selected = document.querySelector(`input[name="q61_${i}"]:checked`);
+      const labels = document.querySelectorAll(`#rg-${i} .radio-label`);
+      labels.forEach(l => { l.classList.remove('selected-correct','selected-wrong'); });
+      if (selected) {
+        const parentLabel = selected.closest('.radio-label');
+        if (selected.value === item.answer) {
+          parentLabel.classList.add('selected-correct');
+          score++;
+        } else {
+          parentLabel.classList.add('selected-wrong');
+          // Show correct
+          labels.forEach(l => { if (l.dataset.val === item.answer) l.classList.add('selected-correct'); });
+        }
+      }
+    });
+    const res = document.getElementById('act61-result');
+    res.textContent = `You got ${score} / ${act61Data.length} correct! ${score === act61Data.length ? '🎉 Perfect!' : score >= 2 ? '👍 Good job!' : '📚 Keep trying!'}`;
+    res.style.color = score === act61Data.length ? '#00b894' : score >= 2 ? '#F9CA24' : '#FF6B6B';
+  });
+
+  // ===== ACTIVITY 6.2 – DIRECTIONS =====
+  const directions = [
+    { text: "Take the second right.", emoji: "↗️", id: "d1" },
+    { text: "Don't turn left.", emoji: "🚫", id: "d2" },
+    { text: "Turn right.", emoji: "➡️", id: "d3" },
+    { text: "Open the gate.", emoji: "🚪", id: "d4" },
+    { text: "Go straight ahead.", emoji: "⬆️", id: "d5" },
+    { text: "Walk south.", emoji: "⬇️", id: "d6" },
+    { text: "Walk east.", emoji: "➡️", id: "d7" },
+    { text: "Go west.", emoji: "⬅️", id: "d8" },
+    { text: "Cross the bridge.", emoji: "🌉", id: "d9" },
+  ];
+
+  // Pictures: 6 picture slots with correct answers
+  const picSlots = [
+    { num: 1, desc: "Compass pointing North + up arrow", emoji: "🧭", correct: "Go north.", extraLabel: "Go north." },
+    { num: 2, desc: "Door with arrow pointing right", emoji: "🚪", correct: "Open the gate.", extraLabel: "" },
+    { num: 3, desc: "Bridge with arrow", emoji: "🌉", correct: "Cross the bridge.", extraLabel: "" },
+    { num: 4, desc: "Turn right sign", emoji: "↩️", correct: "Turn right.", extraLabel: "" },
+    { num: 5, desc: "Go straight ahead sign", emoji: "⬆️", correct: "Go straight ahead.", extraLabel: "" },
+    { num: 6, desc: "No left turn sign", emoji: "🚫", correct: "Don't turn left.", extraLabel: "" },
+  ];
+
+  // All direction texts for chips (excluding "Go north." since it's given)
+  const chipDirections = directions.filter(d => d.text !== "Go north.");
+
+  const chipsWrap = document.getElementById('drag-chips');
+  chipDirections.forEach(dir => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = dir.text;
+    chip.draggable = true;
+    chip.dataset.text = dir.text;
+    chip.id = 'chip-' + dir.id;
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', dir.text);
+      e.dataTransfer.setData('chipId', chip.id);
+    });
+    // Touch drag support
+    chip.addEventListener('touchstart', handleTouchStart, { passive: false });
+    chipsWrap.appendChild(chip);
+  });
+
+  // Touch drag vars
+  let touchDragging = null;
+  let touchClone = null;
+
+  function handleTouchStart(e) {
+    touchDragging = e.currentTarget;
+    const touch = e.touches[0];
+    touchClone = touchDragging.cloneNode(true);
+    touchClone.style.position = 'fixed';
+    touchClone.style.opacity = '0.7';
+    touchClone.style.pointerEvents = 'none';
+    touchClone.style.zIndex = '9999';
+    touchClone.style.left = (touch.clientX - 50) + 'px';
+    touchClone.style.top = (touch.clientY - 20) + 'px';
+    document.body.appendChild(touchClone);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+  }
+
+  function handleTouchMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touchClone) {
+      touchClone.style.left = (touch.clientX - 50) + 'px';
+      touchClone.style.top = (touch.clientY - 20) + 'px';
+    }
+    // Highlight potential drop target
+    document.querySelectorAll('.dir-picture-card').forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+        card.classList.add('drop-hover');
+      } else {
+        card.classList.remove('drop-hover');
+      }
+    });
+  }
+
+  function handleTouchEnd(e) {
+    const touch = e.changedTouches[0];
+    if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+    document.removeEventListener('touchmove', handleTouchMove);
+    document.removeEventListener('touchend', handleTouchEnd);
+
+    let dropped = false;
+    document.querySelectorAll('.dir-picture-card').forEach(card => {
+      card.classList.remove('drop-hover');
+      const rect = card.getBoundingClientRect();
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+        if (touchDragging) {
+          const slot = card.querySelector('.dir-answer-slot');
+          if (slot && !slot.dataset.filled) {
+            const oldText = slot.textContent.trim();
+            if (oldText && oldText !== 'Drop here') {
+              // Re-enable old chip
+              const allChips = document.querySelectorAll('.drag-chip');
+              allChips.forEach(ch => { if (ch.dataset.text === oldText) ch.classList.remove('used'); });
+            }
+            slot.textContent = touchDragging.dataset.text;
+            slot.dataset.filled = '1';
+            touchDragging.classList.add('used');
+            dropped = true;
+          }
+        }
+      }
+    });
+    touchDragging = null;
+  }
+
+  const dirGrid = document.getElementById('dir-grid');
+
+  picSlots.forEach((slot, i) => {
+    const card = document.createElement('div');
+    card.className = 'dir-picture-card';
+    card.dataset.correct = slot.correct;
+    card.dataset.slot = i;
+    let inner = `
+      <span class="dir-emoji">${slot.emoji}</span>
+      <div class="dir-pic-label">Picture ${slot.num}</div>
+    `;
+    if (slot.extraLabel) {
+      inner += `<div class="dir-answer-slot" data-filled="1" style="background:#E8F5E9; color:#00b894; font-weight:700;">${slot.extraLabel}</div>`;
+    } else {
+      inner += `<div class="dir-answer-slot">Drop here</div>`;
+    }
+    card.innerHTML = inner;
+
+    // Drag over
+    card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drop-hover'); });
+    card.addEventListener('dragleave', () => { card.classList.remove('drop-hover'); });
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      card.classList.remove('drop-hover');
+      const text = e.dataTransfer.getData('text/plain');
+      const chipId = e.dataTransfer.getData('chipId');
+      const answerSlot = card.querySelector('.dir-answer-slot');
+      if (answerSlot && !answerSlot.dataset.filled) {
+        // If slot already had content
+        const old = answerSlot.textContent.trim();
+        if (old && old !== 'Drop here') {
+          document.querySelectorAll('.drag-chip').forEach(ch => {
+            if (ch.dataset.text === old) ch.classList.remove('used');
+          });
+        }
+        answerSlot.textContent = text;
+        answerSlot.dataset.filled = '1';
+        const chip = document.getElementById(chipId);
+        if (chip) chip.classList.add('used');
+      }
+    });
+
+    dirGrid.appendChild(card);
+  });
+
+  document.getElementById('check-dir').addEventListener('click', () => {
+    let score = 0; let total = 0;
+    document.querySelectorAll('.dir-picture-card').forEach(card => {
+      const correct = card.dataset.correct;
+      const slot = card.querySelector('.dir-answer-slot');
+      if (!slot || slot.dataset.filled !== '1') return;
+      const given = slot.textContent.trim();
+      // Skip pre-filled "Go north."
+      if (given === 'Go north.' && correct === 'Go north.') { score++; total++; return; }
+      total++;
+      card.classList.remove('matched','wrong-drop');
+      if (given === correct) { card.classList.add('matched'); score++; }
+      else { card.classList.add('wrong-drop'); }
+    });
+    const res = document.getElementById('dir-result');
+    res.textContent = `You matched ${score} / ${total} correctly! ${score === total ? '🎉 All correct!' : score >= total*0.6 ? '👍 Good effort!' : '📚 Try again!'}`;
+    res.style.color = score === total ? '#00b894' : '#e17055';
+  });
+
+  // ===== QUIZ =====
+  const quizData = [
+    {
+      q: "Which sentence is an imperative?",
+      options: ["She is eating pizza.", "Are you hungry?", "Eat your pizza.", "I ate pizza."],
+      answer: 2, type: "mcq",
+      explanation: "\"Eat your pizza.\" uses the base verb directly — that's an imperative!"
+    },
+    {
+      q: "True or False: \"Don't shout in the library!\" is a negative imperative.",
+      options: ["True", "False"],
+      answer: 0, type: "tf",
+      explanation: "TRUE! It begins with \"Don't\" — so it is a negative imperative."
+    },
+    {
+      q: "Which word begins a polite imperative (request)?",
+      options: ["Never", "Please", "Always", "Don't"],
+      answer: 1, type: "mcq",
+      explanation: "\"Please\" or \"Kindly\" are used with imperatives to make polite requests."
+    },
+    {
+      q: "\"Let's go to the park.\" is an example of which type of imperative?",
+      options: ["Order", "Advice", "Suggestion", "Warning"],
+      answer: 2, type: "mcq",
+      explanation: "\"Let's\" introduces a suggestion — the speaker includes themselves!"
+    },
+    {
+      q: "True or False: Imperatives always need a subject like \"you\" or \"he\".",
+      options: ["True", "False"],
+      answer: 1, type: "tf",
+      explanation: "FALSE! Imperatives do NOT need a subject. They start directly with the verb."
+    },
+    {
+      q: "Which of these is a negative imperative?",
+      options: ["Please sit down.", "Come here.", "Never touch that plant.", "Let's read a book."],
+      answer: 2, type: "mcq",
+      explanation: "\"Never touch that plant.\" begins with \"Never\" — a negative imperative."
+    },
+    {
+      q: "\"Always cross the road carefully.\" is an example of:",
+      options: ["Request", "Order", "Advice", "Suggestion"],
+      answer: 2, type: "mcq",
+      explanation: "This sentence gives helpful advice about road safety."
+    },
+    {
+      q: "True or False: \"Do not open this window.\" and \"Don't open this window.\" mean the same thing.",
+      options: ["True", "False"],
+      answer: 0, type: "tf",
+      explanation: "TRUE! \"Do not\" and \"Don't\" are the same — \"Don't\" is just the short form (contraction)."
+    }
+  ];
+
+  let currentQ = 0;
+  let userAnswers = new Array(quizData.length).fill(null);
+  let quizAnswered = new Array(quizData.length).fill(false);
+
+  function buildQuiz() {
+    const container = document.getElementById('quiz-questions');
+    container.innerHTML = '';
+    quizData.forEach((q, qi) => {
+      const card = document.createElement('div');
+      card.className = 'question-card' + (qi === 0 ? ' active' : '');
+      card.id = `qcard-${qi}`;
+      card.innerHTML = `
+        <div class="q-number">Question ${qi+1} of ${quizData.length} · ${q.type === 'tf' ? 'True / False' : 'Multiple Choice'}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-options">
+          ${q.options.map((o, oi) => `<button class="q-option" data-qi="${qi}" data-oi="${oi}">${o}</button>`).join('')}
+        </div>
+        <div class="q-feedback" id="qfb-${qi}"></div>
+        <div class="quiz-nav">
+          ${qi > 0 ? `<button class="quiz-nav-btn btn-prev" data-dir="prev" data-qi="${qi}">⬅ Previous</button>` : ''}
+          ${qi < quizData.length - 1 
+            ? `<button class="quiz-nav-btn btn-next" data-dir="next" data-qi="${qi}">Next ➡</button>` 
+            : `<button class="quiz-nav-btn btn-next" data-dir="finish" data-qi="${qi}">Finish 🎉</button>`}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Option click
+    document.querySelectorAll('.q-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const qi = parseInt(this.dataset.qi);
+        const oi = parseInt(this.dataset.oi);
+        if (quizAnswered[qi]) return;
+        quizAnswered[qi] = true;
+        userAnswers[qi] = oi;
+        const options = document.querySelectorAll(`.q-option[data-qi="${qi}"]`);
+        options.forEach(o => o.setAttribute('disabled', true));
+        const correct = quizData[qi].answer;
+        options[oi].classList.add(oi === correct ? 'correct' : 'wrong');
+        if (oi !== correct) options[correct].classList.add('reveal-correct');
+        const fb = document.getElementById(`qfb-${qi}`);
+        if (fb) {
+          fb.textContent = oi === correct ? `✅ Correct! ${quizData[qi].explanation}` : `❌ Not quite! ${quizData[qi].explanation}`;
+          fb.className = 'q-feedback ' + (oi === correct ? 'good' : 'bad');
+        }
+        updateQuizProgress();
+      });
+    });
+
+    // Nav click
+    document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const dir = this.dataset.dir;
+        const qi = parseInt(this.dataset.qi);
+        if (dir === 'next' || dir === 'prev') {
+          const next = dir === 'next' ? qi + 1 : qi - 1;
+          document.getElementById(`qcard-${qi}`).classList.remove('active');
+          document.getElementById(`qcard-${next}`).classList.add('active');
+          currentQ = next;
+          updateQuizProgress();
+        } else if (dir === 'finish') {
+          showScore();
+        }
+      });
+    });
+  }
+
+  function updateQuizProgress() {
+    const answered = quizAnswered.filter(Boolean).length;
+    const pct = ((currentQ + 1) / quizData.length) * 100;
+    const prog = document.getElementById('quiz-prog');
+    if (prog) prog.style.width = pct + '%';
+  }
+
+  function showScore() {
+    let score = 0;
+    quizData.forEach((q, i) => { if (userAnswers[i] === q.answer) score++; });
+    document.querySelectorAll('.question-card').forEach(c => c.style.display = 'none');
+    const sc = document.getElementById('score-card');
+    sc.style.display = 'block';
+    document.getElementById('score-text').textContent = `${score}/8`;
+
+    const circumference = 471;
+    const offset = circumference - (score / 8) * circumference;
+    const circle = document.getElementById('score-circle');
+    setTimeout(() => { if (circle) circle.style.strokeDashoffset = offset; }, 200);
+
+    const pct = Math.round((score / 8) * 100);
+    let msg = '';
+    if (pct === 100) msg = '🌟 Perfect Score! You\'re an Imperatives Expert!';
+    else if (pct >= 75) msg = '🎉 Great Job! You really understand imperatives!';
+    else if (pct >= 50) msg = '👍 Good effort! Review the examples and try again.';
+    else msg = '📚 Keep practising! Read the lesson again carefully.';
+    document.getElementById('score-msg').textContent = msg;
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(sc, { scale: 0.85, opacity: 0, duration: 0.6, ease: 'back.out(1.5)' });
+      }
+    } catch(e) {}
+  }
+
+  document.getElementById('retry-btn').addEventListener('click', () => {
+    currentQ = 0;
+    userAnswers = new Array(quizData.length).fill(null);
+    quizAnswered = new Array(quizData.length).fill(false);
+    document.getElementById('score-card').style.display = 'none';
+    document.querySelectorAll('.question-card').forEach(c => { c.style.display = ''; c.classList.remove('active'); });
+    document.getElementById('qcard-0').classList.add('active');
+    document.querySelectorAll('.q-option').forEach(o => {
+      o.removeAttribute('disabled');
+      o.classList.remove('correct','wrong','reveal-correct');
+    });
+    document.querySelectorAll('.q-feedback').forEach(f => { f.textContent = ''; f.className = 'q-feedback'; });
+    updateQuizProgress();
+    document.getElementById('quiz-prog').style.width = '0%';
+    document.getElementById('score-circle').style.strokeDashoffset = '471';
+  });
+
+  buildQuiz();
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

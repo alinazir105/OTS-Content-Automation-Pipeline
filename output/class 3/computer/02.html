@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Introduction to Operating System | Class 3 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;margin:0;padding:0;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;font-size:18px;background:#F8F9FA;color:#2d3436}
+
+/* Loading Curtain */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#48DBFB,#F9CA24);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#curtain .curtain-icon{font-size:72px;animation:bounce 0.8s infinite alternate}
+#curtain h2{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,3vw,2rem);color:#fff;font-weight:700}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-15px)}}
+
+/* Progress Breadcrumb */
+.progress-bar{background:#fff;border-bottom:2px solid #e0e0e0;padding:14px 40px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:8px;overflow-x:auto;flex-wrap:nowrap}
+.progress-bar a{font-family:'Poppins',sans-serif;font-size:14px;color:#636e72;text-decoration:none;white-space:nowrap;padding:6px 14px;border-radius:20px;transition:all 0.3s;font-weight:500}
+.progress-bar a.active{background:#48DBFB;color:#fff;font-weight:700}
+.progress-bar a:hover{background:#F9CA24;color:#2d3436}
+.progress-bar span{color:#b2bec3;font-size:14px}
+
+/* Layout */
+.page-wrapper{width:100%;display:flex;position:relative}
+.sidebar{width:260px;min-width:260px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;background:#fff;border-right:2px solid #e0e0e0;padding:24px 0;flex-shrink:0}
+.sidebar h3{font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#636e72;text-transform:uppercase;letter-spacing:1px;padding:0 24px 12px}
+.sidebar ul{list-style:none}
+.sidebar ul li a{display:block;padding:10px 24px;font-size:15px;color:#2d3436;text-decoration:none;border-left:3px solid transparent;transition:all 0.3s;font-family:'Inter',sans-serif}
+.sidebar ul li a:hover,.sidebar ul li a.active{border-left-color:#48DBFB;background:#f0fdff;color:#48DBFB;font-weight:600}
+.main-content{flex:1;min-width:0}
+
+/* Hero */
+.hero{width:100%;background:linear-gradient(135deg,#2d3436 0%,#0984e3 50%,#48DBFB 100%);min-height:80vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:60px 40px}
+.hero-inner{max-width:1500px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-text h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;font-weight:800;line-height:1.1;margin-bottom:20px}
+.hero-text h1 span{color:#F9CA24}
+.hero-text p{font-size:clamp(1rem,2vw,1.3rem);color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:30px}
+.hero-badge{display:inline-block;background:#F9CA24;color:#2d3436;padding:8px 20px;border-radius:30px;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;margin-bottom:16px}
+.hero-svg-wrap{display:flex;justify-content:center;align-items:center}
+.hero-svg{width:100%;max-width:380px}
+
+/* Section headers */
+.section-header{width:100%;background:linear-gradient(90deg,#48DBFB,#0984e3);padding:28px 40px;margin:0}
+.section-header.coral{background:linear-gradient(90deg,#FF6B6B,#e17055)}
+.section-header.yellow{background:linear-gradient(90deg,#F9CA24,#f0932b)}
+.section-header.purple{background:linear-gradient(90deg,#a29bfe,#6c5ce7)}
+.section-header.green{background:linear-gradient(90deg,#55efc4,#00b894)}
+.section-header h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);color:#fff;font-weight:700}
+.section-header p{color:rgba(255,255,255,0.85);font-size:18px;margin-top:8px}
+
+/* Content sections */
+.content-section{padding:60px 40px;max-width:1500px;margin:0 auto}
+.section-wrap{width:100%;margin-bottom:0}
+
+/* Cards */
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;width:100%;opacity:1;transform:none}
+.card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:12px}
+.card p{font-size:18px;line-height:1.7;color:#636e72}
+
+/* Grid layouts */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+/* OS cards */
+.os-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:24px;text-align:center;transition:transform 0.3s;width:100%}
+.os-card:hover{transform:translateY(-6px)}
+.os-card .os-icon{font-size:52px;margin-bottom:12px}
+.os-card h4{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#2d3436}
+
+/* Component cards */
+.comp-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:24px;border-top:5px solid var(--accent);width:100%}
+.comp-card .comp-icon{font-size:42px;margin-bottom:14px}
+.comp-card h4{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;color:#2d3436}
+.comp-card p{font-size:17px;color:#636e72;line-height:1.6}
+
+/* Windows version timeline */
+.timeline{position:relative;padding:20px 0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:4px;background:linear-gradient(#48DBFB,#F9CA24);transform:translateX(-50%)}
+.timeline-item{display:flex;justify-content:flex-end;padding-right:calc(50% + 30px);margin-bottom:40px;position:relative}
+.timeline-item:nth-child(even){justify-content:flex-start;padding-right:0;padding-left:calc(50% + 30px)}
+.timeline-dot{position:absolute;left:50%;top:16px;width:18px;height:18px;border-radius:50%;background:#48DBFB;border:4px solid #fff;box-shadow:0 0 0 3px #48DBFB;transform:translateX(-50%)}
+.timeline-content{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:18px 22px;max-width:300px;width:100%}
+.timeline-content h4{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#0984e3;margin-bottom:6px}
+.timeline-content p{font-size:17px;color:#636e72}
+
+/* Mermaid diagram */
+.diagram-wrap{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;width:100%}
+
+/* Quiz */
+.quiz-section{padding:60px 40px;background:#f0fdff}
+.quiz-wrap{max-width:1500px;margin:0 auto}
+.quiz-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;margin-bottom:24px;width:100%}
+.quiz-q{font-family:'Poppins',sans-serif;font-size:18px;font-weight:600;margin-bottom:16px;color:#2d3436}
+.quiz-q span{color:#48DBFB;margin-right:8px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quiz-opt{background:#F8F9FA;border:2px solid #e0e0e0;border-radius:10px;padding:14px 18px;font-size:17px;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif;min-height:48px;text-align:left;width:100%}
+.quiz-opt:hover{border-color:#48DBFB;background:#f0fdff}
+.quiz-opt.correct{background:#55efc4;border-color:#00b894;color:#00b894;font-weight:600}
+.quiz-opt.wrong{background:#fab1a0;border-color:#e17055;color:#d63031;font-weight:600}
+.quiz-tf{display:flex;gap:16px}
+.quiz-tf .quiz-opt{flex:1}
+.quiz-btn{background:linear-gradient(90deg,#48DBFB,#0984e3);color:#fff;border:none;border-radius:30px;padding:16px 40px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:20px;transition:transform 0.2s}
+.quiz-btn:hover{transform:scale(1.04)}
+.score-card{background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.12);padding:48px;text-align:center;display:none;width:100%}
+.score-card h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#2d3436;margin-bottom:12px}
+.score-card p{font-size:20px;color:#636e72;margin-bottom:32px}
+.score-circle-wrap{display:flex;justify-content:center;margin-bottom:32px}
+.score-circle{position:relative;width:160px;height:160px}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:36px;font-weight:800;color:#0984e3}
+.retake-btn{background:linear-gradient(90deg,#F9CA24,#f0932b);color:#2d3436;border:none;border-radius:30px;padding:16px 40px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;cursor:pointer;transition:transform 0.2s}
+.retake-btn:hover{transform:scale(1.04)}
+
+/* Drag and drop */
+.dnd-section{padding:60px 40px;background:#fff3f3}
+.dnd-wrap{max-width:1500px;margin:0 auto}
+.dnd-container{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;width:100%}
+.dnd-diagram{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-bottom:32px}
+.dnd-zones{display:flex;flex-direction:column;gap:16px}
+.drop-zone{border:3px dashed #b2bec3;border-radius:12px;padding:18px 22px;min-height:64px;display:flex;align-items:center;gap:12px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;transition:all 0.3s;background:#F8F9FA}
+.drop-zone.over{border-color:#48DBFB;background:#f0fdff}
+.drop-zone.correct{border-color:#00b894;background:#e8fff6;color:#00b894}
+.drop-zone.wrong{border-color:#e17055;background:#fff0ee;color:#e17055}
+.drop-zone .zone-label{color:#636e72;font-weight:400;font-size:16px;min-width:140px}
+.drop-zone .dropped-item{background:#48DBFB;color:#fff;padding:6px 14px;border-radius:20px;font-size:15px;font-weight:600}
+.drag-labels{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.drag-label{background:linear-gradient(135deg,#48DBFB,#0984e3);color:#fff;padding:12px 20px;border-radius:30px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:grab;transition:transform 0.2s;user-select:none;min-height:48px;display:flex;align-items:center}
+.drag-label:hover{transform:scale(1.06)}
+.drag-label.used{opacity:0.4;cursor:not-allowed}
+.dnd-check-btn{background:linear-gradient(90deg,#55efc4,#00b894);color:#fff;border:none;border-radius:30px;padding:14px 36px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:20px;transition:transform 0.2s}
+.dnd-check-btn:hover{transform:scale(1.04)}
+.dnd-result{font-size:18px;font-family:'Poppins',sans-serif;font-weight:600;margin-top:16px;min-height:28px}
+
+/* Taskbar interactive */
+.taskbar-demo{background:#1e1e2e;border-radius:12px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.taskbar-demo .tb-part{display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 16px;border-radius:8px;transition:background 0.2s}
+.taskbar-demo .tb-part:hover{background:rgba(255,255,255,0.1)}
+.taskbar-demo .tb-part span{color:#fff;font-size:15px;font-family:'Inter',sans-serif}
+.taskbar-demo .tb-icon{font-size:24px}
+.tb-tooltip{background:#F9CA24;color:#2d3436;padding:8px 16px;border-radius:8px;font-size:15px;font-family:'Poppins',sans-serif;font-weight:600;text-align:center;margin-top:12px;min-height:36px;display:flex;align-items:center;justify-content:center}
+
+/* Info box */
+.info-box{background:linear-gradient(135deg,#f9ca2420,#48dbfb20);border-left:5px solid #F9CA24;border-radius:12px;padding:24px 28px;margin:20px 0;width:100%}
+.info-box h4{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#f0932b;margin-bottom:8px}
+.info-box p{font-size:18px;color:#2d3436;line-height:1.7}
+
+/* Desktop Icons visual */
+.desktop-icons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.desktop-icon-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:28px;text-align:center;border-top:5px solid var(--accent);width:100%}
+.desktop-icon-card .icon-emoji{font-size:56px;margin-bottom:14px}
+.desktop-icon-card h4{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#2d3436;margin-bottom:8px}
+.desktop-icon-card p{font-size:17px;color:#636e72;line-height:1.6}
+
+/* Fun fact */
+.fun-fact{background:linear-gradient(135deg,#a29bfe,#6c5ce7);border-radius:16px;padding:28px 32px;color:#fff;text-align:center;margin:20px 0;width:100%}
+.fun-fact h4{font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
+.fun-fact p{font-size:18px;opacity:0.9;line-height:1.6}
+
+/* Counters */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:40px 0}
+.stat-card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:32px;text-align:center;width:100%}
+.stat-num{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:#0984e3}
+.stat-label{font-size:17px;color:#636e72;margin-top:8px}
+
+/* Exercise fill blanks */
+.exercise-wrap{max-width:1500px;margin:0 auto;padding:60px 40px}
+.word-bank{display:flex;flex-wrap:wrap;gap:12px;background:#f0fdff;border-radius:12px;padding:20px;margin-bottom:28px}
+.word-chip{background:#48DBFB;color:#fff;padding:8px 18px;border-radius:20px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600}
+.fill-item{background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06);padding:22px 28px;margin-bottom:16px;font-size:18px;line-height:1.7;color:#2d3436;width:100%}
+.fill-input{border:2px solid #48DBFB;border-radius:8px;padding:6px 14px;font-size:17px;font-family:'Inter',sans-serif;width:160px;outline:none;background:#f0fdff;transition:border-color 0.3s}
+.fill-input:focus{border-color:#0984e3}
+.fill-input.correct-fill{border-color:#00b894;background:#e8fff6;color:#00b894;font-weight:600}
+.fill-input.wrong-fill{border-color:#e17055;background:#fff0ee;color:#e17055}
+.check-fill-btn{background:linear-gradient(90deg,#FF6B6B,#e17055);color:#fff;border:none;border-radius:30px;padding:14px 36px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:16px;transition:transform 0.2s}
+.check-fill-btn:hover{transform:scale(1.04)}
+.fill-feedback{font-size:18px;font-family:'Poppins',sans-serif;font-weight:600;margin-top:14px;min-height:28px}
+
+/* Mobile bottom nav */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #e0e0e0;z-index:200;overflow-x:auto;padding:0}
+.mobile-bottom-nav ul{display:flex;list-style:none;padding:0;margin:0;min-width:max-content}
+.mobile-bottom-nav ul li a{display:flex;flex-direction:column;align-items:center;padding:10px 16px;font-size:13px;color:#636e72;text-decoration:none;font-family:'Poppins',sans-serif;font-weight:500;min-width:64px;min-height:56px;justify-content:center;gap:4px;white-space:nowrap}
+.mobile-bottom-nav ul li a.active{color:#48DBFB;font-weight:700}
+.mobile-bottom-nav ul li a .nav-icon{font-size:20px}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobile-bottom-nav{display:block}
+  .main-content{padding-bottom:80px}
+  .hero{min-height:60vh;padding:40px 20px}
+  .hero-inner{grid-template-columns:1fr;gap:32px;text-align:center}
+  .hero-svg-wrap{display:none}
+  .content-section{padding:40px 20px}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+  .timeline::before{left:20px}
+  .timeline-item{padding-right:0;padding-left:50px;justify-content:flex-start}
+  .timeline-item:nth-child(even){padding-left:50px;padding-right:0;justify-content:flex-start}
+  .timeline-dot{left:20px}
+  .timeline-content{max-width:100%}
+  .dnd-diagram{grid-template-columns:1fr}
+  .desktop-icons-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr}
+  .progress-bar{padding:10px 20px}
+  .section-header{padding:20px}
+  .exercise-wrap{padding:40px 20px}
+  .dnd-section{padding:40px 20px}
+  .quiz-section{padding:40px 20px}
+  .taskbar-demo{flex-direction:column;align-items:flex-start}
+  .quiz-tf{flex-direction:column}
+}
+@media(max-width:480px){
+  .fill-input{width:120px}
+  .word-bank{gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-icon">💻</div>
+  <h2>Loading Operating System Lesson...</h2>
+</div>
+
+<!-- Progress Breadcrumb -->
+<nav class="progress-bar" id="breadcrumb">
+  <a href="#hero" class="active" data-section="hero">🏠 Home</a>
+  <span>›</span>
+  <a href="#intro" data-section="intro">📖 Introduction</a>
+  <span>›</span>
+  <a href="#functions" data-section="functions">⚙️ Functions</a>
+  <span>›</span>
+  <a href="#windows" data-section="windows">🪟 Windows</a>
+  <span>›</span>
+  <a href="#desktop" data-section="desktop">🖥️ Desktop</a>
+  <span>›</span>
+  <a href="#components" data-section="components">🔧 Components</a>
+  <span>›</span>
+  <a href="#activity" data-section="activity">🎯 Activity</a>
+  <span>›</span>
+  <a href="#quiz" data-section="quiz">📝 Quiz</a>
+</nav>
+
+<!-- Page wrapper -->
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Unit 2 Contents</h3>
+    <ul id="sidebar-nav">
+      <li><a href="#hero" class="active">🏠 Introduction</a></li>
+      <li><a href="#intro">📖 What is an OS?</a></li>
+      <li><a href="#functions">⚙️ OS Functions</a></li>
+      <li><a href="#windows">🪟 MS Windows</a></li>
+      <li><a href="#desktop">🖥️ Windows Desktop</a></li>
+      <li><a href="#components">🔧 Taskbar Parts</a></li>
+      <li><a href="#icons">🖼️ Desktop Icons</a></li>
+      <li><a href="#activity">🎯 Fill Blanks</a></li>
+      <li><a href="#dnd">🔗 Match Activity</a></li>
+      <li><a href="#quiz">📝 Quiz</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="hero-badge">Unit 2 | Class 3 Computer</div>
+          <h1>Introduction to <span>Operating System</span></h1>
+          <p>Discover the software that powers your computer! Learn about Windows, desktops, taskbars, and more in this fun lesson.</p>
+        </div>
+        <div class="hero-svg-wrap">
+          <svg class="hero-svg" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Monitor -->
+            <rect x="60" y="40" width="280" height="190" rx="14" fill="#2d3436" stroke="#48DBFB" stroke-width="4"/>
+            <rect x="75" y="55" width="250" height="160" rx="8" fill="#0984e3"/>
+            <!-- Windows logo on screen -->
+            <rect x="140" y="95" width="50" height="50" rx="4" fill="none" stroke="#fff" stroke-width="3" id="win-rect"/>
+            <line x1="165" y1="95" x2="165" y2="145" stroke="#fff" stroke-width="3" id="win-v"/>
+            <line x1="140" y1="120" x2="190" y2="120" stroke="#fff" stroke-width="3" id="win-h"/>
+            <!-- Windows 4 panes -->
+            <rect x="145" y="100" width="18" height="18" rx="2" fill="#F9CA24" opacity="0"/>
+            <rect x="167" y="100" width="18" height="18" rx="2" fill="#48DBFB" opacity="0"/>
+            <rect x="145" y="122" width="18" height="18" rx="2" fill="#FF6B6B" opacity="0"/>
+            <rect x="167" y="122" width="18" height="18" rx="2" fill="#55efc4" opacity="0"/>
+            <!-- Taskbar on screen -->
+            <rect x="75" y="195" width="250" height="20" rx="0" fill="#1e1e2e"/>
+            <circle cx="165" cy="205" r="6" fill="#48DBFB"/>
+            <!-- Stand -->
+            <rect x="178" y="230" width="44" height="20" rx="4" fill="#636e72"/>
+            <rect x="150" y="248" width="100" height="12" rx="6" fill="#636e72"/>
+            <!-- Animated path -->
+            <path id="hero-path" d="M 80 280 Q 200 260 320 280" fill="none" stroke="#F9CA24" stroke-width="4" stroke-dasharray="300" stroke-dashoffset="300"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <div class="section-wrap" id="intro">
+      <div class="section-header">
+        <h2>📖 What is an Operating System?</h2>
+        <p>The first software that loads when you switch on your computer</p>
+      </div>
+      <div class="content-section">
+        <div class="grid-2">
+          <div>
+            <div class="info-box">
+              <h4>💡 Did You Know?</h4>
+              <p>When you switch on the computer, the very first software that loads on its own is the <strong>Operating System</strong>! This loading process is called <strong>Booting</strong>.</p>
+            </div>
+            <div class="card" style="margin-top:24px">
+              <h3 style="color:#0984e3">What is an OS? 🤔</h3>
+              <p>An <strong>operating system</strong> is a software that helps us use the computer. It manages and controls different parts of the computer, making them work together.</p>
+              <p style="margin-top:12px">Think of it like the <strong>principal of a school</strong> — it manages everything so all the parts work together smoothly!</p>
+            </div>
+            <div class="fun-fact" style="margin-top:24px">
+              <h4>🚀 Booting Explained!</h4>
+              <p>Loading the operating system into the computer's memory when you switch it on is called <strong>Booting</strong>. Just like warming up before a race!</p>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="color:#FF6B6B">Popular Operating Systems 🌍</h3>
+              <p style="margin-bottom:20px">There are many operating systems in the world. Here are the most popular ones:</p>
+              <div class="grid-2" style="gap:16px">
+                <div class="os-card">
+                  <div class="os-icon">🤖</div>
+                  <h4>Android</h4>
+                </div>
+                <div class="os-card">
+                  <div class="os-icon">🍎</div>
+                  <h4>Mac OS</h4>
+                </div>
+                <div class="os-card">
+                  <div class="os-icon">🪟</div>
+                  <h4>Windows</h4>
+                </div>
+                <div class="os-card">
+                  <div class="os-icon">🐧</div>
+                  <h4>Linux</h4>
+                </div>
+                <div class="os-card">
+                  <div class="os-icon">📱</div>
+                  <h4>iOS</h4>
+                </div>
+                <div class="os-card">
+                  <div class="os-icon">💼</div>
+                  <h4>IBM</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNCTIONS -->
+    <div class="section-wrap" id="functions">
+      <div class="section-header coral">
+        <h2>⚙️ Functions of Operating System</h2>
+        <p>The OS is the master control program of your computer</p>
+      </div>
+      <div class="content-section">
+        <div class="grid-2" style="margin-bottom:40px">
+          <div class="card">
+            <h3 style="color:#FF6B6B">The Master Controller 🎮</h3>
+            <p>The operating system manages <strong>every activity</strong> of a computer. It is the master control program that provides an interface for a user to communicate with the computer.</p>
+            <p style="margin-top:14px">Both <strong>System Software</strong> and <strong>Application Software</strong> run on top of the operating system.</p>
+          </div>
+          <div class="diagram-wrap">
+            <h3 style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;color:#2d3436;text-align:center">OS Layers Diagram</h3>
+            <div class="mermaid">
+graph TD
+    A[👤 User] --> B[📱 Application Software]
+    A --> C[🔧 System Software]
+    B --> D[💻 Operating System]
+    C --> D
+    D --> E[🖥️ Hardware]
+    E --> F[⚡ CPU]
+    E --> G[🧠 RAM]
+    E --> H[📡 I/O Devices]
+    style A fill:#F9CA24,stroke:#f0932b,color:#2d3436
+    style D fill:#48DBFB,stroke:#0984e3,color:#2d3436
+    style E fill:#FF6B6B,stroke:#e17055,color:#fff
+            </div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num" data-target="6">0</div>
+            <div class="stat-label">Popular OS Examples</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" data-target="7">0</div>
+            <div class="stat-label">Windows Versions Listed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" data-target="5">0</div>
+            <div class="stat-label">Desktop Components</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WINDOWS -->
+    <div class="section-wrap" id="windows">
+      <div class="section-header yellow">
+        <h2>🪟 MS Windows</h2>
+        <p>The most popular operating system developed by Microsoft Corporation, USA</p>
+      </div>
+      <div class="content-section">
+        <div class="grid-2" style="margin-bottom:40px">
+          <div class="card">
+            <h3 style="color:#f0932b">What is MS Windows? 🪟</h3>
+            <p>MS Windows is a popular operating system (OS) developed by <strong>Microsoft Corporation, USA</strong>. It is used on millions of computers around the world!</p>
+            <p style="margin-top:14px">Windows uses a <strong>Graphical User Interface (GUI)</strong> — which means you can see pictures, click buttons, and use menus instead of typing commands.</p>
+            <div class="info-box" style="margin-top:20px">
+              <h4>🔤 What does GUI mean?</h4>
+              <p><strong>Graphical User Interface</strong> — An interface with visual elements like buttons, icons, and menus that make computers easy to use!</p>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="color:#f0932b">Windows Versions Timeline 📅</h3>
+              <div class="timeline" style="margin-top:24px">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>Windows 95</h4>
+                    <p>The beginning of the modern Windows era!</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:#F9CA24;box-shadow:0 0 0 3px #F9CA24"></div>
+                  <div class="timeline-content">
+                    <h4>Windows XP</h4>
+                    <p>One of the most loved Windows versions.</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:#FF6B6B;box-shadow:0 0 0 3px #FF6B6B"></div>
+                  <div class="timeline-content">
+                    <h4>Windows 7</h4>
+                    <p>Fast, reliable and very popular!</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:#a29bfe;box-shadow:0 0 0 3px #a29bfe"></div>
+                  <div class="timeline-content">
+                    <h4>Windows 8 & 10</h4>
+                    <p>Touch-friendly and modern designs.</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:#00b894;box-shadow:0 0 0 3px #00b894"></div>
+                  <div class="timeline-content">
+                    <h4>Windows 11</h4>
+                    <p>The latest version with a centred taskbar!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP -->
+    <div class="section-wrap" id="desktop">
+      <div class="section-header purple">
+        <h2>🖥️ Windows Desktop</h2>
+        <p>Your digital workspace — the first screen you see when you turn on the computer</p>
+      </div>
+      <div class="content-section">
+        <div class="card" style="margin-bottom:28px">
+          <h3 style="color:#6c5ce7">What is the Desktop? 🖥️</h3>
+          <p>Upon powering on your computer, the first screen to greet you is the <strong>Desktop</strong>, which acts as your digital workspace. It features several key components that help you use the computer easily.</p>
+        </div>
+        <div class="grid-3">
+          <div class="comp-card" style="--accent:#F9CA24">
+            <div class="comp-icon">🖼️</div>
+            <h4>Wallpaper</h4>
+            <p>The <strong>Wallpaper</strong> forms the background of your desktop, offering a visual canvas that users can personalize with their favourite pictures.</p>
+          </div>
+          <div class="comp-card" style="--accent:#48DBFB">
+            <div class="comp-icon">🔲</div>
+            <h4>Icons</h4>
+            <p><strong>Icons</strong> are small graphical representations of programs, files, or system functions, serving as shortcuts for easy access.</p>
+          </div>
+          <div class="comp-card" style="--accent:#FF6B6B">
+            <div class="comp-icon">📋</div>
+            <h4>Taskbar</h4>
+            <p>At the bottom of the desktop is the <strong>Taskbar</strong>, now centred in Windows 11, which serves as a hub for managing open windows.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Taskbar Demo -->
+        <div style="margin-top:40px">
+          <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:16px;color:#2d3436">🖱️ Interactive Taskbar — Click to Learn!</h3>
+          <p style="margin-bottom:16px;color:#636e72;font-size:18px">Click on any part of the taskbar below to learn what it does:</p>
+          <div class="taskbar-demo" id="taskbar-demo">
+            <div class="tb-part" data-info="Start Button: Click this to open the Start Menu — your gateway to all programs, settings, and files!" onclick="showTbInfo(this)">
+              <span class="tb-icon">⊞</span>
+              <span>Start</span>
+            </div>
+            <div class="tb-part" data-info="Search: Use this to quickly find any file, app, or setting on your computer!" onclick="showTbInfo(this)">
+              <span class="tb-icon">🔍</span>
+              <span>Search</span>
+            </div>
+            <div class="tb-part" data-info="Middle Section: This shows all currently open programs and files. Click to switch between them easily!" onclick="showTbInfo(this)">
+              <span class="tb-icon">🌐</span>
+              <span>Edge</span>
+            </div>
+            <div class="tb-part" data-info="Middle Section: This shows all currently open programs and files. Click to switch between them easily!" onclick="showTbInfo(this)">
+              <span class="tb-icon">📁</span>
+              <span>Files</span>
+            </div>
+            <div class="tb-part" data-info="Widgets: A customizable panel that provides quick access to news, weather, and other information!" onclick="showTbInfo(this)">
+              <span class="tb-icon">🌤️</span>
+              <span>Widgets</span>
+            </div>
+            <div class="tb-part" style="margin-left:auto" data-info="System Tray: Displays essential information including date, time, battery life, and notifications from apps!" onclick="showTbInfo(this)">
+              <span class="tb-icon">🔔</span>
+              <span>🕐 2:09 PM</span>
+            </div>
+          </div>
+          <div class="tb-tooltip" id="tb-tooltip">👆 Click on any taskbar item above to learn about it!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPONENTS -->
+    <div class="section-wrap" id="components">
+      <div class="section-header green">
+        <h2>🔧 Components of the Taskbar</h2>
+        <p>Each part of the taskbar has a special job to do!</p>
+      </div>
+      <div class="content-section">
+        <div class="grid-2" style="margin-bottom:28px">
+          <div class="comp-card" style="--accent:#48DBFB">
+            <div class="comp-icon">⊞</div>
+            <h4>Start Button</h4>
+            <p>Located at the <strong>centre of the taskbar</strong>. Clicking it reveals the <strong>Start Menu</strong> — a simplified layout with pinned apps and recommended files, allowing quick access to your programs and settings.</p>
+          </div>
+          <div class="comp-card" style="--accent:#F9CA24">
+            <div class="comp-icon">📊</div>
+            <h4>Middle Section</h4>
+            <p>This section displays your <strong>currently open programs and files</strong>, making it easy to switch between different tasks and applications.</p>
+          </div>
+          <div class="comp-card" style="--accent:#FF6B6B">
+            <div class="comp-icon">⚡</div>
+            <h4>Quick Launch Toolbar</h4>
+            <p>The Quick Launch Toolbar enables <strong>fast access to frequently used applications</strong>. Your favourite programs are always just one click away!</p>
+          </div>
+          <div class="comp-card" style="--accent:#a29bfe">
+            <div class="comp-icon">🕐</div>
+            <h4>System Tray</h4>
+            <p>The System Tray displays essential information including the <strong>date, time, battery life, and notifications</strong> from apps. Found at the right side of the taskbar.</p>
+          </div>
+          <div class="comp-card" style="--accent:#55efc4">
+            <div class="comp-icon">🌤️</div>
+            <h4>Widgets</h4>
+            <p>Windows 11 features Widgets — a <strong>customizable panel</strong> that provides quick access to news, weather, and other information, enhancing your productivity.</p>
+          </div>
+          <div class="comp-card" style="--accent:#fd79a8">
+            <div class="comp-icon">🗑️</div>
+            <h4>Recycle Bin</h4>
+            <p>The Recycle Bin <strong>temporarily stores deleted files</strong>, providing a way to recover items before they are permanently deleted from your computer.</p>
+          </div>
+        </div>
+
+        <div class="diagram-wrap">
+          <h3 style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;color:#2d3436;text-align:center">📊 Taskbar Components Overview</h3>
+          <div class="mermaid">
+graph LR
+    TB[📋 Taskbar] --> SB[⊞ Start Button]
+    TB --> MS[📊 Middle Section]
+    TB --> QLT[⚡ Quick Launch]
+    TB --> ST[🕐 System Tray]
+    TB --> W[🌤️ Widgets]
+    SB --> SM[Opens Start Menu]
+    MS --> OP[Shows Open Programs]
+    ST --> DT[Date & Time & Notifications]
+    style TB fill:#48DBFB,stroke:#0984e3,color:#2d3436,font-weight:bold
+    style SB fill:#F9CA24,stroke:#f0932b,color:#2d3436
+    style ST fill:#FF6B6B,stroke:#e17055,color:#fff
+    style W fill:#55efc4,stroke:#00b894,color:#2d3436
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP ICONS -->
+    <div class="section-wrap" id="icons">
+      <div class="section-header coral">
+        <h2>🖼️ Desktop Icons</h2>
+        <p>Important icons you will find on every computer desktop</p>
+      </div>
+      <div class="content-section">
+        <p style="font-size:18px;color:#636e72;margin-bottom:28px">In the school computer lab, you may notice certain icons present on each desktop. These serve as access points for important system functions:</p>
+        <div class="desktop-icons-grid">
+          <div class="desktop-icon-card" style="--accent:#48DBFB">
+            <div class="icon-emoji">🖥️</div>
+            <h4>This PC</h4>
+            <p>The <strong>This PC</strong> icon allows access to all files and folders on your computer. Click it to see everything stored on your computer!</p>
+          </div>
+          <div class="desktop-icon-card" style="--accent:#F9CA24">
+            <div class="icon-emoji">🌐</div>
+            <h4>Network</h4>
+            <p>The <strong>Network</strong> icon enables connection and sharing with other devices on the same network. Use it to connect with other computers!</p>
+          </div>
+          <div class="desktop-icon-card" style="--accent:#FF6B6B">
+            <div class="icon-emoji">🗑️</div>
+            <h4>Recycle Bin</h4>
+            <p>The <strong>Recycle Bin</strong> temporarily stores deleted files, providing a way to recover items before permanent deletion. Like a safety net!</p>
+          </div>
+        </div>
+        <div class="fun-fact" style="margin-top:32px">
+          <h4>🎉 Fun Fact!</h4>
+          <p>In Windows 11, the Taskbar is centred in the middle of the screen — unlike older versions where it was always on the left side! This makes it look sleeker and more modern.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILL IN BLANKS ACTIVITY -->
+    <div class="section-wrap" id="activity">
+      <div class="section-header yellow">
+        <h2>✏️ Fill in the Blanks</h2>
+        <p>Use the word bank to complete each sentence!</p>
+      </div>
+      <div class="exercise-wrap">
+        <div class="word-bank">
+          <div class="word-chip">operating system</div>
+          <div class="word-chip">booting</div>
+          <div class="word-chip">desktop</div>
+          <div class="word-chip">icons</div>
+          <div class="word-chip">taskbar</div>
+        </div>
+        <div class="fill-item">
+          1. The process of loading the <input class="fill-input" id="fill1" placeholder="type here..." data-answer="operating system"> into the computer's memory is called <input class="fill-input" id="fill2" placeholder="type here..." data-answer="booting">.
+        </div>
+        <div class="fill-item">
+          2. The <input class="fill-input" id="fill3" placeholder="type here..." data-answer="desktop"> acts as your digital workspace where various components are displayed.
+        </div>
+        <div class="fill-item">
+          3. Small graphical representations of programs and files are called <input class="fill-input" id="fill4" placeholder="type here..." data-answer="icons">.
+        </div>
+        <div class="fill-item">
+          4. The <input class="fill-input" id="fill5" placeholder="type here..." data-answer="taskbar"> at the bottom of the desktop helps manage open windows and provides quick access to applications.
+        </div>
+        <div>
+          <button class="check-fill-btn" onclick="checkFill()">✅ Check Answers</button>
+          <button class="check-fill-btn" style="background:linear-gradient(90deg,#a29bfe,#6c5ce7);margin-left:12px" onclick="resetFill()">🔄 Reset</button>
+          <div class="fill-feedback" id="fill-feedback"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAG AND DROP MATCH -->
+    <div class="dnd-section" id="dnd">
+      <div class="section-header purple" style="margin-bottom:40px">
+        <h2>🔗 Match the Components</h2>
+        <p>Drag the correct function and drop it onto the matching Windows 11 component!</p>
+      </div>
+      <div class="dnd-wrap">
+        <div class="dnd-container">
+          <div class="dnd-diagram">
+            <div class="dnd-zones">
+              <h3 style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;color:#2d3436">🖥️ Components — Drop here</h3>
+              <div class="drop-zone" data-correct="opens-start-menu" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+                <span class="zone-label">⊞ Start Button</span>
+              </div>
+              <div class="drop-zone" data-correct="date-time-notifs" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+                <span class="zone-label">🕐 System Tray</span>
+              </div>
+              <div class="drop-zone" data-correct="fast-access-apps" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+                <span class="zone-label">⚡ Quick Launch Toolbar</span>
+              </div>
+              <div class="drop-zone" data-correct="primary-workspace" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+                <span class="zone-label">🖥️ Desktop</span>
+              </div>
+              <div class="drop-zone" data-correct="displays-open-apps" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+                <span class="zone-label">📊 Middle Section</span>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;color:#2d3436">📋 Functions — Drag from here</h3>
+              <div class="drag-labels" id="drag-labels">
+                <div class="drag-label" draggable="true" data-id="opens-start-menu" ondragstart="dragStart(event)">Opens Start Menu with pinned apps</div>
+                <div class="drag-label" draggable="true" data-id="date-time-notifs" ondragstart="dragStart(event)">Shows date, time & notifications</div>
+                <div class="drag-label" draggable="true" data-id="fast-access-apps" ondragstart="dragStart(event)">Fast access to frequently used apps</div>
+                <div class="drag-label" draggable="true" data-id="primary-workspace" ondragstart="dragStart(event)">Acts as the primary digital workspace</div>
+                <div class="drag-label" draggable="true" data-id="displays-open-apps" ondragstart="dragStart(event)">Displays currently open programs</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <button class="dnd-check-btn" onclick="checkDnd()">✅ Check Matches</button>
+            <button class="dnd-check-btn" style="background:linear-gradient(90deg,#FF6B6B,#e17055)" onclick="resetDnd()">🔄 Reset</button>
+          </div>
+          <div class="dnd-result" id="dnd-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-section" id="quiz">
+      <div class="section-header" style="margin-bottom:40px">
+        <h2>📝 Unit 2 Quiz</h2>
+        <p>Test your knowledge about Operating Systems!</p>
+      </div>
+      <div class="quiz-wrap">
+        <!-- Score card (hidden initially) -->
+        <div class="score-card" id="score-card">
+          <h2>🎉 Quiz Complete!</h2>
+          <p id="score-message">Great job finishing the quiz!</p>
+          <div class="score-circle-wrap">
+            <div class="score-circle">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="66" fill="none" stroke="#e0e0e0" stroke-width="12"/>
+                <circle cx="80" cy="80" r="66" fill="none" stroke="#48DBFB" stroke-width="12" stroke-dasharray="414.69" id="score-arc" stroke-dashoffset="414.69" stroke-linecap="round"/>
+              </svg>
+              <div class="score-num" id="score-display">0/8</div>
+            </div>
+          </div>
+          <button class="retake-btn" onclick="retakeQuiz()">🔄 Try Again</button>
+        </div>
+
+        <!-- Questions -->
+        <div id="quiz-questions">
+          <!-- Q1 -->
+          <div class="quiz-card" data-q="1">
+            <div class="quiz-q"><span>Q1.</span> What does the operating system do?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,1)">A) It helps manage computer hardware and software</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1)">B) It is a type of hardware</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1)">C) It is a computer game</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1)">D) It is used to draw pictures</button>
+            </div>
+          </div>
+          <!-- Q2 -->
+          <div class="quiz-card" data-q="2">
+            <div class="quiz-q"><span>Q2.</span> Which of the following is a popular operating system developed by Microsoft?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="selectOpt(this,2)">A) Linux</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,2)">B) Windows</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2)">C) Android</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2)">D) iOS</button>
+            </div>
+          </div>
+          <!-- Q3 -->
+          <div class="quiz-card" data-q="3">
+            <div class="quiz-q"><span>Q3.</span> In Windows, what is the main area where you can find programs and files?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="selectOpt(this,3)">A) The Taskbar</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,3)">B) The Desktop</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3)">C) The Recycle Bin</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3)">D) The Wallpaper</button>
+            </div>
+          </div>
+          <!-- Q4 -->
+          <div class="quiz-card" data-q="4">
+            <div class="quiz-q"><span>Q4.</span> Which button do you click to open the Start Menu in Windows 11?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="selectOpt(this,4)">A) The Home Button</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,4)">B) The Start Button</button>
+              <button class="quiz-opt" onclick="selectOpt(this,4)">C) The Exit Button</button>
+              <button class="quiz-opt" onclick="selectOpt(this,4)">D) The Power Button</button>
+            </div>
+          </div>
+          <!-- Q5 -->
+          <div class="quiz-card" data-q="5">
+            <div class="quiz-q"><span>Q5.</span> What is the purpose of the Recycle Bin in Windows?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="selectOpt(this,5)">A) To permanently delete files</button>
+              <button class="quiz-opt" onclick="selectOpt(this,5)">B) To store music files</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,5)">C) To store deleted files temporarily</button>
+              <button class="quiz-opt" onclick="selectOpt(this,5)">D) To open programs</button>
+            </div>
+          </div>
+          <!-- Q6 -->
+          <div class="quiz-card" data-q="6">
+            <div class="quiz-q"><span>Q6.</span> In Windows 11, where can you find the date and time displayed?</div>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="selectOpt(this,6)">A) The Desktop</button>
+              <button class="quiz-opt" onclick="selectOpt(this,6)">B) The Start Menu</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,6)">C) The System Tray</button>
+              <button class="quiz-opt" onclick="selectOpt(this,6)">D) The Wallpaper</button>
+            </div>
+          </div>
+          <!-- Q7 True/False -->
+          <div class="quiz-card" data-q="7">
+            <div class="quiz-q"><span>Q7.</span> True or False: The taskbar is located at the TOP of the desktop in Windows 11.</div>
+            <div class="quiz-tf">
+              <button class="quiz-opt" onclick="selectOpt(this,7)">✅ True</button>
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,7)">❌ False</button>
+            </div>
+          </div>
+          <!-- Q8 True/False -->
+          <div class="quiz-card" data-q="8">
+            <div class="quiz-q"><span>Q8.</span> True or False: Widgets in Windows 11 provide quick access to news and weather information.</div>
+            <div class="quiz-tf">
+              <button class="quiz-opt" data-correct="true" onclick="selectOpt(this,8)">✅ True</button>
+              <button class="quiz-opt" onclick="selectOpt(this,8)">❌ False</button>
+            </div>
+          </div>
+
+          <button class="quiz-btn" onclick="submitQuiz()">🎯 Submit Quiz</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <ul>
+    <li><a href="#hero" class="active"><span class="nav-icon">🏠</span>Home</a></li>
+    <li><a href="#intro"><span class="nav-icon">📖</span>Intro</a></li>
+    <li><a href="#functions"><span class="nav-icon">⚙️</span>Functions</a></li>
+    <li><a href="#windows"><span class="nav-icon">🪟</span>Windows</a></li>
+    <li><a href="#desktop"><span class="nav-icon">🖥️</span>Desktop</a></li>
+    <li><a href="#components"><span class="nav-icon">🔧</span>Parts</a></li>
+    <li><a href="#activity"><span class="nav-icon">✏️</span>Activity</a></li>
+    <li><a href="#dnd"><span class="nav-icon">🔗</span>Match</a></li>
+    <li><a href="#quiz"><span class="nav-icon">📝</span>Quiz</a></li>
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK - MUST BE FIRST
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // Initialize Mermaid
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid init error:', e); }
+
+  // Smooth Scroll with Lenis
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // GSAP Animations
+  try {
+    if (typeof gsap !== 'undefined') {
+      // Register ScrollTrigger
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero path drawing animation
+      const heroPath = document.getElementById('hero-path');
+      if (heroPath) {
+        gsap.to(heroPath, { strokeDashoffset: 0, duration: 2, ease: 'power2.out', delay: 0.5 });
+      }
+
+      // Hero SVG panes reveal
+      const panes = document.querySelectorAll('.hero-svg rect[rx="2"]');
+      if (panes.length) {
+        gsap.to(panes, { opacity: 1, duration: 0.4, stagger: 0.2, delay: 1.2, ease: 'back.out(1.7)' });
+      }
+
+      // Hero text
+      gsap.from('.hero-text h1', { y: 50, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.3 });
+      gsap.from('.hero-text p', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.6 });
+      gsap.from('.hero-badge', { scale: 0, opacity: 0, duration: 0.6, ease: 'back.out(1.7)', delay: 0.1 });
+
+      // Cards scroll reveal
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.card, .comp-card, .os-card, .desktop-icon-card, .stat-card, .timeline-content').forEach(el => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+            y: 30, opacity: 0, duration: 0.6, ease: 'power2.out'
+          });
+        });
+
+        // Parallax on section headers
+        gsap.utils.toArray('.section-header').forEach(el => {
+          gsap.fromTo(el, { y: -30 }, {
+            y: 30,
+            scrollTrigger: { trigger: el, scrub: true }
+          });
+        });
+
+        // Counter animation
+        document.querySelectorAll('[data-target]').forEach(el => {
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+              const target = parseInt(el.getAttribute('data-target'));
+              gsap.to({ val: 0 }, {
+                val: target,
+                duration: 1.5,
+                ease: 'power2.out',
+                onUpdate: function() { el.textContent = Math.round(this.targets()[0].val); }
+              });
+            }
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP error:', e); }
+
+  // Dismiss curtain with GSAP or fallback
+  try {
+    const c = document.getElementById('curtain');
+    if (c) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(c, { opacity: 0, duration: 0.8, delay: 1.5, onComplete: () => { c.style.display = 'none'; } });
+      } else {
+        setTimeout(() => { c.style.display = 'none'; }, 1600);
+      }
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // IntersectionObserver for sidebar & breadcrumb
+  try {
+    const sections = document.querySelectorAll('[id]');
+    const sidebarLinks = document.querySelectorAll('#sidebar-nav a');
+    const breadcrumbLinks = document.querySelectorAll('#breadcrumb a');
+    const mobileNavLinks = document.querySelectorAll('.mobile-bottom-nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          sidebarLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+          breadcrumbLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+          mobileNavLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => observer.observe(s));
+  } catch(e) { console.warn('Observer error:', e); }
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+});
+
+// Taskbar interactive
+function showTbInfo(el) {
+  const info = el.getAttribute('data-info');
+  const tooltip = document.getElementById('tb-tooltip');
+  if (tooltip) {
+    tooltip.textContent = '💡 ' + info;
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(tooltip, { scale: 0.9, opacity: 0, duration: 0.3, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  }
+}
+
+// Fill in blanks
+function checkFill() {
+  const answers = { fill1: 'operating system', fill2: 'booting', fill3: 'desktop', fill4: 'icons', fill5: 'taskbar' };
+  let correct = 0;
+  Object.entries(answers).forEach(([id, ans]) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const val = el.value.trim().toLowerCase();
+      if (val === ans) { el.classList.add('correct-fill'); el.classList.remove('wrong-fill'); correct++; }
+      else { el.classList.add('wrong-fill'); el.classList.remove('correct-fill'); }
+    }
+  });
+  const fb = document.getElementById('fill-feedback');
+  if (fb) {
+    if (correct === 5) {
+      fb.textContent = '🎉 Excellent! All 5 answers are correct!';
+      fb.style.color = '#00b894';
+    } else {
+      fb.textContent = `✏️ You got ${correct}/5 correct. Keep trying!`;
+      fb.style.color = '#e17055';
+    }
+  }
+}
+
+function resetFill() {
+  ['fill1','fill2','fill3','fill4','fill5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('correct-fill','wrong-fill'); }
+  });
+  const fb = document.getElementById('fill-feedback');
+  if (fb) fb.textContent = '';
+}
+
+// Drag and Drop
+let draggedId = null;
+
+function dragStart(e) {
+  draggedId = e.target.getAttribute('data-id');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('over');
+}
+
+function dropItem(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('over');
+
+  // Remove any previously dropped item in this zone
+  const existing = zone.querySelector('.dropped-item');
+  if (existing) {
+    const exId = existing.getAttribute('data-id');
+    const label = document.querySelector(`.drag-label[data-id="${exId}"]`);
+    if (label) label.classList.remove('used');
+    existing.remove();
+  }
+
+  // Mark dragged label as used
+  const label = document.querySelector(`.drag-label[data-id="${draggedId}"]`);
+  if (label) label.classList.add('used');
+
+  // Create dropped item
+  const dropped = document.createElement('div');
+  dropped.className = 'dropped-item';
+  dropped.setAttribute('data-id', draggedId);
+  dropped.textContent = label ? label.textContent : draggedId;
+  zone.appendChild(dropped);
+  draggedId = null;
+}
+
+// Touch drag support for mobile
+document.querySelectorAll('.drag-label').forEach(label => {
+  label.addEventListener('touchstart', e => { draggedId = label.getAttribute('data-id'); }, { passive: true });
+});
+
+document.querySelectorAll('.drop-zone').forEach(zone => {
+  zone.addEventListener('touchend', e => {
+    if (!draggedId) return;
+    const existing = zone.querySelector('.dropped-item');
+    if (existing) {
+      const exId = existing.getAttribute('data-id');
+      const lbl = document.querySelector(`.drag-label[data-id="${exId}"]`);
+      if (lbl) lbl.classList.remove('used');
+      existing.remove();
+    }
+    const label = document.querySelector(`.drag-label[data-id="${draggedId}"]`);
+    if (label) label.classList.add('used');
+    const dropped = document.createElement('div');
+    dropped.className = 'dropped-item';
+    dropped.setAttribute('data-id', draggedId);
+    dropped.textContent = label ? label.textContent : draggedId;
+    zone.appendChild(dropped);
+    draggedId = null;
+  });
+  zone.addEventListener('dragleave', e => { zone.classList.remove('over'); });
+});
+
+function checkDnd() {
+  let correct = 0;
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    const expected = zone.getAttribute('data-correct');
+    const dropped = zone.querySelector('.dropped-item');
+    if (dropped) {
+      const got = dropped.getAttribute('data-id');
+      if (got === expected) { zone.classList.add('correct'); zone.classList.remove('wrong'); correct++; }
+      else { zone.classList.add('wrong'); zone.classList.remove('correct'); }
+    } else {
+      zone.classList.remove('correct','wrong');
+    }
+  });
+  const res = document.getElementById('dnd-result');
+  if (res) {
+    if (correct === 5) { res.textContent = '🎉 Perfect! All 5 matches are correct!'; res.style.color = '#00b894'; }
+    else { res.textContent = `📋 You matched ${correct}/5 correctly. Try again!`; res.style.color = '#e17055'; }
+  }
+}
+
+function resetDnd() {
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    const dropped = zone.querySelector('.dropped-item');
+    if (dropped) dropped.remove();
+    zone.classList.remove('correct','wrong','over');
+  });
+  document.querySelectorAll('.drag-label').forEach(l => l.classList.remove('used'));
+  const res = document.getElementById('dnd-result');
+  if (res) res.textContent = '';
+}
+
+// Quiz
+const quizAnswers = {};
+
+function selectOpt(btn, qNum) {
+  const card = btn.closest('.quiz-card');
+  const opts = card.querySelectorAll('.quiz-opt');
+  opts.forEach(o => { o.classList.remove('correct','wrong'); o.disabled = false; });
+  if (btn.getAttribute('data-correct')) {
+    btn.classList.add('correct');
+    quizAnswers[qNum] = true;
+  } else {
+    btn.classList.add('wrong');
+    quizAnswers[qNum] = false;
+    // Show correct
+    opts.forEach(o => { if (o.getAttribute('data-correct')) o.classList.add('correct'); });
+  }
+  opts.forEach(o => o.disabled = true);
+}
+
+function submitQuiz() {
+  let score = 0;
+  for (let i = 1; i <= 8; i++) { if (quizAnswers[i] === true) score++; }
+  document.getElementById('quiz-questions').style.display = 'none';
+  const sc = document.getElementById('score-card');
+  sc.style.display = 'block';
+
+  const msg = score >= 7 ? '🌟 Outstanding! You\'re an OS expert!' :
+              score >= 5 ? '👍 Good job! Keep practicing!' :
+              '📚 Keep studying — you\'ll get it!';
+  document.getElementById('score-message').textContent = msg + ` Score: ${score}/8`;
+  document.getElementById('score-display').textContent = `${score}/8`;
+
+  // Animate progress circle
+  const arc = document.getElementById('score-arc');
+  const circumference = 2 * Math.PI * 66;
+  const offset = circumference - (score / 8) * circumference;
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to(arc, { strokeDashoffset: offset, duration: 1.5, ease: 'power2.out' });
+      gsap.from(sc, { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' });
+    } else {
+      arc.style.strokeDashoffset = offset;
+    }
+  } catch(e) { arc.style.strokeDashoffset = offset; }
+}
+
+function retakeQuiz() {
+  Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+  document.getElementById('score-card').style.display = 'none';
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('correct','wrong');
+    o.disabled = false;
+  });
+  const arc = document.getElementById('score-arc');
+  if (arc) arc.style.strokeDashoffset = 414.69;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 3 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Division - Class 3 Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sunshine: #F9CA24;
+    --sky: #48DBFB;
+    --coral: #FF6B6B;
+    --light-gray: #F8F9FA;
+    --teal: #00B894;
+    --purple: #A29BFE;
+    --white: #ffffff;
+    --dark: #2D3436;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --radius: 12px;
+  }
+  html, body { width: 100%; margin: 0; padding: 0; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; font-size: 18px; background: var(--light-gray); color: var(--dark); overflow-x: hidden; }
+  h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+  h2 { font-size: clamp(2rem, 4vw, 3rem); }
+  h3 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: linear-gradient(135deg, #00B894, #48DBFB);
+    z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;
+  }
+  #curtain h2 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 20px; }
+  .loader-dots { display: flex; gap: 12px; }
+  .loader-dots span { width: 16px; height: 16px; border-radius: 50%; background: white; animation: bounce 0.6s infinite alternate; }
+  .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-18px); } }
+
+  /* PROGRESS BREADCRUMB */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 24px; display: flex; align-items: center; gap: 8px; overflow-x: auto;
+  }
+  .breadcrumb-item {
+    font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600;
+    padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+    transition: all 0.3s; color: #636e72; background: var(--light-gray);
+    text-decoration: none; min-height: 36px; display: flex; align-items: center;
+  }
+  .breadcrumb-item.active { background: var(--teal); color: white; }
+  .breadcrumb-sep { color: #b2bec3; font-size: 15px; }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; display: flex; padding-top: 56px; }
+  .sidebar {
+    width: 260px; min-width: 260px; position: sticky; top: 56px; height: calc(100vh - 56px);
+    overflow-y: auto; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.06);
+    padding: 24px 16px;
+  }
+  .sidebar-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: var(--teal); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px;
+    font-size: 15px; color: #636e72; text-decoration: none; margin-bottom: 4px;
+    transition: all 0.3s; cursor: pointer; min-height: 44px;
+  }
+  .sidebar-link:hover { background: var(--light-gray); color: var(--teal); }
+  .sidebar-link.active { background: linear-gradient(135deg, #00B894, #48DBFB); color: white; font-weight: 600; }
+  .sidebar-link .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; background: rgba(0,0,0,0.05); flex-shrink: 0; }
+
+  /* MAIN CONTENT */
+  .main-content { flex: 1; min-width: 0; padding-bottom: 40px; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* SECTION HEADER BANDS */
+  .section-band {
+    width: 100%; padding: 50px 0; position: relative; overflow: hidden;
+  }
+  .band-intro { background: linear-gradient(135deg, #00B894 0%, #48DBFB 100%); }
+  .band-concept { background: linear-gradient(135deg, #FF6B6B 0%, #F9CA24 100%); }
+  .band-visual { background: linear-gradient(135deg, #A29BFE 0%, #48DBFB 100%); }
+  .band-practice { background: linear-gradient(135deg, #F9CA24 0%, #FF6B6B 100%); }
+  .band-activity { background: linear-gradient(135deg, #00B894 0%, #A29BFE 100%); }
+  .band-quiz { background: linear-gradient(135deg, #2D3436 0%, #636e72 100%); }
+  .band-word { background: linear-gradient(135deg, #e17055 0%, #fd79a8 100%); }
+  .section-band h2 { color: white; text-align: center; position: relative; z-index: 1; }
+  .section-band p { color: rgba(255,255,255,0.9); text-align: center; font-size: 18px; max-width: 700px; margin: 12px auto 0; position: relative; z-index: 1; }
+  .band-bg-shape { position: absolute; border-radius: 50%; opacity: 0.1; background: white; }
+
+  /* CONTENT SECTIONS */
+  .content-section { padding: 60px 0; }
+  .card {
+    background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 32px; width: 100%; opacity: 1; transform: none;
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .card-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; background: linear-gradient(135deg, #00B894 0%, #48DBFB 50%, #A29BFE 100%);
+    display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 80px 40px;
+  }
+  .hero-content { text-align: center; color: white; position: relative; z-index: 2; max-width: 900px; }
+  .hero-badge { background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4); color: white; padding: 8px 24px; border-radius: 30px; font-size: 17px; font-weight: 600; display: inline-block; margin-bottom: 24px; }
+  .hero-title { margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
+  .hero-sub { font-size: clamp(1rem, 2.5vw, 1.3rem); opacity: 0.9; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+  .hero-stat { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 20px 30px; text-align: center; }
+  .hero-stat .num { font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; }
+  .hero-stat .lbl { font-size: 15px; opacity: 0.85; }
+
+  /* SVG HERO ANIMATION */
+  #hero-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero-path { fill: none; stroke: rgba(255,255,255,0.25); stroke-width: 3; }
+
+  /* DIVISION PARTS CARD */
+  .division-display {
+    background: linear-gradient(135deg, #f8f9fa, #e8f5f0);
+    border-radius: 16px; padding: 40px; text-align: center; position: relative;
+  }
+  .division-equation { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .div-box {
+    background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px 32px; font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 800; position: relative; transition: transform 0.3s;
+  }
+  .div-box:hover { transform: translateY(-4px); }
+  .div-box.dividend { color: var(--coral); border: 3px solid var(--coral); }
+  .div-box.divisor { color: var(--teal); border: 3px solid var(--teal); }
+  .div-box.quotient { color: var(--purple); border: 3px solid var(--purple); }
+  .div-box.remainder { color: var(--sunshine); border: 3px solid var(--sunshine); }
+  .div-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+  .div-symbol { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: #636e72; }
+  .div-wrapper { position: relative; padding-bottom: 28px; }
+
+  /* LONG DIVISION VISUAL */
+  .long-div-container { background: white; border-radius: 16px; padding: 40px; font-family: 'Poppins', sans-serif; }
+  .long-div-step { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px; padding: 20px; background: var(--light-gray); border-radius: 12px; transition: all 0.3s; }
+  .step-num { background: var(--teal); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; flex-shrink: 0; }
+  .step-content h4 { margin-bottom: 6px; color: var(--teal); }
+  .step-content p { font-size: 17px; color: #636e72; }
+  .highlight-box { background: linear-gradient(135deg, var(--sunshine), #f0932b); color: white; padding: 8px 16px; border-radius: 8px; display: inline-block; font-weight: 700; margin-top: 8px; font-size: 17px; }
+
+  /* LONG DIVISION WORKED EXAMPLE */
+  .worked-example { background: linear-gradient(135deg, #f0f9ff, #e8f5f0); border-radius: 16px; padding: 40px; }
+  .division-work { font-family: 'Poppins', sans-serif; display: inline-block; text-align: left; }
+  .dw-quotient { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: var(--coral); border-bottom: 3px solid var(--dark); padding-bottom: 6px; display: block; text-align: right; padding-right: 8px; }
+  .dw-row { display: flex; align-items: center; gap: 12px; font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 700; }
+  .dw-divisor { color: var(--teal); }
+  .dw-bracket { font-size: clamp(1.4rem, 3vw, 2.2rem); color: var(--dark); }
+  .dw-dividend { color: var(--dark); }
+  .dw-step { padding-left: 60px; }
+  .dw-line { border: none; border-top: 2px solid var(--dark); margin: 4px 0; }
+  .dw-sub { color: var(--coral); }
+  .dw-result { color: var(--teal); }
+  .dw-remainder { color: #e17055; font-weight: 800; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: linear-gradient(135deg, var(--teal), #00cec9); color: white;
+    border-radius: 16px; padding: 32px; text-align: center;
+  }
+  .formula-box h3 { margin-bottom: 12px; }
+  .formula-text { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 700; background: rgba(255,255,255,0.2); padding: 16px 24px; border-radius: 10px; display: inline-block; margin-top: 10px; }
+
+  /* PRACTICE GRIDS */
+  .practice-card {
+    background: white; border-radius: 12px; box-shadow: var(--shadow);
+    padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    opacity: 1; transform: none;
+  }
+  .practice-eq { font-family: 'Poppins', sans-serif; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 700; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .eq-box { background: var(--light-gray); border-radius: 8px; padding: 10px 18px; border: 2px solid #dfe6e9; }
+  .eq-answer { border: 2px dashed var(--teal); background: #f0fdf9; min-width: 70px; text-align: center; cursor: pointer; }
+  .eq-answer.revealed { background: var(--teal); color: white; border-color: var(--teal); }
+  .reveal-btn { background: var(--coral); color: white; border: none; border-radius: 8px; padding: 10px 22px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; min-height: 44px; }
+  .reveal-btn:hover { background: #e55a5a; transform: translateY(-2px); }
+
+  /* LONG DIV PRACTICE */
+  .long-div-practice { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .ldp-card { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 24px; text-align: center; font-family: 'Poppins', sans-serif; }
+  .ldp-card .problem { font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 700; color: var(--dark); margin-bottom: 12px; }
+  .ldp-card .answer-area { background: var(--light-gray); border-radius: 8px; padding: 16px; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 17px; color: #b2bec3; cursor: pointer; transition: all 0.3s; border: 2px dashed #dfe6e9; }
+  .ldp-card .answer-area.shown { background: #f0fdf9; color: var(--teal); font-weight: 700; border-color: var(--teal); font-size: clamp(1.1rem, 2vw, 1.4rem); }
+
+  /* DRAG AND DROP */
+  .drag-container { background: var(--light-gray); border-radius: 16px; padding: 32px; }
+  .drag-labels { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 30px; }
+  .drag-label {
+    background: var(--sunshine); color: var(--dark); padding: 12px 22px; border-radius: 30px;
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 17px; cursor: grab;
+    user-select: none; transition: all 0.2s; box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    min-height: 48px; display: flex; align-items: center;
+  }
+  .drag-label:active { cursor: grabbing; transform: scale(1.05); }
+  .drag-label.dragging { opacity: 0.5; }
+  .drag-label.placed { opacity: 0.4; pointer-events: none; }
+  .drop-targets { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .drop-target {
+    border: 3px dashed #b2bec3; border-radius: 12px; padding: 20px 16px; min-height: 90px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; transition: all 0.3s; background: white; font-size: 17px;
+  }
+  .drop-target.drag-over { border-color: var(--teal); background: #f0fdf9; transform: scale(1.02); }
+  .drop-target.correct { border-color: var(--teal); background: #d4edda; }
+  .drop-target.incorrect { border-color: var(--coral); background: #fde8e8; }
+  .drop-target .hint { font-size: 13px; color: #b2bec3; }
+  .drop-target .value { font-family: 'Poppins', sans-serif; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; }
+  .drop-result { display: none; font-weight: 600; font-size: 15px; }
+
+  /* QUIZ */
+  .quiz-container { max-width: 800px; margin: 0 auto; }
+  .quiz-progress-bar { background: #dfe6e9; border-radius: 30px; height: 10px; margin-bottom: 30px; overflow: hidden; }
+  .quiz-progress-fill { background: linear-gradient(90deg, var(--teal), var(--sky)); height: 100%; border-radius: 30px; transition: width 0.5s ease; }
+  .quiz-q { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 700; margin-bottom: 24px; color: var(--dark); }
+  .quiz-num { color: var(--teal); font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quiz-opt {
+    background: white; border: 2px solid #dfe6e9; border-radius: 10px; padding: 16px 20px;
+    font-size: 17px; cursor: pointer; transition: all 0.2s; text-align: left; min-height: 56px;
+    font-family: 'Inter', sans-serif; font-weight: 500;
+  }
+  .quiz-opt:hover { border-color: var(--teal); background: #f0fdf9; }
+  .quiz-opt.correct { border-color: var(--teal); background: #d4edda; color: #155724; }
+  .quiz-opt.wrong { border-color: var(--coral); background: #fde8e8; color: #721c24; }
+  .quiz-opt.disabled { pointer-events: none; }
+  .quiz-feedback { padding: 14px 20px; border-radius: 10px; font-size: 17px; font-weight: 600; margin-top: 16px; display: none; }
+  .quiz-feedback.correct { background: #d4edda; color: #155724; display: block; }
+  .quiz-feedback.wrong { background: #fde8e8; color: #721c24; display: block; }
+  .quiz-nav { display: flex; justify-content: flex-end; margin-top: 24px; }
+  .quiz-btn { background: var(--teal); color: white; border: none; border-radius: 10px; padding: 14px 32px; font-size: 17px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; min-height: 52px; }
+  .quiz-btn:hover { background: #00a381; transform: translateY(-2px); }
+  .quiz-btn:disabled { background: #b2bec3; cursor: not-allowed; transform: none; }
+
+  /* SCORE CARD */
+  .score-card { text-align: center; padding: 50px 30px; }
+  .score-circle-wrap { position: relative; width: 180px; height: 180px; margin: 0 auto 30px; }
+  .score-circle-wrap svg { transform: rotate(-90deg); }
+  .score-circle-bg { fill: none; stroke: #dfe6e9; stroke-width: 14; }
+  .score-circle-fill { fill: none; stroke: var(--teal); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 502; stroke-dashoffset: 502; transition: stroke-dashoffset 1.5s ease; }
+  .score-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--teal); }
+  .score-msg { font-family: 'Poppins', sans-serif; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 700; margin-bottom: 12px; }
+  .score-detail { font-size: 17px; color: #636e72; margin-bottom: 30px; }
+  .retry-btn { background: var(--coral); color: white; border: none; border-radius: 10px; padding: 14px 40px; font-size: 18px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s; min-height: 52px; }
+  .retry-btn:hover { background: #e55a5a; transform: translateY(-2px); }
+
+  /* WORD PROBLEMS */
+  .word-problem-card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 32px; }
+  .wp-label { background: var(--coral); color: white; padding: 6px 16px; border-radius: 20px; font-size: 15px; font-weight: 700; display: inline-block; margin-bottom: 16px; }
+  .wp-question { font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 600; color: var(--dark); margin-bottom: 20px; line-height: 1.6; }
+  .wp-work-area { background: var(--light-gray); border-radius: 12px; padding: 24px; min-height: 120px; font-family: 'Poppins', sans-serif; }
+  .wp-show-btn { background: var(--purple); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 16px; min-height: 48px; }
+  .wp-show-btn:hover { background: #8e7cf3; }
+  .wp-answer { display: none; }
+  .wp-answer.visible { display: block; }
+  .wp-ans-text { font-family: 'Poppins', sans-serif; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 700; color: var(--teal); margin-top: 12px; }
+
+  /* CONCEPT HIGHLIGHTS */
+  .concept-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .concept-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 18px; line-height: 1.6; }
+  .concept-list li::before { content: '✓'; background: var(--teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 14px; margin-top: 2px; }
+
+  /* SYMBOLS TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 18px; }
+  th { background: var(--teal); color: white; padding: 14px 20px; text-align: left; font-family: 'Poppins', sans-serif; font-size: 17px; }
+  td { padding: 14px 20px; border-bottom: 1px solid #dfe6e9; font-size: 17px; }
+  tr:nth-child(even) td { background: var(--light-gray); }
+  tr:hover td { background: #e8f5f0; }
+  .table-wrap { overflow-x: auto; border-radius: 12px; box-shadow: var(--shadow); }
+
+  /* MOBILE BOTTOM NAV */
+  #mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+    background: white; box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
+    overflow-x: auto; padding: 10px 12px; gap: 8px;
+  }
+  .mobile-nav-link {
+    flex-shrink: 0; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+    color: #636e72; background: var(--light-gray); text-decoration: none;
+    min-height: 48px; display: flex; align-items: center; transition: all 0.3s;
+  }
+  .mobile-nav-link.active { background: var(--teal); color: white; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    #mobile-nav { display: flex; }
+    #progress-bar { display: none; }
+    .main-content { padding-bottom: 80px; }
+    .container { padding: 0 16px; }
+    .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .hero-stats { gap: 16px; }
+    .hero-stat { padding: 14px 20px; }
+    #hero { min-height: 60vh; padding: 60px 20px; }
+    .content-section { padding: 40px 0; }
+    .card { padding: 20px; }
+    .practice-eq { font-size: clamp(1.1rem, 4vw, 1.6rem); }
+    .drop-targets { grid-template-columns: 1fr 1fr; }
+    .long-div-practice { grid-template-columns: repeat(2, 1fr); }
+    .division-equation { gap: 10px; }
+    .div-box { padding: 14px 20px; }
+  }
+  @media (max-width: 480px) {
+    .drop-targets { grid-template-columns: 1fr; }
+    .long-div-practice { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; align-items: center; }
+    .division-equation { flex-direction: column; align-items: center; }
+  }
+
+  /* MERMAID */
+  .mermaid { background: white; border-radius: 12px; padding: 20px; }
+
+  /* NUMBER COUNTER */
+  .counter-num { font-family: 'Poppins', sans-serif; font-weight: 800; }
+
+  /* PARALLAX BG */
+  .parallax-section { position: relative; overflow: hidden; }
+
+  /* ACTIVE SECTION HIGHLIGHT */
+  section:target { scroll-margin-top: 70px; }
+
+  /* Tooltip */
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-content { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 8px 14px; border-radius: 8px; font-size: 15px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 10; }
+  .tooltip-wrap:hover .tooltip-content { opacity: 1; }
+
+  .info-badge { display: inline-block; background: var(--sky); color: var(--dark); padding: 4px 12px; border-radius: 20px; font-size: 15px; font-weight: 600; margin-left: 8px; }
+  .color-teal { color: var(--teal); }
+  .color-coral { color: var(--coral); }
+  .color-sunshine { color: #d4a017; }
+  .color-purple { color: var(--purple); }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mb-24 { margin-bottom: 24px; }
+  .text-center { text-align: center; }
+  .flex-center { display: flex; align-items: center; justify-content: center; }
+  .gap-12 { gap: 12px; }
+
+  /* Emoji fallback canvas */
+  .webgl-fallback { display: flex; align-items: center; justify-content: center; min-height: 200px; background: var(--light-gray); border-radius: 12px; font-size: 80px; }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <h2>🔢 Loading Division Lesson...</h2>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar">
+  <a class="breadcrumb-item active" onclick="scrollToSection('hero')">🏠 Home</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('intro')">📖 Intro</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('concept')">💡 Concept</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('visual')">👁️ Visual</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('practice')">✏️ Practice</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('activity')">🎮 Activity</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('wordproblems')">📝 Word Problems</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-item" onclick="scrollToSection('quiz')">🏆 Quiz</a>
+</div>
+
+<div class="page-wrapper">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">📚 Contents</div>
+    <a class="sidebar-link active" onclick="scrollToSection('hero')"><span class="icon">🏠</span>Home</a>
+    <a class="sidebar-link" onclick="scrollToSection('intro')"><span class="icon">📖</span>Introduction</a>
+    <a class="sidebar-link" onclick="scrollToSection('concept')"><span class="icon">💡</span>Concept</a>
+    <a class="sidebar-link" onclick="scrollToSection('visual')"><span class="icon">👁️</span>Visual Explanation</a>
+    <a class="sidebar-link" onclick="scrollToSection('practice')"><span class="icon">✏️</span>Guided Practice</a>
+    <a class="sidebar-link" onclick="scrollToSection('activity')"><span class="icon">🎮</span>Activity</a>
+    <a class="sidebar-link" onclick="scrollToSection('wordproblems')"><span class="icon">📝</span>Word Problems</a>
+    <a class="sidebar-link" onclick="scrollToSection('quiz')"><span class="icon">🏆</span>Quiz</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <section id="hero">
+      <svg id="hero-svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+        <path class="hero-path" id="path1" d="M0,150 Q300,50 600,150 T1200,150"/>
+        <path class="hero-path" id="path2" d="M0,300 Q300,200 600,300 T1200,300"/>
+        <path class="hero-path" id="path3" d="M0,450 Q300,350 600,450 T1200,450"/>
+        <circle cx="100" cy="100" r="60" fill="rgba(255,255,255,0.1)"/>
+        <circle cx="1100" cy="500" r="90" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="600" cy="50" r="40" fill="rgba(255,255,255,0.12)"/>
+      </svg>
+      <div class="hero-content">
+        <div class="hero-badge">Chapter 5 • Class 3 Mathematics</div>
+        <h1 class="hero-title">✖️ ➗ Division</h1>
+        <p class="hero-sub">Learn to split numbers into equal groups and discover the magic of division — the inverse of multiplication!</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num counter-num" data-target="4">0</div>
+            <div class="lbl">Division Parts</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num counter-num" data-target="8">0</div>
+            <div class="lbl">Quiz Questions</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num counter-num" data-target="30">0</div>
+            <div class="lbl">Practice Problems</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num counter-num" data-target="5">0</div>
+            <div class="lbl">Word Problems</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO BAND -->
+    <div class="section-band band-intro">
+      <div class="band-bg-shape" style="width:300px;height:300px;top:-100px;right:-50px;"></div>
+      <div class="band-bg-shape" style="width:200px;height:200px;bottom:-80px;left:5%;"></div>
+      <div class="container">
+        <h2>📖 Introduction to Division</h2>
+        <p>Division is the inverse of multiplication — it splits a larger number into equal smaller parts</p>
+      </div>
+    </div>
+
+    <!-- INTRO CONTENT -->
+    <section id="intro" class="content-section parallax-section">
+      <div class="container">
+        <div class="card-grid">
+          <div class="card">
+            <h3 class="color-teal" style="margin-bottom:16px;">🔄 What is Division?</h3>
+            <ul class="concept-list">
+              <li>Division is the <strong>inverse of multiplication</strong></li>
+              <li>It means <strong>splitting into equal parts</strong> or separating items into groups</li>
+              <li>We <strong>break down a larger number</strong> into smaller numbers</li>
+              <li>Division helps us share things <strong>equally and fairly</strong></li>
+              <li>It is one of the four basic <strong>arithmetic operations</strong></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="color-coral" style="margin-bottom:16px;">✏️ Division Symbols</h3>
+            <p style="margin-bottom:16px; font-size:18px;">There are two basic symbols that represent the division of two numbers:</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Symbol</th><th>Name</th><th>Example</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-size:24px; font-weight:800; color:var(--coral);">÷</td><td>Obelus</td><td>4 ÷ 2 = 2</td></tr>
+                  <tr><td style="font-size:24px; font-weight:800; color:var(--teal);">/</td><td>Slash / Solidus</td><td>4 / 2 = 2</td></tr>
+                  <tr><td style="font-size:24px; font-weight:800; color:var(--purple);">—</td><td>Fraction Bar</td><td>4/2 = 2</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-24">
+          <h3 class="color-teal" style="margin-bottom:20px; text-align:center;">🔗 Division is the Inverse of Multiplication</h3>
+          <div class="mermaid">
+graph LR
+    A["Multiplication<br/>3 × 4 = 12"] <-->|"Inverse<br/>Operations"| B["Division<br/>12 ÷ 4 = 3"]
+    style A fill:#FF6B6B,color:#fff,stroke:#FF6B6B
+    style B fill:#00B894,color:#fff,stroke:#00B894
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT BAND -->
+    <div class="section-band band-concept">
+      <div class="band-bg-shape" style="width:250px;height:250px;top:-80px;left:10%;"></div>
+      <div class="container">
+        <h2>💡 The Four Parts of Division</h2>
+        <p>Every division problem has four important parts — learn them all!</p>
+      </div>
+    </div>
+
+    <!-- CONCEPT SECTION -->
+    <section id="concept" class="content-section parallax-section">
+      <div class="container">
+        <div class="card mb-24">
+          <h3 class="text-center color-teal" style="margin-bottom:30px;">🎯 The Four Parts of Division</h3>
+          <div class="division-display">
+            <div class="division-equation">
+              <div class="div-wrapper">
+                <div class="div-box dividend">105</div>
+                <span class="div-label color-coral">📥 Dividend</span>
+              </div>
+              <div class="div-symbol">÷</div>
+              <div class="div-wrapper">
+                <div class="div-box divisor">8</div>
+                <span class="div-label color-teal">📤 Divisor</span>
+              </div>
+              <div class="div-symbol">=</div>
+              <div class="div-wrapper">
+                <div class="div-box quotient">13</div>
+                <span class="div-label color-purple">✅ Quotient</span>
+              </div>
+              <div class="div-symbol">R</div>
+              <div class="div-wrapper">
+                <div class="div-box remainder">1</div>
+                <span class="div-label color-sunshine">🔁 Remainder</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-grid mt-24" style="margin-top:40px;">
+            <div class="card" style="border-left:5px solid var(--coral);">
+              <h4 class="color-coral" style="margin-bottom:10px;">📥 Dividend</h4>
+              <p>The <strong>number being divided</strong>. It's the total amount you start with. In 105 ÷ 8, the dividend is <strong>105</strong>.</p>
+            </div>
+            <div class="card" style="border-left:5px solid var(--teal);">
+              <h4 class="color-teal" style="margin-bottom:10px;">📤 Divisor</h4>
+              <p>The <strong>number you divide by</strong>. It tells how many equal groups to make. In 105 ÷ 8, the divisor is <strong>8</strong>.</p>
+            </div>
+            <div class="card" style="border-left:5px solid var(--purple);">
+              <h4 class="color-purple" style="margin-bottom:10px;">✅ Quotient</h4>
+              <p>The <strong>result of division</strong> — the answer. In 105 ÷ 8, the quotient is <strong>13</strong>.</p>
+            </div>
+            <div class="card" style="border-left:5px solid var(--sunshine);">
+              <h4 style="color:#d4a017; margin-bottom:10px;">🔁 Remainder</h4>
+              <p>What's <strong>left over</strong> after equal division. In 105 ÷ 8, the remainder is <strong>1</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="formula-box">
+          <h3>🔑 The Division Formula</h3>
+          <p style="font-size:18px; opacity:0.9; margin-bottom:10px;">Always verify your answer using this formula:</p>
+          <div class="formula-text">Dividend = Divisor × Quotient + Remainder</div>
+          <div class="formula-text" style="margin-top:10px; background:rgba(255,255,255,0.3);">105 = 8 × 13 + 1 ✓</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL BAND -->
+    <div class="section-band band-visual">
+      <div class="band-bg-shape" style="width:350px;height:350px;bottom:-150px;right:-50px;"></div>
+      <div class="container">
+        <h2>👁️ Visual Explanation</h2>
+        <p>Step-by-step: how to perform long division</p>
+      </div>
+    </div>
+
+    <!-- VISUAL SECTION -->
+    <section id="visual" class="content-section">
+      <div class="container">
+        <div class="card-grid-2" style="gap:32px;">
+          <div class="long-div-container">
+            <h3 class="color-teal" style="margin-bottom:24px;">📋 How to Divide — Step by Step</h3>
+            <p style="margin-bottom:24px; font-size:18px; color:#636e72;">Example: <strong>413 ÷ 7</strong></p>
+            <div class="long-div-step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Divide the first digit(s)</h4>
+                <p>Ask: how many times does 7 go into 41?</p>
+                <div class="highlight-box">41 ÷ 7 → try 7 × 5 = 35</div>
+              </div>
+            </div>
+            <div class="long-div-step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Subtract and Compare</h4>
+                <p>Make sure the remainder is less than the divisor</p>
+                <div class="highlight-box">41 − 35 = 6 (less than 7 ✓)</div>
+              </div>
+            </div>
+            <div class="long-div-step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Bring Down the Next Number</h4>
+                <p>Bring down the next digit and divide again</p>
+                <div class="highlight-box">63 ÷ 7 → try 7 × 9 = 63</div>
+              </div>
+            </div>
+            <div class="long-div-step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>Subtract and Compare Again</h4>
+                <p>Check that the final remainder is less than divisor</p>
+                <div class="highlight-box">63 − 63 = 0 (no remainder!)</div>
+              </div>
+            </div>
+          </div>
+          <div class="worked-example">
+            <h3 class="color-purple" style="margin-bottom:24px; text-align:center;">📐 Worked Example: 413 ÷ 7</h3>
+            <div style="display:flex; justify-content:center; align-items:flex-start; gap:40px; flex-wrap:wrap;">
+              <div class="division-work">
+                <span class="dw-quotient">5 9</span>
+                <div class="dw-row">
+                  <span class="dw-divisor">7</span>
+                  <span class="dw-bracket">)</span>
+                  <span class="dw-dividend">4 1 3</span>
+                </div>
+                <div class="dw-step">
+                  <div class="dw-row dw-sub">− 3 5</div>
+                  <hr class="dw-line">
+                  <div class="dw-row dw-result">6 3</div>
+                  <div class="dw-row dw-sub">− 6 3</div>
+                  <hr class="dw-line">
+                  <div class="dw-row dw-remainder">0</div>
+                </div>
+              </div>
+              <div style="max-width:220px;">
+                <div class="card" style="margin-bottom:16px; border-left:4px solid var(--teal);">
+                  <p style="font-size:16px;"><strong>Dividend:</strong> 413</p>
+                </div>
+                <div class="card" style="margin-bottom:16px; border-left:4px solid var(--coral);">
+                  <p style="font-size:16px;"><strong>Divisor:</strong> 7</p>
+                </div>
+                <div class="card" style="margin-bottom:16px; border-left:4px solid var(--purple);">
+                  <p style="font-size:16px;"><strong>Quotient:</strong> 59</p>
+                </div>
+                <div class="card" style="border-left:4px solid var(--sunshine);">
+                  <p style="font-size:16px;"><strong>Remainder:</strong> 0</p>
+                </div>
+              </div>
+            </div>
+            <div class="formula-box" style="margin-top:24px; padding:20px;">
+              <div class="formula-text" style="font-size:17px;">413 = 7 × 59 + 0 ✓</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Division with Remainder Example -->
+        <div class="card mt-24">
+          <h3 class="color-coral" style="margin-bottom:24px; text-align:center;">🔁 Division With a Remainder: 105 ÷ 8</h3>
+          <div style="display:flex; justify-content:center; align-items:flex-start; gap:40px; flex-wrap:wrap;">
+            <div class="division-work">
+              <span class="dw-quotient">1 3</span>
+              <div class="dw-row">
+                <span class="dw-divisor">8</span>
+                <span class="dw-bracket">)</span>
+                <span class="dw-dividend">1 0 5</span>
+              </div>
+              <div class="dw-step">
+                <div class="dw-row dw-sub">− 8</div>
+                <hr class="dw-line">
+                <div class="dw-row dw-result">2 5</div>
+                <div class="dw-row dw-sub">− 2 4</div>
+                <hr class="dw-line">
+                <div class="dw-row dw-remainder">1 ← Remainder</div>
+              </div>
+            </div>
+            <div style="max-width:350px;">
+              <p style="font-size:18px; margin-bottom:16px; color:#636e72;">When 8 goes into 10, it goes <strong>once</strong> (8×1=8). Subtract: 10−8=2. Bring down 5 → 25. 8 goes into 25 <strong>three times</strong> (8×3=24). 25−24=<strong>1</strong> remainder!</p>
+              <div class="formula-box" style="padding:20px;">
+                <div class="formula-text" style="font-size:17px;">105 = 8 × 13 + 1 ✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICE BAND -->
+    <div class="section-band band-practice">
+      <div class="band-bg-shape" style="width:280px;height:280px;top:-100px;right:10%;"></div>
+      <div class="container">
+        <h2>✏️ Guided Practice</h2>
+        <p>Click "Reveal" to see the answer for each problem</p>
+      </div>
+    </div>
+
+    <!-- PRACTICE SECTION -->
+    <section id="practice" class="content-section">
+      <div class="container">
+        <!-- Basic Division -->
+        <div class="card mb-24">
+          <h3 class="color-teal" style="margin-bottom:24px;">🔢 Basic Division Facts</h3>
+          <div class="card-grid-4" id="basic-practice">
+            <!-- populated by JS -->
+          </div>
+        </div>
+        <!-- Short Division (2 digit) -->
+        <div class="card mb-24">
+          <h3 class="color-coral" style="margin-bottom:24px;">📐 Short Division — 2-Digit Numbers</h3>
+          <div class="long-div-practice" id="short-practice"></div>
+        </div>
+        <!-- Division with Remainder -->
+        <div class="card mb-24">
+          <h3 class="color-purple" style="margin-bottom:24px;">🔁 Division With Remainders</h3>
+          <div class="long-div-practice" id="remainder-practice"></div>
+        </div>
+        <!-- 3-Digit Division -->
+        <div class="card">
+          <h3 style="color:#e17055; margin-bottom:24px;">🏗️ 3-Digit Division</h3>
+          <div class="long-div-practice" id="three-digit-practice"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY BAND -->
+    <div class="section-band band-activity">
+      <div class="band-bg-shape" style="width:320px;height:320px;bottom:-120px;left:-60px;"></div>
+      <div class="container">
+        <h2>🎮 Interactive Activity</h2>
+        <p>Label the parts of a division problem by dragging the correct labels</p>
+      </div>
+    </div>
+
+    <!-- ACTIVITY SECTION -->
+    <section id="activity" class="content-section">
+      <div class="container">
+        <div class="card">
+          <h3 class="color-teal" style="margin-bottom:8px;">🏷️ Drag & Drop: Label the Division Parts</h3>
+          <p style="color:#636e72; margin-bottom:28px; font-size:18px;">Drag each label to the correct box in the division problem: <strong>56 ÷ 7 = 8</strong></p>
+          <div class="drag-container">
+            <div class="drag-labels" id="drag-labels">
+              <div class="drag-label" draggable="true" data-label="Quotient" id="dl-quotient">✅ Quotient</div>
+              <div class="drag-label" draggable="true" data-label="Dividend" id="dl-dividend">📥 Dividend</div>
+              <div class="drag-label" draggable="true" data-label="Divisor" id="dl-divisor">📤 Divisor</div>
+              <div class="drag-label" draggable="true" data-label="Remainder" id="dl-remainder">🔁 Remainder</div>
+            </div>
+            <div class="drop-targets">
+              <div class="drop-target" data-accept="Dividend" id="dt-dividend">
+                <div class="value">56</div>
+                <div class="hint">Drop label here</div>
+                <div class="drop-result"></div>
+              </div>
+              <div class="drop-target" data-accept="Divisor" id="dt-divisor">
+                <div class="value">7</div>
+                <div class="hint">Drop label here</div>
+                <div class="drop-result"></div>
+              </div>
+              <div class="drop-target" data-accept="Quotient" id="dt-quotient">
+                <div class="value">8</div>
+                <div class="hint">Drop label here</div>
+                <div class="drop-result"></div>
+              </div>
+              <div class="drop-target" data-accept="Remainder" id="dt-remainder">
+                <div class="value">0</div>
+                <div class="hint">Drop label here</div>
+                <div class="drop-result"></div>
+              </div>
+            </div>
+            <div style="text-align:center; margin-top:20px;">
+              <button onclick="resetDragDrop()" style="background:var(--coral);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:17px;font-weight:600;cursor:pointer;min-height:48px;">🔄 Reset</button>
+              <span id="drag-score" style="margin-left:16px; font-weight:700; font-size:18px; color:var(--teal);"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual grouping activity -->
+        <div class="card mt-24">
+          <h3 class="color-teal" style="margin-bottom:20px;">🍎 Sharing Equally Activity</h3>
+          <p style="margin-bottom:24px; font-size:18px;">Watch how 12 apples are shared equally among 3 groups!</p>
+          <div id="sharing-activity" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:20px; letter-spacing:4px;" id="apple-display">🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎</div>
+            <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:24px;" id="groups-display">
+              <div style="background:var(--light-gray);border-radius:12px;padding:20px;min-width:140px;border:3px dashed var(--teal);">
+                <div style="font-size:14px;font-weight:700;color:var(--teal);margin-bottom:8px;">GROUP 1</div>
+                <div id="group1" style="font-size:28px;min-height:40px;"></div>
+              </div>
+              <div style="background:var(--light-gray);border-radius:12px;padding:20px;min-width:140px;border:3px dashed var(--coral);">
+                <div style="font-size:14px;font-weight:700;color:var(--coral);margin-bottom:8px;">GROUP 2</div>
+                <div id="group2" style="font-size:28px;min-height:40px;"></div>
+              </div>
+              <div style="background:var(--light-gray);border-radius:12px;padding:20px;min-width:140px;border:3px dashed var(--purple);">
+                <div style="font-size:14px;font-weight:700;color:var(--purple);margin-bottom:8px;">GROUP 3</div>
+                <div id="group3" style="font-size:28px;min-height:40px;"></div>
+              </div>
+            </div>
+            <button onclick="animateSharing()" id="share-btn" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:14px 32px;font-size:18px;font-weight:700;cursor:pointer;min-height:52px;">▶️ Share Equally!</button>
+            <div id="sharing-result" style="margin-top:20px;font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:var(--teal);"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORD PROBLEMS BAND -->
+    <div class="section-band band-word">
+      <div class="band-bg-shape" style="width:260px;height:260px;top:-80px;right:5%;"></div>
+      <div class="container">
+        <h2>📝 Word Problems</h2>
+        <p>Apply your division skills to real-life situations</p>
+      </div>
+    </div>
+
+    <!-- WORD PROBLEMS SECTION -->
+    <section id="wordproblems" class="content-section">
+      <div class="container">
+        <div class="card-grid" id="word-problems-container">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ BAND -->
+    <div class="section-band band-quiz">
+      <div class="band-bg-shape" style="width:300px;height:300px;bottom:-120px;right:-60px;"></div>
+      <div class="container">
+        <h2>🏆 Division Quiz</h2>
+        <p>Test your knowledge — 8 questions to prove you're a division master!</p>
+      </div>
+    </div>
+
+    <!-- QUIZ SECTION -->
+    <section id="quiz" class="content-section">
+      <div class="container">
+        <div class="card">
+          <div id="quiz-wrapper">
+            <div class="quiz-container">
+              <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+              <div id="quiz-content"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobile-nav">
+  <a class="mobile-nav-link active" onclick="scrollToSection('hero')">🏠 Home</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('intro')">📖 Intro</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('concept')">💡 Concept</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('visual')">👁️ Visual</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('practice')">✏️ Practice</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('activity')">🎮 Activity</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('wordproblems')">📝 Words</a>
+  <a class="mobile-nav-link" onclick="scrollToSection('quiz')">🏆 Quiz</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // GUARANTEED CURTAIN DISMISSAL
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => { c.style.display = 'none'; }, 500); }
+  }, 2000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) { console.warn('Mermaid init failed', e); }
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero SVG paths drawing animation
+      const paths = document.querySelectorAll('.hero-path');
+      paths.forEach((path, i) => {
+        try {
+          const len = path.getTotalLength ? path.getTotalLength() : 1000;
+          gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+          gsap.to(path, { strokeDashoffset: 0, duration: 2.5, delay: i * 0.4, ease: 'power2.out' });
+        } catch(err) {}
+      });
+
+      // Hero content animation
+      gsap.from('.hero-content > *', { y: 40, opacity: 0, stagger: 0.15, duration: 1, delay: 0.3, ease: 'power3.out' });
+
+      // Scroll-triggered card reveals
+      document.querySelectorAll('.card, .practice-card, .word-problem-card, .long-div-step').forEach(el => {
+        gsap.fromTo(el, { y: 30, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+        });
+      });
+
+      // Section band parallax
+      document.querySelectorAll('.parallax-section').forEach(section => {
+        gsap.to(section, {
+          yPercent: -5,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true }
+        });
+      });
+
+      // Concept div boxes
+      document.querySelectorAll('.div-box').forEach((box, i) => {
+        gsap.from(box, { scale: 0.5, opacity: 0, duration: 0.6, delay: i * 0.15,
+          scrollTrigger: { trigger: box, start: 'top 85%', once: true }
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // COUNTER ANIMATION
+  function animateCounters() {
+    document.querySelectorAll('.counter-num').forEach(el => {
+      const target = parseInt(el.getAttribute('data-target')) || 0;
+      let current = 0;
+      const step = Math.max(1, Math.ceil(target / 30));
+      const interval = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current >= target) clearInterval(interval);
+      }, 50);
+    });
+  }
+  setTimeout(animateCounters, 1500);
+
+  // BASIC PRACTICE DATA
+  const basicProblems = [
+    {a:16,b:2},{a:24,b:6},{a:48,b:1},{a:9,b:3},{a:15,b:5},{a:32,b:8},{a:18,b:9},{a:40,b:8},{a:28,b:7},{a:45,b:9},
+    {a:36,b:6},{a:21,b:7},{a:63,b:9},{a:6,b:6},{a:24,b:6},{a:32,b:4},{a:72,b:8},{a:30,b:5},{a:14,b:7}
+  ];
+
+  const basicContainer = document.getElementById('basic-practice');
+  if (basicContainer) {
+    basicProblems.forEach((p, i) => {
+      const ans = Math.floor(p.a / p.b);
+      const div = document.createElement('div');
+      div.className = 'practice-card';
+      div.innerHTML = `
+        <div class="practice-eq">
+          <span class="eq-box">${p.a}</span>
+          <span>÷</span>
+          <span class="eq-box">${p.b}</span>
+          <span>=</span>
+          <span class="eq-box eq-answer" id="ba-${i}">?</span>
+        </div>
+        <button class="reveal-btn" onclick="revealAnswer('ba-${i}','${ans}',this)">Reveal</button>
+      `;
+      basicContainer.appendChild(div);
+    });
+  }
+
+  // SHORT DIVISION DATA
+  const shortProblems = [
+    {d:3,n:12},{d:6,n:36},{d:4,n:20},{d:9,n:27},{d:7,n:21},{d:9,n:63},{d:6,n:6},{d:6,n:24},
+    {d:4,n:32},{d:8,n:72},{d:5,n:30},{d:7,n:14},{d:8,n:24},{d:9,n:54},{d:4,n:16}
+  ];
+
+  const shortContainer = document.getElementById('short-practice');
+  if (shortContainer) {
+    shortProblems.forEach((p, i) => {
+      const q = Math.floor(p.n / p.d);
+      const r = p.n % p.d;
+      const ansText = r === 0 ? `${q}` : `${q} R${r}`;
+      const div = document.createElement('div');
+      div.className = 'ldp-card';
+      div.innerHTML = `
+        <div class="problem">${p.d}) ${p.n}</div>
+        <div class="answer-area" id="sp-${i}" onclick="showLdAnswer('sp-${i}','${ansText}')">Tap to reveal</div>
+      `;
+      shortContainer.appendChild(div);
+    });
+  }
+
+  // REMAINDER DIVISION DATA
+  const remainderProblems = [
+    {d:7,n:50},{d:2,n:19},{d:6,n:37},{d:5,n:26},{d:7,n:43},{d:9,n:77}
+  ];
+
+  const remContainer = document.getElementById('remainder-practice');
+  if (remContainer) {
+    remainderProblems.forEach((p, i) => {
+      const q = Math.floor(p.n / p.d);
+      const r = p.n % p.d;
+      const div = document.createElement('div');
+      div.className = 'ldp-card';
+      div.innerHTML = `
+        <div class="problem">${p.d}) ${p.n}</div>
+        <div class="answer-area" id="rp-${i}" onclick="showLdAnswer('rp-${i}','Q:${q} R:${r}')">Tap to reveal</div>
+      `;
+      remContainer.appendChild(div);
+    });
+  }
+
+  // 3-DIGIT DIVISION DATA
+  const threeDigitProblems = [
+    {d:3,n:236},{d:4,n:315},{d:5,n:494},{d:6,n:341},{d:9,n:818},{d:7,n:569},
+    {d:7,n:595},{d:3,n:181},{d:5,n:215},{d:3,n:240},{d:8,n:752},{d:5,n:171},
+    {d:4,n:399},{d:6,n:111},{d:9,n:188},{d:10,n:181},{d:11,n:171}
+  ];
+
+  const threeContainer = document.getElementById('three-digit-practice');
+  if (threeContainer) {
+    threeDigitProblems.forEach((p, i) => {
+      const q = Math.floor(p.n / p.d);
+      const r = p.n % p.d;
+      const ansText = r === 0 ? `${q}` : `${q} R${r}`;
+      const div = document.createElement('div');
+      div.className = 'ldp-card';
+      div.innerHTML = `
+        <div class="problem">${p.d}) ${p.n}</div>
+        <div class="answer-area" id="tp-${i}" onclick="showLdAnswer('tp-${i}','${ansText}')">Tap to reveal</div>
+      `;
+      threeContainer.appendChild(div);
+    });
+  }
+
+  // WORD PROBLEMS DATA
+  const wordProblems = [
+    {
+      num: 'Q1', emoji: '💧',
+      question: 'If 432 litres of water are divided equally into 9 tanks, how many litres does each tank hold?',
+      work: '432 ÷ 9 = ?',
+      answer: '432 ÷ 9 = 48 litres per tank',
+      check: '9 × 48 = 432 ✓'
+    },
+    {
+      num: 'Q2', emoji: '✏️',
+      question: 'A carton contains 240 pencils, and there are 8 boxes in the carton. How many pencils are there in each box?',
+      work: '240 ÷ 8 = ?',
+      answer: '240 ÷ 8 = 30 pencils per box',
+      check: '8 × 30 = 240 ✓'
+    },
+    {
+      num: 'Q3', emoji: '🍬',
+      question: 'If 672 candies are equally divided among 8 children, how many candies does each child get?',
+      work: '672 ÷ 8 = ?',
+      answer: '672 ÷ 8 = 84 candies per child',
+      check: '8 × 84 = 672 ✓'
+    },
+    {
+      num: 'Q4', emoji: '🚛',
+      question: 'A truck carries 1,200 kilograms of goods and distributes them equally across 4 warehouses. How many kilograms of goods does each warehouse receive?',
+      work: '1200 ÷ 4 = ?',
+      answer: '1200 ÷ 4 = 300 kg per warehouse',
+      check: '4 × 300 = 1200 ✓'
+    },
+    {
+      num: 'Q5', emoji: '🍎',
+      question: 'There are 1,560 apples packed into 6 crates. How many apples are in each crate?',
+      work: '1560 ÷ 6 = ?',
+      answer: '1560 ÷ 6 = 260 apples per crate',
+      check: '6 × 260 = 1560 ✓'
+    }
+  ];
+
+  const wpContainer = document.getElementById('word-problems-container');
+  if (wpContainer) {
+    wordProblems.forEach((wp, i) => {
+      const div = document.createElement('div');
+      div.className = 'word-problem-card';
+      div.innerHTML = `
+        <div class="wp-label">${wp.num}</div>
+        <div style="font-size:36px;margin-bottom:12px;">${wp.emoji}</div>
+        <div class="wp-question">${wp.question}</div>
+        <div class="wp-work-area">
+          <strong style="font-size:17px;">Working:</strong>
+          <div style="font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:var(--teal);margin-top:10px;">${wp.work}</div>
+          <div class="wp-answer" id="wpa-${i}">
+            <div class="wp-ans-text">✅ ${wp.answer}</div>
+            <div style="font-size:16px;color:#636e72;margin-top:6px;">Verification: ${wp.check}</div>
+          </div>
+        </div>
+        <button class="wp-show-btn" onclick="showWPAnswer(${i},this)">💡 Show Answer</button>
+      `;
+      wpContainer.appendChild(div);
+    });
+  }
+
+  // QUIZ DATA
+  const quizData = [
+    {
+      q: 'What is 16 ÷ 2?',
+      type: 'mcq',
+      options: ['6', '8', '7', '9'],
+      correct: 1,
+      explanation: '16 ÷ 2 = 8 because 2 × 8 = 16.'
+    },
+    {
+      q: 'In the division 105 ÷ 8 = 13 R1, what is the DIVISOR?',
+      type: 'mcq',
+      options: ['105', '13', '8', '1'],
+      correct: 2,
+      explanation: 'The DIVISOR is the number you divide BY. Here it is 8.'
+    },
+    {
+      q: 'TRUE or FALSE: Division is the inverse of multiplication.',
+      type: 'tf',
+      options: ['True', 'False'],
+      correct: 0,
+      explanation: 'TRUE! Division and multiplication are inverse operations. 4×3=12 and 12÷3=4.'
+    },
+    {
+      q: 'What is 45 ÷ 9?',
+      type: 'mcq',
+      options: ['4', '5', '6', '7'],
+      correct: 1,
+      explanation: '45 ÷ 9 = 5 because 9 × 5 = 45.'
+    },
+    {
+      q: 'A carton has 240 pencils in 8 boxes. How many pencils per box?',
+      type: 'mcq',
+      options: ['25', '28', '30', '32'],
+      correct: 2,
+      explanation: '240 ÷ 8 = 30. Each box has 30 pencils.'
+    },
+    {
+      q: 'What is the REMAINDER when 50 is divided by 7?',
+      type: 'mcq',
+      options: ['1', '6', '7', '8'],
+      correct: 1,
+      explanation: '50 ÷ 7 = 7 remainder 6. Because 7 × 7 = 49 and 50 − 49 = 1... wait, 7×7=49, 50-49=1. Actually: 7×7=49, remainder=1. Correct answer is 1.',
+    },
+    {
+      q: 'TRUE or FALSE: The quotient is the number being divided.',
+      type: 'tf',
+      options: ['True', 'False'],
+      correct: 1,
+      explanation: 'FALSE! The number being divided is called the DIVIDEND. The QUOTIENT is the answer/result of division.'
+    },
+    {
+      q: 'If 432 litres are divided equally into 9 tanks, how many litres per tank?',
+      type: 'mcq',
+      options: ['46', '48', '50', '52'],
+      correct: 1,
+      explanation: '432 ÷ 9 = 48 litres per tank. Check: 9 × 48 = 432 ✓'
+    }
+  ];
+
+  // Fix quiz question 6 answer
+  quizData[5].correct = 1;
+  quizData[5].explanation = '50 ÷ 7 = 7 remainder 6. Because 7 × 7 = 49, and 50 − 49 = 1. Wait, 50 ÷ 7: 7×7=49, 50-49=1. The remainder is 1, not 6.';
+  quizData[5].correct = 0;
+  quizData[5].options = ['1', '6', '7', '8'];
+  quizData[5].explanation = '50 ÷ 7 = 7 remainder 1. Because 7 × 7 = 49, and 50 − 49 = 1.';
+
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  function renderQuiz() {
+    const content = document.getElementById('quiz-content');
+    const progressFill = document.getElementById('quiz-progress-fill');
+    if (!content) return;
+
+    if (currentQ >= quizData.length) {
+      showScoreCard(content);
+      return;
+    }
+
+    const q = quizData[currentQ];
+    const progress = (currentQ / quizData.length) * 100;
+    if (progressFill) progressFill.style.width = progress + '%';
+    answered = false;
+
+    let optionsHTML = q.options.map((opt, i) => `
+      <button class="quiz-opt" onclick="selectAnswer(${i})" id="qopt-${i}">${opt}</button>
+    `).join('');
+
+    content.innerHTML = `
+      <div class="quiz-num">Question ${currentQ + 1} of ${quizData.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">${optionsHTML}</div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+      <div class="quiz-nav">
+        <button class="quiz-btn" id="next-btn" onclick="nextQuestion()" disabled>
+          ${currentQ < quizData.length - 1 ? 'Next Question ➡️' : 'See Results 🏆'}
+        </button>
+      </div>
+    `;
+  }
+
+  window.selectAnswer = function(idx) {
+    if (answered) return;
+    answered = true;
+    const q = quizData[currentQ];
+    const feedback = document.getElementById('quiz-feedback');
+    const nextBtn = document.getElementById('next-btn');
+
+    document.querySelectorAll('.quiz-opt').forEach((btn, i) => {
+      btn.classList.add('disabled');
+      if (i === q.correct) btn.classList.add('correct');
+      else if (i === idx && i !== q.correct) btn.classList.add('wrong');
+    });
+
+    if (idx === q.correct) {
+      score++;
+      if (feedback) { feedback.className = 'quiz-feedback correct'; feedback.textContent = '✅ Correct! ' + q.explanation; }
+    } else {
+      if (feedback) { feedback.className = 'quiz-feedback wrong'; feedback.textContent = '❌ Not quite! ' + q.explanation; }
+    }
+    if (nextBtn) nextBtn.disabled = false;
+  };
+
+  window.nextQuestion = function() {
+    currentQ++;
+    renderQuiz();
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from('#quiz-content', { y: 20, opacity: 0, duration: 0.4 });
+      }
+    } catch(e) {}
+  };
+
+  function showScoreCard(content) {
+    const percent = Math.round((score / quizData.length) * 100);
+    const circumference = 2 * Math.PI * 80;
+    const offset = circumference - (percent / 100) * circumference;
+    let msg = percent >= 80 ? '🌟 Excellent Work!' : percent >= 60 ? '👍 Good Job!' : '📚 Keep Practicing!';
+    const progressFill = document.getElementById('quiz-progress-fill');
+    if (progressFill) progressFill.style.width = '100%';
+
+    content.innerHTML = `
+      <div class="score-card">
+        <div class="score-circle-wrap">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle class="score-circle-bg" cx="90" cy="90" r="80"/>
+            <circle class="score-circle-fill" id="score-fill" cx="90" cy="90" r="80" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"/>
+          </svg>
+          <div class="score-num" id="score-num">0%</div>
+        </div>
+        <div class="score-msg">${msg}</div>
+        <div class="score-detail">You scored <strong>${score}</strong> out of <strong>${quizData.length}</strong> questions correctly.</div>
+        <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again</button>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const fill = document.getElementById('score-fill');
+      const num = document.getElementById('score-num');
+      if (fill) fill.style.strokeDashoffset = offset;
+      if (num) {
+        let c = 0;
+        const iv = setInterval(() => {
+          c = Math.min(c + 2, percent);
+          num.textContent = c + '%';
+          if (c >= percent) clearInterval(iv);
+        }, 20);
+      }
+    }, 100);
+  }
+
+  window.retryQuiz = function() {
+    currentQ = 0; score = 0; answered = false; renderQuiz();
+  };
+
+  renderQuiz();
+
+  // SCROLL SPY
+  const sections = ['hero','intro','concept','visual','practice','activity','wordproblems','quiz'];
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        document.querySelectorAll('.breadcrumb-item, .sidebar-link, .mobile-nav-link').forEach(el => el.classList.remove('active'));
+        const sectionMap = {'hero':'hero','intro':'intro','concept':'concept','visual':'visual','practice':'practice','activity':'activity','wordproblems':'wordproblems','quiz':'quiz'};
+        const key = sectionMap[id] || id;
+        document.querySelectorAll(`[onclick="scrollToSection('${key}')"]`).forEach(el => el.classList.add('active'));
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-60px 0px 0px 0px' });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+
+});
+
+// GLOBAL FUNCTIONS
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+function revealAnswer(id, answer, btn) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.textContent = answer;
+    el.classList.add('revealed');
+    if (btn) { btn.textContent = '✓ Shown'; btn.style.background = 'var(--teal)'; btn.disabled = true; }
+  }
+}
+
+function showLdAnswer(id, answer) {
+  const el = document.getElementById(id);
+  if (el && !el.classList.contains('shown')) {
+    el.textContent = answer;
+    el.classList.add('shown');
+  }
+}
+
+function showWPAnswer(i, btn) {
+  const el = document.getElementById('wpa-' + i);
+  if (el) {
+    el.classList.add('visible');
+    if (btn) { btn.style.display = 'none'; }
+  }
+}
+
+// DRAG AND DROP
+let draggingEl = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const labels = document.querySelectorAll('.drag-label');
+  const targets = document.querySelectorAll('.drop-target');
+
+  labels.forEach(label => {
+    label.addEventListener('dragstart', e => {
+      draggingEl = label;
+      label.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', label.getAttribute('data-label'));
+    });
+    label.addEventListener('dragend', () => {
+      label.classList.remove('dragging');
+    });
+  });
+
+  targets.forEach(target => {
+    target.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      target.classList.add('drag-over');
+    });
+    target.addEventListener('dragleave', () => {
+      target.classList.remove('drag-over');
+    });
+    target.addEventListener('drop', e => {
+      e.preventDefault();
+      target.classList.remove('drag-over');
+      const label = e.dataTransfer.getData('text/plain');
+      if (!label) return;
+      const accept = target.getAttribute('data-accept');
+      const hint = target.querySelector('.hint');
+      const result = target.querySelector('.drop-result');
+      if (label === accept) {
+        target.classList.add('correct');
+        target.classList.remove('incorrect');
+        if (hint) hint.textContent = '';
+        if (result) { result.textContent = '✅ ' + label; result.style.display = 'block'; result.style.color = 'var(--teal)'; }
+        if (draggingEl) draggingEl.classList.add('placed');
+      } else {
+        target.classList.add('incorrect');
+        target.classList.remove('correct');
+        if (result) { result.textContent = '❌ Try again!'; result.style.display = 'block'; result.style.color = 'var(--coral)'; }
+        setTimeout(() => { target.classList.remove('incorrect'); if (result) result.style.display = 'none'; }, 1500);
+      }
+      updateDragScore();
+    });
+  });
+});
+
+function updateDragScore() {
+  const correct = document.querySelectorAll('.drop-target.correct').length;
+  const score = document.getElementById('drag-score');
+  if (score) {
+    score.textContent = correct === 4 ? '🎉 Perfect Score! All 4 correct!' : `${correct}/4 correct`;
+  }
+}
+
+function resetDragDrop() {
+  document.querySelectorAll('.drop-target').forEach(t => {
+    t.classList.remove('correct','incorrect');
+    const hint = t.querySelector('.hint'); if (hint) hint.textContent = 'Drop label here';
+    const result = t.querySelector('.drop-result'); if (result) { result.style.display = 'none'; result.textContent = ''; }
+  });
+  document.querySelectorAll('.drag-label').forEach(l => l.classList.remove('placed','dragging'));
+  const score = document.getElementById('drag-score'); if (score) score.textContent = '';
+}
+
+// SHARING ANIMATION
+let sharingDone = false;
+function animateSharing() {
+  if (sharingDone) {
+    sharingDone = false;
+    document.getElementById('group1').textContent = '';
+    document.getElementById('group2').textContent = '';
+    document.getElementById('group3').textContent = '';
+    document.getElementById('sharing-result').textContent = '';
+    document.getElementById('apple-display').style.opacity = '1';
+    document.getElementById('share-btn').textContent = '▶️ Share Equally!';
+    return;
+  }
+  sharingDone = true;
+  const apples = '🍎🍎🍎🍎';
+  let step = 0;
+  document.getElementById('share-btn').textContent = '🔄 Reset';
+  const iv = setInterval(() => {
+    const groups = ['group1','group2','group3'];
+    if (step < 3) {
+      const g = document.getElementById(groups[step]);
+      if (g) { g.textContent = apples; }
+      step++;
+    } else {
+      clearInterval(iv);
+      document.getElementById('sharing-result').textContent = '✅ 12 ÷ 3 = 4 apples in each group!';
+      document.getElementById('apple-display').style.opacity = '0.3';
+    }
+  }, 600);
+}
+</script>
+</body>
+</html>
