@@ -1,0 +1,2080 @@
+<!-- CLASS: 4 | SUBJECT: urdu | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سچا سلطان - اردو سبق</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --green: #6AB04C;
+    --navy: #2C3E50;
+    --amber: #F0932B;
+    --white: #ffffff;
+    --light-green: #f0f9eb;
+    --light-amber: #fff8f0;
+    --border-radius: 16px;
+    --font-urdu: 'Noto Nastaliq Urdu', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f8fdf5;
+    font-family: var(--font-urdu);
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--navy);
+    direction: rtl;
+  }
+
+  /* Loading Curtain */
+  #curtain {
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  #curtain .curtain-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-top: 20px;
+    color: var(--amber);
+  }
+  #curtain .curtain-subtitle {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: rgba(255,255,255,0.7);
+    margin-top: 10px;
+  }
+  .curtain-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Sticky Header */
+  #sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--navy);
+    color: white;
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+  .header-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 8px;
+    flex-direction: row-reverse;
+  }
+  .progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .progress-dot.active { background: var(--green); }
+  .progress-dot.done { background: var(--amber); }
+
+  /* Main Layout */
+  .page-wrapper {
+    width: 100%;
+    padding-top: 70px;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    width: 100vw;
+    min-height: 70vh;
+    background: linear-gradient(135deg, var(--navy) 0%, #1a252f 50%, #0d1b24 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: repeating-linear-gradient(45deg, var(--green) 0px, var(--green) 1px, transparent 1px, transparent 40px);
+  }
+  .hero-calligraphy {
+    position: absolute;
+    right: 5%;
+    top: 10%;
+    opacity: 0.15;
+  }
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+  .hero-lesson-num {
+    display: inline-block;
+    background: var(--amber);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    padding: 6px 20px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .hero-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--white);
+    line-height: 1.4;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .hero-title span {
+    color: var(--green);
+  }
+  .hero-subtitle {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: rgba(255,255,255,0.75);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 2;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .hero-badge {
+    background: rgba(106,176,76,0.2);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: var(--font-urdu);
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    padding: 8px 18px;
+    border-radius: 30px;
+  }
+
+  /* Content Layout */
+  .content-wrapper {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .two-col-layout {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: 40px;
+    align-items: start;
+    padding: 60px 0;
+  }
+
+  /* Sections */
+  .section-alt { background: var(--light-green); }
+  .section-white { background: var(--white); }
+  .section-amber { background: var(--light-amber); }
+
+  .section-inner {
+    padding: 60px 40px;
+    width: 100%;
+  }
+
+  .section-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--navy);
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+    width: 0;
+    height: 4px;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+  .section-title.underlined::after { width: 100%; }
+
+  /* Story Card */
+  .story-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    border-right: 6px solid var(--green);
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .story-card::before {
+    content: '📖';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-size: 2.5rem;
+    background: white;
+    padding: 0 10px;
+  }
+  .story-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 2.2;
+    color: var(--navy);
+    text-align: right;
+  }
+  .story-highlight {
+    background: linear-gradient(120deg, rgba(106,176,76,0.2) 0%, rgba(106,176,76,0.2) 100%);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #2d6a1e;
+  }
+
+  /* Maqasid Box */
+  .maqasid-box {
+    background: linear-gradient(135deg, var(--green), #4a8f35);
+    border-radius: var(--border-radius);
+    padding: 35px;
+    color: white;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .maqasid-box h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+  }
+  .maqasid-list {
+    list-style: none;
+    padding: 0;
+  }
+  .maqasid-list li {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+  }
+  .maqasid-list li::before {
+    content: '✓';
+    background: rgba(255,255,255,0.25);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* Highlight Boxes */
+  .highlight-box {
+    border-radius: 12px;
+    padding: 25px 30px;
+    margin: 20px 0;
+    border-right: 5px solid;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .highlight-green {
+    background: #f0f9eb;
+    border-color: var(--green);
+  }
+  .highlight-amber {
+    background: #fff8f0;
+    border-color: var(--amber);
+  }
+  .highlight-navy {
+    background: #eef2f7;
+    border-color: var(--navy);
+  }
+  .highlight-box h4 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    margin-bottom: 12px;
+    color: var(--navy);
+  }
+  .highlight-box p, .highlight-box li {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    line-height: 2;
+    color: var(--navy);
+  }
+
+  /* Vocabulary Table */
+  .vocab-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    width: 100%;
+  }
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-family: var(--font-urdu);
+    min-width: 300px;
+  }
+  .vocab-table th {
+    background: var(--navy);
+    color: white;
+    padding: 16px 20px;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    text-align: center;
+    font-weight: 700;
+  }
+  .vocab-table td {
+    padding: 14px 20px;
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    text-align: center;
+    border-bottom: 1px solid #e8f5e0;
+    color: var(--navy);
+    line-height: 1.8;
+  }
+  .vocab-table tr:nth-child(even) { background: var(--light-green); }
+  .vocab-table tr:hover { background: rgba(106,176,76,0.1); }
+
+  /* Sidebar */
+  .sidebar {
+    position: sticky;
+    top: 90px;
+    opacity: 1;
+  }
+  .sidebar-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--green);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .sidebar-card h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--navy);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light-green);
+  }
+  .sidebar-card p, .sidebar-card li {
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: #444;
+    line-height: 2;
+  }
+  .sidebar-card ul {
+    padding-right: 20px;
+  }
+
+  /* Accordion (mobile sidebar) */
+  .accordion {
+    display: none;
+    width: 100%;
+  }
+  .accordion-item {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-right: 4px solid var(--green);
+    width: 100%;
+  }
+  .accordion-header {
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: var(--navy);
+    font-weight: 700;
+    min-height: 48px;
+  }
+  .accordion-header .arrow {
+    transition: transform 0.3s;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .accordion-header.open .arrow { transform: rotate(180deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 20px;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    color: #444;
+    line-height: 2;
+  }
+  .accordion-body.open { padding: 0 20px 18px; }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    width: 100%;
+  }
+  .info-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-bottom: 4px solid var(--green);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .info-card.amber-card { border-color: var(--amber); }
+  .info-card h4 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .info-card p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 2;
+    color: #555;
+  }
+
+  /* Quiz */
+  .quiz-container {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .quiz-progress-bar {
+    background: #e8f5e0;
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    background: var(--green);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .quiz-question {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--navy);
+    margin-bottom: 25px;
+    line-height: 2;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 25px;
+  }
+  .quiz-option {
+    background: #f8fdf5;
+    border: 2px solid #d4edca;
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    color: var(--navy);
+    text-align: right;
+    transition: all 0.2s;
+    min-height: 48px;
+    line-height: 1.8;
+  }
+  .quiz-option:hover { background: var(--light-green); border-color: var(--green); }
+  .quiz-option.correct { background: #d4edca; border-color: var(--green); color: #2d6a1e; }
+  .quiz-option.wrong { background: #fde8e8; border-color: #e74c3c; color: #c0392b; }
+  .quiz-option.disabled { pointer-events: none; }
+  .quiz-feedback {
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    margin-bottom: 20px;
+    display: none;
+    line-height: 1.8;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: #d4edca; color: #2d6a1e; border-right: 4px solid var(--green); }
+  .quiz-feedback.wrong-fb { background: #fde8e8; color: #c0392b; border-right: 4px solid #e74c3c; }
+  .quiz-nav {
+    display: flex;
+    gap: 14px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    min-height: 48px;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: #5a9d3c; transform: translateY(-2px); }
+  .btn-amber { background: var(--amber); color: white; }
+  .btn-amber:hover { background: #d4821f; transform: translateY(-2px); }
+  .btn-navy { background: var(--navy); color: white; }
+  .btn-navy:hover { background: #1a252f; transform: translateY(-2px); }
+  .quiz-score {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+  .quiz-score.show { display: block; }
+  .score-emoji { font-size: 5rem; margin-bottom: 20px; display: block; }
+  .score-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    color: var(--navy);
+    margin-bottom: 15px;
+  }
+  .score-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  /* Fill in the Blank */
+  .fib-container {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .fib-sentence {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 2.5;
+    color: var(--navy);
+    margin-bottom: 20px;
+  }
+  .fib-blank {
+    display: inline-block;
+    border-bottom: 3px solid var(--green);
+    min-width: 120px;
+    text-align: center;
+    padding: 0 8px;
+    margin: 0 8px;
+    cursor: pointer;
+    color: var(--amber);
+    font-weight: 700;
+    position: relative;
+  }
+  .fib-blank.filled { color: var(--green); border-color: var(--green); }
+  .fib-blank.wrong { color: #e74c3c; border-color: #e74c3c; }
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+    padding: 20px;
+    background: var(--light-green);
+    border-radius: 12px;
+  }
+  .word-chip {
+    background: white;
+    border: 2px solid var(--green);
+    color: var(--navy);
+    padding: 10px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    transition: all 0.2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .word-chip:hover { background: var(--green); color: white; transform: scale(1.05); }
+  .word-chip.used { opacity: 0.4; pointer-events: none; }
+
+  /* Drag & Drop Labeling */
+  .label-activity {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .label-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 30px 0;
+  }
+  .label-item {
+    background: var(--light-green);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    color: var(--navy);
+    line-height: 2;
+  }
+  .label-item strong {
+    display: block;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .drop-zone {
+    border: 2px dashed var(--green);
+    border-radius: 8px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    background: white;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: #aaa;
+    transition: all 0.2s;
+    padding: 8px;
+  }
+  .drop-zone.drag-over { background: #f0f9eb; border-color: var(--amber); }
+  .drop-zone.filled { color: var(--navy); background: var(--light-green); border-style: solid; }
+  .draggable-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px;
+    background: #f0f4f8;
+    border-radius: 12px;
+  }
+  .draggable-chip {
+    background: var(--navy);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: grab;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    transition: all 0.2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+  .draggable-chip:hover { background: var(--amber); transform: scale(1.05); }
+  .draggable-chip.dragging { opacity: 0.5; cursor: grabbing; }
+
+  /* Step-by-step worked example */
+  .worked-example {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .step-display {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step-item {
+    background: var(--light-green);
+    border-right: 4px solid var(--green);
+    border-radius: 8px;
+    padding: 18px 22px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--navy);
+    line-height: 2;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .step-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .step-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  /* Calligraphic SVG decorations */
+  .calligraphy-divider {
+    text-align: center;
+    margin: 30px 0;
+    color: var(--green);
+    font-size: 2rem;
+    opacity: 0.4;
+    letter-spacing: 10px;
+  }
+
+  /* Grammar section - اسم and فعل */
+  .grammar-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 25px;
+  }
+  .grammar-card {
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+  .grammar-card.ism {
+    background: linear-gradient(135deg, #e8f5e0, #d4edca);
+    border: 2px solid var(--green);
+  }
+  .grammar-card.fail {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border: 2px solid var(--amber);
+  }
+  .grammar-card h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin-bottom: 15px;
+  }
+  .grammar-card.ism h3 { color: #2d6a1e; }
+  .grammar-card.fail h3 { color: #8B4513; }
+  .grammar-card p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 2;
+    color: #555;
+  }
+  .grammar-examples {
+    list-style: none;
+    margin-top: 15px;
+    text-align: right;
+  }
+  .grammar-examples li {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.6);
+    color: var(--navy);
+    line-height: 1.8;
+  }
+
+  /* Mobile Bottom Nav */
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: var(--navy);
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 8px 0;
+    box-shadow: 0 -2px 20px rgba(0,0,0,0.2);
+  }
+  .mobile-bottom-nav a {
+    display: inline-block;
+    padding: 10px 16px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-family: var(--font-urdu);
+    font-size: 13px;
+    min-height: 48px;
+    line-height: 2;
+    transition: color 0.2s;
+  }
+  .mobile-bottom-nav a:hover { color: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .two-col-layout {
+      grid-template-columns: 1fr;
+    }
+    .sidebar { display: none; }
+    .accordion { display: block; }
+    .grammar-cards { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .label-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .mobile-bottom-nav { display: block; }
+    body { padding-bottom: 80px; }
+    .section-inner { padding: 40px 16px; }
+    .content-wrapper { padding: 0 16px; }
+    .hero-section { min-height: 60vh; padding: 40px 16px; }
+    #sticky-header { padding: 10px 16px; }
+    .story-card { padding: 24px 18px; }
+    .quiz-container { padding: 24px 18px; }
+    .fib-container { padding: 24px 18px; }
+    .label-activity { padding: 24px 18px; }
+    .worked-example { padding: 24px 18px; }
+    .two-col-layout { padding: 30px 0; gap: 20px; }
+    .grammar-cards { gap: 14px; }
+    .cards-grid { gap: 14px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-badges { flex-direction: column; align-items: center; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .label-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Paragraph animations — visible by default */
+  .para-animate {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Mermaid container */
+  .mermaid-container {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    overflow: auto;
+    width: 100%;
+  }
+  .mermaid {
+    font-family: var(--font-urdu) !important;
+  }
+
+  /* Story sentences */
+  .sentence-block {
+    padding: 15px 0;
+    border-bottom: 1px solid #e8f5e0;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .sentence-block:last-child { border-bottom: none; }
+  .sentence-num {
+    background: var(--green);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* Imam result display */
+  .result-banner {
+    background: linear-gradient(135deg, var(--green), #4a8f35);
+    color: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 2;
+    margin: 20px 0;
+    display: none;
+  }
+  .result-banner.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-spinner"></div>
+  <div class="curtain-text">سچا سلطان</div>
+  <div class="curtain-subtitle">سبق لوڈ ہو رہا ہے...</div>
+</div>
+
+<!-- Sticky Header -->
+<header id="sticky-header">
+  <div class="header-title">📚 سچا سلطان — سبق ۱۵</div>
+  <div class="progress-dots">
+    <div class="progress-dot active" data-section="0" onclick="scrollToSection(0)" title="سبق"></div>
+    <div class="progress-dot" data-section="1" onclick="scrollToSection(1)" title="الفاظ معنی"></div>
+    <div class="progress-dot" data-section="2" onclick="scrollToSection(2)" title="قواعد"></div>
+    <div class="progress-dot" data-section="3" onclick="scrollToSection(3)" title="مشق"></div>
+    <div class="progress-dot" data-section="4" onclick="scrollToSection(4)" title="کوئز"></div>
+  </div>
+</header>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="#hero-section">🏠 گھر</a>
+  <a href="#section-story">📖 سبق</a>
+  <a href="#section-vocab">📝 الفاظ</a>
+  <a href="#section-grammar">✏️ قواعد</a>
+  <a href="#section-activity">🎯 مشق</a>
+  <a href="#section-quiz">❓ کوئز</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero-section">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-lesson-num">LESSON 15 · کلاس ۴</div>
+      <h1 class="hero-title"><span>سچا</span> سلطان</h1>
+      <p class="hero-subtitle">ایمانداری اور سچائی کی اہمیت — ایک سبق آموز کہانی</p>
+      <div class="hero-badges">
+        <span class="hero-badge">📖 کہانی</span>
+        <span class="hero-badge">🔤 الفاظ معنی</span>
+        <span class="hero-badge">✏️ اسم اور فعل</span>
+        <span class="hero-badge">🎯 مشق</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Maqasid Section -->
+  <section class="section-alt" data-section-index="0" id="section-maqasid">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <div class="maqasid-box para-animate">
+          <h3>🎯 مقاصد</h3>
+          <p style="font-family: var(--font-urdu); font-size: clamp(1rem, 1.8vw, 1.15rem); color:rgba(255,255,255,0.85); margin-bottom:16px; text-align:center;">اس سبق کو پڑھنے کے بعد طلبہ اس قابل ہو جائیں گے کہ وہ:</p>
+          <ul class="maqasid-list">
+            <li>ایمانداری اور سچائی کی اہمیت کو سمجھیں</li>
+            <li>جملوں میں اسم اور فعل کی شناخت کریں</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="section-white" data-section-index="1" id="section-story">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <div class="two-col-layout">
+
+          <!-- Main Story Content -->
+          <div class="main-content">
+            <h2 class="section-title" id="story-title">📖 سچا سلطان</h2>
+            <div class="calligraphy-divider">﷽ ❋ ❋ ❋</div>
+
+            <div class="story-card para-animate">
+              <p class="story-text">
+                دور کسی ملک میں ایک <span class="story-highlight">سلطان</span> رہتا تھا۔ ایک دن اس نے اپنے <span class="story-highlight">بیٹوں</span> کو اپنے پاس بلایا۔
+              </p>
+              <p class="story-text" style="margin-top:18px;">
+                اس نے ہر بیٹے کو ایک <span class="story-highlight">بیج</span> دیا اور کہا: "اس بیج کو ایک سال تک اگاؤ۔ ایک سال بعد جس کا پودا مجھے سب سے زیادہ پسند آئے گا، وہی میرے بعد <span class="story-highlight">سلطان بنے گا</span>۔"
+              </p>
+              <p class="story-text" style="margin-top:18px;">
+                سب بچوں میں سے چھوٹا <span class="story-highlight">سلیم</span> تھا۔ وہ صرف دس سال کا تھا۔ اس نے بہت <span class="story-highlight">احتیاط</span> سے بیج کو گملے میں بویا۔ وہ روزاس کو پانی دیتا اور اس کا خیال کرتا۔ دن گزرتے گئے لیکن بیج سے کوئی پودا نہیں نکلا۔
+              </p>
+              <p class="story-text" style="margin-top:18px;">
+                آخر ایک سال گزر گیا اور سب بیٹے <span class="story-highlight">سلطان</span> کے پاس اپنے اپنے پودے لائے۔ سلیم کے پاس سب کے علاوہ خوبصورت پھولوں والے پودے تھے۔
+              </p>
+              <p class="story-text" style="margin-top:18px;">
+                سلطان نے باری باری سب کے پودے دیکھے اور آخر کار بولا: "میں نے آپ سب کو <span class="story-highlight">خراب بیج</span> دیے تھے۔ ان سے پودا کبھی نہیں اگ سکتا تھا۔ صرف <span class="story-highlight">سلیم</span> نے ایمان داری سے وہی بیج اگایا جو میں نے دیا تھا۔ میرے بعد <span class="story-highlight">سلیم ہی آپ کا سلطان ہو گا</span>۔"
+              </p>
+            </div>
+
+            <!-- Key Morals -->
+            <div class="highlight-box highlight-green para-animate" style="margin-top:30px;">
+              <h4>💡 سبق کی اہم بات</h4>
+              <p>ایمانداری اور سچائی ہمیشہ کامیابی کا راستہ ہے۔ سلیم نے جھوٹ نہیں بولا اور اسی وجہ سے وہ سلطان بنا۔</p>
+            </div>
+
+            <!-- Character Diagram -->
+            <div style="margin-top:30px;">
+              <h3 class="section-title" style="font-size: clamp(1.3rem, 2.5vw, 1.8rem);">کہانی کے کردار</h3>
+              <div class="mermaid-container">
+                <div class="mermaid">
+graph TD
+  A["سلطان 👑<br/>حکمران"]
+  A --> B["بیٹے 👦<br/>بیج لائے"]
+  A --> C["سلیم ❤️<br/>سب سے چھوٹا"]
+  B --> D["جھوٹے پودے<br/>لائے"]
+  C --> E["خالی گملا<br/>لایا"]
+  E --> F["ایمانداری ✓<br/>سلطان بنا"]
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Desktop Sidebar -->
+          <aside class="sidebar">
+            <div class="sidebar-card">
+              <h3>📌 اہم نکات</h3>
+              <ul>
+                <li>سلطان نے ایک امتحان لیا</li>
+                <li>سب بیٹوں کو خراب بیج دیے</li>
+                <li>سلیم نے ایمانداری سے خالی گملا لایا</li>
+                <li>سلیم سلطان بنا</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-card" style="border-top-color: var(--amber);">
+              <h3>🔑 اہم الفاظ</h3>
+              <ul>
+                <li><strong>سلطان</strong> — حکمران</li>
+                <li><strong>بیج</strong> — بونے کی چیز</li>
+                <li><strong>احتیاط</strong> — خبردار رہنا</li>
+                <li><strong>ایمانداری</strong> — سچائی</li>
+                <li><strong>محنت</strong> — کام میں لگن</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-card" style="border-top-color: var(--navy);">
+              <h3>💭 سوچیں!</h3>
+              <p>اگر آپ سلیم کی جگہ ہوتے تو آپ کیا کرتے؟ کیا آپ بھی خالی گملا لاتے؟</p>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Mobile Accordion -->
+        <div class="accordion" id="mobile-accordion">
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>📌 اہم نکات</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-body">
+              <ul style="padding-right:20px; margin-top:10px;">
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;">سلطان نے ایک امتحان لیا</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;">سب بیٹوں کو خراب بیج دیے</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;">سلیم نے ایمانداری سے خالی گملا لایا</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;">سلیم سلطان بنا</li>
+              </ul>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>🔑 اہم الفاظ</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-body">
+              <ul style="padding-right:20px; margin-top:10px; list-style:none;">
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;"><strong>سلطان</strong> — حکمران</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;"><strong>بیج</strong> — بونے کی چیز</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;"><strong>احتیاط</strong> — خبردار رہنا</li>
+                <li style="font-family:var(--font-urdu); font-size:clamp(0.95rem,1.5vw,1.1rem); line-height:2; color:#444;"><strong>ایمانداری</strong> — سچائی</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vocabulary Section -->
+  <section class="section-alt" data-section-index="2" id="section-vocab">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">📝 الفاظ اور معنی</h2>
+
+        <div class="vocab-table-wrapper para-animate">
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th>الفاظ</th>
+                <th>معنی</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>سلطان</strong></td>
+                <td>حکمران</td>
+              </tr>
+              <tr>
+                <td><strong>محنت</strong></td>
+                <td>کام میں لگن اور کوشش</td>
+              </tr>
+              <tr>
+                <td><strong>احتیاط</strong></td>
+                <td>خبردار رہنا</td>
+              </tr>
+              <tr>
+                <td><strong>ایمانداری</strong></td>
+                <td>سچائی اور امانت</td>
+              </tr>
+              <tr>
+                <td><strong>بیج</strong></td>
+                <td>وہ چیز جو زمین میں بو کر پودا اگایا جاتا ہے</td>
+              </tr>
+              <tr>
+                <td><strong>خوبصورت</strong></td>
+                <td>دیکھنے میں اچھا</td>
+              </tr>
+              <tr>
+                <td><strong>ایمان</strong></td>
+                <td>یقین اور اعتماد</td>
+              </tr>
+              <tr>
+                <td><strong>گملہ</strong></td>
+                <td>پودا لگانے کا برتن</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cards-grid" style="margin-top:35px;">
+          <div class="info-card para-animate">
+            <h4>🌱 سلطان</h4>
+            <p>کسی ملک یا علاقے کا حکمران۔ اس کہانی میں سلطان ایک نیک اور سمجھدار حکمران تھا۔</p>
+          </div>
+          <div class="info-card amber-card para-animate">
+            <h4>💪 محنت</h4>
+            <p>کام میں لگن اور پوری کوشش کرنا۔ سلیم نے بیج کی بہت محنت سے دیکھ بھال کی۔</p>
+          </div>
+          <div class="info-card para-animate">
+            <h4>🛡️ احتیاط</h4>
+            <p>کسی کام میں خبردار رہنا اور غلطی سے بچنا۔ سلیم نے بیج کو بہت احتیاط سے سنبھالا۔</p>
+          </div>
+          <div class="info-card amber-card para-animate">
+            <h4>❤️ ایمانداری</h4>
+            <p>ہمیشہ سچ بولنا اور امانت دار رہنا۔ سلیم کی ایمانداری نے اسے سلطان بنایا۔</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spelling Exercise Section -->
+  <section class="section-white" id="section-spelling">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">✍️ املا کے الفاظ</h2>
+        <p class="para-animate" style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+          نیچے دیے گئے الفاظ کو دیکھیں اور ان کو صحیح طریقے سے یاد کریں:
+        </p>
+
+        <div class="cards-grid para-animate">
+          <div style="background: linear-gradient(135deg, #e8f5e0, #d4edca); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">سلطان</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Sultan — حکمران</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #fff8f0, #ffe0b2); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">بیج</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Seed — بونے کی چیز</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #e8f5e0, #d4edca); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">احتیاط</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Caution — خبردار رہنا</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #fff8f0, #ffe0b2); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">ایمانداری</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Honesty — سچائی</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #e8f5e0, #d4edca); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">خوبصورت</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Beautiful — دیکھنے میں اچھا</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #fff8f0, #ffe0b2); border-radius:12px; padding:25px; text-align:center;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1.8rem,4vw,2.8rem); color:var(--navy); font-weight:700; line-height:1.6;">ایمان</div>
+            <div style="font-family:var(--font-urdu); font-size:clamp(0.9rem,1.5vw,1.1rem); color:#666; margin-top:8px;">Faith — یقین</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grammar Section -->
+  <section class="section-alt" data-section-index="3" id="section-grammar">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">✏️ زبان دانی — اردو قواعد</h2>
+
+        <div class="highlight-box highlight-navy para-animate">
+          <h4>📚 اسم اور فعل — تعریف</h4>
+          <p>جملوں میں دو اہم چیزیں ہوتی ہیں: <strong>اسم</strong> (نام) اور <strong>فعل</strong> (کام)۔</p>
+        </div>
+
+        <div class="grammar-cards para-animate">
+          <div class="grammar-card ism">
+            <h3>اسم 🏷️</h3>
+            <p>کسی شخص، جگہ، یا چیز کا نام <strong>اسم</strong> کہلاتا ہے۔</p>
+            <ul class="grammar-examples">
+              <li>🌟 سلطان — (شخص کا نام)</li>
+              <li>🌟 سلیم — (بچے کا نام)</li>
+              <li>🌟 بیج — (چیز کا نام)</li>
+              <li>🌟 گملہ — (چیز کا نام)</li>
+              <li>🌟 ملک — (جگہ کا نام)</li>
+            </ul>
+          </div>
+          <div class="grammar-card fail">
+            <h3>فعل 🎬</h3>
+            <p>کسی کام یا عمل کو ظاہر کرنے والا لفظ <strong>فعل</strong> کہلاتا ہے۔</p>
+            <ul class="grammar-examples">
+              <li>⚡ بولا — (کہنے کا کام)</li>
+              <li>⚡ اگایا — (اگانے کا کام)</li>
+              <li>⚡ دیا — (دینے کا کام)</li>
+              <li>⚡ لایا — (لانے کا کام)</li>
+              <li>⚡ سنبھال کر رکھا — (سنبھالنے کا کام)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="worked-example para-animate" style="margin-top:35px;">
+          <h3 style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2.2vw,1.6rem); color:var(--navy); margin-bottom:20px;">
+            🔍 مثال کے ذریعے سیکھیں
+          </h3>
+
+          <div class="highlight-box highlight-amber" style="margin-bottom:20px;">
+            <h4>جملہ نمبر ۱:</h4>
+            <p style="font-size:clamp(1.1rem,2vw,1.4rem); font-weight:600;">سلیم نے بیج کو سنبھال کر رکھا۔</p>
+          </div>
+
+          <div class="step-display" id="step-display-1">
+            <!-- Steps will appear here -->
+          </div>
+
+          <div style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap;">
+            <button class="btn btn-green" id="next-step-btn" onclick="showNextStep()">اگلا مرحلہ ▶</button>
+            <button class="btn btn-amber" onclick="resetSteps()">دوبارہ شروع 🔄</button>
+          </div>
+
+          <div style="margin-top:30px; padding-top:25px; border-top:2px solid var(--light-green);">
+            <h4 style="font-family:var(--font-urdu); font-size:clamp(1.1rem,2vw,1.35rem); color:var(--navy); margin-bottom:20px;">
+              باقی جملوں کا تجزیہ:
+            </h4>
+            <div class="cards-grid">
+              <div class="highlight-box highlight-green" style="margin:0;">
+                <h4>جملہ ۲:</h4>
+                <p style="font-size:clamp(1rem,1.7vw,1.2rem);"><strong>سلیم</strong> روز پودے کو <strong>پانی دیتا</strong> تھا۔</p>
+                <p style="margin-top:10px; font-size:clamp(0.9rem,1.5vw,1.1rem); color:var(--green);">اسم: سلیم | فعل: پانی دیتا تھا</p>
+              </div>
+              <div class="highlight-box highlight-amber" style="margin:0;">
+                <h4>جملہ ۳:</h4>
+                <p style="font-size:clamp(1rem,1.7vw,1.2rem);"><strong>سلطان</strong> نے ہر بیٹے کو ایک <strong>بیج دیا</strong>۔</p>
+                <p style="margin-top:10px; font-size:clamp(0.9rem,1.5vw,1.1rem); color:var(--amber);">اسم: سلطان | فعل: دیا</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fill in the Blank Activity -->
+  <section class="section-amber" data-section-index="4" id="section-activity">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">🎯 جملے مکمل کریں</h2>
+        <p class="para-animate" style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+          نیچے دیے گئے الفاظ میں سے صحیح لفظ خالی جگہ میں لکھیں:
+        </p>
+
+        <div class="fib-container para-animate" id="fib-container">
+          <div class="fib-sentence" id="fib-sentence-1">
+            ۱. دور کسی ملک میں ایک <span class="fib-blank" id="blank-1" data-answer="سلطان" onclick="fillBlank('blank-1')">_____</span> رہتا تھا۔
+          </div>
+          <div class="fib-sentence" id="fib-sentence-2">
+            ۲. سلیم نے بہت <span class="fib-blank" id="blank-2" data-answer="احتیاط" onclick="fillBlank('blank-2')">_____</span> سے بیج کو گملے میں بویا۔
+          </div>
+          <div class="fib-sentence" id="fib-sentence-3">
+            ۳. صرف سلیم نے <span class="fib-blank" id="blank-3" data-answer="ایمانداری" onclick="fillBlank('blank-3')">_____</span> سے وہی بیج اگایا۔
+          </div>
+          <div class="fib-sentence" id="fib-sentence-4">
+            ۴. سلطان نے سب کو <span class="fib-blank" id="blank-4" data-answer="خراب بیج" onclick="fillBlank('blank-4')">_____</span> دیے تھے۔
+          </div>
+          <div class="fib-sentence" id="fib-sentence-5">
+            ۵. سلیم صرف دس سال کا <span class="fib-blank" id="blank-5" data-answer="چھوٹا" onclick="fillBlank('blank-5')">_____</span> بچہ تھا۔
+          </div>
+
+          <div style="margin-top:16px; font-family:var(--font-urdu); font-size:clamp(0.9rem,1.4vw,1.05rem); color:#888;">
+            * الفاظ کو چھوئیں اور پھر خالی جگہ کو چھوئیں
+          </div>
+
+          <h4 style="font-family:var(--font-urdu); font-size:clamp(1.1rem,2vw,1.3rem); color:var(--navy); margin-top:25px; margin-bottom:12px;">الفاظ کا خزانہ:</h4>
+          <div class="word-bank" id="word-bank">
+            <span class="word-chip" onclick="selectWord(this)" data-word="سلطان">سلطان</span>
+            <span class="word-chip" onclick="selectWord(this)" data-word="احتیاط">احتیاط</span>
+            <span class="word-chip" onclick="selectWord(this)" data-word="ایمانداری">ایمانداری</span>
+            <span class="word-chip" onclick="selectWord(this)" data-word="خراب بیج">خراب بیج</span>
+            <span class="word-chip" onclick="selectWord(this)" data-word="چھوٹا">چھوٹا</span>
+            <span class="word-chip" onclick="selectWord(this)" data-word="محنت">محنت</span>
+          </div>
+
+          <div style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap;">
+            <button class="btn btn-green" onclick="checkFIB()">جانچیں ✓</button>
+            <button class="btn btn-amber" onclick="resetFIB()">دوبارہ کریں 🔄</button>
+          </div>
+
+          <div id="fib-result" class="result-banner"></div>
+        </div>
+
+        <!-- Sentence Making Activity -->
+        <div style="margin-top:40px;">
+          <h2 class="section-title">✍️ لکھائی کی مہارت — جملے بنائیں</h2>
+          <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+            ان الفاظ سے جملے بنائیں:
+          </p>
+          <div class="cards-grid para-animate">
+            <div style="background:white; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-right:4px solid var(--green);">
+              <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:var(--green); margin-bottom:12px; font-weight:700;">۱. سلطان</div>
+              <textarea style="width:100%; border:2px solid #e8f5e0; border-radius:8px; padding:12px; font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); resize:vertical; min-height:80px; color:var(--navy); direction:rtl; outline:none; line-height:2;" placeholder="یہاں جملہ لکھیں..."></textarea>
+            </div>
+            <div style="background:white; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-right:4px solid var(--amber);">
+              <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:var(--amber); margin-bottom:12px; font-weight:700;">۲. محنت</div>
+              <textarea style="width:100%; border:2px solid #ffe0b2; border-radius:8px; padding:12px; font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); resize:vertical; min-height:80px; color:var(--navy); direction:rtl; outline:none; line-height:2;" placeholder="یہاں جملہ لکھیں..."></textarea>
+            </div>
+            <div style="background:white; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-right:4px solid var(--green);">
+              <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:var(--green); margin-bottom:12px; font-weight:700;">۳. احتیاط</div>
+              <textarea style="width:100%; border:2px solid #e8f5e0; border-radius:8px; padding:12px; font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); resize:vertical; min-height:80px; color:var(--navy); direction:rtl; outline:none; line-height:2;" placeholder="یہاں جملہ لکھیں..."></textarea>
+            </div>
+            <div style="background:white; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-right:4px solid var(--amber);">
+              <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:var(--amber); margin-bottom:12px; font-weight:700;">۴. ایمانداری</div>
+              <textarea style="width:100%; border:2px solid #ffe0b2; border-radius:8px; padding:12px; font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); resize:vertical; min-height:80px; color:var(--navy); direction:rtl; outline:none; line-height:2;" placeholder="یہاں جملہ لکھیں..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drag and Drop ISM / FAIL -->
+        <div style="margin-top:40px;">
+          <h2 class="section-title">🧩 اسم اور فعل پہچانیں</h2>
+          <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+            نیچے دیے گئے الفاظ کو گھسیٹ کر درست خانے میں ڈالیں:
+          </p>
+
+          <div class="label-activity para-animate" id="dd-activity">
+            <div class="draggable-words" id="draggable-pool">
+              <div class="draggable-chip" draggable="true" data-type="اسم" data-word="سلیم">سلیم</div>
+              <div class="draggable-chip" draggable="true" data-type="فعل" data-word="بویا">بویا</div>
+              <div class="draggable-chip" draggable="true" data-type="اسم" data-word="ملک">ملک</div>
+              <div class="draggable-chip" draggable="true" data-type="فعل" data-word="لایا">لایا</div>
+              <div class="draggable-chip" draggable="true" data-type="اسم" data-word="بیج">بیج</div>
+              <div class="draggable-chip" draggable="true" data-type="فعل" data-word="دیکھا">دیکھا</div>
+              <div class="draggable-chip" draggable="true" data-type="اسم" data-word="سلطان">سلطان</div>
+              <div class="draggable-chip" draggable="true" data-type="فعل" data-word="بولا">بولا</div>
+            </div>
+
+            <div class="label-grid" style="margin-top:20px;">
+              <div style="background:#e8f5e0; border-radius:12px; padding:20px; border:2px solid var(--green);">
+                <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:#2d6a1e; text-align:center; margin-bottom:15px; font-weight:700;">🏷️ اسم</div>
+                <div class="drop-zone" id="drop-ism" data-accepts="اسم">یہاں اسم ڈالیں</div>
+                <div id="ism-dropped" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+              </div>
+              <div style="background:#fff8f0; border-radius:12px; padding:20px; border:2px solid var(--amber);">
+                <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:#8B4513; text-align:center; margin-bottom:15px; font-weight:700;">🎬 فعل</div>
+                <div class="drop-zone" id="drop-fail" data-accepts="فعل">یہاں فعل ڈالیں</div>
+                <div id="fail-dropped" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <div style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap;">
+              <button class="btn btn-green" onclick="checkDD()">جانچیں ✓</button>
+              <button class="btn btn-amber" onclick="resetDD()">دوبارہ کریں 🔄</button>
+            </div>
+            <div id="dd-result" class="result-banner" style="margin-top:15px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions Section -->
+  <section class="section-white" id="section-questions">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">❓ سوال و جواب</h2>
+        <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+          سبق کے نیچے دیے گئے سوالات کے جوابات:
+        </p>
+
+        <div class="cards-grid para-animate">
+          <div style="background:white; border-radius:var(--border-radius); padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-right:5px solid var(--green); width:100%;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--amber); font-weight:700; margin-bottom:12px;">سوال ۱:</div>
+            <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:var(--navy); margin-bottom:12px; line-height:2;">سلیم کتنے سال کا تھا؟</p>
+            <div style="background:var(--light-green); border-radius:8px; padding:14px;">
+              <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:#2d6a1e; line-height:2;"><strong>جواب:</strong> سلیم صرف دس سال کا تھا۔</p>
+            </div>
+          </div>
+
+          <div style="background:white; border-radius:var(--border-radius); padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-right:5px solid var(--amber); width:100%;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--amber); font-weight:700; margin-bottom:12px;">سوال ۲:</div>
+            <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:var(--navy); margin-bottom:12px; line-height:2;">سلطان نے اپنے بیٹوں کو تاج دینے سے پہلے ان کی اہلیت کو جانچنے کے لیے کیا طریقہ اختیار کیا؟</p>
+            <div style="background:#fff8f0; border-radius:8px; padding:14px;">
+              <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:#8B4513; line-height:2;"><strong>جواب:</strong> سلطان نے ہر بیٹے کو ایک بیج دیا اور کہا کہ ایک سال بعد جس کا پودا سب سے اچھا ہوگا وہی سلطان بنے گا۔</p>
+            </div>
+          </div>
+
+          <div style="background:white; border-radius:var(--border-radius); padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-right:5px solid var(--green); width:100%;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--amber); font-weight:700; margin-bottom:12px;">سوال ۳:</div>
+            <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:var(--navy); margin-bottom:12px; line-height:2;">سلیم نے بیج کے ساتھ کیا کیا؟</p>
+            <div style="background:var(--light-green); border-radius:8px; padding:14px;">
+              <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:#2d6a1e; line-height:2;"><strong>جواب:</strong> سلیم نے بہت احتیاط سے بیج کو گملے میں بویا، روزاسے پانی دیتا اور اس کا خیال کرتا۔</p>
+            </div>
+          </div>
+
+          <div style="background:white; border-radius:var(--border-radius); padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-right:5px solid var(--amber); width:100%;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--amber); font-weight:700; margin-bottom:12px;">سوال ۴:</div>
+            <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:var(--navy); margin-bottom:12px; line-height:2;">سب بیٹوں کے پاس کیا تھا؟</p>
+            <div style="background:#fff8f0; border-radius:8px; padding:14px;">
+              <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:#8B4513; line-height:2;"><strong>جواب:</strong> سب بیٹوں کے پاس خوبصورت پھولوں والے پودے تھے (سوائے سلیم کے)۔</p>
+            </div>
+          </div>
+
+          <div style="background:white; border-radius:var(--border-radius); padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.07); border-right:5px solid var(--green); width:100%; grid-column: 1 / -1;">
+            <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--amber); font-weight:700; margin-bottom:12px;">سوال ۵:</div>
+            <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:var(--navy); margin-bottom:12px; line-height:2;">سلطان سلیم کی کس عادت پر خوش ہوا؟</p>
+            <div style="background:var(--light-green); border-radius:8px; padding:14px;">
+              <p style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:#2d6a1e; line-height:2;"><strong>جواب:</strong> سلطان سلیم کی ایمانداری پر خوش ہوا۔ سلیم نے وہی بیج اگایا جو سلطان نے دیا تھا، اگرچہ وہ بیج خراب تھا اور اس سے پودا نہیں اگ سکتا تھا۔</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section class="section-alt" data-section-index="5" id="section-quiz">
+    <div class="section-inner">
+      <div class="content-wrapper">
+        <h2 class="section-title">🧠 آزمائشی کوئز</h2>
+        <p class="para-animate" style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.2rem); color:#555; margin-bottom:25px; line-height:2;">
+          سبق پڑھنے کے بعد یہ سوالات حل کریں:
+        </p>
+
+        <div class="quiz-container para-animate" id="quiz-container">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress"></div>
+          </div>
+
+          <div id="quiz-question-area">
+            <div style="font-family:'Poppins',sans-serif; font-size:clamp(0.85rem,1.3vw,1rem); color:#aaa; margin-bottom:10px;">
+              سوال <span id="q-current">1</span> از <span id="q-total">9</span>
+            </div>
+            <div class="quiz-question" id="quiz-q-text"></div>
+            <div class="quiz-options" id="quiz-options-container"></div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+            <div class="quiz-nav">
+              <button class="btn btn-green" id="quiz-next-btn" onclick="nextQuestion()" style="display:none;">اگلا سوال ▶</button>
+            </div>
+          </div>
+
+          <div class="quiz-score" id="quiz-score-area">
+            <span class="score-emoji" id="score-emoji">🎉</span>
+            <div class="score-text">آپ کا نتیجہ</div>
+            <div class="score-num" id="score-display">0/9</div>
+            <div id="score-message" style="font-family:var(--font-urdu); font-size:clamp(1rem,1.8vw,1.25rem); color:#555; margin-top:15px; line-height:2;"></div>
+            <button class="btn btn-navy" onclick="restartQuiz()" style="margin-top:20px;">دوبارہ کوشش کریں 🔄</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:var(--navy); color:white; padding:40px; text-align:center;">
+    <div class="content-wrapper">
+      <div style="font-family:var(--font-urdu); font-size:clamp(1.2rem,2vw,1.5rem); color:var(--amber); margin-bottom:12px;">سچا سلطان — سبق ۱۵</div>
+      <div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.6vw,1.15rem); color:rgba(255,255,255,0.6); line-height:2;">
+        ایمانداری اور سچائی ہمیشہ کامیابی کا راستہ ہے 🌱
+      </div>
+      <div style="font-family:'Inter',sans-serif; font-size:clamp(0.85rem,1.3vw,1rem); color:rgba(255,255,255,0.3); margin-top:20px;">
+        Digital School · Class 4 · Urdu
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK — always first
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // Init sequence
+  try { initLenis(); } catch(e) { console.warn('Lenis failed', e); }
+  try { initGSAP(); } catch(e) { console.warn('GSAP failed', e); }
+  try { initMermaid(); } catch(e) { console.warn('Mermaid failed', e); }
+  initQuiz();
+  initDragDrop();
+  hideCurtain();
+});
+
+// ---- CURTAIN ----
+function hideCurtain() {
+  const c = document.getElementById('curtain');
+  if (!c) return;
+  if (typeof gsap !== 'undefined') {
+    try {
+      gsap.to(c, { opacity: 0, duration: 0.8, delay: 0.3, onComplete: () => { c.style.display = 'none'; } });
+    } catch(e) { c.style.display = 'none'; }
+  } else {
+    setTimeout(() => { c.style.display = 'none'; }, 500);
+  }
+}
+
+// ---- LENIS ----
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.12, smooth: true });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+
+// ---- GSAP ----
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Sidebar slide from right
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar && typeof ScrollTrigger !== 'undefined') {
+    gsap.from(sidebar, {
+      x: 80, opacity: 0.5, duration: 1,
+      scrollTrigger: { trigger: sidebar, start: 'top 80%' }
+    });
+  }
+
+  // Paragraph animations
+  const paras = document.querySelectorAll('.para-animate');
+  paras.forEach((el, i) => {
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.from(el, {
+        y: 30, opacity: 0.7, duration: 0.7,
+        scrollTrigger: { trigger: el, start: 'top 88%' },
+        delay: (i % 3) * 0.1
+      });
+    }
+  });
+
+  // Hero animations
+  const heroContent = document.querySelector('.hero-content');
+  if (heroContent) {
+    gsap.from(heroContent.children, {
+      y: 50, opacity: 0, stagger: 0.2, duration: 1, ease: 'power2.out', delay: 0.5
+    });
+  }
+
+  // Section title underline on scroll
+  const sectionTitles = document.querySelectorAll('.section-title');
+  sectionTitles.forEach(title => {
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: title,
+        start: 'top 85%',
+        onEnter: () => title.classList.add('underlined')
+      });
+    }
+  });
+
+  // Story card entrance
+  const storyCard = document.querySelector('.story-card');
+  if (storyCard && typeof ScrollTrigger !== 'undefined') {
+    gsap.from(storyCard, {
+      x: -40, opacity: 0.8, duration: 0.8,
+      scrollTrigger: { trigger: storyCard, start: 'top 85%' }
+    });
+  }
+}
+
+// ---- MERMAID ----
+function initMermaid() {
+  if (typeof mermaid !== 'undefined') {
+    mermaid.initialize({ startOnLoad: true, theme: 'default', fontFamily: 'Noto Nastaliq Urdu' });
+  }
+}
+
+// ---- SCROLL TO SECTION ----
+const sections = ['#hero-section', '#section-story', '#section-vocab', '#section-grammar', '#section-activity', '#section-quiz'];
+function scrollToSection(idx) {
+  const el = document.querySelector(sections[idx]);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Update progress dots on scroll
+window.addEventListener('scroll', () => {
+  const dots = document.querySelectorAll('.progress-dot');
+  const scrollY = window.scrollY + 100;
+  let active = 0;
+  sections.forEach((sel, i) => {
+    const el = document.querySelector(sel);
+    if (el && el.offsetTop <= scrollY) active = i;
+  });
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i === active) d.classList.add('active');
+    else if (i < active) d.classList.add('done');
+  });
+});
+
+// ---- ACCORDION ----
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  document.querySelectorAll('.accordion-header.open').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+    h.nextElementSibling.style.maxHeight = '0';
+  });
+  if (!isOpen) {
+    header.classList.add('open');
+    body.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+// ---- WORKED EXAMPLE STEPS ----
+const steps = [
+  { label: 'مرحلہ ۱: جملہ پڑھیں', text: 'سلیم نے بیج کو سنبھال کر رکھا۔', color: 'var(--light-green)', border: 'var(--green)' },
+  { label: 'مرحلہ ۲: اسم تلاش کریں', text: '🏷️ اسم: <strong>سلیم</strong> — ایک شخص کا نام | <strong>بیج</strong> — ایک چیز کا نام', color: '#e8f5e0', border: 'var(--green)' },
+  { label: 'مرحلہ ۳: فعل تلاش کریں', text: '🎬 فعل: <strong>سنبھال کر رکھا</strong> — ایک کام (سنبھالنا)', color: '#fff3e0', border: 'var(--amber)' },
+  { label: 'مرحلہ ۴: نتیجہ', text: '✅ اسم: سلیم، بیج | فعل: سنبھال کر رکھا', color: '#f0f9eb', border: '#2d6a1e' }
+];
+let currentStep = 0;
+
+function showNextStep() {
+  if (currentStep >= steps.length) return;
+  const display = document.getElementById('step-display-1');
+  const step = steps[currentStep];
+  const div = document.createElement('div');
+  div.className = 'step-item';
+  div.style.background = step.color;
+  div.style.borderRightColor = step.border;
+  div.innerHTML = `<div class="step-label">${step.label}</div><div style="font-family:var(--font-urdu); font-size:clamp(1rem,1.7vw,1.2rem); color:var(--navy); line-height:2;">${step.text}</div>`;
+  display.appendChild(div);
+  setTimeout(() => div.classList.add('visible'), 50);
+
+  if (typeof gsap !== 'undefined') {
+    try {
+      gsap.from(div, { y: 20, opacity: 0, duration: 0.5 });
+    } catch(e) {}
+  }
+
+  currentStep++;
+  if (currentStep >= steps.length) {
+    document.getElementById('next-step-btn').disabled = true;
+    document.getElementById('next-step-btn').style.opacity = '0.5';
+  }
+}
+
+function resetSteps() {
+  currentStep = 0;
+  const display = document.getElementById('step-display-1');
+  display.innerHTML = '';
+  const btn = document.getElementById('next-step-btn');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+}
+
+// ---- FILL IN THE BLANK ----
+let selectedWord = null;
+
+function selectWord(chip) {
+  // Deselect previous
+  document.querySelectorAll('.word-chip').forEach(c => c.style.background = '');
+  document.querySelectorAll('.word-chip').forEach(c => c.style.color = '');
+  selectedWord = chip.dataset.word;
+  chip.style.background = 'var(--amber)';
+  chip.style.color = 'white';
+}
+
+function fillBlank(blankId) {
+  if (!selectedWord) return;
+  const blank = document.getElementById(blankId);
+  blank.textContent = selectedWord;
+  blank.classList.add('filled');
+  blank.classList.remove('wrong');
+  blank.dataset.filled = selectedWord;
+  // Mark chip as used
+  document.querySelectorAll('.word-chip').forEach(c => {
+    if (c.dataset.word === selectedWord) {
+      c.classList.add('used');
+      c.style.background = '';
+      c.style.color = '';
+    }
+  });
+  selectedWord = null;
+}
+
+function checkFIB() {
+  let correct = 0;
+  const blanks = document.querySelectorAll('.fib-blank');
+  blanks.forEach(b => {
+    if (b.dataset.filled === b.dataset.answer) {
+      b.classList.add('filled');
+      b.classList.remove('wrong');
+      correct++;
+    } else {
+      b.classList.add('wrong');
+      b.classList.remove('filled');
+    }
+  });
+  const result = document.getElementById('fib-result');
+  result.classList.add('show');
+  if (correct === blanks.length) {
+    result.textContent = `🎉 شاباش! آپ نے تمام ${correct} جوابات درست دیے!`;
+    result.style.background = 'linear-gradient(135deg, var(--green), #4a8f35)';
+  } else {
+    result.textContent = `آپ نے ${correct} جوابات درست دیے۔ لال رنگ والے غلط ہیں۔ دوبارہ کوشش کریں!`;
+    result.style.background = 'linear-gradient(135deg, var(--amber), #d4821f)';
+  }
+}
+
+function resetFIB() {
+  document.querySelectorAll('.fib-blank').forEach(b => {
+    b.textContent = '_____';
+    b.classList.remove('filled', 'wrong');
+    delete b.dataset.filled;
+  });
+  document.querySelectorAll('.word-chip').forEach(c => {
+    c.classList.remove('used');
+    c.style.background = '';
+    c.style.color = '';
+  });
+  selectedWord = null;
+  const result = document.getElementById('fib-result');
+  result.classList.remove('show');
+}
+
+// ---- DRAG AND DROP ----
+function initDragDrop() {
+  const chips = document.querySelectorAll('.draggable-chip');
+  const dropZones = document.querySelectorAll('.drop-zone');
+
+  chips.forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', chip.dataset.word);
+      e.dataTransfer.setData('type', chip.dataset.type);
+      chip.classList.add('dragging');
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+
+    // Touch support
+    chip.addEventListener('touchstart', touchStart, { passive: true });
+    chip.addEventListener('touchmove', touchMove, { passive: false });
+    chip.addEventListener('touchend', touchEnd);
+  });
+
+  dropZones.forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const word = e.dataTransfer.getData('text/plain');
+      const type = e.dataTransfer.getData('type');
+      const accepts = zone.dataset.accepts;
+      dropWord(word, type, accepts, zone.id);
+    });
+  });
+}
+
+let touchChip = null;
+let touchClone = null;
+function touchStart(e) {
+  touchChip = e.currentTarget;
+}
+function touchMove(e) {
+  e.preventDefault();
+}
+function touchEnd(e) {
+  if (!touchChip) return;
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (el) {
+    const zone = el.closest('.drop-zone');
+    if (zone) {
+      dropWord(touchChip.dataset.word, touchChip.dataset.type, zone.dataset.accepts, zone.id);
+    }
+  }
+  touchChip = null;
+}
+
+function dropWord(word, type, accepts, zoneId) {
+  if (type !== accepts) return;
+  const droppedContainer = zoneId === 'drop-ism' ? document.getElementById('ism-dropped') : document.getElementById('fail-dropped');
+  const chip = document.createElement('span');
+  chip.style.cssText = `background:${accepts === 'اسم' ? 'var(--green)' : 'var(--amber)'}; color:white; padding:8px 14px; border-radius:20px; font-family:var(--font-urdu); font-size:clamp(0.9rem,1.4vw,1.05rem); display:inline-flex; align-items:center;`;
+  chip.textContent = word;
+  droppedContainer.appendChild(chip);
+
+  // Hide original draggable
+  document.querySelectorAll('.draggable-chip').forEach(c => {
+    if (c.dataset.word === word) c.style.opacity = '0.3';
+  });
+}
+
+function checkDD() {
+  const ismItems = document.getElementById('ism-dropped').children;
+  const failItems = document.getElementById('fail-dropped').children;
+
+  const correctIsm = ['سلیم', 'ملک', 'بیج', 'سلطان'];
+  const correctFail = ['بویا', 'لایا', 'دیکھا', 'بولا'];
+
+  let correct = 0, total = 0;
+  Array.from(ismItems).forEach(item => {
+    total++;
+    if (correctIsm.includes(item.textContent)) { correct++; item.style.background = '#2d6a1e'; }
+    else { item.style.background = '#e74c3c'; }
+  });
+  Array.from(failItems).forEach(item => {
+    total++;
+    if (correctFail.includes(item.textContent)) { correct++; item.style.background = '#8B4513'; }
+    else { item.style.background = '#e74c3c'; }
+  });
+
+  const result = document.getElementById('dd-result');
+  result.classList.add('show');
+  if (correct === total && total > 0) {
+    result.textContent = `🎉 بہت خوب! آپ نے تمام الفاظ صحیح جگہ ڈالے!`;
+    result.style.background = 'linear-gradient(135deg, var(--green), #4a8f35)';
+  } else {
+    result.textContent = `آپ نے ${correct} میں سے ${total} درست کیے۔ لال رنگ والے غلط ہیں۔`;
+    result.style.background = 'linear-gradient(135deg, var(--amber), #d4821f)';
+  }
+}
+
+function resetDD() {
+  document.getElementById('ism-dropped').innerHTML = '';
+  document.getElementById('fail-dropped').innerHTML = '';
+  document.querySelectorAll('.draggable-chip').forEach(c => { c.style.opacity = '1'; });
+  const result = document.getElementById('dd-result');
+  result.classList.remove('show');
+}
+
+// ---- QUIZ ----
+const quizQuestions = [
+  {
+    q: 'اس کہانی میں سلطان نے اپنے بیٹوں کو کیا دیا؟',
+    options: ['سونا', 'بیج', 'پیسے', 'کتاب'],
+    answer: 1,
+    explanation: 'سلطان نے ہر بیٹے کو ایک بیج دیا۔'
+  },
+  {
+    q: 'سلیم کتنے سال کا تھا؟',
+    options: ['پانچ سال', 'بارہ سال', 'دس سال', 'آٹھ سال'],
+    answer: 2,
+    explanation: 'سلیم صرف دس سال کا تھا۔'
+  },
+  {
+    q: '"احتیاط" کا کیا مطلب ہے؟',
+    options: ['خوبصورت', 'خبردار رہنا', 'محنت کرنا', 'بات کرنا'],
+    answer: 1,
+    explanation: 'احتیاط کا مطلب ہے خبردار رہنا۔'
+  },
+  {
+    q: 'سلطان نے بیٹوں کو خراب بیج کیوں دیے؟',
+    options: ['وہ بیمار تھا', 'اس کے پاس اچھے بیج نہیں تھے', 'وہ ایمانداری کا امتحان لینا چاہتا تھا', 'وہ کھیتی کرنا چاہتا تھا'],
+    answer: 2,
+    explanation: 'سلطان نے بیٹوں کی ایمانداری کا امتحان لینے کے لیے خراب بیج دیے۔'
+  },
+  {
+    q: 'سلیم نے بیج کے ساتھ کیا کیا؟',
+    options: ['اسے پھینک دیا', 'اسے گملے میں بویا اور پانی دیا', 'اسے کھا گیا', 'اسے دوسرے سے بدل لیا'],
+    answer: 1,
+    explanation: 'سلیم نے احتیاط سے بیج کو گملے میں بویا اور روز پانی دیا۔'
+  },
+  {
+    q: '"سلطان" کا کیا مطلب ہے؟',
+    options: ['طالب علم', 'حکمران', 'کسان', 'تاجر'],
+    answer: 1,
+    explanation: 'سلطان کا مطلب ہے حکمران۔'
+  },
+  {
+    q: 'اس جملے میں اسم کون سا ہے؟ "سلیم نے بیج بویا۔"',
+    options: ['بویا', 'نے', 'سلیم', 'میں'],
+    answer: 2,
+    explanation: 'سلیم ایک شخص کا نام ہے، اس لیے یہ اسم ہے۔'
+  },
+  {
+    q: 'سلیم کے گملے میں کیا نکلا؟',
+    options: ['خوبصورت پھول', 'بڑا پودا', 'کچھ نہیں نکلا', 'میوے'],
+    answer: 2,
+    explanation: 'بیج خراب تھا اس لیے سلیم کے گملے میں کچھ نہیں نکلا۔'
+  },
+  {
+    q: 'آخر میں سلطان نے کسے اپنا جانشین بنایا؟',
+    options: ['سب سے بڑے بیٹے کو', 'سلیم کو', 'جس کا پودا سب سے خوبصورت تھا', 'کسی کو نہیں'],
+    answer: 1,
+    explanation: 'سلطان نے سلیم کو اپنا جانشین بنایا کیونکہ سلیم نے ایمانداری دکھائی۔'
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function initQuiz() {
+  document.getElementById('q-total').textContent = quizQuestions.length;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = quizQuestions[currentQuestion];
+  document.getElementById('quiz-q-text').textContent = q.q;
+  document.getElementById('q-current').textContent = currentQuestion + 1;
+  document.getElementById('quiz-progress').style.width = ((currentQuestion / quizQuestions.length) * 100) + '%';
+
+  const optCont = document.getElementById('quiz-options-container');
+  optCont.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(idx);
+    optCont.appendChild(btn);
+  });
+
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-next-btn').style.display = 'none';
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[currentQuestion];
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach((opt, i) => {
+    opt.classList.add('disabled');
+    if (i === q.answer) opt.classList.add('correct');
+    else if (i === idx && i !== q.answer) opt.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  if (idx === q.answer) {
+    score++;
+    fb.textContent = '✅ شاباش! بالکل درست جواب! — ' + q.explanation;
+    fb.className = 'quiz-feedback show correct-fb';
+  } else {
+    fb.textContent = '❌ غلط جواب۔ درست جواب: ' + q.options[q.answer] + ' — ' + q.explanation;
+    fb.className = 'quiz-feedback show wrong-fb';
+  }
+
+  document.getElementById('quiz-next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion >= quizQuestions.length) {
+    showScore();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showScore() {
+  document.getElementById('quiz-question-area').style.display = 'none';
+  const scoreArea = document.getElementById('quiz-score-area');
+  scoreArea.classList.add('show');
+  document.getElementById('quiz-progress').style.width = '100%';
+
+  const pct = score / quizQuestions.length;
+  document.getElementById('score-display').textContent = score + '/' + quizQuestions.length;
+
+  let emoji, msg;
+  if (pct >= 0.89) { emoji = '🏆'; msg = 'ماشاءاللہ! آپ نے بہت اچھا کیا! آپ بہت ہوشیار ہیں۔'; }
+  else if (pct >= 0.67) { emoji = '⭐'; msg = 'بہت اچھا! تھوڑی اور مشق کریں۔'; }
+  else if (pct >= 0.44) { emoji = '📚'; msg = 'ٹھیک ہے۔ سبق دوبارہ پڑھیں اور کوشش کریں۔'; }
+  else { emoji = '💪'; msg = 'مایوس نہ ہوں! دوبارہ کوشش کریں۔'; }
+
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-message').textContent = msg;
+
+  if (typeof gsap !== 'undefined') {
+    try {
+      gsap.from('#quiz-score-area', { scale: 0.8, opacity: 0.5, duration: 0.6, ease: 'back.out(1.7)' });
+    } catch(e) {}
+  }
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('quiz-question-area').style.display = 'block';
+  document.getElementById('quiz-score-area').classList.remove('show');
+  renderQuestion();
+}
+</script>
+</body>
+</html>

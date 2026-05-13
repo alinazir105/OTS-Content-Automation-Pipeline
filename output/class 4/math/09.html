@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 4 | SUBJECT: math | VERSION: 1.0 -->
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 9: Time | Class 4 Mathematics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;color:#2C3E50;background:#fff;overflow-x:hidden}
+:root{--green:#6AB04C;--navy:#2C3E50;--amber:#F0932B;--light-green:#f0f9eb;--white:#fff;--border-radius:14px}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .c-logo{font-family:'Poppins',sans-serif;font-size:2rem;font-weight:800;color:#fff}
+#curtain .c-sub{color:#a0b4c8;font-size:1.1rem}
+.curtain-bar{width:200px;height:6px;background:#1a2a38;border-radius:3px;overflow:hidden}
+.curtain-fill{height:100%;width:0;background:var(--green);border-radius:3px}
+
+/* STICKY HEADER */
+.sticky-header{position:sticky;top:0;z-index:100;background:var(--navy);padding:12px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(0,0,0,.18)}
+.sticky-header .lesson-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;color:#fff}
+.progress-dots{display:flex;gap:8px;align-items:center}
+.progress-dots span{width:11px;height:11px;border-radius:50%;background:#fff;opacity:.3;cursor:pointer;transition:opacity .3s,background .3s}
+.progress-dots span.active{opacity:1;background:var(--amber)}
+
+/* HERO */
+.hero{width:100%;background:linear-gradient(135deg,var(--navy) 60%,#1e5a3a 100%);min-height:72vh;display:flex;align-items:center;justify-content:center;padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero-bg-clock{position:absolute;right:5%;bottom:-20px;width:340px;opacity:.08;pointer-events:none}
+.hero h1{font-family:'Poppins',sans-serif;font-size:clamp(2.6rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:18px}
+.hero h1 span{color:var(--amber)}
+.hero p{font-size:clamp(1rem,2vw,1.25rem);color:#b8d4e8;max-width:600px;margin:0 auto 28px}
+.badge{display:inline-block;background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;padding:7px 22px;border-radius:30px;letter-spacing:.5px}
+
+/* LAYOUT */
+.page-wrapper{width:100%;max-width:1500px;margin:0 auto;padding:0 40px}
+.content-grid{display:grid;grid-template-columns:65% 35%;gap:48px;padding:60px 0}
+.main-col{}
+.sidebar-col{}
+
+/* SECTIONS */
+section{padding:60px 0}
+section.alt-bg{background:var(--light-green)}
+.section-inner{width:100%;max-width:1500px;margin:0 auto;padding:0 40px}
+
+/* SECTION HEADERS */
+.section-tag{display:inline-block;background:var(--amber);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;padding:4px 16px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.section-title{font-family:'Poppins',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--navy);margin-bottom:8px}
+.section-desc{font-size:1.05rem;color:#4a6075;margin-bottom:36px}
+
+/* HIGHLIGHT BOXES */
+.highlight-box{background:#e8f5e0;border-left:6px solid var(--green);border-radius:0 var(--border-radius) var(--border-radius) 0;padding:20px 24px;margin:20px 0;opacity:1;transform:none}
+.highlight-box.amber{background:#fff7ed;border-left-color:var(--amber)}
+.highlight-box.navy{background:#eaf0f6;border-left-color:var(--navy)}
+.highlight-box h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy);margin-bottom:6px}
+.highlight-box p,.highlight-box ul{font-size:1rem;color:#34495e}
+.highlight-box ul{padding-left:20px}
+.highlight-box ul li{margin-bottom:4px}
+
+/* FORMULA BOX */
+.formula-box{background:var(--navy);color:#fff;border-radius:var(--border-radius);padding:22px 28px;margin:20px 0;font-family:'Courier New',monospace;font-size:1.05rem;position:relative;overflow:hidden}
+.formula-box .formula-label{font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:600;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.formula-line{display:block;padding:4px 0;color:#e0eaf4}
+.formula-underline{position:relative;display:inline-block}
+.formula-underline::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:3px;background:var(--amber);border-radius:2px;transition:width .6s}
+.formula-underline.drawn::after{width:100%}
+
+/* STEP BOXES */
+.step-box{background:#1a2a38;border-radius:var(--border-radius);padding:24px 28px;margin:20px 0;color:#e0eaf4;font-family:'Courier New',monospace;font-size:1rem}
+.step-box .step-header{font-family:'Poppins',sans-serif;color:var(--amber);font-size:.9rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.step-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px;opacity:1;transform:none}
+.step-num{background:var(--green);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:.85rem;flex-shrink:0}
+.step-text{font-size:1rem;color:#c9dce8;line-height:1.6}
+
+/* CARDS */
+.card{background:#fff;border-radius:var(--border-radius);padding:24px 28px;box-shadow:0 4px 20px rgba(44,62,80,.08);margin-bottom:20px;width:100%;max-width:100%;opacity:1;transform:none}
+.card h3{font-family:'Poppins',sans-serif;font-size:clamp(1.2rem,2vw,1.45rem);font-weight:700;color:var(--navy);margin-bottom:10px}
+.card p{font-size:1rem;color:#4a6075}
+
+/* WORKED EXAMPLE */
+.worked-example{background:#fff;border-radius:var(--border-radius);box-shadow:0 4px 24px rgba(44,62,80,.1);overflow:hidden;margin:28px 0;width:100%;max-width:100%}
+.we-header{background:var(--navy);padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+.we-header h3{font-family:'Poppins',sans-serif;color:#fff;font-size:1.15rem;font-weight:700}
+.we-badge{background:var(--amber);color:#fff;font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:12px}
+.we-body{padding:24px 28px}
+.we-question{background:var(--light-green);border-left:5px solid var(--green);padding:14px 18px;border-radius:0 8px 8px 0;font-size:1.05rem;font-weight:600;color:var(--navy);margin-bottom:20px}
+.we-steps .step-reveal{display:none;background:#f7fbf3;border:1px solid #c5e2a8;border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:1rem;color:#2C3E50;opacity:1;transform:none}
+.we-steps .step-reveal.visible{display:block}
+.we-steps .step-reveal .sl{font-family:'Poppins',sans-serif;font-weight:700;color:var(--green);font-size:.9rem;margin-bottom:4px}
+.we-answer{background:var(--navy);color:#fff;border-radius:10px;padding:14px 18px;font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;display:none;margin-top:10px}
+.we-answer.visible{display:block}
+.we-footer{padding:16px 28px;background:#f9f9f9;display:flex;gap:12px;flex-wrap:wrap}
+.btn{background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;padding:11px 26px;border:none;border-radius:8px;cursor:pointer;transition:background .2s,transform .1s;min-height:48px}
+.btn:hover{background:#5a9a3e;transform:translateY(-1px)}
+.btn.amber{background:var(--amber)}
+.btn.amber:hover{background:#d4831e}
+.btn.navy{background:var(--navy)}
+.btn.navy:hover{background:#1a2a38}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* CONVERSION TABLE */
+.conv-table-wrap{overflow-x:auto;margin:20px 0}
+.conv-table{width:100%;border-collapse:collapse;font-size:1rem}
+.conv-table th{background:var(--navy);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;padding:13px 18px;text-align:left;font-size:1rem}
+.conv-table td{padding:12px 18px;border-bottom:1px solid #e0e8d4;font-size:1rem}
+.conv-table tr:nth-child(even) td{background:var(--light-green)}
+.conv-table tr:hover td{background:#ddf0ca}
+
+/* QUIZ */
+.quiz-wrap{background:#fff;border-radius:var(--border-radius);box-shadow:0 4px 24px rgba(44,62,80,.1);overflow:hidden;margin:28px 0;width:100%;max-width:100%}
+.quiz-header{background:var(--navy);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.quiz-header h3{font-family:'Poppins',sans-serif;color:#fff;font-size:1.15rem;font-weight:700}
+.quiz-progress-text{color:var(--amber);font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem}
+.quiz-body{padding:28px}
+.q-item{display:none}
+.q-item.active{display:block}
+.q-text{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:20px;line-height:1.5}
+.q-options{display:flex;flex-direction:column;gap:12px}
+.q-opt{background:#f4f8f0;border:2px solid #d0e8b8;border-radius:10px;padding:14px 18px;font-size:1rem;cursor:pointer;transition:border-color .2s,background .2s;text-align:left;font-family:'Inter',sans-serif;min-height:52px;width:100%}
+.q-opt:hover{border-color:var(--green);background:#e8f5e0}
+.q-opt.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.q-opt.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.q-opt:disabled{cursor:not-allowed}
+.q-feedback{margin-top:16px;padding:12px 18px;border-radius:8px;font-size:1rem;font-weight:600;display:none}
+.q-feedback.show{display:block}
+.q-feedback.correct{background:#d4edda;color:#155724}
+.q-feedback.wrong{background:#f8d7da;color:#721c24}
+.quiz-footer{padding:16px 28px;background:#f9f9f9;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.quiz-result{padding:32px 28px;text-align:center;display:none}
+.quiz-result.show{display:block}
+.quiz-result .score{font-family:'Poppins',sans-serif;font-size:3.5rem;font-weight:800;color:var(--green)}
+.quiz-result p{font-size:1.1rem;color:#4a6075;margin-top:8px}
+.quiz-result .star-row{font-size:2.5rem;margin:16px 0}
+
+/* CLOZE */
+.cloze-wrap{background:#fff;border-radius:var(--border-radius);box-shadow:0 4px 20px rgba(44,62,80,.09);padding:28px;margin:28px 0;width:100%;max-width:100%}
+.cloze-wrap h3{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:16px}
+.cloze-para{font-size:1.05rem;color:#2C3E50;line-height:2.2}
+.cloze-input{border:none;border-bottom:2.5px solid var(--amber);background:transparent;font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);padding:2px 6px;width:110px;text-align:center;outline:none;transition:border-color .2s}
+.cloze-input:focus{border-bottom-color:var(--green)}
+.cloze-input.correct-ans{border-bottom-color:var(--green);background:#e8f5e0}
+.cloze-input.wrong-ans{border-bottom-color:#dc3545;background:#f8d7da}
+.cloze-footer{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}
+
+/* DRAG & DROP */
+.drag-section{background:#fff;border-radius:var(--border-radius);box-shadow:0 4px 20px rgba(44,62,80,.09);padding:28px;margin:28px 0;width:100%;max-width:100%}
+.drag-section h3{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.drag-section p{font-size:1rem;color:#4a6075;margin-bottom:20px}
+.drag-bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;min-height:52px;background:#f4f8f0;padding:14px;border-radius:10px;border:2px dashed #b0d48c}
+.drag-item{background:var(--navy);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;padding:9px 18px;border-radius:8px;cursor:grab;user-select:none;transition:opacity .2s,transform .2s;min-height:44px;display:flex;align-items:center}
+.drag-item:active{cursor:grabbing;opacity:.7;transform:scale(1.06)}
+.drag-item.dragging{opacity:.4}
+.drop-targets{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.drop-target{border:2.5px dashed #b0d48c;border-radius:10px;padding:16px 18px;min-height:64px;display:flex;align-items:center;gap:12px;transition:background .2s,border-color .2s}
+.drop-target .dt-label{font-size:.9rem;color:#6a8090;font-weight:600;flex-shrink:0}
+.drop-target .dt-slot{flex:1;min-height:38px;display:flex;align-items:center}
+.drop-target.over{background:#e8f5e0;border-color:var(--green)}
+.drop-target.matched{background:#d4edda;border-color:#28a745}
+.drop-target.wrong-drop{background:#f8d7da;border-color:#dc3545}
+.dropped-item{background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;padding:7px 14px;border-radius:8px}
+
+/* SIDEBAR */
+.sidebar-col .sidebar-sticky{position:sticky;top:80px}
+.sidebar-card{background:#fff;border-radius:var(--border-radius);box-shadow:0 4px 20px rgba(44,62,80,.1);overflow:hidden;margin-bottom:24px;width:100%;max-width:100%;opacity:1;transform:none}
+.sidebar-card-header{background:var(--navy);padding:14px 20px}
+.sidebar-card-header h4{font-family:'Poppins',sans-serif;color:#fff;font-size:1rem;font-weight:700}
+.sidebar-card-body{padding:18px 20px}
+.sb-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2e8;font-size:.98rem;color:#2C3E50}
+.sb-item:last-child{border-bottom:none}
+.sb-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;background:var(--light-green)}
+.mini-clock{width:100%;aspect-ratio:1;max-width:180px;margin:0 auto;display:block}
+
+/* PRACTICE */
+.practice-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+.prac-card{background:var(--light-green);border:2px solid #b8dda0;border-radius:12px;padding:18px 20px}
+.prac-card .pq{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);margin-bottom:8px}
+.prac-card input{width:100%;border:2px solid #b8dda0;border-radius:6px;padding:9px 12px;font-size:1rem;font-family:'Inter',sans-serif;background:#fff;color:var(--navy);outline:none;min-height:44px}
+.prac-card input:focus{border-color:var(--green)}
+.prac-card input.correct-ans{border-color:var(--green);background:#e8f5e0}
+.prac-card input.wrong-ans{border-color:#dc3545;background:#f8d7da}
+
+/* TIME CLOCK SVG DIAGRAM */
+.clock-diagram{background:var(--light-green);border-radius:var(--border-radius);padding:24px;text-align:center;margin:24px 0}
+.clock-diagram h4{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:16px}
+
+/* ACCORDION (mobile) */
+.accordion-sidebar{display:none}
+.accordion-item{border:1px solid #d0e8b8;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.accordion-trigger{background:var(--navy);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;padding:14px 18px;border:none;width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.accordion-trigger::after{content:'▼';font-size:.8rem;transition:transform .3s}
+.accordion-trigger.open::after{transform:rotate(180deg)}
+.accordion-content{display:none;padding:18px;background:#f9fdf6}
+.accordion-content.open{display:block}
+
+/* MOBILE NAV */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy);z-index:200;padding:0 8px 6px;overflow-x:auto;border-top:3px solid var(--green)}
+.mobile-bottom-nav .mnav-row{display:flex;gap:4px;min-width:max-content;padding:6px 0}
+.mobile-bottom-nav a{color:#a0b4c8;font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:600;text-decoration:none;padding:10px 14px;border-radius:8px;white-space:nowrap;min-height:48px;display:flex;align-items:center;transition:background .2s,color .2s}
+.mobile-bottom-nav a:hover,.mobile-bottom-nav a.active{background:var(--green);color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .content-grid{grid-template-columns:1fr}
+  .sidebar-col{display:none}
+  .accordion-sidebar{display:block}
+  .practice-grid{grid-template-columns:1fr}
+  .drop-targets{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .sticky-header{padding:10px 16px}
+  .page-wrapper{padding:0 16px}
+  .section-inner{padding:0 16px}
+  section{padding:40px 0}
+  .hero{padding:60px 16px 50px;min-height:60vh}
+  .mobile-bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .content-grid{padding:30px 0;gap:24px}
+  .we-body{padding:16px}
+  .we-footer{padding:12px 16px}
+  .quiz-body{padding:20px 16px}
+  .quiz-footer{padding:12px 16px}
+  .conv-table th,.conv-table td{padding:10px 12px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:clamp(2rem,8vw,3rem)}
+  .section-title{font-size:clamp(1.4rem,5vw,2rem)}
+}
+
+/* ANIMATIONS (base — GSAP enhances) */
+.fade-in-el{opacity:1;transform:none}
+.slide-right-el{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="c-logo">⏰ Digital School</div>
+  <div class="c-sub">Loading Chapter 9: Time...</div>
+  <div class="curtain-bar"><div class="curtain-fill" id="curtainFill"></div></div>
+</div>
+
+<!-- STICKY HEADER -->
+<header class="sticky-header" id="stickyHeader">
+  <div class="lesson-title">📘 Chapter 9 — TIME | Class 4</div>
+  <div class="progress-dots" id="progressDots">
+    <span class="active" data-target="hero" title="Intro"></span>
+    <span data-target="units" title="Units"></span>
+    <span data-target="adding" title="Adding Time"></span>
+    <span data-target="practice" title="Practice"></span>
+    <span data-target="quiz" title="Quiz"></span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div>
+    <span class="badge">Chapter 9</span>
+    <h1>Understanding <span>TIME</span></h1>
+    <p>Learn to read, convert, add and subtract time — and solve real-world time problems!</p>
+  </div>
+</section>
+
+<!-- UNITS SECTION -->
+<section id="units" style="background:#fff">
+<div class="section-inner">
+  <div class="content-grid">
+    <!-- MAIN COLUMN -->
+    <div class="main-col">
+      <span class="section-tag">Units of Time</span>
+      <h2 class="section-title fade-in-el">Units &amp; Conversions</h2>
+      <p class="section-desc fade-in-el">We measure time in <strong>seconds</strong>, <strong>minutes</strong>, and <strong>hours</strong>. Knowing how to convert between them is essential!</p>
+
+      <div class="highlight-box fade-in-el">
+        <h4>📏 Key Relationships</h4>
+        <ul>
+          <li><strong>1 minute = 60 seconds</strong></li>
+          <li><strong>1 hour = 60 minutes</strong></li>
+          <li><strong>1 hour = 3,600 seconds</strong></li>
+        </ul>
+      </div>
+
+      <div class="formula-box fade-in-el">
+        <div class="formula-label">Conversion Formulas</div>
+        <span class="formula-line">To convert <span class="formula-underline" id="fu1">minutes → seconds</span>: multiply by <strong>60</strong></span>
+        <span class="formula-line">To convert <span class="formula-underline" id="fu2">seconds → minutes</span>: divide by <strong>60</strong></span>
+        <span class="formula-line">To convert <span class="formula-underline" id="fu3">hours → minutes</span>: multiply by <strong>60</strong></span>
+        <span class="formula-line">To convert <span class="formula-underline" id="fu4">minutes → hours</span>: divide by <strong>60</strong></span>
+      </div>
+
+      <!-- CONVERSION TABLE -->
+      <div class="card fade-in-el">
+        <h3>📋 Conversion Reference Table</h3>
+        <div class="conv-table-wrap">
+          <table class="conv-table">
+            <thead>
+              <tr><th>From</th><th>To</th><th>Operation</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Seconds</td><td>Minutes</td><td>÷ 60</td><td>120 sec ÷ 60 = <strong>2 min</strong></td></tr>
+              <tr><td>Minutes</td><td>Seconds</td><td>× 60</td><td>3 min × 60 = <strong>180 sec</strong></td></tr>
+              <tr><td>Minutes</td><td>Hours</td><td>÷ 60</td><td>90 min ÷ 60 = <strong>1 hr 30 min</strong></td></tr>
+              <tr><td>Hours</td><td>Minutes</td><td>× 60</td><td>2.5 hr × 60 = <strong>150 min</strong></td></tr>
+              <tr><td>Seconds</td><td>Hours</td><td>÷ 3600</td><td>3600 sec ÷ 3600 = <strong>1 hr</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- WORKED EXAMPLE -->
+      <div class="worked-example fade-in-el">
+        <div class="we-header">
+          <h3>🔢 Worked Example: Conversions</h3>
+          <span class="we-badge">Step by Step</span>
+        </div>
+        <div class="we-body">
+          <div class="we-question">Convert 2 hours and 30 minutes into minutes.</div>
+          <div class="we-steps" id="convSteps">
+            <div class="step-reveal" id="cs1"><div class="sl">Step 1</div>Identify: We have 2 hours and 30 minutes. We need to convert everything to minutes.</div>
+            <div class="step-reveal" id="cs2"><div class="sl">Step 2</div>Convert hours to minutes: 2 hours × 60 = <strong>120 minutes</strong></div>
+            <div class="step-reveal" id="cs3"><div class="sl">Step 3</div>Add the remaining minutes: 120 + 30 = <strong>150 minutes</strong></div>
+          </div>
+          <div class="we-answer" id="convAnswer">✅ Answer: 2 hours 30 minutes = <strong>150 minutes</strong></div>
+        </div>
+        <div class="we-footer">
+          <button class="btn" id="convNextBtn" onclick="revealConvStep()">Show Step 1</button>
+          <button class="btn navy" onclick="resetConvExample()">Reset</button>
+        </div>
+      </div>
+
+      <!-- CONVERSION PRACTICE -->
+      <div class="card fade-in-el">
+        <h3>✏️ Quick Conversion Practice</h3>
+        <div class="practice-grid" id="convPractice">
+          <div class="prac-card">
+            <div class="pq">1) Convert 120 seconds to minutes</div>
+            <input type="text" placeholder="Your answer..." data-answer="2" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">2) How many minutes in 3 hours?</div>
+            <input type="text" placeholder="Your answer..." data-answer="180" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">3) Convert 180 seconds to minutes</div>
+            <input type="text" placeholder="Your answer..." data-answer="3" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">4) Convert 2.5 hours to minutes</div>
+            <input type="text" placeholder="Your answer..." data-answer="150" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">5) Seconds in 2 min 45 sec?</div>
+            <input type="text" placeholder="Your answer..." data-answer="165" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">6) Convert 3600 seconds to hours</div>
+            <input type="text" placeholder="Your answer..." data-answer="1" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">7) Seconds in 1 hour 15 minutes?</div>
+            <input type="text" placeholder="Your answer..." data-answer="4500" class="prac-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">8) How many seconds in 5 minutes?</div>
+            <input type="text" placeholder="Your answer..." data-answer="300" class="prac-input"/>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn" onclick="checkConvPractice()">Check Answers</button>
+          <button class="btn navy" onclick="resetConvPractice()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-col">
+      <div class="sidebar-sticky">
+        <div class="sidebar-card slide-right-el">
+          <div class="sidebar-card-header"><h4>🕐 Clock Reading</h4></div>
+          <div class="sidebar-card-body">
+            <div class="clock-diagram">
+              <svg class="mini-clock" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="95" fill="#fff" stroke="#2C3E50" stroke-width="6"/>
+                <circle cx="100" cy="100" r="86" fill="#f0f9eb" stroke="#6AB04C" stroke-width="2"/>
+                <!-- Hour marks -->
+                <line x1="100" y1="14" x2="100" y2="26" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+                <line x1="150" y1="27" x2="144" y2="37" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="185" y1="63" x2="175" y2="68" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="186" y1="100" x2="174" y2="100" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+                <line x1="173" y1="150" x2="163" y2="144" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="137" y1="185" x2="131" y2="175" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="100" y1="186" x2="100" y2="174" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+                <line x1="63" y1="185" x2="69" y2="175" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="27" y1="150" x2="37" y2="144" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="14" y1="100" x2="26" y2="100" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+                <line x1="27" y1="63" x2="37" y2="68" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="27" x2="56" y2="37" stroke="#2C3E50" stroke-width="2" stroke-linecap="round"/>
+                <!-- Numbers -->
+                <text x="96" y="32" font-size="14" font-family="Poppins" font-weight="700" fill="#2C3E50">12</text>
+                <text x="158" y="55" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">1</text>
+                <text x="172" y="106" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">3</text>
+                <text x="158" y="157" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">5</text>
+                <text x="94" y="176" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">6</text>
+                <text x="30" y="157" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">7</text>
+                <text x="14" y="106" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">9</text>
+                <text x="30" y="55" font-size="13" font-family="Poppins" font-weight="700" fill="#2C3E50">11</text>
+                <!-- Hour hand (pointing ~12:30) -->
+                <line x1="100" y1="100" x2="100" y2="45" stroke="#2C3E50" stroke-width="5" stroke-linecap="round"/>
+                <!-- Minute hand -->
+                <line x1="100" y1="100" x2="142" y2="66" stroke="#6AB04C" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="100" cy="100" r="5" fill="#2C3E50"/>
+              </svg>
+            </div>
+            <p style="font-size:.95rem;color:#4a6075;text-align:center">The <strong>short hand</strong> = hours<br>The <strong>long hand</strong> = minutes</p>
+          </div>
+        </div>
+
+        <div class="sidebar-card slide-right-el">
+          <div class="sidebar-card-header"><h4>💡 Key Facts</h4></div>
+          <div class="sidebar-card-body">
+            <div class="sb-item"><div class="sb-icon">⏱️</div><div>60 seconds = 1 minute</div></div>
+            <div class="sb-item"><div class="sb-icon">🕐</div><div>60 minutes = 1 hour</div></div>
+            <div class="sb-item"><div class="sb-icon">📅</div><div>24 hours = 1 day</div></div>
+            <div class="sb-item"><div class="sb-icon">🔢</div><div>3600 seconds = 1 hour</div></div>
+            <div class="sb-item"><div class="sb-icon">🌙</div><div>AM = before noon<br>PM = after noon</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card slide-right-el">
+          <div class="sidebar-card-header"><h4>🧭 Quick Navigation</h4></div>
+          <div class="sidebar-card-body">
+            <div class="sb-item"><a href="#units" style="color:var(--green);text-decoration:none;font-weight:600">📏 Units &amp; Conversions</a></div>
+            <div class="sb-item"><a href="#adding" style="color:var(--green);text-decoration:none;font-weight:600">➕ Adding &amp; Subtracting</a></div>
+            <div class="sb-item"><a href="#practice" style="color:var(--green);text-decoration:none;font-weight:600">✏️ Word Problems</a></div>
+            <div class="sb-item"><a href="#quiz" style="color:var(--green);text-decoration:none;font-weight:600">🎯 Quiz</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MOBILE ACCORDION SIDEBAR -->
+<section style="background:var(--light-green);padding:24px 0">
+<div class="section-inner">
+  <div class="accordion-sidebar">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">💡 Key Time Facts</button>
+      <div class="accordion-content">
+        <ul style="font-size:1rem;color:#2C3E50;padding-left:20px;line-height:2">
+          <li>60 seconds = 1 minute</li>
+          <li>60 minutes = 1 hour</li>
+          <li>3600 seconds = 1 hour</li>
+          <li>24 hours = 1 day</li>
+          <li>AM = before noon | PM = after noon</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">📐 Conversion Formulas</button>
+      <div class="accordion-content">
+        <div class="formula-box" style="margin:0">
+          <span class="formula-line">minutes → seconds: × 60</span>
+          <span class="formula-line">seconds → minutes: ÷ 60</span>
+          <span class="formula-line">hours → minutes: × 60</span>
+          <span class="formula-line">minutes → hours: ÷ 60</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ADDING & SUBTRACTING -->
+<section id="adding" class="alt-bg">
+<div class="section-inner">
+  <span class="section-tag">Time Arithmetic</span>
+  <h2 class="section-title fade-in-el">Adding &amp; Subtracting Time</h2>
+  <p class="section-desc fade-in-el">Use these rules to add or subtract time correctly — including carrying and borrowing!</p>
+
+  <div class="content-grid" style="padding:0 0 40px">
+    <div class="main-col">
+      <!-- RULES -->
+      <div class="step-box fade-in-el">
+        <div class="step-header">⚙️ Time Arithmetic Rules</div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">Add or subtract hours, minutes and seconds separately.</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">If <strong style="color:var(--amber)">seconds exceed 60</strong>: carry 1 minute, subtract 60 from seconds.</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">If <strong style="color:var(--amber)">minutes exceed 60</strong>: carry 1 hour, subtract 60 from minutes.</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">For subtraction, borrow from the higher unit if needed.</div></div>
+      </div>
+
+      <!-- WORKED EXAMPLE 2 -->
+      <div class="worked-example fade-in-el">
+        <div class="we-header">
+          <h3>📚 Worked Example: Adding Time</h3>
+          <span class="we-badge">Step by Step</span>
+        </div>
+        <div class="we-body">
+          <div class="we-question">You start studying at 4:30 PM and study for 2 hours and 15 minutes. When will you finish?</div>
+          <div class="we-steps" id="addSteps">
+            <div class="step-reveal" id="as1"><div class="sl">Step 1 — Identify</div>Start time: 4:30 PM | Duration: 2 hours 15 minutes</div>
+            <div class="step-reveal" id="as2"><div class="sl">Step 2 — Add Hours</div>4:30 PM + 2 hours = <strong>6:30 PM</strong></div>
+            <div class="step-reveal" id="as3"><div class="sl">Step 3 — Add Minutes</div>6:30 PM + 15 minutes = <strong>6:45 PM</strong></div>
+            <div class="step-reveal" id="as4"><div class="sl">Step 4 — Check</div>Minutes 45 &lt; 60, so no carry needed. ✓</div>
+          </div>
+          <div class="we-answer" id="addAnswer">✅ Finish Time: <strong>6:45 PM</strong></div>
+        </div>
+        <div class="we-footer">
+          <button class="btn" id="addNextBtn" onclick="revealAddStep()">Show Step 1</button>
+          <button class="btn navy" onclick="resetAddExample()">Reset</button>
+        </div>
+      </div>
+
+      <!-- WORKED EXAMPLE 3 - Subtraction -->
+      <div class="worked-example fade-in-el">
+        <div class="we-header">
+          <h3>📚 Worked Example: Finding Duration</h3>
+          <span class="we-badge">Step by Step</span>
+        </div>
+        <div class="we-body">
+          <div class="we-question">Ali started homework at 5:30 PM and finished at 6:45 PM. How long did he spend?</div>
+          <div class="we-steps" id="subSteps">
+            <div class="step-reveal" id="ss1"><div class="sl">Step 1 — Identify</div>End: 6:45 PM | Start: 5:30 PM. We subtract to find duration.</div>
+            <div class="step-reveal" id="ss2"><div class="sl">Step 2 — Subtract Minutes</div>45 − 30 = <strong>15 minutes</strong></div>
+            <div class="step-reveal" id="ss3"><div class="sl">Step 3 — Subtract Hours</div>6 − 5 = <strong>1 hour</strong></div>
+            <div class="step-reveal" id="ss4"><div class="sl">Step 4 — Combine</div>Duration = <strong>1 hour and 15 minutes</strong></div>
+          </div>
+          <div class="we-answer" id="subAnswer">✅ Ali spent <strong>1 hour and 15 minutes</strong> on homework.</div>
+        </div>
+        <div class="we-footer">
+          <button class="btn" id="subNextBtn" onclick="revealSubStep()">Show Step 1</button>
+          <button class="btn navy" onclick="resetSubExample()">Reset</button>
+        </div>
+      </div>
+
+      <!-- CALCULATE SUM/DIFFERENCE PRACTICE -->
+      <div class="card fade-in-el">
+        <h3>🧮 Calculate Sum or Difference</h3>
+        <p style="margin-bottom:16px">Enter your answers in the format: <strong>hr min</strong> (e.g., 39 hr 59 min)</p>
+        <div class="practice-grid" id="sumDiffPractice">
+          <div class="prac-card">
+            <div class="pq">13 hr 34 min + 25 hr 25 min</div>
+            <input type="text" placeholder="e.g. 38 hr 59 min" data-answer="38 hr 59 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">18 hr 43 min − 07 hr 03 min</div>
+            <input type="text" placeholder="e.g. 11 hr 40 min" data-answer="11 hr 40 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">12 hr 04 min + 13 hr 41 min</div>
+            <input type="text" placeholder="hr min" data-answer="25 hr 45 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">19 hr 47 min − 16 hr 41 min</div>
+            <input type="text" placeholder="hr min" data-answer="3 hr 06 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">04 hr 43 min + 16 hr 36 min</div>
+            <input type="text" placeholder="hr min" data-answer="21 hr 19 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">21 hr 30 min − 07 hr 13 min</div>
+            <input type="text" placeholder="hr min" data-answer="14 hr 17 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">09 hr 57 min + 16 hr 39 min</div>
+            <input type="text" placeholder="hr min" data-answer="26 hr 36 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">17 hr 46 min − 08 hr 43 min</div>
+            <input type="text" placeholder="hr min" data-answer="9 hr 03 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">13 hr 58 min + 17 hr 06 min</div>
+            <input type="text" placeholder="hr min" data-answer="31 hr 04 min" class="sum-input"/>
+          </div>
+          <div class="prac-card">
+            <div class="pq">43 hr 44 min − 20 hr 46 min</div>
+            <input type="text" placeholder="hr min" data-answer="22 hr 58 min" class="sum-input"/>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn" onclick="checkSumDiff()">Check Answers</button>
+          <button class="btn navy" onclick="resetSumDiff()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR (desktop only) -->
+    <div class="sidebar-col">
+      <div class="sidebar-sticky">
+        <div class="sidebar-card slide-right-el">
+          <div class="sidebar-card-header"><h4>⚡ Carry Over Rule</h4></div>
+          <div class="sidebar-card-body">
+            <div class="highlight-box" style="margin:0 0 14px">
+              <h4>Seconds ≥ 60?</h4>
+              <p>Subtract 60, add 1 to minutes column</p>
+            </div>
+            <div class="highlight-box amber" style="margin:0">
+              <h4>Minutes ≥ 60?</h4>
+              <p>Subtract 60, add 1 to hours column</p>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-card slide-right-el">
+          <div class="sidebar-card-header"><h4>📝 AM vs PM</h4></div>
+          <div class="sidebar-card-body">
+            <div class="sb-item"><div class="sb-icon">🌅</div><div><strong>12:00 AM</strong> = Midnight</div></div>
+            <div class="sb-item"><div class="sb-icon">☀️</div><div><strong>12:00 PM</strong> = Noon</div></div>
+            <div class="sb-item"><div class="sb-icon">🌙</div><div><strong>11:59 PM</strong> = Just before midnight</div></div>
+            <div class="sb-item"><div class="sb-icon">🕐</div><div>Hours 1-11 followed by AM or PM</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- WORD PROBLEMS -->
+<section id="practice" style="background:#fff">
+<div class="section-inner">
+  <span class="section-tag">Word Problems</span>
+  <h2 class="section-title fade-in-el">Word Problems</h2>
+  <p class="section-desc fade-in-el">Apply your time skills to real-life situations! Read carefully and show your work.</p>
+
+  <!-- CLOZE PASSAGE -->
+  <div class="cloze-wrap fade-in-el">
+    <h3>📝 Fill in the Blanks</h3>
+    <div class="cloze-para" id="clozePara">
+      We measure time in seconds, minutes, and hours. There are <input type="text" class="cloze-input" data-answer="60" placeholder="?"/> seconds in 1 minute, and <input type="text" class="cloze-input" data-answer="60" placeholder="?"/> minutes in 1 hour. So there are <input type="text" class="cloze-input" data-answer="3600" placeholder="?"/> seconds in 1 hour. When adding time, if minutes exceed <input type="text" class="cloze-input" data-answer="60" placeholder="?"/>, we carry 1 to the <input type="text" class="cloze-input" data-answer="hours" placeholder="?"/> column. A movie that starts at 6:00 PM and lasts 2 hours will finish at <input type="text" class="cloze-input" data-answer="8:00 PM" placeholder="?"/>.
+    </div>
+    <div class="cloze-footer">
+      <button class="btn" onclick="checkCloze()">Check Answers</button>
+      <button class="btn navy" onclick="resetCloze()">Reset</button>
+    </div>
+  </div>
+
+  <!-- DRAG AND DROP -->
+  <div class="drag-section fade-in-el">
+    <h3>🎯 Match the Conversion</h3>
+    <p>Drag each time value to the correct equivalent below.</p>
+    <div class="drag-bank" id="dragBank">
+      <div class="drag-item" draggable="true" data-id="a">2 minutes</div>
+      <div class="drag-item" draggable="true" data-id="b">180 minutes</div>
+      <div class="drag-item" draggable="true" data-id="c">300 seconds</div>
+      <div class="drag-item" draggable="true" data-id="d">1 hour 30 min</div>
+    </div>
+    <div class="drop-targets">
+      <div class="drop-target" data-accepts="a"><div class="dt-label">120 seconds =</div><div class="dt-slot" id="slot-a"></div></div>
+      <div class="drop-target" data-accepts="b"><div class="dt-label">3 hours =</div><div class="dt-slot" id="slot-b"></div></div>
+      <div class="drop-target" data-accepts="c"><div class="dt-label">5 minutes =</div><div class="dt-slot" id="slot-c"></div></div>
+      <div class="drop-target" data-accepts="d"><div class="dt-label">90 minutes =</div><div class="dt-slot" id="slot-d"></div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn" onclick="checkDragDrop()">Check</button>
+      <button class="btn navy" onclick="resetDragDrop()">Reset</button>
+    </div>
+    <div id="dragFeedback" style="margin-top:12px;font-size:1rem;font-weight:600;color:var(--green);display:none"></div>
+  </div>
+
+  <!-- WORD PROBLEM CARDS -->
+  <div class="card fade-in-el">
+    <h3>📖 Solve These Word Problems</h3>
+    <div class="practice-grid" id="wordProblems">
+      <div class="prac-card">
+        <div class="pq">Q1: A class starts at 9:00 AM and ends 45 minutes later. What time does it end?</div>
+        <input type="text" placeholder="Your answer..." data-answer="9:45 AM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q2: A movie starts at 7:15 PM and lasts 1 hour 30 minutes. When does it finish?</div>
+        <input type="text" placeholder="Your answer..." data-answer="8:45 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q3: A train departs at 11:30 AM and travels for 2 hours 45 minutes. When does it arrive?</div>
+        <input type="text" placeholder="Your answer..." data-answer="2:15 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q4: A cooking session begins at 2:15 PM and lasts 1 hour 25 minutes. When does it end?</div>
+        <input type="text" placeholder="Your answer..." data-answer="3:40 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q5: A meeting begins at 10:30 AM and lasts 3 hours 20 minutes. When does it finish?</div>
+        <input type="text" placeholder="Your answer..." data-answer="1:50 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q6: Sara played from 3:00 PM for 1 hour 20 minutes. What time did she finish?</div>
+        <input type="text" placeholder="Your answer..." data-answer="4:20 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q7: A train leaves at 11:30 AM and takes 2 hours 45 minutes. When does it arrive?</div>
+        <input type="text" placeholder="Your answer..." data-answer="2:15 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q8: A movie starts at 6:50 PM and lasts 2 hours 10 minutes. When does it finish?</div>
+        <input type="text" placeholder="Your answer..." data-answer="9:00 PM" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q9: A meeting begins at 8:15 AM and ends at 10:40 AM. How long did it last?</div>
+        <input type="text" placeholder="Your answer..." data-answer="2 hours 25 minutes" class="word-input"/>
+      </div>
+      <div class="prac-card">
+        <div class="pq">Q10: A football match starts at 4:30 PM and ends at 6:15 PM. How long was the match?</div>
+        <input type="text" placeholder="Your answer..." data-answer="1 hour 45 minutes" class="word-input"/>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn" onclick="checkWordProblems()">Check Answers</button>
+      <button class="btn navy" onclick="resetWordProblems()">Reset</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section id="quiz" class="alt-bg">
+<div class="section-inner">
+  <span class="section-tag">Test Yourself</span>
+  <h2 class="section-title fade-in-el">Knowledge Quiz</h2>
+  <p class="section-desc fade-in-el">Answer all 10 questions to test your mastery of Time!</p>
+
+  <div class="quiz-wrap fade-in-el">
+    <div class="quiz-header">
+      <h3>⏱️ Time Quiz</h3>
+      <div class="quiz-progress-text" id="quizProgressText">Question 1 of 10</div>
+    </div>
+
+    <div class="quiz-body" id="quizBody">
+      <!-- Q1 -->
+      <div class="q-item active" data-q="0">
+        <div class="q-text">1. How many seconds are in 1 minute?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">30</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">60</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">100</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">120</button>
+        </div>
+        <div class="q-feedback">60 seconds = 1 minute is a key time fact!</div>
+      </div>
+      <!-- Q2 -->
+      <div class="q-item" data-q="1">
+        <div class="q-text">2. How many minutes are there in 3 hours?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">120</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">150</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">180</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">200</button>
+        </div>
+        <div class="q-feedback">3 hours × 60 minutes = 180 minutes ✓</div>
+      </div>
+      <!-- Q3 -->
+      <div class="q-item" data-q="2">
+        <div class="q-text">3. Convert 120 seconds into minutes.</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">1 minute</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">2 minutes</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">3 minutes</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">4 minutes</button>
+        </div>
+        <div class="q-feedback">120 ÷ 60 = 2 minutes ✓</div>
+      </div>
+      <!-- Q4 -->
+      <div class="q-item" data-q="3">
+        <div class="q-text">4. A class starts at 9:00 AM and lasts 45 minutes. What time does it end?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">9:30 AM</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">9:45 AM</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">10:00 AM</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">10:15 AM</button>
+        </div>
+        <div class="q-feedback">9:00 + 45 min = 9:45 AM ✓</div>
+      </div>
+      <!-- Q5 -->
+      <div class="q-item" data-q="4">
+        <div class="q-text">5. How many seconds are in 2 minutes and 45 seconds?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">145</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">155</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">165</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">175</button>
+        </div>
+        <div class="q-feedback">2 × 60 + 45 = 120 + 45 = 165 seconds ✓</div>
+      </div>
+      <!-- Q6 -->
+      <div class="q-item" data-q="5">
+        <div class="q-text">6. A movie starts at 7:15 PM and lasts 1 hour 30 minutes. When does it finish?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">8:30 PM</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">8:45 PM</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">9:00 PM</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">9:15 PM</button>
+        </div>
+        <div class="q-feedback">7:15 + 1:30 = 8:45 PM ✓</div>
+      </div>
+      <!-- Q7 -->
+      <div class="q-item" data-q="6">
+        <div class="q-text">7. Convert 90 minutes to hours and minutes.</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">1 hour 15 min</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">1 hour 30 min</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">2 hours</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">1 hour 45 min</button>
+        </div>
+        <div class="q-feedback">90 ÷ 60 = 1 remainder 30, so 1 hour 30 min ✓</div>
+      </div>
+      <!-- Q8 -->
+      <div class="q-item" data-q="7">
+        <div class="q-text">8. What is 13 hr 34 min + 25 hr 25 min?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">37 hr 59 min</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">38 hr 59 min</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">39 hr 00 min</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">38 hr 00 min</button>
+        </div>
+        <div class="q-feedback">13+25=38 hours, 34+25=59 min → 38 hr 59 min ✓</div>
+      </div>
+      <!-- Q9 -->
+      <div class="q-item" data-q="8">
+        <div class="q-text">9. A meeting starts at 8:15 AM and ends at 10:40 AM. How long did it last?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">2 hours 10 minutes</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">2 hours 15 minutes</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">2 hours 25 minutes</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">2 hours 30 minutes</button>
+        </div>
+        <div class="q-feedback">10:40 − 8:15 = 2 hours 25 minutes ✓</div>
+      </div>
+      <!-- Q10 -->
+      <div class="q-item" data-q="9">
+        <div class="q-text">10. How many seconds are in 1 hour?</div>
+        <div class="q-options">
+          <button class="q-opt" onclick="answerQuiz(this,false)">600</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">1800</button>
+          <button class="q-opt" onclick="answerQuiz(this,true)">3600</button>
+          <button class="q-opt" onclick="answerQuiz(this,false)">7200</button>
+        </div>
+        <div class="q-feedback">60 min × 60 sec = 3600 seconds ✓</div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="quiz-result" id="quizResult">
+        <div class="score" id="scoreDisplay">0/10</div>
+        <div class="star-row" id="starRow">⭐⭐⭐</div>
+        <p id="scoreFeedback">Great job!</p>
+        <button class="btn" style="margin-top:20px" onclick="restartQuiz()">Try Again 🔄</button>
+      </div>
+    </div>
+
+    <div class="quiz-footer" id="quizFooter">
+      <div id="quizStatus" style="font-size:1rem;color:#4a6075;font-weight:600;display:flex;align-items:center">Answer to continue...</div>
+      <button class="btn amber" id="nextQuizBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="mnav-row">
+    <a href="#hero" class="active">🏠 Home</a>
+    <a href="#units">📏 Units</a>
+    <a href="#adding">➕ Adding</a>
+    <a href="#practice">✏️ Practice</a>
+    <a href="#quiz">🎯 Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // INIT
+  try { initCurtain(); } catch(e){}
+  try { initLenis(); } catch(e){}
+  try { initGSAP(); } catch(e){}
+  initWorkedExamples();
+  initDragDrop();
+  initProgressDots();
+  initMobileNav();
+});
+
+// ========================
+// CURTAIN
+// ========================
+function initCurtain() {
+  const fill = document.getElementById('curtainFill');
+  const curtain = document.getElementById('curtain');
+  if (!fill || !curtain) return;
+  let w = 0;
+  const interval = setInterval(() => {
+    w = Math.min(w + Math.random() * 25, 100);
+    fill.style.width = w + '%';
+    if (w >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(curtain, { opacity: 0, duration: 0.5, onComplete: () => curtain.style.display = 'none' });
+        } else {
+          curtain.style.display = 'none';
+        }
+      }, 300);
+    }
+  }, 60);
+}
+
+// ========================
+// LENIS
+// ========================
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.12 });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+
+// ========================
+// GSAP
+// ========================
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Fade in elements
+  const fadeEls = document.querySelectorAll('.fade-in-el');
+  fadeEls.forEach(el => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+      opacity: 0, y: 30, duration: 0.7, ease: 'power2.out'
+    });
+  });
+
+  // Sidebar slide in
+  const slideEls = document.querySelectorAll('.slide-right-el');
+  slideEls.forEach((el, i) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+      opacity: 0, x: 50, duration: 0.7, delay: i * 0.12, ease: 'power2.out'
+    });
+  });
+
+  // Formula underline draw
+  setTimeout(() => {
+    document.querySelectorAll('.formula-underline').forEach((el, i) => {
+      setTimeout(() => el.classList.add('drawn'), 400 + i * 200);
+    });
+  }, 1000);
+}
+
+// ========================
+// WORKED EXAMPLES
+// ========================
+let convStep = 0, addStep = 0, subStep = 0;
+
+function initWorkedExamples() {
+  convStep = 0; addStep = 0; subStep = 0;
+}
+
+function revealConvStep() {
+  convStep++;
+  const steps = ['cs1','cs2','cs3'];
+  const btn = document.getElementById('convNextBtn');
+  if (convStep <= steps.length) {
+    const el = document.getElementById(steps[convStep-1]);
+    el.classList.add('visible');
+    if (typeof gsap !== 'undefined') gsap.from(el, {opacity:0, y:10, duration:0.4});
+  }
+  if (convStep >= steps.length) {
+    document.getElementById('convAnswer').classList.add('visible');
+    btn.textContent = 'All Steps Shown';
+    btn.disabled = true;
+  } else {
+    btn.textContent = 'Show Step ' + (convStep+1);
+  }
+}
+
+function resetConvExample() {
+  convStep = 0;
+  ['cs1','cs2','cs3'].forEach(id => { const el = document.getElementById(id); if(el){el.classList.remove('visible')} });
+  const ans = document.getElementById('convAnswer'); if(ans) ans.classList.remove('visible');
+  const btn = document.getElementById('convNextBtn');
+  if(btn){ btn.textContent='Show Step 1'; btn.disabled=false; }
+}
+
+function revealAddStep() {
+  addStep++;
+  const steps = ['as1','as2','as3','as4'];
+  const btn = document.getElementById('addNextBtn');
+  if (addStep <= steps.length) {
+    const el = document.getElementById(steps[addStep-1]);
+    el.classList.add('visible');
+    if (typeof gsap !== 'undefined') gsap.from(el, {opacity:0, y:10, duration:0.4});
+  }
+  if (addStep >= steps.length) {
+    document.getElementById('addAnswer').classList.add('visible');
+    btn.textContent = 'All Steps Shown';
+    btn.disabled = true;
+  } else {
+    btn.textContent = 'Show Step ' + (addStep+1);
+  }
+}
+
+function resetAddExample() {
+  addStep = 0;
+  ['as1','as2','as3','as4'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('visible'); });
+  const ans = document.getElementById('addAnswer'); if(ans) ans.classList.remove('visible');
+  const btn = document.getElementById('addNextBtn');
+  if(btn){ btn.textContent='Show Step 1'; btn.disabled=false; }
+}
+
+function revealSubStep() {
+  subStep++;
+  const steps = ['ss1','ss2','ss3','ss4'];
+  const btn = document.getElementById('subNextBtn');
+  if (subStep <= steps.length) {
+    const el = document.getElementById(steps[subStep-1]);
+    el.classList.add('visible');
+    if (typeof gsap !== 'undefined') gsap.from(el, {opacity:0, y:10, duration:0.4});
+  }
+  if (subStep >= steps.length) {
+    document.getElementById('subAnswer').classList.add('visible');
+    btn.textContent = 'All Steps Shown';
+    btn.disabled = true;
+  } else {
+    btn.textContent = 'Show Step ' + (subStep+1);
+  }
+}
+
+function resetSubExample() {
+  subStep = 0;
+  ['ss1','ss2','ss3','ss4'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('visible'); });
+  const ans = document.getElementById('subAnswer'); if(ans) ans.classList.remove('visible');
+  const btn = document.getElementById('subNextBtn');
+  if(btn){ btn.textContent='Show Step 1'; btn.disabled=false; }
+}
+
+// ========================
+// CONVERSION PRACTICE
+// ========================
+function checkConvPractice() {
+  document.querySelectorAll('.prac-input').forEach(inp => {
+    const val = inp.value.trim();
+    const ans = inp.dataset.answer;
+    inp.classList.remove('correct-ans','wrong-ans');
+    if (val === ans) inp.classList.add('correct-ans');
+    else if (val !== '') inp.classList.add('wrong-ans');
+  });
+}
+function resetConvPractice() {
+  document.querySelectorAll('.prac-input').forEach(inp => {
+    inp.value = ''; inp.classList.remove('correct-ans','wrong-ans');
+  });
+}
+
+// ========================
+// SUM/DIFF PRACTICE
+// ========================
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/\s+/g,' ')
+    .replace('hr ','hr ').replace('min','min');
+}
+function checkSumDiff() {
+  document.querySelectorAll('.sum-input').forEach(inp => {
+    const val = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+    const ans = inp.dataset.answer.toLowerCase();
+    inp.classList.remove('correct-ans','wrong-ans');
+    // flexible match
+    const vParts = val.match(/(\d+)\s*hr\s*(\d+)\s*min/);
+    const aParts = ans.match(/(\d+)\s*hr\s*(\d+)\s*min/);
+    if (vParts && aParts) {
+      if (vParts[1]===aParts[1] && vParts[2]===aParts[2]) inp.classList.add('correct-ans');
+      else inp.classList.add('wrong-ans');
+    } else if (val !== '') {
+      inp.classList.add('wrong-ans');
+    }
+  });
+}
+function resetSumDiff() {
+  document.querySelectorAll('.sum-input').forEach(inp => {
+    inp.value = ''; inp.classList.remove('correct-ans','wrong-ans');
+  });
+}
+
+// ========================
+// CLOZE
+// ========================
+function checkCloze() {
+  document.querySelectorAll('.cloze-input').forEach(inp => {
+    const val = inp.value.trim().toLowerCase();
+    const ans = inp.dataset.answer.toLowerCase();
+    inp.classList.remove('correct-ans','wrong-ans');
+    if (val === ans) inp.classList.add('correct-ans');
+    else if (val !== '') inp.classList.add('wrong-ans');
+  });
+}
+function resetCloze() {
+  document.querySelectorAll('.cloze-input').forEach(inp => {
+    inp.value = ''; inp.classList.remove('correct-ans','wrong-ans');
+  });
+}
+
+// ========================
+// DRAG AND DROP
+// ========================
+let draggedItem = null;
+const slotMap = {};
+
+function initDragDrop() {
+  const items = document.querySelectorAll('.drag-item');
+  const targets = document.querySelectorAll('.drop-target');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => {
+      draggedItem = null;
+      item.classList.remove('dragging');
+    });
+    // Touch support
+    item.addEventListener('touchstart', e => {
+      draggedItem = item;
+    }, {passive:true});
+  });
+
+  targets.forEach(target => {
+    target.addEventListener('dragover', e => {
+      e.preventDefault();
+      target.classList.add('over');
+    });
+    target.addEventListener('dragleave', () => target.classList.remove('over'));
+    target.addEventListener('drop', e => {
+      e.preventDefault();
+      target.classList.remove('over');
+      if (!draggedItem) return;
+      const slot = target.querySelector('.dt-slot');
+      // Remove from previous slot if any
+      const prevTarget = document.querySelector('.drop-target[data-accepts="'+draggedItem.dataset.id+'"].matched');
+      if (prevTarget) {
+        prevTarget.classList.remove('matched','wrong-drop');
+        const ps = prevTarget.querySelector('.dt-slot');
+        ps.innerHTML = '';
+      }
+      slot.innerHTML = '';
+      const clone = draggedItem.cloneNode(true);
+      clone.classList.remove('dragging');
+      clone.classList.add('dropped-item');
+      clone.setAttribute('draggable','false');
+      slot.appendChild(clone);
+      slotMap[target.dataset.accepts] = draggedItem.dataset.id;
+      // hide from bank
+      draggedItem.style.display = 'none';
+    });
+    // Touch drop
+    target.addEventListener('touchend', e => {
+      if (!draggedItem) return;
+      const rect = target.getBoundingClientRect();
+      const touch = e.changedTouches[0];
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+        const slot = target.querySelector('.dt-slot');
+        slot.innerHTML = '';
+        const clone = draggedItem.cloneNode(true);
+        clone.classList.remove('dragging');
+        clone.classList.add('dropped-item');
+        clone.setAttribute('draggable','false');
+        slot.appendChild(clone);
+        slotMap[target.dataset.accepts] = draggedItem.dataset.id;
+        draggedItem.style.display = 'none';
+      }
+      draggedItem = null;
+    }, {passive:true});
+  });
+}
+
+function checkDragDrop() {
+  let correct = 0;
+  document.querySelectorAll('.drop-target').forEach(target => {
+    const accepts = target.dataset.accepts;
+    const dropped = slotMap[accepts];
+    target.classList.remove('matched','wrong-drop');
+    if (dropped === accepts) { target.classList.add('matched'); correct++; }
+    else if (dropped) { target.classList.add('wrong-drop'); }
+  });
+  const fb = document.getElementById('dragFeedback');
+  fb.style.display = 'block';
+  fb.textContent = correct === 4 ? '🎉 Perfect! All matches correct!' : correct + '/4 correct. Try again!';
+  fb.style.color = correct === 4 ? 'var(--green)' : 'var(--amber)';
+}
+
+function resetDragDrop() {
+  document.querySelectorAll('.drag-item').forEach(item => item.style.display = '');
+  document.querySelectorAll('.dt-slot').forEach(slot => slot.innerHTML = '');
+  document.querySelectorAll('.drop-target').forEach(t => t.classList.remove('matched','wrong-drop','over'));
+  for (let k in slotMap) delete slotMap[k];
+  const fb = document.getElementById('dragFeedback');
+  fb.style.display = 'none';
+  draggedItem = null;
+}
+
+// ========================
+// WORD PROBLEMS
+// ========================
+function normalizeAnswer(s) {
+  return s.trim().toLowerCase()
+    .replace(/\s+/g,' ')
+    .replace(/:/g,':')
+    .replace('am','am').replace('pm','pm');
+}
+function checkWordProblems() {
+  document.querySelectorAll('.word-input').forEach(inp => {
+    const val = normalizeAnswer(inp.value);
+    const ans = normalizeAnswer(inp.dataset.answer);
+    inp.classList.remove('correct-ans','wrong-ans');
+    if (val === ans) inp.classList.add('correct-ans');
+    else if (val !== '') inp.classList.add('wrong-ans');
+  });
+}
+function resetWordProblems() {
+  document.querySelectorAll('.word-input').forEach(inp => {
+    inp.value = ''; inp.classList.remove('correct-ans','wrong-ans');
+  });
+}
+
+// ========================
+// QUIZ
+// ========================
+let currentQ = 0;
+let score = 0;
+let answered = false;
+const totalQ = 10;
+
+function answerQuiz(btn, isCorrect) {
+  if (answered) return;
+  answered = true;
+  const qItem = btn.closest('.q-item');
+  const opts = qItem.querySelectorAll('.q-opt');
+  const feedback = qItem.querySelector('.q-feedback');
+  opts.forEach(o => { o.disabled = true; });
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score++;
+    feedback.classList.add('show','correct');
+    feedback.textContent = '✅ Correct! ' + feedback.textContent;
+  } else {
+    btn.classList.add('wrong');
+    // highlight correct
+    opts.forEach(o => { if (o.onclick.toString().includes('true')) o.classList.add('correct'); });
+    feedback.classList.add('show','wrong');
+    feedback.textContent = '❌ Not quite. ' + feedback.textContent;
+  }
+  document.getElementById('nextQuizBtn').style.display = 'block';
+  document.getElementById('quizStatus').textContent = isCorrect ? '✅ Correct!' : '❌ Wrong';
+  updateQuizProgress();
+}
+
+function nextQuestion() {
+  currentQ++;
+  answered = false;
+  document.getElementById('nextQuizBtn').style.display = 'none';
+  document.getElementById('quizStatus').textContent = 'Answer to continue...';
+
+  const items = document.querySelectorAll('.q-item');
+  items.forEach(item => item.classList.remove('active'));
+
+  if (currentQ < totalQ) {
+    items[currentQ].classList.add('active');
+    updateQuizProgress();
+    if (typeof gsap !== 'undefined') gsap.from(items[currentQ], {opacity:0, x:30, duration:0.4});
+  } else {
+    showQuizResult();
+  }
+}
+
+function updateQuizProgress() {
+  const pt = document.getElementById('quizProgressText');
+  if (pt) pt.textContent = 'Question ' + (currentQ+1) + ' of ' + totalQ;
+}
+
+function showQuizResult() {
+  document.querySelectorAll('.q-item').forEach(item => item.classList.remove('active'));
+  const result = document.getElementById('quizResult');
+  result.classList.add('show');
+  document.getElementById('scoreDisplay').textContent = score + '/' + totalQ;
+  document.getElementById('quizProgressText').textContent = 'Completed!';
+  document.getElementById('quizFooter').style.display = 'none';
+
+  let stars = '⭐';
+  let msg = 'Keep practising — you can do it!';
+  if (score >= 9) { stars = '⭐⭐⭐'; msg = 'Excellent! You are a Time Master! 🏆'; }
+  else if (score >= 7) { stars = '⭐⭐⭐'; msg = 'Great work! Almost perfect!'; }
+  else if (score >= 5) { stars = '⭐⭐'; msg = 'Good effort! Review and try again.'; }
+  else { stars = '⭐'; msg = 'Keep practising — you can do it!'; }
+
+  document.getElementById('starRow').textContent = stars;
+  document.getElementById('scoreFeedback').textContent = msg;
+
+  if (typeof gsap !== 'undefined') {
+    gsap.from(result, {opacity:0, scale:0.9, duration:0.6, ease:'back.out(1.4)'});
+  }
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  const items = document.querySelectorAll('.q-item');
+  items.forEach((item, i) => {
+    item.classList.remove('active');
+    item.querySelectorAll('.q-opt').forEach(o => {
+      o.disabled = false;
+      o.classList.remove('correct','wrong');
+    });
+    const fb = item.querySelector('.q-feedback');
+    if (fb) { fb.classList.remove('show','correct','wrong'); }
+  });
+  if (items[0]) items[0].classList.add('active');
+  document.getElementById('quizResult').classList.remove('show');
+  document.getElementById('quizFooter').style.display = 'flex';
+  document.getElementById('nextQuizBtn').style.display = 'none';
+  document.getElementById('quizStatus').textContent = 'Answer to continue...';
+  updateQuizProgress();
+}
+
+// ========================
+// PROGRESS DOTS
+// ========================
+function initProgressDots() {
+  const sections = ['hero','units','adding','practice','quiz'];
+  const dots = document.querySelectorAll('.progress-dots span');
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const target = document.getElementById(sections[i]);
+      if (target) target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  if (typeof IntersectionObserver !== 'undefined') {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const idx = sections.indexOf(id);
+          dots.forEach((d,i) => d.classList.toggle('active', i===idx));
+        }
+      });
+    }, {threshold:0.3});
+    sections.forEach(id => { const el = document.getElementById(id); if(el) obs.observe(el); });
+  }
+}
+
+// ========================
+// MOBILE NAV
+// ========================
+function initMobileNav() {
+  const links = document.querySelectorAll('.mobile-bottom-nav a');
+  links.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      const target = document.querySelector(href);
+      if (target) target.scrollIntoView({behavior:'smooth'});
+      links.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+}
+
+// ========================
+// ACCORDION
+// ========================
+function toggleAccordion(trigger) {
+  const content = trigger.nextElementSibling;
+  const isOpen = content.classList.contains('open');
+  document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+  document.querySelectorAll('.accordion-trigger').forEach(t => t.classList.remove('open'));
+  if (!isOpen) {
+    content.classList.add('open');
+    trigger.classList.add('open');
+  }
+}
+</script>
+</body>
+</html>

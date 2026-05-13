@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<!-- CLASS: 4 | SUBJECT: computer | VERSION: 1.0 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unit 5: Introduction to MS Excel | Class 4</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;color:#2C3E50;background:#fff}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.3}
+h1{font-size:clamp(2.5rem,6vw,4.5rem)}
+h2{font-size:clamp(2rem,4vw,3rem)}
+h3{font-size:clamp(1.4rem,2.5vw,1.8rem)}
+h4{font-size:clamp(1.1rem,2vw,1.4rem)}
+p{font-size:18px;min-font-size:18px}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#2C3E50;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .spin{width:60px;height:60px;border:5px solid rgba(255,255,255,0.2);border-top-color:#6AB04C;border-radius:50%;animation:spin 0.8s linear infinite}
+#curtain p{color:#fff;font-family:'Poppins',sans-serif;font-size:20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STICKY HEADER */
+#sticky-header{position:sticky;top:0;z-index:500;background:#2C3E50;padding:12px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+#sticky-header .lesson-title{color:#fff;font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.3rem);font-weight:700}
+.progress-dots{display:flex;gap:8px;align-items:center}
+.progress-dots .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.3s,transform 0.2s}
+.progress-dots .dot.active{background:#6AB04C;transform:scale(1.3)}
+.progress-dots .dot:hover{background:#F0932B}
+
+/* HERO */
+.hero{width:100%;min-height:85vh;background:linear-gradient(135deg,#2C3E50 0%,#1a252f 60%,#6AB04C 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236AB04C' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-badge{display:inline-block;background:#6AB04C;color:#fff;padding:6px 20px;border-radius:20px;font-size:15px;font-weight:600;margin-bottom:20px;letter-spacing:1px;text-transform:uppercase}
+.hero h1{color:#fff;margin-bottom:20px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.hero p{color:rgba(255,255,255,0.85);font-size:clamp(1rem,2.2vw,1.25rem);max-width:700px;margin:0 auto 32px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.hero-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:8px 18px;border-radius:25px;font-size:15px;backdrop-filter:blur(4px)}
+
+/* MAIN LAYOUT */
+.page-wrapper{width:100%;max-width:100%}
+.content-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-white{background:#fff;padding:70px 0}
+.section-green{background:#f0f9eb;padding:70px 0}
+
+/* SIDEBAR LAYOUT */
+.layout-grid{display:grid;grid-template-columns:65% 35%;gap:40px;align-items:start}
+.main-col{}
+.sidebar-col{position:sticky;top:80px}
+
+/* SIDEBAR */
+.sidebar-card{background:#2C3E50;color:#fff;border-radius:16px;padding:28px;margin-bottom:24px;opacity:1;transform:none}
+.sidebar-card h4{color:#6AB04C;margin-bottom:16px;font-size:clamp(1rem,2vw,1.2rem)}
+.sidebar-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+.sidebar-item:last-child{border-bottom:none}
+.sidebar-icon{width:36px;height:36px;background:#6AB04C;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sidebar-item p{font-size:15px;color:rgba(255,255,255,0.85)}
+.sidebar-item strong{font-size:15px;color:#fff}
+
+/* HIGHLIGHT BOXES */
+.highlight-box{border-radius:12px;padding:24px 28px;margin:24px 0;opacity:1;transform:none}
+.highlight-green{background:#e8f5e1;border-left:5px solid #6AB04C}
+.highlight-amber{background:#fff4e6;border-left:5px solid #F0932B}
+.highlight-navy{background:#eef2f7;border-left:5px solid #2C3E50}
+.highlight-box h4{margin-bottom:10px;font-size:clamp(1rem,2vw,1.15rem)}
+
+/* DEFINITION CARD */
+.def-card{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:20px 24px;margin:16px 0;transition:border-color 0.3s,box-shadow 0.3s;opacity:1;transform:none}
+.def-card:hover{border-color:#6AB04C;box-shadow:0 4px 20px rgba(106,176,76,0.2)}
+.def-card .term{font-family:'Poppins',sans-serif;font-weight:700;color:#2C3E50;font-size:18px;margin-bottom:6px}
+.def-card .meaning{color:#555;font-size:17px}
+
+/* CODE BOX */
+.code-box{background:#1e272e;border-radius:12px;padding:24px 28px;margin:20px 0;font-family:'Courier New',monospace;color:#a8e063;font-size:17px;line-height:1.9;border-left:4px solid #6AB04C;overflow-x:auto}
+.code-box .comment{color:#7f8c8d}
+.code-box .keyword{color:#F0932B;font-weight:700}
+.code-box .formula{color:#fff;font-weight:700}
+.formula-underline{position:relative;display:inline-block}
+.formula-underline::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:3px;background:#F0932B;border-radius:2px;transition:width 0.8s ease}
+.formula-underline.drawn::after{width:100%}
+
+/* STEP BOX */
+.step-container{background:#f8f9fa;border-radius:16px;padding:32px;margin:24px 0}
+.step-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.step-header h3{color:#2C3E50}
+.steps-list{}
+.step-item{display:flex;gap:16px;align-items:flex-start;padding:16px;background:#fff;border-radius:10px;margin-bottom:12px;border:2px solid transparent;opacity:1;transform:none;transition:border-color 0.3s}
+.step-item.active-step{border-color:#6AB04C;background:#e8f5e1}
+.step-num{width:40px;height:40px;background:#2C3E50;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:17px}
+.step-item.active-step .step-num{background:#6AB04C}
+.step-text{font-size:17px;color:#333;padding-top:8px}
+.btn-next{background:#6AB04C;color:#fff;border:none;padding:12px 28px;border-radius:25px;font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;cursor:pointer;transition:background 0.3s,transform 0.2s;display:flex;align-items:center;gap:8px}
+.btn-next:hover{background:#5a9a3c;transform:translateY(-2px)}
+.btn-next:disabled{background:#ccc;cursor:not-allowed;transform:none}
+
+/* INTERFACE COMPONENTS */
+.interface-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:24px 0}
+.interface-card{background:#fff;border:2px solid #e8e8e8;border-radius:14px;padding:24px;opacity:1;transform:none;transition:border-color 0.3s,transform 0.2s,box-shadow 0.3s}
+.interface-card:hover{border-color:#6AB04C;transform:translateY(-4px);box-shadow:0 8px 28px rgba(106,176,76,0.2)}
+.interface-card .icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px}
+.ic-green{background:#e8f5e1}
+.ic-amber{background:#fff4e6}
+.ic-navy{background:#eef2f7}
+.interface-card h4{font-size:clamp(1rem,2vw,1.1rem);margin-bottom:8px;color:#2C3E50}
+.interface-card p{font-size:17px;color:#555}
+
+/* TABS */
+.tab-bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:24px 0;background:#f0f0f0;padding:8px;border-radius:12px}
+.tab-btn{padding:12px 16px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;color:#555;transition:all 0.3s;min-height:48px}
+.tab-btn.active{background:#2C3E50;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.tab-panel{display:none;padding:24px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;animation:fadeIn 0.4s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* MERMAID DIAGRAM */
+.diagram-wrap{background:#fff;border-radius:16px;padding:28px;border:2px solid #e0e0e0;margin:24px 0;overflow:hidden}
+.diagram-wrap h4{color:#2C3E50;margin-bottom:20px;text-align:center}
+.mermaid{font-size:16px!important}
+
+/* FILL IN THE BLANK */
+.fitb-container{background:#f8f9fa;border-radius:16px;padding:32px;margin:24px 0}
+.fitb-container h3{margin-bottom:20px;color:#2C3E50}
+.fitb-sentence{font-size:18px;line-height:2.4;margin-bottom:16px;color:#2C3E50}
+.blank-input{border:none;border-bottom:3px solid #6AB04C;background:transparent;font-size:18px;font-family:'Inter',sans-serif;color:#2C3E50;padding:4px 8px;width:160px;text-align:center;outline:none;transition:border-color 0.3s}
+.blank-input:focus{border-color:#F0932B}
+.blank-input.correct{border-color:#27ae60;background:#e8f5e1;border-radius:4px}
+.blank-input.wrong{border-color:#e74c3c;background:#fde8e8;border-radius:4px}
+.fitb-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.btn-check{background:#F0932B;color:#fff;border:none;padding:12px 28px;border-radius:25px;font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;cursor:pointer;transition:all 0.3s;min-height:48px}
+.btn-check:hover{background:#d97f20;transform:translateY(-2px)}
+.btn-reset{background:#2C3E50;color:#fff;border:none;padding:12px 28px;border-radius:25px;font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;cursor:pointer;transition:all 0.3s;min-height:48px}
+.fitb-feedback{margin-top:12px;font-size:17px;font-weight:600;min-height:28px}
+
+/* DRAG AND DROP LABELING */
+.dnd-container{margin:24px 0}
+.dnd-instructions{font-size:17px;color:#555;margin-bottom:20px}
+.dnd-diagram{background:#1e272e;border-radius:16px;padding:32px;position:relative;min-height:420px;display:flex;flex-direction:column;gap:8px}
+.excel-mockup{border-radius:8px;overflow:hidden;background:#c0c0c0}
+.excel-titlebar{background:#1d6b2d;padding:8px 16px;color:#fff;font-size:15px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.excel-ribbon{background:#217346;padding:6px 12px;display:flex;gap:16px;align-items:center}
+.ribbon-tab{background:rgba(255,255,255,0.15);color:#fff;padding:4px 12px;border-radius:4px;font-size:13px;cursor:pointer}
+.ribbon-tab.active-tab{background:#fff;color:#217346;font-weight:700}
+.excel-formulabar{background:#f0f0f0;padding:5px 12px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #ccc}
+.name-box{background:#fff;border:1px solid #aaa;padding:2px 8px;font-size:13px;width:80px}
+.formula-input{background:#fff;border:1px solid #aaa;padding:2px 8px;font-size:13px;flex:1;color:#c0392b;font-family:monospace}
+.excel-grid{background:#fff;display:grid;grid-template-columns:40px repeat(6,1fr)}
+.excel-col-header{background:#f0f0f0;border:1px solid #ccc;padding:4px;text-align:center;font-size:13px;font-weight:700}
+.excel-row-num{background:#f0f0f0;border:1px solid #ccc;padding:4px;text-align:center;font-size:13px;font-weight:700}
+.excel-cell{border:1px solid #ccc;padding:4px 6px;font-size:13px;min-height:26px}
+.excel-cell.selected{background:#d3e8ff;border-color:#4472c4}
+.excel-cell.header-cell{background:#217346;color:#fff;font-weight:700}
+
+.label-targets{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.drop-target{border:2px dashed #6AB04C;border-radius:8px;padding:10px 14px;min-width:120px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#888;transition:all 0.3s;background:#fff;font-style:italic}
+.drop-target.over{background:#e8f5e1;border-color:#F0932B}
+.drop-target.filled{background:#e8f5e1;border-style:solid;color:#2C3E50;font-style:normal;font-weight:600}
+.drag-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.drag-chip{background:#2C3E50;color:#fff;padding:10px 16px;border-radius:25px;font-size:15px;cursor:grab;user-select:none;transition:all 0.3s;font-weight:600}
+.drag-chip:hover{background:#F0932B;transform:scale(1.05)}
+.drag-chip.dragging{opacity:0.4}
+.drag-chip.used{opacity:0.3;cursor:not-allowed;pointer-events:none}
+.dnd-feedback{margin-top:12px;font-size:17px;font-weight:600;min-height:28px}
+
+/* QUIZ */
+.quiz-container{background:#f8f9fa;border-radius:16px;padding:32px;margin:24px 0}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.quiz-header h3{color:#2C3E50}
+.quiz-score{background:#2C3E50;color:#fff;padding:8px 20px;border-radius:20px;font-family:'Poppins',sans-serif;font-size:17px;font-weight:600}
+.quiz-question{background:#fff;border-radius:12px;padding:24px;margin-bottom:16px;border:2px solid #e0e0e0;display:none;opacity:1}
+.quiz-question.active-q{display:block}
+.q-text{font-size:18px;font-weight:600;color:#2C3E50;margin-bottom:20px}
+.q-number{display:inline-block;background:#6AB04C;color:#fff;width:30px;height:30px;border-radius:50%;text-align:center;line-height:30px;font-size:15px;font-weight:700;margin-right:10px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.option-btn{padding:14px 16px;border:2px solid #e0e0e0;border-radius:10px;background:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-size:17px;text-align:left;transition:all 0.3s;min-height:48px;color:#2C3E50}
+.option-btn:hover:not(:disabled){border-color:#6AB04C;background:#e8f5e1}
+.option-btn.correct{border-color:#27ae60;background:#e8f5e1;color:#27ae60;font-weight:600}
+.option-btn.wrong{border-color:#e74c3c;background:#fde8e8;color:#e74c3c}
+.option-btn:disabled{cursor:default}
+.q-feedback{font-size:17px;font-weight:600;min-height:28px;margin-bottom:12px}
+.q-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.btn-qnav{background:#2C3E50;color:#fff;border:none;padding:10px 24px;border-radius:20px;cursor:pointer;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;transition:all 0.3s;min-height:48px}
+.btn-qnav:hover{background:#6AB04C}
+.btn-qnav:disabled{background:#ccc;cursor:not-allowed}
+.quiz-result{text-align:center;padding:32px;display:none}
+.quiz-result h3{font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:12px;color:#2C3E50}
+.quiz-result p{font-size:18px;color:#555}
+.result-stars{font-size:clamp(2rem,5vw,3.5rem);margin:16px 0}
+.btn-restart{background:#6AB04C;color:#fff;border:none;padding:14px 32px;border-radius:25px;font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;cursor:pointer;margin-top:20px;transition:all 0.3s;min-height:48px}
+.btn-restart:hover{background:#5a9a3c;transform:scale(1.05)}
+
+/* PROGRESS BAR */
+.quiz-progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:20px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:linear-gradient(90deg,#6AB04C,#F0932B);border-radius:4px;transition:width 0.5s ease;width:0%}
+
+/* ACCORDION */
+.accordion-item{border:2px solid #e0e0e0;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.accordion-header{background:#f8f9fa;padding:18px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;color:#2C3E50;transition:background 0.3s;min-height:48px}
+.accordion-header:hover{background:#e8f5e1}
+.accordion-header.open{background:#2C3E50;color:#fff}
+.accordion-arrow{transition:transform 0.3s;font-size:20px}
+.accordion-header.open .accordion-arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s}
+.accordion-body.open{max-height:600px;padding:20px 24px}
+
+/* SECTION TITLE */
+.section-title{margin-bottom:12px;color:#2C3E50}
+.section-title span{color:#6AB04C}
+.section-subtitle{font-size:18px;color:#666;margin-bottom:36px;max-width:700px}
+
+/* NUMBER LIST */
+.num-list{counter-reset:num;list-style:none;padding:0;margin:16px 0}
+.num-list li{counter-increment:num;display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;font-size:18px}
+.num-list li::before{content:counter(num);width:32px;height:32px;background:#6AB04C;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;flex-shrink:0;margin-top:2px}
+
+/* APP CARDS */
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:24px 0}
+.app-card{background:linear-gradient(135deg,#2C3E50,#34495e);color:#fff;border-radius:16px;padding:28px;text-align:center;opacity:1;transform:none;transition:transform 0.3s,box-shadow 0.3s}
+.app-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(44,62,80,0.3)}
+.app-card .emoji{font-size:clamp(2.5rem,5vw,3.5rem);margin-bottom:14px;display:block}
+.app-card h4{font-size:clamp(1rem,2vw,1.2rem);margin-bottom:8px}
+.app-card p{font-size:16px;opacity:0.85}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+th{background:#2C3E50;color:#fff;padding:16px;font-family:'Poppins',sans-serif;font-size:17px;text-align:left}
+td{padding:14px 16px;border-bottom:1px solid #e0e0e0;font-size:17px;vertical-align:top}
+tr:nth-child(even) td{background:#f0f9eb}
+tr:hover td{background:#e8f5e1}
+
+/* MOBILE NAV */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#2C3E50;padding:8px 16px;z-index:600;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mobile-bottom-nav::-webkit-scrollbar{height:3px}
+.mobile-bottom-nav-inner{display:flex;gap:4px;width:max-content;min-width:100%}
+.mobile-nav-btn{background:rgba(255,255,255,0.1);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap;transition:background 0.3s;min-height:48px;font-family:'Poppins',sans-serif}
+.mobile-nav-btn.active{background:#6AB04C}
+.mobile-nav-btn:hover{background:#F0932B}
+
+/* MOBILE SIDEBAR ACCORDION */
+.mobile-sidebar{display:none}
+.mobile-sidebar .accordion-header{background:#2C3E50;color:#fff;border-radius:12px}
+.mobile-sidebar .accordion-header.open{border-radius:12px 12px 0 0}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #sticky-header{padding:10px 16px}
+  .content-container{padding:0 16px}
+  .hero{min-height:60vh;padding:40px 16px}
+  .section-white,.section-green{padding:40px 0}
+  .layout-grid{grid-template-columns:1fr}
+  .sidebar-col{display:none}
+  .mobile-sidebar{display:block;margin-bottom:24px}
+  .mobile-bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .options{grid-template-columns:1fr}
+  .tab-bar{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+  .interface-grid{grid-template-columns:1fr}
+  .dnd-container .dnd-diagram{padding:16px}
+  .fitb-actions{flex-direction:column}
+  .quiz-header{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){
+  .hero-pills{gap:8px}
+  .hero-pill{padding:6px 12px;font-size:13px}
+  .step-container,.quiz-container,.fitb-container{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="spin"></div>
+  <p>Loading MS Excel Lesson...</p>
+</div>
+
+<!-- STICKY HEADER -->
+<header id="sticky-header">
+  <div class="lesson-title">📊 Unit 5 — Introduction to MS Excel</div>
+  <div class="progress-dots">
+    <div class="dot active" data-section="hero" title="Intro"></div>
+    <div class="dot" data-section="what-is" title="What is Excel"></div>
+    <div class="dot" data-section="features" title="Features"></div>
+    <div class="dot" data-section="interface" title="Interface"></div>
+    <div class="dot" data-section="applications" title="Applications"></div>
+    <div class="dot" data-section="exercises" title="Exercises"></div>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Unit 5 · Class 4 · Computer Studies</div>
+      <h1>Introduction to<br/>MS Excel 📊</h1>
+      <p>Learn how to organize data, perform calculations, and create colourful charts using Microsoft Excel — one of the world's most powerful spreadsheet tools!</p>
+      <div class="hero-pills">
+        <span class="hero-pill">🗂️ Spreadsheets</span>
+        <span class="hero-pill">🔢 Formulas</span>
+        <span class="hero-pill">📈 Charts</span>
+        <span class="hero-pill">🎨 Formatting</span>
+        <span class="hero-pill">🧭 Interface</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS MS EXCEL -->
+  <section class="section-white" id="what-is">
+    <div class="content-container">
+      <div class="layout-grid">
+        <div class="main-col">
+          <h2 class="section-title">What is <span>MS Excel?</span></h2>
+          <p class="section-subtitle">Microsoft Excel is a powerful spreadsheet application that helps you organize, analyze, and visualize data.</p>
+
+          <p>MS Excel is a simple yet powerful tool that helps you organize information using a table made up of <strong>rows</strong> and <strong>columns</strong>. You can use it to make lists, add numbers, and create small charts.</p>
+
+          <div class="highlight-box highlight-green">
+            <h4>📘 Definition</h4>
+            <p><strong>MS Excel</strong> is a spreadsheet software developed by Microsoft. It organizes data in a grid of rows and columns, allowing users to perform calculations, create charts, and manage data efficiently.</p>
+          </div>
+
+          <p>Think of Excel like a giant grid — like a huge piece of graph paper on your computer screen, where every square (called a <strong>cell</strong>) can hold a word, a number, or even a math formula!</p>
+
+          <div class="highlight-box highlight-amber">
+            <h4>💡 Real-World Example</h4>
+            <p>Your school report card is like an Excel spreadsheet! It has students' names in one column, subjects in other columns, and marks in cells where the row and column meet.</p>
+          </div>
+
+          <!-- INTERFACE MOCKUP SVG REPLACED WITH MERMAID DIAGRAM -->
+          <div class="diagram-wrap">
+            <h4>📐 How Excel Organizes Data</h4>
+            <div class="mermaid">
+graph LR
+  A[📊 MS Excel Spreadsheet] --> B[Rows\nNumbered 1,2,3...]
+  A --> C[Columns\nLabelled A,B,C...]
+  B --> D[Cells\ne.g. A1, B2, C3]
+  C --> D
+  D --> E[Data\nText / Numbers]
+  D --> F[Formulas\ne.g. =SUM]
+  D --> G[Functions\ne.g. =AVERAGE]
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-col" id="sidebar-main">
+          <div class="sidebar-card">
+            <h4>🎯 Learning Objectives</h4>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">📝</div>
+              <div><strong>Explain</strong><p>MS Excel's purpose and key features</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">⚙️</div>
+              <div><strong>Perform</strong><p>Basic tasks like data entry, formulas, and chart creation</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">🧭</div>
+              <div><strong>Identify</strong><p>Key components of the Excel interface</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">💼</div>
+              <div><strong>Apply</strong><p>Excel for practical tasks like lists, budgets, and charts</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">🗂️</div>
+              <div><strong>Navigate</strong><p>Rows, columns, and sheets effectively</p></div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <h4>🔑 Key Terms</h4>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">🔲</div>
+              <div><strong>Cell</strong><p>A single box where rows and columns intersect (e.g., A1)</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">↔️</div>
+              <div><strong>Row</strong><p>Horizontal line of cells — labelled with numbers</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">↕️</div>
+              <div><strong>Column</strong><p>Vertical line of cells — labelled with letters</p></div>
+            </div>
+            <div class="sidebar-item">
+              <div class="sidebar-icon">➕</div>
+              <div><strong>=SUM</strong><p>Formula to add numbers together automatically</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE SIDEBAR ACCORDION -->
+      <div class="mobile-sidebar">
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            🎯 Learning Objectives & Key Terms <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="accordion-body">
+            <ul class="num-list">
+              <li>Explain MS Excel's purpose and key features</li>
+              <li>Perform basic tasks like data entry, formulas, and chart creation</li>
+              <li>Identify and use key components of the Excel interface</li>
+              <li>Apply Excel for practical tasks like lists, budgets, and charts</li>
+              <li>Navigate rows, columns, and sheets effectively</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY FEATURES -->
+  <section class="section-green" id="features">
+    <div class="content-container">
+      <h2 class="section-title">Key <span>Features</span> of MS Excel</h2>
+      <p class="section-subtitle">Excel has five main features that make it a powerful tool for organizing and analyzing data.</p>
+
+      <div class="tab-bar" id="featuresTabBar">
+        <button class="tab-btn active" onclick="switchTab('feat',this,'t1')">📋 Layout</button>
+        <button class="tab-btn" onclick="switchTab('feat',this,'t2')">⌨️ Data Entry</button>
+        <button class="tab-btn" onclick="switchTab('feat',this,'t3')">🔢 Formulas</button>
+        <button class="tab-btn" onclick="switchTab('feat',this,'t4')">📈 Charts</button>
+        <button class="tab-btn" onclick="switchTab('feat',this,'t5')">🎨 Formatting</button>
+      </div>
+
+      <div id="feat-t1" class="tab-panel active">
+        <h3>1. Spreadsheet Layout</h3>
+        <p>MS Excel has boxes called <strong>"cells"</strong> arranged in rows (numbers) and columns (letters). Each cell has a unique address formed by its column letter + row number.</p>
+        <div class="code-box">
+          <span class="comment">// Cell Address Examples:</span><br/>
+          <span class="keyword">Column A + Row 1</span> = <span class="formula">A1</span><br/>
+          <span class="keyword">Column B + Row 3</span> = <span class="formula">B3</span><br/>
+          <span class="keyword">Column D + Row 6</span> = <span class="formula">D6</span><br/>
+          <span class="comment">// Excel has 1,048,576 rows and 16,384 columns!</span>
+        </div>
+        <div class="highlight-box highlight-navy">
+          <h4>📌 Example Use</h4>
+          <p>You can use cells to make a list of your friends' names or their favourite colours. Each name goes into its own cell!</p>
+        </div>
+      </div>
+
+      <div id="feat-t2" class="tab-panel">
+        <h3>2. Data Entry</h3>
+        <p>You can type <strong>words, numbers, or even simple maths problems</strong> into the cells. Excel stores whatever you type and can use it for calculations.</p>
+        <div class="code-box">
+          <span class="comment">// Types of data you can enter:</span><br/>
+          <span class="keyword">Text</span>: <span class="formula">Hasnain, Ibrahim, Math, Science</span><br/>
+          <span class="keyword">Numbers</span>: <span class="formula">1000, 5000, 6000, 3000</span><br/>
+          <span class="keyword">Dates</span>: <span class="formula">01/01/2024</span><br/>
+          <span class="keyword">Formulas</span>: <span class="formula">=SUM(D2:D5)</span>
+        </div>
+        <div class="highlight-box highlight-amber">
+          <h4>💡 Quick Tip</h4>
+          <p>Press <strong>Tab</strong> to move to the next cell in the same row, and <strong>Enter</strong> to move to the next row. This speeds up data entry!</p>
+        </div>
+      </div>
+
+      <div id="feat-t3" class="tab-panel">
+        <h3>3. Simple Formulas</h3>
+        <p>Excel can do maths like adding numbers automatically. Every formula starts with the <strong>= sign</strong>.</p>
+        <div class="code-box">
+          <span class="comment">// Formula to add all fees (D2 through D5):</span><br/>
+          <span class="keyword">Cell D6</span> → type: <span class="formula formula-underline" id="sumFormula">=SUM(D2:D5)</span><br/><br/>
+          <span class="comment">// Example data:</span><br/>
+          <span class="keyword">D2</span> = <span class="formula">1000</span> (Hasnain's fee)<br/>
+          <span class="keyword">D3</span> = <span class="formula">5000</span> (Ibrahim's fee)<br/>
+          <span class="keyword">D4</span> = <span class="formula">3000</span> (Zaeem's fee)<br/>
+          <span class="keyword">D5</span> = <span class="formula">2000</span> (Ayan's fee)<br/>
+          <span class="keyword">D6</span> = <span class="formula">11000</span> (Total — calculated automatically!)
+        </div>
+
+        <!-- STEP BY STEP WORKED EXAMPLE -->
+        <div class="step-container">
+          <div class="step-header">
+            <h3>📚 How to Enter a Formula — Step by Step</h3>
+            <button class="btn-next" id="stepBtn" onclick="nextStep()">Next Step ▶</button>
+          </div>
+          <div class="steps-list" id="stepsList">
+            <div class="step-item" id="step1">
+              <div class="step-num">1</div>
+              <div class="step-text"><strong>Click on cell D6</strong> — this is where you want the total to appear.</div>
+            </div>
+            <div class="step-item" id="step2">
+              <div class="step-num">2</div>
+              <div class="step-text"><strong>Type the = sign</strong> — all Excel formulas start with equals.</div>
+            </div>
+            <div class="step-item" id="step3">
+              <div class="step-num">3</div>
+              <div class="step-text"><strong>Type SUM(</strong> — this tells Excel you want to add numbers.</div>
+            </div>
+            <div class="step-item" id="step4">
+              <div class="step-num">4</div>
+              <div class="step-text"><strong>Type D2:D5)</strong> — the colon means "from D2 to D5", all cells in between.</div>
+            </div>
+            <div class="step-item" id="step5">
+              <div class="step-num">5</div>
+              <div class="step-text"><strong>Press Enter</strong> — Excel calculates and shows 11000 in cell D6!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="feat-t4" class="tab-panel">
+        <h3>4. Creating Charts</h3>
+        <p>Excel can make charts from your data to help you see information in a visual and fun way. Two popular chart types are:</p>
+        <div class="interface-grid">
+          <div class="interface-card">
+            <div class="icon-wrap ic-green">📊</div>
+            <h4>Column Chart</h4>
+            <p>Uses vertical bars to compare values side by side. Great for comparing data across categories like months or students.</p>
+          </div>
+          <div class="interface-card">
+            <div class="icon-wrap ic-amber">🥧</div>
+            <h4>Pie Chart</h4>
+            <p>Shows data as slices of a circle. Each slice represents a percentage of the whole. Great for showing proportions (e.g., 39%, 33%, 28%).</p>
+          </div>
+          <div class="interface-card">
+            <div class="icon-wrap ic-navy">📉</div>
+            <h4>Line Chart</h4>
+            <p>Connects data points with a line to show trends over time. Perfect for tracking temperatures or scores over a week.</p>
+          </div>
+        </div>
+        <div class="code-box">
+          <span class="comment">// How to create a chart:</span><br/>
+          <span class="keyword">Step 1:</span> Select your data cells<br/>
+          <span class="keyword">Step 2:</span> Click the <span class="formula">Insert</span> tab<br/>
+          <span class="keyword">Step 3:</span> Click <span class="formula">Charts</span> group<br/>
+          <span class="keyword">Step 4:</span> Choose <span class="formula">Column</span> or <span class="formula">Pie</span><br/>
+          <span class="keyword">Step 5:</span> Excel creates the chart automatically! 🎉
+        </div>
+      </div>
+
+      <div id="feat-t5" class="tab-panel">
+        <h3>5. Formatting Your Work</h3>
+        <p>You can change the appearance of your cells and text to make your spreadsheet look professional and easy to read.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Formatting Option</th><th>What it Does</th><th>How to Use</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Bold Text</strong></td><td>Makes text thick and stand out</td><td>Select cell → Click <strong>B</strong> in Home tab</td></tr>
+              <tr><td><strong>Cell Colour</strong></td><td>Changes the background colour of a cell</td><td>Select cell → Click Fill Colour button</td></tr>
+              <tr><td><strong>Font Colour</strong></td><td>Changes text colour</td><td>Select text → Click Font Colour (A)</td></tr>
+              <tr><td><strong>Borders</strong></td><td>Adds lines around cells</td><td>Home tab → Borders dropdown</td></tr>
+              <tr><td><strong>Merge Cells</strong></td><td>Combines multiple cells into one</td><td>Select cells → Merge & Center</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERFACE -->
+  <section class="section-white" id="interface">
+    <div class="content-container">
+      <h2 class="section-title">The MS Excel <span>Interface</span></h2>
+      <p class="section-subtitle">The Excel interface has 10 main components. Each plays an important role in helping you work with data.</p>
+
+      <div class="interface-grid">
+        <div class="interface-card">
+          <div class="icon-wrap ic-amber">🏷️</div>
+          <h4>1. Title Bar</h4>
+          <p>Located at the very <strong>top</strong> of the Excel window. Displays the file name (e.g., "Book1 – Excel") and the application name.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-green">🎀</div>
+          <h4>2. Menu Bar / Ribbon</h4>
+          <p>Contains different <strong>tabs</strong> (Home, Insert, Page Layout, etc.) that group related tools and features.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-navy">📑</div>
+          <h4>3. Tabs</h4>
+          <p>Organize commands into groups: <strong>Home, Insert, Page Layout, Formulas, Data, Review, View</strong>.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-amber">📝</div>
+          <h4>4. Formula Bar</h4>
+          <p>Located <strong>below the Ribbon</strong>. Shows the contents of the selected cell. Use it to enter or edit data and formulas.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-green">🗃️</div>
+          <h4>5. Worksheet Area</h4>
+          <p>The <strong>main grid area</strong> where you enter and view data. Divided into cells organized in rows and columns.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-navy">🔲</div>
+          <h4>6. Cells</h4>
+          <p>Each cell can hold <strong>data, formulas, or functions</strong>. Clicking a cell shows its address (e.g., A1) in the Name Box.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-amber">📏</div>
+          <h4>7. Row & Column Headers</h4>
+          <p><strong>Row headers</strong> are numbers (1, 2, 3...). <strong>Column headers</strong> are letters (A, B, C...). Click to select an entire row or column.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-green">↔️</div>
+          <h4>8. Scroll Bars</h4>
+          <p>Vertical and horizontal scroll bars let you <strong>navigate</strong> through worksheets larger than the visible screen area.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-navy">📊</div>
+          <h4>9. Status Bar</h4>
+          <p>At the <strong>bottom</strong> of the window. Displays current mode ("Ready", "Enter") and quick calculations like SUM and AVERAGE.</p>
+        </div>
+        <div class="interface-card">
+          <div class="icon-wrap ic-amber">📂</div>
+          <h4>10. Sheet Tabs</h4>
+          <p>At the <strong>bottom</strong> of the window. Allow you to switch between different worksheets in the same Excel file. Can be renamed.</p>
+        </div>
+      </div>
+
+      <!-- INTERFACE DIAGRAM WITH MERMAID -->
+      <div class="diagram-wrap">
+        <h4>🗺️ Excel Interface — Component Map</h4>
+        <div class="mermaid">
+graph TD
+  TitleBar["🏷️ Title Bar\nFile & App Name"] 
+  Ribbon["🎀 Ribbon / Menu Bar\nAll Tools & Commands"]
+  Tabs["📑 Tabs\nHome | Insert | Page Layout\nFormulas | Data | Review | View"]
+  FormulaBar["📝 Formula Bar\nShows Selected Cell Content"]
+  NameBox["🔢 Name Box\nCell Address e.g. A1"]
+  Worksheet["🗃️ Worksheet Area\nGrid of Cells"]
+  Rows["↔️ Row Headers\nNumbers 1,2,3..."]
+  Cols["↕️ Column Headers\nLetters A,B,C..."]
+  Cells["🔲 Cells\nHold Data/Formulas"]
+  StatusBar["📊 Status Bar\nMode & Calculations"]
+  SheetTabs["📂 Sheet Tabs\nSwitch Worksheets"]
+  ScrollBars["↔️ Scroll Bars\nNavigate Large Sheets"]
+
+  TitleBar --> Ribbon
+  Ribbon --> Tabs
+  Tabs --> FormulaBar
+  FormulaBar --> NameBox
+  FormulaBar --> Worksheet
+  Worksheet --> Rows
+  Worksheet --> Cols
+  Rows --> Cells
+  Cols --> Cells
+  Worksheet --> StatusBar
+  StatusBar --> SheetTabs
+  Worksheet --> ScrollBars
+        </div>
+      </div>
+
+      <!-- TABS DETAIL -->
+      <div class="highlight-box highlight-green">
+        <h4>📑 Common Excel Tabs Explained</h4>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tab Name</th><th>Icon</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Home</strong></td><td>🏠</td><td>Formatting text, copying, pasting, basic editing — used most often</td></tr>
+            <tr><td><strong>Insert</strong></td><td>➕</td><td>Add charts, pictures, tables, shapes to your spreadsheet</td></tr>
+            <tr><td><strong>Page Layout</strong></td><td>📄</td><td>Adjust margins, orientation, themes for printing</td></tr>
+            <tr><td><strong>Formulas</strong></td><td>🔢</td><td>Contains all functions (SUM, AVERAGE, COUNT, etc.) for calculations</td></tr>
+            <tr><td><strong>Data</strong></td><td>📋</td><td>Manage, sort, and filter data; connect to external data sources</td></tr>
+            <tr><td><strong>Review</strong></td><td>✔️</td><td>Spell check, add comments, protect sheets</td></tr>
+            <tr><td><strong>View</strong></td><td>👁️</td><td>Zoom in/out, freeze panes, switch between views</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS -->
+  <section class="section-green" id="applications">
+    <div class="content-container">
+      <h2 class="section-title">Applications of <span>MS Excel</span></h2>
+      <p class="section-subtitle">Excel is used in real life for many practical tasks — even ones you do every day!</p>
+
+      <div class="app-grid">
+        <div class="app-card">
+          <span class="emoji">📋</span>
+          <h4>Class Lists</h4>
+          <p>Create a list of your classmates' names and favourite subjects, organized neatly in rows and columns.</p>
+        </div>
+        <div class="app-card">
+          <span class="emoji">💰</span>
+          <h4>Simple Budgets</h4>
+          <p>Track how much money you have saved and what you want to buy. Excel adds it all up for you!</p>
+        </div>
+        <div class="app-card">
+          <span class="emoji">📊</span>
+          <h4>Charts for Fun Projects</h4>
+          <p>Create a pie chart to show how many candies you and your friends like. Make it colourful!</p>
+        </div>
+        <div class="app-card">
+          <span class="emoji">🗓️</span>
+          <h4>Attendance Tracker</h4>
+          <p>Mark P for Present and A for Absent every day. Use =SUM to count total days attended!</p>
+        </div>
+        <div class="app-card">
+          <span class="emoji">🌤️</span>
+          <h4>Weather Log</h4>
+          <p>Record temperature each day. Create a line chart to see if it's getting hotter or colder over the week.</p>
+        </div>
+        <div class="app-card">
+          <span class="emoji">🍎</span>
+          <h4>Survey Results</h4>
+          <p>Collect data on classmates' favourite fruits, then visualize results with a pie chart.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXERCISES SECTION -->
+  <section class="section-white" id="exercises">
+    <div class="content-container">
+      <h2 class="section-title">Practice <span>Exercises</span></h2>
+      <p class="section-subtitle">Test your knowledge with these interactive activities based on the lesson.</p>
+
+      <!-- EXERCISE 1: FILL IN THE BLANK (from Exercise 2) -->
+      <div class="fitb-container">
+        <h3>✏️ Exercise 1 — Fill in the Blanks</h3>
+        <p style="font-size:17px;color:#555;margin-bottom:20px">Complete each sentence with the correct word from what you learned.</p>
+
+        <div class="fitb-sentence">
+          1. The <input class="blank-input" id="b1" placeholder="___" data-answer="title"/> bar at the top of MS Excel displays the file name and application name.
+        </div>
+        <div class="fitb-sentence">
+          2. Cells are organized in rows, labelled by <input class="blank-input" id="b2" placeholder="___" data-answer="numbers"/>, and columns, labelled by <input class="blank-input" id="b3" placeholder="___" data-answer="letters"/>.
+        </div>
+        <div class="fitb-sentence">
+          3. To add numbers in MS Excel, you can use the <input class="blank-input" id="b4" placeholder="___" data-answer="=SUM"/> formula.
+        </div>
+        <div class="fitb-sentence">
+          4. The <input class="blank-input" id="b5" placeholder="___" data-answer="sheet"/> tabs allow you to switch between multiple worksheets.
+        </div>
+        <div class="fitb-sentence">
+          5. The <input class="blank-input" id="b6" placeholder="___" data-answer="formula"/> bar shows the data or formula currently in the selected cell.
+        </div>
+
+        <div class="fitb-actions">
+          <button class="btn-check" onclick="checkFITB()">✅ Check Answers</button>
+          <button class="btn-reset" onclick="resetFITB()">🔄 Reset</button>
+        </div>
+        <div class="fitb-feedback" id="fitbFeedback"></div>
+      </div>
+
+      <!-- EXERCISE 2: TRUE / FALSE (from Exercise 3) -->
+      <div class="fitb-container" style="background:#fff4e6;border:2px solid #F0932B">
+        <h3>✔️ Exercise 2 — True or False</h3>
+        <p style="font-size:17px;color:#555;margin-bottom:20px">Click TRUE or FALSE for each statement.</p>
+        <div id="tfContainer"></div>
+        <div class="fitb-actions">
+          <button class="btn-check" onclick="checkTF()">✅ Check Answers</button>
+          <button class="btn-reset" onclick="resetTF()">🔄 Reset</button>
+        </div>
+        <div class="fitb-feedback" id="tfFeedback"></div>
+      </div>
+
+      <!-- EXERCISE 3: DRAG AND DROP (from Exercise 4 Match) -->
+      <div class="dnd-container">
+        <h3 style="margin-bottom:12px">🔗 Exercise 3 — Match the Terms</h3>
+        <p class="dnd-instructions">Drag each label from the chips below and drop it onto the correct description box.</p>
+        <div class="label-targets" id="dropTargets">
+          <div class="drop-target" data-accept="Title Bar" id="dt1">Displays the file name and Excel application name</div>
+          <div class="drop-target" data-accept="Ribbon" id="dt2">Contains tabs with commands for formatting and inserting items</div>
+          <div class="drop-target" data-accept="Formula Bar" id="dt3">Shows the contents of the selected cell</div>
+          <div class="drop-target" data-accept="Sheet Tabs" id="dt4">Allows you to switch between worksheets within the same file</div>
+          <div class="drop-target" data-accept="Status Bar" id="dt5">Shows calculations like sum or average of selected cells</div>
+          <div class="drop-target" data-accept="Scroll Bars" id="dt6">Allows you to navigate larger worksheets that extend beyond the screen</div>
+        </div>
+        <div class="drag-chips" id="dragChips">
+          <div class="drag-chip" draggable="true" data-label="Title Bar" id="dc1">Title Bar</div>
+          <div class="drag-chip" draggable="true" data-label="Ribbon" id="dc2">Ribbon</div>
+          <div class="drag-chip" draggable="true" data-label="Formula Bar" id="dc3">Formula Bar</div>
+          <div class="drag-chip" draggable="true" data-label="Sheet Tabs" id="dc4">Sheet Tabs</div>
+          <div class="drag-chip" draggable="true" data-label="Status Bar" id="dc5">Status Bar</div>
+          <div class="drag-chip" draggable="true" data-label="Scroll Bars" id="dc6">Scroll Bars</div>
+        </div>
+        <div class="dnd-feedback" id="dndFeedback"></div>
+      </div>
+
+      <!-- EXERCISE 4: UNSCRAMBLE (from Exercise 5) -->
+      <div class="fitb-container" style="background:#eef2f7;border:2px solid #2C3E50">
+        <h3>🔤 Exercise 4 — Unscramble the Words</h3>
+        <p style="font-size:17px;color:#555;margin-bottom:20px">Unscramble these MS Excel terms:</p>
+        <div id="scrambleContainer"></div>
+        <div class="fitb-actions">
+          <button class="btn-check" onclick="checkScramble()">✅ Check</button>
+          <button class="btn-reset" onclick="resetScramble()">🔄 Reset</button>
+        </div>
+        <div class="fitb-feedback" id="scrambleFeedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ SECTION -->
+  <section class="section-green" id="quiz">
+    <div class="content-container">
+      <h2 class="section-title">📝 Unit <span>Quiz</span></h2>
+      <p class="section-subtitle">Answer all 10 questions to test your knowledge of MS Excel. Good luck!</p>
+
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h3>🎯 MS Excel Quiz</h3>
+          <div class="quiz-score" id="quizScore">Score: 0 / 10</div>
+        </div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizProgressBar"></div></div>
+        <div id="quizBody"></div>
+        <div class="quiz-result" id="quizResult">
+          <div class="result-stars" id="resultStars">⭐⭐⭐</div>
+          <h3 id="resultTitle">Excellent Work!</h3>
+          <p id="resultMsg"></p>
+          <button class="btn-restart" onclick="restartQuiz()">🔄 Try Again</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="mobile-bottom-nav-inner">
+    <button class="mobile-nav-btn active" onclick="scrollToSection('hero')">🏠 Home</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('what-is')">❓ What is Excel</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('features')">⚙️ Features</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('interface')">🧭 Interface</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('applications')">💼 Applications</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('exercises')">✏️ Exercises</button>
+    <button class="mobile-nav-btn" onclick="scrollToSection('quiz')">📝 Quiz</button>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // MERMAID INIT
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid error:', e); }
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.12, smooth: true });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Sidebar slide in from right
+      gsap.from('#sidebar-main', {
+        x: 80, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: '#sidebar-main', start: 'top 80%' }
+      });
+
+      // Hero content stagger
+      gsap.from('.hero-content > *', {
+        y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out', delay: 0.3
+      });
+
+      // Interface cards stagger
+      gsap.utils.toArray('.interface-card').forEach((card, i) => {
+        gsap.from(card, {
+          y: 40, opacity: 0, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 85%' },
+          delay: (i % 3) * 0.1
+        });
+      });
+
+      // App cards stagger
+      gsap.utils.toArray('.app-card').forEach((card, i) => {
+        gsap.from(card, {
+          scale: 0.9, opacity: 0, duration: 0.5, ease: 'back.out(1.4)',
+          scrollTrigger: { trigger: card, start: 'top 88%' },
+          delay: (i % 3) * 0.1
+        });
+      });
+
+      // Def cards
+      gsap.utils.toArray('.def-card').forEach(card => {
+        gsap.from(card, {
+          x: -30, opacity: 0, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 88%' }
+        });
+      });
+
+      // Paragraphs fade in
+      gsap.utils.toArray('.main-col p').forEach(p => {
+        gsap.from(p, {
+          y: 20, opacity: 0, duration: 0.5, ease: 'power1.out',
+          scrollTrigger: { trigger: p, start: 'top 90%' }
+        });
+      });
+
+      // Formula underline draw on SUM formula
+      ScrollTrigger.create({
+        trigger: '#sumFormula',
+        start: 'top 85%',
+        onEnter: () => {
+          document.getElementById('sumFormula').classList.add('drawn');
+        }
+      });
+    }
+  } catch(e) { console.warn('GSAP error:', e); }
+
+  // CURTAIN DISMISS (after animations attempt)
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => c.style.display = 'none', 500); }
+  }, 800);
+
+  // PROGRESS DOTS
+  const sections = ['hero','what-is','features','interface','applications','exercises'];
+  const dots = document.querySelectorAll('.progress-dots .dot');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const idx = sections.indexOf(id);
+        if (idx !== -1) {
+          dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+          document.querySelectorAll('.mobile-nav-btn').forEach((b,i) => b.classList.toggle('active', i === idx));
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+
+  // PROGRESS DOT CLICK
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { scrollToSection(sections[i]); });
+  });
+
+  // TRUE/FALSE DATA
+  const tfData = [
+    { text: 'The Ribbon in MS Excel contains different tabs, each with specific commands.', answer: true },
+    { text: 'The =SUM formula is used to change the colour of cells.', answer: false },
+    { text: 'The Worksheet Area is where you enter data into cells.', answer: true },
+    { text: 'Row headers are labelled with letters, and column headers are labelled with numbers.', answer: false },
+    { text: 'The Formula Bar is used to edit data or formulas in a cell.', answer: true }
+  ];
+  buildTF();
+
+  // SCRAMBLE DATA (from Exercise 5)
+  const scrambleData = [
+    { scrambled: 'BRIBON', answer: 'RIBBON' },
+    { scrambled: 'ALUMFRO ABR', answer: 'FORMULA BAR' },
+    { scrambled: 'HSEET TASB', answer: 'SHEET TABS' },
+    { scrambled: 'LLSCE', answer: 'CELLS' },
+    { scrambled: 'SRWKOEHTE REAA', answer: 'WORKSHEET AREA' }
+  ];
+  buildScramble();
+
+  // QUIZ DATA (Exercise 1 MCQ expanded to 10 questions)
+  const quizData = [
+    {
+      q: 'What is the purpose of a cell in MS Excel?',
+      opts: ['To hold data, formulas, or functions', 'To change the colour of the worksheet', 'To display the current file name', 'To add images to the spreadsheet'],
+      correct: 0
+    },
+    {
+      q: 'Which feature in MS Excel is used to perform calculations like addition?',
+      opts: ['Chart', 'Formula Bar', '=SUM formula', 'Status Bar'],
+      correct: 2
+    },
+    {
+      q: 'Where is the Title Bar located in MS Excel?',
+      opts: ['At the bottom of the screen', 'Below the Ribbon', 'At the very top of the screen', 'Next to the Sheet Tabs'],
+      correct: 2
+    },
+    {
+      q: 'Which of the following tabs is used to insert charts and images?',
+      opts: ['Home', 'View', 'Insert', 'Data'],
+      correct: 2
+    },
+    {
+      q: 'What does the Status Bar display?',
+      opts: ['File name and application name', 'Calculations like sum or average of selected cells', 'Tabs for different sheets', 'Data entries in cells'],
+      correct: 1
+    },
+    {
+      q: 'Row headers in MS Excel are labelled with:',
+      opts: ['Letters (A, B, C...)', 'Numbers (1, 2, 3...)', 'Symbols (#, $, @)', 'Colours'],
+      correct: 1
+    },
+    {
+      q: 'Column headers in MS Excel are labelled with:',
+      opts: ['Numbers (1, 2, 3...)', 'Roman numerals (I, II, III)', 'Letters (A, B, C...)', 'Symbols'],
+      correct: 2
+    },
+    {
+      q: 'The Formula Bar is located:',
+      opts: ['At the very top of the Excel window', 'At the bottom of the screen', 'Below the Ribbon', 'Next to the Sheet Tabs'],
+      correct: 2
+    },
+    {
+      q: 'Sheet Tabs allow you to:',
+      opts: ['Change the font colour', 'Switch between different worksheets', 'Add images to cells', 'Sort data alphabetically'],
+      correct: 1
+    },
+    {
+      q: 'To create a chart in Excel, which tab do you use?',
+      opts: ['Home', 'Page Layout', 'Insert', 'Review'],
+      correct: 2
+    }
+  ];
+  buildQuiz();
+
+  // DRAG AND DROP SETUP
+  setupDragDrop();
+
+  // STEP COUNTER
+  window._currentStep = 0;
+  highlightStep(0);
+
+  // =====================
+  // FUNCTIONS
+  // =====================
+
+  function buildTF() {
+    const cont = document.getElementById('tfContainer');
+    if (!cont) return;
+    cont.innerHTML = '';
+    tfData.forEach((item, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:16px;padding:14px;background:#fff;border-radius:10px;margin-bottom:10px;border:2px solid transparent;flex-wrap:wrap';
+      row.id = 'tfrow' + i;
+      row.innerHTML = `
+        <div style="flex:1;font-size:18px;color:#2C3E50;min-width:200px">${i+1}. ${item.text}</div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <button onclick="selectTF(${i},true)" id="tf${i}true" style="padding:10px 20px;border:2px solid #e0e0e0;border-radius:8px;background:#fff;cursor:pointer;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;min-height:48px;transition:all 0.3s">TRUE</button>
+          <button onclick="selectTF(${i},false)" id="tf${i}false" style="padding:10px 20px;border:2px solid #e0e0e0;border-radius:8px;background:#fff;cursor:pointer;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;min-height:48px;transition:all 0.3s">FALSE</button>
+        </div>
+      `;
+      cont.appendChild(row);
+    });
+  }
+
+  window.selectTF = function(idx, val) {
+    const trueBtn = document.getElementById('tf'+idx+'true');
+    const falseBtn = document.getElementById('tf'+idx+'false');
+    if (!trueBtn || !falseBtn) return;
+    trueBtn.dataset.selected = val === true ? 'yes' : '';
+    falseBtn.dataset.selected = val === false ? 'yes' : '';
+    trueBtn.style.background = val === true ? '#2C3E50' : '#fff';
+    trueBtn.style.color = val === true ? '#fff' : '#2C3E50';
+    trueBtn.style.borderColor = val === true ? '#2C3E50' : '#e0e0e0';
+    falseBtn.style.background = val === false ? '#2C3E50' : '#fff';
+    falseBtn.style.color = val === false ? '#fff' : '#2C3E50';
+    falseBtn.style.borderColor = val === false ? '#2C3E50' : '#e0e0e0';
+  };
+
+  window.checkTF = function() {
+    let correct = 0;
+    tfData.forEach((item, i) => {
+      const trueBtn = document.getElementById('tf'+i+'true');
+      const falseBtn = document.getElementById('tf'+i+'false');
+      const row = document.getElementById('tfrow'+i);
+      if (!trueBtn || !falseBtn || !row) return;
+      const selected = trueBtn.dataset.selected === 'yes' ? true : (falseBtn.dataset.selected === 'yes' ? false : null);
+      if (selected === null) return;
+      if (selected === item.answer) {
+        correct++;
+        row.style.borderColor = '#27ae60';
+        row.style.background = '#e8f5e1';
+      } else {
+        row.style.borderColor = '#e74c3c';
+        row.style.background = '#fde8e8';
+      }
+    });
+    document.getElementById('tfFeedback').textContent = `You got ${correct} out of ${tfData.length} correct! ${correct === tfData.length ? '🎉' : '💪 Keep trying!'}`;
+    document.getElementById('tfFeedback').style.color = correct === tfData.length ? '#27ae60' : '#F0932B';
+  };
+
+  window.resetTF = function() {
+    buildTF();
+    document.getElementById('tfFeedback').textContent = '';
+  };
+
+  function buildScramble() {
+    const cont = document.getElementById('scrambleContainer');
+    if (!cont) return;
+    cont.innerHTML = '';
+    scrambleData.forEach((item, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap';
+      row.innerHTML = `
+        <span style="background:#2C3E50;color:#fff;padding:10px 18px;border-radius:8px;font-family:monospace;font-size:18px;font-weight:700;min-width:180px;display:inline-block">${item.scrambled}</span>
+        <span style="font-size:22px">→</span>
+        <input id="sc${i}" type="text" placeholder="Unscrambled..." style="border:2px solid #6AB04C;border-radius:8px;padding:10px 14px;font-size:18px;font-family:'Inter',sans-serif;outline:none;min-width:180px;max-width:260px"/>
+      `;
+      cont.appendChild(row);
+    });
+  }
+
+  window.checkScramble = function() {
+    let correct = 0;
+    scrambleData.forEach((item, i) => {
+      const inp = document.getElementById('sc'+i);
+      if (!inp) return;
+      if (inp.value.trim().toUpperCase() === item.answer.toUpperCase()) {
+        correct++;
+        inp.style.borderColor = '#27ae60';
+        inp.style.background = '#e8f5e1';
+      } else {
+        inp.style.borderColor = '#e74c3c';
+        inp.style.background = '#fde8e8';
+      }
+    });
+    const fb = document.getElementById('scrambleFeedback');
+    fb.textContent = `${correct} / ${scrambleData.length} correct! ${correct === scrambleData.length ? '🎉 Perfect!' : '🔄 Try again!'}`;
+    fb.style.color = correct === scrambleData.length ? '#27ae60' : '#F0932B';
+  };
+
+  window.resetScramble = function() {
+    buildScramble();
+    document.getElementById('scrambleFeedback').textContent = '';
+  };
+
+  function buildQuiz() {
+    const body = document.getElementById('quizBody');
+    if (!body) return;
+    body.innerHTML = '';
+    quizData.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-question' + (i === 0 ? ' active-q' : '');
+      div.id = 'qq' + i;
+      div.innerHTML = `
+        <div class="q-text"><span class="q-number">${i+1}</span>${q.q}</div>
+        <div class="options">
+          ${q.opts.map((opt, oi) => `<button class="option-btn" onclick="answerQ(${i},${oi})">${String.fromCharCode(65+oi)}. ${opt}</button>`).join('')}
+        </div>
+        <div class="q-feedback" id="qf${i}"></div>
+        <div class="q-nav">
+          <button class="btn-qnav" onclick="prevQ(${i})" ${i===0?'disabled':''}>◀ Previous</button>
+          <span style="font-size:17px;color:#888">${i+1} / ${quizData.length}</span>
+          <button class="btn-qnav" id="qnext${i}" onclick="nextQ(${i})" disabled>${i===quizData.length-1?'Finish ✓':'Next ▶'}</button>
+        </div>
+      `;
+      body.appendChild(div);
+    });
+  }
+
+  let quizScore = 0;
+  let quizAnswered = new Array(quizData.length).fill(false);
+
+  window.answerQ = function(qi, oi) {
+    if (quizAnswered[qi]) return;
+    quizAnswered[qi] = true;
+    const q = quizData[qi];
+    const qq = document.getElementById('qq'+qi);
+    const btns = qq.querySelectorAll('.option-btn');
+    btns.forEach(b => b.disabled = true);
+    const fb = document.getElementById('qf'+qi);
+    if (oi === q.correct) {
+      quizScore++;
+      btns[oi].classList.add('correct');
+      fb.textContent = '✅ Correct! Well done!';
+      fb.style.color = '#27ae60';
+    } else {
+      btns[oi].classList.add('wrong');
+      btns[q.correct].classList.add('correct');
+      fb.textContent = '❌ Not quite. The correct answer is: ' + String.fromCharCode(65+q.correct) + '. ' + q.opts[q.correct];
+      fb.style.color = '#e74c3c';
+    }
+    document.getElementById('quizScore').textContent = 'Score: ' + quizScore + ' / ' + quizData.length;
+    document.getElementById('qnext'+qi).disabled = false;
+    document.getElementById('quizProgressBar').style.width = (((qi+1)/quizData.length)*100) + '%';
+  };
+
+  window.nextQ = function(qi) {
+    document.getElementById('qq'+qi).classList.remove('active-q');
+    if (qi === quizData.length - 1) {
+      showQuizResult();
+    } else {
+      document.getElementById('qq'+(qi+1)).classList.add('active-q');
+    }
+  };
+
+  window.prevQ = function(qi) {
+    if (qi > 0) {
+      document.getElementById('qq'+qi).classList.remove('active-q');
+      document.getElementById('qq'+(qi-1)).classList.add('active-q');
+    }
+  };
+
+  function showQuizResult() {
+    document.getElementById('quizBody').style.display = 'none';
+    const res = document.getElementById('quizResult');
+    res.style.display = 'block';
+    const pct = quizScore / quizData.length;
+    let stars = '⭐';
+    let title = 'Keep Practicing!';
+    let msg = `You scored ${quizScore} out of ${quizData.length}. Review the lesson and try again!`;
+    if (pct >= 0.9) { stars = '⭐⭐⭐'; title = 'Excellent! 🎉'; msg = `Fantastic! You scored ${quizScore} out of ${quizData.length}. You really know MS Excel!`; }
+    else if (pct >= 0.7) { stars = '⭐⭐'; title = 'Great Job! 👍'; msg = `You scored ${quizScore} out of ${quizData.length}. Almost there — review a few topics and try again!`; }
+    document.getElementById('resultStars').textContent = stars;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = msg;
+    document.getElementById('quizProgressBar').style.width = '100%';
+  }
+
+  window.restartQuiz = function() {
+    quizScore = 0;
+    quizAnswered = new Array(quizData.length).fill(false);
+    document.getElementById('quizScore').textContent = 'Score: 0 / ' + quizData.length;
+    document.getElementById('quizProgressBar').style.width = '0%';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizBody').style.display = 'block';
+    buildQuiz();
+  };
+
+  // STEP SYSTEM
+  window._currentStep = 0;
+  function highlightStep(step) {
+    for (let i = 1; i <= 5; i++) {
+      const s = document.getElementById('step' + i);
+      if (s) s.classList.toggle('active-step', i <= step + 1);
+    }
+    const btn = document.getElementById('stepBtn');
+    if (!btn) return;
+    if (step >= 4) {
+      btn.disabled = true;
+      btn.textContent = '✅ Done!';
+    }
+  }
+
+  window.nextStep = function() {
+    if (window._currentStep < 5) {
+      window._currentStep++;
+      highlightStep(window._currentStep);
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.from('#step' + (window._currentStep + 1), { scale: 0.95, duration: 0.3, ease: 'back.out(2)' });
+        }
+      } catch(e) {}
+    }
+  };
+
+  // DRAG AND DROP
+  function setupDragDrop() {
+    const chips = document.querySelectorAll('.drag-chip');
+    const targets = document.querySelectorAll('.drop-target');
+    let draggingChip = null;
+
+    chips.forEach(chip => {
+      chip.addEventListener('dragstart', (e) => {
+        draggingChip = chip;
+        chip.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', chip.dataset.label);
+      });
+      chip.addEventListener('dragend', () => {
+        chip.classList.remove('dragging');
+        draggingChip = null;
+      });
+    });
+
+    targets.forEach(target => {
+      target.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        target.classList.add('over');
+      });
+      target.addEventListener('dragleave', () => {
+        target.classList.remove('over');
+      });
+      target.addEventListener('drop', (e) => {
+        e.preventDefault();
+        target.classList.remove('over');
+        const label = e.dataTransfer.getData('text/plain');
+        const chip = document.querySelector(`.drag-chip[data-label="${label}"]`);
+        if (!chip || chip.classList.contains('used')) return;
+        if (target.classList.contains('filled')) {
+          // Remove old chip from used
+          const old = target.dataset.placed;
+          if (old) {
+            const oldChip = document.querySelector(`.drag-chip[data-label="${old}"]`);
+            if (oldChip) oldChip.classList.remove('used');
+          }
+        }
+        target.textContent = label;
+        target.classList.add('filled');
+        target.dataset.placed = label;
+        chip.classList.add('used');
+        checkDND();
+      });
+
+      // Touch support
+      target.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        if (draggingChip) {
+          const label = draggingChip.dataset.label;
+          target.textContent = label;
+          target.classList.add('filled');
+          target.dataset.placed = label;
+          draggingChip.classList.add('used');
+          draggingChip = null;
+          checkDND();
+        }
+      });
+    });
+
+    chips.forEach(chip => {
+      chip.addEventListener('touchstart', (e) => {
+        draggingChip = chip;
+        chip.classList.add('dragging');
+      });
+      chip.addEventListener('touchend', (e) => {
+        chip.classList.remove('dragging');
+      });
+    });
+  }
+
+  function checkDND() {
+    const targets = document.querySelectorAll('.drop-target');
+    let correct = 0;
+    let filled = 0;
+    targets.forEach(t => {
+      if (t.dataset.placed) {
+        filled++;
+        if (t.dataset.placed === t.dataset.accept) {
+          correct++;
+          t.style.borderColor = '#27ae60';
+          t.style.background = '#e8f5e1';
+          t.style.color = '#27ae60';
+        } else {
+          t.style.borderColor = '#e74c3c';
+          t.style.background = '#fde8e8';
+          t.style.color = '#e74c3c';
+        }
+      }
+    });
+    const fb = document.getElementById('dndFeedback');
+    if (fb) {
+      if (filled === 6) {
+        fb.textContent = `${correct} / 6 correct! ${correct === 6 ? '🎉 All matched perfectly!' : '🔄 Some are wrong — try rearranging!'}`;
+        fb.style.color = correct === 6 ? '#27ae60' : '#F0932B';
+      }
+    }
+  }
+
+  // FILL IN THE BLANK
+  window.checkFITB = function() {
+    const blanks = [
+      { id: 'b1', answer: 'title' },
+      { id: 'b2', answer: 'numbers' },
+      { id: 'b3', answer: 'letters' },
+      { id: 'b4', answer: '=sum' },
+      { id: 'b5', answer: 'sheet' },
+      { id: 'b6', answer: 'formula' }
+    ];
+    let correct = 0;
+    blanks.forEach(b => {
+      const inp = document.getElementById(b.id);
+      if (!inp) return;
+      const val = inp.value.trim().toLowerCase();
+      const ans = b.answer.toLowerCase();
+      if (val === ans || (b.id === 'b4' && (val === '=sum' || val === 'sum'))) {
+        correct++;
+        inp.classList.add('correct');
+        inp.classList.remove('wrong');
+      } else {
+        inp.classList.add('wrong');
+        inp.classList.remove('correct');
+      }
+    });
+    const fb = document.getElementById('fitbFeedback');
+    fb.textContent = `${correct} / ${blanks.length} correct! ${correct === blanks.length ? '🎉 Perfect!' : '💪 Keep trying!'}`;
+    fb.style.color = correct === blanks.length ? '#27ae60' : '#F0932B';
+  };
+
+  window.resetFITB = function() {
+    ['b1','b2','b3','b4','b5','b6'].forEach(id => {
+      const inp = document.getElementById(id);
+      if (inp) { inp.value = ''; inp.classList.remove('correct','wrong'); }
+    });
+    document.getElementById('fitbFeedback').textContent = '';
+  };
+
+  // UTILITY FUNCTIONS (global scope)
+  window.scrollToSection = function(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  window.toggleAccordion = function(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  };
+
+  window.switchTab = function(group, btn, tabId) {
+    const container = btn.closest('.content-container') || document.body;
+    const bar = btn.closest('.tab-bar');
+    if (bar) bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Hide all panels with group prefix
+    document.querySelectorAll(`[id^="${group}-"]`).forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(`${group}-${tabId}`);
+    if (target) target.classList.add('active');
+  };
+
+  // Step 1 highlighted by default
+  highlightStep(-1);
+  const s1 = document.getElementById('step1');
+  if (s1) s1.classList.add('active-step');
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

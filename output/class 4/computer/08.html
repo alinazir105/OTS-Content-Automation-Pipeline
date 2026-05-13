@@ -1,0 +1,1243 @@
+<!-- CLASS: 4 | SUBJECT: computer | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unit 8: Robotics | Class 4 Digital School</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;color:#2C3E50;background:#fff;width:100%;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.3}
+h1{font-size:clamp(2.5rem,6vw,4.5rem)}
+h2{font-size:clamp(2rem,4vw,3rem)}
+h3{font-size:clamp(1.4rem,2.5vw,1.8rem)}
+h4{font-size:clamp(1.1rem,2vw,1.4rem)}
+p{font-size:18px;margin-bottom:1rem}
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#2C3E50;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .robot-icon{font-size:4rem;animation:bounce 0.8s infinite alternate}
+#curtain .curtain-text{color:#fff;font-family:'Poppins',sans-serif;font-size:1.3rem}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+/* STICKY HEADER */
+#sticky-header{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(44,62,80,0.97);backdrop-filter:blur(8px);padding:10px 40px;display:flex;align-items:center;justify-content:space-between;min-height:60px}
+#sticky-header .header-title{color:#fff;font-family:'Poppins',sans-serif;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700}
+.progress-dots{display:flex;gap:8px;align-items:center}
+.progress-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.3s,transform 0.3s}
+.progress-dot.active{background:#6AB04C;transform:scale(1.3)}
+/* HERO */
+#hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#2C3E50 0%,#3d5a73 50%,#1a252f 100%);display:flex;align-items:center;justify-content:center;padding:100px 40px 60px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236AB04C' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.hero-inner{max-width:1500px;width:100%;margin:0 auto;display:flex;align-items:center;gap:60px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:280px}
+.hero-badge{display:inline-block;background:#6AB04C;color:#fff;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:20px;letter-spacing:1px;text-transform:uppercase}
+.hero-text h1{color:#fff;margin-bottom:16px}
+.hero-text p{color:rgba(255,255,255,0.85);font-size:1.1rem;max-width:560px}
+.hero-robot{flex:0 0 240px;display:flex;align-items:center;justify-content:center}
+.hero-robot-svg{width:200px;height:200px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+/* LEARNING OBJECTIVES */
+.objectives-strip{background:#6AB04C;padding:30px 40px;width:100%}
+.objectives-strip-inner{max-width:1500px;margin:0 auto}
+.objectives-strip h3{color:#fff;margin-bottom:16px;font-family:'Poppins',sans-serif}
+.objectives-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.objectives-list li{background:rgba(255,255,255,0.18);border-radius:10px;padding:12px 16px;color:#fff;font-size:17px;display:flex;align-items:flex-start;gap:10px}
+.objectives-list li::before{content:'✓';color:#fff;font-weight:700;flex-shrink:0;margin-top:1px}
+/* MAIN LAYOUT */
+.page-wrapper{width:100%;max-width:1500px;margin:0 auto;padding:0 40px}
+.content-layout{display:grid;grid-template-columns:65% 35%;gap:40px;padding:60px 0}
+.main-content{min-width:0}
+.sidebar{min-width:0;opacity:1;transform:none}
+/* SECTIONS */
+.section-white{background:#fff;padding:60px 0}
+.section-green{background:#f4faf0;padding:60px 0}
+/* CARDS */
+.card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(44,62,80,0.10);padding:28px;margin-bottom:24px;width:100%;opacity:1;transform:none}
+.card-green{background:#f4faf0;border-left:5px solid #6AB04C}
+.card-amber{background:#fff9f0;border-left:5px solid #F0932B}
+.card-navy{background:#f0f3f7;border-left:5px solid #2C3E50}
+/* HIGHLIGHT BOXES */
+.highlight-box{border-radius:12px;padding:20px 24px;margin-bottom:20px;opacity:1}
+.highlight-green{background:#e8f8e0;border-left:5px solid #6AB04C}
+.highlight-amber{background:#fff4e6;border-left:5px solid #F0932B}
+.highlight-navy{background:#eef2f7;border-left:5px solid #2C3E50}
+.highlight-box h4{margin-bottom:8px;color:#2C3E50}
+/* DEFINITION BOX */
+.definition-box{background:#2C3E50;color:#fff;border-radius:12px;padding:20px 24px;margin-bottom:20px;border-left:5px solid #6AB04C}
+.definition-box .def-label{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#6AB04C;font-weight:700;margin-bottom:6px}
+.definition-box p{color:rgba(255,255,255,0.9);margin:0;font-size:18px}
+/* APPLICATION CARDS */
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:24px}
+.app-card{background:#fff;border-radius:14px;box-shadow:0 3px 16px rgba(44,62,80,0.10);padding:24px;border-top:4px solid #6AB04C;opacity:1;transform:none}
+.app-card .app-icon{font-size:2.5rem;margin-bottom:12px}
+.app-card h4{color:#2C3E50;margin-bottom:8px}
+.app-card ul{list-style:none;padding:0}
+.app-card ul li{font-size:17px;padding:4px 0;display:flex;align-items:flex-start;gap:8px;color:#444}
+.app-card ul li::before{content:'→';color:#6AB04C;font-weight:700;flex-shrink:0}
+/* ADV/DIS GRID */
+.adv-dis-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.adv-card{background:#e8f8e0;border-radius:14px;padding:20px;border-top:4px solid #6AB04C}
+.dis-card{background:#fff0e6;border-radius:14px;padding:20px;border-top:4px solid #e74c3c}
+.adv-card h4,.dis-card h4{margin-bottom:12px;font-size:1.1rem}
+.adv-card h4{color:#2d6a1e}
+.dis-card h4{color:#c0392b}
+.adv-item,.dis-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:17px}
+.adv-item::before{content:'✅';flex-shrink:0}
+.dis-item::before{content:'⚠️';flex-shrink:0}
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(44,62,80,0.08);overflow-x:auto;margin-bottom:24px}
+/* SIDEBAR */
+.sidebar-card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(44,62,80,0.10);padding:24px;margin-bottom:24px;width:100%;opacity:1}
+.sidebar-card h4{color:#2C3E50;margin-bottom:14px;font-family:'Poppins',sans-serif;border-bottom:2px solid #6AB04C;padding-bottom:8px}
+.key-term{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;padding:12px;background:#f4faf0;border-radius:8px}
+.key-term .term{font-weight:700;color:#6AB04C;font-size:17px}
+.key-term .meaning{font-size:16px;color:#555}
+/* QUIZ */
+#quiz-section{background:#2C3E50;padding:60px 0;width:100%}
+.quiz-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.quiz-header{color:#fff;text-align:center;margin-bottom:40px}
+.quiz-header h2{color:#fff;margin-bottom:8px}
+.quiz-header p{color:rgba(255,255,255,0.8);font-size:18px}
+.question-card{background:#fff;border-radius:14px;padding:28px;margin-bottom:20px;opacity:1}
+.question-text{font-weight:600;font-size:18px;margin-bottom:16px;color:#2C3E50}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.option-btn{background:#f4faf0;border:2px solid #ddd;border-radius:10px;padding:14px 16px;font-size:17px;cursor:pointer;text-align:left;transition:all 0.2s;min-height:48px;font-family:'Inter',sans-serif;color:#2C3E50}
+.option-btn:hover{border-color:#6AB04C;background:#e8f8e0}
+.option-btn.correct{background:#e8f8e0;border-color:#6AB04C;color:#2d6a1e}
+.option-btn.wrong{background:#fde8e8;border-color:#e74c3c;color:#c0392b}
+.quiz-feedback{margin-top:12px;font-size:17px;font-weight:600;min-height:28px}
+.quiz-feedback.ok{color:#27ae60}
+.quiz-feedback.bad{color:#e74c3c}
+.quiz-score{background:#6AB04C;color:#fff;border-radius:14px;padding:24px;text-align:center;font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;display:none;margin-top:24px}
+/* FILL IN THE BLANK */
+.fitb-section{background:#f4faf0;padding:60px 0;width:100%}
+.fitb-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.fitb-title{color:#2C3E50;margin-bottom:8px}
+.fitb-subtitle{color:#555;margin-bottom:28px;font-size:18px}
+.fitb-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 3px 16px rgba(44,62,80,0.09);margin-bottom:20px}
+.fitb-sentence{font-size:18px;line-height:2.2;margin-bottom:12px}
+.blank-input{border:none;border-bottom:2.5px solid #6AB04C;background:transparent;font-size:18px;font-family:'Inter',sans-serif;color:#2C3E50;width:160px;padding:2px 6px;outline:none;text-align:center;margin:0 4px}
+.blank-input:focus{border-bottom-color:#F0932B}
+.blank-input.correct{border-bottom-color:#27ae60;color:#27ae60}
+.blank-input.wrong{border-bottom-color:#e74c3c;color:#e74c3c}
+.fitb-btn{background:#6AB04C;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;margin-right:12px;min-height:48px;transition:background 0.2s}
+.fitb-btn:hover{background:#58a03d}
+.fitb-result{margin-top:14px;font-size:18px;font-weight:600;color:#2C3E50}
+/* WORKED EXAMPLE */
+.worked-example{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(44,62,80,0.10);padding:28px;margin-bottom:24px}
+.worked-title{color:#2C3E50;margin-bottom:6px}
+.step-box{background:#2C3E50;border-radius:10px;padding:18px 22px;margin-bottom:14px;display:none;opacity:1}
+.step-box.visible{display:block}
+.step-num{font-family:'Poppins',sans-serif;color:#6AB04C;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.step-content{color:#fff;font-size:17px;font-family:monospace}
+.step-btn{background:#F0932B;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;min-height:48px;transition:background 0.2s;margin-top:8px}
+.step-btn:hover{background:#d97e1a}
+/* TRUE/FALSE */
+.tf-section{background:#fff;padding:60px 0;width:100%}
+.tf-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.tf-card{background:#f4faf0;border-radius:14px;padding:24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tf-statement{font-size:18px;color:#2C3E50;flex:1;min-width:200px}
+.tf-buttons{display:flex;gap:10px}
+.tf-btn{padding:10px 22px;border-radius:8px;border:2px solid transparent;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;min-height:48px;transition:all 0.2s}
+.tf-true{background:#e8f8e0;color:#2d6a1e;border-color:#6AB04C}
+.tf-false{background:#fde8e8;color:#c0392b;border-color:#e74c3c}
+.tf-btn:hover{opacity:0.85}
+.tf-btn.selected-correct{background:#6AB04C;color:#fff;border-color:#6AB04C}
+.tf-btn.selected-wrong{background:#e74c3c;color:#fff;border-color:#e74c3c}
+.tf-feedback{font-size:16px;font-weight:600;width:100%;margin-top:4px}
+.tf-feedback.ok{color:#27ae60}
+.tf-feedback.bad{color:#e74c3c}
+/* DRAG DROP LABELING */
+.label-section{background:#2C3E50;padding:60px 0;width:100%}
+.label-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.label-title{color:#fff;margin-bottom:8px}
+.label-subtitle{color:rgba(255,255,255,0.8);font-size:18px;margin-bottom:28px}
+.drag-area{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.robot-diagram-wrap{flex:1;min-width:280px;background:#fff;border-radius:14px;padding:24px;position:relative}
+.robot-diagram-wrap h4{color:#2C3E50;margin-bottom:16px;font-size:1rem}
+.robot-visual{width:100%;position:relative;min-height:300px;display:flex;align-items:center;justify-content:center}
+.drop-targets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.drop-target{background:#f4faf0;border:2.5px dashed #6AB04C;border-radius:8px;min-height:48px;padding:8px 12px;font-size:16px;color:#555;display:flex;align-items:center;justify-content:center;text-align:center;transition:background 0.2s;cursor:pointer}
+.drop-target.filled{background:#e8f8e0;border-style:solid;border-color:#6AB04C;color:#2d6a1e;font-weight:600}
+.drop-target.wrong-drop{background:#fde8e8;border-color:#e74c3c}
+.drag-labels-wrap{flex:0 0 200px;background:#fff;border-radius:14px;padding:20px}
+.drag-labels-wrap h4{color:#2C3E50;margin-bottom:14px;font-size:1rem}
+.drag-label{background:#6AB04C;color:#fff;border-radius:8px;padding:10px 14px;font-size:16px;font-weight:600;cursor:grab;margin-bottom:10px;text-align:center;user-select:none;transition:opacity 0.2s;min-height:48px;display:flex;align-items:center;justify-content:center}
+.drag-label.used{opacity:0.35;cursor:default;pointer-events:none}
+.drag-label:active{cursor:grabbing;opacity:0.85}
+.label-check-btn{background:#F0932B;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;min-height:48px;margin-top:14px;transition:background 0.2s}
+.label-check-btn:hover{background:#d97e1a}
+.label-result{color:#fff;font-size:17px;font-weight:600;margin-top:12px}
+/* LAB ACTIVITY */
+.lab-section{background:#f4faf0;padding:60px 0;width:100%}
+.lab-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.lab-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:24px}
+.lab-step{background:#fff;border-radius:14px;padding:22px;box-shadow:0 3px 14px rgba(44,62,80,0.09);border-top:4px solid #F0932B;opacity:1}
+.lab-step .step-number{background:#F0932B;color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Poppins',sans-serif;margin-bottom:10px}
+.lab-step h4{margin-bottom:8px;font-size:1rem}
+.materials-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.material-tag{background:#fff;border:2px solid #6AB04C;color:#2d6a1e;border-radius:20px;padding:6px 16px;font-size:16px;font-weight:600}
+/* MOBILE NAV */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#2C3E50;z-index:600;padding:8px 0;overflow-x:auto}
+#mobile-nav ul{display:flex;list-style:none;gap:0;min-width:max-content;padding:0 12px}
+#mobile-nav ul li a{color:rgba(255,255,255,0.8);font-size:13px;font-family:'Poppins',sans-serif;text-decoration:none;padding:8px 14px;display:block;white-space:nowrap;min-height:48px;display:flex;align-items:center;border-radius:6px;transition:background 0.2s}
+#mobile-nav ul li a:hover,#mobile-nav ul li a.active{background:#6AB04C;color:#fff}
+/* SECTION DIVIDER */
+.section-label{font-family:'Poppins',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:2px;color:#6AB04C;font-weight:700;margin-bottom:8px}
+/* ACCORDION (mobile sidebar) */
+.accordion-btn{display:none;background:#6AB04C;color:#fff;border:none;border-radius:10px;padding:14px 20px;font-size:17px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;width:100%;text-align:left;margin-bottom:8px;min-height:48px}
+.accordion-content{display:none}
+.accordion-content.open{display:block}
+/* RESPONSIVE */
+@media(max-width:768px){
+  body{padding-bottom:80px}
+  #sticky-header{padding:10px 16px}
+  .page-wrapper{padding:0 16px}
+  .content-layout{grid-template-columns:1fr;gap:24px;padding:30px 0}
+  .sidebar{display:none}
+  .accordion-btn{display:block}
+  #mobile-nav{display:block}
+  .hero-inner{flex-direction:column;gap:30px;text-align:center}
+  #hero{min-height:60vh;padding:90px 16px 40px}
+  .hero-robot{flex:none}
+  .adv-dis-grid{grid-template-columns:1fr}
+  .options-grid{grid-template-columns:1fr}
+  .drag-area{flex-direction:column}
+  .drag-labels-wrap{flex:none;width:100%}
+  .objectives-strip{padding:24px 16px}
+  .quiz-container,.fitb-container,.tf-container,.label-container,.lab-container{padding:0 16px}
+  .section-white,.section-green,.tf-section,.lab-section,.fitb-section{padding:40px 0}
+  #quiz-section{padding:40px 0}
+  .label-section{padding:40px 0}
+  .app-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .drop-targets{grid-template-columns:1fr}
+  .tf-card{flex-direction:column;align-items:flex-start}
+}
+/* SCROLL ANIMATIONS - defaults ensure visibility */
+.fade-in{opacity:1;transform:none}
+.slide-right{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="robot-icon">🤖</div>
+  <div class="curtain-text">Loading Unit 8: Robotics…</div>
+</div>
+
+<!-- STICKY HEADER -->
+<header id="sticky-header">
+  <div class="header-title">🤖 Unit 8 — Robotics | Class 4</div>
+  <div class="progress-dots" id="progress-dots">
+    <div class="progress-dot active" data-section="hero" title="Intro"></div>
+    <div class="progress-dot" data-section="what-is" title="What is Robotics"></div>
+    <div class="progress-dot" data-section="applications" title="Applications"></div>
+    <div class="progress-dot" data-section="adv-dis" title="Advantages & Disadvantages"></div>
+    <div class="progress-dot" data-section="exercises" title="Exercises"></div>
+    <div class="progress-dot" data-section="lab" title="Lab Activity"></div>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <ul>
+    <li><a href="#hero">🏠 Home</a></li>
+    <li><a href="#what-is">🤖 Robotics</a></li>
+    <li><a href="#applications">⚙️ Applications</a></li>
+    <li><a href="#adv-dis">⚖️ Adv/Dis</a></li>
+    <li><a href="#worked">📋 Example</a></li>
+    <li><a href="#tf-section">✅ True/False</a></li>
+    <li><a href="#fitb-section">✏️ Fill Blanks</a></li>
+    <li><a href="#label-section">🏷️ Label</a></li>
+    <li><a href="#quiz-section">🎯 Quiz</a></li>
+    <li><a href="#lab">🔬 Lab</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Unit 8 · Class 4</div>
+      <h1>Robotics</h1>
+      <p>Discover how robots are transforming manufacturing, medicine, and exploration — and learn about the exciting world of emerging technologies that are changing our world every day.</p>
+    </div>
+    <div class="hero-robot">
+      <svg class="hero-robot-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="60" y="60" width="80" height="70" rx="12" fill="#6AB04C"/>
+        <rect x="75" y="75" width="20" height="18" rx="5" fill="#fff" opacity="0.9"/>
+        <rect x="105" y="75" width="20" height="18" rx="5" fill="#fff" opacity="0.9"/>
+        <circle cx="85" cy="84" r="6" fill="#2C3E50"/>
+        <circle cx="115" cy="84" r="6" fill="#2C3E50"/>
+        <rect x="85" y="103" width="30" height="8" rx="4" fill="#fff" opacity="0.7"/>
+        <rect x="75" y="50" width="50" height="14" rx="7" fill="#F0932B"/>
+        <rect x="97" y="40" width="6" height="14" rx="3" fill="#F0932B"/>
+        <rect x="35" y="68" width="28" height="14" rx="7" fill="#2C3E50"/>
+        <rect x="137" y="68" width="28" height="14" rx="7" fill="#2C3E50"/>
+        <rect x="70" y="130" width="22" height="40" rx="8" fill="#2C3E50"/>
+        <rect x="108" y="130" width="22" height="40" rx="8" fill="#2C3E50"/>
+        <rect x="65" y="165" width="28" height="10" rx="5" fill="#6AB04C"/>
+        <rect x="107" y="165" width="28" height="10" rx="5" fill="#6AB04C"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING OBJECTIVES -->
+<div class="objectives-strip">
+  <div class="objectives-strip-inner">
+    <h3>🎯 Learning Objectives</h3>
+    <ul class="objectives-list">
+      <li>Identify key emerging technologies and their applications</li>
+      <li>Define robotics and explain its significance</li>
+      <li>Describe the use of robotics in manufacturing, drones, and surgery</li>
+      <li>List benefits of robotics including safety, efficiency, and consistency</li>
+      <li>Identify challenges of robotics such as unemployment, skill loss, and high costs</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION: EMERGING TECHNOLOGIES -->
+<section class="section-white" id="what-is">
+  <div class="page-wrapper">
+    <div class="content-layout">
+      <div class="main-content">
+        <div class="section-label">Introduction</div>
+        <h2>Emerging Technologies</h2>
+        <p class="fade-in">The world is advancing rapidly with the development of new technologies that are transforming how we live, work, and interact. These technologies are <strong>revolutionizing industries and everyday life</strong>.</p>
+
+        <div class="highlight-box highlight-green fade-in">
+          <h4>🌐 Key Emerging Technologies</h4>
+          <p>Artificial Intelligence (AI), Biometrics, Vision Enhancement, <strong>Robotics</strong>, Quantum Cryptography, Computer-Assisted Translation (CAT), 3-D and Holographic Imaging, and Virtual Reality.</p>
+        </div>
+
+        <div class="highlight-box highlight-amber fade-in">
+          <h4>💡 Stay Updated!</h4>
+          <p>As technology evolves at a remarkable pace, it's important to stay updated. Reviewing advancements on the internet every <strong>six months</strong> can help us keep up with these rapid changes.</p>
+        </div>
+
+        <div class="section-label" style="margin-top:32px">Definition</div>
+        <h2>What is Robotics?</h2>
+        <div class="definition-box fade-in">
+          <div class="def-label">Definition</div>
+          <p>Robotics is one of the most exciting emerging technologies. <strong>Robots</strong> are machines designed to perform tasks automatically or with some level of human guidance. They are capable of doing tasks that are <em>repetitive, dangerous,</em> or require a <em>high level of precision</em>.</p>
+        </div>
+
+        <p class="fade-in">Robotics has been around for many years, primarily used in the manufacturing industry. Today, it extends far beyond factories into medicine, space exploration, and disaster response.</p>
+
+        <!-- Mermaid diagram: overview -->
+        <div class="mermaid-wrap fade-in">
+          <div class="mermaid">
+graph TD
+  R[🤖 Robotics] --> M[Manufacturing]
+  R --> D[Drones]
+  R --> S[Surgery]
+  M --> M1[Painting Cars]
+  M --> M2[Welding Parts]
+  M --> M3[Making Microchips]
+  M --> M4[Automatic Warehouses]
+  D --> D1[Military: Reconnaissance]
+  D --> D2[Civilian: Mapping & Rescue]
+  S --> S1[Precise Procedures]
+  S --> S2[Flexible Control]
+          </div>
+        </div>
+
+        <!-- Robot Controls -->
+        <h3 class="fade-in" style="margin-top:24px">How Robots Are Controlled</h3>
+        <div class="app-grid fade-in">
+          <div class="app-card">
+            <div class="app-icon">💻</div>
+            <h4>Pre-programmed Instructions</h4>
+            <p style="font-size:17px">The robot follows a sequence of commands to complete tasks, such as painting a car. These instructions are coded in advance.</p>
+          </div>
+          <div class="app-card">
+            <div class="app-icon">🖐️</div>
+            <h4>Manual Guidance</h4>
+            <p style="font-size:17px">A human operator either guides the robot arm directly or uses sensors. The robot then <strong>saves these actions</strong> and repeats them automatically.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box highlight-navy fade-in">
+          <h4>📌 Smart Sensor Example</h4>
+          <p>Robots equipped with sensors can ensure they <strong>don't spray paint when no car is present</strong>, or stop working if the paint runs out. This makes them efficient and reliable in repetitive tasks.</p>
+        </div>
+      </div>
+
+      <!-- SIDEBAR DESKTOP -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-card slide-right">
+          <h4>📖 Key Terms</h4>
+          <div class="key-term">
+            <span class="term">Robotics</span>
+            <span class="meaning">The science and technology of designing and using robots to perform tasks automatically.</span>
+          </div>
+          <div class="key-term">
+            <span class="term">Robot</span>
+            <span class="meaning">A machine that can perform tasks automatically or with human guidance.</span>
+          </div>
+          <div class="key-term">
+            <span class="term">Drone</span>
+            <span class="meaning">A robotic flying device that operates without a pilot on board.</span>
+          </div>
+          <div class="key-term">
+            <span class="term">Sensor</span>
+            <span class="meaning">A device that detects changes in the environment (e.g., detecting a car before spraying paint).</span>
+          </div>
+          <div class="key-term">
+            <span class="term">Precision</span>
+            <span class="meaning">Performing a task with very high accuracy and exactness.</span>
+          </div>
+          <div class="key-term">
+            <span class="term">AI</span>
+            <span class="meaning">Artificial Intelligence — machines that can learn and solve problems like humans.</span>
+          </div>
+          <div class="key-term">
+            <span class="term">CAT</span>
+            <span class="meaning">Computer-Assisted Translation — technology that helps translate languages.</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card slide-right">
+          <h4>⚡ Quick Facts</h4>
+          <div class="highlight-box highlight-green" style="margin-bottom:12px">
+            <p style="font-size:17px;margin:0">🏭 Robots have been used in manufacturing for <strong>over 60 years</strong>!</p>
+          </div>
+          <div class="highlight-box highlight-amber" style="margin-bottom:12px">
+            <p style="font-size:17px;margin:0">✈️ Military drones are called <strong>UAVs</strong> — Unmanned Aerial Vehicles.</p>
+          </div>
+          <div class="highlight-box highlight-navy" style="margin-bottom:0">
+            <p style="font-size:17px;margin:0">🔬 Robotic surgery uses camera arms that <strong>mimic human movement</strong> for precision.</p>
+          </div>
+        </div>
+
+        <div class="sidebar-card slide-right">
+          <h4>🗂️ Emerging Technologies List</h4>
+          <ul style="list-style:none;padding:0">
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">🧠 Artificial Intelligence (AI)</li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">👁️ Biometrics</li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">🔍 Vision Enhancement</li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">🤖 <strong>Robotics</strong></li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">🔐 Quantum Cryptography</li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">🌐 CAT (Translation)</li>
+            <li style="padding:6px 0;font-size:17px;border-bottom:1px solid #eee">📷 3-D & Holographic Imaging</li>
+            <li style="padding:6px 0;font-size:17px">🥽 Virtual Reality</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Mobile accordion for sidebar -->
+    <button class="accordion-btn" id="acc-btn-1" onclick="toggleAccordion('acc-content-1','acc-btn-1')">📖 Key Terms & Quick Facts ▼</button>
+    <div class="accordion-content" id="acc-content-1">
+      <div class="sidebar-card">
+        <h4>📖 Key Terms</h4>
+        <div class="key-term"><span class="term">Robotics</span><span class="meaning">The science of designing and using robots to perform tasks automatically.</span></div>
+        <div class="key-term"><span class="term">Robot</span><span class="meaning">A machine that performs tasks automatically or with human guidance.</span></div>
+        <div class="key-term"><span class="term">Drone</span><span class="meaning">A robotic flying device without a pilot on board.</span></div>
+        <div class="key-term"><span class="term">Sensor</span><span class="meaning">A device that detects changes in the environment.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: APPLICATIONS -->
+<section class="section-green" id="applications">
+  <div class="page-wrapper">
+    <div class="section-label">Applications</div>
+    <h2 class="fade-in">Applications of Robotics</h2>
+    <p class="fade-in">Robots are used in many different fields. Here are the three main application areas covered in this unit:</p>
+
+    <div class="app-grid" style="margin-top:24px">
+      <div class="app-card fade-in" style="border-top-color:#6AB04C">
+        <div class="app-icon">🏭</div>
+        <h4>1. Manufacturing</h4>
+        <p style="font-size:17px;margin-bottom:10px">Robots are widely used in manufacturing to improve efficiency and consistency. They perform tasks such as:</p>
+        <ul>
+          <li>Painting car bodies</li>
+          <li>Welding parts of cars</li>
+          <li>Manufacturing microchips and electrical goods</li>
+          <li>Storing and retrieving items in automatic warehouses</li>
+        </ul>
+      </div>
+      <div class="app-card fade-in" style="border-top-color:#F0932B">
+        <div class="app-icon">🚁</div>
+        <h4>2. Use of Drones</h4>
+        <p style="font-size:17px;margin-bottom:10px">Drones are robotic devices that can fly without a pilot. They are used in:</p>
+        <ul>
+          <li>Military: reconnaissance and surveillance</li>
+          <li>Mapping landscapes in 3-D</li>
+          <li>Monitoring weather conditions</li>
+          <li>Search and rescue missions during natural disasters</li>
+          <li>Tasks too dangerous or difficult for humans</li>
+        </ul>
+      </div>
+      <div class="app-card fade-in" style="border-top-color:#2C3E50">
+        <div class="app-icon">🏥</div>
+        <h4>3. In Surgery</h4>
+        <p style="font-size:17px;margin-bottom:10px">Robots are used in the field of medicine, especially in surgeries. Robotic surgery enables:</p>
+        <ul>
+          <li>Precise and complex procedures</li>
+          <li>Flexibility and control beyond standard techniques</li>
+          <li>Surgeons use camera arms and mechanical joints</li>
+          <li>Joints that mimic human movement</li>
+          <li>Surgeries become safer and more effective</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mermaid: Robot Control Flow -->
+    <div style="margin-top:36px">
+      <div class="section-label">How It Works</div>
+      <h3 class="fade-in">Robot Control Flowchart</h3>
+      <div class="mermaid-wrap fade-in">
+        <div class="mermaid">
+flowchart LR
+  A[🔵 Start Task] --> B{Control Method?}
+  B -->|Pre-programmed| C[Follow Command Sequence]
+  B -->|Manual Guidance| D[Human Guides Robot Arm]
+  C --> E[Execute Task e.g. Paint Car]
+  D --> F[Robot Saves Actions]
+  F --> G[Repeat Automatically]
+  E --> H{Sensor Check}
+  H -->|Object Present| I[✅ Continue Task]
+  H -->|No Object / Low Supply| J[⛔ Stop / Pause]
+  G --> H
+        </div>
+      </div>
+    </div>
+
+    <!-- Worked Example -->
+    <div class="worked-example fade-in" id="worked" style="margin-top:36px">
+      <div class="section-label">Guided Example</div>
+      <h3 class="worked-title">🔧 How a Car-Painting Robot Works</h3>
+      <p style="font-size:17px;margin-bottom:16px">Click "Next Step" to follow the process step-by-step!</p>
+      <div id="steps-container">
+        <div class="step-box visible" id="step-0">
+          <div class="step-num">Step 1</div>
+          <div class="step-content">🚗 A car body moves along the assembly line conveyor belt...</div>
+        </div>
+        <div class="step-box" id="step-1">
+          <div class="step-num">Step 2</div>
+          <div class="step-content">📡 Sensors detect that a car is present in the painting zone.</div>
+        </div>
+        <div class="step-box" id="step-2">
+          <div class="step-num">Step 3</div>
+          <div class="step-content">💻 The robot receives a pre-programmed command: "BEGIN PAINT SEQUENCE"</div>
+        </div>
+        <div class="step-box" id="step-3">
+          <div class="step-num">Step 4</div>
+          <div class="step-content">🎨 The robot arm moves precisely over the car body and begins spraying paint evenly.</div>
+        </div>
+        <div class="step-box" id="step-4">
+          <div class="step-num">Step 5</div>
+          <div class="step-content">📊 Sensors continuously check paint levels. If paint runs out → robot STOPS automatically.</div>
+        </div>
+        <div class="step-box" id="step-5">
+          <div class="step-num">Step 6</div>
+          <div class="step-content">✅ Task complete! Same robot repeats this for EVERY car — consistent, fast, and accurate!</div>
+        </div>
+      </div>
+      <button class="step-btn" id="step-btn" onclick="nextStep()">▶ Show Next Step</button>
+      <button class="step-btn" id="reset-btn" onclick="resetSteps()" style="background:#2C3E50;display:none;margin-left:10px">↺ Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: ADVANTAGES & DISADVANTAGES -->
+<section class="section-white" id="adv-dis">
+  <div class="page-wrapper">
+    <div class="section-label">Benefits & Challenges</div>
+    <h2 class="fade-in">Advantages & Disadvantages of Robotics</h2>
+
+    <div class="adv-dis-grid" style="margin-top:24px">
+      <div class="adv-card fade-in">
+        <h4>✅ Advantages</h4>
+        <div class="adv-item"><span><strong>Safety:</strong> Can work in dangerous environments harmful to humans (e.g., toxic chemicals, extreme heat).</span></div>
+        <div class="adv-item"><span><strong>Efficiency:</strong> Robots can work non-stop (24/7), unlike humans who need rest.</span></div>
+        <div class="adv-item"><span><strong>Cost-Effectiveness:</strong> Though expensive initially, cheaper long-term — no wages or holidays needed.</span></div>
+        <div class="adv-item"><span><strong>Consistency:</strong> Robots produce uniform results, e.g., all cars on an assembly line are identical.</span></div>
+        <div class="adv-item"><span><strong>Time-Saving:</strong> They handle repetitive tasks, freeing humans for creative and skilled work like quality control or designing.</span></div>
+      </div>
+      <div class="dis-card fade-in">
+        <h4>⚠️ Disadvantages</h4>
+        <div class="dis-item"><span><strong>Limited Flexibility:</strong> Robots struggle with unique or unusual tasks, such as creating custom glassware.</span></div>
+        <div class="dis-item"><span><strong>Unemployment:</strong> Replacing humans with robots can reduce jobs for skilled workers.</span></div>
+        <div class="dis-item"><span><strong>Skill Loss:</strong> Over-reliance on robots may lead to a decline in human skills like welding.</span></div>
+        <div class="dis-item"><span><strong>High Costs:</strong> Setting up and maintaining robots is very expensive.</span></div>
+        <div class="dis-item"><span><strong>Job Relocation:</strong> Factories equipped with robots can be moved to other regions, impacting local employment.</span></div>
+      </div>
+    </div>
+
+    <!-- Mermaid: Advantages/Disadvantages summary -->
+    <div class="mermaid-wrap fade-in" style="margin-top:24px">
+      <div class="mermaid">
+graph LR
+  R[🤖 Robotics Impact] --> A[Advantages]
+  R --> D[Disadvantages]
+  A --> A1[Safety in Dangerous Zones]
+  A --> A2[Works 24/7 Non-Stop]
+  A --> A3[Consistent & Precise]
+  A --> A4[Long-term Cost Savings]
+  A --> A5[Frees Humans for Creative Work]
+  D --> D1[Can Cause Unemployment]
+  D --> D2[Human Skills May Decline]
+  D --> D3[High Setup Costs]
+  D --> D4[Limited Flexibility]
+  D --> D5[Job Relocation Risk]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUE / FALSE SECTION -->
+<section class="tf-section" id="tf-section">
+  <div class="tf-container">
+    <div class="section-label">Exercise 3</div>
+    <h2 class="fade-in">True or False?</h2>
+    <p class="fade-in" style="margin-bottom:28px">Read each statement carefully and click TRUE or FALSE!</p>
+
+    <div class="tf-card fade-in" data-correct="false">
+      <div class="tf-statement">Robots never require programming.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-card fade-in" data-correct="true">
+      <div class="tf-statement">Drones are used for search and rescue missions.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-card fade-in" data-correct="true">
+      <div class="tf-statement">Robotics can help reduce human jobs in manufacturing.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-card fade-in" data-correct="false">
+      <div class="tf-statement">Robots are unable to perform repetitive tasks.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-card fade-in" data-correct="true">
+      <div class="tf-statement">Robots in surgery use camera arms to perform tasks.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-card fade-in" data-correct="false">
+      <div class="tf-statement">Quantum cryptography is a type of robotics.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" onclick="checkTF(this,'true')">TRUE</button>
+        <button class="tf-btn tf-false" onclick="checkTF(this,'false')">FALSE</button>
+      </div>
+      <div class="tf-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILL IN THE BLANKS -->
+<section class="fitb-section" id="fitb-section">
+  <div class="fitb-container">
+    <div class="section-label">Exercise 2</div>
+    <h2 class="fitb-title fade-in">Fill in the Blanks</h2>
+    <p class="fitb-subtitle fade-in">Use the words from your lesson to complete each sentence.</p>
+
+    <div class="fitb-card fade-in">
+      <div class="fitb-sentence">1. Robotics is an example of an <input class="blank-input" id="b1" placeholder="?" autocomplete="off"> technology.</div>
+      <div class="fitb-sentence">2. Drones are commonly used for <input class="blank-input" id="b2" placeholder="?" autocomplete="off"> missions in the military.</div>
+      <div class="fitb-sentence">3. Robots can work <input class="blank-input" id="b3" placeholder="?" autocomplete="off"> hours without stopping.</div>
+      <div class="fitb-sentence">4. Robotic surgery provides more <input class="blank-input" id="b4" placeholder="?" autocomplete="off"> than standard techniques.</div>
+      <div class="fitb-sentence">5. A robot in manufacturing is often guided by <input class="blank-input" id="b5" placeholder="?" autocomplete="off">.</div>
+      <div class="fitb-sentence">6. Robots are good at doing <input class="blank-input" id="b6" placeholder="?" autocomplete="off"> tasks.</div>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
+        <button class="fitb-btn" onclick="checkFITB()">✅ Check Answers</button>
+        <button class="fitb-btn" style="background:#2C3E50" onclick="resetFITB()">↺ Reset</button>
+        <button class="fitb-btn" style="background:#F0932B" onclick="showFITBAnswers()">💡 Show Answers</button>
+      </div>
+      <div class="fitb-result" id="fitb-result"></div>
+    </div>
+
+    <div class="fitb-card fade-in" style="margin-top:16px">
+      <h4 style="margin-bottom:12px;color:#2C3E50">Word Bank 💬</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">emerging</span>
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">reconnaissance</span>
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">24/7</span>
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">precision / flexibility</span>
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">sensors</span>
+        <span style="background:#6AB04C;color:#fff;padding:6px 14px;border-radius:20px;font-size:16px;font-weight:600">repetitive</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGRAM LABELING -->
+<section class="label-section" id="label-section">
+  <div class="label-container">
+    <div class="section-label" style="color:#6AB04C">Diagram Activity</div>
+    <h2 class="label-title fade-in">Label the Robot!</h2>
+    <p class="label-subtitle fade-in">Drag the correct labels to each part of the robot. Click a label then click the target!</p>
+
+    <div class="drag-area">
+      <div class="robot-diagram-wrap">
+        <h4>🤖 Robot Parts Diagram</h4>
+        <div class="robot-visual">
+          <svg viewBox="0 0 220 320" width="220" height="320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Head -->
+            <rect x="70" y="10" width="80" height="65" rx="12" fill="#6AB04C" stroke="#2C3E50" stroke-width="2"/>
+            <circle cx="95" cy="38" r="9" fill="#fff"/>
+            <circle cx="125" cy="38" r="9" fill="#fff"/>
+            <circle cx="95" cy="38" r="5" fill="#2C3E50"/>
+            <circle cx="125" cy="38" r="5" fill="#2C3E50"/>
+            <rect x="90" y="55" width="40" height="8" rx="4" fill="#fff" opacity="0.7"/>
+            <!-- Antenna -->
+            <line x1="110" y1="10" x2="110" y2="0" stroke="#F0932B" stroke-width="3"/>
+            <circle cx="110" cy="0" r="4" fill="#F0932B"/>
+            <!-- Body -->
+            <rect x="60" y="80" width="100" height="85" rx="12" fill="#2C3E50" stroke="#6AB04C" stroke-width="2"/>
+            <rect x="75" y="95" width="70" height="35" rx="6" fill="#6AB04C" opacity="0.6"/>
+            <circle cx="90" cy="145" r="8" fill="#F0932B"/>
+            <circle cx="110" cy="145" r="8" fill="#F0932B"/>
+            <circle cx="130" cy="145" r="8" fill="#F0932B"/>
+            <!-- Left arm -->
+            <rect x="20" y="82" width="38" height="14" rx="7" fill="#6AB04C" stroke="#2C3E50" stroke-width="1.5"/>
+            <!-- Right arm -->
+            <rect x="162" y="82" width="38" height="14" rx="7" fill="#6AB04C" stroke="#2C3E50" stroke-width="1.5"/>
+            <!-- Legs -->
+            <rect x="72" y="168" width="30" height="55" rx="10" fill="#6AB04C" stroke="#2C3E50" stroke-width="2"/>
+            <rect x="118" y="168" width="30" height="55" rx="10" fill="#6AB04C" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Feet -->
+            <rect x="65" y="220" width="42" height="16" rx="8" fill="#2C3E50"/>
+            <rect x="113" y="220" width="42" height="16" rx="8" fill="#2C3E50"/>
+            <!-- Labels connectors -->
+            <line x1="110" y1="10" x2="160" y2="10" stroke="#F0932B" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="95" y1="38" x2="30" y2="55" stroke="#F0932B" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="110" y1="80" x2="170" y2="90" stroke="#F0932B" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="20" y1="89" x2="10" y2="110" stroke="#F0932B" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="85" y1="220" x2="60" y2="250" stroke="#F0932B" stroke-width="1.5" stroke-dasharray="4"/>
+          </svg>
+        </div>
+        <div class="drop-targets" id="drop-targets">
+          <div class="drop-target" data-label="antenna" title="Top of robot head">📍 Antenna / Sensor</div>
+          <div class="drop-target" data-label="cameras" title="Eyes of robot">📍 Cameras (Eyes)</div>
+          <div class="drop-target" data-label="body" title="Main body">📍 Main Body / Control Panel</div>
+          <div class="drop-target" data-label="arms" title="Side arms">📍 Arms (F/T Sensors)</div>
+          <div class="drop-target" data-label="legs" title="Lower legs">📍 Legs</div>
+          <div class="drop-target" data-label="feet" title="Feet">📍 Feet / Wheels</div>
+        </div>
+        <button class="label-check-btn" onclick="checkLabels()">✅ Check Labels</button>
+        <div class="label-result" id="label-result"></div>
+      </div>
+
+      <div class="drag-labels-wrap">
+        <h4>🏷️ Labels to Place</h4>
+        <div id="drag-labels-list">
+          <div class="drag-label" data-value="antenna" onclick="selectLabel(this)">🔴 Antenna / Sensor</div>
+          <div class="drag-label" data-value="cameras" onclick="selectLabel(this)">📷 Cameras (Eyes)</div>
+          <div class="drag-label" data-value="body" onclick="selectLabel(this)">🟦 Main Body / Control Panel</div>
+          <div class="drag-label" data-value="arms" onclick="selectLabel(this)">💪 Arms (F/T Sensors)</div>
+          <div class="drag-label" data-value="legs" onclick="selectLabel(this)">🦵 Legs</div>
+          <div class="drag-label" data-value="feet" onclick="selectLabel(this)">👟 Feet / Wheels</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section id="quiz-section">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div class="section-label" style="color:#6AB04C;text-align:center">Exercise 1</div>
+      <h2>🎯 Robotics Quiz</h2>
+      <p>Answer all 10 questions. Click an option to select your answer!</p>
+    </div>
+
+    <div class="question-card fade-in" id="q1">
+      <div class="question-text">Q1. What is one common application of robotics in manufacturing?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q1',this,'B')">A. Teaching</button>
+        <button class="option-btn" onclick="checkQ('q1',this,'B')" data-correct="true">B. Painting car bodies</button>
+        <button class="option-btn" onclick="checkQ('q1',this,'B')">C. Cooking</button>
+        <button class="option-btn" onclick="checkQ('q1',this,'B')">D. Writing books</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q1"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q2">
+      <div class="question-text">Q2. Which technology is used for flying without a pilot?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q2',this,'B')">A. AI</button>
+        <button class="option-btn" onclick="checkQ('q2',this,'B')" data-correct="true">B. Drones</button>
+        <button class="option-btn" onclick="checkQ('q2',this,'B')">C. Biometrics</button>
+        <button class="option-btn" onclick="checkQ('q2',this,'B')">D. Quantum cryptography</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q2"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q3">
+      <div class="question-text">Q3. What is one advantage of robots?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q3',this,'B')">A. They never need maintenance</button>
+        <button class="option-btn" onclick="checkQ('q3',this,'B')" data-correct="true">B. They can work non-stop (24/7)</button>
+        <button class="option-btn" onclick="checkQ('q3',this,'B')">C. They are very cheap to buy</button>
+        <button class="option-btn" onclick="checkQ('q3',this,'B')">D. They don't require programming</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q3"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q4">
+      <div class="question-text">Q4. Where is robotic surgery commonly used?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q4',this,'B')">A. Schools</button>
+        <button class="option-btn" onclick="checkQ('q4',this,'B')">B. Factories</button>
+        <button class="option-btn" onclick="checkQ('q4',this,'B')" data-correct="true">C. Hospitals</button>
+        <button class="option-btn" onclick="checkQ('q4',this,'B')">D. Farms</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q4"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q5">
+      <div class="question-text">Q5. What can drones be used for?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q5',this,'B')">A. Cooking</button>
+        <button class="option-btn" onclick="checkQ('q5',this,'B')" data-correct="true">B. Firefighting / Reconnaissance</button>
+        <button class="option-btn" onclick="checkQ('q5',this,'B')">C. Writing books</button>
+        <button class="option-btn" onclick="checkQ('q5',this,'B')">D. Welding in surgery</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q5"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q6">
+      <div class="question-text">Q6. What is an example of a disadvantage of robots?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q6',this,'B')">A. They never get tired</button>
+        <button class="option-btn" onclick="checkQ('q6',this,'B')" data-correct="true">B. They are expensive to maintain</button>
+        <button class="option-btn" onclick="checkQ('q6',this,'B')">C. They help in repetitive tasks</button>
+        <button class="option-btn" onclick="checkQ('q6',this,'B')">D. They increase consistency</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q6"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q7">
+      <div class="question-text">Q7. What does a robot use to understand its surroundings?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q7',this,'B')" data-correct="true">A. Sensors</button>
+        <button class="option-btn" onclick="checkQ('q7',this,'B')">B. Motors</button>
+        <button class="option-btn" onclick="checkQ('q7',this,'B')">C. Cameras only</button>
+        <button class="option-btn" onclick="checkQ('q7',this,'B')">D. Wires</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q7"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q8">
+      <div class="question-text">Q8. Which part of a robot mimics human movement in surgery?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q8',this,'B')">A. Legs</button>
+        <button class="option-btn" onclick="checkQ('q8',this,'B')">B. Camera arm only</button>
+        <button class="option-btn" onclick="checkQ('q8',this,'B')" data-correct="true">C. Mechanical joints with camera arms</button>
+        <button class="option-btn" onclick="checkQ('q8',this,'B')">D. Wheels</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q8"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q9">
+      <div class="question-text">Q9. Which technology helps in translation?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q9',this,'B')">A. Robotics</button>
+        <button class="option-btn" onclick="checkQ('q9',this,'B')" data-correct="true">B. CAT (Computer-Assisted Translation)</button>
+        <button class="option-btn" onclick="checkQ('q9',this,'B')">C. AI Biometrics</button>
+        <button class="option-btn" onclick="checkQ('q9',this,'B')">D. Virtual Reality</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q9"></div>
+    </div>
+
+    <div class="question-card fade-in" id="q10">
+      <div class="question-text">Q10. What does ICT stand for?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q10',this,'B')" data-correct="true">A. Information and Communication Technology</button>
+        <button class="option-btn" onclick="checkQ('q10',this,'B')">B. Innovative Creative Tools</button>
+        <button class="option-btn" onclick="checkQ('q10',this,'B')">C. Intelligent Circuit Technology</button>
+        <button class="option-btn" onclick="checkQ('q10',this,'B')">D. Industrial Computing Techniques</button>
+      </div>
+      <div class="quiz-feedback" id="fb-q10"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px">
+      <button class="step-btn" onclick="showQuizScore()" style="background:#6AB04C;font-size:18px;padding:14px 36px">📊 See My Score</button>
+    </div>
+    <div class="quiz-score" id="quiz-score"></div>
+  </div>
+</section>
+
+<!-- LAB ACTIVITY -->
+<section class="lab-section" id="lab">
+  <div class="lab-container">
+    <div class="section-label">Lab Activity</div>
+    <h2 class="fade-in">🔬 Making a Robot Model from Cardboard</h2>
+    <p class="fade-in" style="font-size:18px;max-width:700px">Understand basic robot features by creating a robot model using household materials. Then watch a video on "How Robots Work" and discuss with your class!</p>
+
+    <h3 style="margin-top:32px;margin-bottom:14px" class="fade-in">🧰 Materials Needed</h3>
+    <div class="materials-list fade-in">
+      <span class="material-tag">📦 Cardboard boxes (small & medium)</span>
+      <span class="material-tag">🧻 Toilet paper / tissue rolls</span>
+      <span class="material-tag">🔘 Plastic bottle caps</span>
+      <span class="material-tag">🪙 Aluminum foil</span>
+      <span class="material-tag">✂️ Glue, tape, scissors</span>
+      <span class="material-tag">🎨 Markers or paint</span>
+      <span class="material-tag">💡 Optional: LED lights, old wires</span>
+    </div>
+
+    <h3 style="margin-top:32px;margin-bottom:14px" class="fade-in">📋 Steps</h3>
+    <div class="lab-steps">
+      <div class="lab-step fade-in">
+        <div class="step-number">1</div>
+        <h4>Prepare the Base</h4>
+        <p style="font-size:17px">Use a medium-sized cardboard box as the robot's body. Attach a smaller box on top for the robot's head.</p>
+      </div>
+      <div class="lab-step fade-in">
+        <div class="step-number">2</div>
+        <h4>Add Features</h4>
+        <p style="font-size:17px">Use tissue rolls or small cartons for arms and legs. Attach them with glue or tape. Stick bottle caps on the head as "eyes" or "buttons."</p>
+      </div>
+      <div class="lab-step fade-in">
+        <div class="step-number">3</div>
+        <h4>Decorate</h4>
+        <p style="font-size:17px">Wrap parts in aluminum foil for a metallic look. Draw or paint a control panel on the robot's body.</p>
+      </div>
+      <div class="lab-step fade-in">
+        <div class="step-number">4</div>
+        <h4>Optional Additions</h4>
+        <p style="font-size:17px">Attach wires or LED lights for a futuristic look. Create movable joints using split pins for a more dynamic model.</p>
+      </div>
+      <div class="lab-step fade-in">
+        <div class="step-number">5</div>
+        <h4>Show and Tell</h4>
+        <p style="font-size:17px">Display your robot and explain its name, design, and the tasks it could perform if it were a real robot!</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:36px;margin-bottom:14px" class="fade-in">💬 Discussion Questions</h3>
+    <div class="app-grid fade-in">
+      <div class="app-card" style="border-top-color:#F0932B">
+        <div class="app-icon">🤔</div>
+        <h4>Discussion 1</h4>
+        <p style="font-size:17px">What tasks can robots perform <strong>better than humans</strong>? Give at least 3 examples from what you learned.</p>
+      </div>
+      <div class="app-card" style="border-top-color:#6AB04C">
+        <div class="app-icon">⚙️</div>
+        <h4>Discussion 2</h4>
+        <p style="font-size:17px">What are the main parts of a robot? Think about: <strong>sensors, motors, processing unit, camera arms, joints.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#2C3E50;color:rgba(255,255,255,0.7);text-align:center;padding:24px 40px;font-size:16px">
+  <p>Unit 8: Robotics — Class 4 Digital School | Emerging Technologies</p>
+  <p style="margin-top:4px;font-size:14px">Review technology advancements every 6 months to stay updated! 🤖</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- CURTAIN FALLBACK (must be first) ---
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.4s'; setTimeout(() => { c.style.display = 'none'; }, 400); }
+  }, 2000);
+
+  // --- MERMAID ---
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { useMaxWidth: true } });
+    }
+  } catch(e) { console.warn('Mermaid init failed', e); }
+
+  // --- LENIS SMOOTH SCROLL ---
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.12, smooth: true });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // --- GSAP ANIMATIONS ---
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Sidebar slide from right
+      gsap.from('#sidebar', {
+        x: 60, opacity: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '#sidebar', start: 'top 80%', once: true }
+      });
+
+      // Fade in paragraphs
+      gsap.utils.toArray('.fade-in').forEach((el, i) => {
+        gsap.from(el, {
+          y: 28, opacity: 0, duration: 0.7, ease: 'power2.out', delay: i * 0.03,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        });
+      });
+
+      // App cards stagger
+      gsap.utils.toArray('.app-card').forEach((card, i) => {
+        gsap.from(card, {
+          y: 30, opacity: 0, duration: 0.6, ease: 'back.out(1.4)', delay: i * 0.08,
+          scrollTrigger: { trigger: card, start: 'top 90%', once: true }
+        });
+      });
+
+      // Lab steps
+      gsap.utils.toArray('.lab-step').forEach((step, i) => {
+        gsap.from(step, {
+          y: 24, opacity: 0, duration: 0.5, delay: i * 0.1, ease: 'power2.out',
+          scrollTrigger: { trigger: step, start: 'top 90%', once: true }
+        });
+      });
+
+      // Curtain dismiss with GSAP
+      gsap.to('#curtain', {
+        opacity: 0, duration: 0.6, delay: 1.5, ease: 'power2.out',
+        onComplete: () => { const c = document.getElementById('curtain'); if (c) c.style.display = 'none'; }
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // --- PROGRESS DOTS ---
+  const sections = ['hero','what-is','applications','adv-dis','quiz-section','lab'];
+  const dots = document.querySelectorAll('.progress-dot');
+  function updateDots() {
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = i;
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+  window.addEventListener('scroll', updateDots);
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const el = document.getElementById(sections[i]);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Mobile nav active
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelectorAll('#mobile-nav a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+    });
+  });
+
+});
+
+// --- ACCORDION ---
+function toggleAccordion(contentId, btnId) {
+  const content = document.getElementById(contentId);
+  const btn = document.getElementById(btnId);
+  if (!content) return;
+  const open = content.classList.toggle('open');
+  if (btn) btn.textContent = btn.textContent.replace(open ? '▼' : '▲', open ? '▲' : '▼');
+}
+
+// --- WORKED EXAMPLE ---
+let currentStep = 0;
+const totalSteps = 6;
+function nextStep() {
+  currentStep++;
+  if (currentStep < totalSteps) {
+    const box = document.getElementById('step-' + currentStep);
+    if (box) {
+      box.classList.add('visible');
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.from(box, { x: -20, opacity: 0, duration: 0.5, ease: 'power2.out' });
+        }
+      } catch(e) {}
+    }
+  }
+  if (currentStep >= totalSteps - 1) {
+    document.getElementById('step-btn').style.display = 'none';
+    document.getElementById('reset-btn').style.display = 'inline-block';
+  }
+}
+function resetSteps() {
+  currentStep = 0;
+  for (let i = 1; i < totalSteps; i++) {
+    const box = document.getElementById('step-' + i);
+    if (box) box.classList.remove('visible');
+  }
+  document.getElementById('step-btn').style.display = 'inline-block';
+  document.getElementById('reset-btn').style.display = 'none';
+}
+
+// --- TRUE/FALSE ---
+function checkTF(btn, answer) {
+  const card = btn.closest('.tf-card');
+  if (!card) return;
+  if (card.dataset.answered) return;
+  card.dataset.answered = '1';
+  const correct = card.dataset.correct;
+  const feedback = card.querySelector('.tf-feedback');
+  const allBtns = card.querySelectorAll('.tf-btn');
+  allBtns.forEach(b => b.disabled = true);
+  if (answer === correct) {
+    btn.classList.add('selected-correct');
+    if (feedback) { feedback.textContent = '✅ Correct! Well done!'; feedback.className = 'tf-feedback ok'; }
+  } else {
+    btn.classList.add('selected-wrong');
+    if (feedback) { feedback.textContent = '❌ Not quite! The correct answer is: ' + correct.toUpperCase(); feedback.className = 'tf-feedback bad'; }
+    // Highlight correct
+    allBtns.forEach(b => { if (b.textContent.toLowerCase().includes(correct)) b.classList.add('selected-correct'); });
+  }
+}
+
+// --- FILL IN BLANKS ---
+const fitbAnswers = {
+  b1: ['emerging'],
+  b2: ['reconnaissance', 'surveillance', 'reconnaissance and surveillance'],
+  b3: ['24/7', '24 hours', 'non-stop', '24'],
+  b4: ['precision', 'flexibility', 'control', 'precision and flexibility'],
+  b5: ['sensors', 'pre-programmed instructions', 'a human operator', 'pre-programmed'],
+  b6: ['repetitive']
+};
+function normalise(s) { return s.trim().toLowerCase().replace(/[^a-z0-9\/]/g, ''); }
+function checkFITB() {
+  let correct = 0;
+  Object.keys(fitbAnswers).forEach(id => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    const val = normalise(inp.value);
+    const ok = fitbAnswers[id].some(a => normalise(a) === val);
+    inp.classList.remove('correct','wrong');
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    if (ok) correct++;
+  });
+  const r = document.getElementById('fitb-result');
+  if (r) r.textContent = `You got ${correct} / ${Object.keys(fitbAnswers).length} correct! ${correct === 6 ? '🎉 Perfect!' : correct >= 4 ? '👍 Great job!' : '📚 Keep practising!'}`;
+}
+function resetFITB() {
+  Object.keys(fitbAnswers).forEach(id => {
+    const inp = document.getElementById(id);
+    if (inp) { inp.value = ''; inp.classList.remove('correct','wrong'); }
+  });
+  const r = document.getElementById('fitb-result');
+  if (r) r.textContent = '';
+}
+const fitbShowAnswers = { b1:'emerging', b2:'reconnaissance', b3:'24/7', b4:'precision / flexibility', b5:'sensors', b6:'repetitive' };
+function showFITBAnswers() {
+  Object.keys(fitbShowAnswers).forEach(id => {
+    const inp = document.getElementById(id);
+    if (inp) { inp.value = fitbShowAnswers[id]; inp.classList.remove('wrong'); inp.classList.add('correct'); }
+  });
+  const r = document.getElementById('fitb-result');
+  if (r) r.textContent = '💡 Answers shown! Review and try again.';
+}
+
+// --- DIAGRAM LABELING ---
+let selectedLabel = null;
+function selectLabel(el) {
+  if (el.classList.contains('used')) return;
+  document.querySelectorAll('.drag-label').forEach(l => l.style.boxShadow = '');
+  selectedLabel = el;
+  el.style.boxShadow = '0 0 0 3px #F0932B';
+}
+document.querySelectorAll('.drop-target').forEach(target => {
+  target.addEventListener('click', () => {
+    if (!selectedLabel) return;
+    const val = selectedLabel.dataset.value;
+    const expected = target.dataset.label;
+    target.textContent = selectedLabel.textContent;
+    target.dataset.placed = val;
+    target.classList.add('filled');
+    selectedLabel.classList.add('used');
+    selectedLabel.style.boxShadow = '';
+    selectedLabel = null;
+  });
+});
+function checkLabels() {
+  let correct = 0;
+  const targets = document.querySelectorAll('.drop-target');
+  targets.forEach(t => {
+    t.classList.remove('wrong-drop');
+    if (t.dataset.placed) {
+      if (t.dataset.placed === t.dataset.label) {
+        correct++;
+        t.style.background = '#e8f8e0';
+        t.style.borderColor = '#6AB04C';
+      } else {
+        t.classList.add('wrong-drop');
+        t.style.background = '#fde8e8';
+        t.style.borderColor = '#e74c3c';
+      }
+    }
+  });
+  const total = targets.length;
+  const r = document.getElementById('label-result');
+  if (r) r.textContent = `✅ ${correct} / ${total} labels correct! ${correct === total ? '🎉 Perfect labeling!' : 'Try fixing the wrong ones!'}`;
+}
+
+// --- QUIZ ---
+const quizAnswers = {};
+function checkQ(qId, btn, letter) {
+  if (quizAnswers[qId] !== undefined) return;
+  const card = document.getElementById(qId);
+  const allBtns = card.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const isCorrect = btn.dataset.correct === 'true';
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    allBtns.forEach(b => { if (b.dataset.correct === 'true') b.classList.add('correct'); });
+  }
+  const fb = document.getElementById('fb-' + qId);
+  if (fb) {
+    fb.textContent = isCorrect ? '✅ Correct!' : '❌ Not quite — see the highlighted answer.';
+    fb.className = 'quiz-feedback ' + (isCorrect ? 'ok' : 'bad');
+  }
+  quizAnswers[qId] = isCorrect ? 1 : 0;
+}
+function showQuizScore() {
+  const answered = Object.keys(quizAnswers).length;
+  const correct = Object.values(quizAnswers).reduce((a,b)=>a+b,0);
+  const scoreDiv = document.getElementById('quiz-score');
+  if (!scoreDiv) return;
+  let emoji = correct >= 9 ? '🏆' : correct >= 7 ? '🌟' : correct >= 5 ? '👍' : '📚';
+  scoreDiv.innerHTML = `${emoji} Your Score: <strong>${correct} / 10</strong><br><span style="font-size:1rem;font-weight:400">${correct >= 9 ? 'Excellent! You are a Robotics expert!' : correct >= 7 ? 'Great job! Keep learning!' : correct >= 5 ? 'Good effort! Review the lesson.' : 'Keep practising — you can do it!'}</span>`;
+  scoreDiv.style.display = 'block';
+  scoreDiv.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

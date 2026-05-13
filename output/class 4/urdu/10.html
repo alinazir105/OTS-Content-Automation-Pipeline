@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<!-- CLASS: 4 | SUBJECT: urdu | VERSION: 1.0 -->
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جگنو - اردو سبق | کلاس 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  :root {
+    --green: #6AB04C;
+    --navy: #2C3E50;
+    --amber: #F0932B;
+    --white: #ffffff;
+    --light-green: #f0f9ea;
+    --card-shadow: 0 4px 20px rgba(44,62,80,0.10);
+    --border-radius: 16px;
+    --font-urdu: 'Noto Nastaliq Urdu', serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; width: 100%; }
+  body {
+    font-family: var(--font-urdu);
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--navy);
+    background: var(--white);
+    width: 100%;
+    direction: rtl;
+  }
+  /* Curtain */
+  #curtain {
+    position: fixed; inset: 0; background: var(--navy); z-index: 9999;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    gap: 20px;
+  }
+  #curtain .curtain-title { color: var(--white); font-size: clamp(2rem,5vw,3rem); font-family: var(--font-urdu); }
+  #curtain .curtain-sub { color: var(--amber); font-size: 1.2rem; font-family: var(--font-urdu); }
+  .curtain-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--green); display: inline-block; margin: 0 4px; }
+
+  /* Sticky Header */
+  #sticky-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--navy); color: var(--white);
+    padding: 12px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    height: 64px;
+  }
+  .header-title { font-family: var(--font-urdu); font-size: clamp(1.1rem,2.5vw,1.5rem); font-weight: 700; }
+  .progress-dots { display: flex; gap: 10px; align-items: center; }
+  .progress-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5);
+    cursor: pointer; transition: background 0.3s;
+  }
+  .progress-dot.active { background: var(--amber); border-color: var(--amber); }
+
+  /* Layout */
+  .page-wrapper { width: 100%; padding-top: 64px; }
+  .section-container {
+    max-width: 1500px; margin: 0 auto; padding: 0 40px;
+  }
+  .two-col {
+    display: grid; grid-template-columns: 65% 35%; gap: 40px; align-items: start;
+  }
+  .main-col {}
+  .sidebar-col {
+    position: sticky; top: 80px;
+  }
+
+  /* Hero */
+  .hero {
+    width: 100vw; min-height: 80vh;
+    background: linear-gradient(135deg, var(--navy) 0%, #1a252f 60%, #2e4a1e 100%);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden;
+    padding: 80px 40px 60px;
+  }
+  .hero-bg-decor {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.08;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-badge {
+    display: inline-block; background: var(--amber); color: var(--white);
+    padding: 6px 22px; border-radius: 50px; font-size: 1rem;
+    font-family: var(--font-urdu); margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: var(--font-urdu); font-size: clamp(3rem,8vw,6rem);
+    color: var(--white); line-height: 1.4; margin-bottom: 16px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .hero-subtitle {
+    font-family: var(--font-urdu); font-size: clamp(1.1rem,2.5vw,1.5rem);
+    color: rgba(255,255,255,0.8); line-height: 1.8;
+  }
+  .hero-poet { color: var(--amber); font-size: 1.1rem; margin-top: 16px; font-family: var(--font-urdu); }
+
+  /* Firefly SVG Animation */
+  .firefly-container {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .firefly {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    background: #f0ff70; box-shadow: 0 0 12px 4px rgba(240,255,112,0.7);
+    animation: float-fly 4s ease-in-out infinite;
+  }
+  @keyframes float-fly {
+    0%,100% { transform: translateY(0) translateX(0); opacity: 0.8; }
+    33% { transform: translateY(-30px) translateX(15px); opacity: 0.4; }
+    66% { transform: translateY(-10px) translateX(-20px); opacity: 1; }
+  }
+
+  /* Sections */
+  .section-white { background: var(--white); padding: 60px 0; }
+  .section-green { background: var(--light-green); padding: 60px 0; }
+  .section-title {
+    font-family: var(--font-urdu); font-size: clamp(2rem,4vw,3rem);
+    color: var(--navy); margin-bottom: 30px; position: relative;
+    padding-right: 20px;
+  }
+  .section-title::before {
+    content: ''; position: absolute; right: 0; top: 50%;
+    transform: translateY(-50%); width: 5px; height: 60%;
+    background: var(--green); border-radius: 3px;
+  }
+
+  /* Poem Section */
+  .poem-card {
+    background: var(--navy); border-radius: var(--border-radius);
+    padding: 40px 50px; color: var(--white);
+    box-shadow: var(--card-shadow); position: relative; overflow: hidden;
+  }
+  .poem-card::before {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(106,176,76,0.2) 0%, transparent 70%);
+  }
+  .poem-verse {
+    font-family: var(--font-urdu); font-size: clamp(1.1rem,2.5vw,1.5rem);
+    line-height: 2.2; text-align: center; margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;
+    opacity: 1; transform: none;
+  }
+  .poem-verse:last-child { border-bottom: none; margin-bottom: 0; }
+  .poem-verse .misra { display: block; margin-bottom: 8px; }
+  .poem-final {
+    text-align: center; margin-top: 30px; padding: 20px;
+    background: rgba(106,176,76,0.15); border-radius: 12px;
+    border: 1px solid rgba(106,176,76,0.3);
+  }
+  .poem-line { font-family: var(--font-urdu); font-size: 1.3rem; color: var(--amber); display: block; line-height: 2.2; }
+
+  /* Vocabulary Table */
+  .vocab-table-wrap { overflow-x: auto; border-radius: var(--border-radius); box-shadow: var(--card-shadow); }
+  .vocab-table {
+    width: 100%; border-collapse: collapse; background: var(--white);
+    font-family: var(--font-urdu); font-size: 17px; min-width: 400px;
+  }
+  .vocab-table th {
+    background: var(--navy); color: var(--white); padding: 16px 24px;
+    font-size: 1.1rem; font-weight: 600;
+  }
+  .vocab-table td { padding: 14px 24px; border-bottom: 1px solid #e8f5e1; font-size: 17px; }
+  .vocab-table tr:nth-child(even) td { background: var(--light-green); }
+  .vocab-table tr:hover td { background: #d4edcc; transition: background 0.2s; }
+  .vocab-word { color: var(--navy); font-weight: 600; }
+  .vocab-meaning { color: var(--green); }
+
+  /* Sidebar Cards */
+  .sidebar-card {
+    background: var(--white); border-radius: var(--border-radius);
+    padding: 28px; box-shadow: var(--card-shadow); margin-bottom: 24px;
+    border-right: 5px solid var(--green); opacity: 1; transform: none;
+  }
+  .sidebar-card.amber-border { border-right-color: var(--amber); }
+  .sidebar-card-title {
+    font-family: var(--font-urdu); font-size: 1.3rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px dashed var(--green);
+  }
+  .sidebar-card ul { list-style: none; padding: 0; }
+  .sidebar-card ul li {
+    font-family: var(--font-urdu); font-size: 17px; padding: 8px 0;
+    border-bottom: 1px solid #f0f9ea; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .sidebar-card ul li::before { content: '✦'; color: var(--green); flex-shrink: 0; margin-top: 4px; }
+
+  /* Highlight Box */
+  .highlight-box {
+    border-right: 5px solid var(--amber); background: #fff8f0;
+    padding: 20px 24px; border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    margin: 24px 0; font-family: var(--font-urdu); font-size: 1.05rem;
+    opacity: 1; transform: none;
+  }
+  .highlight-box.green { border-right-color: var(--green); background: var(--light-green); }
+  .highlight-box strong { color: var(--navy); display: block; margin-bottom: 8px; font-size: 1.1rem; }
+
+  /* Exercise Cards */
+  .exercise-card {
+    background: var(--white); border-radius: var(--border-radius);
+    padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 28px;
+    opacity: 1; transform: none;
+  }
+  .exercise-title {
+    font-family: var(--font-urdu); font-size: 1.4rem; font-weight: 700;
+    color: var(--amber); margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--light-green);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ex-number {
+    background: var(--amber); color: var(--white); width: 36px; height: 36px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* Q&A Section */
+  .qa-item {
+    background: var(--light-green); border-radius: 12px; padding: 20px 24px;
+    margin-bottom: 16px; font-family: var(--font-urdu); font-size: 1.05rem;
+    opacity: 1; transform: none;
+  }
+  .qa-question { color: var(--navy); font-weight: 700; margin-bottom: 10px; }
+  .qa-answer-input {
+    width: 100%; border: 2px solid #c8e6b8; border-radius: 8px;
+    padding: 12px 16px; font-family: var(--font-urdu); font-size: 1rem;
+    background: var(--white); color: var(--navy); direction: rtl;
+    resize: vertical; min-height: 70px; transition: border-color 0.3s;
+  }
+  .qa-answer-input:focus { outline: none; border-color: var(--green); }
+
+  /* Fill in blanks */
+  .fill-blank {
+    display: inline-block; min-width: 120px; border-bottom: 2px solid var(--amber);
+    margin: 0 8px; padding: 2px 8px; text-align: center;
+    font-family: var(--font-urdu); font-size: 1.05rem; direction: rtl;
+    background: transparent; color: var(--navy);
+    transition: border-color 0.3s;
+  }
+  .fill-blank:focus { outline: none; border-color: var(--green); border-bottom-width: 3px; }
+  .fill-blank.correct { border-color: var(--green); background: #e8f8e1; }
+  .fill-blank.wrong { border-color: #e74c3c; background: #fdf0ef; }
+  .blank-sentence {
+    font-family: var(--font-urdu); font-size: 1.1rem; line-height: 2.5;
+    padding: 16px 0; border-bottom: 1px dashed #d0e8c8;
+  }
+  .blank-sentence:last-child { border-bottom: none; }
+  .check-btn {
+    background: var(--green); color: var(--white); border: none;
+    padding: 12px 28px; border-radius: 50px; font-family: var(--font-urdu);
+    font-size: 1.05rem; cursor: pointer; margin-top: 16px;
+    transition: background 0.3s, transform 0.2s; display: block;
+  }
+  .check-btn:hover { background: #5a9a3e; transform: scale(1.03); }
+
+  /* MCQ Quiz */
+  .quiz-section { padding: 60px 0; }
+  .quiz-card {
+    background: var(--white); border-radius: var(--border-radius);
+    padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px;
+    opacity: 1; transform: none;
+  }
+  .quiz-q-num { color: var(--amber); font-size: 1rem; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+  .quiz-q-text { font-family: var(--font-urdu); font-size: 1.2rem; font-weight: 600; color: var(--navy); margin-bottom: 18px; line-height: 1.8; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quiz-option {
+    background: var(--light-green); border: 2px solid transparent;
+    border-radius: 10px; padding: 14px 18px; cursor: pointer;
+    font-family: var(--font-urdu); font-size: 1.05rem; color: var(--navy);
+    transition: all 0.25s; text-align: right; min-height: 48px;
+  }
+  .quiz-option:hover { border-color: var(--green); background: #d9f0cb; }
+  .quiz-option.selected { border-color: var(--amber); background: #fff3e0; }
+  .quiz-option.correct { border-color: var(--green); background: #e8f8e1; color: #2d7a1a; }
+  .quiz-option.wrong { border-color: #e74c3c; background: #fdf0ef; color: #c0392b; }
+  .quiz-submit-btn {
+    background: var(--navy); color: var(--white); border: none;
+    padding: 16px 40px; border-radius: 50px; font-family: var(--font-urdu);
+    font-size: 1.2rem; cursor: pointer; margin: 20px auto; display: block;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .quiz-submit-btn:hover { background: var(--green); transform: scale(1.03); }
+  #quiz-result {
+    text-align: center; font-family: var(--font-urdu); font-size: 1.5rem;
+    padding: 24px; border-radius: var(--border-radius); margin-top: 20px;
+    display: none;
+  }
+  #quiz-result.show { display: block; }
+
+  /* Maqasid Section */
+  .maqasid-card {
+    background: var(--navy); color: var(--white); border-radius: var(--border-radius);
+    padding: 32px; box-shadow: var(--card-shadow);
+  }
+  .maqasid-card ul { list-style: none; }
+  .maqasid-card ul li {
+    font-family: var(--font-urdu); font-size: 1.1rem; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .maqasid-card ul li::before { content: '●'; color: var(--amber); flex-shrink: 0; }
+
+  /* Calligraphic SVG Decoration */
+  .callig-decor {
+    display: flex; justify-content: center; margin: 16px 0;
+    opacity: 0.6;
+  }
+
+  /* MCQ True/False Section */
+  .tf-options { display: flex; gap: 16px; flex-wrap: wrap; }
+  .tf-btn {
+    background: var(--light-green); border: 2px solid var(--green);
+    border-radius: 10px; padding: 10px 24px; cursor: pointer;
+    font-family: var(--font-urdu); font-size: 1.05rem; color: var(--navy);
+    transition: all 0.25s; min-height: 48px;
+  }
+  .tf-btn:hover { background: var(--green); color: var(--white); }
+  .tf-btn.correct { background: var(--green); color: var(--white); }
+  .tf-btn.wrong { background: #e74c3c; color: var(--white); border-color: #e74c3c; }
+
+  /* Mobile Nav */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--navy); overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 0 8px; height: 64px; align-items: center;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.2);
+  }
+  .mobile-nav-inner { display: flex; gap: 0; white-space: nowrap; align-items: center; height: 100%; }
+  .mobile-nav a {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 16px; color: rgba(255,255,255,0.7); text-decoration: none;
+    font-family: var(--font-urdu); font-size: 15px; height: 100%;
+    white-space: nowrap; min-height: 48px; transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .mobile-nav a.active, .mobile-nav a:hover { color: var(--amber); }
+
+  /* Accordion (mobile sidebar) */
+  .sidebar-accordion { display: none; }
+  .accordion-header {
+    background: var(--navy); color: var(--white); padding: 16px 24px;
+    border-radius: 12px; cursor: pointer; font-family: var(--font-urdu);
+    font-size: 1.1rem; margin-bottom: 4px; display: flex;
+    justify-content: space-between; align-items: center;
+  }
+  .accordion-content {
+    display: none; padding: 0; border-radius: 0 0 12px 12px;
+    background: var(--white); border: 2px solid var(--light-green);
+    border-top: none; margin-bottom: 12px;
+  }
+  .accordion-content.open { display: block; padding: 20px; }
+  .accordion-arrow { transition: transform 0.3s; }
+  .accordion-arrow.open { transform: rotate(180deg); }
+
+  /* Buttons */
+  .btn-amber {
+    background: var(--amber); color: var(--white); border: none;
+    padding: 12px 28px; border-radius: 50px; font-family: var(--font-urdu);
+    font-size: 1.05rem; cursor: pointer; transition: all 0.2s;
+    display: inline-block; min-height: 48px;
+  }
+  .btn-amber:hover { background: #d4821f; transform: scale(1.03); }
+  .btn-green {
+    background: var(--green); color: var(--white); border: none;
+    padding: 12px 28px; border-radius: 50px; font-family: var(--font-urdu);
+    font-size: 1.05rem; cursor: pointer; transition: all 0.2s;
+    display: inline-block; min-height: 48px;
+  }
+  .btn-green:hover { background: #5a9a3e; transform: scale(1.03); }
+
+  /* Drag & Drop */
+  .dnd-container { margin: 20px 0; }
+  .dnd-words { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding: 16px; background: var(--light-green); border-radius: 12px; }
+  .dnd-word {
+    background: var(--navy); color: var(--white); padding: 8px 20px;
+    border-radius: 50px; font-family: var(--font-urdu); font-size: 1.05rem;
+    cursor: grab; user-select: none; transition: all 0.2s; min-height: 48px;
+    display: flex; align-items: center;
+  }
+  .dnd-word:active { cursor: grabbing; transform: scale(1.05); }
+  .dnd-word.used { opacity: 0.4; pointer-events: none; }
+  .dnd-sentence {
+    font-family: var(--font-urdu); font-size: 1.15rem; line-height: 2.8;
+    padding: 12px 0; border-bottom: 1px dashed #c8e6b8; direction: rtl;
+  }
+  .dnd-drop {
+    display: inline-block; min-width: 120px; min-height: 36px;
+    border-bottom: 2px solid var(--amber); margin: 0 8px;
+    vertical-align: middle; text-align: center; position: relative;
+    background: rgba(240,147,43,0.05); border-radius: 4px; padding: 2px 8px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .dnd-drop:hover { background: rgba(240,147,43,0.15); }
+  .dnd-drop.filled { border-color: var(--green); background: rgba(106,176,76,0.1); }
+  .dnd-drop.filled span { color: var(--green); font-weight: 600; }
+  .dnd-drop.correct { background: #e8f8e1; border-color: var(--green); }
+  .dnd-drop.wrong { background: #fdf0ef; border-color: #e74c3c; }
+
+  /* Poem Step Reveal */
+  .step-reveal-box { background: var(--light-green); border-radius: var(--border-radius); padding: 24px; margin: 20px 0; }
+  .step-item {
+    font-family: var(--font-urdu); font-size: 1.1rem; line-height: 2;
+    padding: 16px; background: var(--white); border-radius: 10px;
+    margin-bottom: 12px; border-right: 4px solid var(--green);
+    display: none;
+  }
+  .step-item.visible { display: block; }
+  .step-label { color: var(--amber); font-weight: 700; display: block; margin-bottom: 8px; }
+  #step-counter { font-family: 'Poppins', sans-serif; font-size: 1rem; color: var(--navy); margin-top: 10px; text-align: center; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .section-container { padding: 0 24px; }
+    .two-col { grid-template-columns: 1fr; }
+    .sidebar-col { display: none; }
+    .sidebar-accordion { display: block; }
+  }
+  @media (max-width: 768px) {
+    #sticky-header { padding: 10px 16px; }
+    .section-container { padding: 0 16px; }
+    .hero { min-height: 60vh; padding: 80px 20px 60px; }
+    .mobile-nav { display: flex; }
+    .page-wrapper { padding-bottom: 80px; }
+    .poem-card { padding: 24px 20px; }
+    .poem-verse { font-size: 1.05rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .exercise-card { padding: 20px 16px; }
+    .sidebar-col { display: none; }
+    .sidebar-accordion { display: block; }
+    .section-white { padding: 40px 0; }
+    .section-green { padding: 40px 0; }
+    .dnd-container { overflow-x: auto; }
+    .tf-options { flex-direction: column; }
+    .dnd-words { gap: 8px; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: 2.5rem; }
+    .vocab-table th, .vocab-table td { padding: 10px 12px; }
+    .check-btn, .quiz-submit-btn { width: 100%; text-align: center; }
+  }
+
+  /* Mermaid */
+  .mermaid-container { background: var(--white); border-radius: var(--border-radius); padding: 24px; box-shadow: var(--card-shadow); margin: 24px 0; overflow-x: auto; }
+
+  /* Active section highlight */
+  .section-active-indicator {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 500; display: flex; flex-direction: column; gap: 8px; padding: 0 8px;
+  }
+  .section-dot-nav {
+    width: 10px; height: 10px; border-radius: 50%; background: rgba(44,62,80,0.2);
+    cursor: pointer; transition: background 0.3s; border: none;
+  }
+  .section-dot-nav.active { background: var(--green); }
+
+  @media (max-width: 768px) {
+    .section-active-indicator { display: none; }
+  }
+
+  /* Step process box */
+  .step-process-box {
+    background: #1a1a2e; border-radius: var(--border-radius); padding: 28px;
+    font-family: var(--font-urdu); font-size: 1.05rem; color: #e8e8e8; margin: 20px 0;
+    direction: rtl;
+  }
+  .step-process-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; gap: 12px; align-items: flex-start; }
+  .step-process-item:last-child { border-bottom: none; }
+  .step-num { color: var(--amber); font-weight: 700; font-size: 1.2rem; flex-shrink: 0; font-family: 'Poppins', sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="curtain-title">جگنو</div>
+  <div class="curtain-sub">کلاس ۴ - اردو سبق</div>
+  <div>
+    <span class="curtain-dot" style="animation: float-fly 1s ease-in-out infinite;"></span>
+    <span class="curtain-dot" style="animation: float-fly 1s ease-in-out 0.3s infinite;"></span>
+    <span class="curtain-dot" style="animation: float-fly 1s ease-in-out 0.6s infinite;"></span>
+  </div>
+</div>
+
+<!-- Sticky Header -->
+<header id="sticky-header">
+  <div class="header-title">🪲 جگنو - علامہ اقبال</div>
+  <div class="progress-dots">
+    <div class="progress-dot active" data-section="0" title="نظم"></div>
+    <div class="progress-dot" data-section="1" title="الفاظ"></div>
+    <div class="progress-dot" data-section="2" title="مشق"></div>
+    <div class="progress-dot" data-section="3" title="قواعد"></div>
+    <div class="progress-dot" data-section="4" title="کوئز"></div>
+  </div>
+</header>
+
+<!-- Section Dot Nav -->
+<nav class="section-active-indicator" aria-label="Section navigation">
+  <button class="section-dot-nav active" data-target="section-poem" title="نظم"></button>
+  <button class="section-dot-nav" data-target="section-vocab" title="الفاظ"></button>
+  <button class="section-dot-nav" data-target="section-exercise" title="مشق"></button>
+  <button class="section-dot-nav" data-target="section-grammar" title="قواعد"></button>
+  <button class="section-dot-nav" data-target="section-quiz" title="کوئز"></button>
+</nav>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <div class="mobile-nav-inner">
+    <a href="#section-maqasid">مقاصد</a>
+    <a href="#section-poem">نظم</a>
+    <a href="#section-vocab">الفاظ</a>
+    <a href="#section-exercise">مشق</a>
+    <a href="#section-grammar">قواعد</a>
+    <a href="#section-quiz">کوئز</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="firefly-container" id="fireflyContainer"></div>
+    <svg class="hero-bg-decor" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="200" fill="white"/>
+      <circle cx="700" cy="500" r="150" fill="white"/>
+      <circle cx="400" cy="300" r="300" fill="white" opacity="0.3"/>
+    </svg>
+    <div class="hero-content">
+      <div class="hero-badge">سبق نمبر ۱۵</div>
+      <h1 class="hero-title">جگنو</h1>
+      <div class="callig-decor">
+        <svg width="200" height="30" viewBox="0 0 200 30">
+          <path d="M10,15 Q50,5 100,15 Q150,25 190,15" stroke="#F0932B" stroke-width="2" fill="none"/>
+          <circle cx="10" cy="15" r="3" fill="#F0932B"/>
+          <circle cx="190" cy="15" r="3" fill="#F0932B"/>
+          <circle cx="100" cy="15" r="4" fill="#6AB04C"/>
+        </svg>
+      </div>
+      <p class="hero-subtitle">علامہ اقبال کی خوبصورت نظم — جگنو کی روشنی سے علم و حکمت کا درس</p>
+      <p class="hero-poet">✍️ علامہ اقبال</p>
+    </div>
+  </section>
+
+  <!-- Maqasid Section -->
+  <section class="section-white" id="section-maqasid">
+    <div class="section-container">
+      <h2 class="section-title">مقاصد</h2>
+      <div class="two-col">
+        <div class="main-col">
+          <div class="maqasid-card">
+            <p style="color: rgba(255,255,255,0.8); font-family: var(--font-urdu); font-size: 1.1rem; margin-bottom: 20px;">اس نظم کو پڑھنے کے بعد طلبہ اس قابل ہو جائیں گے کہ وہ:</p>
+            <ul>
+              <li>شاعری کے ذریعے جذبات اور قدرتی مظاہر کی عکاسی کو سمجھ سکیں</li>
+              <li>الفاظ کے چناؤ، تشبیہات، اور استعاروں کی اہمیت کو سمجھ سکیں</li>
+              <li>پروانے اور جگنو کی روشنی کے موازنے سے دو مختلف رویّوں اور نظریات کو سمجھنے کے قابل ہوں</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sidebar-col">
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">🎯 اس سبق میں کیا سیکھیں گے؟</div>
+            <ul>
+              <li>جگنو کی روشنی کی تشبیہات</li>
+              <li>پروانے اور جگنو کا موازنہ</li>
+              <li>مترادف الفاظ</li>
+              <li>قافیہ دار الفاظ</li>
+              <li>شاعری کا پیغام</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Mobile Accordion -->
+        <div class="sidebar-accordion" style="width:100%;">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            اس سبق میں کیا سیکھیں گے؟ <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="accordion-content">
+            <ul style="list-style:none;padding:0;">
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">✦ جگنو کی روشنی کی تشبیہات</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">✦ پروانے اور جگنو کا موازنہ</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">✦ مترادف الفاظ</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;">✦ شاعری کا پیغام</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Poem Section -->
+  <section class="section-green" id="section-poem">
+    <div class="section-container">
+      <h2 class="section-title">نظم: جگنو</h2>
+      <div class="two-col">
+        <div class="main-col">
+          <div class="poem-card">
+            <div class="poem-verse">
+              <span class="misra">جگنو کی روشنی ہے کاشانۂ چمن میں</span>
+              <span class="misra">یا شمع جل رہی ہے پھولوں کی انجمن میں</span>
+            </div>
+            <div class="poem-verse">
+              <span class="misra">آیا ہے آسمان سے اڑ کر کوئی ستارہ</span>
+              <span class="misra">یا جان پڑ گئی ہے مہتاب کی کرن میں</span>
+            </div>
+            <div class="poem-verse">
+              <span class="misra">یا شب کی سلطنت میں دن کا سفیر آیا</span>
+              <span class="misra">غربت میں آکے چمکا، غم نام تھا وطن میں</span>
+            </div>
+            <div class="poem-verse">
+              <span class="misra">ٹکمہ کوئی گرا ہے مہتاب کی قبا کا</span>
+              <span class="misra">ذرہ ہے یا نمایاں سورج کے پیرہن میں</span>
+            </div>
+            <div class="poem-verse">
+              <span class="misra">حُسن قدیم کی یہ پوشیدہ اک جھلک تھی</span>
+              <span class="misra">لے آئی جس کو قدرت خلوت سے انجمن میں</span>
+            </div>
+            <div class="poem-verse">
+              <span class="misra">چھوٹے سے چاند میں ہے ظلمت بھی روشنی بھی</span>
+              <span class="misra">نکلا کبھی گہن میں، آیا کبھی گہن میں</span>
+            </div>
+            <div class="poem-final">
+              <span class="poem-line">پروانہ اک پتنگا، جگنو بھی اک پتنگا</span>
+              <span class="poem-line">وہ روشنی کا طالب، یہ روشنی سراپا</span>
+            </div>
+          </div>
+
+          <!-- Step Reveal Explanation -->
+          <div style="margin-top: 32px;">
+            <h3 style="font-family:var(--font-urdu);font-size:1.5rem;color:var(--navy);margin-bottom:16px;">نظم کی تفہیم — قدم بہ قدم</h3>
+            <div class="step-reveal-box">
+              <div class="step-item visible" id="step-0">
+                <span class="step-label">شعر ۱:</span>
+                جگنو کی روشنی کو شاعر نے پھولوں کے درمیان جلتی شمع سے تشبیہ دی ہے — یعنی جگنو باغ میں اس طرح چمکتا ہے جیسے شمع جل رہی ہو۔
+              </div>
+              <div class="step-item" id="step-1">
+                <span class="step-label">شعر ۲:</span>
+                شاعر کہتا ہے کہ شاید آسمان سے کوئی ستارہ اڑ کر نیچے آ گیا ہو یا چاند کی کرن میں جان پڑ گئی ہو۔
+              </div>
+              <div class="step-item" id="step-2">
+                <span class="step-label">شعر ۳:</span>
+                جگنو کو رات کی سلطنت میں دن کا سفیر کہا گیا ہے — جو اندھیرے میں روشنی لاتا ہے۔
+              </div>
+              <div class="step-item" id="step-3">
+                <span class="step-label">شعر ۴:</span>
+                جگنو کو چاند کے لباس کا گرا ہوا ٹکمہ (بٹن) یا سورج کے پیرہن میں چمکتا ذرہ کہا گیا ہے۔
+              </div>
+              <div class="step-item" id="step-4">
+                <span class="step-label">آخری شعر:</span>
+                پروانہ بھی ایک پتنگا ہے اور جگنو بھی — فرق یہ ہے کہ پروانہ روشنی کا طالب ہے مگر جگنو خود روشنی ہے!
+              </div>
+              <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+                <button class="btn-amber" id="nextStepBtn" onclick="nextStep()">اگلا قدم ←</button>
+                <button class="btn-green" onclick="resetSteps()">دوبارہ شروع کریں</button>
+              </div>
+              <div id="step-counter" style="font-family:var(--font-urdu);">قدم: ۱ / ۵</div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-col">
+          <div class="sidebar-card amber-border">
+            <div class="sidebar-card-title" style="border-color:var(--amber);">💡 اہم تشبیہات</div>
+            <ul>
+              <li>جگنو = شمع (پھولوں کی محفل میں)</li>
+              <li>جگنو = آسمان سے گرا ستارہ</li>
+              <li>جگنو = چاند کی کرن</li>
+              <li>جگنو = دن کا سفیر (رات میں)</li>
+              <li>جگنو = چاند کا ٹکمہ</li>
+              <li>جگنو = سورج کے لباس میں ذرہ</li>
+            </ul>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">✨ مرکزی پیغام</div>
+            <p style="font-family:var(--font-urdu);font-size:1.05rem;line-height:1.9;color:var(--navy);">
+              پروانہ روشنی کا طالب ہے — وہ روشنی کے پیچھے بھاگتا ہے۔ لیکن جگنو خود روشنی سراپا ہے — وہ دوسروں کو روشنی دیتا ہے۔ علامہ اقبال ہمیں جگنو بننے کا درس دیتے ہیں!
+            </p>
+          </div>
+          <div class="sidebar-card" style="border-right-color:var(--navy);">
+            <div class="sidebar-card-title" style="border-color:var(--navy);">📖 علامہ اقبال</div>
+            <p style="font-family:var(--font-urdu);font-size:1.05rem;line-height:1.9;color:var(--navy);">
+              علامہ اقبال پاکستان کے قومی شاعر ہیں۔ انہوں نے بچوں اور بڑوں دونوں کے لیے بہترین نظمیں لکھیں۔ ان کی شاعری میں قدرت، محبت اور خودی کا درس ملتا ہے۔
+            </p>
+          </div>
+        </div>
+        <!-- Mobile Accordion for sidebar -->
+        <div class="sidebar-accordion" style="width:100%;">
+          <div class="accordion-header" onclick="toggleAccordion(this)">💡 اہم تشبیہات <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-content">
+            <ul style="list-style:none;padding:0;">
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">جگنو = شمع (پھولوں کی محفل میں)</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">جگنو = آسمان سے گرا ستارہ</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">جگنو = دن کا سفیر (رات میں)</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;">جگنو = سورج کے لباس میں ذرہ</li>
+            </ul>
+          </div>
+          <div class="accordion-header" onclick="toggleAccordion(this)">✨ مرکزی پیغام <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-content">
+            <p style="font-family:var(--font-urdu);font-size:1.05rem;line-height:1.9;color:var(--navy);">پروانہ روشنی کا طالب ہے۔ جگنو خود روشنی سراپا ہے — دوسروں کو روشنی دیتا ہے!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vocabulary Section -->
+  <section class="section-white" id="section-vocab">
+    <div class="section-container">
+      <h2 class="section-title">الفاظ کے معنی</h2>
+      <div class="two-col">
+        <div class="main-col">
+          <div class="vocab-table-wrap">
+            <table class="vocab-table">
+              <thead>
+                <tr>
+                  <th>لفظ</th>
+                  <th>معنی</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="vocab-word">خلوت</td><td class="vocab-meaning">تنہائی</td></tr>
+                <tr><td class="vocab-word">چمک</td><td class="vocab-meaning">روشنی</td></tr>
+                <tr><td class="vocab-word">جھلک</td><td class="vocab-meaning">جھلملانا</td></tr>
+                <tr><td class="vocab-word">انجمن</td><td class="vocab-meaning">محفل</td></tr>
+                <tr><td class="vocab-word">پیرہن</td><td class="vocab-meaning">روشنی یا چمک کا لباس</td></tr>
+                <tr><td class="vocab-word">قبا</td><td class="vocab-meaning">قیمتی لباس</td></tr>
+                <tr><td class="vocab-word">ٹکمہ</td><td class="vocab-meaning">آرائشی بٹن</td></tr>
+                <tr><td class="vocab-word">ظلمت</td><td class="vocab-meaning">اندھیرا</td></tr>
+                <tr><td class="vocab-word">گہن</td><td class="vocab-meaning">دھندلا پن یا روشنی کی کمی</td></tr>
+                <tr><td class="vocab-word">سراپا</td><td class="vocab-meaning">سر سے پاؤں تک</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box green" style="margin-top:24px;">
+            <strong>📝 یاد رکھیں:</strong>
+            "کاشانہ" کا مطلب ہے گھر یا آشیانہ۔ "سلطنت" کا مطلب ہے بادشاہی یا حکومت۔ "سفیر" کا مطلب ہے قاصد یا پیغام لانے والا۔
+          </div>
+        </div>
+        <div class="sidebar-col">
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">🔤 نئے الفاظ سیکھیں</div>
+            <div class="step-process-box">
+              <div class="step-process-item"><span class="step-num">۱</span><span>نئے لفظ کو پڑھیں</span></div>
+              <div class="step-process-item"><span class="step-num">۲</span><span>اس کے معنی یاد کریں</span></div>
+              <div class="step-process-item"><span class="step-num">۳</span><span>جملے میں استعمال کریں</span></div>
+              <div class="step-process-item"><span class="step-num">۴</span><span>مترادف تلاش کریں</span></div>
+            </div>
+          </div>
+          <div class="sidebar-card amber-border">
+            <div class="sidebar-card-title" style="border-color:var(--amber);">🌙 اہم الفاظ</div>
+            <ul>
+              <li>مہتاب = چاند</li>
+              <li>کاشانہ = گھر / آشیانہ</li>
+              <li>شمع = موم بتی</li>
+              <li>سلطنت = بادشاہی</li>
+              <li>غربت = پردیس / تنہائی</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sidebar-accordion" style="width:100%;">
+          <div class="accordion-header" onclick="toggleAccordion(this)">🔤 الفاظ سیکھنے کا طریقہ <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-content">
+            <ol style="padding-right:20px;font-family:var(--font-urdu);font-size:1.05rem;line-height:2;">
+              <li>نئے لفظ کو پڑھیں</li>
+              <li>معنی یاد کریں</li>
+              <li>جملے میں استعمال کریں</li>
+              <li>مترادف تلاش کریں</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise Section -->
+  <section class="section-green" id="section-exercise">
+    <div class="section-container">
+      <h2 class="section-title">مشق</h2>
+
+      <!-- Exercise 1: Short Questions -->
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۱</div>
+          نیچے دیے گئے سوالات کے جوابات لکھیے
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۱- جگنو کہاں چمک رہا تھا؟</div>
+          <textarea class="qa-answer-input" placeholder="یہاں جواب لکھیں..." rows="2"></textarea>
+          <div class="qa-hint" style="color:var(--green);font-family:var(--font-urdu);font-size:0.95rem;margin-top:8px;display:none;">✅ جواب: جگنو کاشانۂ چمن (باغ) میں چمک رہا تھا۔</div>
+          <button class="btn-green" style="margin-top:10px;padding:8px 20px;" onclick="toggleHint(this)">جواب دیکھیں</button>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۲- پروانے اور جگنو میں سے کون روشنی کا طالب تھا؟</div>
+          <textarea class="qa-answer-input" placeholder="یہاں جواب لکھیں..." rows="2"></textarea>
+          <div class="qa-hint" style="color:var(--green);font-family:var(--font-urdu);font-size:0.95rem;margin-top:8px;display:none;">✅ جواب: پروانہ روشنی کا طالب تھا جبکہ جگنو خود روشنی سراپا تھا۔</div>
+          <button class="btn-green" style="margin-top:10px;padding:8px 20px;" onclick="toggleHint(this)">جواب دیکھیں</button>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۳- شاعر نے جگنو کو ستارہ کیوں کہا ہے؟</div>
+          <textarea class="qa-answer-input" placeholder="یہاں جواب لکھیں..." rows="2"></textarea>
+          <div class="qa-hint" style="color:var(--green);font-family:var(--font-urdu);font-size:0.95rem;margin-top:8px;display:none;">✅ جواب: کیونکہ جگنو اندھیرے میں ستارے کی طرح چمکتا ہے اور شاعر کو لگتا ہے جیسے آسمان سے کوئی ستارہ اڑ کر آیا ہو۔</div>
+          <button class="btn-green" style="margin-top:10px;padding:8px 20px;" onclick="toggleHint(this)">جواب دیکھیں</button>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۴- شاعر نے دن کا سفیر کسے کہا ہے؟</div>
+          <textarea class="qa-answer-input" placeholder="یہاں جواب لکھیں..." rows="2"></textarea>
+          <div class="qa-hint" style="color:var(--green);font-family:var(--font-urdu);font-size:0.95rem;margin-top:8px;display:none;">✅ جواب: شاعر نے جگنو کو دن کا سفیر کہا ہے کیونکہ وہ رات (شب کی سلطنت) میں روشنی لاتا ہے۔</div>
+          <button class="btn-green" style="margin-top:10px;padding:8px 20px;" onclick="toggleHint(this)">جواب دیکھیں</button>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۵- اس نظم میں جگنو کو چھوٹا سا چاند کیوں کہا گیا ہے؟</div>
+          <textarea class="qa-answer-input" placeholder="یہاں جواب لکھیں..." rows="2"></textarea>
+          <div class="qa-hint" style="color:var(--green);font-family:var(--font-urdu);font-size:0.95rem;margin-top:8px;display:none;">✅ جواب: کیونکہ جگنو کی روشنی میں بھی ظلمت اور روشنی دونوں ہیں، جیسے چاند کبھی گہن میں اور کبھی روشن ہوتا ہے۔</div>
+          <button class="btn-green" style="margin-top:10px;padding:8px 20px;" onclick="toggleHint(this)">جواب دیکھیں</button>
+        </div>
+      </div>
+
+      <!-- Exercise 2: Fill in the blanks -->
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۲</div>
+          خالی جگہوں میں درست الفاظ لکھیے
+        </div>
+        <div class="blank-sentence">
+          ۱- آیا ہے <input class="fill-blank" id="b1" placeholder="___"> سے اڑ کر کوئی ستارہ
+        </div>
+        <div class="blank-sentence">
+          ۲- ذرہ ہے یا نمایاں <input class="fill-blank" id="b2" placeholder="___"> کے پیرہن میں
+        </div>
+        <div class="blank-sentence">
+          ۳- چھوٹے سے <input class="fill-blank" id="b3" placeholder="___"> میں ہے ظلمت بھی روشنی بھی
+        </div>
+        <div class="blank-sentence">
+          ۴- لے آئی جس کو قدرت <input class="fill-blank" id="b4" placeholder="___"> سے انجمن میں
+        </div>
+        <button class="check-btn" onclick="checkBlanks()">✅ جانچیں</button>
+        <div id="blanks-result" style="display:none; margin-top:12px; padding:12px; border-radius:8px; font-family:var(--font-urdu); font-size:1.05rem;"></div>
+      </div>
+
+      <!-- Exercise 3: MCQ -->
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۳</div>
+          درج ذیل سوالات کے درست جواب پر (✔) کا نشان لگائیے
+        </div>
+        <!-- Q1 -->
+        <div style="margin-bottom:24px;">
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:12px;">۱- شمع جل رہی ہے پھولوں کی:</p>
+          <div class="tf-options">
+            <button class="tf-btn" onclick="checkMCQ(this, false)">بزم میں</button>
+            <button class="tf-btn" onclick="checkMCQ(this, true)">انجمن میں</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">محفل میں</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">مجلس میں</button>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div style="margin-bottom:24px;">
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:12px;">۲- مہتاب کے معنی ہیں:</p>
+          <div class="tf-options">
+            <button class="tf-btn" onclick="checkMCQ(this, true)">چاند</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">سورج</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">سیارہ</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">ستارہ</button>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div style="margin-bottom:24px;">
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:12px;">۳- ایک پتنگا ہے:</p>
+          <div class="tf-options">
+            <button class="tf-btn" onclick="checkMCQ(this, false)">مکڑی</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">مکھی</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">مچھر</button>
+            <button class="tf-btn" onclick="checkMCQ(this, true)">پروانہ</button>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div style="margin-bottom:24px;">
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:12px;">۴- نظم جگنو کے شاعر ہیں:</p>
+          <div class="tf-options">
+            <button class="tf-btn" onclick="checkMCQ(this, false)">اسماعیل میر ٹھی</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">شفیع الدین نیر</button>
+            <button class="tf-btn" onclick="checkMCQ(this, true)">علامہ اقبال</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">محمد حسین آزاد</button>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div style="margin-bottom:8px;">
+          <p style="font-family:var(--font-urdu);font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:12px;">۵- سراپا روشنی ہے:</p>
+          <div class="tf-options">
+            <button class="tf-btn" onclick="checkMCQ(this, false)">شمع</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">پروانہ</button>
+            <button class="tf-btn" onclick="checkMCQ(this, true)">جگنو</button>
+            <button class="tf-btn" onclick="checkMCQ(this, false)">چاند</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise 4: Drag & Drop Fill Blanks -->
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۴</div>
+          الفاظ کو جملوں میں صحیح جگہ رکھیں (ڈریگ کریں یا کلک کریں)
+        </div>
+        <div class="dnd-container" id="dndContainer">
+          <div class="dnd-words" id="dndWords">
+            <div class="dnd-word" draggable="true" data-word="آسمان" onclick="selectDndWord(this)">آسمان</div>
+            <div class="dnd-word" draggable="true" data-word="سورج" onclick="selectDndWord(this)">سورج</div>
+            <div class="dnd-word" draggable="true" data-word="چاند" onclick="selectDndWord(this)">چاند</div>
+            <div class="dnd-word" draggable="true" data-word="خلوت" onclick="selectDndWord(this)">خلوت</div>
+          </div>
+          <div class="dnd-sentence">
+            ۱- آیا ہے <span class="dnd-drop" data-answer="آسمان" onclick="dropHere(this)"><span></span></span> سے اڑ کر کوئی ستارہ
+          </div>
+          <div class="dnd-sentence">
+            ۲- ذرہ ہے یا نمایاں <span class="dnd-drop" data-answer="سورج" onclick="dropHere(this)"><span></span></span> کے پیرہن میں
+          </div>
+          <div class="dnd-sentence">
+            ۳- چھوٹے سے <span class="dnd-drop" data-answer="چاند" onclick="dropHere(this)"><span></span></span> میں ہے ظلمت بھی روشنی بھی
+          </div>
+          <div class="dnd-sentence">
+            ۴- لے آئی جس کو قدرت <span class="dnd-drop" data-answer="خلوت" onclick="dropHere(this)"><span></span></span> سے انجمن میں
+          </div>
+          <button class="check-btn" onclick="checkDnD()" style="margin-top:16px;">✅ جانچیں</button>
+          <button class="btn-amber" onclick="resetDnD()" style="margin-top:16px; margin-right: 12px;">🔄 دوبارہ</button>
+          <div id="dnd-result" style="display:none; margin-top:12px; padding:12px; border-radius:8px; font-family:var(--font-urdu); font-size:1.05rem;"></div>
+        </div>
+      </div>
+
+      <!-- Exercise 5: Sentence making -->
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۵</div>
+          ان الفاظ کے جملے بنائیں
+        </div>
+        <div class="qa-item" style="margin-bottom:12px;">
+          <div class="qa-question">۱- شمع:</div>
+          <textarea class="qa-answer-input" placeholder="شمع کا جملہ لکھیں..." rows="2"></textarea>
+        </div>
+        <div class="qa-item" style="margin-bottom:12px;">
+          <div class="qa-question">۲- ستارہ:</div>
+          <textarea class="qa-answer-input" placeholder="ستارہ کا جملہ لکھیں..." rows="2"></textarea>
+        </div>
+        <div class="qa-item" style="margin-bottom:12px;">
+          <div class="qa-question">۳- قدیم:</div>
+          <textarea class="qa-answer-input" placeholder="قدیم کا جملہ لکھیں..." rows="2"></textarea>
+        </div>
+        <div class="qa-item" style="margin-bottom:12px;">
+          <div class="qa-question">۴- جھلک:</div>
+          <textarea class="qa-answer-input" placeholder="جھلک کا جملہ لکھیں..." rows="2"></textarea>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question">۵- ظلمت:</div>
+          <textarea class="qa-answer-input" placeholder="ظلمت کا جملہ لکھیں..." rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grammar Section -->
+  <section class="section-white" id="section-grammar">
+    <div class="section-container">
+      <h2 class="section-title">زبان دانی (اردو قواعد)</h2>
+      <div class="two-col">
+        <div class="main-col">
+          <!-- Rhyming Words -->
+          <div class="exercise-card">
+            <div class="exercise-title">
+              <div class="ex-number">۷</div>
+              قافیہ دار الفاظ (ہم آواز الفاظ)
+            </div>
+            <div class="highlight-box">
+              <strong>قافیہ کیا ہے؟</strong>
+              قافیہ وہ الفاظ ہیں جن کی آواز آخر میں ایک جیسی ہو۔ جیسے: "چمن میں"، "انجمن میں"، "کرن میں" — یہ سب ہم قافیہ ہیں۔
+            </div>
+            <p style="font-family:var(--font-urdu);font-size:1.1rem;margin-bottom:16px;">اس نظم میں ہم آواز والے الفاظ (قافیے) تلاش کریں:</p>
+            <div style="background:var(--light-green);border-radius:12px;padding:20px;">
+              <div style="display:flex;flex-wrap:wrap;gap:12px;">
+                <span style="background:var(--navy);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">چمن میں</span>
+                <span style="background:var(--amber);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">انجمن میں</span>
+                <span style="background:var(--green);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">کرن میں</span>
+                <span style="background:var(--navy);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">وطن میں</span>
+                <span style="background:var(--amber);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">پیرہن میں</span>
+                <span style="background:var(--green);color:var(--white);padding:8px 20px;border-radius:50px;font-family:var(--font-urdu);font-size:1.05rem;">گہن میں</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Synonyms -->
+          <div class="exercise-card">
+            <div class="exercise-title">
+              <div class="ex-number">۸</div>
+              مترادف الفاظ
+            </div>
+            <div class="highlight-box green">
+              <strong>مترادف الفاظ کیا ہیں؟</strong>
+              مترادف الفاظ وہ ہیں جن کے معنی ایک جیسے ہوں۔ جیسے: "بلند" کا ہم معنی لفظ "اونچا" ہے۔
+            </div>
+            <p style="font-family:var(--font-urdu);font-size:1.1rem;margin-bottom:20px;">درج ذیل الفاظ کے مترادف نظم سے تلاش کر کے اپنے جملوں میں استعمال کیجیے:</p>
+            <div class="qa-item" style="margin-bottom:12px;">
+              <div class="qa-question">۱- رات کا مترادف: <span style="color:var(--amber);">شب</span></div>
+              <textarea class="qa-answer-input" placeholder="'شب' کو جملے میں استعمال کریں..." rows="2"></textarea>
+            </div>
+            <div class="qa-item" style="margin-bottom:12px;">
+              <div class="qa-question">۲- اجالا کا مترادف: <span style="color:var(--amber);">روشنی / چمک</span></div>
+              <textarea class="qa-answer-input" placeholder="'روشنی' کو جملے میں استعمال کریں..." rows="2"></textarea>
+            </div>
+            <div class="qa-item" style="margin-bottom:12px;">
+              <div class="qa-question">۳- قدیم کا مترادف: <span style="color:var(--amber);">پرانا</span></div>
+              <textarea class="qa-answer-input" placeholder="'قدیم' کو جملے میں استعمال کریں..." rows="2"></textarea>
+            </div>
+            <div class="qa-item">
+              <div class="qa-question">۴- چاند کا مترادف: <span style="color:var(--amber);">مہتاب / ماہتاب</span></div>
+              <textarea class="qa-answer-input" placeholder="'مہتاب' کو جملے میں استعمال کریں..." rows="2"></textarea>
+            </div>
+          </div>
+
+          <!-- Mermaid Diagram -->
+          <div class="exercise-card">
+            <div class="exercise-title">
+              <div class="ex-number">🗺</div>
+              نظم کا خاکہ
+            </div>
+            <div class="mermaid-container">
+              <div class="mermaid">
+graph TD
+    A[جگنو] --> B[تشبیہات]
+    A --> C[پیغام]
+    B --> D[شمع]
+    B --> E[ستارہ]
+    B --> F[چاند کی کرن]
+    B --> G[دن کا سفیر]
+    C --> H[پروانہ = روشنی کا طالب]
+    C --> I[جگنو = روشنی سراپا]
+    I --> J[دوسروں کو روشنی دیتا ہے]
+              </div>
+            </div>
+          </div>
+
+          <!-- Writing Exercise -->
+          <div class="exercise-card">
+            <div class="exercise-title">
+              <div class="ex-number">۶</div>
+              فطری مناظر پر ایک پیراگراف لکھیں
+            </div>
+            <div class="highlight-box">
+              <strong>یاد دہانی:</strong>
+              ان الفاظ کی مدد سے ایک پیراگراف لکھیں: جھیل، پہاڑ، پرندے، کشتی، بچے، بوڑھے، عورتیں، جھونپڑی
+            </div>
+            <textarea class="qa-answer-input" placeholder="یہاں اپنا پیراگراف لکھیں..." rows="6" style="min-height:150px;"></textarea>
+          </div>
+        </div>
+        <div class="sidebar-col">
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">📚 قواعد یاد رکھیں</div>
+            <ul>
+              <li>قافیہ = ہم آواز الفاظ</li>
+              <li>مترادف = ہم معنی الفاظ</li>
+              <li>تشبیہ = ایک چیز کو دوسری سے تشبیہ دینا</li>
+              <li>استعارہ = کسی کو کسی اور نام سے پکارنا</li>
+            </ul>
+          </div>
+          <div class="sidebar-card amber-border">
+            <div class="sidebar-card-title" style="border-color:var(--amber);">✨ مثالیں</div>
+            <p style="font-family:var(--font-urdu);font-size:1.05rem;line-height:2;color:var(--navy);">
+              <strong style="color:var(--amber);">تشبیہ:</strong><br>
+              "جگنو شمع کی طرح ہے"<br><br>
+              <strong style="color:var(--amber);">استعارہ:</strong><br>
+              "جگنو — دن کا سفیر"<br><br>
+              <strong style="color:var(--amber);">قافیہ:</strong><br>
+              چمن میں، انجمن میں، وطن میں
+            </p>
+          </div>
+        </div>
+        <div class="sidebar-accordion" style="width:100%;">
+          <div class="accordion-header" onclick="toggleAccordion(this)">📚 قواعد کی تعریفیں <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-content">
+            <ul style="list-style:none;padding:0;">
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">قافیہ = ہم آواز الفاظ</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">مترادف = ہم معنی الفاظ</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;border-bottom:1px solid #f0f9ea;">تشبیہ = ایک چیز کو دوسری سے تشبیہ دینا</li>
+              <li style="padding:8px 0;font-family:var(--font-urdu);font-size:17px;">استعارہ = کسی کو کسی اور نام سے پکارنا</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section class="section-green quiz-section" id="section-quiz">
+    <div class="section-container">
+      <h2 class="section-title">🎯 آزمائشی کوئز</h2>
+      <p style="font-family:var(--font-urdu);font-size:1.1rem;margin-bottom:28px;color:var(--navy);">ہر سوال کا درست جواب منتخب کریں — ۱۰ سوالات</p>
+
+      <div id="quiz-container">
+        <!-- Q1 -->
+        <div class="quiz-card" data-q="1">
+          <div class="quiz-q-num">سوال ۱ / ۱۰</div>
+          <div class="quiz-q-text">جگنو کی روشنی کو شاعر نے کیا کہا ہے؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">چاند کی روشنی</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">شمع کی روشنی</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">سورج کی روشنی</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">ستارے کی روشنی</div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-card" data-q="2">
+          <div class="quiz-q-num">سوال ۲ / ۱۰</div>
+          <div class="quiz-q-text">"خلوت" کے کیا معنی ہیں؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">روشنی</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">محفل</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">تنہائی</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">اندھیرا</div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-card" data-q="3">
+          <div class="quiz-q-num">سوال ۳ / ۱۰</div>
+          <div class="quiz-q-text">شاعر نے جگنو کو رات میں کیا کہا ہے؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">رات کا پہرہ دار</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">دن کا سفیر</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">چاند کا ٹکڑا</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">ستاروں کا بادشاہ</div>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-card" data-q="4">
+          <div class="quiz-q-num">سوال ۴ / ۱۰</div>
+          <div class="quiz-q-text">"انجمن" کے کیا معنی ہیں؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">باغ</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">محفل</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">رات</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">پتنگا</div>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-card" data-q="5">
+          <div class="quiz-q-num">سوال ۵ / ۱۰</div>
+          <div class="quiz-q-text">پروانہ کس چیز کا طالب ہے؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">پانی کا</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">پھولوں کا</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">روشنی کا</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">آواز کا</div>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-card" data-q="6">
+          <div class="quiz-q-num">سوال ۶ / ۱۰</div>
+          <div class="quiz-q-text">"سراپا" کے کیا معنی ہیں؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">تھوڑا سا</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">سر سے پاؤں تک (پورا)</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">آہستہ آہستہ</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">اوپر سے</div>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-card" data-q="7">
+          <div class="quiz-q-num">سوال ۷ / ۱۰</div>
+          <div class="quiz-q-text">یہ نظم کس نے لکھی؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">میر تقی میر</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">غالب</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">علامہ اقبال</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">فیض احمد فیض</div>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-card" data-q="8">
+          <div class="quiz-q-num">سوال ۸ / ۱۰</div>
+          <div class="quiz-q-text">"ظلمت" کا کیا مطلب ہے؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">روشنی</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">اندھیرا</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">خوشی</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">گرمی</div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="quiz-card" data-q="9">
+          <div class="quiz-q-num">سوال ۹ / ۱۰</div>
+          <div class="quiz-q-text">شاعر نے جگنو کو "قبا کا ٹکمہ" کیوں کہا؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">کیونکہ وہ کپڑوں پر بیٹھتا ہے</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">کیونکہ وہ چھوٹا اور چمکدار ہے</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">کیونکہ وہ گول ہے</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">کیونکہ وہ رات کو اڑتا ہے</div>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="quiz-card" data-q="10">
+          <div class="quiz-q-num">سوال ۱۰ / ۱۰</div>
+          <div class="quiz-q-text">اس نظم کا مرکزی پیغام کیا ہے؟</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">رات میں باہر نہ جائیں</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">پروانہ بہتر ہے</div>
+            <div class="quiz-option" data-correct="true" onclick="selectOption(this)">دوسروں کو روشنی دینے والے بنو</div>
+            <div class="quiz-option" data-correct="false" onclick="selectOption(this)">چاند ستارے خوبصورت ہیں</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="quiz-submit-btn" onclick="submitQuiz()">✅ جوابات جمع کرائیں</button>
+      <div id="quiz-result"></div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section class="section-white" id="section-activity">
+    <div class="section-container">
+      <h2 class="section-title">عملی سرگرمی</h2>
+      <div class="exercise-card">
+        <div class="exercise-title">
+          <div class="ex-number">۹</div>
+          علامہ اقبال کی مشہور نظمیں
+        </div>
+        <p style="font-family:var(--font-urdu);font-size:1.1rem;margin-bottom:20px;color:var(--navy);line-height:2;">
+          طلبہ کو علامہ اقبال کی مشہور نظموں (جیسے "ایک پہاڑ اور گلہری"، "ہمدردی"، "لب پہ آتی ہے دعا"، یا "ایک گائے اور بکری") کو انٹرنیٹ سے تلاش کرنے کو کہاجائے۔ وہ اپنی پسندیدہ نظم کا انتخاب کریں، نظم کا پیغام اور سیکھا گیا سبق جماعت میں پیش کریں۔
+        </p>
+        <div class="highlight-box green">
+          <strong>ہدایات:</strong>
+          اپنی پسندیدہ نظم کا نام، شاعر، پیغام اور پسندیدگی کی وجہ بتائیں۔
+        </div>
+        <textarea class="qa-answer-input" placeholder="اپنی پسندیدہ نظم کے بارے میں لکھیں..." rows="5" style="min-height:130px;margin-top:16px;"></textarea>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<!-- Mermaid -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.5s'; setTimeout(() => { c.style.display = 'none'; }, 500); }
+  }, 2500);
+
+  // Init functions
+  try { initFireflies(); } catch(e) {}
+  try { initMermaid(); } catch(e) {}
+  try { initLenis(); } catch(e) {}
+  try { initGSAP(); } catch(e) {}
+  try { initProgressDots(); } catch(e) {}
+  try { initDragDrop(); } catch(e) {}
+  try { initMobileNav(); } catch(e) {}
+  try { initSectionDots(); } catch(e) {}
+
+  // Curtain GSAP
+  if (typeof gsap !== 'undefined') {
+    gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 2, onComplete: () => {
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }});
+  }
+});
+
+// Fireflies
+function initFireflies() {
+  const container = document.getElementById('fireflyContainer');
+  if (!container) return;
+  for (let i = 0; i < 18; i++) {
+    const fly = document.createElement('div');
+    fly.className = 'firefly';
+    fly.style.left = Math.random() * 100 + '%';
+    fly.style.top = Math.random() * 100 + '%';
+    fly.style.animationDelay = (Math.random() * 4) + 's';
+    fly.style.animationDuration = (3 + Math.random() * 3) + 's';
+    fly.style.width = fly.style.height = (5 + Math.random() * 6) + 'px';
+    container.appendChild(fly);
+  }
+}
+
+// Mermaid
+function initMermaid() {
+  if (typeof mermaid !== 'undefined') {
+    mermaid.initialize({ startOnLoad: true, theme: 'default', direction: 'TD' });
+  }
+}
+
+// Lenis
+function initLenis() {
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.12, smooth: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+}
+
+// GSAP Animations
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+  // Hero
+  gsap.from('.hero-badge', { opacity: 0, y: 30, duration: 0.8, delay: 2.2 });
+  gsap.from('.hero-title', { opacity: 0, y: 50, duration: 1, delay: 2.4 });
+  gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.8, delay: 2.7 });
+  gsap.from('.hero-poet', { opacity: 0, y: 20, duration: 0.6, delay: 3.0 });
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    // Poem verses
+    gsap.utils.toArray('.poem-verse').forEach((el, i) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 90%' },
+        opacity: 0, y: 30, duration: 0.6, delay: i * 0.12
+      });
+    });
+    // Exercise cards
+    gsap.utils.toArray('.exercise-card').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 92%' },
+        opacity: 0, y: 40, duration: 0.7
+      });
+    });
+    // Sidebar slides from right
+    gsap.utils.toArray('.sidebar-card').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 90%' },
+        opacity: 0, x: 60, duration: 0.7
+      });
+    });
+    // QA items
+    gsap.utils.toArray('.qa-item').forEach((el, i) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 95%' },
+        opacity: 0, x: -30, duration: 0.5, delay: i * 0.08
+      });
+    });
+    // Quiz cards
+    gsap.utils.toArray('.quiz-card').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 92%' },
+        opacity: 0, y: 30, duration: 0.5
+      });
+    });
+    // Section titles underline draw
+    gsap.utils.toArray('.section-title').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 90%' },
+        opacity: 0, x: 40, duration: 0.7
+      });
+    });
+  }
+}
+
+// Progress Dots
+function initProgressDots() {
+  const sections = ['section-poem','section-vocab','section-exercise','section-grammar','section-quiz'];
+  const dots = document.querySelectorAll('.progress-dot');
+  window.addEventListener('scroll', () => {
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight / 2 && rect.bottom > 0) {
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[i]) dots[i].classList.add('active');
+      }
+    });
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const el = document.getElementById(sections[i]);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+
+// Section Dot Nav
+function initSectionDots() {
+  const navDots = document.querySelectorAll('.section-dot-nav');
+  navDots.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+  const sectionIds = ['section-poem','section-vocab','section-exercise','section-grammar','section-quiz'];
+  window.addEventListener('scroll', () => {
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.6 && rect.bottom > 0) {
+        navDots.forEach(d => d.classList.remove('active'));
+        if (navDots[i]) navDots[i].classList.add('active');
+      }
+    });
+  });
+}
+
+// Mobile Nav active
+function initMobileNav() {
+  const links = document.querySelectorAll('.mobile-nav a');
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+}
+
+// Accordion
+function toggleAccordion(header) {
+  const content = header.nextElementSibling;
+  const arrow = header.querySelector('.accordion-arrow');
+  if (!content) return;
+  if (content.classList.contains('open')) {
+    content.classList.remove('open');
+    if (arrow) arrow.classList.remove('open');
+  } else {
+    content.classList.add('open');
+    if (arrow) arrow.classList.add('open');
+  }
+}
+
+// Hint toggle
+function toggleHint(btn) {
+  const hint = btn.previousElementSibling;
+  if (!hint) return;
+  if (hint.style.display === 'none' || hint.style.display === '') {
+    hint.style.display = 'block';
+    btn.textContent = 'جواب چھپائیں';
+  } else {
+    hint.style.display = 'none';
+    btn.textContent = 'جواب دیکھیں';
+  }
+}
+
+// MCQ check (Exercise 3)
+function checkMCQ(btn, isCorrect) {
+  const parent = btn.closest('div');
+  const allBtns = parent.querySelectorAll('.tf-btn');
+  allBtns.forEach(b => { b.classList.remove('correct','wrong'); b.disabled = true; });
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+  }
+}
+
+// Fill in blanks check
+const blankAnswers = { b1: 'آسمان', b2: 'سورج', b3: 'چاند', b4: 'خلوت' };
+function checkBlanks() {
+  let correct = 0;
+  Object.keys(blankAnswers).forEach(id => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    const val = input.value.trim();
+    if (val === blankAnswers[id]) {
+      input.className = 'fill-blank correct';
+      correct++;
+    } else {
+      input.className = 'fill-blank wrong';
+    }
+  });
+  const result = document.getElementById('blanks-result');
+  if (result) {
+    result.style.display = 'block';
+    result.style.background = correct === 4 ? '#e8f8e1' : '#fff3e0';
+    result.style.border = '1px solid ' + (correct === 4 ? '#6AB04C' : '#F0932B');
+    result.textContent = correct === 4 ? '🎉 شاباش! چاروں جواب درست ہیں!' : `آپ نے ${correct}/4 درست جوابات دیے۔ دوبارہ کوشش کریں۔`;
+  }
+}
+
+// Drag & Drop
+let selectedDndWord = null;
+function initDragDrop() {
+  const words = document.querySelectorAll('.dnd-word');
+  const drops = document.querySelectorAll('.dnd-drop');
+  words.forEach(word => {
+    word.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', word.dataset.word);
+      selectedDndWord = word;
+    });
+  });
+  drops.forEach(drop => {
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.style.background = 'rgba(240,147,43,0.2)'; });
+    drop.addEventListener('dragleave', () => { drop.style.background = ''; });
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      drop.style.background = '';
+      const word = e.dataTransfer.getData('text/plain');
+      const span = drop.querySelector('span');
+      if (span) { span.textContent = word; drop.classList.add('filled'); }
+      if (selectedDndWord) { selectedDndWord.classList.add('used'); selectedDndWord = null; }
+    });
+  });
+}
+function selectDndWord(wordEl) {
+  if (wordEl.classList.contains('used')) return;
+  document.querySelectorAll('.dnd-word').forEach(w => w.style.boxShadow = '');
+  if (selectedDndWord === wordEl) {
+    selectedDndWord = null;
+    wordEl.style.boxShadow = '';
+  } else {
+    selectedDndWord = wordEl;
+    wordEl.style.boxShadow = '0 0 0 3px #F0932B';
+  }
+}
+function dropHere(dropEl) {
+  if (!selectedDndWord) return;
+  const span = dropEl.querySelector('span');
+  if (span) { span.textContent = selectedDndWord.dataset.word; }
+  dropEl.classList.add('filled');
+  selectedDndWord.classList.add('used');
+  selectedDndWord.style.boxShadow = '';
+  selectedDndWord = null;
+}
+function checkDnD() {
+  const drops = document.querySelectorAll('.dnd-drop');
+  let correct = 0;
+  drops.forEach(drop => {
+    const span = drop.querySelector('span');
+    const userAnswer = span ? span.textContent.trim() : '';
+    const correctAnswer = drop.dataset.answer;
+    if (userAnswer === correctAnswer) {
+      drop.classList.add('correct'); drop.classList.remove('wrong'); correct++;
+    } else {
+      drop.classList.add('wrong'); drop.classList.remove('correct');
+    }
+  });
+  const result = document.getElementById('dnd-result');
+  if (result) {
+    result.style.display = 'block';
+    result.style.background = correct === 4 ? '#e8f8e1' : '#fff3e0';
+    result.style.border = '1px solid ' + (correct === 4 ? '#6AB04C' : '#F0932B');
+    result.textContent = correct === 4 ? '🎉 بہت خوب! سب درست!' : `${correct}/4 درست — دوبارہ کوشش کریں!`;
+  }
+}
+function resetDnD() {
+  document.querySelectorAll('.dnd-drop').forEach(drop => {
+    const span = drop.querySelector('span');
+    if (span) span.textContent = '';
+    drop.classList.remove('filled','correct','wrong');
+  });
+  document.querySelectorAll('.dnd-word').forEach(w => { w.classList.remove('used'); w.style.boxShadow = ''; });
+  selectedDndWord = null;
+  const result = document.getElementById('dnd-result');
+  if (result) result.style.display = 'none';
+}
+
+// Step reveal
+let currentStep = 0;
+const totalSteps = 5;
+function nextStep() {
+  currentStep++;
+  if (currentStep < totalSteps) {
+    const next = document.getElementById('step-' + currentStep);
+    if (next) {
+      next.classList.add('visible');
+      if (typeof gsap !== 'undefined') {
+        gsap.from(next, { opacity: 0, y: 20, duration: 0.5 });
+      }
+    }
+  }
+  updateStepCounter();
+  const btn = document.getElementById('nextStepBtn');
+  if (btn && currentStep >= totalSteps - 1) { btn.textContent = '✅ مکمل!'; btn.disabled = true; }
+}
+function resetSteps() {
+  for (let i = 1; i < totalSteps; i++) {
+    const el = document.getElementById('step-' + i);
+    if (el) el.classList.remove('visible');
+  }
+  currentStep = 0;
+  const btn = document.getElementById('nextStepBtn');
+  if (btn) { btn.textContent = 'اگلا قدم ←'; btn.disabled = false; }
+  updateStepCounter();
+}
+function updateStepCounter() {
+  const counter = document.getElementById('step-counter');
+  if (counter) counter.textContent = 'قدم: ' + (currentStep + 1) + ' / ' + totalSteps;
+}
+
+// Quiz
+function selectOption(optEl) {
+  const card = optEl.closest('.quiz-card');
+  if (!card || card.dataset.answered) return;
+  const options = card.querySelectorAll('.quiz-option');
+  options.forEach(o => o.classList.remove('selected'));
+  optEl.classList.add('selected');
+}
+function submitQuiz() {
+  const cards = document.querySelectorAll('.quiz-card');
+  let score = 0; let answered = 0;
+  cards.forEach(card => {
+    const selected = card.querySelector('.quiz-option.selected');
+    if (!selected) return;
+    answered++;
+    card.dataset.answered = 'true';
+    const options = card.querySelectorAll('.quiz-option');
+    options.forEach(o => {
+      o.style.pointerEvents = 'none';
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      if (o.classList.contains('selected') && o.dataset.correct === 'false') o.classList.add('wrong');
+    });
+    if (selected.dataset.correct === 'true') score++;
+  });
+  const result = document.getElementById('quiz-result');
+  if (!result) return;
+  result.classList.add('show');
+  let emoji = score >= 8 ? '🏆' : score >= 5 ? '👍' : '📚';
+  let msg = score >= 8 ? 'بہت خوب! آپ نے بہترین کارکردگی دکھائی!' : score >= 5 ? 'اچھا! مزید مشق کریں۔' : 'پریشان نہ ہوں — دوبارہ پڑھیں اور کوشش کریں!';
+  result.style.background = score >= 8 ? '#e8f8e1' : score >= 5 ? '#fff3e0' : '#fdf0ef';
+  result.style.border = '2px solid ' + (score >= 8 ? '#6AB04C' : score >= 5 ? '#F0932B' : '#e74c3c');
+  result.innerHTML = `<div style="font-size:3rem;">${emoji}</div><div style="font-family:var(--font-urdu);font-size:1.4rem;margin-top:8px;">آپ کے ${answered} میں سے ${score} جوابات درست ہیں</div><div style="font-family:var(--font-urdu);font-size:1.1rem;margin-top:8px;color:var(--navy);">${msg}</div>`;
+  if (typeof gsap !== 'undefined') {
+    gsap.from('#quiz-result', { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(1.7)' });
+  }
+}
+</script>
+</body>
+</html>

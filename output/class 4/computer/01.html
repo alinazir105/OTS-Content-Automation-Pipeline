@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<!-- CLASS: 4 | SUBJECT: computer | VERSION: 1.0 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1: System Unit | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;background:#fff;color:#2C3E50;overflow-x:hidden}
+:root{--green:#6AB04C;--navy:#2C3E50;--amber:#F0932B;--light-green:#f0f9eb;--white:#fff}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .logo{font-family:'Poppins',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:#fff}
+#curtain .sub{color:rgba(255,255,255,0.7);font-size:1.1rem}
+.curtain-bar{width:200px;height:4px;background:rgba(255,255,255,0.2);border-radius:4px;overflow:hidden}
+.curtain-fill{height:100%;background:var(--green);border-radius:4px;width:0%}
+
+/* STICKY HEADER */
+#sticky-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--navy);padding:12px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.2)}
+.header-title{font-family:'Poppins',sans-serif;font-weight:700;color:#fff;font-size:clamp(0.95rem,2vw,1.2rem)}
+.progress-dots{display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.3s,transform 0.3s}
+.dot.active{background:var(--green);transform:scale(1.3)}
+
+/* HERO */
+#hero{width:100%;min-height:80vh;background:linear-gradient(135deg,var(--navy) 0%,#1a252f 60%,#0d1a22 100%);display:flex;align-items:center;padding-top:80px}
+.hero-inner{max-width:1500px;margin:0 auto;padding:60px 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-badge{display:inline-block;background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;padding:6px 18px;border-radius:20px;margin-bottom:16px;letter-spacing:1px;text-transform:uppercase}
+.hero-title{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-title span{color:var(--green)}
+.hero-desc{color:rgba(255,255,255,0.75);font-size:clamp(1rem,2vw,1.2rem);margin-bottom:32px}
+.hero-objectives{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px}
+.hero-objectives h3{font-family:'Poppins',sans-serif;color:var(--amber);font-size:1rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.hero-objectives li{color:rgba(255,255,255,0.8);font-size:0.95rem;margin-bottom:8px;padding-left:4px;list-style:none;display:flex;gap:8px}
+.hero-objectives li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0}
+#three-canvas-wrap{width:100%;border-radius:20px;overflow:hidden;background:#0a1628;min-height:300px}
+#three-canvas-wrap canvas{display:block}
+.three-fallback{display:none;min-height:250px;background:#1a2a3a;border-radius:16px;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-size:4rem}
+.three-fallback p{font-size:1rem;color:rgba(255,255,255,0.6)}
+
+/* SECTIONS */
+section{width:100%;padding:70px 0}
+section:nth-child(even){background:var(--light-green)}
+section:nth-child(odd){background:var(--white)}
+.section-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-tag{font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.section-title{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--navy);margin-bottom:24px}
+.section-title span{color:var(--green)}
+
+/* TWO-COL LAYOUT */
+.two-col{display:grid;grid-template-columns:65% 35%;gap:40px;align-items:start}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:90px}
+.sidebar-card{background:var(--navy);border-radius:16px;padding:24px;margin-bottom:20px;opacity:1;transform:none}
+.sidebar-card h4{font-family:'Poppins',sans-serif;color:var(--amber);font-size:1rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.sidebar-card ul{list-style:none}
+.sidebar-card ul li{color:rgba(255,255,255,0.85);font-size:0.95rem;margin-bottom:8px;padding-left:16px;position:relative}
+.sidebar-card ul li::before{content:"▸";position:absolute;left:0;color:var(--green)}
+.concept-chip{display:inline-block;background:rgba(106,176,76,0.15);border:1px solid var(--green);color:var(--green);border-radius:20px;padding:4px 14px;font-size:0.85rem;font-weight:600;margin:4px}
+
+/* ACCORDION (mobile sidebar) */
+.accordion-sidebar{display:none}
+.accordion-btn{width:100%;background:var(--navy);color:#fff;border:none;padding:14px 20px;font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;text-align:left;cursor:pointer;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.accordion-btn .arr{transition:transform 0.3s}
+.accordion-btn.open .arr{transform:rotate(180deg)}
+.accordion-content{display:none;background:var(--light-green);border-radius:12px;padding:16px;margin-bottom:12px}
+.accordion-content.show{display:block}
+
+/* HIGHLIGHT BOX */
+.highlight-box{border-radius:12px;padding:20px 24px;margin:20px 0;opacity:1;transform:none}
+.highlight-box.green{background:#e8f5e0;border-left:5px solid var(--green)}
+.highlight-box.amber{background:#fff4e6;border-left:5px solid var(--amber)}
+.highlight-box.navy{background:#e8ecf0;border-left:5px solid var(--navy)}
+.highlight-box h4{font-family:'Poppins',sans-serif;font-weight:700;margin-bottom:8px;font-size:1.05rem}
+.highlight-box p,.highlight-box li{font-size:1rem;color:#2C3E50}
+
+/* COMPONENT CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:24px 0}
+.comp-card{background:#fff;border-radius:16px;padding:24px;border:2px solid #e8f0e0;box-shadow:0 4px 20px rgba(0,0,0,0.05);transition:transform 0.3s,box-shadow 0.3s;opacity:1;transform:none;width:100%;max-width:100%}
+.comp-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(106,176,76,0.15)}
+.comp-card .icon{font-size:2.5rem;margin-bottom:12px}
+.comp-card h3{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:1.1rem;margin-bottom:8px}
+.comp-card p{font-size:0.95rem;color:#555;line-height:1.6}
+.comp-card .badge{display:inline-block;background:var(--green);color:#fff;border-radius:20px;padding:2px 12px;font-size:0.8rem;font-weight:600;margin-bottom:8px}
+
+/* STEP REVEAL */
+.step-box{background:#1a2a3a;border-radius:12px;padding:24px;margin:20px 0}
+.step-box h4{color:var(--amber);font-family:'Poppins',sans-serif;margin-bottom:16px;font-size:1rem;text-transform:uppercase;letter-spacing:1px}
+.step-item{background:rgba(255,255,255,0.06);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;margin-bottom:10px;font-family:'Courier New',monospace;color:#e0e0e0;font-size:0.95rem;opacity:1;transform:none}
+.step-item .step-num{color:var(--green);font-weight:700;margin-right:8px}
+.step-btn{background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.95rem;cursor:pointer;margin-top:12px;transition:background 0.3s}
+.step-btn:hover{background:#5a9a3c}
+.step-btn:disabled{background:#aaa;cursor:not-allowed}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:16px;padding:24px;border:2px solid #e0e8d8;margin:24px 0;overflow-x:auto}
+.mermaid{font-size:16px}
+
+/* CLOZE */
+.cloze-box{background:var(--navy);border-radius:16px;padding:30px;margin:24px 0}
+.cloze-box h3{font-family:'Poppins',sans-serif;color:var(--amber);margin-bottom:20px;font-size:1.2rem}
+.cloze-text{color:rgba(255,255,255,0.9);font-size:1rem;line-height:2.2}
+.cloze-input{background:rgba(255,255,255,0.1);border:2px solid var(--green);border-radius:6px;padding:4px 10px;color:#fff;font-family:'Inter',sans-serif;font-size:0.95rem;width:130px;outline:none;text-align:center;transition:border-color 0.3s}
+.cloze-input:focus{border-color:var(--amber)}
+.cloze-input.correct{border-color:#4CAF50;background:rgba(76,175,80,0.2)}
+.cloze-input.wrong{border-color:#f44336;background:rgba(244,67,54,0.2)}
+.check-btn{background:var(--amber);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;margin-top:16px;display:block;transition:background 0.3s}
+.check-btn:hover{background:#d4811f}
+.cloze-result{margin-top:12px;font-weight:600;font-size:1rem}
+
+/* DRAG DROP */
+.drag-section{margin:24px 0}
+.drag-targets-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.drop-target{background:#f0f9eb;border:3px dashed var(--green);border-radius:12px;padding:16px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background 0.3s}
+.drop-target .target-label{font-size:0.85rem;font-weight:600;color:var(--navy);margin-bottom:8px}
+.drop-target .dropped{background:var(--navy);color:#fff;border-radius:8px;padding:6px 12px;font-size:0.9rem;font-weight:600;cursor:grab;display:none;width:100%;text-align:center}
+.drop-target.filled{border-color:var(--navy);background:#e8ecf0}
+.drop-target.correct-drop{border-color:var(--green);background:#d4edda}
+.drop-target.wrong-drop{border-color:#f44336;background:#fde8e8}
+.draggables{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.drag-item{background:var(--navy);color:#fff;border-radius:10px;padding:10px 18px;cursor:grab;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.95rem;user-select:none;transition:transform 0.2s,box-shadow 0.2s;touch-action:none}
+.drag-item:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+.drag-item.dragging{opacity:0.5}
+.drag-item.placed{display:none}
+.drag-check-btn{background:var(--green);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:background 0.3s}
+.drag-check-btn:hover{background:#5a9a3c}
+.drag-result{margin-top:12px;font-weight:600;font-size:1rem;color:var(--navy)}
+
+/* QUIZ */
+.quiz-wrap{background:var(--navy);border-radius:20px;padding:36px;margin:24px 0}
+.quiz-wrap h3{font-family:'Poppins',sans-serif;color:#fff;font-size:1.4rem;margin-bottom:8px}
+.quiz-progress-bar{height:6px;background:rgba(255,255,255,0.2);border-radius:3px;margin-bottom:28px;overflow:hidden}
+.quiz-fill{height:100%;background:var(--green);border-radius:3px;transition:width 0.5s}
+.q-block{display:none}
+.q-block.active{display:block}
+.q-text{color:#fff;font-size:1.1rem;font-weight:600;margin-bottom:20px;line-height:1.5}
+.q-num{color:var(--amber);font-size:0.85rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.options{display:grid;gap:10px}
+.opt-btn{background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.15);border-radius:10px;padding:14px 20px;color:#fff;font-size:1rem;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:all 0.3s;min-height:48px}
+.opt-btn:hover:not(:disabled){background:rgba(106,176,76,0.2);border-color:var(--green)}
+.opt-btn.correct{background:rgba(76,175,80,0.25);border-color:#4CAF50;color:#a5d6a7}
+.opt-btn.wrong{background:rgba(244,67,54,0.2);border-color:#f44336;color:#ef9a9a}
+.q-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.95rem;font-weight:600;display:none}
+.q-feedback.show{display:block}
+.q-feedback.ok{background:rgba(76,175,80,0.2);color:#a5d6a7}
+.q-feedback.no{background:rgba(244,67,54,0.15);color:#ef9a9a}
+.quiz-nav{display:flex;gap:12px;margin-top:20px;justify-content:space-between;align-items:center}
+.qnav-btn{background:var(--green);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:background 0.3s;min-height:48px}
+.qnav-btn:hover{background:#5a9a3c}
+.qnav-btn:disabled{background:rgba(255,255,255,0.2);cursor:not-allowed}
+.quiz-score{display:none;text-align:center;padding:20px}
+.quiz-score h4{font-family:'Poppins',sans-serif;color:var(--amber);font-size:1.8rem;margin-bottom:8px}
+.quiz-score p{color:rgba(255,255,255,0.8);font-size:1.1rem}
+.quiz-score .score-emoji{font-size:4rem;margin-bottom:12px}
+.restart-btn{background:var(--amber);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;margin-top:16px;transition:background 0.3s}
+.restart-btn:hover{background:#d4811f}
+
+/* MOTHERBOARD TABLE */
+.table-wrap{overflow-x:auto;border-radius:12px;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:1rem}
+th{background:var(--navy);color:#fff;padding:14px 18px;text-align:left;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.95rem}
+td{padding:12px 18px;border-bottom:1px solid #e0e8d8;font-size:0.95rem;color:#2C3E50}
+tr:nth-child(even) td{background:#f7fcf3}
+tr:hover td{background:#e8f5e0}
+
+/* KEY TERM */
+.key-term{font-weight:700;color:var(--green);position:relative;display:inline-block}
+.key-term::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--green);transition:width 0.6s}
+.key-term.drawn::after{width:100%}
+
+/* BOTTOM NAV (mobile) */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy);z-index:999;padding:8px 0;box-shadow:0 -4px 20px rgba(0,0,0,0.3);overflow-x:auto}
+#mobile-nav ul{display:flex;list-style:none;gap:0;white-space:nowrap;padding:0 8px}
+#mobile-nav ul li a{display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.75rem;padding:6px 12px;border-radius:8px;min-width:60px;min-height:48px;justify-content:center;transition:color 0.3s,background 0.3s}
+#mobile-nav ul li a .nav-icon{font-size:1.3rem;margin-bottom:2px}
+#mobile-nav ul li a:hover,#mobile-nav ul li a.active{color:var(--green);background:rgba(106,176,76,0.15)}
+
+/* SCROLL TO TOP */
+#scrolltop{position:fixed;bottom:24px;right:24px;width:48px;height:48px;background:var(--green);color:#fff;border:none;border-radius:50%;font-size:1.4rem;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:800;transition:background 0.3s}
+#scrolltop:hover{background:#5a9a3c}
+#scrolltop.show{display:flex}
+
+/* LAB ACTIVITY */
+.lab-card{background:linear-gradient(135deg,#1a2a3a,#0d1a22);border-radius:20px;padding:36px;margin:24px 0;border:2px solid rgba(106,176,76,0.3)}
+.lab-card h3{font-family:'Poppins',sans-serif;color:var(--amber);font-size:1.3rem;margin-bottom:16px}
+.lab-card p{color:rgba(255,255,255,0.85);margin-bottom:16px;font-size:1rem}
+.lab-q{background:rgba(255,255,255,0.06);border-radius:10px;padding:14px 18px;margin-bottom:10px;color:rgba(255,255,255,0.85);font-size:0.95rem}
+.lab-q strong{color:var(--green)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #sticky-header{padding:10px 16px}
+  .hero-inner{grid-template-columns:1fr;gap:30px;padding:40px 16px}
+  #three-canvas-wrap{min-height:220px}
+  .section-inner{padding:0 16px}
+  .two-col{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .accordion-sidebar{display:block}
+  section{padding:40px 0}
+  #mobile-nav{display:block}
+  body{padding-bottom:80px}
+  .cards-grid{grid-template-columns:1fr}
+  .drag-targets-grid{grid-template-columns:1fr 1fr}
+  .hero-objectives li{font-size:0.9rem}
+  #scrolltop{bottom:80px}
+}
+@media(max-width:480px){
+  .drag-targets-grid{grid-template-columns:1fr}
+  .draggables{gap:8px}
+  .drag-item{font-size:0.85rem;padding:8px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="logo">💻 Digital School</div>
+  <div class="sub">Loading Unit 1: System Unit...</div>
+  <div class="curtain-bar"><div class="curtain-fill" id="curtain-fill"></div></div>
+</div>
+
+<!-- STICKY HEADER -->
+<header id="sticky-header">
+  <div class="header-title">🖥️ Unit 1 — System Unit</div>
+  <div class="progress-dots">
+    <div class="dot active" data-target="hero" title="Intro"></div>
+    <div class="dot" data-target="sec-system" title="System Unit"></div>
+    <div class="dot" data-target="sec-motherboard" title="Motherboard"></div>
+    <div class="dot" data-target="sec-cpu" title="CPU"></div>
+    <div class="dot" data-target="sec-components" title="Components"></div>
+    <div class="dot" data-target="sec-exercises" title="Exercises"></div>
+    <div class="dot" data-target="sec-lab" title="Lab"></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" style="background:linear-gradient(135deg,#2C3E50 0%,#1a252f 60%,#0d1a22 100%);padding-top:80px">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Unit 1 · Grade 4</div>
+      <h1 class="hero-title">The <span>System Unit</span></h1>
+      <p class="hero-desc">Explore the heart of every computer — from the motherboard that connects everything, to the CPU that does all the thinking!</p>
+      <div class="hero-objectives">
+        <h3>🎯 Learning Objectives</h3>
+        <ul>
+          <li>Define the system unit and its role in operations</li>
+          <li>Explain the motherboard and how it connects components</li>
+          <li>Describe the CPU (microprocessor) and its functions</li>
+          <li>Identify the 5 key parts of the CPU: ALU, CU, Clock, Registers, Cache</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div id="three-canvas-wrap">
+        <div class="three-fallback" id="three-fallback">
+          <span>🖥️</span>
+          <p>3D Hardware Model</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOBILE ACCORDION SIDEBAR -->
+<div class="accordion-sidebar section-inner" style="max-width:1500px;margin:0 auto;padding:20px 16px 0">
+  <button class="accordion-btn" onclick="toggleAccordion(this)">📌 Key Concepts <span class="arr">▼</span></button>
+  <div class="accordion-content">
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <span class="concept-chip">System Unit</span>
+      <span class="concept-chip">Motherboard</span>
+      <span class="concept-chip">CPU</span>
+      <span class="concept-chip">ALU</span>
+      <span class="concept-chip">Control Unit</span>
+      <span class="concept-chip">Clock</span>
+      <span class="concept-chip">Registers</span>
+      <span class="concept-chip">Cache</span>
+      <span class="concept-chip">Hardware</span>
+      <span class="concept-chip">Software</span>
+    </div>
+  </div>
+  <button class="accordion-btn" onclick="toggleAccordion(this)">🔤 Vocabulary <span class="arr">▼</span></button>
+  <div class="accordion-content">
+    <ul style="list-style:none;font-size:0.95rem">
+      <li><strong>Hardware:</strong> Physical parts of a computer</li>
+      <li><strong>Software:</strong> Programs and applications</li>
+      <li><strong>CPU:</strong> Central Processing Unit — the brain</li>
+      <li><strong>MHz/GHz:</strong> Speed measurement units</li>
+      <li><strong>Silicon:</strong> Material CPUs are made from</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION: HARDWARE VS SOFTWARE -->
+<section id="sec-system">
+  <div class="section-inner">
+    <div class="two-col">
+      <div>
+        <div class="section-tag">Foundation</div>
+        <h2 class="section-title">Hardware vs <span>Software</span></h2>
+        <p class="fade-para">Computers are made up of both <span class="key-term">software</span> and <span class="key-term">hardware</span>. Software refers to the programs and applications that operate on a computer, while hardware includes the physical components that run these programs.</p>
+        <p class="fade-para" style="margin-top:16px">Unlike software, hardware can be <strong>seen and touched</strong>. The key parts of computer hardware include the CPU, memory, motherboard, graphics card, sound card, and the computer casing.</p>
+        
+        <div class="highlight-box green fade-para">
+          <h4>🖥️ What is the System Unit?</h4>
+          <p>The <strong>System Unit</strong> is the part of a computer that contains the primary devices. It performs operations and produces results for complex calculations. It includes the <strong>motherboard, CPU, RAM</strong>, and other components, as well as the case in which these devices are enclosed.</p>
+        </div>
+
+        <div class="cards-grid" style="grid-template-columns:1fr 1fr;margin-top:24px">
+          <div class="comp-card" style="border-color:#6AB04C">
+            <div class="icon">💾</div>
+            <h3>Software</h3>
+            <p>Programs and applications — cannot be seen or touched. Examples: Windows, Chrome, games.</p>
+          </div>
+          <div class="comp-card" style="border-color:#F0932B">
+            <div class="icon">🔧</div>
+            <h3>Hardware</h3>
+            <p>Physical components you can see and touch. Examples: CPU, keyboard, monitor, RAM.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h4>📌 Key Concepts</h4>
+          <ul>
+            <li>System Unit = computer's core</li>
+            <li>Hardware = physical parts</li>
+            <li>Software = programs</li>
+            <li>CPU = brain of computer</li>
+            <li>Motherboard = connects everything</li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>🔤 Vocabulary</h4>
+          <div>
+            <span class="concept-chip">System Unit</span>
+            <span class="concept-chip">Motherboard</span>
+            <span class="concept-chip">CPU</span>
+            <span class="concept-chip">ALU</span>
+            <span class="concept-chip">Control Unit</span>
+            <span class="concept-chip">Clock</span>
+            <span class="concept-chip">Registers</span>
+            <span class="concept-chip">Cache</span>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h4>⚡ Quick Facts</h4>
+          <ul>
+            <li>CPU speed measured in MHz or GHz</li>
+            <li>Registers hold 8, 16, 32 or 64 bits</li>
+            <li>Motherboard made of layered fiberglass</li>
+            <li>CPU made of silicon chip</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: MOTHERBOARD -->
+<section id="sec-motherboard">
+  <div class="section-inner">
+    <div class="section-tag">Component 1</div>
+    <h2 class="section-title">The <span>Motherboard</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="fade-para">The <span class="key-term">motherboard</span> is the main circuit board that connects all parts of a computer. It contains key components like the CPU, RAM, ROM, ports, and expansion slots.</p>
+        <p class="fade-para" style="margin-top:12px">Similar to a <strong>nervous system</strong>, the motherboard enables communication between all parts of the computer. Made of layered fiberglass, it contains copper circuits that carry electrical signals to different components.</p>
+
+        <div class="highlight-box amber fade-para">
+          <h4>🔌 Input/Output Ports</h4>
+          <p>Devices such as input and output peripherals can be attached, removed, or upgraded through its ports as needed by the user.</p>
+        </div>
+
+        <div class="table-wrap fade-para">
+          <table>
+            <thead>
+              <tr><th>Part</th><th>Function</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Audio Chip</td><td>Processes audio signals for sound input/output</td></tr>
+              <tr><td>PCIe Slots</td><td>Expansion slots for graphics and other cards</td></tr>
+              <tr><td>CPU Socket</td><td>Holds the processor chip securely</td></tr>
+              <tr><td>RAM Slots</td><td>Holds memory modules for temporary storage</td></tr>
+              <tr><td>SATA Connectors</td><td>Connects storage devices like HDD and SSD</td></tr>
+              <tr><td>BIOS Chip</td><td>Stores firmware that boots the computer</td></tr>
+              <tr><td>USB Pin Header</td><td>Connects front-panel USB ports</td></tr>
+              <tr><td>BIOS Battery</td><td>Keeps BIOS settings when power is off</td></tr>
+              <tr><td>Chipset</td><td>Manages data flow between CPU and other parts</td></tr>
+              <tr><td>Power Connectors</td><td>Receives power from the power supply unit</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mermaid-wrap fade-para">
+          <h4 style="font-family:'Poppins',sans-serif;color:var(--navy);margin-bottom:16px;font-size:1.05rem">Motherboard Communication Flow</h4>
+          <div class="mermaid">
+graph LR
+    A[🖱️ Input Devices] --> B[Motherboard]
+    B --> C[CPU]
+    C --> B
+    B --> D[RAM]
+    B --> E[Storage]
+    B --> F[🖥️ Output Devices]
+    style B fill:#6AB04C,color:#fff
+    style C fill:#2C3E50,color:#fff
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h4>🌐 External Ports</h4>
+          <ul>
+            <li>HDMI Port – video output</li>
+            <li>USB Type A – peripheral devices</li>
+            <li>USB Type C – modern devices</li>
+            <li>Ethernet (RJ45) – network</li>
+            <li>DVI Port – video output</li>
+            <li>PS2 Ports – keyboard/mouse</li>
+            <li>Audio Ports – sound in/out</li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>💡 Remember</h4>
+          <ul>
+            <li>Made of layered fiberglass</li>
+            <li>Copper circuits carry signals</li>
+            <li>Like a nervous system</li>
+            <li>Connects ALL computer parts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: CPU -->
+<section id="sec-cpu">
+  <div class="section-inner">
+    <div class="section-tag">Component 2</div>
+    <h2 class="section-title">The <span>Microprocessor (CPU)</span></h2>
+    <div class="two-col">
+      <div>
+        <div class="highlight-box green fade-para">
+          <h4>🧠 What is the CPU?</h4>
+          <p>The <strong>CPU (Central Processing Unit)</strong> or microprocessor is the <strong>brain of the computer</strong>, made up of a silicon chip containing millions of transistors that process data. It performs all the calculations needed to operate the computer with high speed and accuracy.</p>
+        </div>
+
+        <p class="fade-para">The microprocessor receives instructions from software programs and carries them out using its internal components. Every action you take on a computer — clicking, typing, loading a website — involves the CPU processing data at incredible speeds.</p>
+
+        <!-- WORKED EXAMPLE STEP REVEAL -->
+        <div class="step-box fade-para">
+          <h4>⚙️ How the CPU Processes Data — Step by Step</h4>
+          <div id="steps-container">
+            <div class="step-item" id="step1"><span class="step-num">Step 1 →</span> You type a key on the keyboard (Input)</div>
+            <div class="step-item" style="display:none" id="step2"><span class="step-num">Step 2 →</span> The signal travels to the Motherboard via circuits</div>
+            <div class="step-item" style="display:none" id="step3"><span class="step-num">Step 3 →</span> The Control Unit receives and decodes the instruction</div>
+            <div class="step-item" style="display:none" id="step4"><span class="step-num">Step 4 →</span> The ALU performs any needed calculations or comparisons</div>
+            <div class="step-item" style="display:none" id="step5"><span class="step-num">Step 5 →</span> Result is stored temporarily in Registers or Cache</div>
+            <div class="step-item" style="display:none" id="step6"><span class="step-num">Step 6 →</span> Output is sent to the display (Output)</div>
+          </div>
+          <button class="step-btn" id="step-reveal-btn" onclick="revealNextStep()">▶ Show Next Step</button>
+        </div>
+
+        <div class="mermaid-wrap fade-para">
+          <h4 style="font-family:'Poppins',sans-serif;color:var(--navy);margin-bottom:16px;font-size:1.05rem">CPU Architecture</h4>
+          <div class="mermaid">
+graph TD
+    A[🔵 Input Unit] --> S[📦 Storage / Memory]
+    S --> ALU[⚡ Arithmetic Logic Unit]
+    ALU --> S
+    CU[🎮 Control Unit] <--> S
+    CU <--> ALU
+    S --> OUT[🟢 Output Unit]
+    style CU fill:#F0932B,color:#fff
+    style ALU fill:#6AB04C,color:#fff
+    style S fill:#2C3E50,color:#fff
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h4>🔬 CPU Facts</h4>
+          <ul>
+            <li>Made of silicon chip</li>
+            <li>Contains millions of transistors</li>
+            <li>Speed: MHz or GHz</li>
+            <li>Performs all calculations</li>
+            <li>Brain of the computer</li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>⚡ Speed Units</h4>
+          <ul>
+            <li><strong>MHz</strong> = Megahertz (older CPUs)</li>
+            <li><strong>GHz</strong> = Gigahertz (modern CPUs)</li>
+            <li>1 GHz = 1,000 MHz</li>
+            <li>Higher GHz = faster processing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: 5 CPU COMPONENTS -->
+<section id="sec-components">
+  <div class="section-inner">
+    <div class="section-tag">Deep Dive</div>
+    <h2 class="section-title">5 Key Parts of the <span>CPU</span></h2>
+    <p class="fade-para" style="margin-bottom:28px">The CPU (microprocessor) has five key components that work together to process all computer operations:</p>
+    
+    <div class="cards-grid">
+      <div class="comp-card fade-para">
+        <div class="badge">1</div>
+        <div class="icon">➕</div>
+        <h3>Arithmetic Logic Unit (ALU)</h3>
+        <p>Handles <strong>arithmetic operations</strong> (addition, subtraction, multiplication, division) and <strong>logical comparisons</strong> (comparing, selecting, matching data). It is the calculating engine of the CPU.</p>
+      </div>
+      <div class="comp-card fade-para">
+        <div class="badge">2</div>
+        <div class="icon">🎮</div>
+        <h3>Control Unit (CU)</h3>
+        <p>Manages the <strong>flow of data and instructions</strong> between other computer units, coordinating operations like a traffic controller. It tells other parts what to do and when.</p>
+      </div>
+      <div class="comp-card fade-para">
+        <div class="badge">3</div>
+        <div class="icon">⏱️</div>
+        <h3>Clock</h3>
+        <p>Generates <strong>electrical pulses</strong> that dictate the timing of instruction execution. CPU speed is measured in <strong>MHz or GHz</strong>. A faster clock means more instructions per second.</p>
+      </div>
+      <div class="comp-card fade-para">
+        <div class="badge">4</div>
+        <div class="icon">📦</div>
+        <h3>Registers</h3>
+        <p><strong>Temporary storage</strong> for data being processed. Available in sizes of <strong>8, 16, 32, or 64 bits</strong>. Registers are the fastest type of storage inside the CPU — right next to the ALU.</p>
+      </div>
+      <div class="comp-card fade-para">
+        <div class="badge">5</div>
+        <div class="icon">⚡</div>
+        <h3>Cache</h3>
+        <p>A <strong>fast, intermediate storage</strong> inside the microprocessor for temporarily holding processed information. Available as <strong>internal</strong> (inside the CPU) or <strong>external</strong> (outside the CPU) cache.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box navy fade-para" style="margin-top:32px">
+      <h4>🔁 Memory Speed Hierarchy (Fastest → Slowest)</h4>
+      <p>Registers → Cache → RAM → Storage (HDD/SSD) — The closer the storage is to the CPU, the faster it operates!</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: EXERCISES -->
+<section id="sec-exercises">
+  <div class="section-inner">
+    <div class="section-tag">Practice Time</div>
+    <h2 class="section-title">Let's <span>Practice!</span></h2>
+
+    <!-- EXERCISE 1: Multiple Choice Quiz (8-10 questions) -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--navy);margin-bottom:16px">📝 Exercise 1 — Multiple Choice Quiz</h3>
+    <div class="quiz-wrap">
+      <h3>Knowledge Check</h3>
+      <div class="quiz-progress-bar"><div class="quiz-fill" id="quiz-fill"></div></div>
+      
+      <!-- Q1 -->
+      <div class="q-block active" data-q="0">
+        <div class="q-num">Question 1 of 10</div>
+        <div class="q-text">What is the main function of the motherboard?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(0,0,0)">A. To store data permanently</button>
+          <button class="opt-btn" onclick="answerQ(0,1,0)">B. To connect and enable communication between all computer parts</button>
+          <button class="opt-btn" onclick="answerQ(0,2,0)">C. To perform calculations only</button>
+          <button class="opt-btn" onclick="answerQ(0,3,0)">D. To display images on the screen</button>
+        </div>
+        <div class="q-feedback" id="fb0"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block" data-q="1">
+        <div class="q-num">Question 2 of 10</div>
+        <div class="q-text">The microprocessor (CPU) is made up of:</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(1,0,1)">A. Plastic layers</button>
+          <button class="opt-btn" onclick="answerQ(1,1,1)">B. A silicon chip with millions of transistors</button>
+          <button class="opt-btn" onclick="answerQ(1,2,1)">C. Copper wires only</button>
+          <button class="opt-btn" onclick="answerQ(1,3,1)">D. Fiberglass and glass</button>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block" data-q="2">
+        <div class="q-num">Question 3 of 10</div>
+        <div class="q-text">Which part of the CPU performs arithmetic and logic operations?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(2,0,2)">A. Control Unit</button>
+          <button class="opt-btn" onclick="answerQ(2,1,2)">B. Registers</button>
+          <button class="opt-btn" onclick="answerQ(2,2,2)">C. Arithmetic Logic Unit (ALU)</button>
+          <button class="opt-btn" onclick="answerQ(2,3,2)">D. Clock</button>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block" data-q="3">
+        <div class="q-num">Question 4 of 10</div>
+        <div class="q-text">Which component is responsible for coordinating all parts of the computer, like a traffic controller?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(3,0,3)">A. ALU</button>
+          <button class="opt-btn" onclick="answerQ(3,1,3)">B. Cache</button>
+          <button class="opt-btn" onclick="answerQ(3,2,3)">C. Registers</button>
+          <button class="opt-btn" onclick="answerQ(3,3,3)">D. Control Unit</button>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-block" data-q="4">
+        <div class="q-num">Question 5 of 10</div>
+        <div class="q-text">What is the speed of the CPU measured in?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(4,0,4)">A. Bits</button>
+          <button class="opt-btn" onclick="answerQ(4,1,4)">B. Bytes</button>
+          <button class="opt-btn" onclick="answerQ(4,2,4)">C. MHz or GHz</button>
+          <button class="opt-btn" onclick="answerQ(4,3,4)">D. Megapixels</button>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-block" data-q="5">
+        <div class="q-num">Question 6 of 10</div>
+        <div class="q-text">Registers in the CPU are used for:</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(5,0,5)">A. Permanent data storage</button>
+          <button class="opt-btn" onclick="answerQ(5,1,5)">B. Temporary storage of data being processed</button>
+          <button class="opt-btn" onclick="answerQ(5,2,5)">C. Connecting to the internet</button>
+          <button class="opt-btn" onclick="answerQ(5,3,5)">D. Displaying graphics</button>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-block" data-q="6">
+        <div class="q-num">Question 7 of 10</div>
+        <div class="q-text">What does cache memory do in the CPU?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(6,0,6)">A. It connects ports to the motherboard</button>
+          <button class="opt-btn" onclick="answerQ(6,1,6)">B. It permanently saves all your files</button>
+          <button class="opt-btn" onclick="answerQ(6,2,6)">C. It is a fast intermediate storage that temporarily holds processed information</button>
+          <button class="opt-btn" onclick="answerQ(6,3,6)">D. It measures the clock speed</button>
+        </div>
+        <div class="q-feedback" id="fb6"></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-block" data-q="7">
+        <div class="q-num">Question 8 of 10</div>
+        <div class="q-text">The motherboard is made of:</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(7,0,7)">A. Silicon and glass</button>
+          <button class="opt-btn" onclick="answerQ(7,1,7)">B. Layered fiberglass with copper circuits</button>
+          <button class="opt-btn" onclick="answerQ(7,2,7)">C. Plastic and rubber</button>
+          <button class="opt-btn" onclick="answerQ(7,3,7)">D. Steel and aluminum</button>
+        </div>
+        <div class="q-feedback" id="fb7"></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q-block" data-q="8">
+        <div class="q-num">Question 9 of 10</div>
+        <div class="q-text">Software refers to:</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(8,0,8)">A. Physical components that can be seen and touched</button>
+          <button class="opt-btn" onclick="answerQ(8,1,8)">B. Programs and applications that operate on a computer</button>
+          <button class="opt-btn" onclick="answerQ(8,2,8)">C. The casing of the computer</button>
+          <button class="opt-btn" onclick="answerQ(8,3,8)">D. The motherboard connections</button>
+        </div>
+        <div class="q-feedback" id="fb8"></div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-block" data-q="9">
+        <div class="q-num">Question 10 of 10</div>
+        <div class="q-text">How many key components does the CPU have?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answerQ(9,0,9)">A. Three</button>
+          <button class="opt-btn" onclick="answerQ(9,1,9)">B. Four</button>
+          <button class="opt-btn" onclick="answerQ(9,2,9)">C. Five</button>
+          <button class="opt-btn" onclick="answerQ(9,3,9)">D. Seven</button>
+        </div>
+        <div class="q-feedback" id="fb9"></div>
+      </div>
+
+      <div class="quiz-score" id="quiz-score">
+        <div class="score-emoji" id="score-emoji">🏆</div>
+        <h4 id="score-title">Great Job!</h4>
+        <p id="score-text">You scored 0 out of 10</p>
+        <button class="restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="qnav-btn" id="prev-btn" onclick="prevQ()" disabled>← Previous</button>
+        <span style="color:rgba(255,255,255,0.6);font-size:0.9rem" id="q-counter">1 / 10</span>
+        <button class="qnav-btn" id="next-btn" onclick="nextQ()" disabled>Next →</button>
+      </div>
+    </div>
+
+    <!-- EXERCISE 2: FILL IN THE BLANKS (CLOZE) -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--navy);margin:40px 0 16px">✏️ Exercise 2 — Fill in the Blanks</h3>
+    <div class="cloze-box">
+      <h3>Complete the sentences with the correct words</h3>
+      <div class="cloze-text">
+        <p style="margin-bottom:14px">1. The <input type="text" class="cloze-input" data-answer="motherboard" placeholder="?????"> is the main circuit board that connects all parts of the computer.</p>
+        <p style="margin-bottom:14px">2. The CPU, also known as the <input type="text" class="cloze-input" data-answer="microprocessor" placeholder="?????"> , performs all the calculations in the computer.</p>
+        <p style="margin-bottom:14px">3. The <input type="text" class="cloze-input" data-answer="RAM" placeholder="???"> stores and processes data temporarily while the computer is running.</p>
+        <p style="margin-bottom:14px">4. A <input type="text" class="cloze-input" data-answer="motherboard" placeholder="?????"> enables communication between all parts of the computer, similar to a nervous system.</p>
+        <p style="margin-bottom:14px">5. The speed of the CPU is measured in <input type="text" class="cloze-input" data-answer="MHz or GHz" placeholder="?????"> .</p>
+      </div>
+      <button class="check-btn" onclick="checkCloze()">✅ Check Answers</button>
+      <div class="cloze-result" id="cloze-result"></div>
+    </div>
+
+    <!-- EXERCISE 3: TRUE/FALSE -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--navy);margin:40px 0 16px">✔️ Exercise 3 — True or False</h3>
+    <div style="background:#fff;border-radius:16px;padding:28px;border:2px solid #e0e8d8">
+      <div id="tf-container">
+        <div class="tf-item" style="margin-bottom:20px;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>1.</strong> The system unit contains all the primary devices needed to perform operations and calculations.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','1')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','1')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf1" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+        <div class="tf-item" style="margin-bottom:20px;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>2.</strong> Software refers to the physical components of a computer that can be seen and touched.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','2')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','2')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf2" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+        <div class="tf-item" style="margin-bottom:20px;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>3.</strong> The motherboard is the main circuit board that connects and enables communication between all parts of the computer.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','3')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','3')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf3" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+        <div class="tf-item" style="margin-bottom:20px;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>4.</strong> The Arithmetic Logic Unit (ALU) in the CPU is responsible for handling arithmetic operations and logical comparisons.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','4')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','4')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf4" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+        <div class="tf-item" style="margin-bottom:20px;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>5.</strong> The CPU has only one component that handles all its operations.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','5')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','5')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf5" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+        <div class="tf-item" style="margin-bottom:0;padding:16px;background:#f7fcf3;border-radius:12px">
+          <p style="font-size:1rem;margin-bottom:12px"><strong>6.</strong> Cache memory in the CPU is a temporary and fast storage used to hold processed information.</p>
+          <div style="display:flex;gap:12px">
+            <button class="tf-btn" onclick="checkTF(this,'true','6')" style="background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">TRUE</button>
+            <button class="tf-btn" onclick="checkTF(this,'false','6')" style="background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;min-height:48px;font-size:0.95rem">FALSE</button>
+          </div>
+          <div class="tf-result" id="tf6" style="margin-top:8px;display:none;font-weight:600;font-size:0.95rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 5: DRAG AND DROP MATCHING -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--navy);margin:40px 0 16px">🧲 Exercise 5 — Match the Components</h3>
+    <div style="background:#fff;border-radius:16px;padding:28px;border:2px solid #e0e8d8">
+      <p style="margin-bottom:16px;font-size:1rem">Drag each component to its correct function:</p>
+      <div class="draggables" id="draggables">
+        <div class="drag-item" draggable="true" data-id="cpu" id="drag-cpu">CPU</div>
+        <div class="drag-item" draggable="true" data-id="alu" id="drag-alu">ALU</div>
+        <div class="drag-item" draggable="true" data-id="motherboard" id="drag-motherboard">Motherboard</div>
+        <div class="drag-item" draggable="true" data-id="registers" id="drag-registers">Registers</div>
+        <div class="drag-item" draggable="true" data-id="cu" id="drag-cu">Control Unit</div>
+      </div>
+      <div class="drag-targets-grid">
+        <div class="drop-target" data-answer="cpu">
+          <div class="target-label">Brain of the computer</div>
+          <div class="dropped" id="dropped-cpu"></div>
+        </div>
+        <div class="drop-target" data-answer="alu">
+          <div class="target-label">Handles arithmetic and logic operations</div>
+          <div class="dropped" id="dropped-alu"></div>
+        </div>
+        <div class="drop-target" data-answer="motherboard">
+          <div class="target-label">Main circuit board of the computer</div>
+          <div class="dropped" id="dropped-motherboard"></div>
+        </div>
+        <div class="drop-target" data-answer="registers">
+          <div class="target-label">Temporary storage area</div>
+          <div class="dropped" id="dropped-registers"></div>
+        </div>
+        <div class="drop-target" data-answer="cu">
+          <div class="target-label">Controls the flow of data and instructions</div>
+          <div class="dropped" id="dropped-cu"></div>
+        </div>
+      </div>
+      <button class="drag-check-btn" onclick="checkDrag()">✅ Check Matches</button>
+      <div class="drag-result" id="drag-result"></div>
+      <button onclick="resetDrag()" style="background:rgba(44,62,80,0.1);color:var(--navy);border:2px solid var(--navy);padding:10px 20px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;margin-left:12px;margin-top:8px;min-height:48px">🔄 Reset</button>
+    </div>
+
+    <!-- EXERCISE 4: SHORT ANSWERS -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--navy);margin:40px 0 16px">💬 Exercise 4 — Answer the Questions</h3>
+    <div style="background:#fff;border-radius:16px;padding:28px;border:2px solid #e0e8d8">
+      <div style="margin-bottom:24px">
+        <p style="font-weight:600;margin-bottom:8px;font-size:1rem">1. What is the role of the microprocessor in a computer?</p>
+        <textarea style="width:100%;border:2px solid #e0e8d8;border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;outline:none;color:#2C3E50" placeholder="Write your answer here..."></textarea>
+        <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--green);font-weight:600;font-size:0.9rem">💡 Show Answer</summary><div style="background:#e8f5e0;border-radius:8px;padding:12px;margin-top:8px;font-size:0.95rem">The microprocessor (CPU) is the brain of the computer. It is made of a silicon chip with millions of transistors that process data. It performs all calculations needed to operate the computer with high speed and accuracy.</div></details>
+      </div>
+      <div style="margin-bottom:24px">
+        <p style="font-weight:600;margin-bottom:8px;font-size:1rem">2. Explain the function of the Control Unit (CU).</p>
+        <textarea style="width:100%;border:2px solid #e0e8d8;border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;outline:none;color:#2C3E50" placeholder="Write your answer here..."></textarea>
+        <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--green);font-weight:600;font-size:0.9rem">💡 Show Answer</summary><div style="background:#e8f5e0;border-radius:8px;padding:12px;margin-top:8px;font-size:0.95rem">The Control Unit (CU) manages the flow of data and instructions between other computer units. It coordinates operations like a traffic controller, telling each part what to do and when to do it.</div></details>
+      </div>
+      <div style="margin-bottom:24px">
+        <p style="font-weight:600;margin-bottom:8px;font-size:1rem">3. Explain the function of the motherboard.</p>
+        <textarea style="width:100%;border:2px solid #e0e8d8;border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;outline:none;color:#2C3E50" placeholder="Write your answer here..."></textarea>
+        <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--green);font-weight:600;font-size:0.9rem">💡 Show Answer</summary><div style="background:#e8f5e0;border-radius:8px;padding:12px;margin-top:8px;font-size:0.95rem">The motherboard is the main circuit board that connects all parts of the computer. Similar to a nervous system, it enables communication between all computer components. It is made of layered fiberglass with copper circuits.</div></details>
+      </div>
+      <div style="margin-bottom:24px">
+        <p style="font-weight:600;margin-bottom:8px;font-size:1rem">4. What is the purpose of the cache in the CPU?</p>
+        <textarea style="width:100%;border:2px solid #e0e8d8;border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;outline:none;color:#2C3E50" placeholder="Write your answer here..."></textarea>
+        <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--green);font-weight:600;font-size:0.9rem">💡 Show Answer</summary><div style="background:#e8f5e0;border-radius:8px;padding:12px;margin-top:8px;font-size:0.95rem">Cache is a fast, intermediate storage inside the microprocessor for temporarily holding processed information. It can be internal (inside the CPU) or external (outside the CPU).</div></details>
+      </div>
+      <div>
+        <p style="font-weight:600;margin-bottom:8px;font-size:1rem">5. How does the Control Unit manage the operations inside the CPU?</p>
+        <textarea style="width:100%;border:2px solid #e0e8d8;border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;outline:none;color:#2C3E50" placeholder="Write your answer here..."></textarea>
+        <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--green);font-weight:600;font-size:0.9rem">💡 Show Answer</summary><div style="background:#e8f5e0;border-radius:8px;padding:12px;margin-top:8px;font-size:0.95rem">The Control Unit manages data flow between the ALU, registers, cache, and other units. It decodes instructions from programs and directs each component to carry out its specific task, coordinating the timing using the Clock's pulses.</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: LAB ACTIVITY -->
+<section id="sec-lab">
+  <div class="section-inner">
+    <div class="section-tag">Hands-On</div>
+    <h2 class="section-title">🔬 Lab <span>Activity</span></h2>
+    <div class="lab-card">
+      <h3>🛠️ Assemble a Computer!</h3>
+      <p>Using the available hardware, assemble a computer by correctly placing the following components: <strong>CPU, RAM, Motherboard, Power Supply, and Storage Device</strong>. After assembling, test the setup (real or virtual) to ensure it works correctly. Identify any issues if the computer doesn't function properly, and explain how you would fix them.</p>
+      <h4 style="font-family:'Poppins',sans-serif;color:var(--amber);margin:20px 0 12px;font-size:1rem;text-transform:uppercase;letter-spacing:1px">📋 Follow-Up Questions:</h4>
+      <div class="lab-q"><strong>Q1.</strong> If the computer doesn't start, what are the possible issues you would check first?</div>
+      <div class="lab-q"><strong>Q2.</strong> How would you identify whether the RAM is not functioning properly?</div>
+      <div class="lab-q"><strong>Q3.</strong> What happens if the power supply is not connected properly to the motherboard?</div>
+      <div class="lab-q"><strong>Q4.</strong> What part of the assembly process did you find the most challenging? How did you solve it?</div>
+      <div class="lab-q"><strong>Q5.</strong> If you had to upgrade one component in this computer, which one would it be and why?</div>
+    </div>
+
+    <!-- Quick reference diagram using Mermaid -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.3rem;color:var(--navy);margin:32px 0 16px">📊 System Unit Overview</h3>
+    <div class="mermaid-wrap">
+      <div class="mermaid">
+graph TD
+    SU[🖥️ System Unit] --> MB[Motherboard]
+    SU --> CASE[Computer Case]
+    MB --> CPU[CPU / Microprocessor]
+    MB --> RAM[RAM Memory]
+    MB --> STG[Storage Device]
+    MB --> PS[Power Connectors]
+    CPU --> ALU[ALU - Arithmetic Logic Unit]
+    CPU --> CU[Control Unit]
+    CPU --> CLK[Clock]
+    CPU --> REG[Registers]
+    CPU --> CACHE[Cache]
+    style SU fill:#2C3E50,color:#fff
+    style MB fill:#6AB04C,color:#fff
+    style CPU fill:#F0932B,color:#fff
+    style ALU fill:#3498db,color:#fff
+    style CU fill:#9b59b6,color:#fff
+    style CLK fill:#e74c3c,color:#fff
+    style REG fill:#1abc9c,color:#fff
+    style CACHE fill:#e67e22,color:#fff
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCROLL TO TOP -->
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobile-nav">
+  <ul>
+    <li><a href="#hero" class="active"><span class="nav-icon">🏠</span>Intro</a></li>
+    <li><a href="#sec-system"><span class="nav-icon">💻</span>System</a></li>
+    <li><a href="#sec-motherboard"><span class="nav-icon">🔌</span>Board</a></li>
+    <li><a href="#sec-cpu"><span class="nav-icon">🧠</span>CPU</a></li>
+    <li><a href="#sec-components"><span class="nav-icon">⚙️</span>Parts</a></li>
+    <li><a href="#sec-exercises"><span class="nav-icon">📝</span>Practice</a></li>
+    <li><a href="#sec-lab"><span class="nav-icon">🔬</span>Lab</a></li>
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // CURTAIN ANIMATION
+  try {
+    const fill = document.getElementById('curtain-fill');
+    if (fill) {
+      let w = 0;
+      const timer = setInterval(() => {
+        w += 4;
+        fill.style.width = w + '%';
+        if (w >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            const c = document.getElementById('curtain');
+            if (c) c.style.display = 'none';
+          }, 300);
+        }
+      }, 30);
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({startOnLoad:true, theme:'default', fontSize:16});
+    }
+  } catch(e) {}
+
+  // LENIS
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.12, smooth: true });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) {}
+
+  // THREE.JS
+  try {
+    const wrap = document.getElementById('three-canvas-wrap');
+    if (typeof THREE !== 'undefined' && wrap) {
+      let canvas;
+      try {
+        const testCanvas = document.createElement('canvas');
+        const testCtx = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+        if (!testCtx) throw new Error('no webgl');
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a1628);
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        camera.position.set(0, 1.5, 5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setClearColor(0x0a1628, 1);
+        canvas = renderer.domElement;
+        wrap.appendChild(canvas);
+
+        // Motherboard base
+        const boardGeo = new THREE.BoxGeometry(4, 0.1, 3);
+        const boardMat = new THREE.MeshPhongMaterial({ color: 0x1a6b3a });
+        const board = new THREE.Mesh(boardGeo, boardMat);
+        scene.add(board);
+
+        // CPU chip
+        const cpuGeo = new THREE.BoxGeometry(0.8, 0.15, 0.8);
+        const cpuMat = new THREE.MeshPhongMaterial({ color: 0xc0c0c0, shininess: 100 });
+        const cpu = new THREE.Mesh(cpuGeo, cpuMat);
+        cpu.position.set(-0.5, 0.125, 0);
+        scene.add(cpu);
+
+        // CPU label box
+        const lblGeo = new THREE.BoxGeometry(0.6, 0.05, 0.6);
+        const lblMat = new THREE.MeshPhongMaterial({ color: 0x2C3E50 });
+        const lbl = new THREE.Mesh(lblGeo, lblMat);
+        lbl.position.set(-0.5, 0.21, 0);
+        scene.add(lbl);
+
+        // RAM sticks
+        for (let i = 0; i < 2; i++) {
+          const ramGeo = new THREE.BoxGeometry(0.15, 0.6, 1.2);
+          const ramMat = new THREE.MeshPhongMaterial({ color: 0x1a3a6b });
+          const ram = new THREE.Mesh(ramGeo, ramMat);
+          ram.position.set(0.8 + i * 0.25, 0.35, 0.2);
+          scene.add(ram);
+          // Green chips on RAM
+          for (let j = 0; j < 4; j++) {
+            const chipGeo = new THREE.BoxGeometry(0.06, 0.02, 0.08);
+            const chipMat = new THREE.MeshPhongMaterial({ color: 0x4CAF50 });
+            const chip = new THREE.Mesh(chipGeo, chipMat);
+            chip.position.set(0.8 + i * 0.25, 0.05, -0.3 + j * 0.2);
+            scene.add(chip);
+          }
+        }
+
+        // PCIe slot
+        const slotGeo = new THREE.BoxGeometry(2, 0.08, 0.2);
+        const slotMat = new THREE.MeshPhongMaterial({ color: 0xF0932B });
+        const slot = new THREE.Mesh(slotGeo, slotMat);
+        slot.position.set(0, 0.09, -0.9);
+        scene.add(slot);
+
+        // Capacitors
+        for (let i = 0; i < 5; i++) {
+          const capGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.2, 8);
+          const capMat = new THREE.MeshPhongMaterial({ color: 0xe74c3c });
+          const cap = new THREE.Mesh(capGeo, capMat);
+          cap.position.set(-1.5 + i * 0.3, 0.15, 1);
+          scene.add(cap);
+        }
+
+        // Heatsink fins
+        for (let i = 0; i < 5; i++) {
+          const finGeo = new THREE.BoxGeometry(0.6, 0.3 + i * 0.05, 0.04);
+          const finMat = new THREE.MeshPhongMaterial({ color: 0x888888, shininess: 80 });
+          const fin = new THREE.Mesh(finGeo, finMat);
+          fin.position.set(-0.5, 0.28 + i * 0.05, -0.1 + i * 0.05);
+          scene.add(fin);
+        }
+
+        // Lights
+        const amb = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(amb);
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+        dir.position.set(3, 5, 3);
+        scene.add(dir);
+        const pt = new THREE.PointLight(0x6AB04C, 0.5, 10);
+        pt.position.set(-2, 2, 2);
+        scene.add(pt);
+
+        let rotY = 0;
+        function animate() {
+          requestAnimationFrame(animate);
+          rotY += 0.005;
+          board.rotation.y = rotY;
+          cpu.rotation.y = rotY;
+          lbl.rotation.y = rotY;
+          scene.children.forEach(obj => { if (obj !== amb && obj !== dir && obj !== pt) obj.rotation.y = rotY; });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize observer
+        const obs = new ResizeObserver(entries => {
+          const w = entries[0].contentRect.width;
+          const h = Math.min(400, w * 0.56);
+          renderer.setSize(w, h);
+          canvas.style.width = w + 'px';
+          canvas.style.height = h + 'px';
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        });
+        obs.observe(wrap);
+
+        // GSAP scroll rotate
+        if (typeof ScrollTrigger !== 'undefined') {
+          try {
+            gsap.registerPlugin(ScrollTrigger);
+            ScrollTrigger.create({
+              trigger: wrap,
+              start: 'top bottom',
+              end: 'bottom top',
+              onUpdate: self => { rotY = self.progress * Math.PI * 4; }
+            });
+          } catch(e) {}
+        }
+
+      } catch(e) {
+        const fb = document.getElementById('three-fallback');
+        if (fb) { fb.style.display = 'flex'; }
+        if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      }
+    } else {
+      const fb = document.getElementById('three-fallback');
+      if (fb) fb.style.display = 'flex';
+    }
+  } catch(e) {
+    const fb = document.getElementById('three-fallback');
+    if (fb) fb.style.display = 'flex';
+  }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Paragraphs fade in
+      gsap.utils.toArray('.fade-para').forEach((el, i) => {
+        gsap.from(el, {
+          opacity: 0, y: 30, duration: 0.7, delay: i * 0.05,
+          scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+        });
+      });
+
+      // Sidebar slides in from right
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar && window.innerWidth > 768) {
+        gsap.from(sidebar, {
+          x: 80, opacity: 0, duration: 1,
+          scrollTrigger: { trigger: sidebar, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+      }
+
+      // Key term underline draw
+      gsap.utils.toArray('.key-term').forEach(el => {
+        ScrollTrigger.create({
+          trigger: el, start: 'top 90%',
+          onEnter: () => el.classList.add('drawn')
+        });
+      });
+
+      // Cards stagger
+      gsap.utils.toArray('.comp-card').forEach((card, i) => {
+        gsap.from(card, {
+          opacity: 0, y: 40, duration: 0.6, delay: i * 0.1,
+          scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none none' }
+        });
+      });
+
+      // Hero title
+      gsap.from('.hero-title', { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+      gsap.from('.hero-desc', { opacity: 0, y: 30, duration: 0.8, delay: 0.8 });
+      gsap.from('.hero-objectives', { opacity: 0, y: 30, duration: 0.8, delay: 1 });
+    }
+  } catch(e) {}
+
+  // PROGRESS DOTS & SCROLL
+  const dots = document.querySelectorAll('.dot');
+  const sections = ['hero','sec-system','sec-motherboard','sec-cpu','sec-components','sec-exercises','sec-lab'];
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const el = document.getElementById(sections[i]);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    // Progress dots
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+          dots.forEach(d => d.classList.remove('active'));
+          if (dots[i]) dots[i].classList.add('active');
+        }
+      }
+    });
+
+    // Scroll to top btn
+    const st = document.getElementById('scrolltop');
+    if (st) {
+      if (window.scrollY > 400) st.classList.add('show');
+      else st.classList.remove('show');
+    }
+
+    // Mobile nav active
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      const navLinks = document.querySelectorAll('#mobile-nav ul li a');
+      if (el && navLinks[i]) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          navLinks[i].classList.add('active');
+        }
+      }
+    });
+  });
+
+  // DRAG AND DROP SETUP
+  setupDragDrop();
+});
+
+// ACCORDION
+function toggleAccordion(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  if (content) content.classList.toggle('show');
+}
+
+// STEP REVEAL
+let currentStep = 1;
+const totalSteps = 6;
+function revealNextStep() {
+  if (currentStep < totalSteps) {
+    currentStep++;
+    const step = document.getElementById('step' + currentStep);
+    if (step) {
+      step.style.display = 'block';
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.from(step, { opacity: 0, x: -20, duration: 0.5 });
+        }
+      } catch(e) {}
+    }
+    if (currentStep >= totalSteps) {
+      const btn = document.getElementById('step-reveal-btn');
+      if (btn) {
+        btn.textContent = '✅ All Steps Shown!';
+        btn.disabled = true;
+      }
+    }
+  }
+}
+
+// CLOZE
+function checkCloze() {
+  const inputs = document.querySelectorAll('.cloze-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const ans = inp.dataset.answer.toLowerCase().trim();
+    const val = inp.value.toLowerCase().trim();
+    inp.classList.remove('correct','wrong');
+    if (val === ans || (ans === 'motherboard' && val === 'motherboard') || 
+        (ans === 'microprocessor' && val === 'microprocessor') ||
+        (ans === 'ram' && val === 'ram') ||
+        (ans === 'mhz or ghz' && (val === 'mhz or ghz' || val === 'mhz' || val === 'ghz' || val === 'mhz/ghz'))) {
+      inp.classList.add('correct'); correct++;
+    } else if (val.length > 0) {
+      inp.classList.add('wrong');
+    }
+  });
+  const res = document.getElementById('cloze-result');
+  if (res) {
+    const total = inputs.length;
+    if (correct === total) {
+      res.textContent = `🎉 Perfect! All ${total} answers correct!`;
+      res.style.color = '#4CAF50';
+    } else {
+      res.textContent = `✅ ${correct} out of ${total} correct. Keep trying!`;
+      res.style.color = correct > total/2 ? '#F0932B' : '#e74c3c';
+    }
+  }
+}
+
+// TRUE/FALSE
+const tfAnswers = { '1':'true', '2':'false', '3':'true', '4':'true', '5':'false', '6':'true' };
+const tfFeedback = {
+  '1': { t:'✅ Correct! The system unit contains all primary devices.', f:'❌ Incorrect. The system unit DOES contain all primary devices.' },
+  '2': { t:'❌ Incorrect. Software refers to PROGRAMS, not physical components.', f:'✅ Correct! Software refers to programs, not physical hardware.' },
+  '3': { t:'✅ Correct! The motherboard connects all parts.', f:'❌ Incorrect. The motherboard IS the main circuit board connecting all parts.' },
+  '4': { t:'✅ Correct! The ALU handles arithmetic and logical operations.', f:'❌ Incorrect. The ALU DOES handle arithmetic and logic operations.' },
+  '5': { t:'❌ Incorrect. The CPU has FIVE key components.', f:'✅ Correct! The CPU has five components: ALU, CU, Clock, Registers, Cache.' },
+  '6': { t:'✅ Correct! Cache is a fast temporary storage.', f:'❌ Incorrect. Cache IS a fast temporary storage inside the CPU.' }
+};
+
+function checkTF(btn, answer, qNum) {
+  const correct = tfAnswers[qNum];
+  const result = document.getElementById('tf' + qNum);
+  const allBtns = btn.parentElement.querySelectorAll('.tf-btn');
+  allBtns.forEach(b => b.disabled = true);
+  if (result) {
+    result.style.display = 'block';
+    const isCorrect = answer === correct;
+    result.textContent = isCorrect ? tfFeedback[qNum].t : tfFeedback[qNum].f;
+    result.style.color = isCorrect ? '#27ae60' : '#e74c3c';
+    btn.style.outline = '3px solid ' + (isCorrect ? '#27ae60' : '#e74c3c');
+  }
+}
+
+// QUIZ
+const quizData = [
+  { correct: 1, explanation: 'The motherboard\'s main function is to connect and enable communication between all computer parts.' },
+  { correct: 1, explanation: 'The CPU is made up of a silicon chip containing millions of transistors.' },
+  { correct: 2, explanation: 'The ALU (Arithmetic Logic Unit) performs all arithmetic and logic operations.' },
+  { correct: 3, explanation: 'The Control Unit coordinates all parts like a traffic controller.' },
+  { correct: 2, explanation: 'CPU speed is measured in MHz (Megahertz) or GHz (Gigahertz).' },
+  { correct: 1, explanation: 'Registers are temporary storage for data currently being processed.' },
+  { correct: 2, explanation: 'Cache is a fast intermediate storage that temporarily holds processed information.' },
+  { correct: 1, explanation: 'The motherboard is made of layered fiberglass with copper circuits.' },
+  { correct: 1, explanation: 'Software refers to programs and applications, not physical components.' },
+  { correct: 2, explanation: 'The CPU has five key components: ALU, Control Unit, Clock, Registers, and Cache.' }
+];
+
+let currentQ = 0;
+let scores = new Array(10).fill(null);
+let answered = new Array(10).fill(false);
+
+function updateQuizDisplay() {
+  document.querySelectorAll('.q-block').forEach((b, i) => b.classList.toggle('active', i === currentQ));
+  const fill = document.getElementById('quiz-fill');
+  if (fill) fill.style.width = ((currentQ + 1) / 10 * 100) + '%';
+  const counter = document.getElementById('q-counter');
+  if (counter) counter.textContent = (currentQ + 1) + ' / 10';
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  if (prevBtn) prevBtn.disabled = currentQ === 0;
+  if (nextBtn) nextBtn.disabled = !answered[currentQ];
+}
+
+function answerQ(qIdx, optIdx, _) {
+  if (answered[qIdx]) return;
+  answered[qIdx] = true;
+  const correct = quizData[qIdx].correct;
+  const isCorrect = optIdx === correct;
+  scores[qIdx] = isCorrect ? 1 : 0;
+
+  const qBlock = document.querySelectorAll('.q-block')[qIdx];
+  if (qBlock) {
+    const opts = qBlock.querySelectorAll('.opt-btn');
+    opts.forEach((btn, i) => {
+      btn.disabled = true;
+      if (i === correct) btn.classList.add('correct');
+      else if (i === optIdx && !isCorrect) btn.classList.add('wrong');
+    });
+    const fb = document.getElementById('fb' + qIdx);
+    if (fb) {
+      fb.classList.add('show');
+      fb.classList.add(isCorrect ? 'ok' : 'no');
+      fb.textContent = isCorrect ? '✅ Correct! ' + quizData[qIdx].explanation : '❌ Not quite. ' + quizData[qIdx].explanation;
+    }
+  }
+
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) nextBtn.disabled = false;
+
+  // Check if all done
+  if (answered.every(a => a)) {
+    setTimeout(showScore, 1500);
+  }
+}
+
+function nextQ() {
+  if (currentQ < 9) { currentQ++; updateQuizDisplay(); }
+  else showScore();
+}
+
+function prevQ() {
+  if (currentQ > 0) { currentQ--; updateQuizDisplay(); }
+}
+
+function showScore() {
+  const total = scores.filter(s => s === 1).length;
+  const scoreDiv = document.getElementById('quiz-score');
+  const title = document.getElementById('score-title');
+  const text = document.getElementById('score-text');
+  const emoji = document.getElementById('score-emoji');
+  document.querySelectorAll('.q-block').forEach(b => b.style.display = 'none');
+  document.querySelector('.quiz-nav').style.display = 'none';
+  if (scoreDiv) scoreDiv.style.display = 'block';
+  if (text) text.textContent = `You scored ${total} out of 10`;
+  if (emoji) emoji.textContent = total >= 8 ? '🏆' : total >= 5 ? '⭐' : '💪';
+  if (title) title.textContent = total >= 8 ? 'Excellent!' : total >= 5 ? 'Good Job!' : 'Keep Practising!';
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  scores = new Array(10).fill(null);
+  answered = new Array(10).fill(false);
+  document.getElementById('quiz-score').style.display = 'none';
+  document.querySelector('.quiz-nav').style.display = 'flex';
+  document.querySelectorAll('.q-block').forEach(b => {
+    b.style.display = '';
+    b.classList.remove('active');
+    const opts = b.querySelectorAll('.opt-btn');
+    opts.forEach(o => { o.disabled = false; o.classList.remove('correct','wrong'); });
+    const fbs = b.querySelectorAll('.q-feedback');
+    fbs.forEach(f => { f.classList.remove('show','ok','no'); f.textContent = ''; });
+  });
+  updateQuizDisplay();
+}
+
+// DRAG AND DROP
+let draggedItem = null;
+const dragState = {};
+
+function setupDragDrop() {
+  const items = document.querySelectorAll('.drag-item');
+  const targets = document.querySelectorAll('.drop-target');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      item.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', item.dataset.id);
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+
+    // Touch support
+    let touchX, touchY;
+    item.addEventListener('touchstart', e => {
+      draggedItem = item;
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    item.addEventListener('touchmove', e => {
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    item.addEventListener('touchend', () => {
+      const el = document.elementFromPoint(touchX, touchY);
+      const target = el ? el.closest('.drop-target') : null;
+      if (target && draggedItem) {
+        handleDrop(target, draggedItem);
+      }
+      draggedItem = null;
+    });
+  });
+
+  targets.forEach(target => {
+    target.addEventListener('dragover', e => { e.preventDefault(); target.style.background = '#d4edda'; });
+    target.addEventListener('dragleave', () => { target.style.background = ''; });
+    target.addEventListener('drop', e => {
+      e.preventDefault();
+      target.style.background = '';
+      if (draggedItem) handleDrop(target, draggedItem);
+    });
+  });
+}
+
+function handleDrop(target, item) {
+  const answer = target.dataset.answer;
+  const droppedId = item.dataset.id;
+
+  // If target already has something, return item
+  if (dragState[answer]) {
+    const prev = document.getElementById('drag-' + dragState[answer]);
+    if (prev) { prev.classList.remove('placed'); prev.style.display = ''; }
+  }
+
+  dragState[answer] = droppedId;
+  item.classList.add('placed');
+  item.style.display = 'none';
+
+  const dropped = document.getElementById('dropped-' + answer);
+  if (dropped) {
+    dropped.textContent = item.textContent;
+    dropped.style.display = 'block';
+    dropped.dataset.from = droppedId;
+    dropped.onclick = () => returnItem(answer, droppedId);
+    dropped.style.cursor = 'pointer';
+    dropped.title = 'Click to return';
+  }
+  target.classList.add('filled');
+}
+
+function returnItem(answer, itemId) {
+  const item = document.getElementById('drag-' + itemId);
+  if (item) { item.classList.remove('placed'); item.style.display = ''; }
+  const dropped = document.getElementById('dropped-' + answer);
+  if (dropped) { dropped.style.display = 'none'; dropped.textContent = ''; }
+  const target = document.querySelector(`.drop-target[data-answer="${answer}"]`);
+  if (target) { target.classList.remove('filled','correct-drop','wrong-drop'); }
+  delete dragState[answer];
+}
+
+function checkDrag() {
+  const targets = document.querySelectorAll('.drop-target');
+  let correct = 0;
+  targets.forEach(target => {
+    const answer = target.dataset.answer;
+    const placed = dragState[answer];
+    target.classList.remove('correct-drop','wrong-drop');
+    if (placed) {
+      if (placed === answer) { target.classList.add('correct-drop'); correct++; }
+      else { target.classList.add('wrong-drop'); }
+    }
+  });
+  const res = document.getElementById('drag-result');
+  if (res) {
+    const total = targets.length;
+    res.textContent = correct === total ? `🎉 Perfect! All ${total} matches correct!` : `✅ ${correct} out of ${total} correct. Try again!`;
+    res.style.color = correct === total ? '#27ae60' : '#e74c3c';
+  }
+}
+
+function resetDrag() {
+  const targets = document.querySelectorAll('.drop-target');
+  targets.forEach(target => {
+    const answer = target.dataset.answer;
+    target.classList.remove('filled','correct-drop','wrong-drop');
+    target.style.background = '';
+    const dropped = document.getElementById('dropped-' + answer);
+    if (dropped) { dropped.style.display = 'none'; dropped.textContent = ''; }
+  });
+  Object.keys(dragState).forEach(k => delete dragState[k]);
+  const items = document.querySelectorAll('.drag-item');
+  items.forEach(item => { item.classList.remove('placed'); item.style.display = ''; });
+  const res = document.getElementById('drag-result');
+  if (res) { res.textContent = ''; }
+}
+
+// Init quiz display
+updateQuizDisplay();
+</script>
+</body>
+</html>

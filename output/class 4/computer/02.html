@@ -1,0 +1,1358 @@
+<!-- CLASS: 4 | SUBJECT: computer | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Computer Memory | Class 4 Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;color:#2C3E50;background:#fff}
+
+:root{
+  --green:#6AB04C;
+  --navy:#2C3E50;
+  --amber:#F0932B;
+  --light-green:#f0f9ea;
+  --white:#fff;
+  --border-r:12px;
+}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:#2C3E50;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain h2{color:#fff;font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem)}
+.curtain-dots{display:flex;gap:10px}
+.curtain-dot{width:14px;height:14px;border-radius:50%;background:#6AB04C;animation:dotpulse 1.2s ease-in-out infinite}
+.curtain-dot:nth-child(2){animation-delay:.2s}
+.curtain-dot:nth-child(3){animation-delay:.4s}
+@keyframes dotpulse{0%,80%,100%{transform:scale(0.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+
+/* STICKY HEADER */
+#sticky-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(44,62,80,0.97);backdrop-filter:blur(8px);padding:10px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+#sticky-header h2{font-family:'Poppins',sans-serif;font-size:clamp(0.95rem,2vw,1.2rem);color:#fff;font-weight:700;white-space:nowrap}
+.progress-dots{display:flex;gap:8px;align-items:center}
+.progress-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background .3s,transform .3s}
+.progress-dot.active{background:#6AB04C;transform:scale(1.3)}
+
+/* HERO */
+.hero{width:100%;min-height:70vh;background:linear-gradient(135deg,#2C3E50 0%,#3d5a73 50%,#2C3E50 100%);display:flex;align-items:center;justify-content:center;padding:120px 40px 60px;position:relative;overflow:hidden}
+.hero-bg-circles{position:absolute;inset:0;pointer-events:none}
+.hero-circle{position:absolute;border-radius:50%;opacity:.07;background:#6AB04C}
+.hero-content{max-width:1500px;width:100%;margin:0 auto;display:flex;align-items:center;gap:60px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:280px}
+.hero-badge{display:inline-block;background:#6AB04C;color:#fff;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;padding:6px 18px;border-radius:30px;letter-spacing:1px;margin-bottom:18px;text-transform:uppercase}
+.hero-title{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.hero-title span{color:#6AB04C}
+.hero-desc{font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,255,255,0.82);max-width:560px;margin-bottom:30px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px}
+.hero-chip{background:rgba(106,176,76,0.18);border:1.5px solid #6AB04C;color:#a8e08c;font-size:14px;padding:6px 16px;border-radius:20px;font-family:'Poppins',sans-serif;font-weight:600}
+.hero-visual{flex:0 0 320px;display:flex;align-items:center;justify-content:center}
+.hero-icon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.hero-icon-card{background:rgba(255,255,255,0.08);border:1.5px solid rgba(106,176,76,0.3);border-radius:14px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .3s}
+.hero-icon-card:hover{transform:translateY(-4px);background:rgba(106,176,76,0.15)}
+.hero-icon-card .icon{font-size:2.2rem}
+.hero-icon-card span{color:#fff;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;text-align:center}
+
+/* LAYOUT */
+.page-wrapper{max-width:1500px;margin:0 auto;padding:0 40px}
+.content-layout{display:flex;gap:40px;align-items:flex-start;padding:60px 0}
+.main-content{flex:0 0 65%;min-width:0}
+.sidebar{flex:0 0 calc(35% - 40px);position:sticky;top:80px}
+
+/* SECTIONS */
+.section{padding:60px 0}
+.section-alt{background:var(--light-green)}
+.section-inner{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-label{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6AB04C;margin-bottom:10px}
+.section-title{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#2C3E50;margin-bottom:18px}
+.section-desc{font-size:18px;color:#555;max-width:700px;margin-bottom:40px}
+
+/* HIGHLIGHT BOXES */
+.highlight-box{border-left:5px solid var(--green);background:var(--light-green);border-radius:0 var(--border-r) var(--border-r) 0;padding:20px 24px;margin-bottom:22px}
+.highlight-box.amber{border-left-color:var(--amber);background:#fff8f0}
+.highlight-box.navy{border-left-color:var(--navy);background:#f4f6f8}
+.highlight-box h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.15rem);font-weight:700;color:#2C3E50;margin-bottom:6px}
+.highlight-box p,.highlight-box ul{font-size:17px;color:#444}
+.highlight-box ul{margin-left:20px;margin-top:6px}
+.highlight-box ul li{margin-bottom:4px}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;width:100%}
+.info-card{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:26px;border-top:4px solid var(--green);width:100%;max-width:100%;opacity:1;transform:none}
+.info-card.amber-top{border-top-color:var(--amber)}
+.info-card.navy-top{border-top-color:var(--navy)}
+.info-card .card-icon{font-size:2.2rem;margin-bottom:12px}
+.info-card h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.15rem);font-weight:700;color:#2C3E50;margin-bottom:8px}
+.info-card p{font-size:17px;color:#555;line-height:1.65}
+
+/* COMPARISON TABLE */
+.table-wrap{overflow-x:auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:30px}
+table{width:100%;border-collapse:collapse;background:#fff}
+thead tr{background:#2C3E50}
+thead th{color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;padding:16px 20px;text-align:left}
+tbody tr:nth-child(even){background:#f4f6f8}
+tbody tr:hover{background:#e8f5e2}
+tbody td{padding:14px 20px;font-size:16px;color:#333;border-bottom:1px solid #eee;vertical-align:top}
+tbody td:first-child{font-family:'Poppins',sans-serif;font-weight:700;color:#2C3E50}
+
+/* SIDEBAR CARDS */
+.sidebar-card{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);padding:24px;margin-bottom:22px;opacity:1;transform:none}
+.sidebar-card h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.1rem);font-weight:700;color:#2C3E50;margin-bottom:12px;border-bottom:2px solid #6AB04C;padding-bottom:8px}
+.sidebar-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #eee}
+.sidebar-item:last-child{border-bottom:none}
+.sidebar-item .s-icon{font-size:1.5rem;flex-shrink:0}
+.sidebar-item .s-text strong{display:block;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:#2C3E50}
+.sidebar-item .s-text span{font-size:14px;color:#666}
+.did-you-know{background:linear-gradient(135deg,#6AB04C,#4e9234);border-radius:14px;padding:22px;color:#fff;margin-bottom:22px}
+.did-you-know h4{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:8px}
+.did-you-know p{font-size:16px;opacity:.95}
+
+/* MEMORY TYPES VISUAL */
+.memory-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:30px}
+.mem-type-card{border-radius:14px;padding:22px;text-align:center;border:2px solid #e0e0e0;transition:transform .3s,border-color .3s;cursor:default;width:100%;max-width:100%}
+.mem-type-card:hover{transform:translateY(-4px);border-color:var(--green)}
+.mem-type-card .mt-icon{font-size:2.5rem;margin-bottom:10px}
+.mem-type-card h5{font-family:'Poppins',sans-serif;font-size:clamp(0.95rem,2vw,1.1rem);font-weight:700;color:#2C3E50;margin-bottom:6px}
+.mem-type-card p{font-size:15px;color:#666;line-height:1.6}
+.mem-type-card.primary-type{background:#f0f9ea;border-color:#6AB04C}
+.mem-type-card.secondary-type{background:#fff8f0;border-color:#F0932B}
+
+/* STEP BOX */
+.step-box{background:#1e2b38;border-radius:14px;padding:28px;margin-bottom:28px;font-family:'Courier New',monospace}
+.step-box .step-header{color:#6AB04C;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-family:'Inter',sans-serif}
+.step-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;opacity:1;transform:none}
+.step-num{background:#6AB04C;color:#fff;font-weight:700;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Poppins',sans-serif}
+.step-text{color:#e0e0e0;font-size:16px;line-height:1.6;font-family:'Inter',sans-serif}
+.step-text strong{color:#6AB04C}
+
+/* WORKED EXAMPLE */
+.worked-example{background:#fff;border-radius:16px;box-shadow:0 6px 30px rgba(0,0,0,.1);overflow:hidden;margin-bottom:30px}
+.we-header{background:#2C3E50;padding:20px 28px;color:#fff}
+.we-header h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700}
+.we-body{padding:28px}
+.we-step{display:none;animation:fadeSlide .4s ease}
+.we-step.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.we-step-label{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#6AB04C;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.we-step-content{font-size:17px;color:#333;line-height:1.7;margin-bottom:16px}
+.we-step-highlight{background:#f0f9ea;border-left:4px solid #6AB04C;padding:14px 18px;border-radius:0 8px 8px 0;font-size:17px;margin-bottom:16px}
+.we-nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:#6AB04C;color:#fff;border:none;padding:12px 28px;border-radius:30px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:background .3s,transform .2s;min-height:48px}
+.btn-primary:hover{background:#5a9a3c;transform:scale(1.03)}
+.btn-secondary{background:transparent;color:#6AB04C;border:2px solid #6AB04C;padding:11px 26px;border-radius:30px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s;min-height:48px}
+.btn-secondary:hover{background:#6AB04C;color:#fff}
+.we-progress{font-size:15px;color:#888;font-family:'Poppins',sans-serif}
+
+/* FILL BLANKS */
+.cloze-box{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:30px;margin-bottom:30px}
+.cloze-box h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#2C3E50;margin-bottom:20px}
+.cloze-sentence{font-size:17px;color:#333;margin-bottom:18px;line-height:2}
+.cloze-input{border:none;border-bottom:2.5px solid #6AB04C;outline:none;font-size:17px;font-family:'Inter',sans-serif;color:#2C3E50;width:160px;padding:2px 6px;background:transparent;text-align:center;transition:border-color .3s}
+.cloze-input:focus{border-color:#F0932B}
+.cloze-input.correct{border-color:#6AB04C;background:#f0f9ea;color:#3a7a20}
+.cloze-input.wrong{border-color:#e74c3c;background:#fff0f0;color:#c0392b}
+.cloze-feedback{font-size:15px;margin-top:12px;font-family:'Poppins',sans-serif;font-weight:600;min-height:24px}
+
+/* DRAG & DROP */
+.dnd-container{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:30px;margin-bottom:30px}
+.dnd-container h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#2C3E50;margin-bottom:8px}
+.dnd-container p{font-size:17px;color:#666;margin-bottom:20px}
+.dnd-labels{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.dnd-label{background:#2C3E50;color:#fff;padding:10px 20px;border-radius:30px;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:grab;user-select:none;transition:transform .2s,box-shadow .2s;min-height:44px;display:flex;align-items:center}
+.dnd-label:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.dnd-label.dragging{opacity:.5;cursor:grabbing}
+.dnd-label.placed{opacity:.4;cursor:default;pointer-events:none}
+.dnd-targets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.dnd-target{border:2.5px dashed #ccc;border-radius:12px;min-height:80px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:border-color .3s,background .3s;position:relative}
+.dnd-target.dragover{border-color:#6AB04C;background:#f0f9ea}
+.dnd-target.correct{border-color:#6AB04C;background:#f0f9ea}
+.dnd-target.wrong{border-color:#e74c3c;background:#fff0f0}
+.dnd-target-desc{font-size:14px;color:#888;margin-bottom:8px;font-style:italic}
+.dnd-target-placed{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:#2C3E50}
+.dnd-result{font-size:15px;font-family:'Poppins',sans-serif;font-weight:600;color:#6AB04C;margin-top:12px;min-height:22px}
+
+/* QUIZ */
+.quiz-container{background:#fff;border-radius:16px;box-shadow:0 6px 30px rgba(0,0,0,.1);overflow:hidden;margin-bottom:30px}
+.quiz-header{background:#2C3E50;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.quiz-header h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#fff}
+.quiz-counter{font-size:15px;color:rgba(255,255,255,.7);font-family:'Poppins',sans-serif}
+.quiz-body{padding:30px}
+.quiz-q{font-size:18px;font-family:'Poppins',sans-serif;font-weight:600;color:#2C3E50;margin-bottom:20px}
+.quiz-options{display:flex;flex-direction:column;gap:12px;margin-bottom:22px}
+.quiz-option{background:#f8f8f8;border:2px solid #e0e0e0;border-radius:10px;padding:14px 18px;font-size:17px;cursor:pointer;transition:all .3s;text-align:left;font-family:'Inter',sans-serif;min-height:52px;width:100%}
+.quiz-option:hover:not(:disabled){border-color:#6AB04C;background:#f0f9ea}
+.quiz-option.correct{border-color:#6AB04C;background:#f0f9ea;color:#2a6e14}
+.quiz-option.wrong{border-color:#e74c3c;background:#fff0f0;color:#c0392b}
+.quiz-option:disabled{cursor:default}
+.quiz-feedback{font-size:16px;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-family:'Poppins',sans-serif;font-weight:600;min-height:44px}
+.quiz-feedback.correct-fb{background:#f0f9ea;color:#2a6e14;border-left:4px solid #6AB04C}
+.quiz-feedback.wrong-fb{background:#fff0f0;color:#c0392b;border-left:4px solid #e74c3c}
+.quiz-nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.quiz-score{text-align:center;padding:40px 28px}
+.quiz-score .score-num{font-family:'Poppins',sans-serif;font-size:clamp(3rem,8vw,5rem);font-weight:800;color:#6AB04C}
+.quiz-score .score-label{font-size:18px;color:#555;margin-bottom:20px;font-family:'Poppins',sans-serif}
+.quiz-score .score-msg{font-size:18px;color:#333;margin-bottom:24px}
+
+/* TRUE FALSE */
+.tf-container{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:30px;margin-bottom:30px}
+.tf-container h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#2C3E50;margin-bottom:20px}
+.tf-item{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid #eee;flex-wrap:wrap}
+.tf-item:last-child{border-bottom:none}
+.tf-stmt{font-size:17px;color:#333;flex:1;min-width:200px}
+.tf-btns{display:flex;gap:10px;flex-shrink:0}
+.tf-btn{padding:9px 20px;border-radius:30px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #ccc;background:#fff;transition:all .3s;min-height:44px}
+.tf-btn:hover{border-color:#6AB04C;color:#6AB04C}
+.tf-btn.selected-true{background:#6AB04C;border-color:#6AB04C;color:#fff}
+.tf-btn.selected-false{background:#e74c3c;border-color:#e74c3c;color:#fff}
+.tf-btn.correct-ans{background:#f0f9ea;border-color:#6AB04C;color:#2a6e14}
+.tf-btn.wrong-ans{background:#fff0f0;border-color:#e74c3c;color:#c0392b}
+.tf-icon{font-size:1.3rem;margin-left:10px}
+
+/* MATCHING */
+.match-container{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:30px;margin-bottom:30px}
+.match-container h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#2C3E50;margin-bottom:8px}
+.match-container p{font-size:17px;color:#666;margin-bottom:20px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.match-term{background:#2C3E50;color:#fff;padding:13px 18px;border-radius:10px;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .3s;min-height:50px;display:flex;align-items:center}
+.match-term.selected{background:#6AB04C}
+.match-term.matched{background:#4e9234;opacity:.7;cursor:default}
+.match-desc{background:#f8f8f8;border:2px solid #e0e0e0;color:#333;padding:13px 18px;border-radius:10px;font-size:15px;cursor:pointer;transition:all .3s;min-height:50px;display:flex;align-items:center;line-height:1.4}
+.match-desc:hover{border-color:#6AB04C;background:#f0f9ea}
+.match-desc.selected{border-color:#F0932B;background:#fff8f0}
+.match-desc.matched{border-color:#6AB04C;background:#f0f9ea;cursor:default}
+.match-desc.wrong-flash{border-color:#e74c3c;background:#fff0f0;animation:wrongFlash .5s}
+@keyframes wrongFlash{0%,100%{border-color:#e74c3c}50%{border-color:#ff0000}}
+.match-result{font-size:15px;font-family:'Poppins',sans-serif;font-weight:600;color:#6AB04C;min-height:22px}
+
+/* DIAGRAM - Mermaid */
+.diagram-wrap{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:30px;margin-bottom:30px;overflow-x:auto}
+.diagram-wrap h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#2C3E50;margin-bottom:20px}
+.mermaid{display:flex;justify-content:center}
+
+/* ACCORDION (mobile sidebar) */
+.accordion-sidebar{display:none}
+.accordion-item{border-radius:10px;overflow:hidden;margin-bottom:12px;border:1.5px solid #e0e0e0}
+.accordion-btn{width:100%;background:#2C3E50;color:#fff;padding:15px 20px;text-align:left;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.accordion-btn .acc-arrow{transition:transform .3s;font-size:1.2rem}
+.accordion-btn.open .acc-arrow{transform:rotate(180deg)}
+.accordion-content{background:#fff;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.accordion-content.open{max-height:600px;padding:16px}
+
+/* BOTTOM NAV (mobile) */
+#mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#2C3E50;z-index:1001;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 10px;border-top:2px solid #6AB04C}
+#mobile-bottom-nav ul{display:flex;gap:6px;list-style:none;white-space:nowrap;margin:0;padding:0}
+#mobile-bottom-nav ul li a{display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.7);text-decoration:none;padding:6px 12px;border-radius:8px;font-size:13px;font-family:'Poppins',sans-serif;font-weight:600;min-height:52px;justify-content:center;gap:4px;transition:background .3s,color .3s}
+#mobile-bottom-nav ul li a .nav-icon{font-size:1.3rem}
+#mobile-bottom-nav ul li a:hover,#mobile-bottom-nav ul li a.active{background:rgba(106,176,76,.3);color:#fff}
+
+/* LAB ACTIVITY */
+.lab-card{background:linear-gradient(135deg,#2C3E50,#3d5a73);border-radius:16px;padding:30px;color:#fff;margin-bottom:30px}
+.lab-card h4{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:800;color:#6AB04C;margin-bottom:16px}
+.lab-step{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px}
+.lab-step-num{background:#6AB04C;color:#fff;font-weight:800;font-size:15px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Poppins',sans-serif}
+.lab-step-text{font-size:17px;opacity:.9;line-height:1.7}
+.lab-step-text strong{color:#6AB04C;opacity:1}
+
+/* FORMULA (underline draw) */
+.formula-box{display:inline-flex;align-items:center;gap:8px;background:#2C3E50;color:#fff;padding:8px 18px;border-radius:8px;font-family:'Courier New',monospace;font-size:16px;position:relative;overflow:hidden}
+.formula-underline{position:absolute;bottom:0;left:0;height:3px;background:#6AB04C;width:0%;transition:width .8s ease}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .content-layout{flex-direction:column}
+  .sidebar{display:none}
+  .main-content{flex:none;width:100%}
+  .accordion-sidebar{display:block}
+}
+@media(max-width:768px){
+  body{font-size:17px;padding-bottom:80px}
+  .page-wrapper{padding:0 16px}
+  .section-inner{padding:0 16px}
+  #sticky-header{padding:10px 16px}
+  .hero{padding:100px 16px 50px;min-height:60vh}
+  .hero-visual{flex:none;width:100%}
+  .hero-icon-grid{grid-template-columns:repeat(2,1fr)}
+  .cards-grid{grid-template-columns:1fr}
+  .memory-type-grid{grid-template-columns:1fr}
+  .match-grid{grid-template-columns:1fr}
+  .dnd-targets{grid-template-columns:1fr}
+  #mobile-bottom-nav{display:block}
+  .section{padding:40px 0}
+  .content-layout{padding:30px 0}
+}
+@media(max-width:480px){
+  .hero-icon-grid{grid-template-columns:1fr 1fr}
+  .we-nav{flex-direction:column;align-items:flex-start}
+}
+
+/* Paragraph animation base */
+.fade-up{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <h2>🖥️ Loading Lesson...</h2>
+  <div class="curtain-dots">
+    <div class="curtain-dot"></div>
+    <div class="curtain-dot"></div>
+    <div class="curtain-dot"></div>
+  </div>
+</div>
+
+<!-- STICKY HEADER -->
+<header id="sticky-header">
+  <h2>🖥️ Unit 2: Computer Memory</h2>
+  <div class="progress-dots">
+    <div class="progress-dot active" data-section="0" title="Intro" onclick="scrollToSection(0)"></div>
+    <div class="progress-dot" data-section="1" title="Primary Memory" onclick="scrollToSection(1)"></div>
+    <div class="progress-dot" data-section="2" title="Secondary Memory" onclick="scrollToSection(2)"></div>
+    <div class="progress-dot" data-section="3" title="Comparison" onclick="scrollToSection(3)"></div>
+    <div class="progress-dot" data-section="4" title="Exercises" onclick="scrollToSection(4)"></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="section-0">
+  <div class="hero-bg-circles">
+    <div class="hero-circle" style="width:400px;height:400px;top:-100px;right:-80px"></div>
+    <div class="hero-circle" style="width:250px;height:250px;bottom:-60px;left:60px"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">Unit 2 · Class 4</div>
+      <h1 class="hero-title">Computer <span>Memory</span></h1>
+      <p class="hero-desc">Discover how computers store and manage data using Primary Memory (RAM & ROM) and Secondary Memory (HDD, SSD, USB & Cloud).</p>
+      <div class="hero-chips">
+        <span class="hero-chip">📚 Primary Memory</span>
+        <span class="hero-chip">💾 Secondary Memory</span>
+        <span class="hero-chip">⚡ RAM & ROM</span>
+        <span class="hero-chip">☁️ Cloud Storage</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-icon-grid">
+        <div class="hero-icon-card"><div class="icon">🧠</div><span>RAM</span></div>
+        <div class="hero-icon-card"><div class="icon">📀</div><span>ROM</span></div>
+        <div class="hero-icon-card"><div class="icon">💽</div><span>HDD / SSD</span></div>
+        <div class="hero-icon-card"><div class="icon">☁️</div><span>Cloud</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: WHAT IS MEMORY + DIAGRAM -->
+<section class="section" id="section-intro">
+  <div class="section-inner">
+    <div class="content-layout">
+      <div class="main-content">
+        <p class="section-label">Foundations</p>
+        <h2 class="section-title">What is Memory?</h2>
+        <p class="section-desc fade-up">Memory is a component of a computer that stores data and instructions. It allows the computer to quickly access and process information. There are two main categories of memory: <strong>Primary Memory</strong> and <strong>Secondary Memory</strong>.</p>
+
+        <div class="highlight-box fade-up">
+          <h4>💡 Key Definition</h4>
+          <p>Computer memory stores data and instructions so the CPU (Central Processing Unit) can access and process information efficiently. Without memory, the computer cannot run any programs or save any files.</p>
+        </div>
+
+        <div class="diagram-wrap fade-up">
+          <h4>🗂️ Memory Hierarchy Diagram</h4>
+          <div class="mermaid">
+graph TD
+  M[Memory] --> P[Primary Memory]
+  M --> S[Secondary Memory]
+  P --> ROM[ROM]
+  P --> RAM[RAM]
+  ROM --> PROM[PROM]
+  ROM --> EPROM[EPROM]
+  ROM --> EEPROM[EEPROM]
+  RAM --> DRAM[DRAM]
+  RAM --> SRAM[SRAM]
+  S --> HDD[HDD]
+  S --> SSD[SSD]
+  S --> USB[USB Flash Drive]
+
+  style M fill:#2C3E50,color:#fff,stroke:#2C3E50
+  style P fill:#6AB04C,color:#fff,stroke:#6AB04C
+  style S fill:#F0932B,color:#fff,stroke:#F0932B
+  style ROM fill:#4e9234,color:#fff,stroke:#4e9234
+  style RAM fill:#4e9234,color:#fff,stroke:#4e9234
+  style HDD fill:#d4811f,color:#fff,stroke:#d4811f
+  style SSD fill:#d4811f,color:#fff,stroke:#d4811f
+  style USB fill:#d4811f,color:#fff,stroke:#d4811f
+          </div>
+        </div>
+
+        <div class="memory-type-grid fade-up">
+          <div class="mem-type-card primary-type">
+            <div class="mt-icon">⚡</div>
+            <h5>Primary Memory</h5>
+            <p>Fast, temporary memory used while the computer is on. Also called <strong>volatile</strong> memory — data is lost when powered off.</p>
+          </div>
+          <div class="mem-type-card secondary-type">
+            <div class="mt-icon">💾</div>
+            <h5>Secondary Memory</h5>
+            <p>Permanent, long-term storage. Also called <strong>non-volatile</strong> memory — data stays safe even when the computer is off.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h4>📌 Quick Reference</h4>
+          <div class="sidebar-item">
+            <div class="s-icon">🧠</div>
+            <div class="s-text"><strong>RAM</strong><span>Random Access Memory — fast, temporary</span></div>
+          </div>
+          <div class="sidebar-item">
+            <div class="s-icon">📀</div>
+            <div class="s-text"><strong>ROM</strong><span>Read-Only Memory — holds firmware</span></div>
+          </div>
+          <div class="sidebar-item">
+            <div class="s-icon">💽</div>
+            <div class="s-text"><strong>HDD</strong><span>Hard Disk Drive — large, slower storage</span></div>
+          </div>
+          <div class="sidebar-item">
+            <div class="s-icon">⚡</div>
+            <div class="s-text"><strong>SSD</strong><span>Solid State Drive — faster, modern</span></div>
+          </div>
+          <div class="sidebar-item">
+            <div class="s-icon">🔌</div>
+            <div class="s-text"><strong>USB Drive</strong><span>Portable external storage</span></div>
+          </div>
+          <div class="sidebar-item">
+            <div class="s-icon">☁️</div>
+            <div class="s-text"><strong>Cloud</strong><span>Online storage (e.g. Google Drive)</span></div>
+          </div>
+        </div>
+
+        <div class="did-you-know">
+          <h4>🤔 Did You Know?</h4>
+          <p><strong>Firmware</strong> is special software stored in ROM. It gives devices like printers and cameras their basic instructions. It is stored in non-volatile memory and is not changed frequently.</p>
+        </div>
+
+        <div class="sidebar-card">
+          <h4>🎯 Learning Objectives</h4>
+          <ul style="list-style:none;padding:0;font-size:16px;color:#555">
+            <li style="padding:6px 0;border-bottom:1px solid #eee">✅ Define computer memory</li>
+            <li style="padding:6px 0;border-bottom:1px solid #eee">✅ Distinguish primary vs secondary</li>
+            <li style="padding:6px 0;border-bottom:1px solid #eee">✅ Explain RAM and ROM</li>
+            <li style="padding:6px 0">✅ Identify HDD, SSD, USB, Cloud</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <!-- MOBILE ACCORDION SIDEBAR -->
+    <div class="accordion-sidebar">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">📌 Quick Reference <span class="acc-arrow">▼</span></button>
+        <div class="accordion-content">
+          <div style="font-size:16px;color:#333;line-height:1.8">
+            <p>🧠 <strong>RAM</strong> — Random Access Memory, fast and temporary</p>
+            <p>📀 <strong>ROM</strong> — Read-Only Memory, holds firmware</p>
+            <p>💽 <strong>HDD</strong> — Hard Disk Drive, large but slower</p>
+            <p>⚡ <strong>SSD</strong> — Solid State Drive, faster modern storage</p>
+            <p>🔌 <strong>USB Drive</strong> — Portable external storage</p>
+            <p>☁️ <strong>Cloud</strong> — Online storage like Google Drive</p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">🤔 Did You Know? <span class="acc-arrow">▼</span></button>
+        <div class="accordion-content">
+          <p style="font-size:16px;color:#333"><strong>Firmware</strong> is special software stored in ROM. It gives devices their basic instructions and is stored in non-volatile memory (ROM, EPROM, Flash).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: PRIMARY MEMORY -->
+<section class="section section-alt" id="section-1">
+  <div class="section-inner">
+    <p class="section-label">Primary Memory</p>
+    <h2 class="section-title">Primary Memory (Volatile)</h2>
+    <p class="section-desc fade-up">Primary Memory, also known as <strong>volatile memory</strong>, is the memory that a computer uses to store data temporarily while it is in use. When the computer is turned off, all data in primary memory is lost.</p>
+
+    <div class="cards-grid fade-up">
+      <div class="info-card">
+        <div class="card-icon">⚡</div>
+        <h4>Volatility</h4>
+        <p>Data stored in primary memory is <strong>lost when the computer is turned off</strong>. This is why it is called "volatile" — it cannot hold data without power.</p>
+      </div>
+      <div class="info-card amber-top">
+        <div class="card-icon">🚀</div>
+        <h4>Speed</h4>
+        <p>Primary memory is <strong>much faster</strong> than secondary memory. This allows the CPU to quickly access data it needs for processing tasks right now.</p>
+      </div>
+      <div class="info-card navy-top">
+        <div class="card-icon">📏</div>
+        <h4>Capacity</h4>
+        <p>Primary memory has a <strong>smaller capacity</strong> compared to secondary memory. It holds only the data currently being used by the CPU.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:36px 0 20px" class="fade-up">Types of Primary Memory</h3>
+
+    <div class="cards-grid fade-up">
+      <div class="info-card">
+        <div class="card-icon">🧠</div>
+        <h4>RAM — Random Access Memory</h4>
+        <p>This is the <strong>main type of primary memory</strong> used to store data actively being used by the CPU. When you open a program, it loads into RAM for fast access. There are two types: <strong>DRAM</strong> (Dynamic RAM) and <strong>SRAM</strong> (Static RAM).</p>
+      </div>
+      <div class="info-card amber-top">
+        <div class="card-icon">📀</div>
+        <h4>ROM — Read-Only Memory</h4>
+        <p>This type of memory contains <strong>important instructions and data that do not change</strong>. It stores the computer's firmware. Types include <strong>PROM, EPROM,</strong> and <strong>EEPROM</strong>. It is non-volatile — data survives power-off.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box fade-up" style="margin-top:30px">
+      <h4>⭐ Importance of Primary Memory</h4>
+      <ul>
+        <li><strong>Performance:</strong> A larger amount of RAM allows for smoother multitasking and faster processing speeds.</li>
+        <li><strong>Temporary Storage:</strong> Primary memory holds data that the CPU needs immediately, making it crucial for the computer's operation.</li>
+      </ul>
+    </div>
+
+    <!-- WORKED EXAMPLE -->
+    <div class="worked-example fade-up" id="section-worked">
+      <div class="we-header">
+        <h4>🔍 Guided Example: How RAM Works Step by Step</h4>
+      </div>
+      <div class="we-body">
+        <div class="we-step active" id="we-step-1">
+          <div class="we-step-label">Step 1 of 5 — You turn on the computer</div>
+          <div class="we-step-content">When you press the power button, the computer starts up. The CPU needs instructions to begin working.</div>
+          <div class="we-step-highlight">💡 The CPU first reads from <strong>ROM</strong> to get startup instructions (firmware/BIOS).</div>
+        </div>
+        <div class="we-step" id="we-step-2">
+          <div class="we-step-label">Step 2 of 5 — Operating System Loads</div>
+          <div class="we-step-content">The operating system (like Windows or macOS) is stored on the hard drive (secondary memory). It needs to be loaded into RAM for the CPU to use it.</div>
+          <div class="we-step-highlight">💡 Data moves from <strong>HDD/SSD → RAM</strong> so the CPU can access it quickly.</div>
+        </div>
+        <div class="we-step" id="we-step-3">
+          <div class="we-step-label">Step 3 of 5 — You open an application</div>
+          <div class="we-step-content">When you open a game or a word processor, that program is copied from secondary storage into RAM. The more RAM you have, the more programs you can open at once.</div>
+          <div class="we-step-highlight">💡 <strong>More RAM = more programs open at the same time</strong> without slowdown.</div>
+        </div>
+        <div class="we-step" id="we-step-4">
+          <div class="we-step-label">Step 4 of 5 — You save your work</div>
+          <div class="we-step-content">While you are working, your document is in RAM (temporary). When you press Save (Ctrl+S), the data is written to the HDD or SSD (secondary memory) permanently.</div>
+          <div class="we-step-highlight">💡 Always save your work! If the power goes out, anything only in <strong>RAM is lost</strong>.</div>
+        </div>
+        <div class="we-step" id="we-step-5">
+          <div class="we-step-label">Step 5 of 5 — Computer shuts down</div>
+          <div class="we-step-content">When you shut down the computer, all data in RAM is cleared. Only data saved to secondary memory (HDD, SSD, USB, Cloud) remains available next time.</div>
+          <div class="we-step-highlight">✅ <strong>Summary:</strong> RAM = fast, temporary. HDD/SSD = slower, permanent. ROM = startup instructions, non-volatile.</div>
+        </div>
+        <div class="we-nav">
+          <button class="btn-secondary" id="we-prev" onclick="weNav(-1)">← Previous</button>
+          <button class="btn-primary" id="we-next" onclick="weNav(1)">Next Step →</button>
+          <span class="we-progress" id="we-progress">Step 1 / 5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: SECONDARY MEMORY -->
+<section class="section" id="section-2">
+  <div class="section-inner">
+    <p class="section-label">Secondary Memory</p>
+    <h2 class="section-title">Secondary Memory (Non-Volatile)</h2>
+    <p class="section-desc fade-up">Secondary Memory, also known as <strong>non-volatile memory</strong>, is used to store data permanently, even when the computer is turned off. It has much larger capacity than primary memory.</p>
+
+    <div class="highlight-box fade-up">
+      <h4>🔑 Key Features of Secondary Memory</h4>
+      <ul>
+        <li><strong>Non-volatility:</strong> Data stored in secondary memory remains intact even after the computer is powered down.</li>
+        <li><strong>Capacity:</strong> Secondary memory generally has a much larger storage capacity compared to primary memory.</li>
+      </ul>
+    </div>
+
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:36px 0 20px" class="fade-up">Types of Secondary Memory</h3>
+
+    <div class="cards-grid fade-up">
+      <div class="info-card">
+        <div class="card-icon">💽</div>
+        <h4>Hard Disk Drive (HDD)</h4>
+        <p>A traditional storage device that uses <strong>spinning magnetic disks</strong> to read and write data. HDDs have a large capacity but are slower compared to SSDs. They are great for storing large amounts of data cheaply.</p>
+      </div>
+      <div class="info-card amber-top">
+        <div class="card-icon">⚡</div>
+        <h4>Solid State Drive (SSD)</h4>
+        <p>A more modern type of storage that uses <strong>flash memory</strong> to store data. SSDs are significantly faster than HDDs and are becoming increasingly popular in laptops and desktops. No moving parts means they are more durable.</p>
+      </div>
+      <div class="info-card navy-top">
+        <div class="card-icon">🔌</div>
+        <h4>External Storage Devices</h4>
+        <p><strong>USB drives</strong> and external hard drives are portable storage options that allow users to save and transfer data easily. Plug them in to any compatible device and access your files instantly.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">☁️</div>
+        <h4>Cloud Storage</h4>
+        <p>An online storage solution where data is saved on <strong>remote servers</strong>. It allows you to access files from anywhere with an internet connection. Examples: <strong>Google Drive, Dropbox</strong>.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box amber fade-up" style="margin-top:30px">
+      <h4>⭐ Importance of Secondary Memory</h4>
+      <ul>
+        <li><strong>Data Storage:</strong> Secondary memory is where you keep your important files, photos, games, and documents. It is essential for saving your work.</li>
+        <li><strong>Backup and Recovery:</strong> Secondary memory allows for backup copies of data, ensuring you don't lose important information.</li>
+      </ul>
+    </div>
+
+    <!-- STEP BOX: Process of data storage -->
+    <div class="step-box fade-up">
+      <div class="step-header">⚙️ How Data is Stored in Secondary Memory — Step by Step</div>
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text">The CPU processes data in <strong>RAM (Primary Memory)</strong> — this is fast but temporary.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text">When you press <strong>Save</strong>, the data is sent from RAM to secondary memory (HDD, SSD, etc.).</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text">The secondary storage device <strong>writes the data permanently</strong> to its storage medium.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-text">When you need the file again, it is <strong>read from secondary memory back into RAM</strong> for processing.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-text">Cloud storage works the same way but the secondary storage is on <strong>remote internet servers</strong>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: COMPARISON -->
+<section class="section section-alt" id="section-3">
+  <div class="section-inner">
+    <p class="section-label">Comparison</p>
+    <h2 class="section-title">Primary vs Secondary Memory</h2>
+    <p class="section-desc fade-up">Both types of memory play crucial roles in how computers function. Let's compare them side by side to understand their differences clearly.</p>
+
+    <div class="table-wrap fade-up">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Primary Memory</th>
+            <th>Secondary Memory</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Volatility</td>
+            <td>Volatile — data lost when off ⚠️</td>
+            <td>Non-volatile — data retained ✅</td>
+          </tr>
+          <tr>
+            <td>Speed</td>
+            <td>🚀 Faster</td>
+            <td>🐢 Slower</td>
+          </tr>
+          <tr>
+            <td>Capacity</td>
+            <td>Smaller (e.g., 4–32 GB RAM)</td>
+            <td>Larger (e.g., 500 GB – 2 TB HDD)</td>
+          </tr>
+          <tr>
+            <td>Types</td>
+            <td>RAM, ROM</td>
+            <td>HDD, SSD, External Drives, Cloud</td>
+          </tr>
+          <tr>
+            <td>Usage</td>
+            <td>Temporary data storage</td>
+            <td>Permanent data storage</td>
+          </tr>
+          <tr>
+            <td>Location</td>
+            <td>Inside the computer (on motherboard)</td>
+            <td>Inside or outside the computer</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box navy fade-up">
+      <h4>🔄 How They Work Together</h4>
+      <p>Primary memory (RAM) allows for <strong>quick access to active data</strong>, while secondary memory provides <strong>long-term storage</strong> for files and information. By understanding these two types of memory, you will be better equipped to use and manage your computer effectively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: EXERCISES -->
+<section class="section" id="section-4">
+  <div class="section-inner">
+    <p class="section-label">Practice Zone</p>
+    <h2 class="section-title">Exercises & Activities</h2>
+
+    <!-- EXERCISE 1: MCQ QUIZ -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:0 0 20px" class="fade-up">📝 Exercise 1: Multiple Choice Quiz</h3>
+    <div class="quiz-container fade-up">
+      <div class="quiz-header">
+        <h4>Choose the Correct Answer</h4>
+        <span class="quiz-counter" id="quiz-counter">Question 1 / 8</span>
+      </div>
+      <div class="quiz-body" id="quiz-body">
+        <div class="quiz-q" id="quiz-question"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+        <div class="quiz-nav">
+          <button class="btn-primary" id="quiz-next-btn" onclick="quizNext()" style="display:none">Next Question →</button>
+        </div>
+      </div>
+      <div id="quiz-score-panel" style="display:none">
+        <div class="quiz-score">
+          <div class="score-num" id="score-num">0/8</div>
+          <div class="score-label">Your Score</div>
+          <div class="score-msg" id="score-msg"></div>
+          <button class="btn-primary" onclick="restartQuiz()">🔄 Try Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 2: FILL IN THE BLANKS -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">✏️ Exercise 2: Fill in the Blanks</h3>
+    <div class="cloze-box fade-up">
+      <h4>Complete each sentence with the correct word.</h4>
+      <div class="cloze-sentence">1. RAM is considered <input class="cloze-input" id="cl1" placeholder="___?___"> memory because it loses data when the computer is turned off.</div>
+      <div class="cloze-sentence">2. <input class="cloze-input" id="cl2" placeholder="___?___"> drives are used for permanent data storage and are slower than RAM.</div>
+      <div class="cloze-sentence">3. The <input class="cloze-input" id="cl3" placeholder="___?___"> memory is often used to store the computer's operating system and applications.</div>
+      <div class="cloze-sentence">4. When a computer is powered down, any data in RAM is <input class="cloze-input" id="cl4" placeholder="___?___">.</div>
+      <div class="cloze-sentence">5. The main advantage of using SSDs is their <input class="cloze-input" id="cl5" placeholder="___?___"> access speed compared to HDDs.</div>
+      <div class="cloze-sentence">6. <input class="cloze-input" id="cl6" placeholder="___?___"> memory is essential for running applications and processing data quickly.</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:20px">
+        <button class="btn-primary" onclick="checkCloze()">✅ Check Answers</button>
+        <button class="btn-secondary" onclick="resetCloze()">🔄 Reset</button>
+      </div>
+      <div class="cloze-feedback" id="cloze-feedback"></div>
+    </div>
+
+    <!-- EXERCISE 3: TRUE / FALSE -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">✅ Exercise 3: True or False</h3>
+    <div class="tf-container fade-up">
+      <h4>Mark each statement as True or False.</h4>
+      <div id="tf-items"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:20px">
+        <button class="btn-primary" onclick="checkTF()">✅ Check Answers</button>
+        <button class="btn-secondary" onclick="resetTF()">🔄 Reset</button>
+      </div>
+      <div class="tf-result" id="tf-result" style="font-size:16px;font-family:'Poppins',sans-serif;font-weight:600;color:#6AB04C;margin-top:14px;min-height:22px"></div>
+    </div>
+
+    <!-- EXERCISE 4: SHORT ANSWER (Static display) -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">💬 Exercise 4: Short Answer Questions</h3>
+    <div class="cloze-box fade-up">
+      <h4>Answer the following questions. (Click to reveal hints!)</h4>
+      <div id="short-qa"></div>
+    </div>
+
+    <!-- EXERCISE 5: MATCHING -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">🔗 Exercise 5: Match the Terms</h3>
+    <div class="match-container fade-up">
+      <h4>Match each term with its correct description.</h4>
+      <p>Click a term, then click its matching description.</p>
+      <div class="match-grid" id="match-grid"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:16px">
+        <button class="btn-secondary" onclick="resetMatch()">🔄 Reset Matching</button>
+      </div>
+      <div class="match-result" id="match-result"></div>
+    </div>
+
+    <!-- DRAG AND DROP -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">🧩 Bonus: Drag & Drop Sorting</h3>
+    <div class="dnd-container fade-up">
+      <h4>Drag each memory type to the correct category.</h4>
+      <p>Drag the labels below into the correct Primary or Secondary Memory box.</p>
+      <div class="dnd-labels" id="dnd-labels"></div>
+      <div class="dnd-targets" id="dnd-targets"></div>
+      <div class="dnd-result" id="dnd-result"></div>
+      <div style="margin-top:16px">
+        <button class="btn-secondary" onclick="resetDND()">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- LAB ACTIVITY -->
+    <h3 style="font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:#2C3E50;margin:40px 0 20px" class="fade-up">🔬 Lab Activity: The Library of Data</h3>
+    <div class="lab-card fade-up">
+      <h4>🎭 Demonstrate How Data Transfers Between Primary & Secondary Memory</h4>
+      <div class="lab-step">
+        <div class="lab-step-num">1</div>
+        <div class="lab-step-text"><strong>Setup:</strong> Create a "Library" (secondary memory) with books/files for long-term storage and a "Desk" (primary memory) for active work.</div>
+      </div>
+      <div class="lab-step">
+        <div class="lab-step-num">2</div>
+        <div class="lab-step-text"><strong>Role Play:</strong> Assign roles — Library Keeper (fetches books from the library) and Worker (processes tasks on the desk with limited space, like RAM).</div>
+      </div>
+      <div class="lab-step">
+        <div class="lab-step-num">3</div>
+        <div class="lab-step-text"><strong>Task Rotation:</strong> The Worker completes tasks (writing, sorting) using books from the desk, and then the Library Keeper returns them to the library when done.</div>
+      </div>
+      <div style="background:rgba(106,176,76,.15);border-radius:10px;padding:16px;margin-top:16px">
+        <p style="font-size:17px;color:#a8e08c"><strong>🧠 What this shows:</strong> The desk = RAM (limited space, active work). The library = HDD/SSD (lots of storage, but you go there to fetch things). The Library Keeper = the operating system managing data flow!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobile-bottom-nav">
+  <ul>
+    <li><a href="#section-0" class="active"><span class="nav-icon">🏠</span>Home</a></li>
+    <li><a href="#section-intro"><span class="nav-icon">❓</span>Memory</a></li>
+    <li><a href="#section-1"><span class="nav-icon">⚡</span>Primary</a></li>
+    <li><a href="#section-2"><span class="nav-icon">💾</span>Secondary</a></li>
+    <li><a href="#section-3"><span class="nav-icon">📊</span>Compare</a></li>
+    <li><a href="#section-4"><span class="nav-icon">📝</span>Exercises</a></li>
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN DISMISS
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity .5s'; setTimeout(()=>c.style.display='none',500); }
+  }, 2000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis' } });
+    }
+  } catch(e) { console.warn('Mermaid failed', e); }
+
+  // LENIS
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.12, smooth: true });
+      function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed', e); }
+
+  // GSAP
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Sidebar slide in
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        gsap.fromTo(sidebar, { x: 60, opacity: 0 }, {
+          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: sidebar, start: 'top 85%', once: true }
+        });
+      }
+
+      // Fade up paragraphs
+      document.querySelectorAll('.fade-up').forEach(el => {
+        gsap.fromTo(el, { y: 30, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+        });
+      });
+
+      // Cards stagger
+      document.querySelectorAll('.cards-grid').forEach(grid => {
+        const cards = grid.querySelectorAll('.info-card');
+        gsap.fromTo(cards, { y: 40, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power2.out',
+          scrollTrigger: { trigger: grid, start: 'top 88%', once: true }
+        });
+      });
+
+      // Table fade
+      const tw = document.querySelector('.table-wrap');
+      if (tw) {
+        gsap.fromTo(tw, { y: 40, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.8, ease: 'power2.out',
+          scrollTrigger: { trigger: tw, start: 'top 88%', once: true }
+        });
+      }
+
+      // Hero content
+      gsap.fromTo('.hero-text', { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.3 });
+      gsap.fromTo('.hero-icon-card', { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.5)', delay: 0.6 });
+    }
+  } catch(e) { console.warn('GSAP failed', e); }
+
+  // PROGRESS DOTS
+  const sections = ['section-0','section-intro','section-1','section-2','section-3','section-4'];
+  const dots = document.querySelectorAll('.progress-dot');
+  function updateDots() {
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 120 && rect.bottom > 120) {
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[i]) dots[i].classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', updateDots);
+
+  // INIT EXERCISES
+  initQuiz();
+  initTF();
+  initShortQA();
+  initMatch();
+  initDND();
+});
+
+// SCROLL TO SECTION
+function scrollToSection(i) {
+  const ids = ['section-0','section-intro','section-1','section-2','section-3','section-4'];
+  const el = document.getElementById(ids[i]);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ACCORDION
+function toggleAccordion(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+// WORKED EXAMPLE
+let weStep = 1; const weTotalSteps = 5;
+function weNav(dir) {
+  document.getElementById('we-step-' + weStep).classList.remove('active');
+  weStep = Math.max(1, Math.min(weTotalSteps, weStep + dir));
+  document.getElementById('we-step-' + weStep).classList.add('active');
+  document.getElementById('we-progress').textContent = 'Step ' + weStep + ' / ' + weTotalSteps;
+  document.getElementById('we-prev').style.display = weStep === 1 ? 'none' : '';
+  document.getElementById('we-next').textContent = weStep === weTotalSteps ? '✅ Complete!' : 'Next Step →';
+  document.getElementById('we-next').disabled = weStep === weTotalSteps;
+  if (weStep === weTotalSteps) { document.getElementById('we-next').style.opacity = '.5'; }
+  else { document.getElementById('we-next').style.opacity = '1'; }
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo('#we-step-' + weStep, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+    }
+  } catch(e) {}
+}
+document.getElementById('we-prev').style.display = 'none';
+
+// QUIZ DATA
+const quizData = [
+  { q: 'What is the primary function of RAM in a computer?', opts: ['Permanent storage of data', 'Temporary storage of data', 'Backup storage', 'Storing firmware'], ans: 1 },
+  { q: 'Which of the following is a type of secondary memory?', opts: ['RAM', 'ROM', 'Hard Disk Drive (HDD)', 'SRAM'], ans: 2 },
+  { q: 'What does ROM stand for?', opts: ['Read-Only Memory', 'Random Access Memory', 'Real-Time Operating Memory', 'Rapid Output Module'], ans: 0 },
+  { q: 'Which memory type is faster?', opts: ['Secondary Memory', 'Primary Memory', 'Both are equally fast', 'Cloud Storage'], ans: 1 },
+  { q: 'What happens to data in RAM when the computer is turned off?', opts: ['It is saved permanently', 'It is lost', 'It is transferred to secondary memory', 'It stays in ROM'], ans: 1 },
+  { q: 'Which of the following is an example of cloud storage?', opts: ['USB flash drive', 'Google Drive', 'External Hard Drive', 'SSD'], ans: 1 },
+  { q: 'What is the main advantage of SSD over HDD?', opts: ['Larger storage capacity', 'Lower cost', 'Faster data access speeds', 'Uses spinning disks'], ans: 2 },
+  { q: 'Which memory is used to store firmware?', opts: ['RAM', 'ROM', 'HDD', 'USB Drive'], ans: 1 }
+];
+
+let qIdx = 0, qScore = 0, qAnswered = false;
+
+function initQuiz() {
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-score-panel').style.display = 'none';
+  document.getElementById('quiz-body').style.display = '';
+  showQuestion();
+}
+
+function showQuestion() {
+  const d = quizData[qIdx];
+  document.getElementById('quiz-counter').textContent = 'Question ' + (qIdx + 1) + ' / ' + quizData.length;
+  document.getElementById('quiz-question').textContent = (qIdx + 1) + '. ' + d.q;
+  const optsDiv = document.getElementById('quiz-options');
+  optsDiv.innerHTML = '';
+  d.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+    btn.onclick = () => selectAnswer(i);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+  document.getElementById('quiz-next-btn').style.display = 'none';
+  qAnswered = false;
+}
+
+function selectAnswer(i) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const d = quizData[qIdx];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === d.ans) btn.classList.add('correct');
+    if (idx === i && i !== d.ans) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('quiz-feedback');
+  if (i === d.ans) {
+    fb.textContent = '✅ Correct! Well done!';
+    fb.className = 'quiz-feedback correct-fb';
+    qScore++;
+  } else {
+    fb.textContent = '❌ Incorrect. The correct answer is: ' + d.opts[d.ans];
+    fb.className = 'quiz-feedback wrong-fb';
+  }
+  document.getElementById('quiz-next-btn').style.display = '';
+}
+
+function quizNext() {
+  qIdx++;
+  if (qIdx >= quizData.length) {
+    document.getElementById('quiz-body').style.display = 'none';
+    document.getElementById('quiz-score-panel').style.display = '';
+    document.getElementById('score-num').textContent = qScore + '/' + quizData.length;
+    const pct = Math.round((qScore / quizData.length) * 100);
+    let msg = pct >= 80 ? '🌟 Excellent! You are a memory master!' : pct >= 60 ? '👍 Good job! Review the topics you missed.' : '📚 Keep studying! Practice makes perfect.';
+    document.getElementById('score-msg').textContent = msg;
+  } else {
+    showQuestion();
+  }
+}
+
+function restartQuiz() { initQuiz(); }
+
+// CLOZE
+const clozeAnswers = ['volatile', 'hard disk', 'secondary', 'lost', 'faster', 'primary'];
+function checkCloze() {
+  let score = 0;
+  clozeAnswers.forEach((ans, i) => {
+    const inp = document.getElementById('cl' + (i + 1));
+    const val = inp.value.trim().toLowerCase();
+    if (val === ans || (ans === 'hard disk' && (val === 'hard disk' || val === 'hdd' || val === 'hard'))) {
+      inp.classList.add('correct'); inp.classList.remove('wrong'); score++;
+    } else {
+      inp.classList.add('wrong'); inp.classList.remove('correct');
+    }
+  });
+  const fb = document.getElementById('cloze-feedback');
+  fb.textContent = score + '/' + clozeAnswers.length + ' correct! ' + (score === clozeAnswers.length ? '🎉 Perfect score!' : 'Review the incorrect ones.');
+  fb.style.color = score === clozeAnswers.length ? '#6AB04C' : '#e74c3c';
+}
+function resetCloze() {
+  clozeAnswers.forEach((_, i) => {
+    const inp = document.getElementById('cl' + (i + 1));
+    inp.value = '';
+    inp.classList.remove('correct', 'wrong');
+  });
+  document.getElementById('cloze-feedback').textContent = '';
+}
+
+// TRUE/FALSE
+const tfData = [
+  { stmt: 'RAM is a type of secondary memory.', ans: false },
+  { stmt: 'Data in primary memory is lost when the computer is turned off.', ans: true },
+  { stmt: 'HDDs are faster than SSDs.', ans: false },
+  { stmt: 'Cloud storage allows you to access files from any device with an internet connection.', ans: true },
+  { stmt: 'ROM is used for the temporary storage of data.', ans: false }
+];
+let tfUserAnswers = new Array(tfData.length).fill(null);
+
+function initTF() {
+  const container = document.getElementById('tf-items');
+  container.innerHTML = '';
+  tfData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'tf-item';
+    div.innerHTML = `
+      <div class="tf-stmt">${i + 1}. ${item.stmt}</div>
+      <div class="tf-btns">
+        <button class="tf-btn" id="tf-t-${i}" onclick="selectTF(${i}, true)">TRUE</button>
+        <button class="tf-btn" id="tf-f-${i}" onclick="selectTF(${i}, false)">FALSE</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  tfUserAnswers = new Array(tfData.length).fill(null);
+  document.getElementById('tf-result').textContent = '';
+}
+
+function selectTF(i, val) {
+  tfUserAnswers[i] = val;
+  const tBtn = document.getElementById('tf-t-' + i);
+  const fBtn = document.getElementById('tf-f-' + i);
+  tBtn.className = 'tf-btn' + (val === true ? ' selected-true' : '');
+  fBtn.className = 'tf-btn' + (val === false ? ' selected-false' : '');
+}
+
+function checkTF() {
+  let score = 0;
+  tfData.forEach((item, i) => {
+    const tBtn = document.getElementById('tf-t-' + i);
+    const fBtn = document.getElementById('tf-f-' + i);
+    tBtn.disabled = true; fBtn.disabled = true;
+    const userAns = tfUserAnswers[i];
+    if (userAns === item.ans) {
+      score++;
+      if (item.ans === true) { tBtn.classList.add('correct-ans'); }
+      else { fBtn.classList.add('correct-ans'); }
+    } else {
+      if (userAns === true) tBtn.classList.add('wrong-ans');
+      if (userAns === false) fBtn.classList.add('wrong-ans');
+      if (item.ans === true) tBtn.classList.add('correct-ans');
+      else fBtn.classList.add('correct-ans');
+    }
+  });
+  document.getElementById('tf-result').textContent = '✅ Score: ' + score + '/' + tfData.length + (score === tfData.length ? ' — Perfect! 🎉' : ' — Review the answers above.');
+}
+
+function resetTF() { initTF(); }
+
+// SHORT ANSWER
+const shortQA = [
+  { q: 'What are the two main types of computer memory?', a: 'The two main types are Primary Memory (volatile) and Secondary Memory (non-volatile).' },
+  { q: 'What are some types of secondary memory?', a: 'Types of secondary memory include HDD (Hard Disk Drive), SSD (Solid State Drive), USB flash drives, external hard drives, and Cloud Storage.' },
+  { q: 'How does RAM differ from ROM in terms of function?', a: 'RAM stores data temporarily for active use by the CPU and loses data when power is off. ROM stores permanent instructions (firmware) that do not change and retains data when power is off.' },
+  { q: 'What is the purpose of a USB drive in a computer system?', a: 'A USB drive is a portable external storage device that allows users to save, carry, and transfer data between computers easily.' },
+  { q: 'Which type of memory is temporary and which one is permanent?', a: 'Primary memory (RAM) is temporary — it loses data when turned off. Secondary memory (HDD, SSD, etc.) is permanent — it retains data even when the computer is off.' },
+  { q: 'What is Cloud Storage?', a: 'Cloud Storage is an online storage solution where data is saved on remote servers on the internet. It allows you to access your files from any device with an internet connection. Examples include Google Drive and Dropbox.' }
+];
+
+function initShortQA() {
+  const container = document.getElementById('short-qa');
+  container.innerHTML = '';
+  shortQA.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'border-bottom:1px solid #eee;padding:16px 0';
+    div.innerHTML = `
+      <div style="font-size:17px;font-family:Poppins,sans-serif;font-weight:600;color:#2C3E50;margin-bottom:8px">${i+1}. ${item.q}</div>
+      <button class="btn-secondary" style="font-size:14px;padding:8px 18px;min-height:40px" onclick="revealAnswer(this, '${item.a.replace(/'/g,"\\'")}')">💡 Show Answer</button>
+      <div class="qa-answer" style="display:none;margin-top:10px;background:#f0f9ea;border-left:4px solid #6AB04C;padding:12px 16px;border-radius:0 8px 8px 0;font-size:16px;color:#333"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function revealAnswer(btn, answer) {
+  const ansDiv = btn.nextElementSibling;
+  ansDiv.style.display = 'block';
+  ansDiv.textContent = answer;
+  btn.style.display = 'none';
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(ansDiv, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
+    }
+  } catch(e) {}
+}
+
+// MATCHING
+const matchData = [
+  { term: 'RAM', desc: 'Primary memory for active data' },
+  { term: 'ROM', desc: 'Stores the computer\'s firmware' },
+  { term: 'HDD', desc: 'Permanent storage of data' },
+  { term: 'SSD', desc: 'Faster than HDD, uses flash memory' },
+  { term: 'Cloud Storage', desc: 'Access files online from any internet-connected device' }
+];
+
+let matchSelected = null;
+let matchPairs = {};
+
+function initMatch() {
+  const grid = document.getElementById('match-grid');
+  grid.innerHTML = '';
+  matchSelected = null;
+  matchPairs = {};
+
+  const shuffledDescs = [...matchData].map(d => d.desc).sort(() => Math.random() - .5);
+
+  matchData.forEach((item, i) => {
+    const termEl = document.createElement('div');
+    termEl.className = 'match-term';
+    termEl.textContent = item.term;
+    termEl.dataset.term = item.term;
+    termEl.onclick = () => selectMatchTerm(termEl);
+    grid.appendChild(termEl);
+
+    const descEl = document.createElement('div');
+    descEl.className = 'match-desc';
+    descEl.textContent = shuffledDescs[i];
+    descEl.dataset.desc = shuffledDescs[i];
+    descEl.onclick = () => selectMatchDesc(descEl);
+    grid.appendChild(descEl);
+  });
+
+  document.getElementById('match-result').textContent = '';
+}
+
+function selectMatchTerm(el) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('.match-term').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSelected = { type: 'term', el, value: el.dataset.term };
+  checkMatchPair();
+}
+
+function selectMatchDesc(el) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('.match-desc').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSelected = matchSelected && matchSelected.type === 'term'
+    ? { ...matchSelected, descEl: el, descValue: el.dataset.desc }
+    : { type: 'desc', el, value: el.dataset.desc };
+
+  if (matchSelected.type === 'term' && matchSelected.descEl) {
+    const correctPair = matchData.find(d => d.term === matchSelected.value);
+    if (correctPair && correctPair.desc === matchSelected.descValue) {
+      matchSelected.el.classList.add('matched');
+      matchSelected.descEl.classList.add('matched');
+      matchPairs[matchSelected.value] = true;
+      const total = Object.keys(matchPairs).length;
+      if (total === matchData.length) {
+        document.getElementById('match-result').textContent = '🎉 Perfect! All matched correctly!';
+      }
+    } else {
+      matchSelected.descEl.classList.add('wrong-flash');
+      setTimeout(() => { if (matchSelected.descEl) matchSelected.descEl.classList.remove('wrong-flash','selected'); }, 600);
+      matchSelected.el.classList.remove('selected');
+    }
+    matchSelected = null;
+  }
+}
+
+function checkMatchPair() {}
+
+function resetMatch() { initMatch(); }
+
+// DRAG AND DROP
+const dndItems = [
+  { label: 'RAM', category: 'primary' },
+  { label: 'ROM', category: 'primary' },
+  { label: 'HDD', category: 'secondary' },
+  { label: 'SSD', category: 'secondary' },
+  { label: 'USB Drive', category: 'secondary' },
+  { label: 'Cloud Storage', category: 'secondary' }
+];
+
+function initDND() {
+  const labelsDiv = document.getElementById('dnd-labels');
+  const targetsDiv = document.getElementById('dnd-targets');
+  labelsDiv.innerHTML = '';
+  targetsDiv.innerHTML = '';
+  document.getElementById('dnd-result').textContent = '';
+
+  const shuffled = [...dndItems].sort(() => Math.random() - .5);
+  shuffled.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'dnd-label';
+    el.textContent = item.label;
+    el.draggable = true;
+    el.dataset.cat = item.category;
+    el.dataset.label = item.label;
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ label: item.label, cat: item.category }));
+      el.classList.add('dragging');
+    });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    // Touch support
+    el.addEventListener('touchstart', touchStart, { passive: true });
+    el.addEventListener('touchmove', touchMove, { passive: false });
+    el.addEventListener('touchend', touchEnd);
+    labelsDiv.appendChild(el);
+  });
+
+  [{ id: 'primary', title: '⚡ Primary Memory', desc: 'Volatile, fast, temporary' }, { id: 'secondary', title: '💾 Secondary Memory', desc: 'Non-volatile, permanent' }].forEach(cat => {
+    const box = document.createElement('div');
+    box.className = 'dnd-target';
+    box.dataset.cat = cat.id;
+    box.innerHTML = `<div class="dnd-target-desc">${cat.title}<br><small>${cat.desc}</small></div>`;
+    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('dragover'); });
+    box.addEventListener('dragleave', () => box.classList.remove('dragover'));
+    box.addEventListener('drop', e => {
+      e.preventDefault();
+      box.classList.remove('dragover');
+      try {
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        handleDrop(box, data);
+      } catch(err) {}
+    });
+    targetsDiv.appendChild(box);
+  });
+}
+
+let touchDragData = null, touchGhost = null;
+
+function touchStart(e) {
+  const el = e.currentTarget;
+  touchDragData = { label: el.dataset.label, cat: el.dataset.cat, src: el };
+  touchGhost = el.cloneNode(true);
+  touchGhost.style.cssText = 'position:fixed;opacity:.8;pointer-events:none;z-index:9999;transition:none;transform:scale(1.05)';
+  document.body.appendChild(touchGhost);
+}
+function touchMove(e) {
+  if (!touchGhost) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  touchGhost.style.left = (touch.clientX - 40) + 'px';
+  touchGhost.style.top = (touch.clientY - 20) + 'px';
+}
+function touchEnd(e) {
+  if (!touchGhost || !touchDragData) return;
+  const touch = e.changedTouches[0];
+  const targets = document.querySelectorAll('.dnd-target');
+  targets.forEach(box => {
+    const rect = box.getBoundingClientRect();
+    if (touch.clientX >= rect.left && touch.clientX <= rect.right && touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+      handleDrop(box, touchDragData);
+    }
+  });
+  touchGhost.remove(); touchGhost = null; touchDragData = null;
+}
+
+function handleDrop(box, data) {
+  const src = document.querySelector(`.dnd-label[data-label="${data.label}"]`);
+  if (src && src.classList.contains('placed')) return;
+
+  const chip = document.createElement('div');
+  chip.className = 'dnd-target-placed';
+  chip.textContent = data.label;
+
+  if (data.cat === box.dataset.cat) {
+    box.classList.add('correct');
+    chip.style.color = '#2a6e14';
+    if (src) src.classList.add('placed');
+    box.appendChild(chip);
+    checkDNDComplete();
+  } else {
+    box.classList.add('wrong');
+    chip.style.color = '#c0392b';
+    chip.textContent = data.label + ' ✗';
+    box.appendChild(chip);
+    setTimeout(() => {
+      chip.remove();
+      box.classList.remove('wrong');
+    }, 1200);
+  }
+}
+
+function checkDNDComplete() {
+  const allPlaced = document.querySelectorAll('.dnd-label.placed').length;
+  if (allPlaced === dndItems.length) {
+    document.getElementById('dnd-result').textContent = '🎉 All sorted correctly! Great work!';
+  }
+}
+
+function resetDND() { initDND(); }
+
+</script>
+</body>
+</html>
