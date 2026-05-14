@@ -1,0 +1,2854 @@
+<!-- COURSE: Logic Building | LEVEL: 4 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 4 — Step by Step | Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Level 4: Step by Step — Learn algorithms and sequential thinking. Big problems are just small steps in the right order.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0D0D0D;
+    --accent-primary: #00F5A0;
+    --accent-secondary: #00D9F5;
+    --accent-warm: #F5A623;
+    --accent-danger: #FF4757;
+    --text-primary: #FFFFFF;
+    --level-color: #00D9F5;
+    --level-color-dim: rgba(0, 217, 245, 0.15);
+    --level-color-glow: rgba(0, 217, 245, 0.4);
+    --bg-card: #141414;
+    --bg-card-hover: #1a1a1a;
+    --border-subtle: rgba(0, 217, 245, 0.2);
+    --grid-line: rgba(0, 217, 245, 0.07);
+    --text-secondary: rgba(255,255,255,0.7);
+    --text-muted: rgba(255,255,255,0.45);
+    --step-counter-size: 48px;
+    --nav-h: 64px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── BLUEPRINT GRID BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 200px 200px;
+    border-color: rgba(0, 217, 245, 0.12);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── STICKY NAV ─── */
+  .sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 1000;
+  }
+
+  .nav-logo a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--level-color);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-logo a:hover { opacity: 0.8; }
+
+  .nav-center {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+    display: none;
+  }
+
+  .nav-xp {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .xp-display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--level-color);
+    background: var(--level-color-dim);
+    border: 1px solid var(--border-subtle);
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  .urdu-toggle {
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    min-width: 48px; min-height: 48px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .urdu-toggle:hover { border-color: var(--level-color); color: var(--level-color); }
+
+  /* ─── LEVEL PROGRESS BAR ─── */
+  .level-progress-bar {
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    z-index: 999;
+  }
+
+  .level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--level-color), var(--accent-primary));
+    width: 33.33%; /* Level 4 of 12 */
+    transition: width 0.5s ease;
+  }
+
+  /* ─── BREADCRUMB ─── */
+  .breadcrumb {
+    padding: calc(var(--nav-h) + 16px + 3px) 24px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    position: relative; z-index: 1;
+  }
+
+  .breadcrumb a { color: var(--level-color); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb span { color: var(--text-muted); }
+
+  /* ─── CONTAINER ─── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  section {
+    padding: 80px 24px;
+  }
+
+  section .container {
+    padding: 0;
+  }
+
+  @media (max-width: 767px) {
+    section { padding: 48px 16px; }
+    .container { padding: 0; }
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .section-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--level-color);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  /* ─── CARD BASE ─── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px var(--level-color-glow);
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--level-color);
+    color: #0D0D0D;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--level-color-glow);
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--level-color);
+    color: var(--level-color);
+  }
+
+  .btn-outline:hover {
+    background: var(--level-color-dim);
+    transform: translateY(-2px);
+  }
+
+  .btn:focus-visible {
+    outline: 3px solid var(--level-color);
+    outline-offset: 3px;
+  }
+
+  /* ─── ANIMATIONS (entrance) ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { opacity: 1; transform: none; }
+    .fade-up.visible { transition: none; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ─── SLIDE-FROM-RIGHT (step cards) ─── */
+  .slide-right {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  .slide-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* ─── SECTION 1: LEVEL HEADER ─── */
+  .level-header {
+    padding-top: calc(var(--nav-h) + 3px + 40px);
+    padding-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Blueprint corner marks */
+  .blueprint-corner {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-color: var(--level-color);
+    border-style: solid;
+    opacity: 0.4;
+  }
+  .blueprint-corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+  .blueprint-corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+  .blueprint-corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+  .blueprint-corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+  .level-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .level-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--level-color);
+    background: var(--level-color-dim);
+    border: 1px solid var(--border-subtle);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+  }
+
+  .difficulty-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--level-color-dim);
+    border: 1px solid var(--level-color);
+    color: var(--level-color);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .xp-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0D0D0D;
+    background: var(--level-color);
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  .level-title {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.0;
+    margin-bottom: 16px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .level-title span {
+    color: var(--level-color);
+  }
+
+  .level-tagline {
+    font-size: clamp(18px, 3vw, 24px);
+    color: var(--text-secondary);
+    font-style: italic;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 32px;
+    border-left: 3px solid var(--level-color);
+    padding-left: 16px;
+  }
+
+  /* Step counter decorative */
+  .step-counter-deco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .step-counter-deco .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--level-color);
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ─── SECTION 2: WHAT YOU'LL LEARN ─── */
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .outcome-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .outcome-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px var(--level-color-glow);
+  }
+
+  .outcome-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--level-color);
+    opacity: 0.3;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .outcome-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .outcome-text strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ─── WARM-UP ZONE ─── */
+  .warmup-section {
+    background: linear-gradient(135deg, rgba(0,217,245,0.05) 0%, transparent 60%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 767px) {
+    .warmup-section { padding: 24px; }
+  }
+
+  .warmup-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,217,245,0.1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--level-color);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .warmup-question {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .warmup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .warmup-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 54px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .warmup-option:hover {
+    border-color: var(--level-color);
+    color: var(--text-primary);
+    background: var(--level-color-dim);
+  }
+
+  .warmup-option.correct {
+    border-color: var(--accent-primary);
+    background: rgba(0, 245, 160, 0.12);
+    color: var(--accent-primary);
+    animation: correct-pulse 0.5s ease;
+  }
+
+  .warmup-option.wrong {
+    border-color: var(--accent-danger);
+    background: rgba(255, 71, 87, 0.12);
+    color: var(--accent-danger);
+    animation: wrong-shake 0.4s ease;
+  }
+
+  @keyframes correct-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes wrong-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+
+  .option-letter {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: rgba(0,217,245,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--level-color);
+    flex-shrink: 0;
+  }
+
+  .warmup-feedback {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .warmup-feedback.show { display: block; }
+  .warmup-feedback.good { background: rgba(0,245,160,0.12); border: 1px solid var(--accent-primary); color: var(--accent-primary); }
+  .warmup-feedback.retry { background: rgba(255,71,87,0.12); border: 1px solid var(--accent-danger); color: var(--accent-danger); }
+
+  /* ─── CORE CONCEPT ─── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 767px) {
+    .concept-grid { grid-template-columns: 1fr; }
+    .nav-center { display: none; }
+  }
+
+  @media (min-width: 768px) {
+    .nav-center { display: block; }
+  }
+
+  .concept-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .concept-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px var(--level-color-glow);
+  }
+
+  .concept-icon {
+    width: 48px; height: 48px;
+    background: var(--level-color-dim);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 22px;
+  }
+
+  .concept-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .concept-body {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .code-block {
+    background: #0a0a0a;
+    border: 1px solid rgba(0,217,245,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--level-color);
+    margin-top: 12px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .code-block .comment { color: rgba(0,217,245,0.4); }
+  .code-block .keyword { color: #C77DFF; }
+  .code-block .value { color: var(--accent-warm); }
+
+  /* Concept full-width */
+  .concept-full {
+    grid-column: 1 / -1;
+  }
+
+  /* ─── RECIPE SCRAMBLE (INTERACTIVE CHALLENGE) ─── */
+  .scramble-container {
+    margin-top: 32px;
+  }
+
+  .scramble-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 767px) {
+    .scramble-layout { grid-template-columns: 1fr; }
+  }
+
+  .scramble-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 360px;
+  }
+
+  .panel-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--level-color);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--level-color);
+    border-radius: 50%;
+  }
+
+  .step-card {
+    background: rgba(0,217,245,0.06);
+    border: 2px solid rgba(0,217,245,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    user-select: none;
+    min-height: 52px;
+    touch-action: none;
+  }
+
+  .step-card:active { cursor: grabbing; }
+
+  .step-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+
+  .step-card.drag-over {
+    border-color: var(--level-color);
+    background: var(--level-color-dim);
+  }
+
+  .step-card.correct-order {
+    border-color: var(--accent-primary);
+    background: rgba(0,245,160,0.1);
+    color: var(--accent-primary);
+    cursor: default;
+  }
+
+  .drag-handle {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .drag-handle span {
+    display: block;
+    width: 18px; height: 2px;
+    background: rgba(0,217,245,0.4);
+    border-radius: 1px;
+  }
+
+  .step-number-badge {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--level-color-dim);
+    border: 1px solid var(--border-subtle);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--level-color);
+    flex-shrink: 0;
+  }
+
+  .drop-zone {
+    background: rgba(255,255,255,0.02);
+    border: 2px dashed rgba(0,217,245,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+  }
+
+  .drop-zone.drag-over-zone {
+    border-color: var(--level-color);
+    background: var(--level-color-dim);
+  }
+
+  .drop-zone.occupied {
+    border-style: solid;
+    border-color: rgba(0,217,245,0.2);
+    background: rgba(0,217,245,0.06);
+  }
+
+  .scramble-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .scramble-result {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .scramble-result.show { display: block; }
+  .scramble-result.success { background: rgba(0,245,160,0.1); border: 1px solid var(--accent-primary); color: var(--accent-primary); }
+  .scramble-result.fail { background: rgba(255,71,87,0.1); border: 1px solid var(--accent-danger); color: var(--accent-danger); }
+
+  /* ─── ALGORITHM BUILDER ─── */
+  .algo-builder {
+    margin-top: 32px;
+  }
+
+  .algo-blocks-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+
+  .algo-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s;
+    min-height: 48px;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .algo-block:active { cursor: grabbing; }
+
+  .algo-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .algo-block.used { opacity: 0.3; cursor: not-allowed; }
+
+  .block-type-action { background: rgba(0,217,245,0.15); border: 1px solid rgba(0,217,245,0.4); color: var(--level-color); }
+  .block-type-start { background: rgba(0,245,160,0.15); border: 1px solid rgba(0,245,160,0.4); color: var(--accent-primary); }
+  .block-type-end { background: rgba(255,71,87,0.15); border: 1px solid rgba(255,71,87,0.4); color: var(--accent-danger); }
+  .block-type-decision { background: rgba(197,119,255,0.15); border: 1px solid rgba(197,119,255,0.4); color: #C77DFF; }
+
+  .algo-sequence {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 300px;
+    position: relative;
+  }
+
+  .algo-sequence-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sequence-placeholder {
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 0;
+    font-style: italic;
+  }
+
+  .sequence-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(0,217,245,0.06);
+    border: 1px solid rgba(0,217,245,0.2);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    position: relative;
+    animation: slide-in-right 0.35s ease forwards;
+  }
+
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .sequence-step-num {
+    font-size: 10px;
+    color: var(--level-color);
+    background: var(--level-color-dim);
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+  }
+
+  .remove-step {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(255,71,87,0.5);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px;
+    min-width: 28px; min-height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    transition: color 0.2s;
+  }
+
+  .remove-step:hover { color: var(--accent-danger); }
+
+  .algo-drop-target {
+    border: 2px dashed rgba(0,217,245,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 8px;
+    transition: all 0.2s;
+  }
+
+  .algo-drop-target.active {
+    border-color: var(--level-color);
+    background: var(--level-color-dim);
+    color: var(--level-color);
+  }
+
+  .algo-evaluate {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .algo-evaluate.show { display: block; }
+  .algo-evaluate.good { background: rgba(0,245,160,0.1); border: 1px solid var(--accent-primary); color: var(--accent-primary); }
+  .algo-evaluate.partial { background: rgba(245,166,35,0.1); border: 1px solid var(--accent-warm); color: var(--accent-warm); }
+
+  /* ─── THINK DEEPER: SPOT THE BUG ─── */
+  .bug-challenge {
+    margin-top: 32px;
+  }
+
+  .buggy-algorithm {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,71,87,0.3);
+    border-radius: 12px;
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 20px;
+  }
+
+  .buggy-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: var(--text-secondary);
+    border: 2px solid transparent;
+  }
+
+  .buggy-step:hover { background: rgba(255,255,255,0.05); }
+
+  .buggy-step.selected-bug {
+    background: rgba(255,71,87,0.1);
+    border-color: var(--accent-danger);
+    color: var(--accent-danger);
+  }
+
+  .buggy-step.confirmed-bug {
+    background: rgba(255,71,87,0.15);
+    border-color: var(--accent-danger);
+    color: var(--accent-danger);
+  }
+
+  .buggy-step.confirmed-correct {
+    background: rgba(0,245,160,0.1);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .step-indicator {
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .bug-feedback {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .bug-feedback.show { display: block; }
+
+  /* ─── REAL-WORLD ─── */
+  .realworld-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .realworld-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .realworld-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--level-color);
+  }
+
+  .realworld-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px var(--level-color-glow);
+  }
+
+  .realworld-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .realworld-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .realworld-body {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ─── LEVEL COMPLETE / BADGE ─── */
+  .badge-section {
+    text-align: center;
+  }
+
+  .badge-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg-card);
+    border: 2px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 48px 56px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 32px;
+  }
+
+  .badge-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(0,217,245,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .level-badge-svg {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 0 20px var(--level-color-glow));
+    animation: badge-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes badge-glow {
+    0%, 100% { filter: drop-shadow(0 0 20px var(--level-color-glow)); }
+    50% { filter: drop-shadow(0 0 40px rgba(0,217,245,0.7)); }
+  }
+
+  .badge-locked {
+    filter: grayscale(100%) brightness(0.3);
+    animation: none;
+  }
+
+  .badge-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .badge-xp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--level-color);
+    font-weight: 700;
+  }
+
+  .badge-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 360px;
+    text-align: center;
+  }
+
+  .complete-btn {
+    background: var(--level-color);
+    color: #0D0D0D;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .complete-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px var(--level-color-glow);
+  }
+
+  .complete-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .badge-unlocked-msg {
+    display: none;
+    color: var(--accent-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    animation: correct-pulse 0.5s ease;
+  }
+
+  .badge-unlocked-msg.show { display: block; }
+
+  /* ─── NAVIGATION ─── */
+  .level-nav {
+    border-top: 1px solid var(--border-subtle);
+    padding: 40px 24px;
+    position: relative; z-index: 1;
+  }
+
+  .level-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    min-height: 52px;
+    border: 2px solid var(--border-subtle);
+    color: var(--text-secondary);
+    background: var(--bg-card);
+  }
+
+  .nav-btn:hover {
+    border-color: var(--level-color);
+    color: var(--level-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--level-color-glow);
+  }
+
+  .nav-btn-next {
+    background: var(--level-color);
+    color: #0D0D0D;
+    border-color: var(--level-color);
+  }
+
+  .nav-btn-next:hover {
+    color: #0D0D0D;
+    box-shadow: 0 6px 24px var(--level-color-glow);
+  }
+
+  .nav-center-info {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── SECTION SEPARATORS ─── */
+  .section-sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+    margin: 0 24px;
+    position: relative; z-index: 1;
+  }
+
+  /* ─── STEP COUNTER HEADER DECORATION ─── */
+  .step-progress-strip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .step-pip {
+    width: 32px; height: 4px;
+    border-radius: 2px;
+    background: rgba(0,217,245,0.2);
+  }
+
+  .step-pip.active {
+    background: var(--level-color);
+  }
+
+  /* ─── ZARA ALGO BUILDER SPECIFIC ─── */
+  .zara-scenario {
+    background: rgba(0,217,245,0.05);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--level-color);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .zara-scenario strong { color: var(--level-color); }
+
+  .algo-score-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    margin-top: 16px;
+    overflow: hidden;
+  }
+
+  .algo-score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--level-color), var(--accent-primary));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  /* ─── TOOLTIP ─── */
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-wrap .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    z-index: 100;
+  }
+  .tooltip-wrap:hover .tooltip { display: block; }
+
+  /* ─── URDU MODE ─── */
+  .urdu-label { display: none; font-family: 'DM Sans', sans-serif; }
+  body.urdu-mode .urdu-label { display: inline; }
+  body.urdu-mode .eng-label { display: none; }
+  .eng-label { display: inline; }
+
+  /* ─── HIGHLIGHT ROW ─── */
+  .highlight-row {
+    background: rgba(0,217,245,0.06);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .highlight-row .hl-icon {
+    color: var(--level-color);
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .highlight-row p { font-size: 14px; color: var(--text-secondary); }
+  .highlight-row strong { color: var(--text-primary); }
+
+  /* Progress indicator for challenge */
+  .challenge-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .challenge-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .challenge-progress-fill {
+    height: 100%;
+    background: var(--level-color);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── STICKY NAV ─── -->
+<nav class="sticky-nav" role="navigation" aria-label="Course navigation">
+  <div class="nav-logo">
+    <a href="index.html" aria-label="OTS Skills Academy — Home">OTS Skills Academy</a>
+  </div>
+  <div class="nav-center">Logic Building Course</div>
+  <div class="nav-xp">
+    <button class="urdu-toggle" id="urduToggle" aria-label="Toggle Urdu labels" title="Toggle Urdu/English">
+      <span class="eng-label">اردو</span>
+      <span class="urdu-label">EN</span>
+    </button>
+    <div class="xp-display" id="xpCounter" aria-live="polite">⚡ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ─── LEVEL PROGRESS BAR ─── -->
+<div class="level-progress-bar" role="progressbar" aria-valuenow="4" aria-valuemin="1" aria-valuemax="12" aria-label="Level 4 of 12">
+  <div class="level-progress-fill"></div>
+</div>
+
+<!-- ─── BREADCRUMB ─── -->
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span> → </span>
+  <a href="index.html">Logic Building</a>
+  <span> → Level 4</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 — LEVEL HEADER
+════════════════════════════════════════ -->
+<section class="level-header" id="top">
+  <div class="blueprint-corner tl"></div>
+  <div class="blueprint-corner tr"></div>
+  <div class="blueprint-corner bl"></div>
+  <div class="blueprint-corner br"></div>
+
+  <div class="container">
+    <div class="level-meta fade-up">
+      <span class="level-number">LEVEL 04</span>
+      <span class="difficulty-badge">Explorer</span>
+      <span class="xp-badge">250 XP</span>
+    </div>
+
+    <h1 class="level-title fade-up">
+      Step by<br><span>Step</span>
+    </h1>
+
+    <p class="level-tagline fade-up">
+      "Big problems are just small steps in the right order."
+    </p>
+
+    <div class="step-counter-deco fade-up">
+      <span class="dot"></span>
+      <span>STEP 01 → STEP 02 → STEP 03 → ... → DONE</span>
+    </div>
+
+    <div class="step-progress-strip fade-up" aria-hidden="true">
+      <div class="step-pip active"></div>
+      <div class="step-pip active"></div>
+      <div class="step-pip active"></div>
+      <div class="step-pip active"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 — WHAT YOU'LL LEARN
+════════════════════════════════════════ -->
+<section id="outcomes" aria-labelledby="outcomes-heading">
+  <div class="container">
+    <span class="section-label fade-up">What You'll Learn</span>
+    <h2 id="outcomes-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      Your Learning Outcomes
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:560px;">
+      By the end of this level you will be able to think in sequences — the foundation of every algorithm ever written.
+    </p>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card fade-up" style="transition-delay:0.1s">
+        <div class="outcome-number">01</div>
+        <div class="outcome-text">
+          <strong>Define an Algorithm</strong>
+          Explain what an algorithm is in plain language — no code required.
+        </div>
+      </div>
+      <div class="outcome-card fade-up" style="transition-delay:0.2s">
+        <div class="outcome-number">02</div>
+        <div class="outcome-text">
+          <strong>Write Step-by-Step Instructions</strong>
+          Break any task into clear, ordered steps that anyone can follow.
+        </div>
+      </div>
+      <div class="outcome-card fade-up" style="transition-delay:0.3s">
+        <div class="outcome-number">03</div>
+        <div class="outcome-text">
+          <strong>Order a Scrambled Sequence</strong>
+          Rearrange disordered steps into the correct logical sequence.
+        </div>
+      </div>
+      <div class="outcome-card fade-up" style="transition-delay:0.4s">
+        <div class="outcome-number">04</div>
+        <div class="outcome-text">
+          <strong>Spot a Bug in a Sequence</strong>
+          Identify a step that is wrong, out of order, or missing.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — WARM-UP ZONE
+════════════════════════════════════════ -->
+<section id="warmup" aria-labelledby="warmup-heading">
+  <div class="container">
+    <span class="section-label fade-up">Warm-Up Zone</span>
+    <h2 id="warmup-heading" class="fade-up" style="font-size: clamp(24px,4vw,36px); margin-bottom: 8px;">
+      Quick Start: What Comes First?
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:600px; margin-bottom:24px;">
+      No pressure — this is just a warm-up. Choose the best answer for each question.
+    </p>
+
+    <div class="warmup-section fade-up" id="warmupContainer">
+      <div class="warmup-label" aria-label="Warm-up activity">⚡ Low Stakes — Just Think</div>
+
+      <!-- Q1 -->
+      <div id="wq1" class="warmup-q">
+        <p class="warmup-question">
+          <strong style="color:var(--level-color)">Question 1 of 2</strong><br>
+          You want to make a cup of tea. Which of these is the <em>correct order</em> for the first two steps?
+        </p>
+        <div class="warmup-options" role="group" aria-label="Question 1 options">
+          <button class="warmup-option" data-correct="false" onclick="checkWarmup(this,'wq1',false)" aria-label="Option A: Pour milk, then boil water">
+            <span class="option-letter">A</span>
+            Pour milk → Boil water
+          </button>
+          <button class="warmup-option" data-correct="true" onclick="checkWarmup(this,'wq1',true)" aria-label="Option B: Boil water, then add tea bag">
+            <span class="option-letter">B</span>
+            Boil water → Add tea bag
+          </button>
+          <button class="warmup-option" data-correct="false" onclick="checkWarmup(this,'wq1',false)" aria-label="Option C: Drink tea, then boil water">
+            <span class="option-letter">C</span>
+            Drink tea → Boil water
+          </button>
+        </div>
+        <div class="warmup-feedback" id="wq1fb"></div>
+      </div>
+
+      <!-- Q2 (hidden initially) -->
+      <div id="wq2" class="warmup-q" style="display:none; margin-top:28px;">
+        <p class="warmup-question">
+          <strong style="color:var(--level-color)">Question 2 of 2</strong><br>
+          A computer follows your instructions <em>exactly</em>. If you say "put on shoes THEN put on socks", what happens?
+        </p>
+        <div class="warmup-options" role="group" aria-label="Question 2 options">
+          <button class="warmup-option" data-correct="false" onclick="checkWarmup(this,'wq2',false)" aria-label="Option A: It figures out the right order automatically">
+            <span class="option-letter">A</span>
+            It figures out the right order automatically
+          </button>
+          <button class="warmup-option" data-correct="true" onclick="checkWarmup(this,'wq2',true)" aria-label="Option B: It puts shoes on before socks — exactly as told">
+            <span class="option-letter">B</span>
+            It puts shoes on before socks — exactly as told
+          </button>
+          <button class="warmup-option" data-correct="false" onclick="checkWarmup(this,'wq2',false)" aria-label="Option C: It asks you if you are sure">
+            <span class="option-letter">C</span>
+            It asks you "Are you sure?" before doing it
+          </button>
+        </div>
+        <div class="warmup-feedback" id="wq2fb"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 — CORE CONCEPT
+════════════════════════════════════════ -->
+<section id="concept" aria-labelledby="concept-heading">
+  <div class="container">
+    <span class="section-label fade-up">Core Concept</span>
+    <h2 id="concept-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      What is an Algorithm?
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:620px; margin-bottom:32px;">
+      An algorithm is simply a set of clear, ordered steps to solve a problem or complete a task. You already use algorithms every day — you just didn't know they had a name.
+    </p>
+
+    <div class="concept-grid">
+
+      <div class="concept-card slide-right" style="transition-delay:0.05s">
+        <div class="concept-icon">📋</div>
+        <div class="concept-title">A Recipe is an Algorithm</div>
+        <div class="concept-body">
+          Every recipe tells you exactly what to do, in what order. Skip a step or do them out of order and the dish goes wrong. That's an algorithm in the kitchen.
+          <div class="code-block"><span class="comment">// Recipe Algorithm</span>
+<span class="keyword">STEP 1:</span> <span class="value">Heat oil in pan</span>
+<span class="keyword">STEP 2:</span> <span class="value">Add onions</span>
+<span class="keyword">STEP 3:</span> <span class="value">Stir for 3 minutes</span>
+<span class="keyword">STEP 4:</span> <span class="value">Add tomatoes</span>
+<span class="keyword">DONE</span></div>
+        </div>
+      </div>
+
+      <div class="concept-card slide-right" style="transition-delay:0.1s">
+        <div class="concept-icon">🗺️</div>
+        <div class="concept-title">Directions are an Algorithm</div>
+        <div class="concept-body">
+          "Turn left at the signal, then go straight for 200 metres, then turn right at the school." These are ordered steps — an algorithm for finding a location.
+          <div class="code-block"><span class="comment">// Navigation Algorithm</span>
+<span class="keyword">STEP 1:</span> <span class="value">Start at home</span>
+<span class="keyword">STEP 2:</span> <span class="value">Turn left at signal</span>
+<span class="keyword">STEP 3:</span> <span class="value">Go straight 200m</span>
+<span class="keyword">STEP 4:</span> <span class="value">Turn right at school</span>
+<span class="keyword">ARRIVE</span></div>
+        </div>
+      </div>
+
+      <div class="concept-card slide-right" style="transition-delay:0.15s">
+        <div class="concept-icon">👟</div>
+        <div class="concept-title">Tying Shoes is an Algorithm</div>
+        <div class="concept-body">
+          You learned to tie your shoes in exact steps. If you cross the laces before making the loop, it doesn't work. Order matters — always.
+        </div>
+      </div>
+
+      <div class="concept-card slide-right" style="transition-delay:0.2s">
+        <div class="concept-icon">📐</div>
+        <div class="concept-title">The 3 Rules of a Good Algorithm</div>
+        <div class="concept-body">
+          <div class="highlight-row">
+            <span class="hl-icon">①</span>
+            <p><strong>Clear</strong> — Every step is unambiguous. No guessing.</p>
+          </div>
+          <div class="highlight-row">
+            <span class="hl-icon">②</span>
+            <p><strong>Ordered</strong> — Steps happen in a specific sequence.</p>
+          </div>
+          <div class="highlight-row">
+            <span class="hl-icon">③</span>
+            <p><strong>Finite</strong> — It has a definite start and a definite end.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 5 — INTERACTIVE CHALLENGE
+     Part A: Recipe Scramble Drag-Drop
+════════════════════════════════════════ -->
+<section id="challenge" aria-labelledby="challenge-heading">
+  <div class="container">
+    <span class="section-label fade-up">Interactive Challenge</span>
+    <h2 id="challenge-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      Challenge A — Recipe Scramble
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:680px; margin-bottom:8px;">
+      The steps below are out of order. Drag them into the correct sequence in the right-hand panel. Get the algorithm right and Zara eats a proper breakfast!
+    </p>
+
+    <div class="challenge-progress fade-up">
+      <span>Challenge Progress</span>
+      <div class="challenge-progress-bar">
+        <div class="challenge-progress-fill" id="challengeProgressFill" style="width:0%"></div>
+      </div>
+      <span id="challengeProgressText">0 / 2</span>
+    </div>
+
+    <div class="scramble-container fade-up">
+
+      <div class="scramble-layout">
+        <!-- Scrambled Pool -->
+        <div class="scramble-panel" id="sourcePanel">
+          <div class="panel-title">Scrambled Steps</div>
+          <div id="sourceList" role="list" aria-label="Scrambled recipe steps">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="scramble-panel" id="targetPanel">
+          <div class="panel-title">Your Algorithm (Drop Here)</div>
+          <div id="targetList" role="list" aria-label="Your ordered algorithm">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="scramble-controls">
+        <button class="btn btn-primary" id="checkRecipeBtn" onclick="checkRecipe()" aria-label="Check recipe order">
+          ✓ Check Order
+        </button>
+        <button class="btn btn-outline" id="resetRecipeBtn" onclick="resetRecipe()" aria-label="Reset recipe scramble">
+          ↺ Reset
+        </button>
+      </div>
+      <div class="scramble-result" id="scrambleResult" role="alert"></div>
+    </div>
+
+    <!-- Part B: Build Zara's Morning Algorithm -->
+    <h3 class="fade-up" style="font-size: clamp(22px,4vw,30px); margin-top: 60px; margin-bottom: 8px;">
+      Challenge B — Build Zara's Morning Algorithm
+    </h3>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:680px; margin-bottom:24px;">
+      Drag action blocks from the palette into the sequence panel to build a valid morning routine algorithm for Zara. You need at least 6 steps including START and END.
+    </p>
+
+    <div class="algo-builder fade-up" id="algoBuilder">
+
+      <div class="zara-scenario">
+        <strong>The Scenario:</strong> Zara needs to get ready for school. She must wake up, get washed, get dressed, eat breakfast, pack her bag, and leave the house — all in a sensible order. Build her algorithm below!
+      </div>
+
+      <div class="panel-title" style="margin-bottom:12px;">Action Block Palette — Drag Blocks to the Sequence</div>
+      <div class="algo-blocks-palette" id="algoBlocksPalette" role="list" aria-label="Algorithm action blocks">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="algo-sequence" id="algoSequence">
+        <div class="panel-title" style="margin-bottom:16px;">Your Algorithm Sequence</div>
+        <div class="algo-sequence-inner" id="algoSeqInner" role="list" aria-label="Your algorithm sequence">
+          <p class="sequence-placeholder" id="seqPlaceholder">← Drag blocks here to build Zara's algorithm</p>
+        </div>
+        <div class="algo-drop-target" id="algoDropTarget" aria-label="Drop zone for algorithm blocks">
+          + Drop block here
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="evaluateAlgo()" aria-label="Evaluate algorithm">⚙ Evaluate Algorithm</button>
+        <button class="btn btn-outline" onclick="clearAlgo()" aria-label="Clear algorithm">✕ Clear All</button>
+      </div>
+
+      <div class="algo-evaluate" id="algoEvaluate" role="alert"></div>
+
+      <div style="margin-top:12px;">
+        <div class="algo-score-bar"><div class="algo-score-fill" id="algoScoreFill"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 6 — THINK DEEPER
+════════════════════════════════════════ -->
+<section id="deeper" aria-labelledby="deeper-heading">
+  <div class="container">
+    <span class="section-label fade-up">Think Deeper</span>
+    <h2 id="deeper-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      Spot the Bug
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:680px; margin-bottom:8px;">
+      The algorithm below has a <strong style="color:var(--accent-danger)">bug</strong> — one step is in the wrong place. Click on the step you think is the problem, then confirm your answer.
+    </p>
+
+    <div class="bug-challenge fade-up" id="bugChallenge">
+
+      <div class="zara-scenario" style="border-left-color: var(--accent-danger);">
+        <strong style="color:var(--accent-danger)">The Scenario:</strong> Ahmed wants to log in to his school account. The algorithm below is meant to walk him through the login process — but one step is in completely the wrong place. Find it!
+      </div>
+
+      <div class="buggy-algorithm" id="buggyAlgo" role="list" aria-label="Algorithm with a bug — click a step to identify the bug">
+        <!-- populated by JS -->
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="confirmBug()" aria-label="Confirm selected bug">
+          🔍 Confirm Bug
+        </button>
+        <button class="btn btn-outline" onclick="resetBug()" aria-label="Reset bug challenge">
+          ↺ Reset
+        </button>
+      </div>
+
+      <div class="bug-feedback" id="bugFeedback" role="alert"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 7 — REAL-WORLD CONNECTION
+════════════════════════════════════════ -->
+<section id="realworld" aria-labelledby="rw-heading">
+  <div class="container">
+    <span class="section-label fade-up">Real-World Connection</span>
+    <h2 id="rw-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      Algorithms in the Real World
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:680px; margin-bottom:0;">
+      Every time you use technology, an algorithm is running. Here are places you encounter them every single day.
+    </p>
+
+    <div class="realworld-grid">
+
+      <div class="realworld-card fade-up" style="transition-delay:0.1s">
+        <span class="realworld-icon">🗺️</span>
+        <div class="realworld-title">Google Maps</div>
+        <div class="realworld-body">
+          When you ask Maps for directions, it runs a pathfinding algorithm. It checks thousands of possible routes, calculates distance and time, then gives you the best sequence of turns to take. Every direction is one step in an algorithm.
+        </div>
+      </div>
+
+      <div class="realworld-card fade-up" style="transition-delay:0.2s">
+        <span class="realworld-icon">🏏</span>
+        <div class="realworld-title">Cricket Scorecard</div>
+        <div class="realworld-body">
+          The scoring system in cricket follows an algorithm: ball bowled → check if wicket → add runs → update over count → check if innings over. Each ball is a new step in a very precise sequence.
+        </div>
+      </div>
+
+      <div class="realworld-card fade-up" style="transition-delay:0.3s">
+        <span class="realworld-icon">🚦</span>
+        <div class="realworld-title">Karachi Traffic Lights</div>
+        <div class="realworld-body">
+          Traffic lights follow a timing algorithm: Red for 60s → Green for 45s → Amber for 5s → Red again. A simple sequence — but get the order wrong and you cause an accident.
+        </div>
+      </div>
+
+      <div class="realworld-card fade-up" style="transition-delay:0.4s">
+        <span class="realworld-icon">🧑‍🍳</span>
+        <div class="realworld-title">School Canteen</div>
+        <div class="realworld-body">
+          The canteen runs on a serving algorithm: take tray → choose food → get charged → sit down → eat → return tray. If a student tries to eat before paying, the system breaks. Sequence = order = fairness.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 8 — LEVEL BADGE + XP UNLOCK
+════════════════════════════════════════ -->
+<section id="badge" aria-labelledby="badge-heading">
+  <div class="container badge-section">
+    <span class="section-label fade-up">Level Complete</span>
+    <h2 id="badge-heading" class="fade-up" style="font-size: clamp(28px,5vw,42px); margin-bottom: 8px;">
+      Claim Your Badge
+    </h2>
+    <p class="fade-up" style="color:var(--text-secondary); font-size:15px; max-width:580px; margin:0 auto 0;">
+      Complete both challenges and spot the bug to unlock the <strong style="color:var(--level-color)">Algorithm Architect</strong> badge and earn your 250 XP.
+    </p>
+
+    <div class="badge-container fade-up" id="badgeContainer">
+      <!-- Badge SVG -->
+      <svg class="level-badge-svg badge-locked" id="badgeSvg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Algorithm Architect Badge">
+        <!-- Outer ring -->
+        <circle cx="60" cy="60" r="56" stroke="#00D9F5" stroke-width="3" fill="none" stroke-dasharray="6 3"/>
+        <!-- Inner shield shape -->
+        <path d="M60 16 L88 32 L88 64 Q88 88 60 104 Q32 88 32 64 L32 32 Z" fill="rgba(0,217,245,0.12)" stroke="#00D9F5" stroke-width="2"/>
+        <!-- Steps icon -->
+        <rect x="40" y="72" width="12" height="6" rx="1" fill="#00D9F5" opacity="0.9"/>
+        <rect x="52" y="64" width="12" height="6" rx="1" fill="#00D9F5" opacity="0.9"/>
+        <rect x="64" y="56" width="12" height="6" rx="1" fill="#00D9F5" opacity="0.9"/>
+        <!-- Arrow up-right -->
+        <path d="M44 68 L76 52" stroke="#00D9F5" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0 0 L6 3 L0 6 Z" fill="#00D9F5"/>
+          </marker>
+        </defs>
+        <!-- 04 text -->
+        <text x="60" y="36" text-anchor="middle" fill="#00D9F5" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" opacity="0.7">LVL 04</text>
+      </svg>
+
+      <div class="badge-title" id="badgeTitle">Algorithm Architect</div>
+      <div class="badge-xp">250 XP</div>
+      <div class="badge-desc" id="badgeDesc">
+        Complete both interactive challenges and the Spot the Bug activity to unlock this badge.
+      </div>
+
+      <div class="badge-unlocked-msg" id="badgeUnlocked" aria-live="polite">
+        🎉 Badge Unlocked! You earned 250 XP!
+      </div>
+
+      <button class="complete-btn" id="completeBtn" onclick="completeLevel()" aria-label="Complete Level 4 and claim badge">
+        <span>🏆</span>
+        <span>Complete Level &amp; Claim Badge</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="section-sep"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 9 — NAVIGATION
+════════════════════════════════════════ -->
+<nav class="level-nav" aria-label="Level navigation">
+  <div class="container">
+    <a href="level-03.html" class="nav-btn" aria-label="Previous level: Find the Pattern">
+      ← <span><span class="eng-label">Previous</span><span class="urdu-label">پچھلا</span><br><small style="font-weight:400;opacity:0.7">Level 3 — Find the Pattern</small></span>
+    </a>
+
+    <div class="nav-center-info">
+      <div>Level 4 of 12</div>
+      <div style="margin-top:4px;opacity:0.5;">Step by Step</div>
+    </div>
+
+    <a href="level-05.html" class="nav-btn nav-btn-next" aria-label="Next level: What If?">
+      <span style="text-align:right"><span class="eng-label">Next</span><span class="urdu-label">اگلا</span><br><small style="font-weight:400;opacity:0.8">Level 5 — What If?</small></span> →
+    </a>
+  </div>
+</nav>
+
+<!-- CDN Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
+
+<script>
+// ─────────────────────────────────────────
+// CONSTANTS & STORAGE
+// ─────────────────────────────────────────
+const COURSE = 'logic-building';
+const LEVEL  = 4;
+const LEVEL_XP = 250;
+
+function storageKey(suffix) {
+  return 'ots_skills_' + COURSE + '_' + suffix;
+}
+
+function getXPTotal() {
+  try {
+    return parseInt(localStorage.getItem(storageKey('xp_total')) || '0', 10);
+  } catch(e) { return 0; }
+}
+
+function setStorage(key, value) {
+  try { localStorage.setItem(key, value); } catch(e) {}
+}
+
+function getStorage(key, def) {
+  try { return localStorage.getItem(key) || def; } catch(e) { return def; }
+}
+
+function updateXPDisplay() {
+  var el = document.getElementById('xpCounter');
+  if (el) el.textContent = '⚡ ' + getXPTotal() + ' XP';
+}
+
+function recomputeXP() {
+  var total = 0;
+  for (var i = 1; i <= 12; i++) {
+    var xp = parseInt(getStorage(storageKey('level_' + i + '_xp'), '0'), 10);
+    total += xp;
+  }
+  setStorage(storageKey('xp_total'), total);
+  updateXPDisplay();
+}
+
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
+(function init() {
+  // Set started_at if not set
+  if (!getStorage(storageKey('started_at'), '')) {
+    setStorage(storageKey('started_at'), new Date().toISOString());
+  }
+  updateXPDisplay();
+
+  // Urdu toggle
+  var urduOn = getStorage(storageKey('urdu_on'), 'false') === 'true';
+  if (urduOn) document.body.classList.add('urdu-mode');
+  var toggleBtn = document.getElementById('urduToggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      document.body.classList.toggle('urdu-mode');
+      var isOn = document.body.classList.contains('urdu-mode');
+      setStorage(storageKey('urdu_on'), isOn ? 'true' : 'false');
+    });
+  }
+
+  // Check if already completed
+  if (getStorage(storageKey('level_' + LEVEL + '_complete'), 'false') === 'true') {
+    var cb = document.getElementById('completeBtn');
+    if (cb) cb.textContent = '✓ Already Completed!';
+    unlockBadgeVisual();
+  }
+})();
+
+// ─────────────────────────────────────────
+// INTERSECTION OBSERVER — FADE IN
+// ─────────────────────────────────────────
+var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReduced) {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var delay = parseFloat(el.style.transitionDelay || '0');
+        setTimeout(function() {
+          el.classList.add('visible');
+        }, delay * 1000);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up, .slide-right').forEach(function(el) {
+    observer.observe(el);
+  });
+}
+
+// ─────────────────────────────────────────
+// GSAP ENTRANCE (level header)
+// ─────────────────────────────────────────
+if (!prefersReduced) {
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.level-title', { duration: 0.8, y: 40, opacity: 0, delay: 0.2, ease: 'power3.out' });
+      gsap.from('.level-tagline', { duration: 0.7, y: 24, opacity: 0, delay: 0.4, ease: 'power2.out' });
+      gsap.from('.level-meta', { duration: 0.6, y: 16, opacity: 0, delay: 0.1, ease: 'power2.out' });
+    }
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────
+// WARM-UP LOGIC
+// ─────────────────────────────────────────
+var warmupScore = 0;
+var warmupDone = [false, false];
+
+function checkWarmup(btn, qId, isCorrect) {
+  var container = document.getElementById(qId);
+  if (!container) return;
+  var allBtns = container.querySelectorAll('.warmup-option');
+  var fb = document.getElementById(qId + 'fb');
+  var qNum = parseInt(qId.replace('wq',''), 10);
+
+  // Disable all buttons in this question
+  allBtns.forEach(function(b) {
+    b.disabled = true;
+    b.style.cursor = 'default';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    if (fb) {
+      fb.textContent = '✓ Correct! ' + (qNum === 1 ? 'You always boil water before adding the tea bag — order matters!' : 'Exactly right. Computers do exactly what you say, in the exact order you say it.');
+      fb.className = 'warmup-feedback show good';
+    }
+    warmupScore++;
+    warmupDone[qNum - 1] = true;
+  } else {
+    btn.classList.add('wrong');
+    if (fb) {
+      fb.textContent = '✗ Not quite. ' + (qNum === 1 ? 'Think about the order: you need hot water before you can steep the tea.' : 'Computers have no common sense — they follow instructions literally.');
+      fb.className = 'warmup-feedback show retry';
+    }
+  }
+
+  // Show Q2 after Q1 answered
+  if (qNum === 1) {
+    setTimeout(function() {
+      var q2 = document.getElementById('wq2');
+      if (q2) q2.style.display = 'block';
+    }, 600);
+  }
+
+  updateChallengeProgress();
+}
+
+// ─────────────────────────────────────────
+// RECIPE SCRAMBLE
+// ─────────────────────────────────────────
+var recipeSteps = [
+  { id: 'r1', text: 'Boil water in the kettle',    correctPos: 0 },
+  { id: 'r2', text: 'Add two spoons of rice',      correctPos: 2 },
+  { id: 'r3', text: 'Wash the rice until clear',   correctPos: 1 },
+  { id: 'r4', text: 'Lower heat and cover with lid', correctPos: 3 },
+  { id: 'r5', text: 'Wait 15 minutes',              correctPos: 4 },
+  { id: 'r6', text: 'Fluff with fork and serve',   correctPos: 5 },
+];
+
+var recipeCorrectOrder = ['r1','r3','r2','r4','r5','r6'];
+var sourceOrder = [];
+var targetOrder = [];
+var draggingId = null;
+var dragSource = null; // 'source' | 'target'
+
+function initRecipe() {
+  // Shuffle source
+  sourceOrder = shuffleArray(recipeSteps.map(function(s){ return s.id; }));
+  targetOrder = [];
+  renderRecipeSource();
+  renderRecipeTarget();
+  var res = document.getElementById('scrambleResult');
+  if (res) { res.className = 'scramble-result'; res.textContent = ''; }
+}
+
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function getStepById(id) {
+  for (var i = 0; i < recipeSteps.length; i++) {
+    if (recipeSteps[i].id === id) return recipeSteps[i];
+  }
+  return null;
+}
+
+function renderRecipeSource() {
+  var sl = document.getElementById('sourceList');
+  if (!sl) return;
+  sl.innerHTML = '';
+  sourceOrder.forEach(function(id) {
+    var step = getStepById(id);
+    if (!step) return;
+    var div = createDraggableStepCard(id, step.text, 'source');
+    sl.appendChild(div);
+  });
+}
+
+function renderRecipeTarget() {
+  var tl = document.getElementById('targetList');
+  if (!tl) return;
+  tl.innerHTML = '';
+
+  if (targetOrder.length === 0) {
+    var ph = document.createElement('p');
+    ph.style.cssText = 'color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;font-style:italic;';
+    ph.textContent = 'Drop steps here to build your algorithm';
+    tl.appendChild(ph);
+    return;
+  }
+
+  targetOrder.forEach(function(id, idx) {
+    var step = getStepById(id);
+    if (!step) return;
+    var div = createDraggableStepCard(id, step.text, 'target', idx + 1);
+    tl.appendChild(div);
+  });
+
+  // Drop zone at end of target
+  var dz = document.createElement('div');
+  dz.className = 'drop-zone';
+  dz.setAttribute('data-dropzone', 'target-end');
+  dz.textContent = '+ Drop here';
+  dz.style.color = 'var(--text-muted)';
+  dz.style.fontSize = '13px';
+  addDropZoneListeners(dz, 'target-end');
+  tl.appendChild(dz);
+}
+
+function createDraggableStepCard(id, text, panelType, stepNum) {
+  var div = document.createElement('div');
+  div.className = 'step-card';
+  div.setAttribute('draggable', 'true');
+  div.setAttribute('data-id', id);
+  div.setAttribute('data-panel', panelType);
+  div.setAttribute('role', 'listitem');
+  div.setAttribute('aria-label', 'Step: ' + text + '. Drag to reorder.');
+  div.setAttribute('tabindex', '0');
+
+  var handle = document.createElement('div');
+  handle.className = 'drag-handle';
+  handle.setAttribute('aria-hidden', 'true');
+  for (var i = 0; i < 3; i++) {
+    var s = document.createElement('span');
+    handle.appendChild(s);
+  }
+  div.appendChild(handle);
+
+  if (stepNum) {
+    var num = document.createElement('div');
+    num.className = 'step-number-badge';
+    num.textContent = stepNum;
+    div.appendChild(num);
+  }
+
+  var txt = document.createElement('span');
+  txt.textContent = text;
+  div.appendChild(txt);
+
+  // Drag events (mouse)
+  div.addEventListener('dragstart', function(e) {
+    draggingId = id;
+    dragSource = panelType;
+    div.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', id);
+  });
+
+  div.addEventListener('dragend', function() {
+    div.classList.remove('dragging');
+    draggingId = null;
+    dragSource = null;
+  });
+
+  div.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    div.classList.add('drag-over');
+  });
+
+  div.addEventListener('dragleave', function() {
+    div.classList.remove('drag-over');
+  });
+
+  div.addEventListener('drop', function(e) {
+    e.preventDefault();
+    div.classList.remove('drag-over');
+    var droppedId = e.dataTransfer.getData('text/plain') || draggingId;
+    if (!droppedId || droppedId === id) return;
+    handleRecipeDrop(droppedId, id, dragSource, panelType);
+  });
+
+  // Touch events
+  addTouchDrag(div, id, panelType);
+
+  // Keyboard
+  div.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      moveStepByKeyboard(id, panelType);
+    }
+  });
+
+  return div;
+}
+
+function addDropZoneListeners(el, zoneType) {
+  el.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    el.classList.add('drag-over-zone');
+  });
+  el.addEventListener('dragleave', function() {
+    el.classList.remove('drag-over-zone');
+  });
+  el.addEventListener('drop', function(e) {
+    e.preventDefault();
+    el.classList.remove('drag-over-zone');
+    var droppedId = e.dataTransfer.getData('text/plain') || draggingId;
+    if (!droppedId) return;
+    handleRecipeDrop(droppedId, null, dragSource, 'target');
+  });
+}
+
+function handleRecipeDrop(fromId, toId, fromPanel, toPanel) {
+  // Move from source → target
+  if (fromPanel === 'source' && toPanel === 'target') {
+    var idx = sourceOrder.indexOf(fromId);
+    if (idx !== -1) sourceOrder.splice(idx, 1);
+    if (toId) {
+      var ti = targetOrder.indexOf(toId);
+      if (ti !== -1) targetOrder.splice(ti, 0, fromId);
+      else targetOrder.push(fromId);
+    } else {
+      targetOrder.push(fromId);
+    }
+  }
+  // Reorder within target
+  else if (fromPanel === 'target' && toPanel === 'target' && toId) {
+    var fi = targetOrder.indexOf(fromId);
+    var ti2 = targetOrder.indexOf(toId);
+    if (fi !== -1 && ti2 !== -1 && fi !== ti2) {
+      targetOrder.splice(fi, 1);
+      var newTi = targetOrder.indexOf(toId);
+      targetOrder.splice(newTi, 0, fromId);
+    }
+  }
+  // Move from target back to source
+  else if (fromPanel === 'target' && toPanel === 'source') {
+    var ti3 = targetOrder.indexOf(fromId);
+    if (ti3 !== -1) targetOrder.splice(ti3, 1);
+    if (!sourceOrder.includes(fromId)) sourceOrder.push(fromId);
+  }
+
+  renderRecipeSource();
+  renderRecipeTarget();
+  updateChallengeProgress();
+}
+
+function moveStepByKeyboard(id, panel) {
+  if (panel === 'source') {
+    var idx = sourceOrder.indexOf(id);
+    if (idx !== -1) sourceOrder.splice(idx, 1);
+    targetOrder.push(id);
+  } else {
+    var ti = targetOrder.indexOf(id);
+    if (ti !== -1) targetOrder.splice(ti, 1);
+    sourceOrder.push(id);
+  }
+  renderRecipeSource();
+  renderRecipeTarget();
+  updateChallengeProgress();
+}
+
+// Touch drag support for recipe
+var touchDragId = null;
+var touchDragPanel = null;
+var touchClone = null;
+var touchStartX = 0;
+var touchStartY = 0;
+
+function addTouchDrag(el, id, panel) {
+  el.addEventListener('touchstart', function(e) {
+    touchDragId = id;
+    touchDragPanel = panel;
+    var t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+
+    // Create visual clone
+    touchClone = el.cloneNode(true);
+    touchClone.style.cssText = 'position:fixed;z-index:9999;opacity:0.85;pointer-events:none;width:' + el.offsetWidth + 'px;';
+    touchClone.style.left = (t.clientX - el.offsetWidth/2) + 'px';
+    touchClone.style.top = (t.clientY - 20) + 'px';
+    document.body.appendChild(touchClone);
+    el.style.opacity = '0.4';
+  }, { passive: true });
+
+  el.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var t = e.touches[0];
+    if (touchClone) {
+      touchClone.style.left = (t.clientX - (touchClone.offsetWidth/2)) + 'px';
+      touchClone.style.top = (t.clientY - 20) + 'px';
+    }
+  }, { passive: false });
+
+  el.addEventListener('touchend', function(e) {
+    el.style.opacity = '1';
+    if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+    var t = e.changedTouches[0];
+    var target = document.elementFromPoint(t.clientX, t.clientY);
+    if (!target) { touchDragId = null; touchDragPanel = null; return; }
+
+    var targetCard = target.closest('[data-id]');
+    var targetPanel = target.closest('[data-panel]');
+
+    if (targetCard && targetCard !== el) {
+      var toId = targetCard.getAttribute('data-id');
+      var toPanel = targetCard.getAttribute('data-panel');
+      handleRecipeDrop(touchDragId, toId, touchDragPanel, toPanel);
+    } else if (targetPanel) {
+      var toP = targetPanel.id === 'targetPanel' ? 'target' : 'source';
+      handleRecipeDrop(touchDragId, null, touchDragPanel, toP);
+    }
+
+    touchDragId = null;
+    touchDragPanel = null;
+  });
+}
+
+function checkRecipe() {
+  var res = document.getElementById('scrambleResult');
+  if (!res) return;
+  if (targetOrder.length !== recipeCorrectOrder.length) {
+    res.className = 'scramble-result show fail';
+    res.innerHTML = '✗ You have ' + targetOrder.length + ' steps in your sequence but there should be ' + recipeCorrectOrder.length + '. Make sure all steps are placed!';
+    return;
+  }
+  var correct = true;
+  for (var i = 0; i < recipeCorrectOrder.length; i++) {
+    if (targetOrder[i] !== recipeCorrectOrder[i]) { correct = false; break; }
+  }
+  if (correct) {
+    res.className = 'scramble-result show success';
+    res.innerHTML = '🎉 Perfect! Your algorithm is in exactly the right order. The rice will be delicious!';
+    recipeComplete = true;
+    // Animate step cards green
+    var cards = document.querySelectorAll('#targetList .step-card');
+    cards.forEach(function(c) { c.classList.add('correct-order'); });
+    updateChallengeProgress();
+  } else {
+    res.className = 'scramble-result show fail';
+    res.innerHTML = '✗ Not quite right. Check your order — think about which steps depend on earlier ones completing first.';
+  }
+}
+
+function resetRecipe() {
+  recipeComplete = false;
+  initRecipe();
+  updateChallengeProgress();
+}
+
+// ─────────────────────────────────────────
+// ALGORITHM BUILDER (Zara's Morning)
+// ─────────────────────────────────────────
+var algoBlocks = [
+  { id: 'ab0', text: 'START',              type: 'start',    emoji: '▶' },
+  { id: 'ab1', text: 'Wake up alarm',      type: 'action',   emoji: '⏰' },
+  { id: 'ab2', text: 'Brush teeth & wash face', type: 'action', emoji: '🪥' },
+  { id: 'ab3', text: 'Get dressed',        type: 'action',   emoji: '👗' },
+  { id: 'ab4', text: 'Eat breakfast',      type: 'action',   emoji: '🍳' },
+  { id: 'ab5', text: 'Pack school bag',    type: 'action',   emoji: '🎒' },
+  { id: 'ab6', text: 'Put on shoes',       type: 'action',   emoji: '👟' },
+  { id: 'ab7', text: 'Check homework done?', type: 'decision', emoji: '❓' },
+  { id: 'ab8', text: 'Leave the house',    type: 'action',   emoji: '🚶' },
+  { id: 'ab9', text: 'END',               type: 'end',      emoji: '■' },
+];
+
+var algoSequence = [];
+var algoComplete = false;
+
+// Good sequence for evaluation bonus
+var algoGoodSequence = ['ab0','ab1','ab2','ab3','ab4','ab5','ab6','ab8','ab9'];
+
+function initAlgoBuilder() {
+  algoSequence = [];
+  algoComplete = false;
+  renderAlgoPalette();
+  renderAlgoSeq();
+  var ev = document.getElementById('algoEvaluate');
+  if (ev) { ev.className = 'algo-evaluate'; ev.textContent = ''; }
+  var sf = document.getElementById('algoScoreFill');
+  if (sf) sf.style.width = '0%';
+}
+
+function renderAlgoPalette() {
+  var pal = document.getElementById('algoBlocksPalette');
+  if (!pal) return;
+  pal.innerHTML = '';
+  algoBlocks.forEach(function(blk) {
+    var b = document.createElement('div');
+    b.className = 'algo-block block-type-' + blk.type;
+    b.setAttribute('draggable', 'true');
+    b.setAttribute('data-blk', blk.id);
+    b.setAttribute('role', 'listitem');
+    b.setAttribute('tabindex', '0');
+    b.setAttribute('aria-label', blk.text + ' block. Drag to add to sequence.');
+    if (algoSequence.includes(blk.id)) b.classList.add('used');
+    b.innerHTML = '<span aria-hidden="true">' + blk.emoji + '</span> ' + blk.text;
+
+    b.addEventListener('dragstart', function(e) {
+      if (algoSequence.includes(blk.id)) { e.preventDefault(); return; }
+      e.dataTransfer.setData('algo-block', blk.id);
+      e.dataTransfer.effectAllowed = 'copy';
+    });
+
+    b.addEventListener('keydown', function(e) {
+      if ((e.key === 'Enter' || e.key === ' ') && !algoSequence.includes(blk.id)) {
+        e.preventDefault();
+        algoSequence.push(blk.id);
+        renderAlgoPalette();
+        renderAlgoSeq();
+      }
+    });
+
+    // Touch
+    b.addEventListener('touchstart', function(ev2) {
+      if (algoSequence.includes(blk.id)) return;
+      var t = ev2.touches[0];
+      var clone = b.cloneNode(true);
+      clone.style.cssText = 'position:fixed;z-index:9999;opacity:0.85;pointer-events:none;';
+      clone.style.left = t.clientX + 'px';
+      clone.style.top = t.clientY + 'px';
+      document.body.appendChild(clone);
+
+      function onMove(ev3) {
+        ev3.preventDefault();
+        var t2 = ev3.touches[0];
+        clone.style.left = t2.clientX + 'px';
+        clone.style.top = t2.clientY + 'px';
+      }
+
+      function onEnd(ev3) {
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onEnd);
+        document.body.removeChild(clone);
+        var t3 = ev3.changedTouches[0];
+        var tgt = document.elementFromPoint(t3.clientX, t3.clientY);
+        if (tgt && (tgt.id === 'algoSeqInner' || tgt.id === 'algoDropTarget' || tgt.closest('#algoSequence'))) {
+          if (!algoSequence.includes(blk.id)) {
+            algoSequence.push(blk.id);
+            renderAlgoPalette();
+            renderAlgoSeq();
+          }
+        }
+      }
+
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onEnd);
+    }, { passive: true });
+
+    pal.appendChild(b);
+  });
+}
+
+function renderAlgoSeq() {
+  var inner = document.getElementById('algoSeqInner');
+  var ph = document.getElementById('seqPlaceholder');
+  if (!inner) return;
+
+  // Remove old step elements (keep placeholder)
+  var toRemove = inner.querySelectorAll('.sequence-step');
+  toRemove.forEach(function(el){ inner.removeChild(el); });
+
+  if (ph) ph.style.display = algoSequence.length === 0 ? 'block' : 'none';
+
+  algoSequence.forEach(function(id, idx) {
+    var blk = null;
+    algoBlocks.forEach(function(b){ if(b.id === id) blk = b; });
+    if (!blk) return;
+
+    var step = document.createElement('div');
+    step.className = 'sequence-step';
+    step.setAttribute('role', 'listitem');
+    step.setAttribute('aria-label', 'Step ' + (idx+1) + ': ' + blk.text);
+
+    var num = document.createElement('span');
+    num.className = 'sequence-step-num';
+    num.textContent = 'STEP ' + String(idx + 1).padStart(2,'0');
+    step.appendChild(num);
+
+    var em = document.createElement('span');
+    em.style.fontSize = '16px';
+    em.setAttribute('aria-hidden', 'true');
+    em.textContent = blk.emoji;
+    step.appendChild(em);
+
+    var tx = document.createElement('span');
+    tx.textContent = blk.text;
+    tx.style.flex = '1';
+    step.appendChild(tx);
+
+    var rm = document.createElement('button');
+    rm.className = 'remove-step';
+    rm.textContent = '×';
+    rm.setAttribute('aria-label', 'Remove step: ' + blk.text);
+    rm.addEventListener('click', function() {
+      algoSequence.splice(idx, 1);
+      renderAlgoPalette();
+      renderAlgoSeq();
+    });
+    step.appendChild(rm);
+
+    inner.appendChild(step);
+  });
+
+  // Drop target
+  var dt = document.getElementById('algoDropTarget');
+  if (dt) {
+    dt.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dt.classList.add('active');
+    });
+    dt.addEventListener('dragleave', function() {
+      dt.classList.remove('active');
+    });
+    dt.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dt.classList.remove('active');
+      var bid = e.dataTransfer.getData('algo-block');
+      if (bid && !algoSequence.includes(bid)) {
+        algoSequence.push(bid);
+        renderAlgoPalette();
+        renderAlgoSeq();
+      }
+    });
+  }
+
+  // Also allow drop on inner
+  if (inner) {
+    inner.addEventListener('dragover', function(e) { e.preventDefault(); });
+    inner.addEventListener('drop', function(e) {
+      e.preventDefault();
+      var bid = e.dataTransfer.getData('algo-block');
+      if (bid && !algoSequence.includes(bid)) {
+        algoSequence.push(bid);
+        renderAlgoPalette();
+        renderAlgoSeq();
+      }
+    });
+  }
+}
+
+function evaluateAlgo() {
+  var ev = document.getElementById('algoEvaluate');
+  var sf = document.getElementById('algoScoreFill');
+  if (!ev) return;
+
+  if (algoSequence.length < 4) {
+    ev.className = 'algo-evaluate show partial';
+    ev.innerHTML = '⚠ Your algorithm needs at least 4 steps. Keep building!';
+    if (sf) sf.style.width = '20%';
+    return;
+  }
+
+  var score = 0;
+  var feedback = [];
+
+  // Check starts with START
+  if (algoSequence[0] === 'ab0') { score++; feedback.push('✓ Starts with START'); }
+  else feedback.push('✗ Should begin with START');
+
+  // Check ends with END
+  if (algoSequence[algoSequence.length - 1] === 'ab9') { score++; feedback.push('✓ Ends with END'); }
+  else feedback.push('✗ Should end with END');
+
+  // Check has wake up
+  if (algoSequence.includes('ab1')) { score++; feedback.push('✓ Includes waking up'); }
+  else feedback.push('✗ Zara needs to wake up first!');
+
+  // Check has breakfast
+  if (algoSequence.includes('ab4')) { score++; feedback.push('✓ Includes breakfast'); }
+  else feedback.push('✗ Zara should eat breakfast');
+
+  // Check has leaving
+  if (algoSequence.includes('ab8')) { score++; feedback.push('✓ Includes leaving the house'); }
+  else feedback.push('✗ Zara needs to leave the house!');
+
+  // Check getting dressed before leaving
+  var dressIdx = algoSequence.indexOf('ab3');
+  var leaveIdx = algoSequence.indexOf('ab8');
+  if (dressIdx !== -1 && leaveIdx !== -1 && dressIdx < leaveIdx) {
+    score++;
+    feedback.push('✓ Gets dressed before leaving');
+  } else if (dressIdx !== -1 && leaveIdx !== -1) {
+    feedback.push('✗ Zara should get dressed BEFORE leaving');
+  }
+
+  var pct = Math.round((score / 6) * 100);
+  if (sf) sf.style.width = pct + '%';
+
+  if (score >= 5) {
+    ev.className = 'algo-evaluate show good';
+    ev.innerHTML = '<strong>Great Algorithm! (' + score + '/6)</strong><br>' + feedback.join('<br>');
+    algoComplete = true;
+    updateChallengeProgress();
+  } else {
+    ev.className = 'algo-evaluate show partial';
+    ev.innerHTML = '<strong>Getting there! (' + score + '/6)</strong><br>' + feedback.join('<br>');
+  }
+}
+
+function clearAlgo() {
+  algoSequence = [];
+  algoComplete = false;
+  renderAlgoPalette();
+  renderAlgoSeq();
+  var ev = document.getElementById('algoEvaluate');
+  if (ev) { ev.className = 'algo-evaluate'; ev.textContent = ''; }
+  var sf = document.getElementById('algoScoreFill');
+  if (sf) sf.style.width = '0%';
+  updateChallengeProgress();
+}
+
+// ─────────────────────────────────────────
+// SPOT THE BUG
+// ─────────────────────────────────────────
+var bugSteps = [
+  { id: 'bug0', text: 'Open the login page',           correct: true },
+  { id: 'bug1', text: 'Enter your username',            correct: true },
+  { id: 'bug2', text: 'Press the Login button',        correct: false, bugReason: 'You pressed Login before entering your password! The system has no password to check.' },
+  { id: 'bug3', text: 'Enter your password',            correct: true },
+  { id: 'bug4', text: 'Click into the password field', correct: true },
+  { id: 'bug5', text: 'Wait for the dashboard to load',correct: true },
+];
+
+var selectedBugId = null;
+var bugDone = false;
+
+function initBug() {
+  var algo = document.getElementById('buggyAlgo');
+  if (!algo) return;
+  algo.innerHTML = '';
+  bugSteps.forEach(function(s, idx) {
+    var row = document.createElement('div');
+    row.className = 'buggy-step';
+    row.setAttribute('data-bugid', s.id);
+    row.setAttribute('role', 'listitem');
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('aria-label', 'Step ' + (idx+1) + ': ' + s.text + '. Click to select as bug.');
+
+    var ind = document.createElement('span');
+    ind.className = 'step-indicator';
+    ind.setAttribute('aria-hidden', 'true');
+    ind.textContent = String(idx + 1).padStart(2,'0');
+    row.appendChild(ind);
+
+    var tx = document.createElement('span');
+    tx.textContent = s.text;
+    row.appendChild(tx);
+
+    row.addEventListener('click', function() {
+      if (bugDone) return;
+      selectedBugId = s.id;
+      document.querySelectorAll('.buggy-step').forEach(function(r) {
+        r.classList.remove('selected-bug');
+      });
+      row.classList.add('selected-bug');
+    });
+
+    row.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        row.click();
+      }
+    });
+
+    algo.appendChild(row);
+  });
+  selectedBugId = null;
+  bugDone = false;
+  var fb = document.getElementById('bugFeedback');
+  if (fb) { fb.className = 'bug-feedback'; fb.textContent = ''; }
+}
+
+function confirmBug() {
+  var fb = document.getElementById('bugFeedback');
+  if (!fb) return;
+  if (!selectedBugId) {
+    fb.className = 'bug-feedback show';
+    fb.style.background = 'rgba(245,166,35,0.1)';
+    fb.style.border = '1px solid var(--accent-warm)';
+    fb.style.color = 'var(--accent-warm)';
+    fb.textContent = '⚠ Click on a step first to select the bug!';
+    return;
+  }
+
+  var selected = null;
+  bugSteps.forEach(function(s){ if(s.id === selectedBugId) selected = s; });
+  if (!selected) return;
+
+  if (!selected.correct) {
+    // Correct!
+    fb.className = 'bug-feedback show';
+    fb.style.background = 'rgba(0,245,160,0.1)';
+    fb.style.border = '1px solid var(--accent-primary)';
+    fb.style.color = 'var(--accent-primary)';
+    fb.innerHTML = '🎉 Correct! You found the bug!<br><strong>' + selected.text + '</strong> is in the wrong position.<br>' + selected.bugReason;
+    document.querySelector('[data-bugid="' + selectedBugId + '"]').classList.add('confirmed-bug');
+    bugDone = true;
+    bugComplete = true;
+    updateChallengeProgress();
+  } else {
+    // Wrong selection
+    fb.className = 'bug-feedback show';
+    fb.style.background = 'rgba(255,71,87,0.1)';
+    fb.style.border = '1px solid var(--accent-danger)';
+    fb.style.color = 'var(--accent-danger)';
+    fb.textContent = '✗ That step is actually fine. Look more carefully at the ordering — is there a step that happens too early?';
+    document.querySelector('[data-bugid="' + selectedBugId + '"]').classList.add('confirmed-correct');
+    setTimeout(function() {
+      var el = document.querySelector('[data-bugid="' + selectedBugId + '"]');
+      if (el) el.classList.remove('confirmed-correct');
+    }, 1500);
+  }
+}
+
+function resetBug() {
+  bugComplete = false;
+  initBug();
+  updateChallengeProgress();
+}
+
+// ─────────────────────────────────────────
+// PROGRESS TRACKING
+// ─────────────────────────────────────────
+var recipeComplete = false;
+var bugComplete = false;
+
+function updateChallengeProgress() {
+  var completed = 0;
+  if (recipeComplete) completed++;
+  if (algoComplete) completed++;
+  // Could track warmup too but we focus on main challenges for badge
+  var total = 2;
+  var pct = Math.round((completed / total) * 100);
+  var fill = document.getElementById('challengeProgressFill');
+  var txt = document.getElementById('challengeProgressText');
+  if (fill) fill.style.width = pct + '%';
+  if (txt) txt.textContent = completed + ' / ' + total;
+
+  // Enable complete button if at least recipe done
+  var cb = document.getElementById('completeBtn');
+  if (cb) {
+    if (completed >= 1) {
+      cb.disabled = false;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// LEVEL COMPLETION
+// ─────────────────────────────────────────
+function unlockBadgeVisual() {
+  var svg = document.getElementById('badgeSvg');
+  var msg = document.getElementById('badgeUnlocked');
+  var desc = document.getElementById('badgeDesc');
+  if (svg) svg.classList.remove('badge-locked');
+  if (msg) msg.classList.add('show');
+  if (desc) desc.textContent = 'You are an Algorithm Architect! You understand how to build clear, ordered step-by-step solutions.';
+}
+
+function completeLevel() {
+  var cb = document.getElementById('completeBtn');
+  if (cb) cb.disabled = true;
+
+  setStorage(storageKey('level_' + LEVEL + '_complete'), 'true');
+  setStorage(storageKey('level_' + LEVEL + '_xp'), LEVEL_XP);
+
+  // Save portfolio artifact
+  var artifact = {
+    recipeCompleted: recipeComplete,
+    algoBuilt: algoSequence.map(function(id){
+      var b = null; algoBlocks.forEach(function(blk){ if(blk.id===id) b = blk; }); return b ? b.text : id;
+    }),
+    bugFound: bugComplete,
+    completedAt: new Date().toISOString()
+  };
+  setStorage(storageKey('portfolio_level_' + LEVEL), JSON.stringify(artifact));
+
+  recomputeXP();
+  unlockBadgeVisual();
+
+  if (cb) {
+    cb.textContent = '✓ Level Complete!';
+    cb.style.background = 'var(--accent-primary)';
+  }
+
+  // Confetti burst
+  try {
+    if (typeof confetti !== 'undefined') {
+      var colors = ['#00D9F5', '#00F5A0', '#F5A623', '#ffffff'];
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: colors });
+      setTimeout(function() {
+        confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.2 }, colors: colors });
+        confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.8 }, colors: colors });
+      }, 400);
+    }
+  } catch(e) {}
+
+  // GSAP badge animation
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('.level-badge-svg', { scale: 1.2, duration: 0.3, ease: 'back.out(2)', yoyo: true, repeat: 1 });
+    }
+  } catch(e) {}
+
+  // Scroll to badge
+  var badge = document.getElementById('badge');
+  if (badge) badge.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ─────────────────────────────────────────
+// INIT ALL ACTIVITIES
+// ─────────────────────────────────────────
+(function initActivities() {
+  initRecipe();
+  initAlgoBuilder();
+  initBug();
+  updateChallengeProgress();
+
+  // Check if previously completed
+  if (getStorage(storageKey('level_' + LEVEL + '_complete'), 'false') === 'true') {
+    var cb = document.getElementById('completeBtn');
+    if (cb) {
+      cb.textContent = '✓ Already Completed!';
+      cb.style.background = 'var(--accent-primary)';
+    }
+  }
+})();
+
+// ─────────────────────────────────────────
+// MAKE FADE-UP elements visible on reduced motion
+// ─────────────────────────────────────────
+if (prefersReduced) {
+  document.querySelectorAll('.fade-up, .slide-right').forEach(function(el) {
+    el.classList.add('visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+</script>
+</body>
+</html>

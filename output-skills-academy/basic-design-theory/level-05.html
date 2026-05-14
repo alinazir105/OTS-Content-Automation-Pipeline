@@ -1,0 +1,2633 @@
+<!-- COURSE: Basic Design Theory | LEVEL: 5 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 5 — Contrast and Attention | Basic Design Theory | OTS Skills Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Bebas+Neue&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --level-color: #FFE600;
+  --level-color-dim: rgba(255,230,0,0.15);
+  --level-color-mid: rgba(255,230,0,0.35);
+  --bg: #111111;
+  --bg-2: #1a1a1a;
+  --bg-3: #222222;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #888888;
+  --accent: #FFE600;
+  --accent-2: #ff6b35;
+  --font-display: 'Playfair Display', serif;
+  --font-display2: 'Bebas Neue', sans-serif;
+  --font-body: 'Lato', sans-serif;
+  --radius: 4px;
+  --radius-lg: 8px;
+  --spacing: 1.5rem;
+  --max-width: 1100px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── STICKY NAV ── */
+#top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(17,17,17,0.92);
+  border-bottom: 2px solid var(--level-color);
+  backdrop-filter: blur(10px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 1rem;
+}
+
+#top-nav .nav-logo {
+  font-family: var(--font-display2);
+  font-size: 1.1rem;
+  color: var(--level-color);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#top-nav .nav-course {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#top-nav .nav-xp {
+  font-family: var(--font-display2);
+  font-size: 1rem;
+  color: var(--level-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── PROGRESS BAR ── */
+#level-progress-bar {
+  position: fixed;
+  top: 56px; left: 0; right: 0;
+  z-index: 999;
+  height: 4px;
+  background: #333;
+}
+#level-progress-fill {
+  height: 100%;
+  background: var(--level-color);
+  width: calc(5 / 12 * 100%);
+  transition: width 0.6s ease;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 80px 1.5rem 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.breadcrumb a { color: var(--text-muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--level-color); }
+.breadcrumb span { color: var(--level-color); }
+
+/* ── SECTIONS ── */
+.section {
+  padding: 5rem 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--level-color);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom: 1.5rem;
+}
+
+p {
+  color: var(--text-secondary);
+  max-width: 70ch;
+  margin-bottom: 1rem;
+}
+
+hr.divider {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 0;
+}
+
+/* ── LEVEL HEADER ── */
+#level-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 7rem 1.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+#header-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.level-badge {
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--level-color);
+  color: #000;
+  padding: 0.3rem 0.8rem;
+  border-radius: 2px;
+}
+
+.difficulty-badge {
+  font-family: var(--font-display2);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid var(--level-color);
+  color: var(--level-color);
+  padding: 0.28rem 0.75rem;
+  border-radius: 2px;
+}
+
+.xp-badge {
+  font-family: var(--font-display2);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  padding: 0.28rem 0;
+}
+
+#level-header h1 {
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.95;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+#level-header h1 span {
+  color: var(--level-color);
+  display: block;
+}
+
+.header-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--level-color);
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  max-width: none;
+}
+
+/* ── BIG QUESTION ── */
+#big-question {
+  background: #000;
+  padding: 5rem 1.5rem;
+}
+
+.big-question-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.big-q-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.1;
+  color: #fff;
+}
+
+.big-q-text em {
+  color: var(--level-color);
+  font-style: italic;
+}
+
+/* ── LOOK AROUND YOU ── */
+#look-around {
+  background: var(--bg-2);
+  padding: 5rem 1.5rem;
+}
+
+.look-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.look-card {
+  background: var(--bg-3);
+  border: 1px solid #333;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.look-card:hover {
+  border-color: var(--level-color);
+  transform: translateY(-4px);
+}
+
+.look-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.look-card h3 {
+  font-family: var(--font-display2);
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--level-color);
+  margin-bottom: 0.5rem;
+}
+
+.look-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: none;
+  margin: 0;
+}
+
+/* ── THE CONCEPT ── */
+#the-concept {
+  background: var(--bg);
+  padding: 5rem 1.5rem;
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .concept-grid { grid-template-columns: 1fr; }
+}
+
+.concept-card {
+  background: var(--bg-2);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border-left: 4px solid var(--level-color);
+}
+
+.concept-card h3 {
+  font-family: var(--font-display2);
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  color: var(--level-color);
+  margin-bottom: 0.75rem;
+}
+
+.concept-card p {
+  font-size: 0.9rem;
+  margin: 0;
+  max-width: none;
+}
+
+.contrast-demos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 600px) {
+  .contrast-demos { grid-template-columns: 1fr; }
+}
+
+.contrast-demo-item {
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  gap: 0.5rem;
+}
+
+.contrast-demo-item .demo-label {
+  font-family: var(--font-display2);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.contrast-demo-item .demo-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+/* ── SEE IT LIVE — Eye Tracker Simulation ── */
+#see-it-live {
+  background: #000;
+  padding: 5rem 1.5rem;
+}
+
+.eye-tracker-container {
+  background: var(--bg-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 2rem;
+  border: 1px solid #333;
+}
+
+.eye-tracker-header {
+  background: var(--bg-3);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.eye-tracker-header p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-display2);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  min-height: 48px;
+  min-width: 48px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--level-color);
+  color: #000;
+  font-weight: 700;
+}
+
+.btn-primary:hover { background: #fff200; transform: translateY(-2px); }
+.btn-primary:focus-visible { outline: 3px solid var(--level-color); outline-offset: 3px; }
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #555;
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover { border-color: var(--level-color); color: var(--level-color); }
+
+.btn-outline-yellow {
+  background: transparent;
+  border: 2px solid var(--level-color);
+  color: var(--level-color);
+}
+
+.btn-outline-yellow:hover { background: var(--level-color); color: #000; }
+
+#eye-tracker-canvas-wrap {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+#eye-tracker-scene {
+  width: 100%;
+  display: block;
+  cursor: crosshair;
+  max-height: 500px;
+}
+
+#tracker-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.click-dot {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.eye-tracker-footer {
+  padding: 1rem 1.5rem;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#tracker-feedback {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: none;
+  margin: 0;
+  flex: 1;
+}
+
+.tracker-instructions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.instr-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.instr-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: var(--font-display2);
+}
+
+/* ── CONTRAST LAB ── */
+#try-it-yourself {
+  background: var(--bg-2);
+  padding: 5rem 1.5rem;
+}
+
+.contrast-lab {
+  background: var(--bg-3);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid #333;
+}
+
+.contrast-lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .contrast-lab-grid { grid-template-columns: 1fr; }
+}
+
+.lab-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--level-color);
+  text-transform: uppercase;
+}
+
+.color-input-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.color-input-row input[type="color"] {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #555;
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: none;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.color-input-row input[type="color"]:focus-visible {
+  outline: 3px solid var(--level-color);
+  outline-offset: 2px;
+}
+
+.color-hex-display {
+  font-family: var(--font-display2);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  background: var(--bg);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius);
+  border: 1px solid #444;
+  min-width: 90px;
+}
+
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.range-row input[type="range"] {
+  flex: 1;
+  height: 6px;
+  accent-color: var(--level-color);
+  cursor: pointer;
+}
+
+.range-value {
+  font-family: var(--font-display2);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  min-width: 45px;
+  text-align: right;
+}
+
+.font-weight-selector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.fw-btn {
+  min-height: 40px;
+  padding: 0.4rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.fw-btn.active, .fw-btn:hover { border-color: var(--level-color); color: var(--level-color); }
+.fw-btn:focus-visible { outline: 3px solid var(--level-color); outline-offset: 2px; }
+
+.lab-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#contrast-preview-box {
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+  border: 2px solid #333;
+}
+
+#contrast-preview-text {
+  transition: font-size 0.2s, font-weight 0.2s;
+  line-height: 1.3;
+}
+
+.wcag-result {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  border: 1px solid #333;
+}
+
+.wcag-ratio-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.wcag-ratio-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+.wcag-ratio-label {
+  font-family: var(--font-display2);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.wcag-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.wcag-badge {
+  font-family: var(--font-display2);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  border: 1px solid #444;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.wcag-badge.pass {
+  background: rgba(0,200,100,0.15);
+  border-color: #00c864;
+  color: #00c864;
+}
+
+.wcag-badge.fail {
+  background: rgba(255,50,50,0.1);
+  border-color: #ff3232;
+  color: #ff3232;
+}
+
+/* ── JUDGE IT — Make It Pop ── */
+#judge-it {
+  background: var(--bg);
+  padding: 5rem 1.5rem;
+}
+
+.make-it-pop-container {
+  margin-top: 2rem;
+}
+
+.mip-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .mip-stage { grid-template-columns: 1fr; }
+}
+
+.mip-canvas-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.mip-canvas-wrap h3 {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-family: var(--font-display2);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.7);
+  color: var(--level-color);
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  z-index: 5;
+}
+
+.mip-poster {
+  width: 100%;
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.mip-tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mip-changes-counter {
+  font-family: var(--font-display2);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--level-color);
+  margin-left: auto;
+}
+
+.change-btn {
+  min-height: 48px;
+  padding: 0.5rem 1rem;
+  background: var(--bg-2);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.change-btn span {
+  font-family: var(--font-display2);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.change-btn.applied {
+  border-color: var(--level-color);
+  color: var(--level-color);
+  background: rgba(255,230,0,0.08);
+}
+
+.change-btn:hover:not(:disabled) { border-color: var(--level-color); }
+.change-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.change-btn:focus-visible { outline: 3px solid var(--level-color); outline-offset: 2px; }
+
+#mip-feedback {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  min-height: 1.5rem;
+}
+
+/* ── IN THE WILD ── */
+#in-the-wild {
+  background: var(--bg-2);
+  padding: 5rem 1.5rem;
+}
+
+.wild-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.wild-card {
+  background: var(--bg-3);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid #333;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.wild-card:hover { border-color: var(--level-color); transform: translateY(-4px); }
+
+.wild-visual {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.wild-card-body { padding: 1.25rem; }
+
+.wild-card-body h3 {
+  font-family: var(--font-display2);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.wild-card-body p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: none;
+}
+
+.wild-tag {
+  display: inline-block;
+  font-family: var(--font-display2);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--level-color);
+  color: var(--level-color);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+}
+
+/* ── LEVEL CHALLENGE ── */
+#level-challenge {
+  background: #000;
+  padding: 5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.challenge-card {
+  background: var(--bg-2);
+  border: 2px solid var(--level-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  max-width: 800px;
+  position: relative;
+}
+
+.challenge-number {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  line-height: 0.9;
+  color: var(--level-color);
+  opacity: 0.08;
+  position: absolute;
+  top: -1rem;
+  right: 2rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.challenge-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.challenge-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.challenge-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--level-color);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.challenge-textarea-wrap {
+  margin-top: 1.5rem;
+}
+
+.challenge-textarea-wrap label {
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--level-color);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.challenge-textarea-wrap textarea {
+  width: 100%;
+  min-height: 140px;
+  background: var(--bg-3);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.875rem;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.challenge-textarea-wrap textarea:focus {
+  outline: none;
+  border-color: var(--level-color);
+}
+
+/* ── REFLECTION ── */
+#reflection {
+  background: var(--bg-2);
+  padding: 5rem 1.5rem;
+}
+
+.reflection-card {
+  background: var(--bg-3);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  border-left: 6px solid var(--level-color);
+  max-width: 800px;
+}
+
+.reflection-q {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: #fff;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.reflection-card textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--bg-2);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.875rem;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.reflection-card textarea:focus {
+  outline: none;
+  border-color: var(--level-color);
+}
+
+/* ── BADGE + XP ── */
+#badge-unlock {
+  background: #000;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+#badge-svg-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+#badge-svg-wrap.earned { opacity: 1; }
+
+.badge-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--level-color);
+  animation: ring-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.7; }
+}
+
+.badge-xp-reward {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--level-color);
+  line-height: 1;
+}
+
+.badge-xp-reward small {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  display: block;
+  font-family: var(--font-display2);
+  letter-spacing: 0.2em;
+  font-weight: 400;
+  margin-top: 0.25rem;
+}
+
+.badge-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+#complete-btn {
+  background: var(--level-color);
+  color: #000;
+  font-family: var(--font-display2);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  min-height: 56px;
+  transition: all 0.3s;
+  font-weight: 700;
+}
+
+#complete-btn:hover { background: #fff200; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,230,0,0.3); }
+#complete-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+#complete-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.complete-msg {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--level-color);
+  display: none;
+}
+
+.complete-msg.visible { display: block; }
+
+/* ── NAVIGATION ── */
+#level-nav {
+  background: var(--bg-2);
+  border-top: 1px solid #333;
+  padding: 2rem 1.5rem;
+}
+
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid #333;
+  transition: all 0.25s;
+  min-width: 140px;
+  min-height: 60px;
+}
+
+.nav-link:hover { border-color: var(--level-color); background: rgba(255,230,0,0.05); }
+.nav-link:focus-visible { outline: 3px solid var(--level-color); outline-offset: 3px; }
+
+.nav-link-label {
+  font-family: var(--font-display2);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.nav-link-title {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.nav-link.next { text-align: right; }
+.nav-link.prev { text-align: left; }
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+/* ── SVG ILLUSTRATIONS ── */
+.contrast-svg-demo {
+  width: 100%;
+  display: block;
+  margin-top: 2.5rem;
+}
+
+/* ── WCAG METER ── */
+.wcag-meter-bar {
+  width: 100%;
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.wcag-meter-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease, background 0.4s;
+  max-width: 100%;
+}
+
+/* ── PORTFOLIO SAVE ── */
+.portfolio-save-row {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#portfolio-saved-msg {
+  font-size: 0.8rem;
+  color: #00c864;
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#portfolio-saved-msg.visible { display: flex; }
+
+/* MOBILE ADJUSTMENTS */
+@media (max-width: 600px) {
+  .nav-inner { flex-direction: column; }
+  .nav-link { min-width: auto; width: 100%; }
+  .nav-link.next { text-align: left; }
+  .challenge-card { padding: 1.5rem; }
+  .reflection-card { padding: 1.5rem; }
+  .contrast-lab { padding: 1.25rem; }
+  .eye-tracker-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── STICKY NAV ── -->
+<nav id="top-nav" role="navigation" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy Home">OTS SKILLS ACADEMY</a>
+  <span class="nav-course">Basic Design Theory</span>
+  <span class="nav-xp" id="xp-display" aria-label="Total XP earned">⚡ 0 XP</span>
+</nav>
+
+<!-- ── PROGRESS BAR ── -->
+<div id="level-progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="1" aria-valuemax="12" aria-label="Level 5 of 12">
+  <div id="level-progress-fill"></div>
+</div>
+
+<!-- ── BREADCRUMB ── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span aria-hidden="true">→</span>
+  <a href="index.html">Basic Design Theory</a>
+  <span aria-hidden="true">→</span>
+  <span>Level 5</span>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: LEVEL HEADER
+══════════════════════════════════════════════ -->
+<header id="level-header" aria-label="Level 5 Header">
+  <canvas id="header-bg-canvas" aria-hidden="true"></canvas>
+  <div class="header-content">
+    <div class="header-meta">
+      <span class="level-badge">Level 5</span>
+      <span class="difficulty-badge">Explorer</span>
+      <span class="xp-badge">300 XP</span>
+    </div>
+    <h1>
+      Contrast
+      <span>and Attention</span>
+    </h1>
+    <p class="header-tagline">"Your eye goes where it's told."</p>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: THE BIG QUESTION
+══════════════════════════════════════════════ -->
+<section id="big-question" aria-labelledby="bq-heading">
+  <div class="big-question-inner">
+    <span class="section-label">The Big Question</span>
+    <p class="big-q-text fade-up" id="bq-heading">
+      When you look at a page,<br>
+      <em>who is really in control</em> —<br>
+      you, or the designer?
+    </p>
+    <p class="fade-up stagger-2" style="font-size:1rem; color:var(--text-muted); max-width:60ch;">
+      Every time your eye "lands" somewhere, a designer made a choice. Contrast is their most powerful weapon. Size, brightness, color, weight — all of it is used to direct your gaze before you even know it's happening.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3: LOOK AROUND YOU
+══════════════════════════════════════════════ -->
+<section id="look-around" aria-labelledby="look-heading">
+  <div class="section">
+    <span class="section-label">Look Around You</span>
+    <h2 class="fade-up" id="look-heading">Before we teach you — look first.</h2>
+    <p class="fade-up stagger-1">Pick any screen or sign near you right now. Ask yourself these questions:</p>
+    <div class="look-grid">
+      <div class="look-card fade-up stagger-1">
+        <span class="look-card-icon" aria-hidden="true">👁</span>
+        <h3>First Landing</h3>
+        <p>Where did your eye go first? Don't think — just notice. What is it about that element that grabbed you?</p>
+      </div>
+      <div class="look-card fade-up stagger-2">
+        <span class="look-card-icon" aria-hidden="true">⚖️</span>
+        <h3>Big vs. Small</h3>
+        <p>Find the largest element. Find the smallest. The gap between them IS the contrast — and contrast creates hierarchy.</p>
+      </div>
+      <div class="look-card fade-up stagger-3">
+        <span class="look-card-icon" aria-hidden="true">🌑</span>
+        <h3>Light vs. Dark</h3>
+        <p>Look for the brightest element on the screen. It is almost certainly the most important thing the designer wants you to notice.</p>
+      </div>
+      <div class="look-card fade-up stagger-4">
+        <span class="look-card-icon" aria-hidden="true">🦺</span>
+        <h3>The Karachi Test</h3>
+        <p>Look at a local shop sign or truck art nearby. How do the painters use bold color and scale contrast to communicate instantly at high speed?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4: THE CONCEPT
+══════════════════════════════════════════════ -->
+<section id="the-concept" aria-labelledby="concept-heading">
+  <div class="section">
+    <span class="section-label">The Concept</span>
+    <h2 class="fade-up" id="concept-heading">What Is Contrast?</h2>
+    <p class="fade-up stagger-1">Contrast is the <strong>visible difference</strong> between two elements. When two things are different enough, one of them "pops." That pop is attention. Designers create contrast intentionally — to guide your eye through a composition in a specific order.</p>
+    <p class="fade-up stagger-2">There are five main types of contrast designers use:</p>
+    <div class="concept-grid">
+      <div class="concept-card fade-up stagger-1">
+        <h3>Light / Dark Contrast</h3>
+        <p>The most powerful type. Pure black on pure white gives a contrast ratio of 21:1 — the maximum possible. Road signs, warning labels, and emergency instructions use this for a reason.</p>
+      </div>
+      <div class="concept-card fade-up stagger-2">
+        <h3>Large / Small Contrast</h3>
+        <p>Make one element significantly bigger than everything else and it will dominate. This is why headlines are big. Not just for readability — for hierarchy.</p>
+      </div>
+      <div class="concept-card fade-up stagger-3">
+        <h3>Bold / Thin Contrast</h3>
+        <p>Font weight creates contrast within text. A bold word inside a thin sentence is a spotlight. Use this to emphasise without changing color or size.</p>
+      </div>
+      <div class="concept-card fade-up stagger-4">
+        <h3>Color Contrast</h3>
+        <p>Not just dark vs. light — complementary colors (opposite on the wheel) create the highest visual tension. Yellow on black. Cyan on red. These combinations demand attention.</p>
+      </div>
+      <div class="concept-card fade-up stagger-5">
+        <h3>Scale Contrast</h3>
+        <p>An unexpected scale relationship — one tiny element inside a sea of giant ones, or vice versa — creates immediate tension and curiosity. The eye always investigates the outlier.</p>
+      </div>
+      <div class="concept-card fade-up">
+        <h3>Accessibility Contrast (WCAG)</h3>
+        <p>The Web Content Accessibility Guidelines require a minimum 4.5:1 ratio for normal text, 3:1 for large text. This isn't a rule — it's a moral commitment to include everyone who uses your design.</p>
+      </div>
+    </div>
+
+    <!-- SVG Contrast Demo -->
+    <svg class="contrast-svg-demo fade-up" viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visual contrast examples" style="max-width:100%;">
+      <rect width="900" height="180" fill="#1a1a1a" rx="8"/>
+      <!-- Demo 1: Light/Dark -->
+      <rect x="20" y="20" width="160" height="140" fill="#000" rx="4"/>
+      <text x="100" y="95" text-anchor="middle" fill="#FFE600" font-family="Bebas Neue" font-size="28" aria-hidden="true">CAUTION</text>
+      <text x="100" y="155" text-anchor="middle" fill="#888" font-family="Lato" font-size="10" aria-hidden="true">Light / Dark</text>
+      <!-- Demo 2: Large/Small -->
+      <rect x="200" y="20" width="160" height="140" fill="#111" rx="4"/>
+      <text x="280" y="85" text-anchor="middle" fill="#fff" font-family="Bebas Neue" font-size="52" aria-hidden="true">BIG</text>
+      <text x="280" y="110" text-anchor="middle" fill="#888" font-family="Lato" font-size="11" aria-hidden="true">small detail</text>
+      <text x="280" y="155" text-anchor="middle" fill="#888" font-family="Lato" font-size="10" aria-hidden="true">Large / Small</text>
+      <!-- Demo 3: Bold/Thin -->
+      <rect x="380" y="20" width="160" height="140" fill="#111" rx="4"/>
+      <text x="460" y="90" text-anchor="middle" fill="#ccc" font-family="Lato" font-size="13" font-weight="300" aria-hidden="true">this is light text</text>
+      <text x="460" y="112" text-anchor="middle" fill="#fff" font-family="Lato" font-size="15" font-weight="900" aria-hidden="true">THIS IS BOLD</text>
+      <text x="460" y="155" text-anchor="middle" fill="#888" font-family="Lato" font-size="10" aria-hidden="true">Bold / Thin</text>
+      <!-- Demo 4: Color -->
+      <rect x="560" y="20" width="160" height="140" fill="#1a0020" rx="4"/>
+      <rect x="575" y="40" width="130" height="70" fill="#7B00FF" rx="4"/>
+      <text x="640" y="81" text-anchor="middle" fill="#FFE600" font-family="Bebas Neue" font-size="22" aria-hidden="true">COLOR BURST</text>
+      <text x="640" y="155" text-anchor="middle" fill="#888" font-family="Lato" font-size="10" aria-hidden="true">Color Contrast</text>
+      <!-- Demo 5: Scale -->
+      <rect x="740" y="20" width="140" height="140" fill="#111" rx="4"/>
+      <circle cx="810" cy="88" r="48" fill="none" stroke="#FFE600" stroke-width="1.5" aria-hidden="true"/>
+      <circle cx="810" cy="88" r="6" fill="#FFE600" aria-hidden="true"/>
+      <text x="810" y="155" text-anchor="middle" fill="#888" font-family="Lato" font-size="10" aria-hidden="true">Scale Contrast</text>
+    </svg>
+
+    <!-- Contrast type demos -->
+    <div class="contrast-demos" style="margin-top:3rem;">
+      <div class="contrast-demo-item" style="background:#000; border:1px solid #333;">
+        <span class="demo-label" style="color:#666;">Ratio 21:1</span>
+        <span class="demo-title" style="color:#fff; font-size:2rem; font-family:'Bebas Neue';">MAXIMUM</span>
+        <span class="demo-label" style="color:#666;">Black on White</span>
+      </div>
+      <div class="contrast-demo-item" style="background:#555; border:1px solid #333;">
+        <span class="demo-label" style="color:#888;">Ratio ~3.9:1</span>
+        <span class="demo-title" style="color:#999; font-size:1.4rem;">Borderline</span>
+        <span class="demo-label" style="color:#888;">Grey on Grey</span>
+      </div>
+      <div class="contrast-demo-item" style="background:#FFE600; border:1px solid #333;">
+        <span class="demo-label" style="color:#555;">Ratio 14.7:1</span>
+        <span class="demo-title" style="color:#000; font-size:1.8rem; font-family:'Bebas Neue';">YELLOW + BLACK</span>
+        <span class="demo-label" style="color:#555;">High Energy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5: SEE IT LIVE — Eye Tracker Simulation
+══════════════════════════════════════════════ -->
+<section id="see-it-live" aria-labelledby="live-heading">
+  <div class="section">
+    <span class="section-label">See It Live</span>
+    <h2 class="fade-up" id="live-heading">Eye Tracker Simulation</h2>
+    <p class="fade-up stagger-1">Where does your eye land first? Click (or tap) the element that grabs your attention first, then second, then third. We'll compare your instinct to where the designer intended your eye to go.</p>
+
+    <div class="eye-tracker-container fade-up stagger-2">
+      <div class="eye-tracker-header">
+        <p id="tracker-instruction">Tap the element that grabs your eye <strong>first</strong>. Then second, then third.</p>
+        <button class="btn btn-secondary" id="tracker-reset-btn" aria-label="Reset eye tracker">↺ Reset</button>
+      </div>
+
+      <div id="eye-tracker-canvas-wrap">
+        <canvas id="eye-tracker-scene" role="img" aria-label="Interactive eye tracker design composition"></canvas>
+        <div id="tracker-overlay" aria-hidden="true"></div>
+      </div>
+
+      <div class="tracker-instructions" id="tracker-legend">
+        <div class="instr-step">
+          <div class="instr-dot" style="background:#FFE600; color:#000;">1</div>
+          <span>Your first pick</span>
+        </div>
+        <div class="instr-step">
+          <div class="instr-dot" style="background:#FF6B35; color:#fff;">2</div>
+          <span>Your second pick</span>
+        </div>
+        <div class="instr-step">
+          <div class="instr-dot" style="background:#6C5CE7; color:#fff;">3</div>
+          <span>Your third pick</span>
+        </div>
+      </div>
+
+      <div class="eye-tracker-footer">
+        <p id="tracker-feedback">Click on the composition above to start tracking.</p>
+        <button class="btn btn-primary" id="tracker-reveal-btn" style="display:none;" aria-label="Reveal designer intention">Reveal Designer Path</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6: TRY IT YOURSELF — Contrast Lab
+══════════════════════════════════════════════ -->
+<section id="try-it-yourself" aria-labelledby="try-heading">
+  <div class="section">
+    <span class="section-label">Try It Yourself</span>
+    <h2 class="fade-up" id="try-heading">The Contrast Lab</h2>
+    <p class="fade-up stagger-1">Adjust the text color, background color, font size, and font weight below. Watch your live WCAG contrast ratio update in real time. Try to hit AAA level (7:1 or above) — then try to break it.</p>
+
+    <div class="contrast-lab fade-up stagger-2">
+      <div class="contrast-lab-grid">
+        <div class="lab-controls">
+
+          <div class="control-group">
+            <label for="text-color-picker">Text Color</label>
+            <div class="color-input-row">
+              <input type="color" id="text-color-picker" value="#FFE600" aria-label="Choose text color">
+              <span class="color-hex-display" id="text-hex-display">#FFE600</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="bg-color-picker">Background Color</label>
+            <div class="color-input-row">
+              <input type="color" id="bg-color-picker" value="#111111" aria-label="Choose background color">
+              <span class="color-hex-display" id="bg-hex-display">#111111</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="font-size-slider">Font Size: <span id="font-size-val">24px</span></label>
+            <div class="range-row">
+              <input type="range" id="font-size-slider" min="12" max="72" value="24" aria-label="Adjust font size">
+              <span class="range-value" id="font-size-display">24px</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Font Weight</label>
+            <div class="font-weight-selector">
+              <button class="fw-btn" data-weight="300" aria-pressed="false">Light</button>
+              <button class="fw-btn active" data-weight="400" aria-pressed="true">Regular</button>
+              <button class="fw-btn" data-weight="700" aria-pressed="false">Bold</button>
+              <button class="fw-btn" data-weight="900" aria-pressed="false">Black</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="lab-preview">
+          <div id="contrast-preview-box" style="background:#111111;" role="region" aria-label="Live contrast preview">
+            <span id="contrast-preview-text" style="color:#FFE600; font-size:24px; font-weight:400; font-family:'Lato',sans-serif;">
+              Preview Text — Can you read this?
+            </span>
+          </div>
+
+          <div class="wcag-result" aria-live="polite" aria-label="WCAG contrast ratio result">
+            <div class="wcag-ratio-display">
+              <span class="wcag-ratio-number" id="wcag-ratio-number" style="color:#FFE600;">14.7</span>
+              <span class="wcag-ratio-label">:1 CONTRAST RATIO</span>
+            </div>
+
+            <div class="wcag-meter-bar" aria-hidden="true">
+              <div class="wcag-meter-fill" id="wcag-meter-fill" style="width:70%; background:#FFE600;"></div>
+            </div>
+
+            <div class="wcag-badges" id="wcag-badges">
+              <span class="wcag-badge" id="badge-aa-normal">AA Normal</span>
+              <span class="wcag-badge" id="badge-aa-large">AA Large</span>
+              <span class="wcag-badge" id="badge-aaa-normal">AAA Normal</span>
+              <span class="wcag-badge" id="badge-aaa-large">AAA Large</span>
+            </div>
+
+            <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.75rem; max-width:none; margin-bottom:0;">
+              WCAG AA requires 4.5:1 for normal text, 3:1 for large text (18px+ bold or 24px+). AAA requires 7:1 normal, 4.5:1 large.
+            </p>
+          </div>
+
+          <div class="portfolio-save-row">
+            <button class="btn btn-primary" id="save-contrast-btn" aria-label="Save contrast result to portfolio">
+              💾 Save to Portfolio
+            </button>
+            <div id="portfolio-saved-msg" role="status">
+              <span>✓</span> Saved to Level 5 portfolio
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7: JUDGE IT — Make It Pop
+══════════════════════════════════════════════ -->
+<section id="judge-it" aria-labelledby="judge-heading">
+  <div class="section">
+    <span class="section-label">Judge It</span>
+    <h2 class="fade-up" id="judge-heading">Make It Pop</h2>
+    <p class="fade-up stagger-1">Here is a badly designed event poster — low contrast, poor hierarchy. You have exactly <strong>3 changes</strong> to improve it. Each change must use a contrast technique. Apply your changes and see what happens.</p>
+
+    <div class="make-it-pop-container fade-up stagger-2">
+      <div class="mip-tool-row">
+        <button class="change-btn" id="mip-btn-1" aria-pressed="false">
+          Boost Headline
+          <span>Increase font size + weight</span>
+        </button>
+        <button class="change-btn" id="mip-btn-2" aria-pressed="false">
+          Fix Background
+          <span>Dark bg, light text</span>
+        </button>
+        <button class="change-btn" id="mip-btn-3" aria-pressed="false">
+          Add Color Accent
+          <span>Yellow highlight on CTA</span>
+        </button>
+        <button class="change-btn" id="mip-btn-4" aria-pressed="false">
+          Scale the Date
+          <span>Make date huge + bold</span>
+        </button>
+        <button class="change-btn" id="mip-btn-5" aria-pressed="false">
+          Strip Clutter
+          <span>Remove decorative noise</span>
+        </button>
+        <span class="mip-changes-counter" id="mip-changes-left" aria-live="polite">3 changes left</span>
+        <button class="btn btn-secondary" id="mip-reset-btn" aria-label="Reset poster changes">↺ Reset</button>
+      </div>
+
+      <div class="mip-stage">
+        <div class="mip-canvas-wrap">
+          <h3>Original</h3>
+          <div class="mip-poster" id="mip-original" aria-label="Original low-contrast poster" style="background:#7a7a7a; flex-direction:column;">
+            <div style="font-size:0.9rem; color:#999; font-family:'Lato';">ART & DESIGN FESTIVAL</div>
+            <div style="font-size:1.1rem; color:#aaa; font-family:'Lato'; font-weight:400;">Design Without Limits</div>
+            <div style="font-size:0.85rem; color:#888; margin-top:0.5rem;">March 15, 2025</div>
+            <div style="font-size:0.8rem; color:#999;">Arts Council Karachi</div>
+            <div style="font-size:0.75rem; color:#aaa; border:1px solid #aaa; padding:0.3rem 0.75rem; margin-top:0.5rem;">Register Now</div>
+            <div style="font-size:0.65rem; color:#999;">★ ★ ★ ✦ ★ ★ ★ ✦ ★ ★ ★</div>
+            <div style="font-size:0.65rem; color:#aaa;">presented by OTS Skills Academy</div>
+            <div style="font-size:0.65rem; color:#888;">workshops • exhibitions • talks</div>
+          </div>
+        </div>
+
+        <div class="mip-canvas-wrap">
+          <h3>Your Version</h3>
+          <div class="mip-poster" id="mip-improved" aria-label="Improved poster — your version" aria-live="polite"
+            style="background:#7a7a7a; flex-direction:column; transition:all 0.5s ease;">
+            <div id="mip-i-sub" style="font-size:0.9rem; color:#999; font-family:'Lato'; transition:all 0.4s;">ART & DESIGN FESTIVAL</div>
+            <div id="mip-i-title" style="font-size:1.1rem; color:#aaa; font-family:'Lato'; font-weight:400; transition:all 0.4s;">Design Without Limits</div>
+            <div id="mip-i-date" style="font-size:0.85rem; color:#888; margin-top:0.5rem; transition:all 0.4s;">March 15, 2025</div>
+            <div id="mip-i-venue" style="font-size:0.8rem; color:#999; transition:all 0.4s;">Arts Council Karachi</div>
+            <div id="mip-i-cta" style="font-size:0.75rem; color:#aaa; border:1px solid #aaa; padding:0.3rem 0.75rem; margin-top:0.5rem; transition:all 0.4s; border-radius:2px;">Register Now</div>
+            <div id="mip-i-noise" style="font-size:0.65rem; color:#999; transition:all 0.4s;">★ ★ ★ ✦ ★ ★ ★ ✦ ★ ★ ★</div>
+            <div id="mip-i-brand" style="font-size:0.65rem; color:#aaa; transition:all 0.4s;">presented by OTS Skills Academy</div>
+            <div id="mip-i-tags" style="font-size:0.65rem; color:#888; transition:all 0.4s;">workshops • exhibitions • talks</div>
+          </div>
+        </div>
+      </div>
+
+      <p id="mip-feedback" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8: IN THE WILD
+══════════════════════════════════════════════ -->
+<section id="in-the-wild" aria-labelledby="wild-heading">
+  <div class="section">
+    <span class="section-label">In the Wild</span>
+    <h2 class="fade-up" id="wild-heading">Contrast at Work — Everywhere</h2>
+    <p class="fade-up stagger-1">These are real-world systems where contrast isn't aesthetic choice — it is survival, safety, or commercial necessity.</p>
+
+    <div class="wild-grid">
+
+      <div class="wild-card fade-up stagger-1">
+        <div class="wild-visual" style="background:#000;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <polygon points="100,10 190,90 10,90" fill="#FFE600" stroke="none"/>
+            <text x="100" y="72" text-anchor="middle" fill="#000" font-family="Bebas Neue" font-size="22">STOP</text>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Road Safety</span>
+          <h3>Traffic Signs</h3>
+          <p>Yellow-on-black, red-on-white, white-on-green. Every road sign palette was chosen by testing contrast at high speed and in low light. Human lives depend on it working in 0.3 seconds.</p>
+        </div>
+      </div>
+
+      <div class="wild-card fade-up stagger-2">
+        <div class="wild-visual" style="background:#1a1a2e;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <rect x="20" y="20" width="160" height="60" rx="8" fill="#FF0080"/>
+            <text x="100" y="58" text-anchor="middle" fill="#fff" font-family="Bebas Neue" font-size="28" letter-spacing="2">SALE 50% OFF</text>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Retail</span>
+          <h3>Sale Banners</h3>
+          <p>Bright pink, fire red, bold white text. Retail uses maximum contrast to trigger urgency. The moment you walk into a store, the eye goes straight to the loudest sign — which is always the sale.</p>
+        </div>
+      </div>
+
+      <div class="wild-card fade-up stagger-3">
+        <div class="wild-visual" style="background:#f0f0f0;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <rect x="30" y="15" width="140" height="70" rx="4" fill="#fff" stroke="#ddd" stroke-width="1"/>
+            <circle cx="60" cy="50" r="18" fill="#FF4444"/>
+            <text x="60" y="55" text-anchor="middle" fill="#fff" font-family="Bebas Neue" font-size="14">!</text>
+            <text x="120" y="42" text-anchor="middle" fill="#333" font-family="Lato" font-size="9" font-weight="700">WARNING</text>
+            <text x="120" y="57" text-anchor="middle" fill="#888" font-family="Lato" font-size="7">Read carefully</text>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Medical</span>
+          <h3>Medicine Packaging</h3>
+          <p>Red warning labels against white backgrounds, bold warning text vs. small body text. Pakistan's DRAP guidelines specify minimum contrast for medicine labels — it is the law, not just taste.</p>
+        </div>
+      </div>
+
+      <div class="wild-card fade-up stagger-4">
+        <div class="wild-visual" style="background:#000; position:relative; overflow:hidden;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <rect width="200" height="100" fill="#000"/>
+            <rect x="10" y="10" width="80" height="80" fill="#FF6B35" rx="4"/>
+            <text x="50" y="58" text-anchor="middle" fill="#fff" font-family="Bebas Neue" font-size="22">OTS</text>
+            <text x="130" y="48" text-anchor="middle" fill="#fff" font-family="Lato" font-size="12" font-weight="700">Skills</text>
+            <text x="130" y="65" text-anchor="middle" fill="#888" font-family="Lato" font-size="9">Academy</text>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Branding</span>
+          <h3>Brand Logos</h3>
+          <p>OTS's own orange-on-black. The orange pop against black creates immediate recognition. Great logos work at 16px and 1600px — because contrast, not detail, carries them across all sizes.</p>
+        </div>
+      </div>
+
+      <div class="wild-card fade-up stagger-5">
+        <div class="wild-visual" style="background:#2d1b69; overflow:hidden;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <!-- Truck art inspired pattern -->
+            <rect width="200" height="100" fill="#1a0040"/>
+            <rect x="0" y="0" width="200" height="8" fill="#FFE600"/>
+            <rect x="0" y="92" width="200" height="8" fill="#FF0080"/>
+            <text x="100" y="56" text-anchor="middle" fill="#FFE600" font-family="Bebas Neue" font-size="20" letter-spacing="3">KARACHI ARTS</text>
+            <circle cx="30" cy="50" r="15" fill="none" stroke="#00B894" stroke-width="2"/>
+            <circle cx="170" cy="50" r="15" fill="none" stroke="#FF0080" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Local Culture</span>
+          <h3>Truck Art & Rickshaw Art</h3>
+          <p>Pakistani truck painters are master contrast artists. Maximum color saturation, bold outlines in black, patterns that create figure/ground relationships at 80km/h. This is contrast mastery without design school.</p>
+        </div>
+      </div>
+
+      <div class="wild-card fade-up">
+        <div class="wild-visual" style="background:#0a0a0a;">
+          <svg viewBox="0 0 200 100" width="180" aria-hidden="true">
+            <text x="100" y="45" text-anchor="middle" fill="#999" font-family="Lato" font-size="11" aria-hidden="true">Can you read</text>
+            <text x="100" y="62" text-anchor="middle" fill="#777" font-family="Lato" font-size="11" aria-hidden="true">this sentence easily?</text>
+            <rect x="20" y="78" width="160" height="10" rx="2" fill="#333"/>
+            <rect x="20" y="78" width="72" height="10" rx="2" fill="#FF4444"/>
+            <text x="100" y="88" text-anchor="middle" fill="#888" font-family="Lato" font-size="7" aria-hidden="true">Fail: 2.1:1 ratio</text>
+          </svg>
+        </div>
+        <div class="wild-card-body">
+          <span class="wild-tag">Accessibility</span>
+          <h3>WCAG & Inclusive Web</h3>
+          <p>1 in 12 men has some form of color vision deficiency. WCAG's contrast requirements exist to keep the web usable for everyone — including under bright sunlight, on old screens, and with aging eyesight.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 9: LEVEL CHALLENGE
+══════════════════════════════════════════════ -->
+<section id="level-challenge" aria-labelledby="challenge-heading">
+  <div class="section">
+    <span class="section-label">Level Challenge</span>
+    <div class="challenge-card fade-up">
+      <span class="challenge-number" aria-hidden="true">5</span>
+      <h3 id="challenge-heading">The Contrast Audit</h3>
+      <p style="max-width:none; margin-bottom:1.5rem; color:var(--text-secondary);">
+        Find a real design in your physical environment — a shop sign, food packaging, a poster, a textbook cover, a website. Perform a full contrast audit using what you've learned in this level.
+      </p>
+      <ul class="challenge-steps" aria-label="Challenge steps">
+        <li><span class="step-num">1</span> Describe the design you are auditing (what is it, what is its purpose, who made it?)</li>
+        <li><span class="step-num">2</span> Identify every type of contrast used: light/dark, large/small, bold/thin, color, scale.</li>
+        <li><span class="step-num">3</span> Rate the contrast effectiveness for each element out of 5. Where does the eye land first?</li>
+        <li><span class="step-num">4</span> Find one element with poor contrast. Describe how you would fix it using exactly one change.</li>
+        <li><span class="step-num">5</span> Is this design accessible? Consider elderly users, color-blind users, and users in sunlight.</li>
+      </ul>
+
+      <div class="challenge-textarea-wrap">
+        <label for="challenge-answer">Your Contrast Audit</label>
+        <textarea id="challenge-answer" placeholder="Start your audit here. Describe the design, list the contrast types you spotted, rate them, and suggest your one improvement..." aria-label="Write your contrast audit here"></textarea>
+      </div>
+
+      <div class="portfolio-save-row">
+        <button class="btn btn-primary" id="save-challenge-btn" aria-label="Save challenge to portfolio">
+          💾 Save Challenge to Portfolio
+        </button>
+        <div id="challenge-saved-msg" role="status" style="font-size:0.8rem; color:#00c864; display:none; align-items:center; gap:0.4rem;">
+          <span>✓</span> Audit saved
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 10: REFLECTION PROMPT
+══════════════════════════════════════════════ -->
+<section id="reflection" aria-labelledby="reflection-heading">
+  <div class="section">
+    <span class="section-label">Reflection</span>
+    <div class="reflection-card fade-up">
+      <p class="reflection-q" id="reflection-heading">
+        "If all contrast was removed from the world — every sign was grey on grey, every headline the same size — what would that world feel like? What would we lose beyond beauty?"
+      </p>
+      <label for="reflection-answer" style="font-family:var(--font-display2); font-size:0.75rem; letter-spacing:0.15em; color:var(--level-color); text-transform:uppercase; display:block; margin-bottom:0.5rem;">Your Reflection</label>
+      <textarea id="reflection-answer" placeholder="Think about safety, communication, emotion, culture — not just aesthetics..." aria-label="Write your reflection"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 11: BADGE + XP UNLOCK
+══════════════════════════════════════════════ -->
+<section id="badge-unlock" aria-labelledby="badge-heading">
+  <div class="section">
+    <div class="badge-container">
+      <div id="badge-svg-wrap" aria-hidden="true">
+        <div class="badge-ring"></div>
+        <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="100" cy="100" r="90" fill="#111" stroke="#FFE600" stroke-width="3"/>
+          <polygon points="100,30 115,75 162,75 125,100 140,145 100,118 60,145 75,100 38,75 85,75" fill="#FFE600" opacity="0.15"/>
+          <!-- Eye icon -->
+          <ellipse cx="100" cy="100" rx="40" ry="22" fill="none" stroke="#FFE600" stroke-width="2.5"/>
+          <circle cx="100" cy="100" r="12" fill="#FFE600"/>
+          <circle cx="100" cy="100" r="5" fill="#000"/>
+          <text x="100" y="148" text-anchor="middle" fill="#FFE600" font-family="Bebas Neue" font-size="10" letter-spacing="3">CONTRAST MASTER</text>
+          <text x="100" y="162" text-anchor="middle" fill="#888" font-family="Lato" font-size="8">LEVEL 5 — EXPLORER</text>
+        </svg>
+      </div>
+
+      <div>
+        <h2 class="badge-title" id="badge-heading">Contrast Master</h2>
+        <p style="color:var(--text-muted); max-width:50ch; text-align:center; margin:0 auto 1.5rem;">You have trained your eye to see what others miss. You understand why some designs scream and others whisper — and how to make either happen on purpose.</p>
+      </div>
+
+      <div class="badge-xp-reward" aria-label="300 XP reward">
+        300
+        <small>XP REWARD</small>
+      </div>
+
+      <button class="btn" id="complete-btn" aria-label="Complete Level 5 and claim 300 XP" style="background:var(--level-color); color:#000; font-family:var(--font-display2); font-size:1rem; letter-spacing:0.2em; padding:1rem 2.5rem; border:none; border-radius:4px; cursor:pointer; min-height:56px; font-weight:700;">
+        ⚡ COMPLETE LEVEL 5 — CLAIM 300 XP
+      </button>
+
+      <p class="complete-msg" id="complete-msg" role="status">
+        🎉 Level 5 complete! Your eye is now trained. On to Level 6 →
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PAGE FOOTER NAV ── -->
+<nav id="level-nav" aria-label="Level navigation">
+  <div class="nav-inner">
+    <a href="level-04.html" class="nav-link prev" aria-label="Previous level: Space is Not Empty">
+      <span class="nav-link-label">← Previous</span>
+      <span class="nav-link-title">Level 4: Space is Not Empty</span>
+    </a>
+    <a href="index.html" class="nav-link" aria-label="Course home" style="text-align:center;">
+      <span class="nav-link-label">⌂ Home</span>
+      <span class="nav-link-title">All Levels</span>
+    </a>
+    <a href="level-06.html" class="nav-link next" aria-label="Next level: Line, Shape and Form">
+      <span class="nav-link-label">Next →</span>
+      <span class="nav-link-title">Level 6: Line, Shape and Form</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SCRIPTS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  const COURSE_SLUG = 'basic-design-theory';
+  const LEVEL = 5;
+  const LEVEL_XP = 300;
+
+  /* ── LOCALSTORAGE HELPERS ── */
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  function getKey(suffix) {
+    return 'ots_skills_' + COURSE_SLUG + '_' + suffix;
+  }
+
+  function getTotalXP() {
+    return parseInt(lsGet(getKey('xp_total')) || '0', 10);
+  }
+
+  function recomputeTotalXP() {
+    let total = 0;
+    for (let n = 1; n <= 12; n++) {
+      if (lsGet(getKey('level_' + n + '_complete')) === 'true') {
+        total += parseInt(lsGet(getKey('level_' + n + '_xp')) || '0', 10);
+      }
+    }
+    lsSet(getKey('xp_total'), total);
+    return total;
+  }
+
+  function updateXPDisplay() {
+    const el = document.getElementById('xp-display');
+    if (el) el.textContent = '⚡ ' + getTotalXP() + ' XP';
+  }
+
+  /* ── INIT ── */
+  function init() {
+    if (!lsGet(getKey('started_at'))) {
+      lsSet(getKey('started_at'), new Date().toISOString());
+    }
+    updateXPDisplay();
+    checkAlreadyComplete();
+    initHeaderCanvas();
+    initScrollAnimations();
+    initEyeTracker();
+    initContrastLab();
+    initMakeItPop();
+    initChallengeBtn();
+    initCompleteBtn();
+  }
+
+  /* ── CHECK ALREADY COMPLETE ── */
+  function checkAlreadyComplete() {
+    if (lsGet(getKey('level_' + LEVEL + '_complete')) === 'true') {
+      const btn = document.getElementById('complete-btn');
+      const msg = document.getElementById('complete-msg');
+      const badge = document.getElementById('badge-svg-wrap');
+      if (btn) { btn.textContent = '✓ Level Complete'; btn.disabled = true; }
+      if (msg) msg.classList.add('visible');
+      if (badge) badge.classList.add('earned');
+    }
+  }
+
+  /* ── HEADER CANVAS — animated contrast particles ── */
+  function initHeaderCanvas() {
+    const canvas = document.getElementById('header-bg-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0;
+    const particles = [];
+    let animId;
+
+    function resize() {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      W = parent.offsetWidth;
+      H = parent.offsetHeight;
+      canvas.width = W;
+      canvas.height = H;
+    }
+
+    function createParticle() {
+      const colors = ['#FFE600','#ffffff','#FF6B35','#888888'];
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.6 + 0.1
+      };
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < 80; i++) particles.push(createParticle());
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+      animId = requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  function initScrollAnimations() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.fade-up').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  }
+
+  /* ── EYE TRACKER SIMULATION ── */
+  function initEyeTracker() {
+    const canvas = document.getElementById('eye-tracker-scene');
+    const overlay = document.getElementById('tracker-overlay');
+    const feedbackEl = document.getElementById('tracker-feedback');
+    const instructionEl = document.getElementById('tracker-instruction');
+    const revealBtn = document.getElementById('tracker-reveal-btn');
+    const resetBtn = document.getElementById('tracker-reset-btn');
+
+    if (!canvas || !overlay) return;
+
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0;
+    let clickCount = 0;
+    let userClicks = [];
+    let revealed = false;
+
+    // Composition elements with designer's intended hierarchy
+    const elements = [
+      { id: 'headline', label: 'SALE', x: 0.5, y: 0.28, size: 'huge', color: '#FFE600', bg: null, designerRank: 1, note: 'Largest, highest contrast — eye lands here first.' },
+      { id: 'date', label: 'FRI 15 MAR', x: 0.5, y: 0.52, size: 'medium', color: '#fff', bg: null, designerRank: 2, note: 'Bold, high contrast — second focal point.' },
+      { id: 'subtitle', label: 'Up to 70% Off', x: 0.5, y: 0.66, size: 'small', color: '#ccc', bg: null, designerRank: 3, note: 'Supporting info — third in hierarchy.' },
+      { id: 'body1', label: 'Selected items only', x: 0.5, y: 0.78, size: 'tiny', color: '#666', bg: null, designerRank: 4, note: 'Fine print — lowest priority.' },
+      { id: 'cta', label: 'SHOP NOW', x: 0.5, y: 0.89, size: 'cta', color: '#000', bg: '#FFE600', designerRank: 2, note: 'CTA — high contrast, yellow accent drives action.' },
+    ];
+
+    const clickColors = ['#FFE600','#FF6B35','#6C5CE7'];
+
+    function getTextSize(el, h) {
+      switch(el.size) {
+        case 'huge': return h * 0.22;
+        case 'medium': return h * 0.08;
+        case 'cta': return h * 0.055;
+        case 'small': return h * 0.05;
+        case 'tiny': return h * 0.035;
+        default: return h * 0.05;
+      }
+    }
+
+    function drawScene(showDesignerPath) {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, W, H);
+
+      // Subtle background texture lines
+      ctx.strokeStyle = 'rgba(255,230,0,0.03)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < W; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, H);
+        ctx.stroke();
+      }
+
+      elements.forEach(el => {
+        const x = el.x * W;
+        const y = el.y * H;
+        const fs = getTextSize(el, H);
+
+        ctx.save();
+        ctx.font = el.size === 'huge' ? `900 ${fs}px 'Bebas Neue', sans-serif` :
+                   el.size === 'medium' ? `700 ${fs}px 'Lato', sans-serif` :
+                   el.size === 'cta' ? `700 ${fs}px 'Bebas Neue', sans-serif` :
+                   `400 ${fs}px 'Lato', sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        if (el.bg) {
+          const tw = ctx.measureText(el.label).width;
+          const pad = fs * 0.4;
+          ctx.fillStyle = el.bg;
+          roundRect(ctx, x - tw/2 - pad, y - fs/2 - pad/2, tw + pad*2, fs + pad, 4);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = el.color;
+        ctx.fillText(el.label, x, y);
+
+        if (showDesignerPath && el.designerRank <= 3) {
+          ctx.strokeStyle = el.designerRank === 1 ? '#00c864' : el.designerRank === 2 ? '#FF6B35' : '#6C5CE7';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 3]);
+          ctx.strokeRect(
+            x - ctx.measureText(el.label).width/2 - 8,
+            y - fs/2 - 6,
+            ctx.measureText(el.label).width + 16,
+            fs + 12
+          );
+          ctx.setLineDash([]);
+          ctx.font = 'bold 11px Lato, sans-serif';
+          ctx.fillStyle = el.designerRank === 1 ? '#00c864' : el.designerRank === 2 ? '#FF6B35' : '#6C5CE7';
+          ctx.fillText('→ ' + el.note, x, y + fs/2 + 18);
+        }
+
+        ctx.restore();
+      });
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function resize() {
+      const wrap = document.getElementById('eye-tracker-canvas-wrap');
+      if (!wrap) return;
+      W = wrap.offsetWidth || 600;
+      H = Math.min(480, W * 0.6);
+      canvas.width = W;
+      canvas.height = H;
+      canvas.style.height = H + 'px';
+      drawScene(revealed);
+      redrawDots();
+    }
+
+    function redrawDots() {
+      overlay.innerHTML = '';
+      userClicks.forEach((click, i) => {
+        if (i >= 3) return;
+        const dot = document.createElement('div');
+        dot.className = 'click-dot';
+        dot.style.left = (click.px * 100) + '%';
+        dot.style.top = (click.py * 100) + '%';
+        dot.style.background = clickColors[i] || '#fff';
+        dot.style.color = i === 0 ? '#000' : '#fff';
+        dot.textContent = i + 1;
+        dot.style.boxShadow = `0 0 10px ${clickColors[i]}88`;
+        overlay.appendChild(dot);
+      });
+    }
+
+    function handleInteraction(ex, ey) {
+      if (revealed || clickCount >= 3) return;
+      const rect = canvas.getBoundingClientRect();
+      const px = (ex - rect.left) / rect.width;
+      const py = (ey - rect.top) / rect.height;
+      userClicks.push({ px, py });
+      clickCount++;
+      redrawDots();
+
+      const msgs = [
+        'First pick noted. Where does your eye go next?',
+        'Second pick noted. One more — what pulls you last?',
+        'All three picks recorded! Now reveal the designer\'s intended path.'
+      ];
+      if (feedbackEl) feedbackEl.textContent = msgs[clickCount - 1] || '';
+      if (instructionEl && clickCount < 3) {
+        instructionEl.innerHTML = `Tap the element that grabs your eye <strong>next</strong> (pick ${clickCount+1} of 3).`;
+      } else if (instructionEl && clickCount >= 3) {
+        instructionEl.textContent = 'Great! Now compare your picks to the designer\'s intention.';
+      }
+      if (clickCount >= 3 && revealBtn) revealBtn.style.display = 'inline-flex';
+    }
+
+    canvas.addEventListener('click', e => handleInteraction(e.clientX, e.clientY));
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      handleInteraction(t.clientX, t.clientY);
+    }, { passive: false });
+
+    if (revealBtn) {
+      revealBtn.addEventListener('click', () => {
+        revealed = true;
+        drawScene(true);
+        revealBtn.style.display = 'none';
+        if (feedbackEl) feedbackEl.textContent = 'Designer\'s path revealed. Compare: did your eye follow the contrast hierarchy?';
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        clickCount = 0;
+        userClicks = [];
+        revealed = false;
+        overlay.innerHTML = '';
+        if (revealBtn) revealBtn.style.display = 'none';
+        if (feedbackEl) feedbackEl.textContent = 'Click on the composition above to start tracking.';
+        if (instructionEl) instructionEl.innerHTML = 'Tap the element that grabs your eye <strong>first</strong>. Then second, then third.';
+        drawScene(false);
+      });
+    }
+
+    const ro = new ResizeObserver(() => resize());
+    const wrap = document.getElementById('eye-tracker-canvas-wrap');
+    if (wrap) ro.observe(wrap);
+    resize();
+  }
+
+  /* ── CONTRAST LAB ── */
+  function initContrastLab() {
+    const textPicker = document.getElementById('text-color-picker');
+    const bgPicker = document.getElementById('bg-color-picker');
+    const textHexDisplay = document.getElementById('text-hex-display');
+    const bgHexDisplay = document.getElementById('bg-hex-display');
+    const fontSizeSlider = document.getElementById('font-size-slider');
+    const fontSizeDisplay = document.getElementById('font-size-display');
+    const fontSizeVal = document.getElementById('font-size-val');
+    const fwBtns = document.querySelectorAll('.fw-btn');
+    const previewBox = document.getElementById('contrast-preview-box');
+    const previewText = document.getElementById('contrast-preview-text');
+    const ratioNumber = document.getElementById('wcag-ratio-number');
+    const meterFill = document.getElementById('wcag-meter-fill');
+    const badgeAAN = document.getElementById('badge-aa-normal');
+    const badgeAAL = document.getElementById('badge-aa-large');
+    const badgeAAAn = document.getElementById('badge-aaa-normal');
+    const badgeAAAl = document.getElementById('badge-aaa-large');
+    const saveBtn = document.getElementById('save-contrast-btn');
+    const savedMsg = document.getElementById('portfolio-saved-msg');
+
+    if (!textPicker || !bgPicker) return;
+
+    let state = {
+      textColor: '#FFE600',
+      bgColor: '#111111',
+      fontSize: 24,
+      fontWeight: 400
+    };
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim());
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    function relativeLuminance(r, g, b) {
+      const sRGB = [r, g, b].map(c => {
+        const s = c / 255;
+        return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
+    }
+
+    function contrastRatio(c1, c2) {
+      const rgb1 = hexToRgb(c1);
+      const rgb2 = hexToRgb(c2);
+      if (!rgb1 || !rgb2) return 1;
+      const l1 = relativeLuminance(rgb1.r, rgb1.g, rgb1.b);
+      const l2 = relativeLuminance(rgb2.r, rgb2.g, rgb2.b);
+      const lighter = Math.max(l1, l2);
+      const darker = Math.min(l1, l2);
+      return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    function updateLab() {
+      const ratio = contrastRatio(state.textColor, state.bgColor);
+      const isLarge = state.fontSize >= 24 || (state.fontSize >= 18 && state.fontWeight >= 700);
+
+      if (previewBox) {
+        previewBox.style.background = state.bgColor;
+        previewBox.style.border = '2px solid ' + (ratio >= 4.5 ? '#00c864' : ratio >= 3 ? '#FFE600' : '#ff4444');
+      }
+      if (previewText) {
+        previewText.style.color = state.textColor;
+        previewText.style.fontSize = state.fontSize + 'px';
+        previewText.style.fontWeight = state.fontWeight;
+      }
+      if (ratioNumber) {
+        ratioNumber.textContent = ratio.toFixed(1);
+        ratioNumber.style.color = ratio >= 7 ? '#00c864' : ratio >= 4.5 ? '#FFE600' : ratio >= 3 ? '#FF6B35' : '#ff4444';
+      }
+      if (meterFill) {
+        const pct = Math.min(100, (ratio / 21) * 100);
+        meterFill.style.width = pct + '%';
+        meterFill.style.background = ratio >= 7 ? '#00c864' : ratio >= 4.5 ? '#FFE600' : ratio >= 3 ? '#FF6B35' : '#ff4444';
+      }
+
+      function setBadge(el, pass) {
+        if (!el) return;
+        el.classList.toggle('pass', pass);
+        el.classList.toggle('fail', !pass);
+      }
+
+      setBadge(badgeAAN, ratio >= 4.5);
+      setBadge(badgeAAL, ratio >= 3);
+      setBadge(badgeAAAn, ratio >= 7);
+      setBadge(badgeAAAl, ratio >= 4.5);
+    }
+
+    textPicker.addEventListener('input', e => {
+      state.textColor = e.target.value;
+      if (textHexDisplay) textHexDisplay.textContent = e.target.value.toUpperCase();
+      updateLab();
+    });
+
+    bgPicker.addEventListener('input', e => {
+      state.bgColor = e.target.value;
+      if (bgHexDisplay) bgHexDisplay.textContent = e.target.value.toUpperCase();
+      updateLab();
+    });
+
+    if (fontSizeSlider) {
+      fontSizeSlider.addEventListener('input', e => {
+        state.fontSize = parseInt(e.target.value, 10);
+        if (fontSizeDisplay) fontSizeDisplay.textContent = state.fontSize + 'px';
+        if (fontSizeVal) fontSizeVal.textContent = state.fontSize + 'px';
+        updateLab();
+      });
+    }
+
+    fwBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        fwBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed','true');
+        state.fontWeight = parseInt(btn.dataset.weight, 10);
+        updateLab();
+      });
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+    });
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const ratio = contrastRatio(state.textColor, state.bgColor);
+        const portfolioData = {
+          type: 'contrast-lab',
+          textColor: state.textColor,
+          bgColor: state.bgColor,
+          fontSize: state.fontSize,
+          fontWeight: state.fontWeight,
+          ratio: ratio.toFixed(1),
+          savedAt: new Date().toISOString()
+        };
+        lsSet(getKey('portfolio_level_' + LEVEL), JSON.stringify(portfolioData));
+        if (savedMsg) savedMsg.classList.add('visible');
+        setTimeout(() => { if (savedMsg) savedMsg.classList.remove('visible'); }, 3000);
+      });
+    }
+
+    updateLab();
+  }
+
+  /* ── MAKE IT POP ── */
+  function initMakeItPop() {
+    const buttons = [
+      document.getElementById('mip-btn-1'),
+      document.getElementById('mip-btn-2'),
+      document.getElementById('mip-btn-3'),
+      document.getElementById('mip-btn-4'),
+      document.getElementById('mip-btn-5')
+    ];
+    const counterEl = document.getElementById('mip-changes-left');
+    const feedbackEl = document.getElementById('mip-feedback');
+    const resetBtn = document.getElementById('mip-reset-btn');
+
+    const poster = document.getElementById('mip-improved');
+    if (!poster) return;
+
+    let changesLeft = 3;
+    let applied = new Set();
+
+    const changes = {
+      'mip-btn-1': {
+        label: 'Headline boosted',
+        apply: () => {
+          const title = document.getElementById('mip-i-title');
+          if (title) {
+            title.style.fontFamily = "'Bebas Neue', sans-serif";
+            title.style.fontSize = '2.2rem';
+            title.style.fontWeight = '900';
+            title.style.color = '#fff';
+            title.style.letterSpacing = '0.05em';
+          }
+        },
+        feedback: 'Headline is now dominant — the eye goes straight to it. That\'s contrast hierarchy.'
+      },
+      'mip-btn-2': {
+        label: 'Background fixed',
+        apply: () => {
+          if (poster) {
+            poster.style.background = '#0a0a0a';
+          }
+          const sub = document.getElementById('mip-i-sub');
+          if (sub) sub.style.color = '#888';
+          const venue = document.getElementById('mip-i-venue');
+          if (venue) venue.style.color = '#aaa';
+        },
+        feedback: 'Dark background creates maximum contrast for the light elements above it. The grey was nowhere near enough.'
+      },
+      'mip-btn-3': {
+        label: 'CTA accented',
+        apply: () => {
+          const cta = document.getElementById('mip-i-cta');
+          if (cta) {
+            cta.style.background = '#FFE600';
+            cta.style.color = '#000';
+            cta.style.fontFamily = "'Bebas Neue', sans-serif";
+            cta.style.fontSize = '0.9rem';
+            cta.style.fontWeight = '700';
+            cta.style.letterSpacing = '0.15em';
+            cta.style.border = 'none';
+            cta.style.padding = '0.5rem 1.25rem';
+          }
+        },
+        feedback: 'Yellow CTA on black — ratio jumps to 14.7:1. Your eye finds the action button immediately.'
+      },
+      'mip-btn-4': {
+        label: 'Date scaled up',
+        apply: () => {
+          const date = document.getElementById('mip-i-date');
+          if (date) {
+            date.style.fontFamily = "'Bebas Neue', sans-serif";
+            date.style.fontSize = '1.5rem';
+            date.style.fontWeight = '700';
+            date.style.color = '#fff';
+            date.style.letterSpacing = '0.08em';
+          }
+        },
+        feedback: 'Scaling the date gives it hierarchy. If your event has a date, people NEED to see it quickly.'
+      },
+      'mip-btn-5': {
+        label: 'Clutter removed',
+        apply: () => {
+          const noise = document.getElementById('mip-i-noise');
+          if (noise) { noise.style.display = 'none'; }
+          const tags = document.getElementById('mip-i-tags');
+          if (tags) { tags.style.fontSize = '0.7rem'; tags.style.color = '#555'; }
+        },
+        feedback: 'Removing decorative noise lets the important elements breathe. White space IS contrast — it makes signal louder.'
+      }
+    };
+
+    function updateCounter() {
+      if (counterEl) counterEl.textContent = changesLeft + ' change' + (changesLeft !== 1 ? 's' : '') + ' left';
+    }
+
+    buttons.forEach(btn => {
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const id = btn.id;
+        if (applied.has(id)) return;
+        if (changesLeft <= 0) {
+          if (feedbackEl) feedbackEl.textContent = 'No more changes! Reset to try again.';
+          return;
+        }
+        applied.add(id);
+        changesLeft--;
+        btn.classList.add('applied');
+        btn.setAttribute('aria-pressed','true');
+        btn.disabled = true;
+
+        const change = changes[id];
+        if (change) {
+          change.apply();
+          if (feedbackEl) feedbackEl.textContent = change.feedback;
+        }
+        updateCounter();
+
+        if (changesLeft <= 0) {
+          buttons.forEach(b => { if (b && !applied.has(b.id)) b.disabled = true; });
+        }
+      });
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applied.clear();
+        changesLeft = 3;
+        updateCounter();
+        if (feedbackEl) feedbackEl.textContent = '';
+        buttons.forEach(btn => {
+          if (!btn) return;
+          btn.classList.remove('applied');
+          btn.setAttribute('aria-pressed','false');
+          btn.disabled = false;
+        });
+        if (poster) {
+          poster.style.background = '#7a7a7a';
+        }
+        const ids = ['mip-i-title','mip-i-sub','mip-i-date','mip-i-venue','mip-i-cta','mip-i-noise','mip-i-brand','mip-i-tags'];
+        const defaults = {
+          'mip-i-title': { fontSize:'1.1rem', color:'#aaa', fontFamily:"'Lato',sans-serif", fontWeight:'400', letterSpacing:'normal' },
+          'mip-i-sub': { fontSize:'0.9rem', color:'#999' },
+          'mip-i-date': { fontSize:'0.85rem', color:'#888', fontFamily:"'Lato',sans-serif", fontWeight:'normal', letterSpacing:'normal' },
+          'mip-i-venue': { fontSize:'0.8rem', color:'#999' },
+          'mip-i-cta': { fontSize:'0.75rem', color:'#aaa', background:'transparent', border:'1px solid #aaa', fontFamily:"'Lato',sans-serif", padding:'0.3rem 0.75rem' },
+          'mip-i-noise': { display:'block', fontSize:'0.65rem', color:'#999' },
+          'mip-i-brand': { fontSize:'0.65rem', color:'#aaa' },
+          'mip-i-tags': { fontSize:'0.65rem', color:'#888' }
+        };
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && defaults[id]) {
+            Object.assign(el.style, defaults[id]);
+          }
+        });
+      });
+    }
+
+    updateCounter();
+  }
+
+  /* ── CHALLENGE SAVE ── */
+  function initChallengeBtn() {
+    const btn = document.getElementById('save-challenge-btn');
+    const msg = document.getElementById('challenge-saved-msg');
+    const textarea = document.getElementById('challenge-answer');
+    const reflectionTextarea = document.getElementById('reflection-answer');
+
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const answer = textarea ? textarea.value.trim() : '';
+        if (!answer) {
+          if (textarea) {
+            textarea.style.borderColor = '#ff4444';
+            textarea.placeholder = 'Please write your audit before saving...';
+            setTimeout(() => { if (textarea) textarea.style.borderColor = ''; }, 2000);
+          }
+          return;
+        }
+        const portfolio = JSON.parse(lsGet(getKey('portfolio_level_' + LEVEL)) || '{}');
+        portfolio.challenge = answer;
+        portfolio.reflection = reflectionTextarea ? reflectionTextarea.value.trim() : '';
+        portfolio.savedAt = new Date().toISOString();
+        lsSet(getKey('portfolio_level_' + LEVEL), JSON.stringify(portfolio));
+        if (msg) { msg.style.display = 'flex'; }
+        setTimeout(() => { if (msg) msg.style.display = 'none'; }, 3000);
+      });
+    }
+  }
+
+  /* ── COMPLETE BUTTON ── */
+  function initCompleteBtn() {
+    const btn = document.getElementById('complete-btn');
+    const msg = document.getElementById('complete-msg');
+    const badge = document.getElementById('badge-svg-wrap');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      lsSet(getKey('level_' + LEVEL + '_complete'), 'true');
+      lsSet(getKey('level_' + LEVEL + '_xp'), LEVEL_XP);
+      const total = recomputeTotalXP();
+
+      btn.textContent = '✓ Level Complete';
+      btn.disabled = true;
+      if (msg) msg.classList.add('visible');
+      if (badge) badge.classList.add('earned');
+
+      updateXPDisplay();
+
+      try {
+        if (typeof confetti === 'function') {
+          const yPos = btn.getBoundingClientRect().top / window.innerHeight;
+          confetti({ particleCount: 120, spread: 90, origin: { y: yPos }, colors: ['#FFE600','#ffffff','#FF6B35','#000000'] });
+          setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { y: yPos - 0.1 }, colors: ['#FFE600','#FF6B35','#fff'] }), 300);
+        }
+      } catch(e) {}
+    });
+  }
+
+  /* ── BOOT ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2274 @@
+<!-- COURSE: Logic Building | LEVEL: 9 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 9 — Break It Down | Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Level 9: Break It Down — Decomposition: the secret weapon of great thinkers. Logic Building Course, OTS Skills Academy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #111118;
+  --bg-card: #16101f;
+  --accent-primary: #A855F7;
+  --accent-glow: rgba(168,85,247,0.35);
+  --accent-soft: rgba(168,85,247,0.12);
+  --accent-secondary: #00D9F5;
+  --accent-warm: #F5A623;
+  --accent-danger: #FF4757;
+  --accent-success: #00F5A0;
+  --text-primary: #FFFFFF;
+  --text-secondary: #C4B5D4;
+  --text-muted: #7A6E8A;
+  --border-color: rgba(168,85,247,0.2);
+  --border-bright: rgba(168,85,247,0.55);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --transition: 0.3s ease;
+  --nav-height: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Blueprint grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── STICKY NAV ─────────────────────────────────────────────────────── */
+#top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+}
+
+.nav-logo a {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--text-muted); font-weight: 400; font-size: 13px; margin-left: 6px; }
+
+.nav-course {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: none;
+}
+@media (min-width: 768px) { .nav-course { display: block; } }
+
+.nav-xp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border-color);
+  border-radius: 40px;
+  padding: 6px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-primary);
+  min-width: 48px;
+  min-height: 36px;
+}
+
+/* ── LEVEL PROGRESS BAR ─────────────────────────────────────────────── */
+.level-progress-bar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(168,85,247,0.12);
+  z-index: 999;
+}
+.level-progress-fill {
+  height: 100%;
+  width: 75%; /* level 9 of 12 */
+  background: linear-gradient(90deg, var(--accent-primary), #c084fc);
+  box-shadow: 0 0 8px var(--accent-glow);
+  transition: width 1s ease;
+}
+
+/* ── BREADCRUMB ─────────────────────────────────────────────────────── */
+.breadcrumb {
+  padding: calc(var(--nav-height) + 20px) 24px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  position: relative;
+  z-index: 1;
+}
+.breadcrumb a { color: var(--text-muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent-primary); }
+.breadcrumb span { color: var(--accent-primary); margin: 0 6px; }
+
+/* ── CONTAINER ─────────────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 767px) { section { padding: 48px 16px; } }
+
+/* ── SECTION LABELS ─────────────────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-primary), transparent);
+  margin: 20px 0 36px;
+  opacity: 0.4;
+}
+
+/* ── LEVEL HEADER ───────────────────────────────────────────────────── */
+#level-header {
+  padding-top: calc(var(--nav-height) + 56px);
+  padding-bottom: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.level-number-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.difficulty-badge {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  border: 1px solid var(--border-bright);
+}
+
+.xp-badge {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-warm);
+  background: rgba(245,166,35,0.1);
+  border: 1px solid rgba(245,166,35,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 9vw, 96px);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, #c084fc 50%, #A855F7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(16px, 2.5vw, 22px);
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+  max-width: 600px;
+}
+
+/* Explode animation illustration */
+.hero-illustration {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  height: 420px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+@media (max-width: 1024px) { .hero-illustration { display: none; } }
+
+/* ── WHAT YOU'LL LEARN ──────────────────────────────────────────────── */
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.outcome-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  opacity: 0;
+  transform: translateY(20px);
+}
+.outcome-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+.outcome-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--accent-soft);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.outcome-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.outcome-text strong { color: var(--text-primary); display: block; margin-bottom: 4px; font-family: var(--font-display); }
+
+/* ── WARM-UP ZONE ───────────────────────────────────────────────────── */
+#warm-up { background: transparent; }
+
+.warmup-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.warmup-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), #c084fc);
+}
+
+.explode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin: 32px 0;
+}
+
+.phone-whole {
+  position: relative;
+  width: 120px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.phone-svg-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+.exploded-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 600px;
+  min-height: 120px;
+}
+
+.part-chip {
+  background: var(--accent-soft);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  opacity: 0;
+  transform: scale(0.8) translateY(10px);
+  transition: opacity 0.4s, transform 0.4s, box-shadow 0.3s;
+}
+.part-chip.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.part-chip:hover {
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.explode-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--bg-primary);
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  cursor: pointer;
+  min-height: 48px;
+  min-width: 48px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.explode-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+.explode-btn:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+
+/* ── CORE CONCEPT ───────────────────────────────────────────────────── */
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+@media (max-width: 767px) { .concept-grid { grid-template-columns: 1fr; } }
+
+.concept-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.concept-block h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+}
+.concept-block p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.decomp-visual {
+  margin-top: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+.decomp-visual h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.decomp-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.decomp-root {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.decomp-connector-v {
+  width: 2px;
+  height: 28px;
+  background: var(--border-bright);
+}
+
+.decomp-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  position: relative;
+}
+.decomp-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-bright);
+}
+
+.decomp-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.decomp-connector-v-short {
+  width: 2px;
+  height: 18px;
+  background: var(--border-bright);
+}
+
+.decomp-child {
+  background: rgba(168,85,247,0.15);
+  border: 1px solid var(--border-bright);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+@media (max-width: 600px) { .decomp-row { flex-direction: column; align-items: center; } .decomp-row::before { display: none; } }
+
+/* ── INTERACTIVE CHALLENGE — MIND MAP BUILDER ───────────────────────── */
+#interactive-challenge { background: transparent; }
+
+.challenge-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.challenge-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.problem-statement {
+  background: rgba(168,85,247,0.1);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+.problem-statement small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.mindmap-canvas {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.mindmap-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mindmap-center {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 16px 20px;
+  border-radius: 50px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  max-width: 160px;
+  box-shadow: 0 0 28px var(--accent-glow);
+}
+
+.mindmap-nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mindmap-node {
+  position: absolute;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  pointer-events: all;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 110px;
+  user-select: none;
+}
+.mindmap-node.active {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+.mindmap-node:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+}
+.mindmap-node:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+
+.sub-nodes-panel {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(168,85,247,0.05);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  min-height: 80px;
+}
+.sub-nodes-panel h4 {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.sub-node-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sub-node-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+}
+
+.mindmap-progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+.progress-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-bar-inner {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-primary);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.progress-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ── DRAG-DROP DECOMP SORTER ─────────────────────────────────────────── */
+.drag-section-header {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 36px 0 8px;
+}
+.drag-instruction {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.drag-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 16px;
+}
+@media (max-width: 600px) { .drag-board { grid-template-columns: 1fr; } }
+
+.drag-zone {
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
+  min-height: 200px;
+  transition: border-color var(--transition), background var(--transition);
+}
+.drag-zone.drag-over {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+}
+.drag-zone h4 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.drag-zone.target h4 { color: var(--accent-primary); }
+
+.drag-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  cursor: grab;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  min-height: 48px;
+  touch-action: none;
+}
+.drag-item:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.drag-item:active { cursor: grabbing; }
+.drag-item.dragging {
+  opacity: 0.4;
+  transform: scale(0.97);
+}
+.drag-item .drag-handle { color: var(--text-muted); font-size: 16px; flex-shrink: 0; }
+.drag-item.correct-item { border-color: var(--accent-success); color: var(--accent-success); }
+.drag-item.wrong-item { border-color: var(--accent-danger); color: var(--accent-danger); }
+
+.check-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--bg-primary);
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  cursor: pointer;
+  min-height: 48px;
+  margin-top: 20px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.check-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px var(--accent-glow);
+}
+.check-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.check-btn:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+
+.feedback-msg {
+  margin-top: 16px;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  display: none;
+}
+.feedback-msg.success {
+  background: rgba(0,245,160,0.1);
+  border: 1px solid rgba(0,245,160,0.3);
+  color: var(--accent-success);
+  display: block;
+}
+.feedback-msg.error {
+  background: rgba(255,71,87,0.1);
+  border: 1px solid rgba(255,71,87,0.3);
+  color: var(--accent-danger);
+  display: block;
+}
+
+/* ── THINK DEEPER ───────────────────────────────────────────────────── */
+#think-deeper { background: transparent; }
+
+.think-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(168,85,247,0.4);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.think-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,85,247,0.18), transparent 70%);
+}
+
+.reverse-decomp {
+  margin-top: 28px;
+}
+.reverse-decomp p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.task-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.task-chip {
+  background: var(--accent-soft);
+  border: 1px solid var(--border-bright);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--accent-primary);
+}
+
+.system-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.system-option {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  transition: border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+  min-height: 56px;
+}
+.system-option:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+}
+.system-option.selected {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.system-option.correct-ans {
+  border-color: var(--accent-success);
+  background: rgba(0,245,160,0.1);
+  color: var(--accent-success);
+}
+.system-option.wrong-ans {
+  border-color: var(--accent-danger);
+  background: rgba(255,71,87,0.1);
+  color: var(--accent-danger);
+}
+.system-option:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+
+/* ── REAL WORLD ─────────────────────────────────────────────────────── */
+#real-world { background: transparent; }
+
+.rw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+.rw-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  opacity: 0;
+  transform: translateY(20px);
+}
+.rw-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+.rw-icon { font-size: 32px; margin-bottom: 14px; }
+.rw-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin-bottom: 8px; color: var(--accent-primary); }
+.rw-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── LEVEL BADGE ────────────────────────────────────────────────────── */
+#level-badge { text-align: center; }
+
+.badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.badge-ring {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.badge-ring.unlocked {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(168,85,247,0.15);
+  animation: badge-pulse 3s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(168,85,247,0.15); }
+  50% { box-shadow: 0 0 60px rgba(168,85,247,0.6), 0 0 100px rgba(168,85,247,0.25); }
+}
+
+.badge-inner {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-display);
+}
+.badge-emoji { font-size: 40px; }
+.badge-name { font-size: 11px; font-weight: 700; color: var(--accent-primary); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+
+.badge-locked-msg {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.complete-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--accent-primary), #c084fc);
+  border: none;
+  border-radius: 10px;
+  padding: 16px 48px;
+  cursor: pointer;
+  min-height: 56px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.complete-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px var(--accent-glow);
+}
+.complete-btn:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+
+.xp-display {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-warm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── NAVIGATION ─────────────────────────────────────────────────────── */
+#nav-section {
+  border-top: 1px solid var(--border-color);
+  padding: 48px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.nav-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nav-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  min-height: 52px;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.nav-btn:hover { transform: translateY(-3px); }
+.nav-btn:focus-visible { outline: 3px solid var(--accent-primary); outline-offset: 3px; }
+.nav-btn-prev {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.nav-btn-prev:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.4); border-color: var(--accent-primary); color: var(--text-primary); }
+.nav-btn-next {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border: none;
+}
+.nav-btn-next:hover { box-shadow: 0 6px 24px var(--accent-glow); }
+.nav-level-info {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+@keyframes green-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0,245,160,0.5); }
+  70% { box-shadow: 0 0 0 16px rgba(0,245,160,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,245,160,0); }
+}
+@keyframes break-apart {
+  0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--bx,0), var(--by,0)) rotate(var(--br,0deg)); opacity: 0; }
+}
+@keyframes reassemble {
+  0%   { transform: translate(var(--bx,0), var(--by,0)) rotate(var(--br,0deg)); opacity: 0; }
+  100% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+}
+
+.anim-fade-up { animation: fade-up 0.6s ease forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── UTILITIES ──────────────────────────────────────────────────────── */
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); font-size: 13px; }
+.mono { font-family: var(--font-mono); }
+
+/* Blueprint card break-apart effect */
+.card-break {
+  transition: none;
+}
+.card-break.breaking { animation: break-apart 0.5s ease forwards; }
+.card-break.assembling { animation: reassemble 0.5s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ── STICKY NAV ────────────────────────────────────────────────────── -->
+<nav id="top-nav" role="navigation" aria-label="Course navigation">
+  <div class="nav-logo">
+    <a href="index.html" aria-label="OTS Skills Academy — Course Home">OTS Skills Academy</a>
+    <span>/ Logic Building</span>
+  </div>
+  <div class="nav-course" aria-hidden="true">Level 9 — Break It Down</div>
+  <div class="nav-xp" aria-live="polite" aria-label="Total XP earned">
+    ⚡ <span id="xp-counter">0</span> XP
+  </div>
+</nav>
+<div class="level-progress-bar" role="progressbar" aria-valuenow="9" aria-valuemin="1" aria-valuemax="12" aria-label="Level 9 of 12">
+  <div class="level-progress-fill" id="progress-fill"></div>
+</div>
+
+<!-- ── BREADCRUMB ─────────────────────────────────────────────────────── -->
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span>→</span>
+  <a href="index.html">Logic Building</a>
+  <span>→</span>
+  <span aria-current="page">Level 9</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 1 — LEVEL HEADER
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="level-header" aria-labelledby="level-title">
+  <div class="container" style="position:relative;">
+
+    <!-- Animated SVG blueprint illustration -->
+    <svg class="hero-illustration" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" id="hero-svg">
+      <!-- Center rectangle (phone/device) -->
+      <rect id="svg-center" x="170" y="140" width="80" height="140" rx="12" stroke="#A855F7" stroke-width="2" fill="rgba(168,85,247,0.08)"/>
+      <!-- Exploding parts -->
+      <rect id="svg-p1" x="60" y="40" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="95" y="66" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">Screen</text>
+      <rect id="svg-p2" x="290" y="40" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="325" y="66" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">Battery</text>
+      <rect id="svg-p3" x="40" y="180" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="75" y="206" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">CPU</text>
+      <rect id="svg-p4" x="310" y="180" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="345" y="206" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">Camera</text>
+      <rect id="svg-p5" x="60" y="330" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="95" y="356" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">Speaker</text>
+      <rect id="svg-p6" x="290" y="330" width="70" height="40" rx="8" stroke="#A855F7" stroke-width="1.5" stroke-dasharray="4,2" fill="rgba(168,85,247,0.06)"/>
+      <text x="325" y="356" font-family="JetBrains Mono" font-size="9" fill="#A855F7" text-anchor="middle">SIM</text>
+      <!-- Connectors -->
+      <line x1="170" y1="175" x2="130" y2="60" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="250" y1="175" x2="290" y2="60" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="170" y1="210" x2="110" y2="200" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="250" y1="210" x2="310" y2="200" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="170" y1="245" x2="130" y2="350" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="250" y1="245" x2="290" y2="350" stroke="#A855F7" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+    </svg>
+
+    <div class="header-meta" id="header-meta">
+      <span class="level-number-badge">Level 9</span>
+      <span class="difficulty-badge">Advanced</span>
+      <span class="xp-badge">⚡ 500 XP</span>
+    </div>
+
+    <h1 class="hero-title" id="level-title">Break It Down</h1>
+    <p class="hero-tagline">"Decomposition: the secret weapon of great thinkers."</p>
+
+    <a href="#warm-up" class="explode-btn" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none;" aria-label="Start learning — scroll to warm-up">
+      Start Learning
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3l5 5-5 5M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 2 — WHAT YOU'LL LEARN
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="outcomes" aria-labelledby="outcomes-title">
+  <span class="section-label">What You'll Learn</span>
+  <h2 class="section-title" id="outcomes-title">Four Skills You'll Build</h2>
+  <div class="section-divider"></div>
+  <div class="outcomes-grid">
+    <div class="outcome-card" role="article">
+      <div class="outcome-icon" aria-hidden="true">🔍</div>
+      <div class="outcome-text">
+        <strong>Decompose Any Problem</strong>
+        Split big, complex problems into small, manageable pieces you can actually solve.
+      </div>
+    </div>
+    <div class="outcome-card" role="article">
+      <div class="outcome-icon" aria-hidden="true">🧩</div>
+      <div class="outcome-text">
+        <strong>Spot Sub-Components</strong>
+        Identify the hidden parts inside any system — from a smartphone to a school canteen.
+      </div>
+    </div>
+    <div class="outcome-card" role="article">
+      <div class="outcome-icon" aria-hidden="true">🔄</div>
+      <div class="outcome-text">
+        <strong>Reverse-Engineer Systems</strong>
+        Look at individual tasks and work backwards to name the bigger system they belong to.
+      </div>
+    </div>
+    <div class="outcome-card" role="article">
+      <div class="outcome-icon" aria-hidden="true">🚀</div>
+      <div class="outcome-text">
+        <strong>Think Like an Engineer</strong>
+        Use the same thinking method NASA uses to plan missions and engineers use to build apps.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 3 — WARM-UP ZONE
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="warm-up" aria-labelledby="warmup-title">
+  <span class="section-label">Warm-Up Zone</span>
+  <h2 class="section-title" id="warmup-title">Explode the Smartphone</h2>
+  <div class="section-divider"></div>
+
+  <div class="warmup-card">
+    <p style="color:var(--text-secondary); font-size:15px; margin-bottom:8px;">
+      A smartphone looks like <em>one</em> thing. But inside it's made of many components working together. 
+      Tap the button to break it apart and see what's hiding inside.
+    </p>
+
+    <div class="explode-container">
+      <div class="phone-whole" id="phone-whole" aria-label="Smartphone to decompose">
+        <svg class="phone-svg-wrap" viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="8" y="4" width="104" height="192" rx="16" fill="#16101f" stroke="#A855F7" stroke-width="2"/>
+          <rect x="20" y="20" width="80" height="120" rx="4" fill="rgba(168,85,247,0.15)" stroke="#A855F7" stroke-width="1"/>
+          <circle cx="60" cy="165" r="12" fill="rgba(168,85,247,0.2)" stroke="#A855F7" stroke-width="1.5"/>
+          <rect x="48" y="8" width="24" height="4" rx="2" fill="#A855F7" opacity="0.6"/>
+          <circle cx="60" cy="80" r="2" fill="#A855F7" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <button class="explode-btn" id="explode-btn" aria-label="Explode smartphone into components" aria-expanded="false">
+        💥 Explode It!
+      </button>
+
+      <div class="exploded-parts" id="exploded-parts" aria-live="polite" aria-label="Smartphone components">
+        <!-- chips injected by JS -->
+      </div>
+    </div>
+
+    <div id="warmup-msg" style="display:none; padding:16px 20px; border-radius:var(--radius); background:var(--accent-soft); border:1px solid var(--border-bright); color:var(--text-primary); font-size:14px;">
+      🧠 <strong>Notice:</strong> Each component is a <em>sub-problem</em>. A software engineer 
+      who builds the camera app only needs to think about the camera — not the whole phone. 
+      That's the power of decomposition.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 4 — CORE CONCEPT
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="core-concept" aria-labelledby="concept-title">
+  <span class="section-label">Core Concept</span>
+  <h2 class="section-title" id="concept-title">What Is Decomposition?</h2>
+  <div class="section-divider"></div>
+
+  <div class="concept-grid">
+    <div class="concept-block">
+      <h3>The Big Idea</h3>
+      <p>
+        Decomposition means breaking a complex problem into smaller, simpler parts. 
+        Each part is easier to understand, easier to solve, and easier to explain to someone else.
+        When all parts are solved, the big problem is solved too.
+      </p>
+    </div>
+    <div class="concept-block">
+      <h3>Why It Works</h3>
+      <p>
+        Our brains can only hold about 7 things in working memory at once. 
+        Decomposition works <em>with</em> your brain — not against it. 
+        By shrinking problems, you make thinking possible instead of overwhelming.
+      </p>
+    </div>
+    <div class="concept-block">
+      <h3>The Three Levels</h3>
+      <p>
+        <strong style="color:var(--accent-primary)">Level 1 — System:</strong> The big thing (e.g. "School Canteen").<br>
+        <strong style="color:var(--accent-primary)">Level 2 — Sub-systems:</strong> Main parts (Queue, Food, Payment).<br>
+        <strong style="color:var(--accent-primary)">Level 3 — Tasks:</strong> Specific actions inside each part.
+      </p>
+    </div>
+    <div class="concept-block">
+      <h3>Decomposition vs Giving Up</h3>
+      <p>
+        When a problem feels too big, most people give up. 
+        Thinkers who know decomposition never give up — they just break the problem smaller 
+        until each piece feels manageable. Then they start solving.
+      </p>
+    </div>
+  </div>
+
+  <!-- Visual decomposition tree -->
+  <div class="decomp-visual mt-32">
+    <h3>Canteen Wait-Time Problem — Decomposed</h3>
+    <div class="decomp-tree">
+      <div class="decomp-root">Why Does the Canteen Queue Take So Long?</div>
+      <div class="decomp-connector-v"></div>
+      <div class="decomp-row">
+        <div class="decomp-branch">
+          <div class="decomp-connector-v-short"></div>
+          <div class="decomp-child">Ordering<br>Process</div>
+        </div>
+        <div class="decomp-branch">
+          <div class="decomp-connector-v-short"></div>
+          <div class="decomp-child">Food<br>Preparation</div>
+        </div>
+        <div class="decomp-branch">
+          <div class="decomp-connector-v-short"></div>
+          <div class="decomp-child">Payment<br>System</div>
+        </div>
+        <div class="decomp-branch">
+          <div class="decomp-connector-v-short"></div>
+          <div class="decomp-child">Seating<br>Capacity</div>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-24" style="color:var(--text-secondary); font-size:14px;">
+      Each branch can be decomposed further. "Ordering Process" → menu clarity → staff count → order-taking speed.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 5 — INTERACTIVE CHALLENGE
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="interactive-challenge" aria-labelledby="challenge-title">
+  <span class="section-label">Interactive Challenge</span>
+  <h2 class="section-title" id="challenge-title">Mind-Map Builder + Drag-Sort</h2>
+  <div class="section-divider"></div>
+
+  <div class="challenge-wrapper">
+
+    <!-- PART A: Mind Map -->
+    <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text-primary);">
+      Part A — Click to Explore: Canteen Wait-Time
+    </h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">
+      Click each node around the centre to reveal its sub-problems. Explore all 5 nodes to unlock Part B.
+    </p>
+
+    <div class="problem-statement" aria-label="Problem being decomposed">
+      🎯 Problem: Why does the school canteen queue take so long?
+      <small>Click the surrounding nodes to decompose this problem</small>
+    </div>
+
+    <div class="mindmap-canvas" id="mindmap-canvas" role="application" aria-label="Interactive mind map — click nodes to explore">
+      <svg class="mindmap-svg" id="mindmap-svg" aria-hidden="true"></svg>
+      <div class="mindmap-center" id="mindmap-center">Canteen<br>Queue<br>Problem</div>
+      <div class="mindmap-nodes" id="mindmap-nodes" aria-live="polite"></div>
+    </div>
+
+    <div class="sub-nodes-panel" id="sub-panel" aria-live="polite">
+      <h4>Sub-Problems</h4>
+      <div class="sub-node-list" id="sub-node-list">
+        <span style="color:var(--text-muted); font-size:13px; font-style:italic;">Click a node above to see its sub-problems…</span>
+      </div>
+    </div>
+
+    <div class="mindmap-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-inner" id="mm-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" aria-label="Mind map exploration progress"></div>
+      </div>
+      <span class="progress-label" id="mm-progress-label">0 / 5 explored</span>
+    </div>
+
+    <!-- PART B: Drag-Drop Decomp Sorter (unlocks after Part A) -->
+    <div id="part-b" style="opacity:0.35; pointer-events:none; transition: opacity 0.5s;" aria-label="Part B — locked until Part A is complete">
+      <h3 class="drag-section-header">Part B — Sort the Tasks</h3>
+      <p class="drag-instruction">
+        Below are 8 tasks. Drag each one into the correct sub-system it belongs to.
+        <span id="part-b-lock-note" style="color:var(--accent-warm); font-size:13px;">(Complete Part A first to unlock)</span>
+      </p>
+
+      <div class="drag-board">
+        <div class="drag-zone source-zone" id="source-zone" role="list" aria-label="Tasks to sort">
+          <h4>Tasks to Sort</h4>
+          <!-- items injected by JS -->
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="drag-zone target-zone" id="zone-ordering" data-zone="ordering" role="list" aria-label="Drop zone: Ordering Process" aria-dropeffect="move">
+            <h4>🍽 Ordering Process</h4>
+          </div>
+          <div class="drag-zone target-zone" id="zone-payment" data-zone="payment" role="list" aria-label="Drop zone: Payment System" aria-dropeffect="move">
+            <h4>💳 Payment System</h4>
+          </div>
+          <div class="drag-zone target-zone" id="zone-food" data-zone="food" role="list" aria-label="Drop zone: Food Preparation" aria-dropeffect="move">
+            <h4>🥘 Food Preparation</h4>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:20px;">
+        <button class="check-btn" id="check-sort-btn" aria-label="Check your sorting answers" disabled>Check Answers</button>
+        <button class="check-btn" id="reset-sort-btn" aria-label="Reset sorting activity" style="background:var(--bg-card); color:var(--text-secondary); border:1px solid var(--border-color);">Reset</button>
+      </div>
+      <div class="feedback-msg" id="sort-feedback" role="alert" aria-live="assertive"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 6 — THINK DEEPER
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="think-deeper" aria-labelledby="think-title">
+  <span class="section-label">Think Deeper</span>
+  <h2 class="section-title" id="think-title">Reverse Decomposition</h2>
+  <div class="section-divider"></div>
+
+  <div class="think-card">
+    <p style="color:var(--text-secondary); font-size:15px; max-width:720px;">
+      Decomposition usually goes <strong>top-down</strong> — big system → small tasks. 
+      But great thinkers can also go <strong>bottom-up</strong>: given a list of tasks, identify the bigger system they all belong to.
+    </p>
+
+    <div class="reverse-decomp">
+      <p>Here are <strong>8 tasks</strong>. They all belong to the same system. Which one?</p>
+
+      <div class="task-chips" aria-label="List of tasks to identify">
+        <span class="task-chip">Check if seat available</span>
+        <span class="task-chip">Detect motion at door</span>
+        <span class="task-chip">Send alert to phone</span>
+        <span class="task-chip">Lock / unlock doors</span>
+        <span class="task-chip">Record camera footage</span>
+        <span class="task-chip">Set alarm schedule</span>
+        <span class="task-chip">Trigger alarm sound</span>
+        <span class="task-chip">Notify emergency contact</span>
+      </div>
+
+      <p style="color:var(--text-secondary); font-size:14px; margin-bottom:16px;">
+        Which system do all these tasks belong to?
+      </p>
+
+      <div class="system-options" role="group" aria-label="Choose the system these tasks belong to">
+        <button class="system-option" data-answer="wrong" aria-label="Library Management System" id="opt-library">📚 Library Management System</button>
+        <button class="system-option" data-answer="correct" aria-label="Home Alarm System" id="opt-alarm">🔒 Home Alarm System</button>
+        <button class="system-option" data-answer="wrong" aria-label="Cricket Team Selector" id="opt-cricket">🏏 Cricket Team Selector</button>
+        <button class="system-option" data-answer="wrong" aria-label="School Timetable Generator" id="opt-timetable">📅 School Timetable Generator</button>
+      </div>
+
+      <div class="feedback-msg" id="reverse-feedback" role="alert" aria-live="assertive"></div>
+
+      <div id="reverse-explain" style="display:none; margin-top:16px; padding:16px 20px; background:var(--accent-soft); border:1px solid var(--border-bright); border-radius:var(--radius); font-size:14px; color:var(--text-secondary);">
+        ✅ <strong style="color:var(--text-primary)">Correct — Home Alarm System!</strong><br><br>
+        Each task ("detect motion", "lock doors", "send alert") is a sub-task of one system. 
+        Notice how some tasks <em>look</em> like they could belong to a library (check availability) 
+        but the majority anchor the pattern to home security. 
+        This is reverse decomposition — reading the pattern from parts to whole.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 7 — REAL-WORLD CONNECTION
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="real-world" aria-labelledby="rw-title">
+  <span class="section-label">Real-World Connection</span>
+  <h2 class="section-title" id="rw-title">Decomposition in the Wild</h2>
+  <div class="section-divider"></div>
+  <p style="color:var(--text-secondary); max-width:680px; margin-bottom:8px; font-size:15px;">
+    Every large achievement in human history used decomposition. Here's how this exact thinking skill shows up in the real world.
+  </p>
+
+  <div class="rw-grid">
+    <div class="rw-card">
+      <div class="rw-icon">🚀</div>
+      <h3>NASA Moon Landing</h3>
+      <p>
+        Getting to the moon is impossibly complex as one problem. NASA broke it into 
+        trajectory, life support, navigation, communication, re-entry — each solved by a different team. 
+        Decomposition made the impossible possible.
+      </p>
+    </div>
+    <div class="rw-card">
+      <div class="rw-icon">📱</div>
+      <h3>Building a Mobile App</h3>
+      <p>
+        WhatsApp is one app — but its engineers work on messaging, media, security, notifications, 
+        and UI as completely separate sub-systems. That's decomposition at scale, used every day in tech.
+      </p>
+    </div>
+    <div class="rw-card">
+      <div class="rw-icon">🏙</div>
+      <h3>Karachi Traffic Problem</h3>
+      <p>
+        Karachi traffic can't be "fixed" as one thing. Decompose it: signal timing, road width, 
+        driver behaviour, public transport gaps, parking rules. Each sub-problem now has a real solution.
+      </p>
+    </div>
+    <div class="rw-card">
+      <div class="rw-icon">🏥</div>
+      <h3>Diagnosing a Patient</h3>
+      <p>
+        A doctor doesn't treat "being unwell". They decompose: symptoms → systems affected → 
+        possible causes → tests → diagnosis. Medicine runs on decomposition every single day.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 8 — LEVEL BADGE + XP UNLOCK
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="level-badge" aria-labelledby="badge-title">
+  <span class="section-label">Level Complete</span>
+  <h2 class="section-title text-center" id="badge-title">Claim Your Badge</h2>
+  <div class="section-divider"></div>
+
+  <div class="badge-container">
+    <div class="badge-ring" id="badge-ring" role="img" aria-label="Level 9 Break It Down badge — locked until completion">
+      <div class="badge-inner">
+        <div class="badge-emoji">🧩</div>
+        <div class="badge-name">Break It Down</div>
+      </div>
+    </div>
+
+    <p class="badge-locked-msg" id="badge-locked-msg">Complete all activities to unlock this badge</p>
+
+    <div class="xp-display" aria-label="XP reward for this level">
+      ⚡ <span id="badge-xp-display">500</span> XP
+    </div>
+
+    <button class="complete-btn" id="complete-btn" aria-label="Mark Level 9 complete and earn 500 XP">
+      Mark Level Complete — Earn 500 XP
+    </button>
+
+    <div id="completion-message" style="display:none; text-align:center; max-width:480px;">
+      <p style="color:var(--accent-success); font-family:var(--font-display); font-weight:700; font-size:18px; margin-bottom:8px;">
+        🎉 Level 9 Complete!
+      </p>
+      <p style="color:var(--text-secondary); font-size:14px;">
+        You've mastered Decomposition — the secret weapon of every great thinker, engineer, and problem-solver.
+        Ready for Level 10: The Rules of Reasoning?
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION 9 — NAVIGATION
+     ══════════════════════════════════════════════════════════════════════ -->
+<nav id="nav-section" aria-label="Level navigation">
+  <div class="nav-buttons">
+    <a href="level-08.html" class="nav-btn nav-btn-prev" aria-label="Previous level: Level 8 — Loop It">
+      ← Level 8
+      <span style="font-weight:400; font-size:13px; color:var(--text-muted);">Loop It</span>
+    </a>
+    <div class="nav-level-info" aria-label="Current position in course">
+      Level 9 of 12 · Logic Building
+    </div>
+    <a href="level-10.html" class="nav-btn nav-btn-next" aria-label="Next level: Level 10 — The Rules of Reasoning">
+      Level 10 →
+      <span style="font-weight:400; font-size:13px;">Rules of Reasoning</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ── CDN SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── CONSTANTS ──────────────────────────────────────────────────────
+  var COURSE_SLUG = 'logic-building';
+  var LEVEL = 9;
+  var LEVEL_XP = 500;
+
+  function lsKey(k) { return 'ots_skills_' + COURSE_SLUG + '_' + k; }
+
+  function lsGet(k) {
+    try { return localStorage.getItem(lsKey(k)); } catch(e) { return null; }
+  }
+  function lsSet(k, v) {
+    try { localStorage.setItem(lsKey(k), v); } catch(e) {}
+  }
+
+  // ── XP TRACKER ─────────────────────────────────────────────────────
+  function getTotalXP() {
+    var total = 0;
+    for (var i = 1; i <= 12; i++) {
+      var xp = parseInt(lsGet('level_' + i + '_xp') || '0', 10);
+      if (!isNaN(xp)) total += xp;
+    }
+    return total;
+  }
+
+  function updateXPDisplay() {
+    var el = document.getElementById('xp-counter');
+    if (el) el.textContent = getTotalXP();
+  }
+
+  function recordStarted() {
+    if (!lsGet('started_at')) {
+      lsSet('started_at', new Date().toISOString());
+    }
+  }
+
+  // ── INIT ────────────────────────────────────────────────────────────
+  recordStarted();
+  updateXPDisplay();
+
+  // Check if already completed
+  var alreadyComplete = lsGet('level_' + LEVEL + '_complete') === 'true';
+
+  // ── ENTRANCE ANIMATIONS (GSAP or CSS fallback) ─────────────────────
+  function runEntranceAnimations() {
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.outcome-card, .concept-block, .rw-card').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+      return;
+    }
+
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        // Header
+        gsap.from('#header-meta', { opacity: 0, y: 30, duration: 0.6, delay: 0.1 });
+        gsap.from('.hero-title',  { opacity: 0, y: 40, duration: 0.7, delay: 0.2 });
+        gsap.from('.hero-tagline',{ opacity: 0, y: 20, duration: 0.6, delay: 0.35 });
+        gsap.from('.explode-btn', { opacity: 0, y: 20, duration: 0.5, delay: 0.5 });
+
+        // Outcome cards
+        gsap.utils.toArray('.outcome-card').forEach(function(el, i) {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%' },
+            opacity: 1, y: 0, duration: 0.5, delay: i * 0.1
+          });
+        });
+
+        // Concept blocks
+        gsap.utils.toArray('.concept-block').forEach(function(el, i) {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%' },
+            opacity: 1, y: 0, duration: 0.5, delay: i * 0.08
+          });
+        });
+
+        // RW cards
+        gsap.utils.toArray('.rw-card').forEach(function(el, i) {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%' },
+            opacity: 1, y: 0, duration: 0.5, delay: i * 0.1
+          });
+        });
+      } catch(e) {
+        fallbackShow();
+      }
+    } else {
+      fallbackShow();
+    }
+  }
+
+  function fallbackShow() {
+    document.querySelectorAll('.outcome-card, .concept-block, .rw-card').forEach(function(el, i) {
+      el.style.transition = 'opacity 0.5s ease ' + (i * 0.08) + 's, transform 0.5s ease ' + (i * 0.08) + 's';
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      io.observe(el);
+    });
+  }
+
+  // Delay GSAP init until scripts load
+  window.addEventListener('load', function() {
+    setTimeout(runEntranceAnimations, 100);
+  });
+
+  // ── WARM-UP: EXPLODE SMARTPHONE ────────────────────────────────────
+  var phoneComponents = [
+    'Screen', 'Battery', 'CPU / Processor', 'Camera Module',
+    'Speaker', 'SIM Card Slot', 'RAM', 'Bluetooth Chip',
+    'Charging Port', 'Microphone', 'Gyroscope', 'GPS Antenna'
+  ];
+
+  var explodeBtn = document.getElementById('explode-btn');
+  var explodedParts = document.getElementById('exploded-parts');
+  var warmupMsg = document.getElementById('warmup-msg');
+  var exploded = false;
+
+  if (explodeBtn && explodedParts) {
+    explodeBtn.addEventListener('click', function() {
+      if (!exploded) {
+        exploded = true;
+        explodeBtn.textContent = '🔁 Put It Back';
+        explodeBtn.setAttribute('aria-expanded', 'true');
+        explodedParts.innerHTML = '';
+        phoneComponents.forEach(function(comp, i) {
+          var chip = document.createElement('div');
+          chip.className = 'part-chip';
+          chip.textContent = comp;
+          chip.setAttribute('role', 'listitem');
+          explodedParts.appendChild(chip);
+          setTimeout(function() {
+            chip.classList.add('visible');
+          }, i * 80);
+        });
+        if (warmupMsg) {
+          setTimeout(function() {
+            warmupMsg.style.display = 'block';
+            warmupMsg.style.animation = 'fade-up 0.5s ease forwards';
+          }, phoneComponents.length * 80 + 200);
+        }
+      } else {
+        exploded = false;
+        explodeBtn.textContent = '💥 Explode It!';
+        explodeBtn.setAttribute('aria-expanded', 'false');
+        explodedParts.innerHTML = '';
+        if (warmupMsg) warmupMsg.style.display = 'none';
+      }
+    });
+  }
+
+  // ── MIND MAP BUILDER ───────────────────────────────────────────────
+  var mindmapData = {
+    'Ordering': {
+      label: 'Ordering\nProcess',
+      subs: ['Unclear menu display', 'Staff not taking orders fast enough', 'Students unsure what to ask for', 'No pre-order system']
+    },
+    'Food': {
+      label: 'Food\nPreparation',
+      subs: ['Food takes too long to cook', 'Only 1-2 cooks available', 'Ingredients run out mid-rush', 'No batch cooking system']
+    },
+    'Payment': {
+      label: 'Payment\nSystem',
+      subs: ['Only cash accepted — no card/app', 'Students don\'t have exact change', 'No receipt system slows things', 'Single payment counter']
+    },
+    'Seating': {
+      label: 'Seating\nCapacity',
+      subs: ['Not enough tables', 'Students eat slowly, blocking others', 'No outdoor eating area', 'Broken seats not replaced']
+    },
+    'Staffing': {
+      label: 'Staff\nPlanning',
+      subs: ['Peak hour understaffing', 'No scheduled break rotations', 'New staff not trained quickly', 'No supervisor during rush']
+    }
+  };
+
+  var nodeKeys = Object.keys(mindmapData);
+  var exploredNodes = {};
+  var mmCanvas = document.getElementById('mindmap-canvas');
+  var mmNodesDiv = document.getElementById('mindmap-nodes');
+  var mmSvg = document.getElementById('mindmap-svg');
+  var subPanel = document.getElementById('sub-panel');
+  var subNodeList = document.getElementById('sub-node-list');
+  var mmProgressBar = document.getElementById('mm-progress');
+  var mmProgressLabel = document.getElementById('mm-progress-label');
+  var partB = document.getElementById('part-b');
+  var partBLockNote = document.getElementById('part-b-lock-note');
+
+  function placeMindmapNodes() {
+    if (!mmCanvas || !mmNodesDiv || !mmSvg) return;
+    mmNodesDiv.innerHTML = '';
+    mmSvg.innerHTML = '';
+
+    var canvasRect = mmCanvas.getBoundingClientRect();
+    var cx = mmCanvas.offsetWidth / 2 || 300;
+    var cy = (mmCanvas.offsetHeight || 340) / 2;
+
+    var angles = [270, 342, 54, 126, 198];
+    var radius = Math.min(cx * 0.72, cy * 0.72, 160);
+
+    nodeKeys.forEach(function(key, i) {
+      var angle = angles[i] * Math.PI / 180;
+      var nx = cx + radius * Math.cos(angle);
+      var ny = cy + radius * Math.sin(angle);
+
+      // SVG line from center to node
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cx);
+      line.setAttribute('y1', cy);
+      line.setAttribute('x2', nx);
+      line.setAttribute('y2', ny);
+      line.setAttribute('stroke', exploredNodes[key] ? '#A855F7' : 'rgba(168,85,247,0.25)');
+      line.setAttribute('stroke-width', exploredNodes[key] ? '2' : '1');
+      line.setAttribute('stroke-dasharray', exploredNodes[key] ? '0' : '4,3');
+      line.setAttribute('id', 'line-' + key);
+      mmSvg.appendChild(line);
+
+      // Node div
+      var node = document.createElement('button');
+      node.className = 'mindmap-node' + (exploredNodes[key] ? ' active' : '');
+      node.textContent = mindmapData[key].label.replace('\n', ' ');
+      node.setAttribute('aria-label', 'Explore ' + key + ' node — ' + (exploredNodes[key] ? 'explored' : 'not yet explored'));
+      node.setAttribute('id', 'node-' + key);
+      node.setAttribute('data-key', key);
+
+      // Position: centered on nx, ny
+      node.style.left = (nx - 55) + 'px';
+      node.style.top  = (ny - 24) + 'px';
+
+      node.addEventListener('click', function() {
+        selectMindmapNode(key);
+      });
+      node.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMindmapNode(key); }
+      });
+
+      mmNodesDiv.appendChild(node);
+    });
+  }
+
+  function selectMindmapNode(key) {
+    if (!mindmapData[key]) return;
+    exploredNodes[key] = true;
+
+    // Update node styles
+    nodeKeys.forEach(function(k) {
+      var node = document.getElementById('node-' + k);
+      if (node) {
+        node.className = 'mindmap-node' + (exploredNodes[k] ? ' active' : '');
+        node.setAttribute('aria-label', 'Explore ' + k + ' node — ' + (exploredNodes[k] ? 'explored' : 'not yet explored'));
+      }
+      var line = document.getElementById('line-' + k);
+      if (line) {
+        line.setAttribute('stroke', exploredNodes[k] ? '#A855F7' : 'rgba(168,85,247,0.25)');
+        line.setAttribute('stroke-width', exploredNodes[k] ? '2' : '1');
+        line.setAttribute('stroke-dasharray', exploredNodes[k] ? '0' : '4,3');
+      }
+    });
+
+    // Show sub-nodes
+    if (subNodeList) {
+      subNodeList.innerHTML = '';
+      mindmapData[key].subs.forEach(function(sub) {
+        var chip = document.createElement('div');
+        chip.className = 'sub-node-chip';
+        chip.textContent = sub;
+        chip.setAttribute('role', 'listitem');
+        subNodeList.appendChild(chip);
+        setTimeout(function() {
+          chip.style.opacity = '1';
+        }, 50);
+      });
+    }
+    if (subPanel) {
+      var h4 = subPanel.querySelector('h4');
+      if (h4) h4.textContent = 'Sub-Problems: ' + key;
+    }
+
+    // Progress
+    var count = Object.keys(exploredNodes).length;
+    var pct = (count / nodeKeys.length) * 100;
+    if (mmProgressBar) {
+      mmProgressBar.style.width = pct + '%';
+      mmProgressBar.setAttribute('aria-valuenow', count);
+    }
+    if (mmProgressLabel) mmProgressLabel.textContent = count + ' / ' + nodeKeys.length + ' explored';
+
+    // Unlock Part B
+    if (count >= nodeKeys.length && partB) {
+      partB.style.opacity = '1';
+      partB.style.pointerEvents = 'auto';
+      if (partBLockNote) partBLockNote.style.display = 'none';
+      initDragSort();
+    }
+  }
+
+  // Position nodes on load and resize
+  if (mmCanvas) {
+    var mmObserver = new ResizeObserver(function() {
+      placeMindmapNodes();
+    });
+    mmObserver.observe(mmCanvas);
+    setTimeout(placeMindmapNodes, 200);
+  }
+
+  // ── DRAG-DROP SORT ─────────────────────────────────────────────────
+  var sortItems = [
+    { id: 'task1', text: 'Student reads menu board', zone: 'ordering' },
+    { id: 'task2', text: 'Staff taps order into system', zone: 'ordering' },
+    { id: 'task3', text: 'Student pays with exact cash', zone: 'payment' },
+    { id: 'task4', text: 'Change calculated and given', zone: 'payment' },
+    { id: 'task5', text: 'Cook fries rice for 30 mins', zone: 'food' },
+    { id: 'task6', text: 'Chef portions out servings', zone: 'food' },
+    { id: 'task7', text: 'Student requests biryani', zone: 'ordering' },
+    { id: 'task8', text: 'Receipt printed and handed over', zone: 'payment' },
+  ];
+
+  var sortInited = false;
+  var draggedItem = null;
+  var touchDragItem = null;
+  var touchClone = null;
+  var touchOffsetX = 0;
+  var touchOffsetY = 0;
+
+  function initDragSort() {
+    if (sortInited) return;
+    sortInited = true;
+
+    var sourceZone = document.getElementById('source-zone');
+    if (!sourceZone) return;
+
+    // Shuffle items
+    var shuffled = sortItems.slice().sort(function() { return Math.random() - 0.5; });
+
+    shuffled.forEach(function(item) {
+      var el = createDragItem(item);
+      sourceZone.appendChild(el);
+    });
+
+    setupDropZones();
+
+    var checkBtn = document.getElementById('check-sort-btn');
+    if (checkBtn) {
+      checkBtn.disabled = false;
+      checkBtn.addEventListener('click', checkSort);
+    }
+
+    var resetBtn = document.getElementById('reset-sort-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetSort);
+    }
+  }
+
+  function createDragItem(item) {
+    var el = document.createElement('div');
+    el.className = 'drag-item';
+    el.setAttribute('draggable', 'true');
+    el.setAttribute('id', item.id);
+    el.setAttribute('data-correct-zone', item.zone);
+    el.setAttribute('role', 'listitem');
+    el.setAttribute('aria-label', item.text + ' — drag to correct category');
+    el.setAttribute('tabindex', '0');
+    el.innerHTML = '<span class="drag-handle" aria-hidden="true">⠿</span>' + item.text;
+
+    // Desktop drag
+    el.addEventListener('dragstart', function(e) {
+      draggedItem = el;
+      el.classList.add('dragging');
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.id);
+      }
+    });
+    el.addEventListener('dragend', function() {
+      el.classList.remove('dragging');
+      draggedItem = null;
+    });
+
+    // Touch drag
+    el.addEventListener('touchstart', function(e) {
+      var touch = e.touches[0];
+      touchDragItem = el;
+      var rect = el.getBoundingClientRect();
+      touchOffsetX = touch.clientX - rect.left;
+      touchOffsetY = touch.clientY - rect.top;
+
+      touchClone = el.cloneNode(true);
+      touchClone.style.position = 'fixed';
+      touchClone.style.width = rect.width + 'px';
+      touchClone.style.opacity = '0.85';
+      touchClone.style.pointerEvents = 'none';
+      touchClone.style.zIndex = '9999';
+      touchClone.style.left = (touch.clientX - touchOffsetX) + 'px';
+      touchClone.style.top  = (touch.clientY - touchOffsetY) + 'px';
+      document.body.appendChild(touchClone);
+      el.classList.add('dragging');
+    }, { passive: true });
+
+    el.addEventListener('touchmove', function(e) {
+      if (!touchClone) return;
+      var touch = e.touches[0];
+      touchClone.style.left = (touch.clientX - touchOffsetX) + 'px';
+      touchClone.style.top  = (touch.clientY - touchOffsetY) + 'px';
+    }, { passive: true });
+
+    el.addEventListener('touchend', function(e) {
+      if (!touchDragItem || !touchClone) return;
+      var touch = e.changedTouches[0];
+      var target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      // Find closest zone
+      var zoneEl = target ? target.closest('.drag-zone') : null;
+      if (zoneEl && zoneEl.getAttribute('data-zone')) {
+        zoneEl.appendChild(touchDragItem);
+      }
+
+      touchDragItem.classList.remove('dragging');
+      document.body.removeChild(touchClone);
+      touchClone = null;
+      touchDragItem = null;
+    }, { passive: true });
+
+    // Keyboard support
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showKeyboardMoveMenu(el, item);
+      }
+    });
+
+    return el;
+  }
+
+  function showKeyboardMoveMenu(el, item) {
+    // Simple keyboard fallback: cycle through zones
+    var zones = ['source-zone', 'zone-ordering', 'zone-payment', 'zone-food'];
+    var currentZone = el.parentElement ? el.parentElement.id : 'source-zone';
+    var currentIdx = zones.indexOf(currentZone);
+    var nextIdx = (currentIdx + 1) % zones.length;
+    var nextZone = document.getElementById(zones[nextIdx]);
+    if (nextZone) {
+      nextZone.appendChild(el);
+      el.focus();
+    }
+  }
+
+  function setupDropZones() {
+    document.querySelectorAll('.drag-zone').forEach(function(zone) {
+      zone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+        if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      });
+      zone.addEventListener('dragleave', function() {
+        zone.classList.remove('drag-over');
+      });
+      zone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        if (draggedItem) {
+          zone.appendChild(draggedItem);
+        }
+      });
+    });
+  }
+
+  function checkSort() {
+    var allItems = document.querySelectorAll('.drag-item');
+    var correct = 0;
+    var total = 0;
+
+    allItems.forEach(function(item) {
+      var parent = item.parentElement;
+      var parentZone = parent ? parent.getAttribute('data-zone') : null;
+      var correctZone = item.getAttribute('data-correct-zone');
+
+      item.classList.remove('correct-item', 'wrong-item');
+
+      if (parentZone !== null) { // in a target zone (not source)
+        total++;
+        if (parentZone === correctZone) {
+          correct++;
+          item.classList.add('correct-item');
+          item.setAttribute('aria-label', item.textContent.trim() + ' — correct!');
+        } else {
+          item.classList.add('wrong-item');
+          item.setAttribute('aria-label', item.textContent.trim() + ' — incorrect, try again');
+        }
+      }
+    });
+
+    var fb = document.getElementById('sort-feedback');
+    if (fb) {
+      fb.className = 'feedback-msg';
+      if (correct === sortItems.length) {
+        fb.className = 'feedback-msg success';
+        fb.textContent = '✅ Perfect! All ' + sortItems.length + ' tasks correctly sorted. You can decompose a system like a pro!';
+        // Green pulse on each correct item
+        document.querySelectorAll('.drag-item.correct-item').forEach(function(el) {
+          el.style.animation = 'green-pulse 0.6s ease';
+          setTimeout(function() { el.style.animation = ''; }, 700);
+        });
+      } else if (total === 0) {
+        fb.className = 'feedback-msg error';
+        fb.textContent = '⚠️ Drag the tasks into the category zones first, then check!';
+      } else if (correct > 0) {
+        fb.className = 'feedback-msg success';
+        fb.textContent = correct + ' / ' + total + ' correct. Keep going — ' + (total - correct) + ' to fix.';
+      } else {
+        fb.className = 'feedback-msg error';
+        fb.textContent = '❌ Hmm, try thinking about what each task is mainly about — ordering, payment, or food prep?';
+        // Shake wrong items
+        document.querySelectorAll('.drag-item.wrong-item').forEach(function(el) {
+          el.style.animation = 'shake 0.4s ease';
+          setTimeout(function() { el.style.animation = ''; }, 450);
+        });
+      }
+    }
+  }
+
+  function resetSort() {
+    var sourceZone = document.getElementById('source-zone');
+    if (!sourceZone) return;
+    document.querySelectorAll('.drag-item').forEach(function(item) {
+      item.classList.remove('correct-item', 'wrong-item');
+      sourceZone.appendChild(item);
+      item.setAttribute('aria-label', (item.textContent || '').trim() + ' — drag to correct category');
+    });
+    var fb = document.getElementById('sort-feedback');
+    if (fb) { fb.className = 'feedback-msg'; }
+  }
+
+  // ── THINK DEEPER: REVERSE DECOMP ──────────────────────────────────
+  document.querySelectorAll('.system-option').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = btn.getAttribute('data-answer') === 'correct';
+      var fb = document.getElementById('reverse-feedback');
+      var explain = document.getElementById('reverse-explain');
+
+      document.querySelectorAll('.system-option').forEach(function(b) {
+        b.classList.remove('selected', 'correct-ans', 'wrong-ans');
+      });
+      btn.classList.add('selected');
+
+      if (isCorrect) {
+        btn.classList.add('correct-ans');
+        if (fb) {
+          fb.className = 'feedback-msg success';
+          fb.textContent = '✅ Correct! Home Alarm System — you read the pattern from parts to whole.';
+        }
+        if (explain) explain.style.display = 'block';
+        if (typeof gsap !== 'undefined') {
+          try { gsap.from(btn, { scale: 1.08, duration: 0.3, ease: 'back.out' }); } catch(e) {}
+        }
+      } else {
+        btn.classList.add('wrong-ans');
+        if (fb) {
+          fb.className = 'feedback-msg error';
+          fb.textContent = '❌ Not quite. Look at the majority of tasks — motion detection, alarm triggers, door locks, cameras. Which system needs all of these?';
+        }
+        btn.style.animation = 'shake 0.4s ease';
+        setTimeout(function() { btn.style.animation = ''; }, 450);
+        if (explain) explain.style.display = 'none';
+      }
+    });
+
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+    });
+  });
+
+  // ── LEVEL COMPLETION ──────────────────────────────────────────────
+  var completeBtn = document.getElementById('complete-btn');
+  var completionMsg = document.getElementById('completion-message');
+  var badgeRing = document.getElementById('badge-ring');
+  var badgeLockedMsg = document.getElementById('badge-locked-msg');
+
+  function completeLevelUI() {
+    if (badgeRing) badgeRing.classList.add('unlocked');
+    if (badgeLockedMsg) badgeLockedMsg.textContent = '🎉 Badge Unlocked — Break It Down Master!';
+    if (completeBtn) {
+      completeBtn.textContent = '✅ Level 9 Complete!';
+      completeBtn.disabled = true;
+      completeBtn.style.opacity = '0.7';
+    }
+    if (completionMsg) completionMsg.style.display = 'block';
+  }
+
+  if (alreadyComplete) {
+    completeLevelUI();
+  }
+
+  if (completeBtn) {
+    completeBtn.addEventListener('click', function() {
+      // Persist progress
+      lsSet('level_' + LEVEL + '_complete', 'true');
+      lsSet('level_' + LEVEL + '_xp', LEVEL_XP.toString());
+
+      // Recompute total
+      var total = getTotalXP();
+      lsSet('xp_total', total.toString());
+
+      updateXPDisplay();
+      completeLevelUI();
+
+      // Confetti burst
+      if (typeof confetti !== 'undefined') {
+        try {
+          confetti({
+            particleCount: 160,
+            spread: 90,
+            origin: { y: 0.6 },
+            colors: ['#A855F7', '#c084fc', '#00F5A0', '#FFD700', '#00D9F5']
+          });
+          setTimeout(function() {
+            confetti({ particleCount: 80, spread: 120, origin: { y: 0.5 }, angle: 60, colors: ['#A855F7', '#fff'] });
+          }, 400);
+          setTimeout(function() {
+            confetti({ particleCount: 80, spread: 120, origin: { y: 0.5 }, angle: 120, colors: ['#c084fc', '#00F5A0'] });
+          }, 600);
+        } catch(e) {}
+      }
+
+      // Scroll to completion msg
+      if (completionMsg) {
+        setTimeout(function() {
+          completionMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    });
+  }
+
+  // ── HERO SVG ANIMATION ────────────────────────────────────────────
+  var heroSvg = document.getElementById('hero-svg');
+  if (heroSvg) {
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) {
+      var parts = ['svg-p1','svg-p2','svg-p3','svg-p4','svg-p5','svg-p6'];
+      var offsets = [
+        {x:-15,y:-10}, {x:15,y:-10}, {x:-18,y:0},
+        {x:18,y:0},    {x:-15,y:10}, {x:15,y:10}
+      ];
+      var direction = 1;
+      setInterval(function() {
+        direction *= -1;
+        parts.forEach(function(id, i) {
+          var el = document.getElementById(id);
+          if (el) {
+            el.style.transition = 'transform 2.5s ease-in-out';
+            el.style.transform = direction === 1
+              ? 'translate(' + offsets[i].x + 'px,' + offsets[i].y + 'px)'
+              : 'translate(0,0)';
+          }
+        });
+      }, 2500);
+    }
+  }
+
+  // ── PROGRESS BAR FILL ON LOAD ─────────────────────────────────────
+  var pFill = document.getElementById('progress-fill');
+  if (pFill) {
+    setTimeout(function() {
+      pFill.style.width = '75%'; // 9/12
+    }, 500);
+  }
+
+})();
+</script>
+</body>
+</html>

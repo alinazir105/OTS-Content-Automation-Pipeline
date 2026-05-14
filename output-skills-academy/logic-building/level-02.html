@@ -1,0 +1,2512 @@
+<!-- COURSE: Logic Building | LEVEL: 2 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 2: Yes or No — Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Learn Boolean logic — True/False, Yes/No, On/Off — and build decision trees. Level 2 of the Logic Building course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   CSS CUSTOM PROPERTIES — LEVEL 2 IDENTITY
+   ============================================= */
+:root {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --bg-card-hover: #222222;
+  --accent-primary: #7BF1A8;
+  --accent-yes: #00F5A0;
+  --accent-no: #00D9F5;
+  --accent-warm: #F5A623;
+  --accent-danger: #FF4757;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-muted: #666666;
+  --border-subtle: rgba(255,255,255,0.08);
+  --border-accent: rgba(123,241,168,0.3);
+  --glow-yes: 0 0 20px rgba(0,245,160,0.4);
+  --glow-no: 0 0 20px rgba(0,217,245,0.4);
+  --glow-accent: 0 0 20px rgba(123,241,168,0.35);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --max-width: 1100px;
+  --section-pad-desktop: 80px 24px;
+  --section-pad-mobile: 48px 16px;
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+body.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--font-body); }
+a { color: inherit; text-decoration: none; }
+
+/* =============================================
+   BINARY RAIN CANVAS
+   ============================================= */
+#binary-rain {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.07;
+}
+
+/* =============================================
+   STICKY TOP NAV
+   ============================================= */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+.nav-inner {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo-mark {
+  background: var(--accent-primary);
+  color: #0D0D0D;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.nav-course {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: none;
+}
+.nav-xp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-primary);
+  background: rgba(123,241,168,0.1);
+  border: 1px solid rgba(123,241,168,0.25);
+  border-radius: 24px;
+  padding: 4px 14px;
+  flex-shrink: 0;
+}
+.nav-xp span { font-size: 16px; }
+.nav-urdu-toggle {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  transition: var(--transition);
+  display: none;
+}
+.nav-urdu-toggle:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+}
+@media (min-width: 480px) { .nav-urdu-toggle { display: block; } }
+@media (min-width: 768px) { .nav-course { display: block; } }
+
+/* =============================================
+   LEVEL PROGRESS BAR
+   ============================================= */
+.level-progress-strip {
+  position: fixed;
+  top: 60px;
+  left: 0; right: 0;
+  z-index: 999;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+}
+.level-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-yes), var(--accent-no));
+  width: 16.66%; /* 2/12 */
+  transition: width 1s ease;
+}
+
+/* =============================================
+   BREADCRUMB
+   ============================================= */
+.breadcrumb {
+  position: relative;
+  z-index: 10;
+  padding: 76px 24px 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--text-muted); transition: color var(--transition); }
+.breadcrumb a:hover { color: var(--accent-primary); }
+.breadcrumb-sep { color: var(--text-muted); }
+.breadcrumb-current { color: var(--accent-primary); font-weight: 500; }
+
+/* =============================================
+   SECTION WRAPPER
+   ============================================= */
+.section {
+  position: relative;
+  z-index: 10;
+  padding: var(--section-pad-mobile);
+}
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .section { padding: var(--section-pad-desktop); }
+}
+
+/* =============================================
+   SECTION LABELS
+   ============================================= */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 14px;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.section-label.visible { opacity: 1; transform: translateY(0); }
+
+/* =============================================
+   TYPOGRAPHY UTILITIES
+   ============================================= */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.5;
+}
+.body-lg { font-size: 1.0625rem; line-height: 1.7; color: var(--text-secondary); }
+.body-sm { font-size: 0.875rem; color: var(--text-muted); }
+.mono { font-family: var(--font-mono); }
+
+/* =============================================
+   ANIMATION BASE CLASSES
+   ============================================= */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+.fade-up-delay-4 { transition-delay: 0.4s; }
+.fade-up-delay-5 { transition-delay: 0.5s; }
+
+/* =============================================
+   LEVEL 1 — LEVEL HEADER (SPLIT SCREEN HERO)
+   ============================================= */
+.hero {
+  min-height: calc(100vh - 63px);
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  padding-bottom: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 400px;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .hero-split {
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+  }
+}
+.hero-yes, .hero-no {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: flex 0.5s ease;
+}
+.hero-yes {
+  background: linear-gradient(135deg, rgba(0,245,160,0.12) 0%, rgba(0,245,160,0.04) 100%);
+  border-right: 1px solid rgba(0,245,160,0.2);
+}
+.hero-no {
+  background: linear-gradient(135deg, rgba(0,217,245,0.12) 0%, rgba(0,217,245,0.04) 100%);
+}
+.hero-side-label {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 15vw, 10rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-yes .hero-side-label { color: var(--accent-yes); text-shadow: var(--glow-yes); }
+.hero-no .hero-side-label { color: var(--accent-no); text-shadow: var(--glow-no); }
+.hero-side-sub {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+  opacity: 0.6;
+}
+.hero-yes .hero-side-sub { color: var(--accent-yes); }
+.hero-no .hero-side-sub { color: var(--accent-no); }
+.hero-center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 20;
+  width: 100%;
+  padding: 0 16px;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .hero-center-content { width: 400px; }
+}
+.hero-level-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(13,13,13,0.85);
+  border: 1px solid var(--border-accent);
+  border-radius: 24px;
+  padding: 6px 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+  margin-bottom: 20px;
+  pointer-events: none;
+}
+.difficulty-badge {
+  display: inline-block;
+  background: rgba(123,241,168,0.15);
+  border: 1px solid rgba(123,241,168,0.3);
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+.xp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(245,166,35,0.15);
+  border: 1px solid rgba(245,166,35,0.3);
+  color: var(--accent-warm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-top: 14px;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  background: rgba(13,13,13,0.7);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  display: inline-block;
+  pointer-events: none;
+}
+.hero-tagline {
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 1.0625rem;
+  margin-top: 14px;
+  background: rgba(13,13,13,0.7);
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  pointer-events: none;
+}
+
+/* Toggle decoration in hero */
+.toggle-decorations {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.deco-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.deco-toggle-track {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+.deco-toggle-track.on { background: rgba(0,245,160,0.4); }
+.deco-toggle-track.off { background: rgba(255,255,255,0.1); }
+.deco-toggle-thumb {
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  transition: left 0.3s;
+}
+.deco-toggle-track.on .deco-toggle-thumb { left: 19px; }
+.deco-toggle-track.off .deco-toggle-thumb { left: 3px; }
+
+/* =============================================
+   SECTION 2 — WHAT YOU'LL LEARN
+   ============================================= */
+.learn-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 32px;
+}
+@media (min-width: 600px) {
+  .learn-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .learn-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.learn-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.learn-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-yes), var(--accent-no));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.learn-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glow-accent);
+  border-color: var(--border-accent);
+}
+.learn-card:hover::before { opacity: 1; }
+.learn-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+.learn-card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+.learn-card p { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
+
+/* =============================================
+   SECTION 3 — WARM-UP ZONE (True/False Blitz)
+   ============================================= */
+.warmup-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-top: 32px;
+}
+.warmup-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: gap;
+  gap: 12px;
+}
+.warmup-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.timer-display {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-warm);
+  min-width: 60px;
+  text-align: right;
+}
+.timer-display.urgent { color: var(--accent-danger); animation: pulseRed 0.5s ease infinite alternate; }
+@keyframes pulseRed { from { opacity: 1; } to { opacity: 0.5; } }
+.warmup-body { padding: 28px; }
+.blitz-score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.score-val { color: var(--accent-primary); font-weight: 700; font-size: 15px; }
+.progress-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  height: 6px;
+  width: 100%;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-yes), var(--accent-no));
+  transition: width 0.3s ease;
+}
+.blitz-question {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 28px;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+}
+.blitz-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.blitz-btn {
+  min-height: 64px;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.blitz-btn-true {
+  background: rgba(0,245,160,0.1);
+  border-color: rgba(0,245,160,0.3);
+  color: var(--accent-yes);
+}
+.blitz-btn-true:hover, .blitz-btn-true:focus {
+  background: rgba(0,245,160,0.2);
+  border-color: var(--accent-yes);
+  box-shadow: var(--glow-yes);
+  transform: translateY(-2px);
+}
+.blitz-btn-false {
+  background: rgba(0,217,245,0.1);
+  border-color: rgba(0,217,245,0.3);
+  color: var(--accent-no);
+}
+.blitz-btn-false:hover, .blitz-btn-false:focus {
+  background: rgba(0,217,245,0.2);
+  border-color: var(--accent-no);
+  box-shadow: var(--glow-no);
+  transform: translateY(-2px);
+}
+.blitz-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.blitz-btn.correct {
+  background: rgba(0,245,160,0.3) !important;
+  border-color: var(--accent-yes) !important;
+  animation: greenPulse 0.4s ease;
+}
+.blitz-btn.wrong {
+  background: rgba(255,71,87,0.3) !important;
+  border-color: var(--accent-danger) !important;
+  animation: redShake 0.4s ease;
+}
+@keyframes greenPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,245,160,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(0,245,160,0); }
+}
+@keyframes redShake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.blitz-feedback {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  min-height: 22px;
+  font-weight: 500;
+}
+.feedback-correct { color: var(--accent-yes); }
+.feedback-wrong { color: var(--accent-danger); }
+.blitz-start-screen, .blitz-end-screen {
+  text-align: center;
+  padding: 20px 0;
+}
+.blitz-start-screen h3, .blitz-end-screen h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+.blitz-end-screen .final-score {
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-yes);
+  margin: 16px 0;
+}
+.blitz-end-screen .score-label { color: var(--text-muted); font-size: 0.9rem; }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent-primary);
+  color: #0D0D0D;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  border: none;
+  min-height: 48px;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-accent); background: #8fffc0; }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 13px 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  min-height: 48px;
+  transition: var(--transition);
+}
+.btn-secondary:hover { border-color: var(--accent-primary); color: var(--accent-primary); transform: translateY(-2px); }
+
+/* =============================================
+   SECTION 4 — CORE CONCEPT
+   ============================================= */
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 32px;
+}
+@media (min-width: 768px) {
+  .concept-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: var(--transition);
+}
+.concept-card:hover { border-color: var(--border-accent); transform: translateY(-4px); box-shadow: var(--glow-accent); }
+.concept-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.concept-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.pill-true { background: rgba(0,245,160,0.15); color: var(--accent-yes); border: 1px solid rgba(0,245,160,0.3); }
+.pill-false { background: rgba(0,217,245,0.15); color: var(--accent-no); border: 1px solid rgba(0,217,245,0.3); }
+.pill-both { background: rgba(123,241,168,0.1); color: var(--accent-primary); border: 1px solid rgba(123,241,168,0.25); }
+.concept-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 28px;
+  font-size: 0.9375rem;
+}
+.concept-table th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.concept-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+.concept-table tr:last-child td { border-bottom: none; }
+.concept-table tr:hover td { background: rgba(255,255,255,0.02); }
+.bool-yes { color: var(--accent-yes); font-weight: 600; font-family: var(--font-mono); }
+.bool-no { color: var(--accent-no); font-weight: 600; font-family: var(--font-mono); }
+.code-block {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin-top: 16px;
+  overflow-x: auto;
+}
+.code-yes { color: var(--accent-yes); }
+.code-no { color: var(--accent-no); }
+.code-comment { color: var(--text-muted); }
+
+/* =============================================
+   SECTION 5 — INTERACTIVE CHALLENGE (Decision Tree Builder)
+   ============================================= */
+.dtb-wrapper {
+  margin-top: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.dtb-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.dtb-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.dtb-sub { font-size: 0.875rem; color: var(--text-muted); }
+.dtb-body { padding: 28px; }
+
+/* Drag blocks */
+.dtb-blocks-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.dtb-blocks-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 56px;
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 24px;
+}
+.dtb-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: transform var(--transition), box-shadow var(--transition);
+  min-height: 40px;
+  touch-action: none;
+}
+.dtb-block:active { cursor: grabbing; transform: scale(1.05) rotate(1deg); }
+.dtb-block[data-type="condition"] {
+  background: rgba(123,241,168,0.12);
+  border: 1px solid rgba(123,241,168,0.3);
+  color: var(--accent-primary);
+}
+.dtb-block[data-type="yes-action"] {
+  background: rgba(0,245,160,0.1);
+  border: 1px solid rgba(0,245,160,0.25);
+  color: var(--accent-yes);
+}
+.dtb-block[data-type="no-action"] {
+  background: rgba(0,217,245,0.1);
+  border: 1px solid rgba(0,217,245,0.25);
+  color: var(--accent-no);
+}
+.dtb-block.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+/* Tree canvas */
+.dtb-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+.tree-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+}
+.tree-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  min-width: 130px;
+}
+.tree-connector-v {
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(to bottom, rgba(123,241,168,0.5), rgba(123,241,168,0.2));
+}
+.tree-connector-h-wrap {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: center;
+}
+.tree-connector-h {
+  height: 2px;
+  flex: 1;
+  background: rgba(123,241,168,0.25);
+}
+.tree-connector-h-spacer { flex: 1; }
+.tree-box {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  min-height: 52px;
+  min-width: 120px;
+  max-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  position: relative;
+}
+.tree-box.root-box {
+  background: rgba(123,241,168,0.1);
+  border-color: rgba(123,241,168,0.4);
+  color: var(--accent-primary);
+}
+.tree-drop-zone {
+  border: 2px dashed rgba(255,255,255,0.15);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+.tree-drop-zone.drag-over {
+  border-color: var(--accent-primary);
+  background: rgba(123,241,168,0.08);
+  color: var(--accent-primary);
+}
+.tree-drop-zone.filled-yes {
+  border-color: rgba(0,245,160,0.5);
+  background: rgba(0,245,160,0.1);
+  color: var(--accent-yes);
+}
+.tree-drop-zone.filled-no {
+  border-color: rgba(0,217,245,0.5);
+  background: rgba(0,217,245,0.1);
+  color: var(--accent-no);
+}
+.tree-branch-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+.branch-yes { color: var(--accent-yes); background: rgba(0,245,160,0.1); }
+.branch-no { color: var(--accent-no); background: rgba(0,217,245,0.1); }
+.dtb-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.dtb-result {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: none;
+}
+.dtb-result.success {
+  display: block;
+  background: rgba(0,245,160,0.1);
+  border: 1px solid rgba(0,245,160,0.3);
+  color: var(--accent-yes);
+}
+.dtb-result.error {
+  display: block;
+  background: rgba(255,71,87,0.1);
+  border: 1px solid rgba(255,71,87,0.3);
+  color: var(--accent-danger);
+}
+
+/* =============================================
+   SECTION 6 — THINK DEEPER (Fix the Broken Logic)
+   ============================================= */
+.bug-hunt-wrapper {
+  margin-top: 32px;
+  display: grid;
+  gap: 20px;
+}
+.bug-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: var(--transition);
+}
+.bug-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.bug-number {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,71,87,0.15);
+  border: 1px solid rgba(255,71,87,0.3);
+  color: var(--accent-danger);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.bug-card h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; }
+.bug-statement {
+  background: rgba(255,71,87,0.06);
+  border: 1px solid rgba(255,71,87,0.2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+.bug-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bug-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.9rem;
+  text-align: left;
+  min-height: 48px;
+  width: 100%;
+}
+.bug-option:hover { border-color: rgba(123,241,168,0.3); background: rgba(123,241,168,0.04); }
+.bug-option.correct-choice { border-color: var(--accent-yes); background: rgba(0,245,160,0.1); color: var(--accent-yes); }
+.bug-option.wrong-choice { border-color: var(--accent-danger); background: rgba(255,71,87,0.1); color: var(--accent-danger); animation: redShake 0.4s ease; }
+.bug-option.disabled { pointer-events: none; opacity: 0.5; }
+.bug-option-icon { font-size: 16px; flex-shrink: 0; }
+.bug-explanation {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(123,241,168,0.06);
+  border: 1px solid rgba(123,241,168,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: none;
+}
+.bug-explanation.show { display: block; }
+
+/* =============================================
+   SECTION 7 — REAL-WORLD CONNECTION
+   ============================================= */
+.realworld-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 32px;
+}
+@media (min-width: 768px) {
+  .realworld-grid { grid-template-columns: 1fr 1fr; }
+}
+.rw-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.rw-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-yes), var(--accent-no));
+  transform: scaleX(0);
+  transition: transform var(--transition);
+  transform-origin: left;
+}
+.rw-card:hover { transform: translateY(-4px); box-shadow: var(--glow-accent); }
+.rw-card:hover::after { transform: scaleX(1); }
+.rw-icon { font-size: 2.5rem; margin-bottom: 14px; }
+.rw-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+.rw-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+.rw-logic-pill {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: rgba(0,245,160,0.1);
+  border: 1px solid rgba(0,245,160,0.25);
+  color: var(--accent-yes);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+/* =============================================
+   SECTION 8 — LEVEL BADGE + XP UNLOCK
+   ============================================= */
+.badge-section {
+  text-align: center;
+  padding: var(--section-pad-mobile);
+  position: relative;
+  z-index: 10;
+}
+@media (min-width: 768px) { .badge-section { padding: var(--section-pad-desktop); } }
+.badge-card {
+  max-width: 520px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(123,241,168,0.06) 0%, rgba(0,217,245,0.06) 100%);
+  border: 1px solid rgba(123,241,168,0.2);
+  border-radius: var(--radius-xl);
+  padding: 48px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.badge-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent 0deg, rgba(123,241,168,0.04) 60deg, transparent 120deg);
+  animation: badgeSpin 8s linear infinite;
+  pointer-events: none;
+}
+@keyframes badgeSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.badge-emblem {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, rgba(0,245,160,0.15), rgba(0,217,245,0.15));
+  border: 2px solid rgba(123,241,168,0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  z-index: 1;
+}
+.badge-emblem.locked { filter: grayscale(1) opacity(0.35); }
+.badge-emblem.unlocked { animation: badgePop 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes badgePop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.badge-title-text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.badge-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.badge-xp-display {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-warm);
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.badge-complete-btn {
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+.badge-status {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+.badge-status.completed { color: var(--accent-yes); }
+
+/* =============================================
+   SECTION 9 — NAVIGATION
+   ============================================= */
+.level-nav {
+  padding: 40px 24px 60px;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid var(--border-subtle);
+}
+.level-nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nav-level-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  transition: var(--transition);
+  min-height: 72px;
+  min-width: 140px;
+  text-decoration: none;
+}
+.nav-level-btn:hover { border-color: var(--accent-primary); transform: translateY(-2px); box-shadow: var(--glow-accent); }
+.nav-level-btn.prev { flex-direction: row; }
+.nav-level-btn.next { flex-direction: row-reverse; text-align: right; }
+.nav-btn-arrow { font-size: 1.2rem; opacity: 0.6; }
+.nav-btn-label { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: 2px; }
+.nav-btn-name { font-family: var(--font-display); font-weight: 600; font-size: 0.9375rem; }
+.nav-level-btn.prev .nav-btn-name { color: var(--text-primary); }
+.nav-level-btn.next .nav-btn-name { color: var(--accent-primary); }
+.home-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 10px 18px;
+  transition: var(--transition);
+  min-height: 48px;
+  text-decoration: none;
+}
+.home-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
+
+/* =============================================
+   DIVIDERS
+   ============================================= */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  margin: 0 24px;
+  position: relative;
+  z-index: 10;
+}
+
+/* =============================================
+   FOCUS STATES
+   ============================================= */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* =============================================
+   SCROLLBAR
+   ============================================= */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* =============================================
+   URDU STYLES
+   ============================================= */
+.urdu-label {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
+  direction: rtl;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  display: none;
+  margin-top: 2px;
+}
+body.urdu-on .urdu-label { display: block; }
+
+/* =============================================
+   TOAST NOTIFICATION
+   ============================================= */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  z-index: 9999;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* =============================================
+   RESPONSIVE HELPERS
+   ============================================= */
+@media (max-width: 480px) {
+  .blitz-buttons { grid-template-columns: 1fr; }
+  .dtb-blocks-pool { gap: 8px; }
+  .level-nav-inner { flex-direction: column; align-items: stretch; }
+  .nav-level-btn { min-width: unset; }
+  .nav-level-btn.next { flex-direction: row; text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- Binary Rain Canvas -->
+<canvas id="binary-rain" aria-hidden="true"></canvas>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<!-- =============================================
+     STICKY TOP NAV
+     ============================================= -->
+<nav class="top-nav" role="navigation" aria-label="Course navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy Home">
+      <span class="nav-logo-mark">OTS</span>
+    </a>
+    <span class="nav-course">Logic Building — Level 2</span>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="nav-urdu-toggle" id="urduToggle" aria-pressed="false" aria-label="Toggle Urdu labels">اردو</button>
+      <div class="nav-xp" aria-label="Total XP earned" aria-live="polite">
+        <span aria-hidden="true">⚡</span>
+        <span id="xpCounter">0</span> XP
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Level Progress Strip -->
+<div class="level-progress-strip" role="progressbar" aria-label="Course progress: Level 2 of 12" aria-valuenow="2" aria-valuemin="1" aria-valuemax="12">
+  <div class="level-progress-fill" id="levelProgressFill"></div>
+</div>
+
+<!-- =============================================
+     BREADCRUMB
+     ============================================= -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span class="breadcrumb-sep" aria-hidden="true">→</span>
+  <a href="index.html">Logic Building</a>
+  <span class="breadcrumb-sep" aria-hidden="true">→</span>
+  <span class="breadcrumb-current" aria-current="page">Level 2</span>
+</nav>
+
+<!-- =============================================
+     SECTION 1 — LEVEL HEADER (HERO)
+     ============================================= -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-split">
+    <div class="hero-yes" role="presentation">
+      <div class="hero-side-label" aria-hidden="true">YES</div>
+      <div class="hero-side-sub" aria-hidden="true">TRUE / ON / 1</div>
+      <!-- Toggle decorations -->
+      <div class="toggle-decorations" aria-hidden="true">
+        <div class="deco-toggle">
+          <div class="deco-toggle-track on"><div class="deco-toggle-thumb"></div></div>
+          <span>ON</span>
+        </div>
+        <div class="deco-toggle">
+          <div class="deco-toggle-track on"><div class="deco-toggle-thumb"></div></div>
+          <span>TRUE</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-no" role="presentation">
+      <div class="hero-side-label" aria-hidden="true">NO</div>
+      <div class="hero-side-sub" aria-hidden="true">FALSE / OFF / 0</div>
+      <div class="toggle-decorations" aria-hidden="true">
+        <div class="deco-toggle">
+          <div class="deco-toggle-track off"><div class="deco-toggle-thumb"></div></div>
+          <span>OFF</span>
+        </div>
+        <div class="deco-toggle">
+          <div class="deco-toggle-track off"><div class="deco-toggle-thumb"></div></div>
+          <span>FALSE</span>
+        </div>
+      </div>
+    </div>
+    <!-- Center overlay -->
+    <div class="hero-center-content" aria-hidden="true">
+      <div style="margin-bottom:12px;">
+        <span class="difficulty-badge">Starter</span>
+        &nbsp;
+        <span class="xp-badge"><span aria-hidden="true">⚡</span>150 XP</span>
+      </div>
+      <div class="hero-title" id="hero-title">Yes or No</div>
+      <div class="hero-tagline">"Every decision starts with a choice."</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 2 — WHAT YOU'LL LEARN
+     ============================================= -->
+<section class="section" aria-labelledby="learn-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up" id="learn-label">What You'll Learn</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="learn-heading">Four things you'll master</h2>
+    <div class="learn-grid" role="list">
+      <div class="learn-card fade-up fade-up-delay-2" role="listitem">
+        <span class="learn-icon" aria-hidden="true">⚡</span>
+        <h3>Boolean Logic</h3>
+        <p>Understand how everything in computing — and real life — can be reduced to <strong>True</strong> or <strong>False</strong>.</p>
+        <div class="urdu-label">بولین منطق</div>
+      </div>
+      <div class="learn-card fade-up fade-up-delay-3" role="listitem">
+        <span class="learn-icon" aria-hidden="true">🌲</span>
+        <h3>Decision Trees</h3>
+        <p>Map out choices visually — every branch is a <strong>Yes</strong> or <strong>No</strong> that leads somewhere different.</p>
+        <div class="urdu-label">فیصلہ درخت</div>
+      </div>
+      <div class="learn-card fade-up fade-up-delay-4" role="listitem">
+        <span class="learn-icon" aria-hidden="true">🔄</span>
+        <h3>On/Off Thinking</h3>
+        <p>Recognise binary states everywhere — light switches, logins, permissions, app settings.</p>
+        <div class="urdu-label">آن/آف سوچ</div>
+      </div>
+      <div class="learn-card fade-up fade-up-delay-5" role="listitem">
+        <span class="learn-icon" aria-hidden="true">🐛</span>
+        <h3>Spot Broken Logic</h3>
+        <p>Find errors in flawed Boolean statements and fix them — the core skill of debugging.</p>
+        <div class="urdu-label">ٹوٹی منطق درست کریں</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 3 — WARM-UP ZONE: TRUE/FALSE BLITZ
+     ============================================= -->
+<section class="section" aria-labelledby="warmup-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up">Warm-Up Zone</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="warmup-heading">True/False Blitz</h2>
+    <p class="body-lg fade-up fade-up-delay-2" style="margin-top:10px;margin-bottom:0;">10 questions. 30 seconds. Go as fast as you can — your brain is already doing Boolean logic, you just don't know it yet.</p>
+
+    <div class="warmup-container fade-up fade-up-delay-3" role="region" aria-label="True/False Blitz game">
+      <div class="warmup-header">
+        <div>
+          <div class="warmup-title">⚡ True/False Blitz</div>
+          <div class="body-sm" style="margin-top:4px;">Answer correctly — earn your warm-up badge</div>
+        </div>
+        <div class="timer-display" id="blitzTimer" aria-live="polite" aria-label="Time remaining">30</div>
+      </div>
+      <div class="warmup-body">
+
+        <!-- Start Screen -->
+        <div class="blitz-start-screen" id="blitzStartScreen">
+          <h3>Ready to Blitz?</h3>
+          <p class="body-lg" style="margin-bottom:24px;">10 True/False questions in 30 seconds. No tricks — just think fast!</p>
+          <button class="btn-primary" id="blitzStartBtn" aria-label="Start True/False Blitz">
+            <span aria-hidden="true">▶</span> Start Blitz
+          </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="blitzQuizScreen" style="display:none;">
+          <div class="blitz-score-bar">
+            <span>Question <span id="blitzQNum" aria-live="polite">1</span>/10</span>
+            <span>Score: <span class="score-val" id="blitzScore" aria-live="polite">0</span></span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+            <div class="progress-fill" id="blitzProgressFill" style="width:0%"></div>
+          </div>
+          <div class="blitz-question" id="blitzQuestion" aria-live="polite"></div>
+          <div class="blitz-buttons" role="group" aria-label="True or False">
+            <button class="blitz-btn blitz-btn-true" id="blitzTrueBtn" aria-label="True">
+              <span aria-hidden="true">✓</span> TRUE
+            </button>
+            <button class="blitz-btn blitz-btn-false" id="blitzFalseBtn" aria-label="False">
+              <span aria-hidden="true">✗</span> FALSE
+            </button>
+          </div>
+          <div class="blitz-feedback" id="blitzFeedback" aria-live="polite"></div>
+        </div>
+
+        <!-- End Screen -->
+        <div class="blitz-end-screen" id="blitzEndScreen" style="display:none;">
+          <h3>Blitz Complete! <span aria-hidden="true">🎯</span></h3>
+          <div class="final-score" id="blitzFinalScore" aria-live="polite">0/10</div>
+          <div class="score-label" id="blitzScoreLabel"></div>
+          <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-primary" id="blitzRetryBtn" aria-label="Try again">↺ Try Again</button>
+            <button class="btn-secondary" id="blitzContinueBtn" aria-label="Continue to next section">Continue →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 4 — CORE CONCEPT
+     ============================================= -->
+<section class="section" aria-labelledby="concept-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up">Core Concept</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="concept-heading">Boolean Logic — the engine behind every decision</h2>
+    <p class="body-lg fade-up fade-up-delay-2" style="margin:16px 0 0;">Every computer, every app, every algorithm works on one fundamental idea: things are either <strong style="color:var(--accent-yes)">True</strong> or <strong style="color:var(--accent-no)">False</strong>. There is no "maybe" in Boolean logic.</p>
+
+    <div class="concept-grid fade-up fade-up-delay-3">
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-pill pill-true">TRUE</div>
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">A statement that matches reality. The condition is met. The answer is YES. The light is ON.</p>
+        <div class="code-block">
+          <span class="code-yes">isRaining</span> = <span class="code-yes">true</span><br>
+          <span class="code-comment">// It IS raining → TRUE</span><br><br>
+          <span class="code-yes">hasTicket</span> = <span class="code-yes">true</span><br>
+          <span class="code-comment">// You have a ticket → TRUE</span>
+        </div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-pill pill-false">FALSE</div>
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">A statement that doesn't match reality. The condition is NOT met. The answer is NO. The light is OFF.</p>
+        <div class="code-block">
+          <span class="code-no">isRaining</span> = <span class="code-no">false</span><br>
+          <span class="code-comment">// It is NOT raining → FALSE</span><br><br>
+          <span class="code-no">hasTicket</span> = <span class="code-no">false</span><br>
+          <span class="code-comment">// No ticket → FALSE</span>
+        </div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-pill pill-both">YES / NO</div>
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">Boolean values have many names — they all mean the same two states:</p>
+        <table class="concept-table">
+          <thead><tr><th>TRUE</th><th>FALSE</th></tr></thead>
+          <tbody>
+            <tr><td class="bool-yes">Yes</td><td class="bool-no">No</td></tr>
+            <tr><td class="bool-yes">On</td><td class="bool-no">Off</td></tr>
+            <tr><td class="bool-yes">1</td><td class="bool-no">0</td></tr>
+            <tr><td class="bool-yes">Allow</td><td class="bool-no">Deny</td></tr>
+            <tr><td class="bool-yes">Pass</td><td class="bool-no">Fail</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Decision Tree explanation -->
+    <div style="margin-top:48px;">
+      <h3 class="display-md fade-up" style="margin-bottom:16px;">What is a Decision Tree?</h3>
+      <p class="body-lg fade-up fade-up-delay-1" style="margin-bottom:24px;">A Decision Tree is a diagram that maps out choices. Every node is a question. Every branch is a <span style="color:var(--accent-yes);font-weight:600">YES</span> or <span style="color:var(--accent-no);font-weight:600">NO</span>. You follow the path until you reach an outcome.</p>
+
+      <!-- Mermaid diagram -->
+      <div class="fade-up fade-up-delay-2" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:24px;overflow-x:auto;">
+        <div class="dtb-blocks-label" style="margin-bottom:16px;">Example: Should I bring an umbrella today?</div>
+        <div class="mermaid" id="exampleTree" aria-label="Decision tree: Should I bring an umbrella?">
+flowchart TD
+    A["☁️ Is it cloudy?"] -->|YES| B["🌧️ Check the forecast"]
+    A -->|NO| E["✅ No umbrella needed"]
+    B -->|Rain forecast| C["🌂 Bring umbrella"]
+    B -->|No rain forecast| D["😊 Probably fine without"]
+    style A fill:#1a1a1a,stroke:#7BF1A8,color:#FFFFFF
+    style B fill:#1a1a1a,stroke:#00D9F5,color:#FFFFFF
+    style C fill:#1a1a1a,stroke:#00F5A0,color:#00F5A0
+    style D fill:#1a1a1a,stroke:#F5A623,color:#F5A623
+    style E fill:#1a1a1a,stroke:#00F5A0,color:#00F5A0
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 5 — INTERACTIVE CHALLENGE: DECISION TREE BUILDER
+     ============================================= -->
+<section class="section" aria-labelledby="challenge-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up">Interactive Challenge</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="challenge-heading">Decision Tree Builder</h2>
+    <p class="body-lg fade-up fade-up-delay-2" style="margin-top:10px;">Drag the correct blocks into the decision tree to answer: <strong>"Can Zara go to cricket practice today?"</strong></p>
+
+    <div class="dtb-wrapper fade-up fade-up-delay-3" role="region" aria-label="Decision Tree Builder interactive activity">
+      <div class="dtb-header">
+        <div>
+          <div class="dtb-title">🏏 Zara's Cricket Practice</div>
+          <div class="dtb-sub">Drag blocks from the pool into the YES and NO branches of the tree.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:4px 10px;border-radius:8px;">LEVEL 2 ACTIVITY</span>
+        </div>
+      </div>
+      <div class="dtb-body">
+
+        <!-- Block pool -->
+        <div class="dtb-blocks-label">Available Blocks — drag these into the tree</div>
+        <div class="dtb-blocks-pool" id="dtbBlockPool" role="list" aria-label="Draggable logic blocks">
+          <div class="dtb-block" data-id="b1" data-type="yes-action" data-correct-slot="slot-yes1" draggable="true" role="listitem" tabindex="0" aria-label="Go to practice — drag to YES branch">✅ Go to practice</div>
+          <div class="dtb-block" data-id="b2" data-type="no-action" data-correct-slot="slot-no1" draggable="true" role="listitem" tabindex="0" aria-label="Stay home — drag to NO branch">🏠 Stay home</div>
+          <div class="dtb-block" data-id="b3" data-type="condition" data-correct-slot="slot-cond2" draggable="true" role="listitem" tabindex="0" aria-label="Is her kit ready? — drag to second condition">🎒 Is her kit ready?</div>
+          <div class="dtb-block" data-id="b4" data-type="no-action" data-correct-slot="slot-no2" draggable="true" role="listitem" tabindex="0" aria-label="Pack kit first — drag to second NO branch">📦 Pack kit first</div>
+        </div>
+
+        <!-- Tree layout -->
+        <div class="dtb-tree" role="img" aria-label="Decision tree diagram for Zara's cricket practice">
+          <!-- Root node -->
+          <div class="tree-row">
+            <div class="tree-node">
+              <div class="tree-box root-box" aria-label="Root question: Is it raining?">🌧️ Is it raining?</div>
+              <div class="tree-connector-v"></div>
+            </div>
+          </div>
+
+          <!-- Branch row -->
+          <div class="tree-row" style="width:100%;position:relative;">
+            <!-- YES side -->
+            <div class="tree-node" style="flex:1;align-items:center;">
+              <div class="tree-branch-label branch-yes">YES → raining</div>
+              <div class="tree-box tree-drop-zone" id="slot-no1" data-slot="slot-no1" aria-label="Drop zone: Yes branch — what happens if it IS raining?" aria-dropeffect="move">Drop here</div>
+            </div>
+            <!-- Connector -->
+            <div style="width:40px;flex-shrink:0;display:flex;align-items:flex-start;padding-top:36px;">
+              <div style="width:100%;height:2px;background:rgba(123,241,168,0.2);"></div>
+            </div>
+            <!-- NO side -->
+            <div class="tree-node" style="flex:1;align-items:center;">
+              <div class="tree-branch-label branch-no">NO → not raining</div>
+              <div class="tree-box tree-drop-zone" id="slot-cond2" data-slot="slot-cond2" aria-label="Drop zone: No branch — what is the next question if it is NOT raining?" aria-dropeffect="move">Drop here</div>
+              <div class="tree-connector-v" id="cond2-connector" style="visibility:hidden;"></div>
+              <!-- Sub branches of second condition -->
+              <div class="tree-row" id="cond2-sub" style="display:none;width:100%;">
+                <div class="tree-node" style="flex:1;align-items:center;">
+                  <div class="tree-branch-label branch-yes">YES → kit ready</div>
+                  <div class="tree-box tree-drop-zone" id="slot-yes1" data-slot="slot-yes1" aria-label="Drop zone: Kit ready YES branch" aria-dropeffect="move">Drop here</div>
+                </div>
+                <div style="width:24px;flex-shrink:0;display:flex;align-items:flex-start;padding-top:36px;">
+                  <div style="width:100%;height:2px;background:rgba(123,241,168,0.15);"></div>
+                </div>
+                <div class="tree-node" style="flex:1;align-items:center;">
+                  <div class="tree-branch-label branch-no">NO → kit not ready</div>
+                  <div class="tree-box tree-drop-zone" id="slot-no2" data-slot="slot-no2" aria-label="Drop zone: Kit not ready NO branch" aria-dropeffect="move">Drop here</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dtb-actions">
+          <button class="btn-primary" id="dtbCheckBtn" aria-label="Check your decision tree">
+            <span aria-hidden="true">🔍</span> Check My Tree
+          </button>
+          <button class="btn-secondary" id="dtbResetBtn" aria-label="Reset the decision tree">
+            <span aria-hidden="true">↺</span> Reset
+          </button>
+        </div>
+
+        <div class="dtb-result" id="dtbResult" role="alert"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 6 — THINK DEEPER: FIX THE BROKEN LOGIC
+     ============================================= -->
+<section class="section" aria-labelledby="deeper-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up">Think Deeper</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="deeper-heading">Fix the Broken Logic 🐛</h2>
+    <p class="body-lg fade-up fade-up-delay-2" style="margin-top:10px;margin-bottom:0;">Each statement below has a logical flaw. Find the fix — choose the corrected version.</p>
+
+    <div class="bug-hunt-wrapper fade-up fade-up-delay-3">
+
+      <!-- Bug 1 -->
+      <div class="bug-card" role="region" aria-labelledby="bug1-title">
+        <div class="bug-card-header">
+          <div class="bug-number" aria-hidden="true">1</div>
+          <h4 id="bug1-title">The Always-Open Door</h4>
+        </div>
+        <div class="bug-statement" aria-label="Broken logic statement">
+          IF door_is_locked = <span style="color:var(--accent-danger)">false</span> → Allow entry<br>
+          IF door_is_locked = <span style="color:var(--accent-danger)">false</span> → Also allow entry<br>
+          <span style="color:var(--text-muted)">// Both conditions are the same — the door can never be blocked!</span>
+        </div>
+        <div class="bug-options" role="group" aria-label="Choose the correct fix">
+          <button class="bug-option" data-bug="1" data-correct="false" aria-label="Option A: Remove one condition">
+            <span class="bug-option-icon" aria-hidden="true">A</span>
+            Remove one of the identical conditions — it's redundant
+          </button>
+          <button class="bug-option" data-bug="1" data-correct="true" aria-label="Option B: The second condition should be TRUE to deny entry">
+            <span class="bug-option-icon" aria-hidden="true">B</span>
+            Second condition should be door_is_locked = <strong>TRUE</strong> → Deny entry
+          </button>
+          <button class="bug-option" data-bug="1" data-correct="false" aria-label="Option C: Both conditions are correct">
+            <span class="bug-option-icon" aria-hidden="true">C</span>
+            Both conditions are correct — nothing needs fixing
+          </button>
+        </div>
+        <div class="bug-explanation" id="bug1-exp">
+          ✅ Correct! For a door lock to work, you need <em>opposite</em> conditions: IF locked=FALSE → allow, IF locked=TRUE → deny. Two identical FALSE conditions mean the door is always open — that's a security bug!
+        </div>
+      </div>
+
+      <!-- Bug 2 -->
+      <div class="bug-card" role="region" aria-labelledby="bug2-title">
+        <div class="bug-card-header">
+          <div class="bug-number" aria-hidden="true">2</div>
+          <h4 id="bug2-title">The Confused Traffic Light</h4>
+        </div>
+        <div class="bug-statement" aria-label="Broken logic statement">
+          IF light = GREEN → <span style="color:var(--accent-danger)">STOP</span><br>
+          IF light = RED → <span style="color:var(--accent-danger)">GO</span><br>
+          <span style="color:var(--text-muted)">// Karachi traffic would be even more chaotic!</span>
+        </div>
+        <div class="bug-options" role="group" aria-label="Choose the correct fix">
+          <button class="bug-option" data-bug="2" data-correct="false" aria-label="Option A: Add a YELLOW condition">
+            <span class="bug-option-icon" aria-hidden="true">A</span>
+            Add a third condition: IF light = YELLOW → SLOW DOWN
+          </button>
+          <button class="bug-option" data-bug="2" data-correct="true" aria-label="Option B: Swap the actions — GREEN means GO, RED means STOP">
+            <span class="bug-option-icon" aria-hidden="true">B</span>
+            Swap the actions: GREEN → GO, RED → STOP
+          </button>
+          <button class="bug-option" data-bug="2" data-correct="false" aria-label="Option C: Remove the red light condition">
+            <span class="bug-option-icon" aria-hidden="true">C</span>
+            Remove the RED condition — only GREEN matters
+          </button>
+        </div>
+        <div class="bug-explanation" id="bug2-exp">
+          ✅ Correct! The actions are reversed. Boolean logic must match real-world truth: GREEN=GO, RED=STOP. Swapping the outcomes fixes the logic.
+        </div>
+      </div>
+
+      <!-- Bug 3 -->
+      <div class="bug-card" role="region" aria-labelledby="bug3-title">
+        <div class="bug-card-header">
+          <div class="bug-number" aria-hidden="true">3</div>
+          <h4 id="bug3-title">The Broken App Login</h4>
+        </div>
+        <div class="bug-statement" aria-label="Broken logic statement">
+          IF password_correct = TRUE AND username_correct = <span style="color:var(--accent-danger)">FALSE</span> → Login<br>
+          <span style="color:var(--text-muted)">// This lets anyone log in with a correct password but ANY username!</span>
+        </div>
+        <div class="bug-options" role="group" aria-label="Choose the correct fix">
+          <button class="bug-option" data-bug="3" data-correct="false" aria-label="Option A: Remove the username check entirely">
+            <span class="bug-option-icon" aria-hidden="true">A</span>
+            Remove the username check — password alone is enough
+          </button>
+          <button class="bug-option" data-bug="3" data-correct="false" aria-label="Option B: Make both conditions FALSE">
+            <span class="bug-option-icon" aria-hidden="true">B</span>
+            Change both to FALSE — deny all access by default
+          </button>
+          <button class="bug-option" data-bug="3" data-correct="true" aria-label="Option C: Change username_correct to TRUE — both must be true to login">
+            <span class="bug-option-icon" aria-hidden="true">C</span>
+            Change username_correct to <strong>TRUE</strong> — BOTH must be TRUE to login
+          </button>
+        </div>
+        <div class="bug-explanation" id="bug3-exp">
+          ✅ Correct! A secure login needs BOTH the password AND username to be TRUE. Using AND means both conditions must pass. Setting username_correct=FALSE would mean it's always invalid — a clear logic error.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 7 — REAL-WORLD CONNECTION
+     ============================================= -->
+<section class="section" aria-labelledby="realworld-heading">
+  <div class="section-inner">
+    <div class="section-label fade-up">Real-World Connection</div>
+    <h2 class="display-md fade-up fade-up-delay-1" id="realworld-heading">Boolean logic is everywhere</h2>
+    <p class="body-lg fade-up fade-up-delay-2" style="margin-top:10px;">Every app, every system, every automated decision is running Yes/No logic right now.</p>
+
+    <div class="realworld-grid">
+      <div class="rw-card fade-up fade-up-delay-2">
+        <div class="rw-icon" aria-hidden="true">📱</div>
+        <h3>App Permissions</h3>
+        <p>When you install an app, it asks: <em>"Allow location access?"</em> Your YES or NO directly sets a Boolean value in the phone's memory. Allow = true. Deny = false. The app checks this before it ever tries to use your GPS.</p>
+        <div class="rw-logic-pill">allow_location = true/false</div>
+      </div>
+      <div class="rw-card fade-up fade-up-delay-3">
+        <div class="rw-icon" aria-hidden="true">🏟️</div>
+        <h3>Cricket Team Selection</h3>
+        <p>The selector runs Boolean checks: <em>Is the player fit? Did they attend practice? Are they in form?</em> Only if ALL are TRUE does the player make the squad. One FALSE and they're out.</p>
+        <div class="rw-logic-pill">fit AND practiced AND in_form</div>
+      </div>
+      <div class="rw-card fade-up fade-up-delay-2">
+        <div class="rw-icon" aria-hidden="true">🚦</div>
+        <h3>Karachi Traffic Logic</h3>
+        <p>Smart traffic lights use Boolean sensors: <em>Is a vehicle present? Is the timer expired?</em> These TRUE/FALSE values determine when lights change. Without correct Boolean logic, intersections would chaos.</p>
+        <div class="rw-logic-pill">vehicle_detected AND timer_expired</div>
+      </div>
+      <div class="rw-card fade-up fade-up-delay-3">
+        <div class="rw-icon" aria-hidden="true">🔐</div>
+        <h3>School Canteen Entry</h3>
+        <p>The canteen gate: <em>Has the student paid? Is it break time?</em> Both must be TRUE for the gate to open. This is the AND operator — every condition in the chain must hold TRUE.</p>
+        <div class="rw-logic-pill">paid = true AND break_time = true</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 8 — LEVEL BADGE + XP UNLOCK
+     ============================================= -->
+<section class="badge-section" aria-labelledby="badge-heading">
+  <div class="section-label fade-up" style="text-align:center;">Level Complete</div>
+  <h2 class="display-md fade-up fade-up-delay-1" id="badge-heading" style="text-align:center;margin-bottom:32px;">Unlock your badge</h2>
+  <div class="badge-card fade-up fade-up-delay-2">
+    <div class="badge-emblem locked" id="badgeEmblem" aria-label="Level 2 badge: Binary Brain" aria-live="polite">⚡</div>
+    <div class="badge-title-text">Binary Brain</div>
+    <div class="badge-subtitle">Level 2 — Yes or No — Starter</div>
+    <div class="badge-xp-display" aria-label="XP reward: 150 XP">+150 XP</div>
+    <p style="color:var(--text-muted);font-size:0.875rem;margin-top:8px;position:relative;z-index:1;">Complete all activities above to unlock this badge and add the XP to your total.</p>
+    <div class="badge-complete-btn">
+      <button class="btn-primary" id="completeBtn" aria-label="Mark Level 2 as complete and claim XP">
+        <span aria-hidden="true">🏆</span> Claim Badge &amp; 150 XP
+      </button>
+    </div>
+    <div class="badge-status" id="badgeStatus">Complete the activities above first for the full experience.</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- =============================================
+     SECTION 9 — NAVIGATION
+     ============================================= -->
+<nav class="level-nav" aria-label="Level navigation">
+  <div class="level-nav-inner">
+    <a href="level-01.html" class="nav-level-btn prev" aria-label="Go to Level 1: How Do I Think?">
+      <span class="nav-btn-arrow" aria-hidden="true">←</span>
+      <div>
+        <div class="nav-btn-label">Previous</div>
+        <div class="nav-btn-name">How Do I Think?</div>
+      </div>
+    </a>
+    <a href="index.html" class="home-btn" aria-label="Go to course home">
+      <span aria-hidden="true">⊞</span> All Levels
+    </a>
+    <a href="level-03.html" class="nav-level-btn next" aria-label="Go to Level 3: Find the Pattern">
+      <div>
+        <div class="nav-btn-label">Next</div>
+        <div class="nav-btn-name">Find the Pattern</div>
+      </div>
+      <span class="nav-btn-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</nav>
+
+<!-- CDN Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" crossorigin="anonymous"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ─── Reduced Motion ─── */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) document.body.classList.add('reduced-motion');
+
+  /* ─── Course / Level Constants ─── */
+  const COURSE_SLUG = 'logic-building';
+  const LEVEL_NUM = 2;
+  const LEVEL_XP = 150;
+  const LS_PREFIX = 'ots_skills_' + COURSE_SLUG;
+  const KEY_XP_TOTAL = LS_PREFIX + '_xp_total';
+  const KEY_LVL_COMPLETE = LS_PREFIX + '_level_' + LEVEL_NUM + '_complete';
+  const KEY_LVL_XP = LS_PREFIX + '_level_' + LEVEL_NUM + '_xp';
+  const KEY_STARTED = LS_PREFIX + '_started_at';
+  const KEY_URDU = LS_PREFIX + '_urdu_on';
+
+  /* ─── Safe localStorage ─── */
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  /* ─── Init started_at ─── */
+  if (!lsGet(KEY_STARTED)) lsSet(KEY_STARTED, new Date().toISOString());
+
+  /* ─── XP Counter ─── */
+  function getXPTotal() {
+    return parseInt(lsGet(KEY_XP_TOTAL) || '0', 10);
+  }
+  function recomputeXP() {
+    const levels = [1,2,3,4,5,6,7,8,9,10,11,12];
+    const xpMap = {1:100,2:150,3:200,4:250,5:300,6:350,7:400,8:450,9:500,10:600,11:700,12:1000};
+    let total = 0;
+    levels.forEach(function(n) {
+      if (lsGet(LS_PREFIX + '_level_' + n + '_complete') === 'true') {
+        total += (parseInt(lsGet(LS_PREFIX + '_level_' + n + '_xp') || '0', 10) || xpMap[n]);
+      }
+    });
+    lsSet(KEY_XP_TOTAL, total);
+    return total;
+  }
+  function updateXPDisplay() {
+    var el = document.getElementById('xpCounter');
+    if (el) el.textContent = getXPTotal();
+  }
+  updateXPDisplay();
+
+  /* ─── Urdu Toggle ─── */
+  var urduState = lsGet(KEY_URDU) === 'true';
+  function applyUrdu() {
+    if (urduState) {
+      document.body.classList.add('urdu-on');
+    } else {
+      document.body.classList.remove('urdu-on');
+    }
+    var btn = document.getElementById('urduToggle');
+    if (btn) btn.setAttribute('aria-pressed', urduState ? 'true' : 'false');
+  }
+  applyUrdu();
+  var urduBtn = document.getElementById('urduToggle');
+  if (urduBtn) {
+    urduBtn.addEventListener('click', function() {
+      urduState = !urduState;
+      lsSet(KEY_URDU, urduState ? 'true' : 'false');
+      applyUrdu();
+    });
+  }
+
+  /* ─── Toast ─── */
+  var toastTimer = null;
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+  }
+
+  /* ─── Binary Rain ─── */
+  (function initBinaryRain() {
+    if (prefersReduced) return;
+    var canvas = document.getElementById('binary-rain');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var cols, drops;
+    var fontSize = 14;
+    var chars = '10';
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.floor(canvas.width / fontSize);
+      drops = [];
+      for (var i = 0; i < cols; i++) drops[i] = Math.random() * -50;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(13,13,13,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#7BF1A8';
+      ctx.font = fontSize + 'px JetBrains Mono, monospace';
+      for (var i = 0; i < drops.length; i++) {
+        var text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    var rainInterval = setInterval(draw, 55);
+    // Store to allow cleanup if needed
+    window._rainInterval = rainInterval;
+  })();
+
+  /* ─── Intersection Observer for fade-ups ─── */
+  var fadeEls = document.querySelectorAll('.fade-up');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(function(el) { io.observe(el); });
+    // Section labels
+    var labelEls = document.querySelectorAll('.section-label');
+    labelEls.forEach(function(el) { io.observe(el); });
+  } else {
+    fadeEls.forEach(function(el) { el.classList.add('visible'); });
+    document.querySelectorAll('.section-label').forEach(function(el) { el.classList.add('visible'); });
+  }
+
+  /* ─── GSAP Entrance ─── */
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.from('.hero-yes', { opacity: 0, x: -40, duration: 0.8, ease: 'power3.out', delay: 0.2 });
+      gsap.from('.hero-no', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', delay: 0.2 });
+      gsap.from('.hero-center-content', { opacity: 0, y: 20, duration: 0.7, ease: 'power2.out', delay: 0.5 });
+    }
+  } catch(e) {}
+
+  /* ─── Mermaid init ─── */
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+    }
+  } catch(e) {}
+
+  /* =============================================
+     BLITZ GAME
+     ============================================= */
+  var blitzQuestions = [
+    { q: "2 + 2 = 4", a: true },
+    { q: "A door that is OPEN is the same as a door that is CLOSED.", a: false },
+    { q: "If it is raining, bringing an umbrella is a logical YES.", a: true },
+    { q: "TRUE and FALSE are the same value.", a: false },
+    { q: "A traffic light can be both RED and GREEN at the same time.", a: false },
+    { q: "In a Boolean system, 1 means TRUE.", a: true },
+    { q: "If your phone is ON, its power state = TRUE.", a: true },
+    { q: "A YES/NO question can have three possible correct answers.", a: false },
+    { q: "Every decision in an app is based on at least one True/False condition.", a: true },
+    { q: "OFF is the same as TRUE in Boolean logic.", a: false }
+  ];
+  var blitzState = { running: false, current: 0, score: 0, timer: 30, interval: null };
+
+  function blitzShowStartScreen() {
+    var ss = document.getElementById('blitzStartScreen');
+    var qs = document.getElementById('blitzQuizScreen');
+    var es = document.getElementById('blitzEndScreen');
+    if (ss) ss.style.display = '';
+    if (qs) qs.style.display = 'none';
+    if (es) es.style.display = 'none';
+    var timerEl = document.getElementById('blitzTimer');
+    if (timerEl) { timerEl.textContent = '30'; timerEl.classList.remove('urgent'); }
+  }
+
+  function blitzStart() {
+    blitzState.current = 0;
+    blitzState.score = 0;
+    blitzState.timer = 30;
+    blitzState.running = true;
+    var shuffled = blitzQuestions.slice().sort(function() { return Math.random() - 0.5; });
+    blitzState.questions = shuffled;
+
+    var ss = document.getElementById('blitzStartScreen');
+    var qs = document.getElementById('blitzQuizScreen');
+    var es = document.getElementById('blitzEndScreen');
+    if (ss) ss.style.display = 'none';
+    if (qs) qs.style.display = '';
+    if (es) es.style.display = 'none';
+
+    blitzRenderQuestion();
+
+    if (blitzState.interval) clearInterval(blitzState.interval);
+    blitzState.interval = setInterval(function() {
+      blitzState.timer--;
+      var timerEl = document.getElementById('blitzTimer');
+      if (timerEl) {
+        timerEl.textContent = blitzState.timer;
+        if (blitzState.timer <= 10) timerEl.classList.add('urgent');
+      }
+      if (blitzState.timer <= 0) {
+        clearInterval(blitzState.interval);
+        blitzEnd();
+      }
+    }, 1000);
+  }
+
+  function blitzRenderQuestion() {
+    var qEl = document.getElementById('blitzQuestion');
+    var numEl = document.getElementById('blitzQNum');
+    var progressEl = document.getElementById('blitzProgressFill');
+    var fb = document.getElementById('blitzFeedback');
+    var tb = document.getElementById('blitzTrueBtn');
+    var fb2 = document.getElementById('blitzFalseBtn');
+    if (!qEl) return;
+    var q = blitzState.questions[blitzState.current];
+    if (qEl) qEl.textContent = q.q;
+    if (numEl) numEl.textContent = blitzState.current + 1;
+    if (progressEl) progressEl.style.width = ((blitzState.current / 10) * 100) + '%';
+    var progBar = progressEl ? progressEl.parentElement : null;
+    if (progBar) progBar.setAttribute('aria-valuenow', blitzState.current);
+    if (fb) { fb.textContent = ''; fb.className = 'blitz-feedback'; }
+    if (tb) { tb.disabled = false; tb.className = 'blitz-btn blitz-btn-true'; }
+    if (fb2) { fb2.disabled = false; fb2.className = 'blitz-btn blitz-btn-false'; }
+  }
+
+  function blitzAnswer(userAnswer) {
+    if (!blitzState.running) return;
+    var q = blitzState.questions[blitzState.current];
+    var correct = q.a === userAnswer;
+    var tb = document.getElementById('blitzTrueBtn');
+    var fb2 = document.getElementById('blitzFalseBtn');
+    var fb = document.getElementById('blitzFeedback');
+    var scoreEl = document.getElementById('blitzScore');
+
+    if (tb) tb.disabled = true;
+    if (fb2) fb2.disabled = true;
+
+    if (correct) {
+      blitzState.score++;
+      if (tb && userAnswer === true) tb.classList.add('correct');
+      if (fb2 && userAnswer === false) fb2.classList.add('correct');
+      if (fb) { fb.textContent = '✓ Correct!'; fb.className = 'blitz-feedback feedback-correct'; }
+      if (scoreEl) scoreEl.textContent = blitzState.score;
+    } else {
+      if (tb && userAnswer === true) tb.classList.add('wrong');
+      if (fb2 && userAnswer === false) fb2.classList.add('wrong');
+      if (fb) { fb.textContent = '✗ ' + (q.a ? 'That was TRUE' : 'That was FALSE'); fb.className = 'blitz-feedback feedback-wrong'; }
+    }
+
+    blitzState.current++;
+    if (blitzState.current >= 10) {
+      setTimeout(function() { clearInterval(blitzState.interval); blitzEnd(); }, 600);
+    } else {
+      setTimeout(blitzRenderQuestion, 600);
+    }
+  }
+
+  function blitzEnd() {
+    blitzState.running = false;
+    var qs = document.getElementById('blitzQuizScreen');
+    var es = document.getElementById('blitzEndScreen');
+    var fs = document.getElementById('blitzFinalScore');
+    var sl = document.getElementById('blitzScoreLabel');
+    if (qs) qs.style.display = 'none';
+    if (es) es.style.display = '';
+    var s = blitzState.score;
+    if (fs) fs.textContent = s + '/10';
+    if (sl) {
+      if (s === 10) sl.textContent = '🏆 Perfect! You think in Boolean!';
+      else if (s >= 7) sl.textContent = '🎯 Great — Boolean logic is clicking for you!';
+      else if (s >= 5) sl.textContent = '👍 Good start — revisit the concept cards above.';
+      else sl.textContent = '💡 Keep going — Boolean logic takes a moment to click!';
+    }
+    showToast('Blitz done! ' + s + '/10 correct');
+  }
+
+  var blitzStartBtn = document.getElementById('blitzStartBtn');
+  if (blitzStartBtn) blitzStartBtn.addEventListener('click', blitzStart);
+
+  var blitzTrueBtn = document.getElementById('blitzTrueBtn');
+  if (blitzTrueBtn) blitzTrueBtn.addEventListener('click', function() { blitzAnswer(true); });
+
+  var blitzFalseBtn = document.getElementById('blitzFalseBtn');
+  if (blitzFalseBtn) blitzFalseBtn.addEventListener('click', function() { blitzAnswer(false); });
+
+  var blitzRetryBtn = document.getElementById('blitzRetryBtn');
+  if (blitzRetryBtn) blitzRetryBtn.addEventListener('click', blitzStart);
+
+  var blitzContinueBtn = document.getElementById('blitzContinueBtn');
+  if (blitzContinueBtn) blitzContinueBtn.addEventListener('click', function() {
+    var conceptSection = document.getElementById('concept-heading');
+    if (conceptSection) conceptSection.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  /* =============================================
+     DECISION TREE BUILDER
+     ============================================= */
+  var dtbSlotData = {};  // slotId -> blockId
+  var dtbBlockPlacement = {}; // blockId -> slotId
+
+  var correctMapping = {
+    'slot-no1': 'b2',   // Stay home → YES it's raining → stay home
+    'slot-cond2': 'b3', // Is her kit ready?
+    'slot-yes1': 'b1',  // Go to practice
+    'slot-no2': 'b4'    // Pack kit first
+  };
+
+  function dtbGetSlotEl(slotId) { return document.getElementById(slotId); }
+  function dtbGetBlockEl(blockId) { return document.querySelector('.dtb-block[data-id="' + blockId + '"]'); }
+
+  function dtbDropBlock(slotId, blockId) {
+    // Remove block from any previous slot
+    if (dtbBlockPlacement[blockId]) {
+      var prevSlot = dtbBlockPlacement[blockId];
+      if (dtbSlotData[prevSlot] === blockId) {
+        delete dtbSlotData[prevSlot];
+        var prevSlotEl = dtbGetSlotEl(prevSlot);
+        if (prevSlotEl) {
+          prevSlotEl.textContent = 'Drop here';
+          prevSlotEl.className = 'tree-box tree-drop-zone';
+        }
+      }
+    }
+    // Remove any block previously in this slot
+    if (dtbSlotData[slotId] && dtbSlotData[slotId] !== blockId) {
+      var prevBlock = dtbSlotData[slotId];
+      delete dtbBlockPlacement[prevBlock];
+      var prevBlockEl = dtbGetBlockEl(prevBlock);
+      if (prevBlockEl) {
+        prevBlockEl.style.display = '';
+        var pool = document.getElementById('dtbBlockPool');
+        if (pool) pool.appendChild(prevBlockEl);
+      }
+    }
+
+    dtbSlotData[slotId] = blockId;
+    dtbBlockPlacement[blockId] = slotId;
+
+    var blockEl = dtbGetBlockEl(blockId);
+    var slotEl = dtbGetSlotEl(slotId);
+    if (blockEl) blockEl.style.display = 'none';
+
+    if (slotEl) {
+      var blockType = blockEl ? blockEl.getAttribute('data-type') : '';
+      slotEl.textContent = blockEl ? blockEl.textContent : '';
+      slotEl.className = 'tree-box tree-drop-zone ' + (blockType === 'yes-action' ? 'filled-yes' : blockType === 'no-action' ? 'filled-no' : 'filled-yes');
+    }
+
+    // Show cond2 sub-branches once slot-cond2 is filled
+    if (slotId === 'slot-cond2') {
+      var connector = document.getElementById('cond2-connector');
+      var sub = document.getElementById('cond2-sub');
+      if (connector) connector.style.visibility = 'visible';
+      if (sub) sub.style.display = 'flex';
+    }
+  }
+
+  function dtbInitDragDrop() {
+    var blocks = document.querySelectorAll('.dtb-block');
+    var slots = document.querySelectorAll('.tree-drop-zone');
+
+    blocks.forEach(function(block) {
+      // Mouse drag
+      block.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', block.getAttribute('data-id'));
+        block.classList.add('dragging');
+      });
+      block.addEventListener('dragend', function() {
+        block.classList.remove('dragging');
+      });
+      // Keyboard
+      block.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          // Cycle to next available slot
+          var blockId = block.getAttribute('data-id');
+          var availableSlots = [];
+          slots.forEach(function(s) {
+            if (!dtbSlotData[s.id]) availableSlots.push(s.id);
+          });
+          if (availableSlots.length > 0) {
+            dtbDropBlock(availableSlots[0], blockId);
+            showToast('Block placed in ' + availableSlots[0].replace('slot-','').replace('-',' '));
+          }
+        }
+      });
+      // Touch support
+      var touchStartX, touchStartY, touchClone;
+      block.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchClone = block.cloneNode(true);
+        touchClone.style.position = 'fixed';
+        touchClone.style.pointerEvents = 'none';
+        touchClone.style.zIndex = '9999';
+        touchClone.style.opacity = '0.8';
+        touchClone.style.transform = 'scale(1.05)';
+        document.body.appendChild(touchClone);
+      }, { passive: true });
+      block.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        var t = e.touches[0];
+        if (touchClone) {
+          touchClone.style.left = (t.clientX - 60) + 'px';
+          touchClone.style.top = (t.clientY - 20) + 'px';
+        }
+      }, { passive: false });
+      block.addEventListener('touchend', function(e) {
+        if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+        var t = e.changedTouches[0];
+        var el = document.elementFromPoint(t.clientX, t.clientY);
+        if (el) {
+          var slotEl = el.closest('.tree-drop-zone');
+          if (slotEl) {
+            dtbDropBlock(slotEl.id, block.getAttribute('data-id'));
+          }
+        }
+      }, { passive: true });
+    });
+
+    slots.forEach(function(slot) {
+      slot.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        slot.classList.add('drag-over');
+      });
+      slot.addEventListener('dragleave', function() {
+        slot.classList.remove('drag-over');
+      });
+      slot.addEventListener('drop', function(e) {
+        e.preventDefault();
+        slot.classList.remove('drag-over');
+        var blockId = e.dataTransfer.getData('text/plain');
+        if (blockId) dtbDropBlock(slot.id, blockId);
+      });
+    });
+  }
+  dtbInitDragDrop();
+
+  var dtbCheckBtn = document.getElementById('dtbCheckBtn');
+  if (dtbCheckBtn) {
+    dtbCheckBtn.addEventListener('click', function() {
+      var result = document.getElementById('dtbResult');
+      var filledSlots = Object.keys(dtbSlotData);
+      if (filledSlots.length < 4) {
+        if (result) {
+          result.className = 'dtb-result error';
+          result.textContent = '⚠️ Fill all four slots in the tree before checking!';
+        }
+        return;
+      }
+      var allCorrect = true;
+      Object.keys(correctMapping).forEach(function(slotId) {
+        if (dtbSlotData[slotId] !== correctMapping[slotId]) allCorrect = false;
+      });
+      if (allCorrect) {
+        if (result) {
+          result.className = 'dtb-result success';
+          result.textContent = '🎉 Perfect! Your decision tree is logically correct. Zara should check if her kit is ready — and if yes, go to practice!';
+        }
+        showToast('🌳 Decision tree correct!');
+      } else {
+        if (result) {
+          result.className = 'dtb-result error';
+          result.textContent = '🐛 Not quite — think about what happens when it IS raining (YES branch) vs when it is NOT raining (NO branch). Try again!';
+        }
+      }
+    });
+  }
+
+  var dtbResetBtn = document.getElementById('dtbResetBtn');
+  if (dtbResetBtn) {
+    dtbResetBtn.addEventListener('click', function() {
+      dtbSlotData = {};
+      dtbBlockPlacement = {};
+      var slots = document.querySelectorAll('.tree-drop-zone');
+      slots.forEach(function(s) {
+        s.textContent = 'Drop here';
+        s.className = 'tree-box tree-drop-zone';
+      });
+      var blocks = document.querySelectorAll('.dtb-block');
+      var pool = document.getElementById('dtbBlockPool');
+      blocks.forEach(function(b) {
+        b.style.display = '';
+        if (pool) pool.appendChild(b);
+      });
+      var connector = document.getElementById('cond2-connector');
+      var sub = document.getElementById('cond2-sub');
+      if (connector) connector.style.visibility = 'hidden';
+      if (sub) sub.style.display = 'none';
+      var result = document.getElementById('dtbResult');
+      if (result) { result.className = 'dtb-result'; result.textContent = ''; }
+      showToast('Tree reset — try again!');
+    });
+  }
+
+  /* =============================================
+     BUG HUNT
+     ============================================= */
+  var bugOptions = document.querySelectorAll('.bug-option');
+  bugOptions.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var bugNum = btn.getAttribute('data-bug');
+      var isCorrect = btn.getAttribute('data-correct') === 'true';
+      var siblings = document.querySelectorAll('.bug-option[data-bug="' + bugNum + '"]');
+      siblings.forEach(function(s) { s.classList.add('disabled'); });
+
+      if (isCorrect) {
+        btn.classList.add('correct-choice');
+        var exp = document.getElementById('bug' + bugNum + '-exp');
+        if (exp) exp.classList.add('show');
+        showToast('✅ Correct fix!');
+      } else {
+        btn.classList.add('wrong-choice');
+        showToast('Not quite — think about what the logic should produce');
+      }
+    });
+  });
+
+  /* =============================================
+     BADGE / COMPLETION
+     ============================================= */
+  function checkAlreadyComplete() {
+    if (lsGet(KEY_LVL_COMPLETE) === 'true') {
+      var badgeEl = document.getElementById('badgeEmblem');
+      var statusEl = document.getElementById('badgeStatus');
+      var btn = document.getElementById('completeBtn');
+      if (badgeEl) { badgeEl.classList.remove('locked'); badgeEl.classList.add('unlocked'); }
+      if (statusEl) { statusEl.textContent = '✅ Level 2 complete — 150 XP earned'; statusEl.classList.add('completed'); }
+      if (btn) { btn.textContent = '✓ Claimed'; btn.disabled = true; }
+    }
+  }
+  checkAlreadyComplete();
+  updateXPDisplay();
+
+  var completeBtn = document.getElementById('completeBtn');
+  if (completeBtn) {
+    completeBtn.addEventListener('click', function() {
+      lsSet(KEY_LVL_COMPLETE, 'true');
+      lsSet(KEY_LVL_XP, LEVEL_XP);
+      recomputeXP();
+      updateXPDisplay();
+
+      var badgeEl = document.getElementById('badgeEmblem');
+      var statusEl = document.getElementById('badgeStatus');
+      if (badgeEl) { badgeEl.classList.remove('locked'); badgeEl.classList.add('unlocked'); }
+      if (statusEl) { statusEl.textContent = '✅ Level 2 complete — 150 XP earned'; statusEl.classList.add('completed'); }
+      completeBtn.textContent = '✓ Claimed';
+      completeBtn.disabled = true;
+
+      // Confetti
+      try {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#7BF1A8','#00F5A0','#00D9F5','#F5A623'] });
+          setTimeout(function() {
+            confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.2 }, colors: ['#7BF1A8','#00D9F5'] });
+            confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.8 }, colors: ['#00F5A0','#F5A623'] });
+          }, 300);
+        }
+      } catch(e) {}
+
+      showToast('🎉 Badge unlocked! +150 XP added');
+    });
+  }
+
+  /* ─── Level 2 badge section scroll trigger ─── */
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: '.badge-card',
+        start: 'top 80%',
+        onEnter: function() {
+          gsap.from('.badge-card', { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(1.5)' });
+        },
+        once: true
+      });
+    }
+  } catch(e) {}
+
+})();
+</script>
+</body>
+</html>

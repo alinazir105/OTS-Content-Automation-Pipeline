@@ -1,0 +1,2770 @@
+<!-- COURSE: Logic Building | LEVEL: 6 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 6: Sort It Out — Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Learn sorting algorithms — Bubble Sort vs Selection Sort — visualised and interactive. Level 6 of the Logic Building course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0D0D0D;
+    --accent-primary: #FF6B6B;
+    --accent-secondary: #FF4444;
+    --accent-warm: #FF8E53;
+    --accent-danger: #FF4757;
+    --accent-success: #00F5A0;
+    --text-primary: #FFFFFF;
+    --text-secondary: #CCCCCC;
+    --text-muted: #888888;
+    --card-bg: #1A1A1A;
+    --card-border: #2A2A2A;
+    --level-color: #FF6B6B;
+    --level-color-dim: rgba(255,107,107,0.15);
+    --level-color-glow: rgba(255,107,107,0.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ── STICKY NAV ── */
+  #top-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,107,107,0.3);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+
+  #top-nav .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--level-color);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  #top-nav .nav-course {
+    flex: 1;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #top-nav .nav-xp {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--level-color);
+    white-space: nowrap;
+    background: var(--level-color-dim);
+    border: 1px solid rgba(255,107,107,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #level-progress-bar {
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    z-index: 999;
+    height: 3px;
+    background: #1A1A1A;
+  }
+  #level-progress-fill {
+    height: 100%;
+    background: var(--level-color);
+    width: 50%; /* level 6 of 12 */
+    transition: width 0.6s ease;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 80px 24px;
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 48px 16px; }
+  }
+
+  section .container {
+    padding: 0;
+  }
+
+  /* ── RACING STRIPE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,107,107,0.02) 40px,
+        rgba(255,107,107,0.02) 41px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h1 { font-size: clamp(2.4rem, 6vw, 4rem); }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+  h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); }
+
+  .section-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--level-color);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .accent { color: var(--level-color); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(255,107,107,0.2);
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--level-color);
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-warm);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--level-color-glow);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--level-color);
+    border: 2px solid var(--level-color);
+  }
+
+  .btn-outline:hover {
+    background: var(--level-color-dim);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--level-color);
+    color: var(--level-color);
+  }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .breadcrumb a:hover { color: var(--level-color); }
+  .breadcrumb .sep { color: #444; }
+  .breadcrumb .current { color: var(--level-color); }
+
+  /* ══════════════════════════════════════════
+     SECTION 1: LEVEL HEADER
+  ══════════════════════════════════════════ */
+  #level-header {
+    padding-top: 120px;
+    padding-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #level-header::after {
+    content: '6';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(180px, 25vw, 320px);
+    font-weight: 700;
+    color: rgba(255,107,107,0.05);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .level-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .level-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    background: var(--level-color);
+    color: #000;
+  }
+
+  .difficulty-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    background: rgba(255,107,107,0.15);
+    border: 1px solid rgba(255,107,107,0.4);
+    color: var(--level-color);
+  }
+
+  .xp-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 4px;
+    background: #1A1A1A;
+    border: 1px solid #333;
+    color: #FFD700;
+  }
+
+  .level-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--level-color);
+    font-style: italic;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .level-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.7;
+  }
+
+  /* Racing bar graphic */
+  .racing-bars {
+    display: flex;
+    gap: 4px;
+    margin-top: 32px;
+    align-items: flex-end;
+    height: 60px;
+  }
+
+  .racing-bar {
+    width: 18px;
+    border-radius: 3px 3px 0 0;
+    background: var(--level-color);
+    opacity: 0.7;
+    animation: barPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION 2: WHAT YOU'LL LEARN
+  ══════════════════════════════════════════ */
+  #what-youll-learn {
+    background: #111;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .outcome-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 4px solid var(--level-color);
+    border-radius: 8px;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .outcome-card .outcome-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--level-color);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .outcome-card h4 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .outcome-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION 3: WARM-UP ZONE
+  ══════════════════════════════════════════ */
+  #warm-up {
+    position: relative;
+  }
+
+  .warmup-container {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .warmup-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--level-color), var(--accent-warm));
+  }
+
+  /* BOOKSHELF DRAG-SORT */
+  .bookshelf-area {
+    margin-top: 24px;
+  }
+
+  .bookshelf-prompt {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+
+  .books-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 80px;
+    padding: 16px;
+    background: #111;
+    border-radius: 8px;
+    border: 2px dashed #333;
+    align-items: flex-end;
+    transition: border-color 0.2s;
+  }
+
+  .books-container.drag-over {
+    border-color: var(--level-color);
+    background: rgba(255,107,107,0.05);
+  }
+
+  .book {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 48px;
+    border-radius: 4px 4px 0 0;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    touch-action: none;
+  }
+
+  .book:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+
+  .book.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+  }
+
+  .book-spine {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .book-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: #000;
+    font-size: 18px;
+    padding: 8px 4px;
+  }
+
+  .book-base {
+    width: 100%;
+    height: 8px;
+    background: #8B4513;
+    border-radius: 0 0 2px 2px;
+  }
+
+  .bookshelf-floor {
+    width: 100%;
+    height: 6px;
+    background: #5a3010;
+    margin-top: 2px;
+    border-radius: 2px;
+  }
+
+  .warmup-feedback {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+  }
+
+  .warmup-feedback.show { display: block; }
+  .warmup-feedback.correct { background: rgba(0,245,160,0.15); border: 1px solid #00F5A0; color: #00F5A0; }
+  .warmup-feedback.wrong { background: rgba(255,71,87,0.15); border: 1px solid #FF4757; color: #FF4757; }
+
+  .warmup-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION 4: CORE CONCEPT
+  ══════════════════════════════════════════ */
+  #core-concept {
+    background: #111;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .concept-grid { grid-template-columns: 1fr; }
+  }
+
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-card.bubble-card::before {
+    content: '🫧';
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .concept-card.selection-card::before {
+    content: '🎯';
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .concept-card h3 {
+    color: var(--level-color);
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+  }
+
+  .concept-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .step-list {
+    list-style: none;
+    margin-top: 12px;
+  }
+
+  .step-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+
+  .step-list li .step-icon {
+    color: var(--level-color);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    min-width: 20px;
+    margin-top: 2px;
+  }
+
+  .complexity-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(255,107,107,0.15);
+    color: var(--level-color);
+    border: 1px solid rgba(255,107,107,0.3);
+    margin-top: 12px;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION 5: INTERACTIVE CHALLENGE — SORTING RACE
+  ══════════════════════════════════════════ */
+  #interactive-challenge {
+    position: relative;
+  }
+
+  .race-container {
+    margin-top: 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .race-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--level-color), var(--accent-warm), var(--level-color));
+    background-size: 200% 100%;
+    animation: raceStripe 2s linear infinite;
+  }
+
+  @keyframes raceStripe {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  .race-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .race-controls label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .speed-select {
+    background: #111;
+    border: 1px solid #333;
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    min-height: 40px;
+  }
+
+  .speed-select:focus {
+    outline: 2px solid var(--level-color);
+    outline-offset: 2px;
+  }
+
+  .race-lanes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .race-lanes { grid-template-columns: 1fr; }
+  }
+
+  .race-lane {
+    background: #111;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #222;
+  }
+
+  .lane-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .lane-title .lane-name { color: var(--level-color); }
+  .lane-title .step-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .lane-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .bars-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 140px;
+    padding: 0 4px;
+  }
+
+  .sort-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: var(--level-color);
+    transition: height 0.3s ease, background 0.3s ease;
+    position: relative;
+    min-width: 20px;
+  }
+
+  .sort-bar.comparing {
+    background: #FFD700 !important;
+    box-shadow: 0 0 12px rgba(255,215,0,0.5);
+  }
+
+  .sort-bar.swapping {
+    background: #FF4757 !important;
+    box-shadow: 0 0 12px rgba(255,71,87,0.5);
+  }
+
+  .sort-bar.sorted {
+    background: var(--accent-success) !important;
+    box-shadow: 0 0 8px rgba(0,245,160,0.3);
+  }
+
+  .bar-val {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .race-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+  }
+
+  .race-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .stat-box {
+    background: #111;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #222;
+  }
+
+  .stat-box .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .stat-box .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--level-color);
+  }
+
+  /* ══════════════════════════════════════════
+     HUMAN SORT ACTIVITY
+  ══════════════════════════════════════════ */
+  .human-sort-area {
+    margin-top: 48px;
+  }
+
+  .human-sort-area h3 {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+  }
+
+  .human-sort-area p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .human-items {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .human-item {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 10px 18px;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+  }
+
+  .human-item:hover, .human-item:focus {
+    border-color: var(--level-color);
+    box-shadow: 0 0 12px var(--level-color-glow);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .human-item.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+  }
+
+  .human-item.swap-highlight {
+    animation: swapPulse 0.4s ease;
+  }
+
+  @keyframes swapPulse {
+    0%, 100% { background: var(--card-bg); }
+    50% { background: rgba(255,107,107,0.3); }
+  }
+
+  .human-sort-instructions {
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .human-sort-instructions strong { color: var(--level-color); }
+
+  .swap-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 12px;
+  }
+
+  .swap-count span { color: var(--level-color); }
+
+  /* ══════════════════════════════════════════
+     SECTION 6: THINK DEEPER
+  ══════════════════════════════════════════ */
+  #think-deeper {
+    background: linear-gradient(135deg, #0D0D0D 0%, #1A0A0A 100%);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .think-deeper-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,107,107,0.3);
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .think-deeper-card::after {
+    content: '🧠';
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    font-size: 48px;
+    opacity: 0.15;
+  }
+
+  .quiz-question {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .quiz-question h4 {
+    font-size: 1rem;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #111;
+    border: 1px solid #2A2A2A;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    min-height: 48px;
+    text-align: left;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .quiz-option:hover, .quiz-option:focus {
+    border-color: var(--level-color);
+    color: var(--text-primary);
+    background: rgba(255,107,107,0.08);
+    outline: none;
+  }
+
+  .quiz-option.correct {
+    border-color: #00F5A0;
+    background: rgba(0,245,160,0.1);
+    color: #00F5A0;
+  }
+
+  .quiz-option.wrong {
+    border-color: #FF4757;
+    background: rgba(255,71,87,0.1);
+    color: #FF4757;
+    animation: shake 0.4s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
+  @keyframes greenPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(0,245,160,0); }
+    50% { box-shadow: 0 0 20px rgba(0,245,160,0.5); }
+  }
+
+  .quiz-option.correct {
+    animation: greenPulse 0.6s ease;
+    border-color: #00F5A0;
+    background: rgba(0,245,160,0.1);
+    color: #00F5A0;
+  }
+
+  .quiz-feedback {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: none;
+    font-style: italic;
+  }
+
+  .quiz-feedback.show { display: block; }
+
+  /* ══════════════════════════════════════════
+     SECTION 7: REAL-WORLD CONNECTION
+  ══════════════════════════════════════════ */
+  #real-world {
+    position: relative;
+  }
+
+  .real-world-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .real-world-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .real-world-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--level-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+
+  .real-world-card:hover::before { transform: scaleX(1); }
+
+  .rw-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .rw-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .rw-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION 8: LEVEL BADGE + XP UNLOCK
+  ══════════════════════════════════════════ */
+  #level-badge {
+    background: #111;
+    border-top: 1px solid var(--card-border);
+    text-align: center;
+  }
+
+  .badge-unlock-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 0;
+  }
+
+  .big-badge {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+
+  .big-badge svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 20px var(--level-color-glow));
+  }
+
+  .badge-locked {
+    opacity: 0.3;
+    filter: grayscale(1);
+  }
+
+  .badge-unlocked {
+    animation: badgeReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes badgeReveal {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .badge-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--level-color);
+  }
+
+  .badge-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .xp-award {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,215,0,0.1);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFD700;
+  }
+
+  #complete-btn {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 20px auto 0;
+  }
+
+  .completion-msg {
+    display: none;
+    margin-top: 16px;
+    padding: 14px;
+    background: rgba(0,245,160,0.1);
+    border: 1px solid #00F5A0;
+    border-radius: 8px;
+    color: #00F5A0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+  }
+
+  .completion-msg.show { display: block; }
+
+  /* ══════════════════════════════════════════
+     SECTION 9: NAVIGATION
+  ══════════════════════════════════════════ */
+  #level-nav {
+    padding: 40px 24px 60px;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    .nav-grid { grid-template-columns: 1fr; }
+  }
+
+  .nav-level-btn {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    min-height: 80px;
+    justify-content: center;
+  }
+
+  .nav-level-btn:hover {
+    border-color: var(--level-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,107,107,0.15);
+  }
+
+  .nav-level-btn .nav-direction {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .nav-level-btn .nav-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--level-color);
+  }
+
+  .nav-level-btn.next-btn {
+    text-align: right;
+  }
+
+  .home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ══════════════════════════════════════════
+     ANIMATED BAR CHART DECORATIONS
+  ══════════════════════════════════════════ */
+  .bg-bars {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    opacity: 0.04;
+    pointer-events: none;
+    height: 200px;
+  }
+
+  .bg-bar {
+    width: 20px;
+    background: var(--level-color);
+    border-radius: 2px 2px 0 0;
+  }
+
+  /* ══════════════════════════════════════════
+     SNAP / SNAP SUCCESS ANIMATIONS
+  ══════════════════════════════════════════ */
+  .snap-success {
+    animation: snapIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes snapIn {
+    0% { transform: scale(0.85); }
+    100% { transform: scale(1); }
+  }
+
+  /* ══════════════════════════════════════════
+     SCROLLED FADE-IN UTILITY
+  ══════════════════════════════════════════ */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ══════════════════════════════════════════
+     FOCUS VISIBLE
+  ══════════════════════════════════════════ */
+  :focus-visible {
+    outline: 2px solid var(--level-color);
+    outline-offset: 3px;
+  }
+
+  /* ══════════════════════════════════════════
+     URDU TOGGLE
+  ══════════════════════════════════════════ */
+  .urdu-toggle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid #333;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 28px;
+    white-space: nowrap;
+  }
+
+  .urdu-toggle:hover { border-color: var(--level-color); color: var(--level-color); }
+
+  .urdu-label { display: none; }
+  body.urdu-on .urdu-label { display: inline; }
+  body.urdu-on .en-label { display: none; }
+
+  /* ══════════════════════════════════════════
+     DIVIDER
+  ══════════════════════════════════════════ */
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--level-color);
+    margin: 16px 0 28px;
+    border-radius: 2px;
+  }
+
+  /* ══════════════════════════════════════════
+     NOTICE / INFO BOX
+  ══════════════════════════════════════════ */
+  .info-box {
+    background: rgba(255,107,107,0.08);
+    border-left: 4px solid var(--level-color);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+
+  .info-box strong { color: var(--level-color); }
+
+  /* mobile touches for drag items */
+  .touch-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    display: none;
+  }
+
+  @media (pointer: coarse) {
+    .touch-hint { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── STICKY TOP NAV ── -->
+<nav id="top-nav" role="navigation" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy home">
+    OTS Skills Academy
+  </a>
+  <span class="nav-course">Logic Building — Level 6</span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="urdu-toggle" id="urdu-toggle-btn" aria-label="Toggle Urdu labels" aria-pressed="false">
+      <span class="en-label">اردو</span>
+      <span class="urdu-label">English</span>
+    </button>
+    <div class="nav-xp" id="nav-xp-counter" aria-label="Total XP earned" aria-live="polite">⚡ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ── LEVEL PROGRESS BAR ── -->
+<div id="level-progress-bar" role="progressbar" aria-valuenow="6" aria-valuemin="1" aria-valuemax="12" aria-label="Level 6 of 12">
+  <div id="level-progress-fill"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: LEVEL HEADER
+══════════════════════════════════════════ -->
+<section id="level-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">OTS Skills Academy</a>
+      <span class="sep" aria-hidden="true">→</span>
+      <a href="index.html">Logic Building</a>
+      <span class="sep" aria-hidden="true">→</span>
+      <span class="current" aria-current="page">Level 6</span>
+    </nav>
+
+    <div class="level-meta">
+      <span class="level-badge">Level 6</span>
+      <span class="difficulty-badge">
+        <span class="en-label">Challenger</span>
+        <span class="urdu-label">چیلنجر</span>
+      </span>
+      <span class="xp-badge">⚡ 350 XP</span>
+    </div>
+
+    <h1>
+      <span class="en-label">Sort It Out</span>
+      <span class="urdu-label">ترتیب دو</span>
+    </h1>
+
+    <div class="section-divider"></div>
+
+    <p class="level-tagline">"Order brings clarity."</p>
+
+    <p class="level-desc">
+      In this level, you'll discover how computers organise information — and why the <em>method</em> they choose matters enormously. Two famous sorting algorithms, side-by-side, in a race you control.
+    </p>
+
+    <div class="racing-bars" aria-hidden="true">
+      <div class="racing-bar" style="height:30px;animation-delay:0s;"></div>
+      <div class="racing-bar" style="height:50px;animation-delay:0.1s;"></div>
+      <div class="racing-bar" style="height:40px;animation-delay:0.2s;"></div>
+      <div class="racing-bar" style="height:60px;animation-delay:0.3s;"></div>
+      <div class="racing-bar" style="height:35px;animation-delay:0.4s;"></div>
+      <div class="racing-bar" style="height:55px;animation-delay:0.5s;"></div>
+      <div class="racing-bar" style="height:45px;animation-delay:0.6s;"></div>
+      <div class="racing-bar" style="height:50px;animation-delay:0.7s;"></div>
+    </div>
+  </div>
+
+  <div class="bg-bars" aria-hidden="true">
+    <div class="bg-bar" style="height:80px;"></div>
+    <div class="bg-bar" style="height:140px;"></div>
+    <div class="bg-bar" style="height:60px;"></div>
+    <div class="bg-bar" style="height:190px;"></div>
+    <div class="bg-bar" style="height:110px;"></div>
+    <div class="bg-bar" style="height:150px;"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: WHAT YOU'LL LEARN
+══════════════════════════════════════════ -->
+<section id="what-youll-learn" aria-labelledby="wyl-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">What You'll Learn</span>
+      <span class="urdu-label">آپ کیا سیکھیں گے</span>
+    </span>
+    <h2 id="wyl-heading">Four Things You'll Master</h2>
+    <div class="section-divider"></div>
+
+    <div class="outcomes-grid" role="list">
+      <article class="outcome-card" role="listitem">
+        <span class="outcome-num">01</span>
+        <h4>Why Sorting Matters</h4>
+        <p>Understand why putting things in order makes every other problem faster and easier to solve.</p>
+      </article>
+      <article class="outcome-card" role="listitem">
+        <span class="outcome-num">02</span>
+        <h4>Bubble Sort Logic</h4>
+        <p>See how repeatedly comparing and swapping neighbours gradually moves the largest values to the end.</p>
+      </article>
+      <article class="outcome-card" role="listitem">
+        <span class="outcome-num">03</span>
+        <h4>Selection Sort Logic</h4>
+        <p>Learn how finding the minimum value each pass and placing it correctly builds a sorted list from left to right.</p>
+      </article>
+      <article class="outcome-card" role="listitem">
+        <span class="outcome-num">04</span>
+        <h4>Compare Both Methods</h4>
+        <p>Race the two algorithms against each other and see why the number of steps matters in real systems.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: WARM-UP ZONE
+══════════════════════════════════════════ -->
+<section id="warm-up" aria-labelledby="warmup-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Warm-Up Zone</span>
+      <span class="urdu-label">وارم اپ</span>
+    </span>
+    <h2 id="warmup-heading">Bookshelf Drag-Sort</h2>
+    <div class="section-divider"></div>
+
+    <p class="fade-in-up" style="color:var(--text-secondary);margin-bottom:8px;">
+      Before we get technical — let's sort the old-fashioned way. These books are out of order. Can you arrange them from <strong style="color:var(--level-color);">lowest (1) to highest (8)</strong> by dragging and dropping?
+    </p>
+
+    <div class="warmup-container fade-in-up">
+      <p class="bookshelf-prompt">
+        <span class="en-label">📚 Drag the books to put them in order — 1 on the left, 8 on the right.</span>
+        <span class="urdu-label">📚 کتابوں کو ترتیب سے رکھیں — بائیں سے دائیں</span>
+      </p>
+      <p class="touch-hint">Tip: tap and hold to drag on mobile.</p>
+
+      <div class="bookshelf-area">
+        <div id="bookshelf" class="books-container" role="list" aria-label="Bookshelf — arrange books in order" aria-dropeffect="move">
+          <!-- books injected by JS -->
+        </div>
+        <div class="bookshelf-floor" aria-hidden="true"></div>
+      </div>
+
+      <div id="warmup-feedback" class="warmup-feedback" role="alert" aria-live="polite"></div>
+
+      <div class="warmup-actions">
+        <button class="btn btn-primary" id="check-shelf-btn" aria-label="Check if books are in order" style="min-width:140px;">
+          <span class="en-label">Check Order</span>
+          <span class="urdu-label">ترتیب چیک کریں</span>
+        </button>
+        <button class="btn btn-ghost" id="shuffle-shelf-btn" aria-label="Shuffle books to try again">
+          <span class="en-label">↺ Shuffle</span>
+          <span class="urdu-label">↺ دوبارہ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: CORE CONCEPT SECTION
+══════════════════════════════════════════ -->
+<section id="core-concept" aria-labelledby="concept-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Core Concept</span>
+      <span class="urdu-label">بنیادی تصور</span>
+    </span>
+    <h2 id="concept-heading">Two Ways to Sort</h2>
+    <div class="section-divider"></div>
+
+    <p class="fade-in-up" style="color:var(--text-secondary);max-width:680px;margin-bottom:32px;">
+      There are dozens of sorting algorithms. We're going to master two. No code required — just logic. Think of each as a <em>strategy</em> a human might use to organise a pile of numbered cards.
+    </p>
+
+    <div class="concept-grid">
+      <div class="concept-card bubble-card fade-in-up">
+        <h3>🫧 Bubble Sort</h3>
+        <p>Walk through the list repeatedly. Each time, compare two neighbours. If they're in the wrong order, swap them. The biggest numbers "bubble" to the end like bubbles rising in water.</p>
+        <ul class="step-list">
+          <li><span class="step-icon">→</span>Compare position 1 and 2. Wrong order? Swap.</li>
+          <li><span class="step-icon">→</span>Compare position 2 and 3. Wrong order? Swap.</li>
+          <li><span class="step-icon">→</span>Continue to the end of the list. That's one pass.</li>
+          <li><span class="step-icon">→</span>Repeat passes until no swaps happen.</li>
+        </ul>
+        <span class="complexity-tag">Worst case: N² comparisons</span>
+      </div>
+
+      <div class="concept-card selection-card fade-in-up">
+        <h3>🎯 Selection Sort</h3>
+        <p>Scan the entire unsorted section. Find the smallest number. Place it at the start of the unsorted section. Repeat, shrinking the unsorted section each time.</p>
+        <ul class="step-list">
+          <li><span class="step-icon">→</span>Scan all positions. Find the minimum value.</li>
+          <li><span class="step-icon">→</span>Swap minimum with the first unsorted position.</li>
+          <li><span class="step-icon">→</span>That position is now "sorted." Move the boundary right.</li>
+          <li><span class="step-icon">→</span>Repeat until the boundary reaches the end.</li>
+        </ul>
+        <span class="complexity-tag">Worst case: N² comparisons</span>
+      </div>
+    </div>
+
+    <div class="info-box fade-in-up" style="margin-top:24px;">
+      <strong>Real Talk:</strong> Both algorithms are O(N²) in complexity — meaning for a list of 10 items they're fine, but for 1,000,000 items they'd be painfully slow. Real systems use faster methods like Merge Sort or Quick Sort. But understanding these two is how you understand <em>why</em> faster methods exist.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: INTERACTIVE CHALLENGE — SORTING RACE
+══════════════════════════════════════════ -->
+<section id="interactive-challenge" aria-labelledby="challenge-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Interactive Challenge</span>
+      <span class="urdu-label">انٹرایکٹو چیلنج</span>
+    </span>
+    <h2 id="challenge-heading">The Sorting Race</h2>
+    <div class="section-divider"></div>
+
+    <p class="fade-in-up" style="color:var(--text-secondary);margin-bottom:12px;">
+      Watch Bubble Sort and Selection Sort race each other on the <em>same data</em>. Press <strong style="color:var(--level-color);">Start Race</strong> and observe which algorithm uses fewer steps and why. The <span style="color:#FFD700;">yellow</span> bars are being compared. The <span style="color:#FF4757;">red</span> bars are being swapped. The <span style="color:#00F5A0;">green</span> bars are sorted.
+    </p>
+
+    <div class="race-container fade-in-up">
+      <div class="race-controls">
+        <label for="speed-control">Speed:</label>
+        <select id="speed-control" class="speed-select" aria-label="Animation speed">
+          <option value="600">Slow (learning)</option>
+          <option value="300" selected>Normal</option>
+          <option value="100">Fast</option>
+          <option value="20">Turbo</option>
+        </select>
+
+        <button class="btn btn-primary" id="start-race-btn" style="min-width:140px;" aria-label="Start the sorting race">
+          ▶ Start Race
+        </button>
+        <button class="btn btn-ghost" id="reset-race-btn" aria-label="Reset race with new data">
+          ↺ New Data
+        </button>
+      </div>
+
+      <div class="race-lanes" role="region" aria-label="Sorting algorithm race visualization">
+        <div class="race-lane">
+          <div class="lane-title">
+            <span class="lane-name">🫧 Bubble Sort</span>
+            <span class="step-counter" id="bubble-steps" aria-live="polite" aria-label="Bubble sort steps">0 steps</span>
+          </div>
+          <div class="lane-subtitle">Swaps neighbours repeatedly</div>
+          <div class="bars-area" id="bubble-bars" role="img" aria-label="Bubble sort bar chart visualization"></div>
+        </div>
+
+        <div class="race-lane">
+          <div class="lane-title">
+            <span class="lane-name">🎯 Selection Sort</span>
+            <span class="step-counter" id="selection-steps" aria-live="polite" aria-label="Selection sort steps">0 steps</span>
+          </div>
+          <div class="lane-subtitle">Finds minimum each pass</div>
+          <div class="bars-area" id="selection-bars" role="img" aria-label="Selection sort bar chart visualization"></div>
+        </div>
+      </div>
+
+      <div class="race-legend" role="list" aria-label="Color legend for sorting visualization">
+        <div class="legend-item" role="listitem">
+          <div class="legend-dot" style="background:var(--level-color);" aria-hidden="true"></div>
+          <span>Unsorted</span>
+        </div>
+        <div class="legend-item" role="listitem">
+          <div class="legend-dot" style="background:#FFD700;" aria-hidden="true"></div>
+          <span>Comparing</span>
+        </div>
+        <div class="legend-item" role="listitem">
+          <div class="legend-dot" style="background:#FF4757;" aria-hidden="true"></div>
+          <span>Swapping</span>
+        </div>
+        <div class="legend-item" role="listitem">
+          <div class="legend-dot" style="background:#00F5A0;" aria-hidden="true"></div>
+          <span>Sorted ✓</span>
+        </div>
+      </div>
+
+      <div class="race-stats" aria-live="polite" aria-label="Race statistics">
+        <div class="stat-box">
+          <div class="stat-label">Bubble Sort Total Steps</div>
+          <div class="stat-value" id="bubble-total-steps">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Selection Sort Total Steps</div>
+          <div class="stat-value" id="selection-total-steps">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUMAN SORT ACTIVITY -->
+    <div class="human-sort-area fade-in-up" aria-labelledby="human-sort-heading">
+      <h3 id="human-sort-heading">🤝 Human Sort — Be the Algorithm</h3>
+      <p>Sort these numbers <strong style="color:var(--level-color);">using only neighbour swaps</strong> — just like Bubble Sort would. You can only swap two numbers that are <em>next to each other</em>. Tap or click a number, then tap or click its neighbour to swap.</p>
+
+      <div class="human-sort-instructions" role="note">
+        <strong>Rule:</strong> Click/tap one number, then click/tap an adjacent number to swap them. Goal: get them in order <strong>1 → 8</strong> from left to right. Count your swaps — can you beat the computer's bubble sort count?
+      </div>
+
+      <div id="human-items" class="human-items" role="list" aria-label="Numbers to sort using neighbour swaps"></div>
+
+      <div class="swap-count" aria-live="polite">
+        Your swaps: <span id="human-swap-count">0</span> &nbsp;|&nbsp; Minimum possible: <span id="min-swaps">?</span>
+      </div>
+
+      <div class="warmup-actions" style="margin-top:16px;">
+        <button class="btn btn-primary" id="check-human-btn" aria-label="Check if numbers are in correct order">
+          <span class="en-label">✓ Check Order</span>
+          <span class="urdu-label">✓ ترتیب چیک کریں</span>
+        </button>
+        <button class="btn btn-ghost" id="reset-human-btn" aria-label="Reset human sort activity">
+          ↺ Reset
+        </button>
+      </div>
+      <div id="human-sort-feedback" class="warmup-feedback" role="alert" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6: THINK DEEPER
+══════════════════════════════════════════ -->
+<section id="think-deeper" aria-labelledby="think-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Think Deeper</span>
+      <span class="urdu-label">گہرا سوچو</span>
+    </span>
+    <h2 id="think-heading">Extension Challenge</h2>
+    <div class="section-divider"></div>
+
+    <div class="think-deeper-card fade-in-up">
+      <p style="color:var(--text-secondary);margin-bottom:28px;">
+        Time to reason, not just watch. Answer these questions to show you've really understood the logic behind sorting.
+      </p>
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <h4>Q1 — You have a list that is <em>already sorted</em>. Which algorithm is smarter about this situation?</h4>
+        <div class="quiz-options" role="radiogroup" aria-label="Question 1 options">
+          <button class="quiz-option" data-q="1" data-correct="false" aria-pressed="false">Selection Sort — it always makes exactly N swaps regardless.</button>
+          <button class="quiz-option" data-q="1" data-correct="true" aria-pressed="false">Bubble Sort — it can detect no swaps happened and stop after one pass.</button>
+          <button class="quiz-option" data-q="1" data-correct="false" aria-pressed="false">They are equally efficient on sorted data.</button>
+        </div>
+        <div class="quiz-feedback" id="qfeedback-1" role="alert">Bubble Sort with an "early exit" flag is O(N) on already-sorted data — one pass, zero swaps, done. Selection Sort always does N² comparisons regardless.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <h4>Q2 — A cricket team selector wants to find the top 3 scorers from a list of 15 players. Which sorting approach makes more sense?</h4>
+        <div class="quiz-options" role="radiogroup" aria-label="Question 2 options">
+          <button class="quiz-option" data-q="2" data-correct="true" aria-pressed="false">Selection Sort logic — find the maximum 3 times, no need to fully sort the list.</button>
+          <button class="quiz-option" data-q="2" data-correct="false" aria-pressed="false">Bubble Sort logic — bubble the top values to the end through multiple passes.</button>
+          <button class="quiz-option" data-q="2" data-correct="false" aria-pressed="false">Sort the entire list first, then pick — that's always the safest method.</button>
+        </div>
+        <div class="quiz-feedback" id="qfeedback-2" role="alert">When you only need the top K items, Selection-style "find the maximum" K times is much more efficient than fully sorting. Real systems use heaps for this.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <h4>Q3 — Karachi's Biryani Festival has 200 food stalls. Each stall submits its price. The organisers want to display them cheapest to most expensive. How many comparisons does Bubble Sort make in the worst case?</h4>
+        <div class="quiz-options" role="radiogroup" aria-label="Question 3 options">
+          <button class="quiz-option" data-q="3" data-correct="false" aria-pressed="false">200 comparisons</button>
+          <button class="quiz-option" data-q="3" data-correct="false" aria-pressed="false">2,000 comparisons</button>
+          <button class="quiz-option" data-q="3" data-correct="true" aria-pressed="false">~19,900 comparisons (N × (N-1) / 2)</button>
+          <button class="quiz-option" data-q="3" data-correct="false" aria-pressed="false">400 comparisons</button>
+        </div>
+        <div class="quiz-feedback" id="qfeedback-3" role="alert">For 200 items: 200 × 199 / 2 = 19,900. This is why O(N²) algorithms struggle with large datasets — and why faster algorithms were invented!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7: REAL-WORLD CONNECTION
+══════════════════════════════════════════ -->
+<section id="real-world" aria-labelledby="rw-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Real-World Connection</span>
+      <span class="urdu-label">حقیقی دنیا سے تعلق</span>
+    </span>
+    <h2 id="rw-heading">Sorting Powers Everything</h2>
+    <div class="section-divider"></div>
+
+    <p class="fade-in-up" style="color:var(--text-secondary);margin-bottom:32px;">
+      You now understand how computers sort. Here's where this thinking lives in the real world around you.
+    </p>
+
+    <div class="real-world-grid" role="list">
+      <article class="real-world-card fade-in-up" role="listitem">
+        <span class="rw-icon" aria-hidden="true">🔍</span>
+        <div class="rw-title">Google Search Ranking</div>
+        <p class="rw-desc">When you search "best biryani Karachi," Google has indexed billions of pages. It sorts them by relevance score in milliseconds. Without efficient sorting, search results would take minutes.</p>
+      </article>
+
+      <article class="real-world-card fade-in-up" role="listitem">
+        <span class="rw-icon" aria-hidden="true">🏏</span>
+        <div class="rw-title">Cricket Leaderboards</div>
+        <p class="rw-desc">The PSL ranking system sorts hundreds of player statistics — batting average, strike rate, economy — after every match. Selection Sort logic is literally finding the "top player" in each category.</p>
+      </article>
+
+      <article class="real-world-card fade-in-up" role="listitem">
+        <span class="rw-icon" aria-hidden="true">🏥</span>
+        <div class="rw-title">Hospital Triage</div>
+        <p class="rw-desc">Emergency rooms sort patients by urgency. Nurses constantly re-evaluate — swapping patients in the queue when new information arrives. That's live bubble sorting of human lives.</p>
+      </article>
+
+      <article class="real-world-card fade-in-up" role="listitem">
+        <span class="rw-icon" aria-hidden="true">📦</span>
+        <div class="rw-title">Karachi Port Logistics</div>
+        <p class="rw-desc">Thousands of shipping containers need to be sorted by destination, weight, and pickup time every day. The wrong algorithm wastes millions of rupees in crane time and fuel.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 8: LEVEL BADGE + XP UNLOCK
+══════════════════════════════════════════ -->
+<section id="level-badge" aria-labelledby="badge-heading">
+  <div class="container">
+    <span class="section-label">
+      <span class="en-label">Level Complete</span>
+      <span class="urdu-label">لیول مکمل</span>
+    </span>
+    <h2 id="badge-heading" style="text-align:center;margin-top:12px;">Unlock Your Reward</h2>
+    <div class="section-divider" style="margin-left:auto;margin-right:auto;"></div>
+
+    <div class="badge-unlock-container">
+      <div class="big-badge" id="level-badge-icon" aria-label="Sort It Out achievement badge">
+        <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="70,8 86,52 133,52 97,78 112,122 70,96 28,122 43,78 7,52 54,52" fill="#FF6B6B" opacity="0.2" stroke="#FF6B6B" stroke-width="2"/>
+          <polygon points="70,18 83,54 121,54 91,73 103,109 70,89 37,109 49,73 19,54 57,54" fill="#FF6B6B" opacity="0.4"/>
+          <!-- Bar chart icon -->
+          <rect x="45" y="85" width="10" height="25" fill="#FF6B6B" rx="2"/>
+          <rect x="60" y="72" width="10" height="38" fill="#FF8E53" rx="2"/>
+          <rect x="75" y="58" width="10" height="52" fill="#FFD700" rx="2"/>
+          <rect x="90" y="75" width="10" height="35" fill="#FF6B6B" rx="2"/>
+          <!-- checkmark -->
+          <circle cx="105" cy="35" r="14" fill="#00F5A0"/>
+          <path d="M99 35 l4 4 l8 -8" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h3 class="badge-title">
+        <span class="en-label">Sort Master 🏆</span>
+        <span class="urdu-label">ترتیب ماسٹر 🏆</span>
+      </h3>
+      <p class="badge-subtitle">
+        <span class="en-label">You understand how computers organise data — and why it matters.</span>
+        <span class="urdu-label">آپ نے ترتیب کا منطق سمجھ لیا۔</span>
+      </p>
+
+      <div class="xp-award" aria-label="350 XP reward for completing this level">
+        ⚡ <span>350 XP Unlocked</span>
+      </div>
+
+      <button class="btn btn-primary" id="complete-btn" aria-label="Complete Level 6 and claim your XP reward" style="display:block;width:100%;max-width:320px;margin:20px auto 0;">
+        <span class="en-label">✓ Complete Level 6</span>
+        <span class="urdu-label">✓ لیول 6 مکمل کریں</span>
+      </button>
+
+      <div class="completion-msg" id="completion-msg" role="alert" aria-live="assertive">
+        🎉 Level 6 complete! 350 XP added to your total. Ready for Level 7: The Search?
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 9: NAVIGATION
+══════════════════════════════════════════ -->
+<section id="level-nav" aria-label="Level navigation">
+  <div class="container">
+    <div class="nav-grid">
+      <a href="level-05.html" class="nav-level-btn prev-btn" aria-label="Go to Level 5: What If?">
+        <span class="nav-direction">← Previous</span>
+        <span class="nav-name">Level 5: What If?</span>
+      </a>
+      <a href="level-07.html" class="nav-level-btn next-btn" aria-label="Go to Level 7: The Search">
+        <span class="nav-direction">Next →</span>
+        <span class="nav-name">Level 7: The Search</span>
+      </a>
+    </div>
+    <div class="home-btn">
+      <a href="index.html" class="btn btn-ghost" aria-label="Return to course home page">
+        ⌂ Course Home
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── CONSTANTS ── */
+  var COURSE_SLUG = 'logic-building';
+  var LEVEL_NUM = 6;
+  var LEVEL_XP = 350;
+
+  /* ── localStorage HELPERS ── */
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  function getKey(suffix) {
+    return 'ots_skills_' + COURSE_SLUG + suffix;
+  }
+
+  function getTotalXP() {
+    var total = 0;
+    for (var i = 1; i <= 12; i++) {
+      var xp = parseInt(lsGet(getKey('_level_' + i + '_xp')) || '0', 10);
+      if (!isNaN(xp)) total += xp;
+    }
+    return total;
+  }
+
+  function updateXPDisplay() {
+    var el = document.getElementById('nav-xp-counter');
+    if (el) el.textContent = '⚡ ' + getTotalXP() + ' XP';
+  }
+
+  function markStarted() {
+    if (!lsGet(getKey('_started_at'))) {
+      lsSet(getKey('_started_at'), new Date().toISOString());
+    }
+  }
+
+  /* ── URDU TOGGLE ── */
+  function initUrduToggle() {
+    var btn = document.getElementById('urdu-toggle-btn');
+    if (!btn) return;
+    var key = getKey('_urdu_on');
+    var on = lsGet(key) === 'true';
+    if (on) document.body.classList.add('urdu-on');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.addEventListener('click', function() {
+      on = !on;
+      document.body.classList.toggle('urdu-on', on);
+      lsSet(key, on ? 'true' : 'false');
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  /* ── INTERSECTION OBSERVER FOR FADE-IN ── */
+  function initFadeIn() {
+    var els = document.querySelectorAll('.fade-in-up, .outcome-card, .real-world-card');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          el.classList.add('visible');
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    els.forEach(function(el, i) {
+      el.style.transitionDelay = (i * 0.05) + 's';
+      io.observe(el);
+    });
+  }
+
+  /* ══════════════════════════════════════════
+     BOOKSHELF DRAG-SORT (Warm-Up)
+  ══════════════════════════════════════════ */
+  var BOOK_COLORS = ['#FF6B6B','#FF8E53','#FFC300','#A8E063','#43AA8B','#4ECDC4','#C77DFF','#00D9F5'];
+  var bookOrder = [];
+  var dragSrc = null;
+  var touchDragItem = null;
+  var touchDragClone = null;
+  var touchDragIdx = null;
+
+  function makeBookData() {
+    var nums = [1,2,3,4,5,6,7,8];
+    // shuffle
+    for (var i = nums.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = nums[i]; nums[i] = nums[j]; nums[j] = tmp;
+    }
+    // ensure not already sorted
+    var sorted = true;
+    for (var k = 0; k < nums.length - 1; k++) {
+      if (nums[k] > nums[k+1]) { sorted = false; break; }
+    }
+    if (sorted) { var t = nums[0]; nums[0] = nums[nums.length-1]; nums[nums.length-1] = t; }
+    return nums;
+  }
+
+  function renderBookshelf() {
+    var shelf = document.getElementById('bookshelf');
+    if (!shelf) return;
+    shelf.innerHTML = '';
+    var feedback = document.getElementById('warmup-feedback');
+    if (feedback) { feedback.className = 'warmup-feedback'; feedback.textContent = ''; }
+
+    bookOrder.forEach(function(num, idx) {
+      var book = document.createElement('div');
+      book.className = 'book';
+      book.setAttribute('draggable', 'true');
+      book.setAttribute('role', 'listitem');
+      book.setAttribute('aria-label', 'Book number ' + num + ', position ' + (idx+1));
+      book.setAttribute('tabindex', '0');
+      book.dataset.idx = idx;
+
+      var h = 50 + (num * 8);
+      var color = BOOK_COLORS[num - 1];
+
+      book.innerHTML = '<div class="book-spine" style="background:' + color + ';height:' + h + 'px;">' +
+        '<span class="book-number">' + num + '</span>' +
+      '</div>' +
+      '<div class="book-base" style="background:' + shadeColor(color, -30) + ';"></div>';
+
+      // mouse drag events
+      book.addEventListener('dragstart', handleDragStart);
+      book.addEventListener('dragover', handleDragOver);
+      book.addEventListener('drop', handleDrop);
+      book.addEventListener('dragend', handleDragEnd);
+
+      // touch events
+      book.addEventListener('touchstart', handleTouchStart, {passive: false});
+      book.addEventListener('touchmove', handleTouchMove, {passive: false});
+      book.addEventListener('touchend', handleTouchEnd);
+
+      // keyboard
+      book.addEventListener('keydown', handleBookKey);
+
+      shelf.appendChild(book);
+    });
+  }
+
+  function shadeColor(hex, percent) {
+    var num = parseInt(hex.slice(1), 16);
+    var r = Math.min(255, Math.max(0, (num >> 16) + percent));
+    var g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + percent));
+    var b = Math.min(255, Math.max(0, (num & 0x0000FF) + percent));
+    return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+  }
+
+  function handleDragStart(e) {
+    dragSrc = this;
+    dragSrc.classList.add('dragging');
+    if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', this.dataset.idx); }
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    var shelf = document.getElementById('bookshelf');
+    if (shelf) shelf.classList.add('drag-over');
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    if (dragSrc && dragSrc !== this) {
+      var fromIdx = parseInt(dragSrc.dataset.idx, 10);
+      var toIdx = parseInt(this.dataset.idx, 10);
+      var tmp = bookOrder[fromIdx];
+      bookOrder[fromIdx] = bookOrder[toIdx];
+      bookOrder[toIdx] = tmp;
+      renderBookshelf();
+      playSwapSound();
+    }
+    var shelf = document.getElementById('bookshelf');
+    if (shelf) shelf.classList.remove('drag-over');
+  }
+
+  function handleDragEnd() {
+    this.classList.remove('dragging');
+    var shelf = document.getElementById('bookshelf');
+    if (shelf) shelf.classList.remove('drag-over');
+    dragSrc = null;
+  }
+
+  /* Touch drag for bookshelf */
+  function handleTouchStart(e) {
+    touchDragItem = this;
+    touchDragIdx = parseInt(this.dataset.idx, 10);
+    touchDragItem.classList.add('dragging');
+  }
+
+  function handleTouchMove(e) {
+    if (!touchDragItem) return;
+    e.preventDefault();
+    var touch = e.touches[0];
+    var shelf = document.getElementById('bookshelf');
+    if (!shelf) return;
+    var books = shelf.querySelectorAll('.book');
+    books.forEach(function(b) {
+      var rect = b.getBoundingClientRect();
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom &&
+          b !== touchDragItem) {
+        b.style.opacity = '0.5';
+      } else if (b !== touchDragItem) {
+        b.style.opacity = '1';
+      }
+    });
+  }
+
+  function handleTouchEnd(e) {
+    if (!touchDragItem) return;
+    var touch = e.changedTouches[0];
+    var shelf = document.getElementById('bookshelf');
+    if (!shelf) return;
+    var books = shelf.querySelectorAll('.book');
+    var targetIdx = null;
+    books.forEach(function(b) {
+      var rect = b.getBoundingClientRect();
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom &&
+          b !== touchDragItem) {
+        targetIdx = parseInt(b.dataset.idx, 10);
+      }
+      b.style.opacity = '1';
+    });
+    if (targetIdx !== null && targetIdx !== touchDragIdx) {
+      var tmp = bookOrder[touchDragIdx];
+      bookOrder[touchDragIdx] = bookOrder[targetIdx];
+      bookOrder[targetIdx] = tmp;
+      renderBookshelf();
+    }
+    touchDragItem.classList.remove('dragging');
+    touchDragItem = null;
+    touchDragIdx = null;
+  }
+
+  var kbSelectedBookIdx = null;
+
+  function handleBookKey(e) {
+    var idx = parseInt(this.dataset.idx, 10);
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (kbSelectedBookIdx === null) {
+        kbSelectedBookIdx = idx;
+        this.style.outline = '3px solid var(--level-color)';
+        this.setAttribute('aria-label', 'Book number ' + bookOrder[idx] + ' selected. Press Enter on another book to swap.');
+      } else if (kbSelectedBookIdx !== idx) {
+        var tmp = bookOrder[kbSelectedBookIdx];
+        bookOrder[kbSelectedBookIdx] = bookOrder[idx];
+        bookOrder[idx] = tmp;
+        kbSelectedBookIdx = null;
+        renderBookshelf();
+        playSwapSound();
+      } else {
+        kbSelectedBookIdx = null;
+        this.style.outline = '';
+      }
+    }
+    if (e.key === 'Escape') {
+      kbSelectedBookIdx = null;
+      var shelf = document.getElementById('bookshelf');
+      if (shelf) shelf.querySelectorAll('.book').forEach(function(b) { b.style.outline = ''; });
+    }
+  }
+
+  function playSwapSound() { /* visual feedback only */ }
+
+  function initBookshelf() {
+    bookOrder = makeBookData();
+    renderBookshelf();
+
+    var checkBtn = document.getElementById('check-shelf-btn');
+    if (checkBtn) {
+      checkBtn.addEventListener('click', function() {
+        var feedback = document.getElementById('warmup-feedback');
+        if (!feedback) return;
+        var sorted = true;
+        for (var i = 0; i < bookOrder.length - 1; i++) {
+          if (bookOrder[i] > bookOrder[i+1]) { sorted = false; break; }
+        }
+        if (sorted) {
+          feedback.textContent = '✓ Perfect! The books are in order. Notice how you just sorted them — your brain naturally compared and swapped neighbours. That\'s Bubble Sort logic!';
+          feedback.className = 'warmup-feedback correct show';
+          triggerSnapAnimation();
+        } else {
+          feedback.textContent = '✗ Not quite! Keep going — find two books that are out of order and swap them.';
+          feedback.className = 'warmup-feedback wrong show';
+        }
+      });
+    }
+
+    var shuffleBtn = document.getElementById('shuffle-shelf-btn');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', function() {
+        bookOrder = makeBookData();
+        renderBookshelf();
+      });
+    }
+  }
+
+  function triggerSnapAnimation() {
+    var shelf = document.getElementById('bookshelf');
+    if (!shelf) return;
+    shelf.classList.add('snap-success');
+    setTimeout(function() { shelf.classList.remove('snap-success'); }, 400);
+  }
+
+  /* ══════════════════════════════════════════
+     SORTING RACE VISUALISATION
+  ══════════════════════════════════════════ */
+  var raceData = [];
+  var isRacing = false;
+  var raceAnimTimeout = null;
+
+  function generateRaceData() {
+    var arr = [];
+    for (var i = 1; i <= 10; i++) arr.push(i);
+    // fisher-yates
+    for (var j = arr.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1));
+      var t = arr[j]; arr[j] = arr[k]; arr[k] = t;
+    }
+    return arr;
+  }
+
+  function renderBars(containerId, data, highlights, sortedIndices) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    var max = Math.max.apply(null, data);
+    data.forEach(function(val, idx) {
+      var bar = document.createElement('div');
+      bar.className = 'sort-bar';
+      var pct = (val / max) * 100;
+      bar.style.height = pct + '%';
+
+      if (sortedIndices && sortedIndices.indexOf(idx) !== -1) {
+        bar.classList.add('sorted');
+      } else if (highlights && highlights.swap && highlights.swap.indexOf(idx) !== -1) {
+        bar.classList.add('swapping');
+      } else if (highlights && highlights.compare && highlights.compare.indexOf(idx) !== -1) {
+        bar.classList.add('comparing');
+      }
+
+      var label = document.createElement('span');
+      label.className = 'bar-val';
+      label.textContent = val;
+      label.setAttribute('aria-hidden', 'true');
+      bar.appendChild(label);
+      container.appendChild(bar);
+    });
+  }
+
+  /* Generate sorted animation frames for Bubble Sort */
+  function getBubbleSortFrames(arr) {
+    var frames = [];
+    var data = arr.slice();
+    var n = data.length;
+    var sortedIdx = [];
+    var steps = 0;
+
+    for (var i = 0; i < n - 1; i++) {
+      var swapped = false;
+      for (var j = 0; j < n - i - 1; j++) {
+        steps++;
+        frames.push({ data: data.slice(), type: 'compare', indices: [j, j+1], sorted: sortedIdx.slice(), steps: steps });
+        if (data[j] > data[j+1]) {
+          var tmp = data[j]; data[j] = data[j+1]; data[j+1] = tmp;
+          swapped = true;
+          steps++;
+          frames.push({ data: data.slice(), type: 'swap', indices: [j, j+1], sorted: sortedIdx.slice(), steps: steps });
+        }
+      }
+      sortedIdx.push(n - i - 1);
+      frames.push({ data: data.slice(), type: 'sorted_pass', indices: [], sorted: sortedIdx.slice(), steps: steps });
+      if (!swapped) {
+        for (var x = 0; x < n; x++) { if (sortedIdx.indexOf(x) === -1) sortedIdx.push(x); }
+        frames.push({ data: data.slice(), type: 'done', indices: [], sorted: sortedIdx.slice(), steps: steps });
+        break;
+      }
+    }
+    // final state
+    var allIdx = [];
+    for (var m = 0; m < n; m++) allIdx.push(m);
+    frames.push({ data: data.slice(), type: 'done', indices: [], sorted: allIdx, steps: steps });
+    return frames;
+  }
+
+  /* Generate sorted animation frames for Selection Sort */
+  function getSelectionSortFrames(arr) {
+    var frames = [];
+    var data = arr.slice();
+    var n = data.length;
+    var sortedIdx = [];
+    var steps = 0;
+
+    for (var i = 0; i < n - 1; i++) {
+      var minIdx = i;
+      for (var j = i + 1; j < n; j++) {
+        steps++;
+        frames.push({ data: data.slice(), type: 'compare', indices: [minIdx, j], sorted: sortedIdx.slice(), steps: steps });
+        if (data[j] < data[minIdx]) {
+          minIdx = j;
+        }
+      }
+      if (minIdx !== i) {
+        var tmp = data[i]; data[i] = data[minIdx]; data[minIdx] = tmp;
+        steps++;
+        frames.push({ data: data.slice(), type: 'swap', indices: [i, minIdx], sorted: sortedIdx.slice(), steps: steps });
+      }
+      sortedIdx.push(i);
+      frames.push({ data: data.slice(), type: 'sorted_pass', indices: [], sorted: sortedIdx.slice(), steps: steps });
+    }
+    var allIdx = [];
+    for (var m = 0; m < n; m++) allIdx.push(m);
+    frames.push({ data: data.slice(), type: 'done', indices: [], sorted: allIdx, steps: steps });
+    return frames;
+  }
+
+  function runRaceAnimation(bubbleFrames, selectionFrames, speed) {
+    var maxLen = Math.max(bubbleFrames.length, selectionFrames.length);
+    var bIdx = 0, sIdx = 0;
+    var bDone = false, sDone = false;
+
+    function step() {
+      if (bDone && sDone) {
+        isRacing = false;
+        var startBtn = document.getElementById('start-race-btn');
+        if (startBtn) startBtn.textContent = '▶ Race Again';
+
+        var bLast = bubbleFrames[bubbleFrames.length - 1];
+        var sLast = selectionFrames[selectionFrames.length - 1];
+
+        var bTotalEl = document.getElementById('bubble-total-steps');
+        var sTotalEl = document.getElementById('selection-total-steps');
+        if (bTotalEl) bTotalEl.textContent = bLast.steps;
+        if (sTotalEl) sTotalEl.textContent = sLast.steps;
+        return;
+      }
+
+      if (!bDone && bIdx < bubbleFrames.length) {
+        var bf = bubbleFrames[bIdx];
+        var bHighlight = {};
+        if (bf.type === 'compare') bHighlight.compare = bf.indices;
+        if (bf.type === 'swap') bHighlight.swap = bf.indices;
+        renderBars('bubble-bars', bf.data, bHighlight, bf.sorted);
+
+        var bStepsEl = document.getElementById('bubble-steps');
+        if (bStepsEl) bStepsEl.textContent = bf.steps + ' steps';
+
+        bIdx++;
+        if (bIdx >= bubbleFrames.length) bDone = true;
+      }
+
+      if (!sDone && sIdx < selectionFrames.length) {
+        var sf = selectionFrames[sIdx];
+        var sHighlight = {};
+        if (sf.type === 'compare') sHighlight.compare = sf.indices;
+        if (sf.type === 'swap') sHighlight.swap = sf.indices;
+        renderBars('selection-bars', sf.data, sHighlight, sf.sorted);
+
+        var sStepsEl = document.getElementById('selection-steps');
+        if (sStepsEl) sStepsEl.textContent = sf.steps + ' steps';
+
+        sIdx++;
+        if (sIdx >= selectionFrames.length) sDone = true;
+      }
+
+      raceAnimTimeout = setTimeout(step, speed);
+    }
+
+    step();
+  }
+
+  function initSortingRace() {
+    raceData = generateRaceData();
+    renderBars('bubble-bars', raceData, null, null);
+    renderBars('selection-bars', raceData, null, null);
+
+    var startBtn = document.getElementById('start-race-btn');
+    var resetBtn = document.getElementById('reset-race-btn');
+
+    if (startBtn) {
+      startBtn.addEventListener('click', function() {
+        if (isRacing) return;
+        if (raceAnimTimeout) { clearTimeout(raceAnimTimeout); raceAnimTimeout = null; }
+        isRacing = true;
+        this.textContent = '⏳ Racing...';
+        var bStepsEl = document.getElementById('bubble-steps');
+        var sStepsEl = document.getElementById('selection-steps');
+        var bTotalEl = document.getElementById('bubble-total-steps');
+        var sTotalEl = document.getElementById('selection-total-steps');
+        if (bStepsEl) bStepsEl.textContent = '0 steps';
+        if (sStepsEl) sStepsEl.textContent = '0 steps';
+        if (bTotalEl) bTotalEl.textContent = '—';
+        if (sTotalEl) sTotalEl.textContent = '—';
+
+        var speedEl = document.getElementById('speed-control');
+        var spd = speedEl ? parseInt(speedEl.value, 10) : 300;
+
+        var bf = getBubbleSortFrames(raceData);
+        var sf = getSelectionSortFrames(raceData);
+        runRaceAnimation(bf, sf, spd);
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        if (raceAnimTimeout) { clearTimeout(raceAnimTimeout); raceAnimTimeout = null; }
+        isRacing = false;
+        raceData = generateRaceData();
+        renderBars('bubble-bars', raceData, null, null);
+        renderBars('selection-bars', raceData, null, null);
+        var startBtn2 = document.getElementById('start-race-btn');
+        if (startBtn2) startBtn2.textContent = '▶ Start Race';
+        var bStepsEl = document.getElementById('bubble-steps');
+        var sStepsEl = document.getElementById('selection-steps');
+        var bTotalEl = document.getElementById('bubble-total-steps');
+        var sTotalEl = document.getElementById('selection-total-steps');
+        if (bStepsEl) bStepsEl.textContent = '0 steps';
+        if (sStepsEl) sStepsEl.textContent = '0 steps';
+        if (bTotalEl) bTotalEl.textContent = '—';
+        if (sTotalEl) sTotalEl.textContent = '—';
+      });
+    }
+  }
+
+  /* ══════════════════════════════════════════
+     HUMAN SORT ACTIVITY
+  ══════════════════════════════════════════ */
+  var humanItems = [];
+  var humanSwapCount = 0;
+  var selectedHumanIdx = null;
+
+  function countMinSwaps(arr) {
+    // count inversions
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
+      for (var j = i + 1; j < arr.length; j++) {
+        if (arr[i] > arr[j]) count++;
+      }
+    }
+    return count;
+  }
+
+  function generateHumanItems() {
+    var nums = [1,2,3,4,5,6,7,8];
+    for (var i = nums.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = nums[i]; nums[i] = nums[j]; nums[j] = t;
+    }
+    var sorted = true;
+    for (var k = 0; k < nums.length - 1; k++) {
+      if (nums[k] > nums[k+1]) { sorted = false; break; }
+    }
+    if (sorted) { var tmp = nums[0]; nums[0] = nums[1]; nums[1] = tmp; }
+    return nums;
+  }
+
+  function renderHumanItems() {
+    var container = document.getElementById('human-items');
+    if (!container) return;
+    container.innerHTML = '';
+    selectedHumanIdx = null;
+
+    humanItems.forEach(function(num, idx) {
+      var item = document.createElement('div');
+      item.className = 'human-item';
+      item.setAttribute('role', 'listitem');
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-label', 'Number ' + num + ' at position ' + (idx+1));
+      item.dataset.idx = idx;
+      item.textContent = num;
+
+      item.addEventListener('click', function() { handleHumanClick(idx); });
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHumanClick(idx); }
+      });
+
+      // touch drag
+      item.addEventListener('touchstart', handleHumanTouchStart, {passive: true});
+      item.addEventListener('touchend', handleHumanTouchEnd);
+
+      container.appendChild(item);
+    });
+
+    updateSwapCountDisplay();
+  }
+
+  function handleHumanClick(idx) {
+    var feedback = document.getElementById('human-sort-feedback');
+    if (feedback) { feedback.className = 'warmup-feedback'; feedback.textContent = ''; }
+
+    if (selectedHumanIdx === null) {
+      selectedHumanIdx = idx;
+      highlightHumanItem(idx, true);
+    } else if (selectedHumanIdx === idx) {
+      highlightHumanItem(idx, false);
+      selectedHumanIdx = null;
+    } else {
+      // only allow adjacent swaps
+      var diff = Math.abs(selectedHumanIdx - idx);
+      if (diff === 1) {
+        highlightHumanItem(selectedHumanIdx, false);
+        var tmp = humanItems[selectedHumanIdx];
+        humanItems[selectedHumanIdx] = humanItems[idx];
+        humanItems[idx] = tmp;
+        humanSwapCount++;
+        selectedHumanIdx = null;
+        renderHumanItems();
+        animateSwap(Math.min(selectedHumanIdx || idx, idx));
+      } else {
+        // not adjacent
+        highlightHumanItem(selectedHumanIdx, false);
+        highlightHumanItem(idx, true);
+        selectedHumanIdx = idx;
+        if (feedback) {
+          feedback.textContent = '⚠ You can only swap neighbours! Select an adjacent number.';
+          feedback.className = 'warmup-feedback wrong show';
+        }
+      }
+    }
+  }
+
+  function highlightHumanItem(idx, on) {
+    var container = document.getElementById('human-items');
+    if (!container) return;
+    var items = container.querySelectorAll('.human-item');
+    if (items[idx]) {
+      items[idx].style.borderColor = on ? 'var(--level-color)' : '';
+      items[idx].style.background = on ? 'rgba(255,107,107,0.2)' : '';
+      items[idx].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+  }
+
+  function animateSwap(idx) {
+    var container = document.getElementById('human-items');
+    if (!container) return;
+    var items = container.querySelectorAll('.human-item');
+    [idx, idx+1].forEach(function(i) {
+      if (items[i]) items[i].classList.add('swap-highlight');
+      setTimeout(function() { if (items[i]) items[i].classList.remove('swap-highlight'); }, 400);
+    });
+  }
+
+  var humanTouchStartIdx = null;
+
+  function handleHumanTouchStart(e) {
+    humanTouchStartIdx = parseInt(this.dataset.idx, 10);
+  }
+
+  function handleHumanTouchEnd(e) {
+    if (humanTouchStartIdx !== null) {
+      handleHumanClick(humanTouchStartIdx);
+      humanTouchStartIdx = null;
+    }
+  }
+
+  function updateSwapCountDisplay() {
+    var countEl = document.getElementById('human-swap-count');
+    if (countEl) countEl.textContent = humanSwapCount;
+  }
+
+  function initHumanSort() {
+    humanItems = generateHumanItems();
+    humanSwapCount = 0;
+
+    var minEl = document.getElementById('min-swaps');
+    if (minEl) minEl.textContent = countMinSwaps(humanItems);
+
+    renderHumanItems();
+
+    var checkBtn = document.getElementById('check-human-btn');
+    if (checkBtn) {
+      checkBtn.addEventListener('click', function() {
+        var feedback = document.getElementById('human-sort-feedback');
+        if (!feedback) return;
+        var sorted = true;
+        for (var i = 0; i < humanItems.length - 1; i++) {
+          if (humanItems[i] > humanItems[i+1]) { sorted = false; break; }
+        }
+        if (sorted) {
+          feedback.textContent = '🎉 Sorted! You used ' + humanSwapCount + ' swaps. You just performed Bubble Sort logic manually!';
+          feedback.className = 'warmup-feedback correct show';
+        } else {
+          feedback.textContent = '✗ Not sorted yet. Keep going — only swap adjacent neighbours!';
+          feedback.className = 'warmup-feedback wrong show';
+        }
+      });
+    }
+
+    var resetBtn = document.getElementById('reset-human-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        humanItems = generateHumanItems();
+        humanSwapCount = 0;
+        var minEl = document.getElementById('min-swaps');
+        if (minEl) minEl.textContent = countMinSwaps(humanItems);
+        var feedback = document.getElementById('human-sort-feedback');
+        if (feedback) { feedback.className = 'warmup-feedback'; feedback.textContent = ''; }
+        renderHumanItems();
+      });
+    }
+  }
+
+  /* ══════════════════════════════════════════
+     QUIZ — THINK DEEPER
+  ══════════════════════════════════════════ */
+  function initQuiz() {
+    var options = document.querySelectorAll('.quiz-option');
+    options.forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        var qNum = this.dataset.q;
+        var siblings = document.querySelectorAll('[data-q="' + qNum + '"]');
+        var alreadyAnswered = false;
+        siblings.forEach(function(s) {
+          if (s.classList.contains('correct') || s.classList.contains('wrong')) alreadyAnswered = true;
+        });
+        if (alreadyAnswered) return;
+
+        var isCorrect = this.dataset.correct === 'true';
+        this.classList.add(isCorrect ? 'correct' : 'wrong');
+        this.setAttribute('aria-pressed', 'true');
+
+        var feedbackEl = document.getElementById('qfeedback-' + qNum);
+        if (feedbackEl) feedbackEl.className = 'quiz-feedback show';
+
+        if (!isCorrect) {
+          // highlight correct
+          siblings.forEach(function(s) {
+            if (s.dataset.correct === 'true') s.classList.add('correct');
+          });
+        }
+
+        // disable all options for this question
+        siblings.forEach(function(s) { s.disabled = true; });
+      });
+
+      opt.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  }
+
+  /* ══════════════════════════════════════════
+     LEVEL COMPLETION
+  ══════════════════════════════════════════ */
+  function initCompletion() {
+    var btn = document.getElementById('complete-btn');
+    if (!btn) return;
+
+    // Check if already complete
+    if (lsGet(getKey('_level_' + LEVEL_NUM + '_complete')) === 'true') {
+      showCompleted();
+    }
+
+    btn.addEventListener('click', function() {
+      lsSet(getKey('_level_' + LEVEL_NUM + '_complete'), 'true');
+      lsSet(getKey('_level_' + LEVEL_NUM + '_xp'), LEVEL_XP);
+
+      // Recompute total XP
+      var total = getTotalXP();
+      lsSet(getKey('_xp_total'), total);
+      updateXPDisplay();
+
+      showCompleted();
+      fireConfetti();
+
+      // Animate badge
+      var badgeEl = document.getElementById('level-badge-icon');
+      if (badgeEl) {
+        badgeEl.classList.remove('badge-locked');
+        badgeEl.classList.add('badge-unlocked');
+      }
+    });
+  }
+
+  function showCompleted() {
+    var btn = document.getElementById('complete-btn');
+    var msg = document.getElementById('completion-msg');
+    if (btn) { btn.textContent = '✓ Level Complete!'; btn.disabled = true; btn.style.opacity = '0.7'; }
+    if (msg) msg.classList.add('show');
+    updateXPDisplay();
+  }
+
+  function fireConfetti() {
+    if (typeof confetti !== 'undefined') {
+      try {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#FF6B6B', '#FF8E53', '#FFD700', '#00F5A0', '#00D9F5'] });
+        setTimeout(function() { confetti({ particleCount: 60, spread: 120, origin: { y: 0.5 }, angle: 60 }); }, 300);
+        setTimeout(function() { confetti({ particleCount: 60, spread: 120, origin: { y: 0.5 }, angle: 120 }); }, 600);
+      } catch(e) {}
+    }
+  }
+
+  /* ══════════════════════════════════════════
+     GSAP ANIMATIONS
+  ══════════════════════════════════════════ */
+  function initGSAP() {
+    if (typeof gsap === 'undefined') return;
+    try {
+      // staggered hero entrance
+      gsap.from('.level-meta', { opacity: 0, y: 30, duration: 0.6, delay: 0.2, ease: 'power2.out' });
+      gsap.from('h1', { opacity: 0, y: 40, duration: 0.7, delay: 0.3, ease: 'power2.out' });
+      gsap.from('.level-tagline', { opacity: 0, y: 20, duration: 0.6, delay: 0.5, ease: 'power2.out' });
+      gsap.from('.level-desc', { opacity: 0, y: 20, duration: 0.6, delay: 0.6, ease: 'power2.out' });
+      gsap.from('.racing-bars .racing-bar', { scaleY: 0, duration: 0.5, delay: 0.7, stagger: 0.07, ease: 'back.out(1.7)', transformOrigin: 'bottom' });
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // outcome cards
+        gsap.utils.toArray('.outcome-card').forEach(function(el, i) {
+          gsap.from(el, { opacity: 0, y: 30, duration: 0.5, delay: i * 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          });
+        });
+
+        // concept cards
+        gsap.utils.toArray('.concept-card').forEach(function(el, i) {
+          gsap.from(el, { opacity: 0, x: i === 0 ? -30 : 30, duration: 0.6, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 80%', once: true }
+          });
+        });
+
+        // real world cards
+        gsap.utils.toArray('.real-world-card').forEach(function(el, i) {
+          gsap.from(el, { opacity: 0, y: 25, duration: 0.5, delay: i * 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          });
+        });
+      }
+    } catch(e) {}
+  }
+
+  /* ══════════════════════════════════════════
+     RACING BAR ANIMATION DELAYS
+  ══════════════════════════════════════════ */
+  function setupRacingBars() {
+    var bars = document.querySelectorAll('.racing-bar');
+    bars.forEach(function(bar, i) {
+      bar.style.animationDelay = (i * 0.15) + 's';
+    });
+  }
+
+  /* ══════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════ */
+  function init() {
+    markStarted();
+    updateXPDisplay();
+    initUrduToggle();
+    initFadeIn();
+    initBookshelf();
+    initSortingRace();
+    initHumanSort();
+    initQuiz();
+    initCompletion();
+    setupRacingBars();
+
+    // Wait for GSAP to load
+    window.addEventListener('load', function() {
+      setTimeout(initGSAP, 100);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>

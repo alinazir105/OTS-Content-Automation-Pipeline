@@ -1,0 +1,2782 @@
+<!-- COURSE: Logic Building | LEVEL: 3 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 3 — Find the Pattern | Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Level 3: Find the Pattern — Patterns are everywhere. Can you see them? 200 XP. OTS Skills Academy Logic Building Course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0D0D0D;
+    --bg-secondary: #111111;
+    --bg-card: #1A1A1A;
+    --bg-card-hover: #222222;
+    --accent-primary: #F5A623;
+    --accent-secondary: #FFD166;
+    --accent-warm: #F5A623;
+    --accent-glow: rgba(245,166,35,0.25);
+    --accent-glow-strong: rgba(245,166,35,0.45);
+    --accent-green: #00F5A0;
+    --accent-danger: #FF4757;
+    --accent-cyan: #00D9F5;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+    --text-muted: #666666;
+    --border-color: rgba(245,166,35,0.2);
+    --border-strong: rgba(245,166,35,0.5);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== TESSELLATION BACKGROUND ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(60deg, rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(-60deg, rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(245,166,35,0.02) 1px, transparent 1px);
+    background-size: 60px 104px, 60px 104px, 60px 52px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Animated tessellation overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245,166,35,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgPulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  /* ===== STICKY NAV ===== */
+  #sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+
+  #sticky-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0.6;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-logo:hover { opacity: 0.85; }
+
+  .nav-course-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .xp-counter {
+    background: rgba(245,166,35,0.15);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent-primary);
+    white-space: nowrap;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+  }
+
+  .urdu-toggle {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: var(--transition);
+    min-height: 36px;
+  }
+
+  .urdu-toggle:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+  /* ===== LEVEL PROGRESS BAR ===== */
+  #level-progress-bar {
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    z-index: 999;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  #level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    width: 25%;
+    transition: width 1s ease;
+    box-shadow: 0 0 8px var(--accent-primary);
+  }
+
+  /* ===== BREADCRUMB ===== */
+  .breadcrumb {
+    padding: 80px 24px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .breadcrumb a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition);
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .breadcrumb a:hover { color: var(--accent-primary); }
+  .breadcrumb span { color: var(--text-muted); }
+  .breadcrumb .current { color: var(--accent-primary); font-weight: 500; }
+
+  /* ===== MAIN WRAPPER ===== */
+  .main-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== SECTION SPACING ===== */
+  section {
+    padding: 80px 0;
+  }
+
+  section + section {
+    border-top: 1px solid var(--border-color);
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 48px 0; }
+    .main-wrapper { padding: 0 16px 48px; }
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 5vw, 42px);
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  .section-body {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 720px;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--border-strong);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  /* ===== PUZZLE PIECE ENTRANCE (level 3 design direction) ===== */
+  .puzzle-card {
+    animation: puzzleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes puzzleIn {
+    0% { opacity: 0; transform: scale(0.85) rotate(-3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  /* ===== FADE-IN STAGGER ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    min-height: 48px;
+    min-width: 48px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--accent-primary);
+    color: #0D0D0D;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow-strong);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent-primary);
+    border: 1.5px solid var(--accent-primary);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(245,166,35,0.1);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* ===== ANSWER FEEDBACK ===== */
+  @keyframes greenPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,245,160,0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(0,245,160,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,245,160,0); }
+  }
+
+  @keyframes redShake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-8px); }
+    30% { transform: translateX(8px); }
+    45% { transform: translateX(-6px); }
+    60% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+    90% { transform: translateX(4px); }
+  }
+
+  .correct { animation: greenPulse 0.6s ease-out; border-color: var(--accent-green) !important; }
+  .wrong { animation: redShake 0.5s ease-out; border-color: var(--accent-danger) !important; }
+
+  /* ===== GRID HELPERS ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+  @media (max-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ===== URDU TOGGLE ===== */
+  .urdu-label {
+    display: none;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 14px;
+    direction: rtl;
+    color: var(--accent-primary);
+    margin-top: 4px;
+  }
+
+  body.urdu-on .urdu-label { display: block; }
+
+  /* ======================== */
+  /* === SECTION 1: HEADER === */
+  /* ======================== */
+
+  #level-header {
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+
+  .level-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .level-number-badge {
+    background: rgba(245,166,35,0.15);
+    border: 1.5px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--accent-primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .difficulty-badge {
+    background: rgba(245,166,35,0.12);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    color: #FFD166;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .xp-badge {
+    background: linear-gradient(135deg, var(--accent-primary), #FFD166);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12px;
+    color: #0D0D0D;
+  }
+
+  .level-title {
+    font-size: clamp(48px, 9vw, 88px);
+    font-weight: 700;
+    line-height: 1.0;
+    background: linear-gradient(135deg, #FFFFFF 30%, var(--accent-primary) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .level-tagline {
+    font-size: clamp(18px, 3vw, 24px);
+    font-style: italic;
+    color: var(--accent-primary);
+    margin-bottom: 32px;
+    font-family: var(--font-body);
+    opacity: 0.9;
+  }
+
+  .hero-description {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 620px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  /* Pattern hero visual */
+  .hero-pattern-visual {
+    margin-top: 48px;
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    background: rgba(245,166,35,0.04);
+  }
+
+  #hero-tessellation {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ============================== */
+  /* === SECTION 2: WHAT YOU'LL LEARN === */
+  /* ============================== */
+
+  .outcome-grid { margin-top: 40px; }
+
+  .outcome-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+  }
+
+  .outcome-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-primary);
+    background: rgba(245,166,35,0.06);
+  }
+
+  .outcome-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(245,166,35,0.15);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .outcome-text h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+
+  .outcome-text p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ============================== */
+  /* === SECTION 3: WARM-UP ZONE === */
+  /* ============================== */
+
+  .warmup-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    max-width: 640px;
+  }
+
+  /* Pattern Spotter Warm-Up */
+  .pattern-spotter-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .pattern-spotter-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .pattern-spotter-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  }
+
+  .spotter-cell {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: clamp(18px, 3vw, 28px);
+    background: var(--bg-card);
+    min-height: 52px;
+    user-select: none;
+    position: relative;
+  }
+
+  .spotter-cell:hover { border-color: var(--accent-primary); transform: scale(1.08); }
+  .spotter-cell.selected { border-color: var(--accent-primary); background: rgba(245,166,35,0.15); }
+  .spotter-cell.correct-select { border-color: var(--accent-green); background: rgba(0,245,160,0.12); animation: greenPulse 0.6s ease-out; }
+  .spotter-cell.wrong-select { border-color: var(--accent-danger); background: rgba(255,71,87,0.12); animation: redShake 0.5s ease-out; }
+
+  .warmup-question {
+    font-size: 20px;
+    font-weight: 600;
+    font-family: var(--font-display);
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  .warmup-feedback {
+    min-height: 32px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-green);
+    transition: opacity 0.3s;
+  }
+
+  .warmup-score {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-top: 16px;
+  }
+
+  .warmup-score span {
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+
+  /* ============================ */
+  /* === SECTION 4: CORE CONCEPT === */
+  /* ============================ */
+
+  .concept-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    max-width: 720px;
+    line-height: 1.75;
+  }
+
+  .pattern-types-grid {
+    margin-bottom: 48px;
+  }
+
+  .pattern-type-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .pattern-type-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .pattern-type-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    border-color: var(--border-strong);
+  }
+
+  .pattern-type-card:hover::after { opacity: 1; }
+
+  .pattern-type-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .pattern-type-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .pattern-type-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .pattern-example {
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  /* Fibonacci visualization */
+  .fibonacci-viz {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+  }
+
+  .fibonacci-viz h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+
+  .fib-sequence {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .fib-num {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(245,166,35,0.12);
+    border: 2px solid rgba(245,166,35,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--accent-primary);
+    transition: var(--transition);
+    position: relative;
+  }
+
+  .fib-num.highlighted {
+    background: rgba(245,166,35,0.25);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 20px var(--accent-glow);
+    transform: scale(1.15);
+  }
+
+  .fib-arrow {
+    color: var(--text-muted);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .fib-explanation {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .fib-explanation strong { color: var(--accent-primary); }
+
+  /* ================================ */
+  /* === SECTION 5: NUMBER PATTERNS LAB === */
+  /* ================================ */
+
+  .lab-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .lab-progress-bar {
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .lab-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 999px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 8px var(--accent-primary);
+  }
+
+  .lab-question-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+    margin-bottom: 24px;
+  }
+
+  .lab-q-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin-bottom: 12px;
+  }
+
+  .lab-sequence-display {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .seq-num {
+    min-width: 56px;
+    height: 56px;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(245,166,35,0.1);
+    border: 1.5px solid rgba(245,166,35,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text-primary);
+  }
+
+  .seq-arrow {
+    color: var(--text-muted);
+    font-size: 20px;
+  }
+
+  .seq-blank {
+    min-width: 72px;
+    height: 56px;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(245,166,35,0.04);
+    border: 2px dashed var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+
+  .lab-input-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .lab-input {
+    width: 100px;
+    height: 52px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+
+  .lab-input:focus { border-color: var(--accent-primary); }
+  .lab-input.correct-input { border-color: var(--accent-green); background: rgba(0,245,160,0.08); }
+  .lab-input.wrong-input { border-color: var(--accent-danger); background: rgba(255,71,87,0.08); animation: redShake 0.5s ease-out; }
+
+  .lab-hint {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .lab-feedback {
+    margin-top: 12px;
+    min-height: 24px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: opacity 0.3s;
+  }
+
+  .lab-score-display {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+    background: rgba(245,166,35,0.06);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    flex-wrap: wrap;
+  }
+
+  .lab-score-stat {
+    text-align: center;
+  }
+
+  .lab-score-stat .stat-number {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    display: block;
+  }
+
+  .lab-score-stat .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .badge-earn {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-md);
+    padding: 8px 20px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: #0D0D0D;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge-earn.visible { display: flex; }
+
+  /* ================================ */
+  /* === SECTION 6: THINK DEEPER — PATTERN vs COINCIDENCE === */
+  /* ================================ */
+
+  .deeper-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .challenge-card {
+    background: var(--bg-card);
+    border: 1.5px solid rgba(245,166,35,0.3);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+    margin-bottom: 20px;
+  }
+
+  .challenge-scenario {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+  }
+
+  .challenge-data {
+    background: rgba(245,166,35,0.06);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent-secondary);
+    margin-bottom: 24px;
+    line-height: 1.8;
+  }
+
+  .verdict-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .verdict-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1.5px solid;
+    transition: var(--transition);
+    min-height: 56px;
+    background: transparent;
+  }
+
+  .verdict-btn.pattern-btn {
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+
+  .verdict-btn.coincidence-btn {
+    color: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+  }
+
+  .verdict-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+  .verdict-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .verdict-btn.chosen-correct {
+    background: rgba(0,245,160,0.1);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  .verdict-btn.chosen-wrong {
+    background: rgba(255,71,87,0.1);
+    border-color: var(--accent-danger);
+    color: var(--accent-danger);
+  }
+
+  .verdict-explanation {
+    margin-top: 16px;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .verdict-explanation.correct { background: rgba(0,245,160,0.08); border: 1px solid rgba(0,245,160,0.3); color: var(--accent-green); display: block; }
+  .verdict-explanation.wrong { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.3); color: #FF8896; display: block; }
+
+  .deeper-score {
+    margin-top: 28px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+
+  .deeper-score strong { color: var(--accent-primary); }
+
+  /* ============================== */
+  /* === SECTION 7: REAL-WORLD === */
+  /* ============================== */
+
+  .realworld-intro {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .realworld-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    transition: var(--transition);
+  }
+
+  .realworld-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .realworld-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    background: rgba(245,166,35,0.1);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .realworld-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .realworld-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .realworld-insight {
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--accent-secondary);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 768px) {
+    .realworld-card { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ================================ */
+  /* === SECTION 8: BADGE + XP === */
+  /* ================================ */
+
+  .completion-zone {
+    text-align: center;
+    padding: 80px 24px;
+  }
+
+  .badge-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 32px;
+  }
+
+  .level-badge {
+    width: 160px;
+    height: 160px;
+    position: relative;
+  }
+
+  .badge-ring-outer {
+    animation: rotateSlow 12s linear infinite;
+    transform-origin: center;
+  }
+
+  .badge-center-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    fill: #0D0D0D;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .badge-center-sub {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    fill: rgba(0,0,0,0.6);
+    text-anchor: middle;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .completion-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .completion-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .xp-unlock-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(245,166,35,0.15), rgba(255,209,102,0.1));
+    border: 1.5px solid var(--accent-primary);
+    border-radius: var(--radius-xl);
+    padding: 20px 40px;
+    margin-bottom: 40px;
+  }
+
+  .xp-unlock-number {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    line-height: 1;
+  }
+
+  .xp-unlock-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  #complete-btn {
+    font-size: 18px;
+    padding: 18px 48px;
+  }
+
+  .completion-locked {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    font-style: italic;
+  }
+
+  /* ======================== */
+  /* === SECTION 9: NAV === */
+  /* ======================== */
+
+  .level-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-level-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: var(--transition);
+    min-height: 72px;
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .nav-level-btn:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .nav-level-btn.next-btn {
+    margin-left: auto;
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .nav-btn-arrow {
+    font-size: 24px;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+  }
+
+  .nav-btn-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .nav-btn-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* ============================= */
+  /* === PATTERN BUILDER (CUSTOM) === */
+  /* ============================= */
+
+  .builder-intro {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .builder-palette {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .palette-item {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--bg-card);
+    user-select: none;
+  }
+
+  .palette-item:hover { border-color: var(--accent-primary); transform: scale(1.1); }
+  .palette-item.active-palette { border-color: var(--accent-primary); background: rgba(245,166,35,0.15); box-shadow: 0 0 12px var(--accent-glow); }
+
+  .builder-canvas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 72px;
+    padding: 12px;
+    background: rgba(245,166,35,0.04);
+    border: 2px dashed rgba(245,166,35,0.3);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    transition: border-color var(--transition);
+  }
+
+  .builder-canvas.drag-over { border-color: var(--accent-primary); background: rgba(245,166,35,0.08); }
+
+  .builder-tile {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    background: rgba(245,166,35,0.12);
+    border: 1.5px solid rgba(245,166,35,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+  }
+
+  .builder-tile:hover::after {
+    content: '✕';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,71,87,0.8);
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    font-style: normal;
+  }
+
+  .builder-placeholder {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-style: italic;
+    align-self: center;
+    padding: 4px 8px;
+  }
+
+  .builder-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .builder-result {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 500;
+    display: none;
+  }
+
+  .builder-result.success { background: rgba(0,245,160,0.1); border: 1px solid rgba(0,245,160,0.3); color: var(--accent-green); display: block; }
+  .builder-result.info { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); color: var(--accent-secondary); display: block; }
+
+  /* Tooltip */
+  [data-tooltip] {
+    position: relative;
+  }
+
+  [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20,20,20,0.95);
+    color: var(--text-primary);
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: 1px solid var(--border-color);
+    z-index: 100;
+  }
+
+  [data-tooltip]:hover::after { opacity: 1; }
+
+  /* Separator */
+  .amber-separator {
+    width: 64px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), transparent);
+    border-radius: 2px;
+    margin: 20px 0 32px;
+  }
+
+  /* Glow text */
+  .glow-amber { text-shadow: 0 0 20px rgba(245,166,35,0.5); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+  ::-webkit-scrollbar-thumb { background: rgba(245,166,35,0.3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ===== Completion Overlay ===== */
+  #completion-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+
+  #completion-overlay.active { display: flex; }
+
+  .overlay-badge {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounceBadge 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes bounceBadge {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .overlay-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px,6vw,52px);
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 12px;
+  }
+
+  .overlay-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  .overlay-xp {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-shadow: 0 0 40px var(--accent-primary);
+    margin-bottom: 8px;
+  }
+
+  .overlay-xp-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== STICKY NAV ===== -->
+<nav id="sticky-nav" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy home">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="margin-right:8px;flex-shrink:0" aria-hidden="true">
+      <rect width="20" height="20" rx="4" fill="#F5A623"/>
+      <text x="10" y="14" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="#0D0D0D" text-anchor="middle">OTS</text>
+    </svg>
+    OTS Skills Academy
+  </a>
+  <span class="nav-course-title">Logic Building</span>
+  <div class="nav-right">
+    <button class="urdu-toggle" id="urdu-toggle-btn" aria-label="Toggle Urdu labels" aria-pressed="false">اردو</button>
+    <div class="xp-counter" id="xp-counter-nav" aria-live="polite" aria-label="Total XP earned">⚡ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ===== LEVEL PROGRESS BAR ===== -->
+<div id="level-progress-bar" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="12" aria-label="Level 3 of 12">
+  <div id="level-progress-fill"></div>
+</div>
+
+<!-- ===== BREADCRUMB ===== -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span aria-hidden="true">→</span>
+  <a href="index.html">Logic Building</a>
+  <span aria-hidden="true">→</span>
+  <span class="current" aria-current="page">Level 3</span>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-wrapper" id="main-content">
+
+  <!-- ======================== -->
+  <!-- SECTION 1: LEVEL HEADER -->
+  <!-- ======================== -->
+  <section id="level-header" aria-labelledby="level-title">
+    <div class="level-meta fade-up">
+      <span class="level-number-badge">Level 3</span>
+      <span class="difficulty-badge">Explorer</span>
+      <span class="xp-badge">200 XP</span>
+    </div>
+
+    <h1 class="level-title fade-up glow-amber" id="level-title">Find the Pattern</h1>
+    <div class="urdu-label fade-up" aria-label="Urdu: Pattern Dhundho">پیٹرن ڈھونڈو</div>
+
+    <p class="level-tagline fade-up">"Patterns are everywhere. Can you see them?"</p>
+
+    <p class="hero-description fade-up">
+      Your brain is a pattern-hunting machine. Every time you recognise a pattern, you can predict what comes next — without memorising everything. That's not just a math skill. That's how Spotify knows your next song. It's how scientists forecast weather. It's how <em>you</em> can think smarter.
+    </p>
+
+    <div class="hero-pattern-visual fade-up" aria-hidden="true">
+      <svg id="hero-tessellation" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Animated tessellation pattern rendered by JS -->
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================ -->
+  <!-- SECTION 2: WHAT YOU'LL LEARN -->
+  <!-- ============================ -->
+  <section id="what-youll-learn" aria-labelledby="learn-heading">
+    <span class="section-label">What You'll Learn</span>
+    <h2 class="section-title fade-up" id="learn-heading">Four Things This Level Unlocks</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+
+    <div class="outcome-grid grid-2 fade-up" role="list">
+      <div class="outcome-item puzzle-card" role="listitem" style="animation-delay:0.05s">
+        <div class="outcome-icon" aria-hidden="true">👁️</div>
+        <div class="outcome-text">
+          <h4>See Patterns Everywhere</h4>
+          <p>Recognise visual, numerical, and logical patterns in everyday situations — not just in textbooks.</p>
+          <div class="urdu-label">ہر جگہ پیٹرن دیکھیں</div>
+        </div>
+      </div>
+      <div class="outcome-item puzzle-card" role="listitem" style="animation-delay:0.1s">
+        <div class="outcome-icon" aria-hidden="true">🔢</div>
+        <div class="outcome-text">
+          <h4>Predict the Next Step</h4>
+          <p>Use a pattern's rule to figure out what comes next — from simple AB patterns up to Fibonacci sequences.</p>
+          <div class="urdu-label">اگلا قدم پیش گوئی کریں</div>
+        </div>
+      </div>
+      <div class="outcome-item puzzle-card" role="listitem" style="animation-delay:0.15s">
+        <div class="outcome-icon" aria-hidden="true">🔍</div>
+        <div class="outcome-text">
+          <h4>Tell Pattern from Coincidence</h4>
+          <p>Not everything that repeats is a pattern. Learn to test whether a rule actually holds.</p>
+          <div class="urdu-label">اتفاق سے پیٹرن الگ کریں</div>
+        </div>
+      </div>
+      <div class="outcome-item puzzle-card" role="listitem" style="animation-delay:0.2s">
+        <div class="outcome-icon" aria-hidden="true">🌍</div>
+        <div class="outcome-text">
+          <h4>Connect Patterns to Real Life</h4>
+          <p>Understand how pattern-recognition powers Spotify recommendations, weather forecasting, and more.</p>
+          <div class="urdu-label">حقیقی زندگی سے جوڑیں</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== -->
+  <!-- SECTION 3: WARM-UP ZONE -->
+  <!-- ======================== -->
+  <section id="warmup-zone" aria-labelledby="warmup-heading">
+    <span class="section-label">Warm-Up Zone</span>
+    <h2 class="section-title fade-up" id="warmup-heading">Pattern Spotter Grid</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+    <p class="warmup-intro fade-up">
+      Below is a 6×4 grid of symbols. <strong>Your task:</strong> find the symbol that breaks the pattern in each row and tap it. Low stakes — just activate your pattern-hunting brain!
+    </p>
+    <div class="urdu-label fade-up" style="margin-bottom:16px">نیچے 6×4 گرڈ میں سے غلط علامت تلاش کریں۔</div>
+
+    <div class="card fade-up" style="padding:32px">
+      <p class="warmup-question" id="spotter-question" aria-live="polite">Row 1: Find the odd one out! 👇</p>
+
+      <div id="spotter-grid" class="pattern-spotter-grid" role="group" aria-label="Pattern spotter grid"></div>
+
+      <div class="warmup-feedback" id="spotter-feedback" aria-live="polite" aria-atomic="true"></div>
+      <div class="warmup-score">Score: <span id="spotter-score">0</span> / <span id="spotter-total">4</span> rows</div>
+
+      <div style="margin-top:20px">
+        <button class="btn btn-ghost" id="spotter-reset-btn" aria-label="Reset pattern spotter warm-up">↺ Try Again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ -->
+  <!-- SECTION 4: CORE CONCEPT -->
+  <!-- ============================ -->
+  <section id="core-concept" aria-labelledby="concept-heading">
+    <span class="section-label">Core Concept</span>
+    <h2 class="section-title fade-up" id="concept-heading">The Three Types of Patterns</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+
+    <p class="concept-intro fade-up">
+      Patterns come in three flavours. Once you know the flavour, you know the rule. Once you know the rule, you can predict anything. Let's break them down.
+    </p>
+
+    <div class="pattern-types-grid grid-3 fade-up">
+      <div class="pattern-type-card puzzle-card" style="animation-delay:0.05s">
+        <span class="pattern-type-icon" aria-hidden="true">🔶</span>
+        <div class="pattern-type-name">Visual Patterns</div>
+        <p class="pattern-type-desc">Shapes, colours, and arrangements that repeat in a predictable order. Your eyes spot these before your brain even tries.</p>
+        <div class="pattern-example" aria-label="Example: circle, square, triangle, circle, square, triangle">
+          🔵 🔷 🔺 🔵 🔷 🔺
+        </div>
+        <div class="urdu-label" style="margin-top:10px">بصری پیٹرن</div>
+      </div>
+      <div class="pattern-type-card puzzle-card" style="animation-delay:0.1s">
+        <span class="pattern-type-icon" aria-hidden="true">🔢</span>
+        <div class="pattern-type-name">Numerical Patterns</div>
+        <p class="pattern-type-desc">Numbers that follow a rule — add 2, multiply by 3, double each time. Find the rule, predict the next number.</p>
+        <div class="pattern-example" aria-label="Example: 2, 4, 8, 16, 32 — doubling pattern">
+          2 → 4 → 8 → 16 → 32
+        </div>
+        <div class="urdu-label" style="margin-top:10px">عددی پیٹرن</div>
+      </div>
+      <div class="pattern-type-card puzzle-card" style="animation-delay:0.15s">
+        <span class="pattern-type-icon" aria-hidden="true">🧩</span>
+        <div class="pattern-type-name">Logical Patterns</div>
+        <p class="pattern-type-desc">Rules about relationships between ideas. "Every time it rains, the ground is wet." That's a logical pattern — cause and effect.</p>
+        <div class="pattern-example" aria-label="Example: IF rain, THEN wet ground — always true">
+          IF rain → wet ground
+        </div>
+        <div class="urdu-label" style="margin-top:10px">منطقی پیٹرن</div>
+      </div>
+    </div>
+
+    <!-- Fibonacci deep-dive -->
+    <div class="fibonacci-viz fade-up" id="fibonacci-section">
+      <h3>The Famous One: Fibonacci Sequence</h3>
+      <p style="font-size:15px;color:var(--text-secondary);margin-bottom:24px;max-width:640px">
+        The Fibonacci sequence is one of nature's favourite patterns. Each number is the <strong style="color:var(--accent-primary)">sum of the two before it</strong>. It appears in sunflower seeds, spiral shells, and even your social media feed algorithm.
+      </p>
+
+      <div class="fib-sequence" id="fib-sequence-display" role="list" aria-label="Fibonacci sequence"></div>
+
+      <p class="fib-explanation" id="fib-explanation">
+        Hover or tap any number to see how it's made. <strong>Rule:</strong> F(n) = F(n−1) + F(n−2)
+      </p>
+
+      <div style="margin-top:20px">
+        <button class="btn btn-secondary" id="fib-animate-btn" aria-label="Animate the Fibonacci sequence step by step">▶ Animate Sequence</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================== -->
+  <!-- SECTION 5: INTERACTIVE CHALLENGE  -->
+  <!-- ================================== -->
+  <section id="interactive-challenge" aria-labelledby="challenge-heading">
+    <span class="section-label">Interactive Challenge</span>
+    <h2 class="section-title fade-up" id="challenge-heading">Number Patterns Lab</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+
+    <p class="lab-intro fade-up">
+      Eight number sequences below. Each one has a blank. Figure out the rule, type your answer, and hit Check. Get them all right to earn your <strong style="color:var(--accent-primary)">Pattern Scout Badge</strong>!
+    </p>
+    <div class="urdu-label fade-up" style="margin-bottom:20px">آٹھ نمبر سیریز میں خالی جگہ بھریں اور بیج کمائیں۔</div>
+
+    <div class="lab-progress-bar fade-up" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="8" aria-label="Questions completed" id="lab-progress-bar-el">
+      <div class="lab-progress-fill" id="lab-progress-fill-el" style="width:0%"></div>
+    </div>
+
+    <div id="lab-questions" class="fade-up"></div>
+
+    <div class="lab-score-display fade-up" style="margin-top:32px">
+      <div class="lab-score-stat">
+        <span class="stat-number" id="lab-correct-count">0</span>
+        <span class="stat-label">Correct</span>
+      </div>
+      <div class="lab-score-stat">
+        <span class="stat-number" id="lab-attempts-count">0</span>
+        <span class="stat-label">Attempts</span>
+      </div>
+      <div class="lab-score-stat">
+        <span class="stat-number" id="lab-remaining-count">8</span>
+        <span class="stat-label">Remaining</span>
+      </div>
+      <div class="badge-earn" id="lab-badge" aria-live="polite" role="status">
+        <span aria-hidden="true">🏅</span> Pattern Scout Badge Earned!
+      </div>
+    </div>
+
+    <!-- Make Your Own Pattern Builder -->
+    <div class="card fade-up" style="margin-top:48px" id="pattern-builder-section">
+      <h3 style="font-size:22px;margin-bottom:8px;font-family:var(--font-display)">Make Your Own Pattern</h3>
+      <p class="builder-intro">Select symbols from the palette and click on the canvas to build your own repeating pattern. Then hit "Check Pattern" — the system will tell you if it detects a rule!</p>
+
+      <div class="builder-palette" id="builder-palette" role="group" aria-label="Pattern builder symbol palette"></div>
+
+      <div class="builder-canvas" id="builder-canvas" role="region" aria-label="Pattern building canvas" aria-dropeffect="copy">
+        <span class="builder-placeholder" id="builder-placeholder">Click a symbol above, then click here to add it to your pattern →</span>
+      </div>
+
+      <div class="builder-controls">
+        <button class="btn btn-primary" id="check-pattern-btn" aria-label="Check if your pattern has a rule">🔍 Check Pattern</button>
+        <button class="btn btn-ghost" id="clear-pattern-btn" aria-label="Clear pattern canvas">✕ Clear</button>
+        <button class="btn btn-ghost" id="undo-pattern-btn" aria-label="Undo last symbol">↺ Undo</button>
+      </div>
+
+      <div class="builder-result" id="builder-result" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </section>
+
+  <!-- ================================ -->
+  <!-- SECTION 6: THINK DEEPER         -->
+  <!-- ================================ -->
+  <section id="think-deeper" aria-labelledby="deeper-heading">
+    <span class="section-label">Think Deeper</span>
+    <h2 class="section-title fade-up" id="deeper-heading">Pattern vs. Coincidence</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+
+    <p class="deeper-intro fade-up">
+      Not everything that repeats is a pattern. A real pattern has a <em>rule</em> that always works. A coincidence just looks like a pattern but breaks down on closer inspection. Judge each scenario below: <strong style="color:var(--accent-primary)">PATTERN</strong> or <strong style="color:var(--accent-cyan)">COINCIDENCE</strong>?
+    </p>
+
+    <div id="deeper-challenges" class="fade-up"></div>
+
+    <div class="deeper-score fade-up" id="deeper-score-display" aria-live="polite">
+      Score: <strong id="deeper-correct">0</strong> / <strong id="deeper-total">5</strong> correct
+    </div>
+  </section>
+
+  <!-- ================================ -->
+  <!-- SECTION 7: REAL-WORLD CONNECTION -->
+  <!-- ================================ -->
+  <section id="real-world" aria-labelledby="realworld-heading">
+    <span class="section-label">Real-World Connection</span>
+    <h2 class="section-title fade-up" id="realworld-heading">Where Pattern Logic Lives</h2>
+    <div class="amber-separator" aria-hidden="true"></div>
+
+    <p class="realworld-intro fade-up">
+      Pattern recognition isn't an abstract skill — it's the engine behind some of the most powerful technologies and natural systems on Earth. Here's where you'll find it in the wild.
+    </p>
+
+    <div class="grid-2 fade-up" style="gap:20px">
+      <div class="realworld-card puzzle-card" style="animation-delay:0.05s">
+        <div class="realworld-icon" aria-hidden="true">🎵</div>
+        <div class="realworld-content">
+          <h3>Spotify Recommendations</h3>
+          <p>Spotify analyses patterns in millions of songs: tempo, key, energy, danceability. When you listen to a song, it spots patterns in your taste and matches them to patterns in other songs.</p>
+          <div class="realworld-insight">IF user likes: fast tempo + minor key → RECOMMEND: similar energy songs</div>
+          <div class="urdu-label" style="margin-top:8px">سپوٹیفائی پیٹرن سے گانے تجویز کرتا ہے۔</div>
+        </div>
+      </div>
+      <div class="realworld-card puzzle-card" style="animation-delay:0.1s">
+        <div class="realworld-icon" aria-hidden="true">⛅</div>
+        <div class="realworld-content">
+          <h3>Weather Forecasting</h3>
+          <p>Meteorologists don't guess — they look for patterns in pressure, temperature, and wind that they've seen thousands of times before. Pattern = prediction.</p>
+          <div class="realworld-insight">Low pressure + rising humidity → rain pattern detected → 80% chance of rain</div>
+          <div class="urdu-label" style="margin-top:8px">موسم پیش گوئی پیٹرن پر مبنی ہے۔</div>
+        </div>
+      </div>
+      <div class="realworld-card puzzle-card" style="animation-delay:0.15s">
+        <div class="realworld-icon" aria-hidden="true">🏏</div>
+        <div class="realworld-content">
+          <h3>Cricket Team Selection</h3>
+          <p>Selectors in Pakistan look at batting patterns: does this batter score well under pressure? Against spinners? On slow pitches? Every match adds data to the pattern.</p>
+          <div class="realworld-insight">Averages 45+ in Test matches + performs in spin conditions → selected for tour</div>
+          <div class="urdu-label" style="margin-top:8px">کرکٹ ٹیم سلیکشن میں پیٹرن کا استعمال</div>
+        </div>
+      </div>
+      <div class="realworld-card puzzle-card" style="animation-delay:0.2s">
+        <div class="realworld-icon" aria-hidden="true">🚦</div>
+        <div class="realworld-content">
+          <h3>Karachi Traffic Management</h3>
+          <p>Traffic engineers study congestion patterns: which roads jam at 8 AM, which routes get clear after school hours. Pattern recognition → smarter signal timing.</p>
+          <div class="realworld-insight">IF time = 8:00–9:30 AM AND location = Shahra-e-Faisal → extend green light by 15s</div>
+          <div class="urdu-label" style="margin-top:8px">کراچی ٹریفک پیٹرن سے ٹریفک لائٹ کنٹرول ہوتی ہے۔</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================ -->
+  <!-- SECTION 8: LEVEL BADGE + XP    -->
+  <!-- ================================ -->
+  <section id="level-complete" aria-labelledby="complete-heading">
+    <div class="completion-zone fade-up">
+      <span class="section-label">Level Complete</span>
+
+      <div class="badge-container" aria-hidden="true">
+        <svg class="level-badge" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <g class="badge-ring-outer">
+            <circle cx="80" cy="80" r="72" fill="none" stroke="#F5A623" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
+          </g>
+          <!-- Main badge body -->
+          <circle cx="80" cy="80" r="60" fill="url(#badgeGrad)" />
+          <!-- Inner border -->
+          <circle cx="80" cy="80" r="56" fill="none" stroke="#FFD166" stroke-width="1.5" opacity="0.6"/>
+          <!-- Pattern symbol -->
+          <text x="80" y="64" class="badge-center-text" font-size="28" fill="#0D0D0D">🔶</text>
+          <text x="80" y="90" class="badge-center-text" font-size="14" fill="#0D0D0D">L3</text>
+          <text x="80" y="108" class="badge-center-sub" fill="#0D0D0D">PATTERN</text>
+          <text x="80" y="120" class="badge-center-sub" fill="#0D0D0D">SCOUT</text>
+          <defs>
+            <radialGradient id="badgeGrad" cx="50%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#FFD166"/>
+              <stop offset="100%" stop-color="#F5A623"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <h2 class="completion-title" id="complete-heading">Pattern Scout Badge</h2>
+      <p class="completion-subtitle">Complete all activities to unlock your badge and claim your XP reward.</p>
+
+      <div class="xp-unlock-display" aria-label="200 XP reward for completing Level 3">
+        <span class="xp-unlock-number" aria-hidden="true">200</span>
+        <div>
+          <div class="xp-unlock-label">XP Reward</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:2px">Level 3 — Explorer</div>
+        </div>
+      </div>
+
+      <br>
+      <button class="btn btn-primary" id="complete-btn" style="font-size:18px;padding:18px 48px" aria-label="Complete Level 3 and claim 200 XP">
+        🏆 Complete Level & Claim XP
+      </button>
+      <p class="completion-locked" id="completion-hint">Finish the Number Patterns Lab to unlock completion.</p>
+    </div>
+  </section>
+
+  <!-- ========================== -->
+  <!-- SECTION 9: NAVIGATION      -->
+  <!-- ========================== -->
+  <section id="level-nav" aria-labelledby="nav-heading">
+    <h2 class="section-title fade-up" id="nav-heading" style="font-size:24px;margin-bottom:28px">Continue Your Journey</h2>
+
+    <nav class="level-navigation fade-up" aria-label="Level navigation">
+      <a href="level-02.html" class="nav-level-btn" aria-label="Go to previous level: Yes or No">
+        <span class="nav-btn-arrow" aria-hidden="true">←</span>
+        <div>
+          <div class="nav-btn-label">Previous</div>
+          <div class="nav-btn-name">Level 2 — Yes or No</div>
+        </div>
+      </a>
+      <a href="index.html" class="nav-level-btn" style="flex:0;padding:16px 20px" aria-label="Go to course home">
+        <div>
+          <div class="nav-btn-label" style="text-align:center">Course</div>
+          <div class="nav-btn-name" style="font-size:14px">🏠 Home</div>
+        </div>
+      </a>
+      <a href="level-04.html" class="nav-level-btn next-btn" aria-label="Go to next level: Step by Step">
+        <span class="nav-btn-arrow" aria-hidden="true">→</span>
+        <div>
+          <div class="nav-btn-label" style="text-align:right">Next</div>
+          <div class="nav-btn-name">Level 4 — Step by Step</div>
+        </div>
+      </a>
+    </nav>
+  </section>
+
+</main>
+
+<!-- ===== COMPLETION OVERLAY ===== -->
+<div id="completion-overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title-text" aria-describedby="overlay-desc-text">
+  <div class="overlay-badge" aria-hidden="true">🔶</div>
+  <div class="overlay-title" id="overlay-title-text">Pattern Scout!</div>
+  <div class="overlay-sub" id="overlay-desc-text">You've unlocked the art of pattern recognition.</div>
+  <div class="overlay-xp" aria-label="200 XP earned">+200</div>
+  <div class="overlay-xp-label">XP EARNED</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+    <button class="btn btn-primary" id="overlay-next-btn" style="font-size:16px;padding:16px 32px">
+      Level 4 → Step by Step
+    </button>
+    <button class="btn btn-ghost" id="overlay-close-btn" style="font-size:16px;padding:16px 32px">
+      Stay Here
+    </button>
+  </div>
+</div>
+
+<!-- ===== EXTERNAL SCRIPTS ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ============================= */
+  /* CONSTANTS & STATE             */
+  /* ============================= */
+  var COURSE_SLUG = 'logic-building';
+  var LEVEL_NUM = 3;
+  var LEVEL_XP = 200;
+
+  var state = {
+    xpTotal: 0,
+    levelComplete: false,
+    urduOn: false,
+    spotterScore: 0,
+    spotterTotal: 4,
+    spotterCurrentRow: 0,
+    spotterDone: false,
+    labCorrect: 0,
+    labAttempts: 0,
+    labAnswered: [],
+    labBadgeEarned: false,
+    deeperCorrect: 0,
+    deeperAnswered: [],
+    selectedPaletteSymbol: null,
+    builderTiles: [],
+    fibAnimating: false,
+    fibStep: 0
+  };
+
+  /* ============================= */
+  /* LOCALSTORAGE HELPERS          */
+  /* ============================= */
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, value); } catch(e) {}
+  }
+
+  function lsKey(suffix) {
+    return 'ots_skills_' + COURSE_SLUG + '_' + suffix;
+  }
+
+  function loadState() {
+    var xp = parseInt(lsGet(lsKey('xp_total'))) || 0;
+    state.xpTotal = xp;
+    state.levelComplete = lsGet(lsKey('level_' + LEVEL_NUM + '_complete')) === 'true';
+    state.urduOn = lsGet(lsKey('urdu_on')) === 'true';
+
+    if (!lsGet(lsKey('started_at'))) {
+      lsSet(lsKey('started_at'), new Date().toISOString());
+    }
+  }
+
+  function recomputeXP() {
+    var total = 0;
+    var xpMap = {1:100,2:150,3:200,4:250,5:300,6:350,7:400,8:450,9:500,10:600,11:700,12:1000};
+    for (var i = 1; i <= 12; i++) {
+      if (lsGet(lsKey('level_' + i + '_complete')) === 'true') {
+        total += (xpMap[i] || 0);
+      }
+    }
+    lsSet(lsKey('xp_total'), total);
+    state.xpTotal = total;
+    updateXPDisplay();
+  }
+
+  function updateXPDisplay() {
+    var el = document.getElementById('xp-counter-nav');
+    if (el) el.textContent = '⚡ ' + state.xpTotal + ' XP';
+  }
+
+  /* ============================= */
+  /* URDU TOGGLE                   */
+  /* ============================= */
+  function applyUrdu(on) {
+    if (on) {
+      document.body.classList.add('urdu-on');
+    } else {
+      document.body.classList.remove('urdu-on');
+    }
+    var btn = document.getElementById('urdu-toggle-btn');
+    if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  /* ============================= */
+  /* TESSELLATION HERO SVG         */
+  /* ============================= */
+  function buildHeroTessellation() {
+    var svg = document.getElementById('hero-tessellation');
+    if (!svg) return;
+    var W = svg.parentElement ? svg.parentElement.offsetWidth : 800;
+    var H = 200;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+
+    var shapes = ['▲','◆','●','■','★','▲','◆','●'];
+    var colors = ['#F5A623','#FFD166','rgba(245,166,35,0.4)','rgba(255,209,102,0.3)'];
+    var html = '';
+    var cols = Math.ceil(W / 70) + 2;
+    var rows = Math.ceil(H / 60) + 1;
+
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var x = c * 70 + (r % 2 === 0 ? 0 : 35);
+        var y = r * 60;
+        var shape = shapes[(r * cols + c) % shapes.length];
+        var color = colors[(r + c) % colors.length];
+        var size = 14 + ((r + c) % 3) * 4;
+        var opacity = 0.15 + ((c + r) % 5) * 0.06;
+        html += '<text x="' + x + '" y="' + (y + size) + '" font-size="' + size + '" fill="' + color + '" opacity="' + opacity + '" font-family="sans-serif" aria-hidden="true">' + shape + '</text>';
+      }
+    }
+
+    // Animated floating shapes
+    var floaters = ['▲','◆','●','■','★'];
+    for (var f = 0; f < 8; f++) {
+      var fx = 50 + f * (W / 8);
+      var fy = 40 + (f % 3) * 50;
+      var fsize = 18 + f * 3;
+      html += '<text x="' + fx + '" y="' + fy + '" font-size="' + fsize + '" fill="#F5A623" opacity="0.35" font-family="sans-serif" aria-hidden="true" style="animation:heroFloat ' + (3 + f * 0.4) + 's ease-in-out infinite alternate;">' + floaters[f % 5] + '</text>';
+    }
+
+    svg.innerHTML = html + '<style>@keyframes heroFloat{0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-14px) rotate(8deg);}}</style>';
+  }
+
+  /* ============================= */
+  /* FIBONACCI VISUALIZATION       */
+  /* ============================= */
+  var fibNums = [1, 1, 2, 3, 5, 8, 13, 21, 34];
+
+  function buildFibSequence() {
+    var container = document.getElementById('fib-sequence-display');
+    if (!container) return;
+    var html = '';
+    for (var i = 0; i < fibNums.length; i++) {
+      html += '<div class="fib-num" data-fib-index="' + i + '" role="listitem" tabindex="0" aria-label="Fibonacci number ' + fibNums[i] + (i >= 2 ? ', equals ' + fibNums[i-2] + ' plus ' + fibNums[i-1] : '') + '">' + fibNums[i] + '</div>';
+      if (i < fibNums.length - 1) {
+        html += '<span class="fib-arrow" aria-hidden="true">→</span>';
+      }
+    }
+    html += '<span class="fib-arrow" aria-hidden="true">→</span><div class="fib-num" style="background:rgba(245,166,35,0.04);border-style:dashed;color:var(--text-muted)" aria-label="Next number in sequence">?</div>';
+    container.innerHTML = html;
+
+    container.querySelectorAll('.fib-num[data-fib-index]').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { showFibExplanation(parseInt(this.getAttribute('data-fib-index'))); });
+      el.addEventListener('focus', function() { showFibExplanation(parseInt(this.getAttribute('data-fib-index'))); });
+      el.addEventListener('mouseleave', resetFibExplanation);
+      el.addEventListener('blur', resetFibExplanation);
+    });
+  }
+
+  function showFibExplanation(idx) {
+    var expEl = document.getElementById('fib-explanation');
+    if (!expEl) return;
+    var num = fibNums[idx];
+    if (idx < 2) {
+      expEl.innerHTML = '<strong>' + num + '</strong> — This is a starting seed. Fibonacci needs two seeds to begin.';
+    } else {
+      expEl.innerHTML = '<strong>' + num + '</strong> = ' + fibNums[idx-2] + ' + ' + fibNums[idx-1] + ' — the two numbers before it added together.';
+    }
+  }
+
+  function resetFibExplanation() {
+    var expEl = document.getElementById('fib-explanation');
+    if (expEl) expEl.innerHTML = 'Hover or tap any number to see how it\'s made. <strong>Rule:</strong> F(n) = F(n−1) + F(n−2)';
+  }
+
+  function animateFib() {
+    var btn = document.getElementById('fib-animate-btn');
+    if (!btn || state.fibAnimating) return;
+    state.fibAnimating = true;
+    state.fibStep = 0;
+    btn.textContent = '⏸ Animating...';
+    btn.disabled = true;
+
+    var nums = document.querySelectorAll('.fib-num[data-fib-index]');
+    nums.forEach(function(n) { n.classList.remove('highlighted'); });
+
+    var interval = setInterval(function() {
+      if (state.fibStep >= nums.length) {
+        clearInterval(interval);
+        state.fibAnimating = false;
+        if (btn) { btn.textContent = '▶ Animate Sequence'; btn.disabled = false; }
+        return;
+      }
+      nums.forEach(function(n) { n.classList.remove('highlighted'); });
+      var el = nums[state.fibStep];
+      if (el) {
+        el.classList.add('highlighted');
+        showFibExplanation(state.fibStep);
+      }
+      state.fibStep++;
+    }, 600);
+  }
+
+  /* ============================= */
+  /* WARM-UP: PATTERN SPOTTER      */
+  /* ============================= */
+  var spotterRows = [
+    {
+      label: 'Row 1: Find the odd one out!',
+      cells: ['🔵','🔵','🔵','🔴','🔵','🔵'],
+      oddIndex: 3,
+      hint: '🔴 is the odd one — the pattern is all blue circles.'
+    },
+    {
+      label: 'Row 2: Which one breaks the pattern?',
+      cells: ['⬜','⬛','⬜','⬛','⬜','⬜'],
+      oddIndex: 5,
+      hint: 'The last ⬜ breaks the alternating black/white pattern.'
+    },
+    {
+      label: 'Row 3: Spot the shape that doesn\'t fit!',
+      cells: ['🔺','🔺','🔷','🔺','🔺','🔺'],
+      oddIndex: 2,
+      hint: '🔷 is a different shape — the pattern is all triangles.'
+    },
+    {
+      label: 'Row 4: Which symbol breaks the rule?',
+      cells: ['⭐','⭐','⭐','⭐','🌟','⭐'],
+      oddIndex: 4,
+      hint: '🌟 (glowing star) breaks the pattern — all others are outlined stars ⭐.'
+    }
+  ];
+
+  function buildSpotterGrid() {
+    var grid = document.getElementById('spotter-grid');
+    var qEl = document.getElementById('spotter-question');
+    if (!grid) return;
+
+    if (state.spotterCurrentRow >= spotterRows.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--accent-green);font-weight:600;font-family:var(--font-display)">✅ All rows complete! Score: ' + state.spotterScore + '/' + spotterRows.length + '</p>';
+      if (qEl) qEl.textContent = 'Well done! You spotted all the odd ones out.';
+      state.spotterDone = true;
+      return;
+    }
+
+    var row = spotterRows[state.spotterCurrentRow];
+    if (qEl) qEl.textContent = row.label;
+
+    grid.innerHTML = '';
+    row.cells.forEach(function(symbol, idx) {
+      var cell = document.createElement('button');
+      cell.className = 'spotter-cell';
+      cell.textContent = symbol;
+      cell.setAttribute('aria-label', 'Symbol ' + (idx + 1) + ': ' + symbol);
+      cell.addEventListener('click', function() { handleSpotterClick(idx, cell); });
+      cell.addEventListener('touchend', function(e) { e.preventDefault(); handleSpotterClick(idx, cell); });
+      grid.appendChild(cell);
+    });
+  }
+
+  function handleSpotterClick(idx, cell) {
+    if (state.spotterDone) return;
+    var row = spotterRows[state.spotterCurrentRow];
+    var feedback = document.getElementById('spotter-feedback');
+
+    if (idx === row.oddIndex) {
+      cell.classList.add('correct-select');
+      state.spotterScore++;
+      document.getElementById('spotter-score').textContent = state.spotterScore;
+      if (feedback) { feedback.textContent = '✅ ' + row.hint; feedback.style.color = 'var(--accent-green)'; }
+      setTimeout(function() {
+        state.spotterCurrentRow++;
+        buildSpotterGrid();
+        if (feedback) feedback.textContent = '';
+      }, 1400);
+    } else {
+      cell.classList.add('wrong-select');
+      if (feedback) { feedback.textContent = '❌ Not quite — look more carefully at what repeats.'; feedback.style.color = 'var(--accent-danger)'; }
+      setTimeout(function() { cell.classList.remove('wrong-select'); if (feedback) feedback.textContent = ''; }, 1000);
+    }
+  }
+
+  /* ============================= */
+  /* NUMBER PATTERNS LAB           */
+  /* ============================= */
+  var labQuestions = [
+    { sequence: [2, 4, 6, 8], blank: 10, hint: '+2 each time', rule: 'Add 2' },
+    { sequence: [3, 6, 12, 24], blank: 48, hint: 'multiply by 2', rule: 'Double' },
+    { sequence: [1, 4, 9, 16], blank: 25, hint: 'square numbers (1², 2², 3²...)', rule: 'Square numbers' },
+    { sequence: [100, 90, 80, 70], blank: 60, hint: 'subtract 10', rule: 'Subtract 10' },
+    { sequence: [1, 1, 2, 3, 5], blank: 8, hint: 'add the two before it', rule: 'Fibonacci' },
+    { sequence: [5, 10, 20, 40], blank: 80, hint: 'multiply by 2', rule: 'Double' },
+    { sequence: [7, 14, 21, 28], blank: 35, hint: 'multiples of 7', rule: 'Add 7' },
+    { sequence: [256, 128, 64, 32], blank: 16, hint: 'divide by 2', rule: 'Halve' }
+  ];
+
+  function buildLabQuestions() {
+    var container = document.getElementById('lab-questions');
+    if (!container) return;
+
+    state.labAnswered = new Array(labQuestions.length).fill(false);
+    var html = '';
+
+    labQuestions.forEach(function(q, i) {
+      var seqHtml = q.sequence.map(function(n) {
+        return '<span class="seq-num">' + n + '</span><span class="seq-arrow" aria-hidden="true">→</span>';
+      }).join('');
+      seqHtml += '<span class="seq-blank" aria-hidden="true">?</span>';
+
+      html += '<div class="lab-question-card" id="lab-q-' + i + '" style="animation-delay:' + (i * 0.05) + 's">';
+      html += '<div class="lab-q-label">Question ' + (i + 1) + ' of ' + labQuestions.length + ' — Rule: ?</div>';
+      html += '<div class="lab-sequence-display" role="group" aria-label="Number sequence for question ' + (i+1) + '">' + seqHtml + '</div>';
+      html += '<div class="lab-input-row">';
+      html += '<input class="lab-input" type="number" id="lab-input-' + i + '" placeholder="?" aria-label="Your answer for question ' + (i+1) + ': what comes next in the sequence?" min="-9999" max="99999">';
+      html += '<button class="btn btn-secondary" data-q="' + i + '" onclick="checkLabAnswer(' + i + ')" style="padding:12px 20px;font-size:14px" aria-label="Check answer for question ' + (i+1) + '">Check</button>';
+      html += '<span class="lab-hint" aria-hidden="true">Hint: ' + q.hint + '</span>';
+      html += '</div>';
+      html += '<div class="lab-feedback" id="lab-feedback-' + i + '" aria-live="polite" aria-atomic="true"></div>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+
+    // Enter key support
+    labQuestions.forEach(function(q, i) {
+      var inp = document.getElementById('lab-input-' + i);
+      if (inp) {
+        inp.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') { checkLabAnswer(i); }
+        });
+      }
+    });
+  }
+
+  window.checkLabAnswer = function(idx) {
+    if (state.labAnswered[idx]) return;
+    var inp = document.getElementById('lab-input-' + idx);
+    var feedback = document.getElementById('lab-feedback-' + idx);
+    var card = document.getElementById('lab-q-' + idx);
+    if (!inp || !feedback) return;
+
+    var val = parseInt(inp.value);
+    var correct = labQuestions[idx].blank;
+
+    state.labAttempts++;
+    document.getElementById('lab-attempts-count').textContent = state.labAttempts;
+
+    if (isNaN(val)) {
+      feedback.textContent = '⚠️ Please type a number!';
+      feedback.style.color = 'var(--accent-warm)';
+      return;
+    }
+
+    if (val === correct) {
+      state.labAnswered[idx] = true;
+      state.labCorrect++;
+      inp.classList.add('correct-input');
+      if (card) card.classList.add('correct');
+      feedback.textContent = '✅ Correct! Rule: ' + labQuestions[idx].rule + '. Next number = ' + correct;
+      feedback.style.color = 'var(--accent-green)';
+
+      var qLabel = document.querySelector('#lab-q-' + idx + ' .lab-q-label');
+      if (qLabel) qLabel.textContent = 'Question ' + (idx+1) + ' of ' + labQuestions.length + ' — Rule: ' + labQuestions[idx].rule + ' ✅';
+
+      updateLabProgress();
+
+      if (state.labCorrect >= labQuestions.length && !state.labBadgeEarned) {
+        state.labBadgeEarned = true;
+        var badge = document.getElementById('lab-badge');
+        if (badge) badge.classList.add('visible');
+        enableCompleteBtn();
+        triggerSmallConfetti();
+      }
+    } else {
+      inp.classList.add('wrong-input');
+      if (card) card.classList.add('wrong');
+      feedback.textContent = '❌ Not quite. Check the hint and try again!';
+      feedback.style.color = 'var(--accent-danger)';
+      setTimeout(function() {
+        inp.classList.remove('wrong-input');
+        if (card) card.classList.remove('wrong');
+        feedback.textContent = '';
+      }, 1200);
+    }
+
+    document.getElementById('lab-correct-count').textContent = state.labCorrect;
+    document.getElementById('lab-remaining-count').textContent = labQuestions.length - state.labCorrect;
+  };
+
+  function updateLabProgress() {
+    var fill = document.getElementById('lab-progress-fill-el');
+    var bar = document.getElementById('lab-progress-bar-el');
+    if (fill) fill.style.width = (state.labCorrect / labQuestions.length * 100) + '%';
+    if (bar) bar.setAttribute('aria-valuenow', state.labCorrect);
+  }
+
+  /* ============================= */
+  /* PATTERN BUILDER               */
+  /* ============================= */
+  var paletteSymbols = ['🔵','🔴','🟡','🟢','🔶','⭐','🔺','🟣','◼','◻'];
+
+  function buildPaletteUI() {
+    var palette = document.getElementById('builder-palette');
+    if (!palette) return;
+
+    paletteSymbols.forEach(function(sym) {
+      var item = document.createElement('button');
+      item.className = 'palette-item';
+      item.textContent = sym;
+      item.setAttribute('aria-label', 'Select ' + sym + ' for pattern');
+      item.setAttribute('data-symbol', sym);
+      item.addEventListener('click', function() { selectPaletteItem(sym, item); });
+      palette.appendChild(item);
+    });
+
+    var canvas = document.getElementById('builder-canvas');
+    if (canvas) {
+      canvas.addEventListener('click', function(e) {
+        if (e.target === canvas || e.target.classList.contains('builder-placeholder')) {
+          addToBuilder();
+        }
+      });
+      canvas.addEventListener('dragover', function(e) { e.preventDefault(); canvas.classList.add('drag-over'); });
+      canvas.addEventListener('dragleave', function() { canvas.classList.remove('drag-over'); });
+      canvas.addEventListener('drop', function(e) {
+        e.preventDefault();
+        canvas.classList.remove('drag-over');
+        var sym = e.dataTransfer.getData('text/plain');
+        if (sym) { state.selectedPaletteSymbol = sym; addToBuilder(); }
+      });
+    }
+  }
+
+  function selectPaletteItem(sym, el) {
+    state.selectedPaletteSymbol = sym;
+    document.querySelectorAll('.palette-item').forEach(function(p) { p.classList.remove('active-palette'); });
+    el.classList.add('active-palette');
+    el.setAttribute('draggable', 'true');
+    el.addEventListener('dragstart', function(e) { e.dataTransfer.setData('text/plain', sym); });
+    addToBuilder();
+  }
+
+  function addToBuilder() {
+    if (!state.selectedPaletteSymbol) return;
+    if (state.builderTiles.length >= 16) {
+      var res = document.getElementById('builder-result');
+      if (res) { res.className = 'builder-result info'; res.textContent = '🔢 Maximum 16 tiles. Click a tile to remove it, or clear all.'; }
+      return;
+    }
+    state.builderTiles.push(state.selectedPaletteSymbol);
+    renderBuilderCanvas();
+  }
+
+  function renderBuilderCanvas() {
+    var canvas = document.getElementById('builder-canvas');
+    if (!canvas) return;
+
+    if (state.builderTiles.length === 0) {
+      canvas.innerHTML = '<span class="builder-placeholder" id="builder-placeholder">Click a symbol above, then click here to add it to your pattern →</span>';
+      return;
+    }
+
+    canvas.innerHTML = '';
+    state.builderTiles.forEach(function(sym, idx) {
+      var tile = document.createElement('button');
+      tile.className = 'builder-tile';
+      tile.textContent = sym;
+      tile.setAttribute('aria-label', sym + ' — click to remove from pattern');
+      tile.addEventListener('click', function() {
+        state.builderTiles.splice(idx, 1);
+        renderBuilderCanvas();
+        var res = document.getElementById('builder-result');
+        if (res) { res.className = 'builder-result'; res.style.display = 'none'; }
+      });
+      canvas.appendChild(tile);
+    });
+  }
+
+  function detectPattern(tiles) {
+    if (tiles.length < 4) return null;
+
+    // Check for period 1 (all same)
+    var allSame = tiles.every(function(t) { return t === tiles[0]; });
+    if (allSame) return { type: 'Repeating Unit', unit: tiles[0], period: 1, description: 'Single symbol repeating: "' + tiles[0] + tiles[0] + tiles[0] + '..."' };
+
+    // Check periods 2-6
+    for (var period = 2; period <= Math.floor(tiles.length / 2); period++) {
+      var unit = tiles.slice(0, period);
+      var valid = true;
+      for (var i = 0; i < tiles.length; i++) {
+        if (tiles[i] !== unit[i % period]) { valid = false; break; }
+      }
+      if (valid) {
+        return { type: 'AB Pattern', unit: unit.join(''), period: period, description: 'Repeating every ' + period + ' tiles: "' + unit.join('') + '" → "' + unit.join('') + '" → ...' };
+      }
+    }
+
+    // Check for almost-repeating (one mismatch allowed — interesting pattern)
+    for (var p2 = 2; p2 <= Math.floor(tiles.length / 2); p2++) {
+      var u2 = tiles.slice(0, p2);
+      var mismatches = 0;
+      for (var j = 0; j < tiles.length; j++) {
+        if (tiles[j] !== u2[j % p2]) mismatches++;
+      }
+      if (mismatches <= 1 && tiles.length >= 6) {
+        return { type: 'Near-Pattern', unit: u2.join(''), period: p2, description: 'Almost a period-' + p2 + ' pattern with one variation! Try extending it consistently.' };
+      }
+    }
+
+    return null;
+  }
+
+  function checkBuilderPattern() {
+    var result = document.getElementById('builder-result');
+    if (!result) return;
+
+    if (state.builderTiles.length < 4) {
+      result.className = 'builder-result info';
+      result.textContent = '🔢 Add at least 4 tiles so I can detect a pattern!';
+      return;
+    }
+
+    var detected = detectPattern(state.builderTiles);
+    if (detected) {
+      result.className = 'builder-result success';
+      result.textContent = '✅ Pattern detected! Type: ' + detected.type + ' — ' + detected.description;
+    } else {
+      result.className = 'builder-result info';
+      result.textContent = '🤔 No clear repeating rule found yet. Try making tiles repeat in a consistent cycle!';
+    }
+  }
+
+  /* ============================= */
+  /* THINK DEEPER: PATTERN vs COINCIDENCE */
+  /* ============================= */
+  var deeperData = [
+    {
+      scenario: 'Every morning for 5 days in a row, Ali wore a blue shirt and his team won cricket practice. His teammate says: "Ali wearing blue is the pattern that makes us win!"',
+      data: 'Day 1: Blue shirt → Win\nDay 2: Blue shirt → Win\nDay 3: Blue shirt → Win\nDay 4: Blue shirt → Win\nDay 5: Blue shirt → Win',
+      answer: 'coincidence',
+      explanation: 'COINCIDENCE — The colour of a shirt has no causal relationship with winning cricket. Without a rule (mechanism), repeated observation alone is not a pattern. This is called superstition, not logic.'
+    },
+    {
+      scenario: 'In a shopping mall, a data analyst notices that customers who buy nappies on Friday evenings also tend to buy soft drinks. This happens every single Friday, across hundreds of customers.',
+      data: 'Week 1: 78% of nappy buyers also bought soft drinks\nWeek 2: 81%\nWeek 3: 79%\nWeek 4: 83%',
+      answer: 'pattern',
+      explanation: 'PATTERN — This is actually a famous real data story. There\'s a logical rule: parents buying nappies after work on Fridays also treat themselves. The rule consistently holds and can be used to change product placement.'
+    },
+    {
+      scenario: 'Every number in this list is odd: 1, 3, 5, 7, 9, 11, 13. What\'s the 100th number?',
+      data: 'Formula: odd numbers = 2n − 1\nn=1 → 1\nn=2 → 3\nn=3 → 5\nn=50 → 99\nn=100 → 199',
+      answer: 'pattern',
+      explanation: 'PATTERN — Odd numbers follow a perfect mathematical rule: each is 2 more than the previous. The 100th odd number is 199. This is a pure numerical pattern with no exceptions.'
+    },
+    {
+      scenario: 'Sana\'s phone battery drains faster every time she uses Google Maps. It happened 3 times this week.',
+      data: 'Monday: Maps on → battery drained fast\nTuesday: Maps on → battery drained fast\nWednesday: Maps on → battery drained fast',
+      answer: 'pattern',
+      explanation: 'PATTERN — GPS and mapping require heavy processing and radios. This is a causal relationship with a logical rule: Maps uses GPS + data + screen = high battery drain. It\'s repeatable and predictable.'
+    },
+    {
+      scenario: 'A student notices that every time the school bus is late, it\'s raining. It happened twice last month. They conclude: "Rain always makes the bus late."',
+      data: 'Oct 5: Rain → Bus late\nOct 19: Rain → Bus late\n[Only 2 data points in the whole month]',
+      answer: 'coincidence',
+      explanation: 'COINCIDENCE (hasty generalisation) — Only 2 data points is not enough. Rain CAN cause delays, but the pattern hasn\'t been tested enough. We need more observations before declaring a rule. This is called a hasty generalisation — a logical mistake.'
+    }
+  ];
+
+  function buildDeeperChallenges() {
+    var container = document.getElementById('deeper-challenges');
+    if (!container) return;
+    state.deeperAnswered = new Array(deeperData.length).fill(false);
+    document.getElementById('deeper-total').textContent = deeperData.length;
+
+    var html = '';
+    deeperData.forEach(function(d, i) {
+      html += '<div class="challenge-card" id="deeper-card-' + i + '">';
+      html += '<p class="challenge-scenario"><strong>Scenario ' + (i+1) + ':</strong> ' + d.scenario + '</p>';
+      html += '<pre class="challenge-data" aria-label="Data for scenario ' + (i+1) + '">' + d.data + '</pre>';
+      html += '<div class="verdict-buttons">';
+      html += '<button class="verdict-btn pattern-btn" data-q="' + i + '" data-verdict="pattern" onclick="submitVerdict(' + i + ',\'pattern\',this)" aria-label="Verdict: this is a pattern">🔶 PATTERN</button>';
+      html += '<button class="verdict-btn coincidence-btn" data-q="' + i + '" data-verdict="coincidence" onclick="submitVerdict(' + i + ',\'coincidence\',this)" aria-label="Verdict: this is a coincidence">🎲 COINCIDENCE</button>';
+      html += '</div>';
+      html += '<div class="verdict-explanation" id="deeper-exp-' + i + '" aria-live="polite" role="alert"></div>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  window.submitVerdict = function(idx, verdict, btn) {
+    if (state.deeperAnswered[idx]) return;
+    state.deeperAnswered[idx] = true;
+
+    var correct = deeperData[idx].answer;
+    var expEl = document.getElementById('deeper-exp-' + idx);
+    var card = document.getElementById('deeper-card-' + idx);
+
+    var allBtns = document.querySelectorAll('[data-q="' + idx + '"].verdict-btn');
+    allBtns.forEach(function(b) { b.disabled = true; });
+
+    if (verdict === correct) {
+      state.deeperCorrect++;
+      btn.classList.add('chosen-correct');
+      if (card) card.classList.add('correct');
+      if (expEl) { expEl.className = 'verdict-explanation correct'; expEl.textContent = '✅ Correct! ' + deeperData[idx].explanation; }
+    } else {
+      btn.classList.add('chosen-wrong');
+      if (card) card.classList.add('wrong');
+      if (expEl) { expEl.className = 'verdict-explanation wrong'; expEl.textContent = '❌ Not quite. ' + deeperData[idx].explanation; }
+    }
+
+    document.getElementById('deeper-correct').textContent = state.deeperCorrect;
+  };
+
+  /* ============================= */
+  /* COMPLETION                    */
+  /* ============================= */
+  function enableCompleteBtn() {
+    var btn = document.getElementById('complete-btn');
+    var hint = document.getElementById('completion-hint');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+    if (hint) hint.textContent = '🎉 You\'ve completed the lab! Click to claim your XP.';
+  }
+
+  function checkCompletionEligibility() {
+    var eligible = state.labCorrect >= labQuestions.length || state.levelComplete;
+    if (eligible) enableCompleteBtn();
+  }
+
+  function completeLevelAction() {
+    if (state.levelComplete) {
+      showCompletionOverlay();
+      return;
+    }
+    state.levelComplete = true;
+    lsSet(lsKey('level_' + LEVEL_NUM + '_complete'), 'true');
+    lsSet(lsKey('level_' + LEVEL_NUM + '_xp'), LEVEL_XP);
+    recomputeXP();
+    showCompletionOverlay();
+    triggerFullConfetti();
+  }
+
+  function showCompletionOverlay() {
+    var overlay = document.getElementById('completion-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+      overlay.focus();
+    }
+  }
+
+  function triggerFullConfetti() {
+    if (typeof confetti !== 'undefined') {
+      var amber = ['#F5A623', '#FFD166', '#FFAB00', '#FF8C00'];
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: amber });
+      setTimeout(function() {
+        confetti({ particleCount: 80, spread: 120, origin: { x: 0.2, y: 0.5 }, colors: amber });
+        confetti({ particleCount: 80, spread: 120, origin: { x: 0.8, y: 0.5 }, colors: amber });
+      }, 400);
+    }
+  }
+
+  function triggerSmallConfetti() {
+    if (typeof confetti !== 'undefined') {
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ['#F5A623', '#FFD166', '#00F5A0'] });
+    }
+  }
+
+  /* ============================= */
+  /* GSAP SCROLL ANIMATIONS        */
+  /* ============================= */
+  function initAnimations() {
+    if (typeof gsap === 'undefined') {
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+
+    try {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      gsap.utils.toArray('.fade-up').forEach(function(el, i) {
+        gsap.fromTo(el,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            delay: i * 0.04,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+      });
+    } catch(e) {
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
+  }
+
+  /* ============================= */
+  /* KEYBOARD NAVIGATION           */
+  /* ============================= */
+  function initKeyboardNav() {
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var overlay = document.getElementById('completion-overlay');
+        if (overlay && overlay.classList.contains('active')) {
+          overlay.classList.remove('active');
+        }
+      }
+    });
+  }
+
+  /* ============================= */
+  /* MAIN INIT                     */
+  /* ============================= */
+  function init() {
+    loadState();
+    updateXPDisplay();
+    applyUrdu(state.urduOn);
+
+    // Hero tessellation
+    buildHeroTessellation();
+    window.addEventListener('resize', function() {
+      buildHeroTessellation();
+    });
+
+    // Fibonacci
+    buildFibSequence();
+    var fibBtn = document.getElementById('fib-animate-btn');
+    if (fibBtn) fibBtn.addEventListener('click', animateFib);
+
+    // Warm-up spotter
+    buildSpotterGrid();
+    var spotterReset = document.getElementById('spotter-reset-btn');
+    if (spotterReset) {
+      spotterReset.addEventListener('click', function() {
+        state.spotterScore = 0;
+        state.spotterCurrentRow = 0;
+        state.spotterDone = false;
+        document.getElementById('spotter-score').textContent = '0';
+        var fb = document.getElementById('spotter-feedback');
+        if (fb) fb.textContent = '';
+        buildSpotterGrid();
+      });
+    }
+
+    // Lab questions
+    buildLabQuestions();
+
+    // Pattern builder
+    buildPaletteUI();
+    var checkPatBtn = document.getElementById('check-pattern-btn');
+    if (checkPatBtn) checkPatBtn.addEventListener('click', checkBuilderPattern);
+    var clearPatBtn = document.getElementById('clear-pattern-btn');
+    if (clearPatBtn) clearPatBtn.addEventListener('click', function() {
+      state.builderTiles = [];
+      renderBuilderCanvas();
+      var res = document.getElementById('builder-result');
+      if (res) { res.className = 'builder-result'; res.style.display = 'none'; }
+    });
+    var undoPatBtn = document.getElementById('undo-pattern-btn');
+    if (undoPatBtn) undoPatBtn.addEventListener('click', function() {
+      if (state.builderTiles.length > 0) {
+        state.builderTiles.pop();
+        renderBuilderCanvas();
+      }
+    });
+
+    // Think deeper
+    buildDeeperChallenges();
+
+    // Complete button
+    var completeBtn = document.getElementById('complete-btn');
+    if (completeBtn) {
+      if (!state.levelComplete) {
+        completeBtn.disabled = true;
+        completeBtn.style.opacity = '0.5';
+      }
+      completeBtn.addEventListener('click', completeLevelAction);
+    }
+
+    checkCompletionEligibility();
+
+    // Overlay buttons
+    var overlayNext = document.getElementById('overlay-next-btn');
+    if (overlayNext) overlayNext.addEventListener('click', function() { window.location.href = 'level-04.html'; });
+    var overlayClose = document.getElementById('overlay-close-btn');
+    if (overlayClose) overlayClose.addEventListener('click', function() {
+      var overlay = document.getElementById('completion-overlay');
+      if (overlay) overlay.classList.remove('active');
+    });
+
+    // Urdu toggle
+    var urduBtn = document.getElementById('urdu-toggle-btn');
+    if (urduBtn) {
+      urduBtn.addEventListener('click', function() {
+        state.urduOn = !state.urduOn;
+        lsSet(lsKey('urdu_on'), state.urduOn.toString());
+        applyUrdu(state.urduOn);
+      });
+    }
+
+    // If already complete, enable button
+    if (state.levelComplete) {
+      enableCompleteBtn();
+    }
+
+    // Animations (deferred)
+    setTimeout(initAnimations, 100);
+    initKeyboardNav();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>

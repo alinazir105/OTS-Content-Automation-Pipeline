@@ -1,0 +1,2309 @@
+<!-- COURSE: Basic Design Theory | LEVEL: 11 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 11 — Design That Persuades | Basic Design Theory | OTS Skills Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Bebas+Neue&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --level-color: #FF4500;
+  --level-color-dark: #cc3700;
+  --level-color-light: #ff6633;
+  --level-color-glow: rgba(255,69,0,0.25);
+  --bg-primary: #1a0800;
+  --bg-secondary: #2a0e00;
+  --bg-card: #2d1000;
+  --bg-card-hover: #3a1500;
+  --text-primary: #fff5f0;
+  --text-secondary: #ffb89a;
+  --text-muted: #cc7755;
+  --border-color: rgba(255,69,0,0.3);
+  --font-display: 'Playfair Display', serif;
+  --font-headline: 'Bebas Neue', sans-serif;
+  --font-body: 'Lato', sans-serif;
+  --nav-height: 64px;
+  --max-width: 1100px;
+  --radius: 6px;
+  --transition: 0.3s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* STICKY NAV */
+.sticky-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: rgba(26,8,0,0.95);
+  border-bottom: 2px solid var(--level-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  color: var(--level-color);
+  text-decoration: none;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.nav-logo span { color: var(--text-primary); }
+
+.nav-course {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-xp {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  color: var(--level-color);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+/* PROGRESS BAR */
+.level-progress-bar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  z-index: 999;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: var(--level-color);
+  width: calc(11 / 12 * 100%);
+  position: relative;
+}
+
+.level-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--level-color);
+  box-shadow: 0 0 8px var(--level-color);
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  padding: calc(var(--nav-height) + 20px) 24px 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.breadcrumb a { color: var(--text-muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--level-color); }
+.breadcrumb span { color: var(--level-color); }
+
+/* MAIN CONTAINER */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* SECTION SPACING */
+section { padding: 80px 0; }
+section + section { border-top: 1px solid var(--border-color); }
+
+/* SECTION LABEL */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--level-color);
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* HEADINGS */
+h1, h2 {
+  font-family: var(--font-display);
+  line-height: 1.1;
+}
+
+h3, h4 {
+  font-family: var(--font-body);
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+/* LEVEL HEADER */
+.level-header {
+  padding-top: calc(var(--nav-height) + 60px);
+  padding-bottom: 80px;
+  background: linear-gradient(135deg, #1a0800 0%, #2a0000 50%, #1a0800 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.level-header::before {
+  content: 'PERSUADE';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-headline);
+  font-size: clamp(80px, 20vw, 240px);
+  color: rgba(255,69,0,0.05);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: 10px;
+}
+
+.level-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--level-color) 0, var(--level-color) 20px, transparent 20px, transparent 30px);
+}
+
+.level-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.badge-difficulty {
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  padding: 6px 14px;
+  border: 2px solid var(--level-color);
+  color: var(--level-color);
+  text-transform: uppercase;
+}
+
+.badge-xp {
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  padding: 6px 14px;
+  background: var(--level-color);
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.badge-level {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.level-title {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.level-title span { color: var(--level-color); }
+
+.level-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+
+/* PROPAGANDA STRIP */
+.propaganda-strip {
+  background: var(--level-color);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.propaganda-inner {
+  display: inline-block;
+  animation: marquee 25s linear infinite;
+  font-family: var(--font-headline);
+  letter-spacing: 4px;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* BIG QUESTION */
+.big-question-section { background: var(--bg-secondary); }
+
+.question-card {
+  background: var(--bg-card);
+  border-left: 6px solid var(--level-color);
+  padding: 40px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.question-card::before {
+  content: '?';
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-headline);
+  font-size: 180px;
+  color: rgba(255,69,0,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: var(--text-primary);
+  line-height: 1.3;
+  max-width: 750px;
+}
+
+/* LOOK AROUND YOU */
+.observation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.observation-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  position: relative;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.observation-card:hover {
+  border-color: var(--level-color);
+  transform: translateY(-4px);
+}
+
+.obs-number {
+  font-family: var(--font-headline);
+  font-size: 3rem;
+  color: var(--level-color);
+  opacity: 0.4;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.obs-title {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.obs-desc { font-size: 0.9rem; color: var(--text-secondary); }
+
+/* THE CONCEPT */
+.concept-section { background: var(--bg-primary); }
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) { .concept-grid { grid-template-columns: 1fr; } }
+
+.concept-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+}
+
+.concept-block h4 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--level-color);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.concept-block p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+
+.technique-list {
+  list-style: none;
+  margin-top: 16px;
+}
+
+.technique-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,69,0,0.1);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.technique-list li::before {
+  content: '▶';
+  color: var(--level-color);
+  font-size: 0.7rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.persuasion-principle {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.principle-icon {
+  width: 48px; height: 48px;
+  background: var(--level-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+}
+
+.principle-body h4 { font-size: 0.95rem; color: var(--text-primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.principle-body p { font-size: 0.85rem; color: var(--text-secondary); }
+
+/* SEE IT LIVE — DARK PATTERN DETECTOR */
+.demo-section { background: var(--bg-secondary); }
+
+.dark-pattern-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 32px;
+  margin-bottom: -1px;
+}
+
+.dp-tab {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-height: 48px;
+}
+
+.dp-tab:hover { color: var(--text-primary); background: var(--bg-card-hover); }
+.dp-tab.active { background: var(--bg-primary); color: var(--level-color); border-color: var(--level-color); border-bottom-color: var(--bg-primary); }
+
+.dp-panels {
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  border-radius: 0 var(--radius) var(--radius) var(--radius);
+}
+
+.dp-panel { display: none; padding: 40px; }
+.dp-panel.active { display: block; }
+
+/* DARK PATTERN SIMULATIONS */
+
+/* Simulation 1: Fake Countdown */
+.fake-countdown {
+  background: #fff;
+  color: #111;
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-body);
+  position: relative;
+}
+
+.fake-countdown h3 { color: #e00; font-size: 1.4rem; margin-bottom: 8px; }
+.fake-countdown p { color: #333; font-size: 0.9rem; margin-bottom: 16px; }
+.fake-countdown .countdown-timer { font-size: 2.5rem; font-weight: 900; color: #e00; letter-spacing: 4px; font-family: monospace; margin-bottom: 16px; }
+.fake-countdown .sale-price { font-size: 2rem; font-weight: 900; color: #00a000; }
+.fake-countdown .original-price { text-decoration: line-through; color: #999; font-size: 0.9rem; }
+.fake-countdown .buy-btn { background: #e00; color: #fff; border: none; padding: 14px 32px; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 4px; margin-top: 16px; width: 100%; }
+.fake-countdown .fine-print { font-size: 0.65rem; color: #aaa; margin-top: 12px; }
+
+.dp-reveal { margin-top: 24px; }
+.reveal-btn {
+  background: transparent;
+  border: 2px solid var(--level-color);
+  color: var(--level-color);
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-height: 48px;
+}
+
+.reveal-btn:hover { background: var(--level-color); color: #fff; }
+
+.dp-explanation {
+  background: rgba(255,69,0,0.1);
+  border-left: 4px solid var(--level-color);
+  padding: 20px 24px;
+  margin-top: 20px;
+  display: none;
+}
+
+.dp-explanation.visible { display: block; }
+.dp-explanation h4 { color: var(--level-color); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+.dp-explanation p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* Simulation 2: Hidden Unsubscribe */
+.hidden-unsub {
+  background: #f5f5f5;
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+  color: #111;
+}
+
+.hidden-unsub h3 { font-size: 1.2rem; margin-bottom: 12px; color: #111; }
+.hidden-unsub .email-from { font-size: 0.75rem; color: #666; margin-bottom: 20px; }
+.hidden-unsub .email-body { font-size: 0.9rem; color: #333; margin-bottom: 24px; line-height: 1.6; }
+.hidden-unsub .email-footer { font-size: 0.65rem; color: #aaa; border-top: 1px solid #ddd; padding-top: 16px; line-height: 2; }
+.hidden-unsub .unsub-link { color: #aaa; font-size: 0.6rem; }
+
+/* Simulation 3: Confirm-shaming */
+.confirm-shame {
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-body);
+  color: #111;
+}
+
+.confirm-shame h3 { font-size: 1.3rem; margin-bottom: 12px; color: #111; }
+.confirm-shame p { font-size: 0.9rem; color: #555; margin-bottom: 24px; }
+.confirm-shame .btn-yes { background: #007bff; color: #fff; border: none; padding: 14px 32px; font-size: 1rem; cursor: pointer; border-radius: 4px; width: 100%; margin-bottom: 12px; font-weight: 700; }
+.confirm-shame .btn-no { background: none; border: none; color: #aaa; font-size: 0.75rem; cursor: pointer; text-decoration: underline; display: block; margin: 0 auto; }
+
+/* Simulation 4: Roach Motel */
+.roach-motel {
+  background: #f0f8ff;
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+  color: #111;
+}
+
+.roach-motel .rm-step { display: none; }
+.roach-motel .rm-step.active { display: block; }
+.roach-motel h3 { font-size: 1.1rem; margin-bottom: 16px; color: #111; }
+.roach-motel p { font-size: 0.9rem; color: #333; margin-bottom: 20px; }
+.rm-btn-primary { background: #e00; color: #fff; border: none; padding: 12px 24px; font-size: 0.9rem; cursor: pointer; border-radius: 4px; font-weight: 700; margin-right: 12px; }
+.rm-btn-secondary { background: transparent; border: 1px solid #ccc; color: #666; padding: 11px 20px; font-size: 0.8rem; cursor: pointer; border-radius: 4px; }
+.rm-progress { font-size: 0.75rem; color: #aaa; margin-top: 16px; }
+
+/* Simulation 5: Misdirection */
+.misdirection {
+  background: #fff;
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+  color: #111;
+  text-align: center;
+}
+
+.misdirection h3 { font-size: 1.2rem; margin-bottom: 16px; }
+.misdirection .options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.misdirection .opt {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.misdirection .opt.recommended {
+  border-color: #007bff;
+  background: #f0f8ff;
+  transform: scale(1.02);
+}
+.misdirection .opt.recommended::before {
+  content: '★ BEST VALUE';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #007bff;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.misdirection .opt-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+.misdirection .opt-price { font-size: 1.3rem; font-weight: 900; color: #007bff; }
+.misdirection .opt-note { font-size: 0.65rem; color: #999; margin-top: 4px; }
+.misdirection .select-btn { width: 100%; padding: 12px; border: none; background: #007bff; color: #fff; font-size: 0.9rem; font-weight: 700; cursor: pointer; border-radius: 4px; }
+
+/* TRY IT YOURSELF */
+.try-section { background: var(--bg-primary); }
+
+.ethical-choice-builder {
+  margin-top: 40px;
+}
+
+.choice-brief {
+  background: var(--bg-card);
+  border: 2px solid var(--level-color);
+  padding: 28px;
+  margin-bottom: 32px;
+}
+
+.choice-brief h4 { color: var(--level-color); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.choice-brief p { color: var(--text-secondary); font-size: 0.95rem; }
+
+.path-chooser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) { .path-chooser { grid-template-columns: 1fr; } }
+
+.path-card {
+  border: 2px solid var(--border-color);
+  padding: 28px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  background: var(--bg-card);
+}
+
+.path-card:hover { border-color: var(--level-color); }
+.path-card.selected { border-color: var(--level-color); background: var(--bg-card-hover); }
+.path-card.selected::after { content: '✓'; position: absolute; top: 16px; right: 16px; color: var(--level-color); font-size: 1.2rem; font-weight: 900; }
+
+.path-type {
+  font-family: var(--font-headline);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.path-card.ethical .path-type { color: #00cc66; }
+.path-card.dark .path-type { color: #ff4444; }
+
+.path-card h4 { font-size: 1rem; color: var(--text-primary); margin-bottom: 10px; }
+.path-card p { font-size: 0.85rem; color: var(--text-secondary); }
+
+.technique-checkboxes {
+  margin-top: 24px;
+}
+
+.technique-checkboxes h4 { color: var(--text-primary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+
+.technique-check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.technique-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: border-color var(--transition);
+  min-height: 48px;
+}
+
+.technique-check:hover { border-color: var(--level-color); }
+.technique-check input { width: 18px; height: 18px; accent-color: var(--level-color); cursor: pointer; flex-shrink: 0; }
+.technique-check label { font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; }
+.technique-check.is-dark { border-left: 3px solid #ff4444; }
+.technique-check.is-ethical { border-left: 3px solid #00cc66; }
+
+.ethical-score-display {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  text-align: center;
+  display: none;
+}
+
+.ethical-score-display.visible { display: block; }
+
+.score-meter {
+  height: 16px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+  position: relative;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease, background 0.5s ease;
+}
+
+.score-label { font-family: var(--font-headline); font-size: 1.5rem; letter-spacing: 2px; }
+.score-feedback { font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; }
+
+/* JUDGE IT */
+.judge-section { background: var(--bg-secondary); }
+
+.judge-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.judge-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.judge-card-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: var(--font-body);
+  position: relative;
+}
+
+.judge-card-body { padding: 20px; }
+
+.judge-card-body h4 { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+.judge-card-body p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px; }
+
+.judge-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.judge-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-height: 48px;
+}
+
+.judge-btn:hover { border-color: var(--level-color); color: var(--level-color); }
+.judge-btn.correct { border-color: #00cc66; background: rgba(0,204,102,0.1); color: #00cc66; }
+.judge-btn.incorrect { border-color: #ff4444; background: rgba(255,68,68,0.1); color: #ff4444; }
+.judge-btn.revealed { pointer-events: none; }
+
+.judge-feedback {
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  display: none;
+  border-top: 1px solid var(--border-color);
+}
+.judge-feedback.visible { display: block; }
+.judge-feedback.ethical-feedback { background: rgba(0,204,102,0.08); color: #00cc66; }
+.judge-feedback.dark-feedback { background: rgba(255,68,68,0.08); color: #ff4444; }
+
+/* IN THE WILD */
+.wild-section { background: var(--bg-primary); }
+
+.wild-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.wild-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  transition: border-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.wild-card:hover { border-color: var(--level-color); }
+
+.wild-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--level-color);
+}
+
+.wild-industry {
+  font-family: var(--font-headline);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--level-color);
+  margin-bottom: 10px;
+}
+
+.wild-card h4 { font-size: 1rem; color: var(--text-primary); margin-bottom: 10px; }
+.wild-card p { font-size: 0.85rem; color: var(--text-secondary); }
+
+/* LEVEL CHALLENGE — PERSUASION AUDIT */
+.challenge-section { background: var(--bg-secondary); }
+
+.audit-builder {
+  margin-top: 40px;
+}
+
+.audit-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.audit-question {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.audit-ad-display {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  max-width: 500px;
+  font-family: var(--font-body);
+  color: #111;
+  position: relative;
+}
+
+.audit-ad-display .ad-tag { font-size: 0.65rem; background: #f0f0f0; padding: 2px 8px; border-radius: 2px; color: #999; margin-bottom: 12px; display: inline-block; }
+.audit-ad-display h3 { font-size: 1.3rem; color: #e00; margin-bottom: 8px; }
+.audit-ad-display p { font-size: 0.85rem; color: #333; margin-bottom: 12px; }
+.audit-ad-display .ad-cta { display: inline-block; background: #e00; color: #fff; padding: 10px 20px; font-size: 0.85rem; font-weight: 700; border-radius: 4px; }
+.audit-ad-display .ad-footnote { font-size: 0.6rem; color: #aaa; margin-top: 12px; }
+.audit-ad-display .ad-social-proof { font-size: 0.75rem; color: #555; margin-bottom: 8px; }
+
+.audit-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 16px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color var(--transition);
+}
+
+.audit-textarea:focus { outline: none; border-color: var(--level-color); }
+.audit-textarea::placeholder { color: var(--text-muted); }
+
+.technique-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.tech-pill {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  border-radius: 20px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.tech-pill:hover { border-color: var(--level-color); color: var(--level-color); }
+.tech-pill.selected { background: var(--level-color); border-color: var(--level-color); color: #fff; }
+
+.ethics-slider-wrap {
+  margin-top: 16px;
+}
+
+.ethics-slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.ethics-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #ff4444, #ffaa00, #00cc66);
+  outline: none;
+  cursor: pointer;
+}
+
+.ethics-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--level-color);
+  cursor: pointer;
+}
+
+.ethics-value {
+  text-align: center;
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+
+.audit-submit-btn {
+  background: var(--level-color);
+  color: #fff;
+  border: none;
+  padding: 16px 40px;
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-transform: uppercase;
+  min-height: 56px;
+}
+
+.audit-submit-btn:hover { background: var(--level-color-dark); }
+.audit-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.audit-result {
+  background: var(--bg-card);
+  border: 2px solid var(--level-color);
+  padding: 32px;
+  display: none;
+  margin-top: 24px;
+}
+
+.audit-result.visible { display: block; }
+.audit-result h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--level-color); margin-bottom: 16px; }
+.audit-result-body { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+
+/* REFLECTION */
+.reflection-section { background: var(--bg-primary); }
+
+.reflection-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 40px;
+  text-align: center;
+  max-width: 700px;
+  margin: 40px auto 0;
+}
+
+.reflection-icon { font-size: 2.5rem; margin-bottom: 20px; }
+
+.reflection-question {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+.reflection-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 16px 20px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 120px;
+  margin-bottom: 16px;
+  transition: border-color var(--transition);
+}
+
+.reflection-input:focus { outline: none; border-color: var(--level-color); }
+.reflection-input::placeholder { color: var(--text-muted); }
+
+.reflection-save-btn {
+  background: transparent;
+  border: 2px solid var(--level-color);
+  color: var(--level-color);
+  padding: 12px 32px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-height: 48px;
+}
+
+.reflection-save-btn:hover { background: var(--level-color); color: #fff; }
+
+/* BADGE + XP */
+.badge-section {
+  background: linear-gradient(135deg, #2a0000 0%, #1a0800 50%, #2a0000 100%);
+  text-align: center;
+  padding: 100px 0;
+}
+
+.badge-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 40px;
+}
+
+.badge-svg-wrap {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 30px rgba(255,69,0,0.5));
+}
+
+.badge-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.badge-title span { color: var(--level-color); }
+
+.badge-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.xp-reward-display {
+  font-family: var(--font-headline);
+  font-size: clamp(3rem, 10vw, 6rem);
+  color: var(--level-color);
+  line-height: 1;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 40px rgba(255,69,0,0.4);
+}
+
+.complete-btn {
+  background: var(--level-color);
+  color: #fff;
+  border: none;
+  padding: 20px 56px;
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-transform: uppercase;
+  margin-top: 24px;
+  min-height: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.complete-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.1);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+
+.complete-btn:hover::before { transform: translateX(0); }
+.complete-btn:hover { box-shadow: 0 0 32px rgba(255,69,0,0.5); }
+
+.complete-btn.completed {
+  background: #333;
+  cursor: default;
+}
+
+.level-nav-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nav-level-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border: 1px solid var(--border-color);
+  transition: all var(--transition);
+  min-height: 48px;
+}
+
+.nav-level-btn:hover { border-color: var(--level-color); color: var(--level-color); }
+
+.nav-level-btn svg { flex-shrink: 0; }
+
+/* UTIL */
+.text-accent { color: var(--level-color); }
+.text-muted { color: var(--text-muted); }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-40 { margin-top: 40px; }
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background: var(--level-color);
+  margin: 20px 0 32px;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--level-color); border-radius: 3px; }
+
+/* FOCUS VISIBLE */
+:focus-visible { outline: 2px solid var(--level-color); outline-offset: 3px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-course { display: none; }
+  section { padding: 60px 0; }
+  .level-header { padding-top: calc(var(--nav-height) + 40px); padding-bottom: 60px; }
+  .dp-panel { padding: 24px 20px; }
+  .path-chooser { grid-template-columns: 1fr; }
+  .audit-card { padding: 24px 20px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .dark-pattern-tabs { gap: 2px; }
+  .dp-tab { padding: 10px 12px; font-size: 0.7rem; }
+}
+
+/* ENTRY ANIMATIONS */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav" role="navigation" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy home">OTS <span>Skills Academy</span></a>
+  <span class="nav-course">Basic Design Theory</span>
+  <span class="nav-xp" id="nav-xp" aria-live="polite" aria-label="Total XP earned">⚡ 0 XP</span>
+</nav>
+<div class="level-progress-bar" role="progressbar" aria-valuenow="11" aria-valuemin="1" aria-valuemax="12" aria-label="Level 11 of 12">
+  <div class="level-progress-fill"></div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb container">
+  <a href="index.html">OTS Skills Academy</a> &rsaquo;
+  <a href="index.html">Basic Design Theory</a> &rsaquo;
+  <span>Level 11</span>
+</div>
+
+<!-- PROPAGANDA MARQUEE -->
+<div class="propaganda-strip" aria-hidden="true">
+  <span class="propaganda-inner">
+    &nbsp;&nbsp;&nbsp;BUY NOW &bull; LIMITED TIME &bull; ACT FAST &bull; EVERYONE IS DOING IT &bull; DON'T MISS OUT &bull; LAST CHANCE &bull; ONLY 3 LEFT &bull; EXPERTS AGREE &bull; BUY NOW &bull; LIMITED TIME &bull; ACT FAST &bull; EVERYONE IS DOING IT &bull; DON'T MISS OUT &bull; LAST CHANCE &bull; ONLY 3 LEFT &bull; EXPERTS AGREE &bull;&nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 1: LEVEL HEADER -->
+<!-- ═══════════════════════════════════════ -->
+<header class="level-header" id="top">
+  <div class="container">
+    <div class="level-meta">
+      <span class="badge-level">Level 11</span>
+      <span class="badge-difficulty">Advanced</span>
+      <span class="badge-xp">⚡ 700 XP</span>
+    </div>
+    <h1 class="level-title">Design That<br><span>Persuades</span></h1>
+    <p class="level-tagline">"Design can make you buy, believe, and behave."</p>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 2: THE BIG QUESTION -->
+<!-- ═══════════════════════════════════════ -->
+<section class="big-question-section" id="big-question">
+  <div class="container">
+    <span class="section-label">The Big Question</span>
+    <div class="question-card fade-in">
+      <p class="question-text">If a designer can make you feel urgent, scared, or delighted — and they do it on purpose — is that a skill to celebrate, or a power to fear?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 3: LOOK AROUND YOU -->
+<!-- ═══════════════════════════════════════ -->
+<section id="look-around">
+  <div class="container">
+    <span class="section-label">Look Around You</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">Before we teach — you already know this.</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:640px; margin-bottom:40px;">Look at these everyday situations. You've experienced all of them. Now let's name what's happening.</p>
+    <div class="observation-grid">
+      <div class="observation-card fade-in">
+        <div class="obs-number">01</div>
+        <div class="obs-title">The Countdown Timer</div>
+        <p class="obs-desc">An online store shows "Only 2 hours left at this price!" You feel an urge to buy immediately. Did that urgency exist before you saw it?</p>
+      </div>
+      <div class="observation-card fade-in">
+        <div class="obs-number">02</div>
+        <div class="obs-title">The Newspaper Front Page</div>
+        <p class="obs-desc">One story gets a giant headline. Another gets 4 lines at the bottom. The designer decided what you'd think was important — before you read a word.</p>
+      </div>
+      <div class="observation-card fade-in">
+        <div class="obs-number">03</div>
+        <div class="obs-title">The App Notification</div>
+        <p class="obs-desc">A red badge on your app. A sound. A vibration. None of it was accidental. Someone designed every element to pull your attention — right now.</p>
+      </div>
+      <div class="observation-card fade-in">
+        <div class="obs-number">04</div>
+        <div class="obs-title">The Billboard in Karachi</div>
+        <p class="obs-desc">A beautiful face next to a product. The emotion on that face was chosen. The colours were chosen. The size of the logo was chosen. None of it is random.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 4: THE CONCEPT -->
+<!-- ═══════════════════════════════════════ -->
+<section class="concept-section" id="concept">
+  <div class="container">
+    <span class="section-label">The Concept</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">How Design Persuades</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px; margin-bottom:40px;">Persuasive design uses visual, psychological, and behavioural techniques to change what people feel, think, and do. Some techniques are ethical and empowering. Others are manipulative. A designer must know the difference — and make a choice.</p>
+
+    <div class="concept-grid">
+      <div class="concept-block fade-in">
+        <h4>Ethical Persuasion Techniques</h4>
+        <p>These help people make decisions that genuinely serve them.</p>
+        <ul class="technique-list">
+          <li>Social proof — "10,000 students have taken this course"</li>
+          <li>Clear value proposition — making benefits obvious</li>
+          <li>Storytelling — connecting emotionally through narrative</li>
+          <li>Visual hierarchy — guiding attention to what matters</li>
+          <li>Contrast & emphasis — making the important thing pop</li>
+          <li>Trust signals — certifications, reviews, transparency</li>
+        </ul>
+      </div>
+      <div class="concept-block fade-in">
+        <h4>Dark Patterns — Manipulative Design</h4>
+        <p>These exploit psychology against the user's interest.</p>
+        <ul class="technique-list">
+          <li>Fake urgency — countdown timers that reset</li>
+          <li>Roach motel — easy in, impossibly hard to cancel</li>
+          <li>Confirm-shaming — "No thanks, I don't want to save money"</li>
+          <li>Hidden costs — prices added at the last checkout step</li>
+          <li>Misdirection — making the bad option look attractive</li>
+          <li>Trick questions — confusing double-negatives in opt-outs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;">
+      <h3 style="font-size:1rem; text-transform:uppercase; letter-spacing:2px; color:var(--text-primary); margin-bottom:24px;">The Six Principles of Influence (Cialdini)</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:16px;">
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">👥</div>
+          <div class="principle-body">
+            <h4>Social Proof</h4>
+            <p>We look at others to decide what's correct. "Thousands use this" signals safety in numbers.</p>
+          </div>
+        </div>
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">⏱️</div>
+          <div class="principle-body">
+            <h4>Scarcity & Urgency</h4>
+            <p>We want things more when they're rare or time-limited. Real scarcity = ethical. Fake = dark pattern.</p>
+          </div>
+        </div>
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">🎖️</div>
+          <div class="principle-body">
+            <h4>Authority</h4>
+            <p>We trust experts. Logos, certifications, and endorsements borrow credibility from established names.</p>
+          </div>
+        </div>
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">❤️</div>
+          <div class="principle-body">
+            <h4>Liking</h4>
+            <p>We say yes to people and brands we like. Beautiful design, relatable faces, and warmth build this.</p>
+          </div>
+        </div>
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">🔄</div>
+          <div class="principle-body">
+            <h4>Reciprocity</h4>
+            <p>We return favours. Free samples, free content, and gifts trigger a desire to give back.</p>
+          </div>
+        </div>
+        <div class="persuasion-principle fade-in">
+          <div class="principle-icon" aria-hidden="true">📌</div>
+          <div class="principle-body">
+            <h4>Commitment</h4>
+            <p>Once we take a small step, we follow through. Free trials, sign-ups, and progress bars use this.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 5: SEE IT LIVE — DARK PATTERN DETECTOR -->
+<!-- ═══════════════════════════════════════ -->
+<section class="demo-section" id="see-it-live">
+  <div class="container">
+    <span class="section-label">See It Live</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">Dark Pattern Detector</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px;">These are real dark patterns used in digital design today. Experience each one — then reveal what's actually happening. These are interactive simulations built to teach, not to trap.</p>
+
+    <div class="dark-pattern-tabs" role="tablist" aria-label="Dark pattern simulations">
+      <button class="dp-tab active" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">Fake Countdown</button>
+      <button class="dp-tab" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">Hidden Unsub</button>
+      <button class="dp-tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3">Confirm-Shame</button>
+      <button class="dp-tab" role="tab" aria-selected="false" aria-controls="panel-4" id="tab-4">Roach Motel</button>
+      <button class="dp-tab" role="tab" aria-selected="false" aria-controls="panel-5" id="tab-5">Misdirection</button>
+    </div>
+
+    <div class="dp-panels">
+      <!-- Panel 1: Fake Countdown -->
+      <div class="dp-panel active" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+        <div class="fake-countdown">
+          <h3>🔥 FLASH SALE — ENDS IN:</h3>
+          <p>Exclusive discount for you! Don't let it expire.</p>
+          <div class="countdown-timer" id="countdown-display">00:14:59</div>
+          <div class="original-price">Was Rs. 4,999</div>
+          <div class="sale-price">Rs. 999</div>
+          <button class="buy-btn" onclick="handleFakeCountdownClick()">CLAIM MY DISCOUNT NOW</button>
+          <p class="fine-print">*Offer applies to all customers at all times. Timer resets on page refresh.</p>
+        </div>
+        <div class="dp-reveal">
+          <button class="reveal-btn" id="reveal-1" onclick="toggleReveal(1)" aria-expanded="false">Reveal the Dark Pattern ▼</button>
+          <div class="dp-explanation" id="explain-1">
+            <h4>Dark Pattern: Fake Urgency</h4>
+            <p>That countdown timer resets every time you visit the page. The "sale" is permanent — the urgency is manufactured. Real discounts have real end dates. Fake countdowns exploit your fear of missing out (FOMO) to rush decisions. <strong style="color:var(--level-color);">As a designer, you decide: is your urgency real?</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Hidden Unsubscribe -->
+      <div class="dp-panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2">
+        <div class="hidden-unsub">
+          <div class="email-from">from: deals@supershop-newsletter.co | to: you@email.com</div>
+          <h3>Your exclusive weekly deals are here! 🎉</h3>
+          <p class="email-body">Hi there! We've hand-picked 47 amazing deals just for you this week. From electronics to fashion — your savings are waiting. Click below to browse now and don't forget to share with friends for a bonus 10% off!</p>
+          <div style="text-align:center; margin-bottom:20px;"><div style="background:#e00; color:#fff; padding:12px 24px; display:inline-block; border-radius:4px; font-weight:700; font-size:0.9rem;">SHOP MY DEALS →</div></div>
+          <div class="email-footer">
+            SuperShop Ltd, Plot 47, SITE Area, Karachi. You are receiving this email because you once shopped with us in 2019. To update your preferences, log into your account, go to Settings → Communications → Email Preferences → Newsletter → Manage Subscriptions → Weekly Digest → Edit → Frequency → None → Save → Confirm via email link sent within 3–5 business days.
+            <br><a class="unsub-link" href="#" onclick="return false;">or click here to unsubscribe (may take up to 30 days)</a>
+          </div>
+        </div>
+        <div class="dp-reveal">
+          <button class="reveal-btn" id="reveal-2" onclick="toggleReveal(2)" aria-expanded="false">Reveal the Dark Pattern ▼</button>
+          <div class="dp-explanation" id="explain-2">
+            <h4>Dark Pattern: Hidden Unsubscribe</h4>
+            <p>The unsubscribe path is buried in 9 steps of bureaucracy. The "click here" link is grey, tiny, and warns of a 30-day delay. Contrast this with the big, bright CTA to shop. <strong style="color:var(--level-color);">Ethical design makes opt-out as easy as opt-in.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Confirm-shaming -->
+      <div class="dp-panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3">
+        <div class="confirm-shame">
+          <h3>💌 Get 20% off your first order!</h3>
+          <p>Join thousands of smart shoppers getting exclusive deals, style tips, and early access to sales — free, every week.</p>
+          <input type="email" placeholder="your@email.com" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; margin-bottom:12px; font-size:0.9rem; color:#111;">
+          <button class="btn-yes">YES! SIGN ME UP FOR 20% OFF</button>
+          <button class="btn-no" onclick="handleConfirmShame()">No thanks, I prefer paying full price and missing out on deals.</button>
+        </div>
+        <div class="dp-reveal">
+          <button class="reveal-btn" id="reveal-3" onclick="toggleReveal(3)" aria-expanded="false">Reveal the Dark Pattern ▼</button>
+          <div class="dp-explanation" id="explain-3">
+            <h4>Dark Pattern: Confirm-Shaming</h4>
+            <p>The "no" button is written to make you feel foolish or guilty for declining. A neutral "No thanks" is fine. Writing "No thanks, I prefer paying full price" is manipulation — it attaches negative emotions to a perfectly valid choice. <strong style="color:var(--level-color);">Users have the right to say no without being shamed for it.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Roach Motel -->
+      <div class="dp-panel" id="panel-4" role="tabpanel" aria-labelledby="tab-4">
+        <div class="roach-motel" id="roach-motel">
+          <div class="rm-step active" id="rm-step-1">
+            <h3>😊 Want to cancel your subscription?</h3>
+            <p>We're sorry to see you go. Before you leave, can we ask why?</p>
+            <button class="rm-btn-primary" onclick="rmNextStep(2)">Continue</button>
+            <button class="rm-btn-secondary" onclick="rmNextStep('keep')">Never mind, keep my subscription</button>
+            <p class="rm-progress">Step 1 of 5</p>
+          </div>
+          <div class="rm-step" id="rm-step-2">
+            <h3>We'd love to help!</h3>
+            <p>Before we cancel, would you like to speak with a retention specialist? They might have an offer for you.</p>
+            <button class="rm-btn-primary" onclick="rmNextStep(3)">No, continue cancelling</button>
+            <button class="rm-btn-secondary" onclick="rmNextStep('keep')">Talk to specialist</button>
+            <p class="rm-progress">Step 2 of 5</p>
+          </div>
+          <div class="rm-step" id="rm-step-3">
+            <h3>How about a pause instead?</h3>
+            <p>Pause your subscription for up to 3 months at no charge. You won't lose your data or settings.</p>
+            <button class="rm-btn-primary" onclick="rmNextStep(4)">No, I want to cancel</button>
+            <button class="rm-btn-secondary" onclick="rmNextStep('keep')">Pause for 1 month</button>
+            <p class="rm-progress">Step 3 of 5</p>
+          </div>
+          <div class="rm-step" id="rm-step-4">
+            <h3>Last offer — 50% off for 3 months</h3>
+            <p>Stay for just Rs. 250/month instead of Rs. 499 for your next 3 billing cycles.</p>
+            <button class="rm-btn-primary" onclick="rmNextStep(5)">No thanks, cancel anyway</button>
+            <button class="rm-btn-secondary" onclick="rmNextStep('keep')">Accept this offer</button>
+            <p class="rm-progress">Step 4 of 5</p>
+          </div>
+          <div class="rm-step" id="rm-step-5">
+            <h3>Final step</h3>
+            <p>To complete cancellation, please call our cancellation hotline at 0800-CANCEL between 9am–5pm Monday to Friday (excluding public holidays). Reference number: <strong>CNL-2847-XQ</strong></p>
+            <button class="rm-btn-secondary" onclick="rmNextStep('keep')">Actually, keep my subscription</button>
+            <p class="rm-progress">Step 5 of 5</p>
+          </div>
+          <div class="rm-step" id="rm-step-keep">
+            <h3 style="color:green;">✓ Subscription retained!</h3>
+            <p>Great! Your subscription continues as normal. <button onclick="rmNextStep(1)" style="background:none; border:none; color:#007bff; cursor:pointer; text-decoration:underline; font-size:0.9rem;">Reset demo</button></p>
+          </div>
+        </div>
+        <div class="dp-reveal">
+          <button class="reveal-btn" id="reveal-4" onclick="toggleReveal(4)" aria-expanded="false">Reveal the Dark Pattern ▼</button>
+          <div class="dp-explanation" id="explain-4">
+            <h4>Dark Pattern: Roach Motel</h4>
+            <p>Signing up was one click. Cancelling requires 5 steps — and ends with a phone call during business hours. The pattern works like a roach motel: easy to get in, impossible to get out. <strong style="color:var(--level-color);">Ethical cancellation = one click, confirmed immediately.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: Misdirection -->
+      <div class="dp-panel" id="panel-5" role="tabpanel" aria-labelledby="tab-5">
+        <div class="misdirection">
+          <h3>Choose your data plan:</h3>
+          <div class="options">
+            <div class="opt">
+              <div class="opt-name">Basic Plan</div>
+              <div class="opt-price">Rs. 299</div>
+              <div class="opt-note">5GB data • 30 days</div>
+            </div>
+            <div class="opt recommended">
+              <div class="opt-name">Premium Plan</div>
+              <div class="opt-price">Rs. 599</div>
+              <div class="opt-note">10GB data • 30 days • "Best Value"</div>
+            </div>
+          </div>
+          <p style="font-size:0.75rem; color:#999; margin-bottom:16px;">*Best Value badge applied by our team. Both plans auto-renew. Cancel anytime.</p>
+          <button class="select-btn" onclick="handleMisdirectionClick()">Continue with selected plan →</button>
+        </div>
+        <div class="dp-reveal">
+          <button class="reveal-btn" id="reveal-5" onclick="toggleReveal(5)" aria-expanded="false">Reveal the Dark Pattern ▼</button>
+          <div class="dp-explanation" id="explain-5">
+            <h4>Dark Pattern: Misdirection via Visual Emphasis</h4>
+            <p>The more expensive plan is enlarged, highlighted in blue, starred, and pre-selected. The cheaper plan is visually suppressed. "Best Value" sounds objective — but was placed by the company. For 10GB at double the price, basic maths says it isn't. <strong style="color:var(--level-color);">Design can make the worse choice look better. That's the responsibility.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 6: TRY IT YOURSELF — THE ETHICAL CHOICE -->
+<!-- ═══════════════════════════════════════ -->
+<section class="try-section" id="try-it">
+  <div class="container">
+    <span class="section-label">Try It Yourself</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">The Ethical Choice</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px; margin-bottom:40px;">You've been given a design brief. Two paths. You choose which techniques to use — and we'll score your design's ethical rating.</p>
+
+    <div class="ethical-choice-builder">
+      <div class="choice-brief">
+        <h4>Design Brief</h4>
+        <p>A new ride-hailing app in Karachi wants you to design their sign-up screen. Their goal: get 10,000 users in 30 days. You must design a screen that converts visitors to sign-ups. Now choose your approach.</p>
+      </div>
+
+      <div class="path-chooser">
+        <div class="path-card ethical" id="path-ethical" onclick="selectPath('ethical')" role="button" tabindex="0" aria-pressed="false">
+          <div class="path-type">⬡ Ethical Path</div>
+          <h4>Design with the user in mind</h4>
+          <p>Focus on clarity, genuine value, and honest communication. Build trust that lasts. Users who sign up willingly return willingly.</p>
+        </div>
+        <div class="path-card dark" id="path-dark" onclick="selectPath('dark')" role="button" tabindex="0" aria-pressed="false">
+          <div class="path-type">⬡ Dark Pattern Path</div>
+          <h4>Design to maximise conversions at any cost</h4>
+          <p>Use every psychological trick available. Short-term numbers will be high. Long-term trust may be destroyed.</p>
+        </div>
+      </div>
+
+      <div id="technique-selector" style="display:none;">
+        <div class="technique-checkboxes">
+          <h4>Select your techniques:</h4>
+          <div class="technique-check-grid" id="technique-grid"></div>
+          <div id="ethical-score-wrap">
+            <button class="audit-submit-btn" id="score-btn" onclick="scoreEthics()" style="margin-top:8px;">Analyse My Design</button>
+            <div class="ethical-score-display" id="score-display">
+              <div class="score-label" id="score-label-text">—</div>
+              <div class="score-meter">
+                <div class="score-fill" id="score-fill-bar" style="width:0%"></div>
+              </div>
+              <div class="score-feedback" id="score-feedback-text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 7: JUDGE IT -->
+<!-- ═══════════════════════════════════════ -->
+<section class="judge-section" id="judge-it">
+  <div class="container">
+    <span class="section-label">Judge It</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">Ethical or Dark Pattern?</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px;">Look at each design example. Is this an ethical persuasion technique or a dark pattern? Judge it — then reveal the answer.</p>
+    <div class="judge-cards">
+
+      <!-- Judge Card 1 -->
+      <div class="judge-card fade-in">
+        <div class="judge-card-visual" style="background:#f0f8f0;">
+          <div style="text-align:center; font-family:sans-serif; color:#111;">
+            <div style="font-size:2rem; margin-bottom:8px;">⭐⭐⭐⭐⭐</div>
+            <div style="font-size:1rem; font-weight:700; color:#111; margin-bottom:4px;">4.8 out of 5</div>
+            <div style="font-size:0.75rem; color:#666;">Based on 2,847 verified reviews</div>
+          </div>
+        </div>
+        <div class="judge-card-body">
+          <h4>Star Ratings with Verified Count</h4>
+          <p>An app shows its average star rating and the exact number of verified reviews next to its download button.</p>
+          <div class="judge-buttons">
+            <button class="judge-btn" onclick="judgeIt(this, 'ethical', 1)" data-card="1">Ethical</button>
+            <button class="judge-btn" onclick="judgeIt(this, 'dark', 1)" data-card="1">Dark Pattern</button>
+          </div>
+        </div>
+        <div class="judge-feedback" id="judge-feedback-1"></div>
+      </div>
+
+      <!-- Judge Card 2 -->
+      <div class="judge-card fade-in">
+        <div class="judge-card-visual" style="background:#fff3cd;">
+          <div style="text-align:center; font-family:sans-serif; color:#111;">
+            <div style="font-size:0.75rem; font-weight:700; color:#e00; margin-bottom:4px;">⚠ HURRY! ALMOST GONE</div>
+            <div style="font-size:0.9rem; color:#333;">👁 43 people viewing this right now</div>
+            <div style="font-size:0.85rem; color:#e00; margin-top:4px;">Only 2 seats left at this price!</div>
+            <div style="font-size:0.65rem; color:#aaa; margin-top:8px;">(Viewing count updates in real time)</div>
+          </div>
+        </div>
+        <div class="judge-card-body">
+          <h4>Viewer Count + Scarcity Alert</h4>
+          <p>A travel booking site shows "43 people viewing this now" and "Only 2 seats left!" next to a flight.</p>
+          <div class="judge-buttons">
+            <button class="judge-btn" onclick="judgeIt(this, 'ethical', 2)" data-card="2">Ethical</button>
+            <button class="judge-btn" onclick="judgeIt(this, 'dark', 2)" data-card="2">Dark Pattern</button>
+          </div>
+        </div>
+        <div class="judge-feedback" id="judge-feedback-2"></div>
+      </div>
+
+      <!-- Judge Card 3 -->
+      <div class="judge-card fade-in">
+        <div class="judge-card-visual" style="background:#e8f4fd;">
+          <div style="font-family:sans-serif; color:#111; font-size:0.85rem;">
+            <div style="font-weight:700; margin-bottom:8px;">📦 Order Summary</div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>2x Item</span><span>Rs. 800</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Delivery</span><span style="color:green;">FREE</span></div>
+            <div style="display:flex; justify-content:space-between; font-weight:700; border-top:1px solid #ddd; padding-top:6px; margin-top:6px;"><span>Total</span><span>Rs. 800</span></div>
+          </div>
+        </div>
+        <div class="judge-card-body">
+          <h4>Clear Price Summary</h4>
+          <p>A checkout page shows every item, delivery cost (Rs. 0), and final total — all before asking for payment.</p>
+          <div class="judge-buttons">
+            <button class="judge-btn" onclick="judgeIt(this, 'ethical', 3)" data-card="3">Ethical</button>
+            <button class="judge-btn" onclick="judgeIt(this, 'dark', 3)" data-card="3">Dark Pattern</button>
+          </div>
+        </div>
+        <div class="judge-feedback" id="judge-feedback-3"></div>
+      </div>
+
+      <!-- Judge Card 4 -->
+      <div class="judge-card fade-in">
+        <div class="judge-card-visual" style="background:#fff;">
+          <div style="font-family:sans-serif; color:#111; font-size:0.8rem; max-width:220px; margin:0 auto;">
+            <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px;">Complete your registration</div>
+            <div style="background:#f5f5f5; padding:10px; border-radius:4px; font-size:0.7rem; color:#555; margin-bottom:8px;">
+              ☑ Yes! Keep me updated on partner offers<br>
+              <span style="color:#aaa;">(pre-checked by default)</span>
+            </div>
+            <div style="font-size:0.65rem; color:#999;">By registering you agree to share your data with 47 partner companies.</div>
+          </div>
+        </div>
+        <div class="judge-card-body">
+          <h4>Pre-Checked Partner Opt-In</h4>
+          <p>A signup form automatically ticks a "share data with partner companies" checkbox. Users must uncheck it manually.</p>
+          <div class="judge-buttons">
+            <button class="judge-btn" onclick="judgeIt(this, 'ethical', 4)" data-card="4">Ethical</button>
+            <button class="judge-btn" onclick="judgeIt(this, 'dark', 4)" data-card="4">Dark Pattern</button>
+          </div>
+        </div>
+        <div class="judge-feedback" id="judge-feedback-4"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 8: IN THE WILD -->
+<!-- ═══════════════════════════════════════ -->
+<section class="wild-section" id="in-the-wild">
+  <div class="container">
+    <span class="section-label">In the Wild</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">Persuasion In Everyday Design</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px;">These industries and contexts use persuasive design — some ethically, some not. Learning to spot them is the first step to understanding them as a designer.</p>
+    <div class="wild-grid">
+      <div class="wild-card fade-in">
+        <div class="wild-industry">E-Commerce</div>
+        <h4>"Customers also bought…"</h4>
+        <p>Amazon pioneered social-proof recommendations. At its best, it helps. At worst, it triggers mindless upselling. The ethics depend on whether it genuinely serves the buyer.</p>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-industry">News Media</div>
+        <h4>Headline Size as Opinion</h4>
+        <p>Which story gets the giant headline? Which gets 3 lines? Editors and designers shape what you think is important — before you read a single word.</p>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-industry">Pakistani Advertising</div>
+        <h4>Doodh (Milk) Ads & Aspirational Imagery</h4>
+        <p>Pakistani milk brand ads show thriving families, strong children, and aspirational lifestyles. The product's benefit is shown, not stated. Emotional association is the real message.</p>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-industry">Social Media Apps</div>
+        <h4>The Infinite Scroll</h4>
+        <p>No end. No stopping point. The absence of a clear stopping cue is itself a dark pattern — it exploits habit formation to keep you in the app far past your intention.</p>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-industry">Politics & Public Design</div>
+        <h4>Karachi Election Posters</h4>
+        <p>Scale, colour, repetition, and placement. Political posters use every visual tool to signal power, trust, or identity. The design language of power is a real and studied field.</p>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-industry">Health & Safety</div>
+        <h4>WHO Vaccination Campaign Graphics</h4>
+        <p>Ethical persuasion at scale. Clear imagery, accessible language, trusted authority signals — all used to save lives. Persuasion in service of public good is powerful and necessary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 9: LEVEL CHALLENGE — PERSUASION AUDIT -->
+<!-- ═══════════════════════════════════════ -->
+<section class="challenge-section" id="level-challenge">
+  <div class="container">
+    <span class="section-label">Level Challenge</span>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:12px;">Persuasion Audit</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-secondary); max-width:680px; margin-bottom:40px;">Analyse the advertisement below. Identify every persuasive technique used. Rate its ethics. Save your audit to your portfolio.</p>
+
+    <div class="audit-builder" id="audit-builder">
+      <!-- The Advertisement -->
+      <div class="audit-card">
+        <div class="audit-question">The Advertisement — Analyse This</div>
+        <div class="audit-ad-display">
+          <span class="ad-tag">SPONSORED</span>
+          <div class="ad-social-proof">🌟 Trusted by 500,000+ parents across Pakistan</div>
+          <h3>YOUR CHILD IS FALLING BEHIND</h3>
+          <p>Every day without proper nutrition, your child loses learning potential. Dr. Ahmed's BrainBoost formula is the #1 recommended solution by nutritionists. Don't wait until it's too late.</p>
+          <div style="display:flex; align-items:center; gap:16px; margin-bottom:12px;">
+            <div>
+              <div class="ad-cta">ORDER NOW — FREE DELIVERY</div>
+            </div>
+            <div style="font-size:0.75rem; color:#e00;"><strong>⏱ Offer ends tonight</strong></div>
+          </div>
+          <div class="ad-footnote">*Individual results may vary. "Dr. Ahmed" is a brand character. "Recommended by nutritionists" based on internal survey of 12 respondents. Free delivery on orders over Rs. 2,000.</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Identify Techniques -->
+      <div class="audit-card">
+        <div class="audit-question">Step 1: Which persuasive techniques can you spot?</div>
+        <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:16px;">Select all that apply. Look carefully — some are hidden in the fine print.</p>
+        <div class="technique-picker" id="audit-technique-picker" role="group" aria-label="Select persuasive techniques">
+          <button class="tech-pill" onclick="toggleTechPill(this)">Fear Appeal</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">False Urgency</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">False Authority</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Social Proof</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Misleading Statistics</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Emotional Guilt</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Scarcity Signal</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Fine Print Deception</button>
+          <button class="tech-pill" onclick="toggleTechPill(this)">Aspirational Promise</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Explain -->
+      <div class="audit-card">
+        <div class="audit-question">Step 2: Explain the most powerful technique in this ad</div>
+        <textarea class="audit-textarea" id="audit-explain" placeholder="Which technique do you think is most effective here, and why? Think about who the audience is — parents — and how the design targets their specific fears and hopes."></textarea>
+      </div>
+
+      <!-- Step 3: Ethics Rating -->
+      <div class="audit-card">
+        <div class="audit-question">Step 3: Rate the ethics of this advertisement</div>
+        <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:20px;">Consider: Is the urgency real? Is "Dr. Ahmed" deceptive? Does the fine print change the meaning of the headline?</p>
+        <div class="ethics-slider-wrap">
+          <div class="ethics-slider-label">
+            <span>Deeply Unethical</span>
+            <span>Acceptable</span>
+            <span>Fully Ethical</span>
+          </div>
+          <input type="range" class="ethics-slider" id="ethics-rating" min="0" max="100" value="50" oninput="updateEthicsValue(this.value)" aria-label="Ethics rating slider">
+          <div class="ethics-value" id="ethics-value-display" aria-live="polite">50 — Acceptable</div>
+        </div>
+      </div>
+
+      <!-- Step 4: Redesign suggestion -->
+      <div class="audit-card">
+        <div class="audit-question">Step 4: How would you redesign this ad ethically?</div>
+        <textarea class="audit-textarea" id="audit-redesign" placeholder="If you kept the goal (sell BrainBoost) but removed the dark patterns — what would the ethical version look and say? What would you change first?"></textarea>
+      </div>
+
+      <button class="audit-submit-btn" id="audit-save-btn" onclick="saveAudit()">Save to Portfolio ✦</button>
+
+      <div class="audit-result" id="audit-result">
+        <h3>Audit Saved to Portfolio ✦</h3>
+        <div class="audit-result-body" id="audit-result-body"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 10: REFLECTION PROMPT -->
+<!-- ═══════════════════════════════════════ -->
+<section class="reflection-section" id="reflection">
+  <div class="container">
+    <span class="section-label">Reflection Prompt</span>
+    <div class="reflection-card fade-in">
+      <div class="reflection-icon" aria-hidden="true">🪞</div>
+      <p class="reflection-question">"If you became a designer tomorrow — and a client asked you to use dark patterns to boost their sales — what would you say? And what would you do if they said: 'Do it or I find someone who will'?"</p>
+      <textarea class="reflection-input" id="reflection-answer" placeholder="Write your honest answer here. There's no right response. This is about your own values as a future designer." aria-label="Your reflection answer"></textarea>
+      <button class="reflection-save-btn" onclick="saveReflection()">Save My Reflection</button>
+      <p id="reflection-saved-msg" style="color:var(--level-color); font-size:0.85rem; margin-top:12px; display:none;">✓ Reflection saved.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 11: BADGE + XP UNLOCK -->
+<!-- ═══════════════════════════════════════ -->
+<section class="badge-section" id="badge-unlock">
+  <div class="container">
+    <span class="section-label" style="display:block; text-align:center; margin-bottom:40px;">Badge + XP Unlock</span>
+
+    <div class="badge-svg-wrap" id="badge-svg-wrap">
+      <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Design That Persuades badge">
+        <defs>
+          <radialGradient id="bg-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#3a1500"/>
+            <stop offset="100%" stop-color="#1a0800"/>
+          </radialGradient>
+        </defs>
+        <!-- Outer ring -->
+        <polygon points="80,4 95,30 124,22 118,52 148,60 132,84 148,108 118,116 124,146 95,138 80,156 65,138 36,146 42,116 12,108 28,84 12,60 42,52 36,22 65,30" fill="url(#bg-grad)" stroke="#FF4500" stroke-width="2.5"/>
+        <!-- Inner circle -->
+        <circle cx="80" cy="80" r="38" fill="none" stroke="#FF4500" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- Eye symbol (seeing through persuasion) -->
+        <ellipse cx="80" cy="80" rx="22" ry="14" fill="none" stroke="#FF4500" stroke-width="2"/>
+        <circle cx="80" cy="80" r="7" fill="#FF4500"/>
+        <circle cx="80" cy="80" r="3" fill="#1a0800"/>
+        <!-- Level number -->
+        <text x="80" y="126" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="11" fill="#FF4500" letter-spacing="2">LEVEL 11</text>
+        <!-- Rays -->
+        <line x1="58" y1="80" x2="44" y2="80" stroke="#FF4500" stroke-width="1.5" opacity="0.5"/>
+        <line x1="102" y1="80" x2="116" y2="80" stroke="#FF4500" stroke-width="1.5" opacity="0.5"/>
+        <line x1="80" y1="58" x2="80" y2="44" stroke="#FF4500" stroke-width="1.5" opacity="0.5"/>
+        <line x1="80" y1="102" x2="80" y2="116" stroke="#FF4500" stroke-width="1.5" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <h2 class="badge-title">The <span>Persuasion</span> Analyst</h2>
+    <p class="badge-subtitle">You can see what others feel but don't understand.</p>
+
+    <div class="xp-reward-display" id="xp-reward-display">700 XP</div>
+    <p style="color:var(--text-muted); font-size:0.85rem; letter-spacing:1px; margin-top:4px;">COMPLETE THE LEVEL TO UNLOCK</p>
+
+    <div>
+      <button class="complete-btn" id="complete-btn" onclick="completeLevel()">
+        Complete Level 11 ✦
+      </button>
+    </div>
+    <p id="complete-msg" style="display:none; color:var(--level-color); margin-top:20px; font-family:var(--font-headline); font-size:1.1rem; letter-spacing:2px;">⚡ 700 XP EARNED — LEVEL 11 COMPLETE</p>
+
+    <nav class="level-nav-footer" aria-label="Level navigation">
+      <a href="level-10.html" class="nav-level-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Previous: Level 10
+      </a>
+      <a href="index.html" class="nav-level-btn">Home</a>
+      <a href="level-12.html" class="nav-level-btn" id="next-level-btn">
+        Next: Level 12
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </nav>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
+<script>
+(function() {
+  'use strict';
+
+  var COURSE_SLUG = 'basic-design-theory';
+  var LEVEL = 11;
+  var LEVEL_XP = 700;
+
+  /* ── localStorage helpers ── */
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  function key(suffix) {
+    return 'ots_skills_' + COURSE_SLUG + '_' + suffix;
+  }
+
+  /* ── XP counter ── */
+  function updateNavXP() {
+    var total = parseInt(lsGet(key('xp_total'))) || 0;
+    var el = document.getElementById('nav-xp');
+    if (el) el.textContent = '⚡ ' + total + ' XP';
+  }
+
+  /* ── Init started_at ── */
+  if (!lsGet(key('started_at'))) {
+    lsSet(key('started_at'), new Date().toISOString());
+  }
+
+  /* ── Check if already complete ── */
+  function checkAlreadyComplete() {
+    if (lsGet(key('level_' + LEVEL + '_complete')) === 'true') {
+      var btn = document.getElementById('complete-btn');
+      var msg = document.getElementById('complete-msg');
+      if (btn) { btn.textContent = '✓ Level Complete'; btn.classList.add('completed'); btn.disabled = true; }
+      if (msg) msg.style.display = 'block';
+    }
+  }
+
+  /* ── Fake Countdown Timer ── */
+  var countdownSeconds = 899;
+  function updateCountdown() {
+    var m = Math.floor(countdownSeconds / 60);
+    var s = countdownSeconds % 60;
+    var el = document.getElementById('countdown-display');
+    if (el) {
+      el.textContent = '00:' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    if (countdownSeconds > 0) {
+      countdownSeconds--;
+    } else {
+      countdownSeconds = 899; // reset — the dark pattern!
+    }
+  }
+  setInterval(updateCountdown, 1000);
+
+  /* ── Dark Pattern Tabs ── */
+  var tabs = document.querySelectorAll('.dp-tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      var panels = document.querySelectorAll('.dp-panel');
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      var target = document.getElementById(tab.getAttribute('aria-controls'));
+      if (target) target.classList.add('active');
+    });
+    tab.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tab.click(); }
+    });
+  });
+
+  /* ── Reveal dark pattern ── */
+  window.toggleReveal = function(n) {
+    var btn = document.getElementById('reveal-' + n);
+    var exp = document.getElementById('explain-' + n);
+    if (!btn || !exp) return;
+    var isOpen = exp.classList.contains('visible');
+    exp.classList.toggle('visible', !isOpen);
+    btn.setAttribute('aria-expanded', (!isOpen).toString());
+    btn.textContent = isOpen ? 'Reveal the Dark Pattern ▼' : 'Hide Explanation ▲';
+  };
+
+  /* ── Fake countdown click ── */
+  window.handleFakeCountdownClick = function() {
+    alert('Notice anything? The "discount" was always available. The timer created urgency that didn\'t exist. This is a Fake Urgency dark pattern.');
+  };
+
+  /* ── Confirm-shame click ── */
+  window.handleConfirmShameClick = function() {};
+  window.handleConfirmShame = function() {
+    var shame = document.querySelector('.confirm-shame');
+    if (shame) {
+      var msg = document.createElement('p');
+      msg.style.cssText = 'color:#e00; font-size:0.85rem; margin-top:8px; font-weight:700;';
+      msg.textContent = '← That just made you feel bad for a completely reasonable decision. That\'s confirm-shaming.';
+      shame.appendChild(msg);
+    }
+  };
+
+  /* ── Roach Motel ── */
+  window.rmNextStep = function(step) {
+    var motel = document.getElementById('roach-motel');
+    if (!motel) return;
+    var allSteps = motel.querySelectorAll('.rm-step');
+    allSteps.forEach(function(s) { s.classList.remove('active'); });
+    var target;
+    if (step === 'keep') {
+      target = document.getElementById('rm-step-keep');
+    } else {
+      target = document.getElementById('rm-step-' + step);
+    }
+    if (target) target.classList.add('active');
+  };
+
+  /* ── Misdirection click ── */
+  window.handleMisdirectionClick = function() {
+    alert('The pre-highlighted "Premium Plan" costs double but only gives double the data at the same per-GB cost. The "Best Value" badge was placed by the company selling you the more expensive plan. Watch for design misdirection.');
+  };
+
+  /* ── Ethical Choice Builder ── */
+  var selectedPath = null;
+  var allTechniques = [
+    { label: 'Clear value proposition', ethical: true },
+    { label: 'Genuine social proof (real numbers)', ethical: true },
+    { label: 'Easy sign-up (3 fields max)', ethical: true },
+    { label: 'Transparent data usage', ethical: true },
+    { label: 'Helpful onboarding preview', ethical: true },
+    { label: 'Fake urgency ("Sign up now!")', ethical: false },
+    { label: 'Fear of missing out messaging', ethical: false },
+    { label: 'Pre-checked marketing consent', ethical: false },
+    { label: 'Hidden cancellation process', ethical: false },
+    { label: 'Manipulative confirm-shame copy', ethical: false }
+  ];
+
+  window.selectPath = function(path) {
+    selectedPath = path;
+    var ethCard = document.getElementById('path-ethical');
+    var darkCard = document.getElementById('path-dark');
+    if (ethCard) { ethCard.classList.toggle('selected', path === 'ethical'); ethCard.setAttribute('aria-pressed', (path === 'ethical').toString()); }
+    if (darkCard) { darkCard.classList.toggle('selected', path === 'dark'); darkCard.setAttribute('aria-pressed', (path === 'dark').toString()); }
+    buildTechniqueGrid();
+    var sel = document.getElementById('technique-selector');
+    if (sel) sel.style.display = 'block';
+  };
+
+  document.querySelectorAll('.path-card').forEach(function(card) {
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        var p = card.classList.contains('ethical') ? 'ethical' : 'dark';
+        window.selectPath(p);
+      }
+    });
+  });
+
+  function buildTechniqueGrid() {
+    var grid = document.getElementById('technique-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    var display = selectedPath === 'ethical'
+      ? allTechniques
+      : allTechniques.sort(function() { return Math.random() - 0.5; });
+    display.forEach(function(tech) {
+      var wrap = document.createElement('label');
+      wrap.className = 'technique-check ' + (tech.ethical ? 'is-ethical' : 'is-dark');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = tech.label;
+      cb.dataset.ethical = tech.ethical ? '1' : '0';
+      var span = document.createElement('span');
+      span.className = 'label';
+      span.textContent = tech.label;
+      wrap.appendChild(cb);
+      wrap.appendChild(span);
+      grid.appendChild(wrap);
+    });
+    var disp = document.getElementById('score-display');
+    if (disp) disp.classList.remove('visible');
+  }
+
+  window.scoreEthics = function() {
+    var checked = document.querySelectorAll('#technique-grid input:checked');
+    if (checked.length === 0) { alert('Select at least one technique to analyse.'); return; }
+    var ethicalCount = 0;
+    var darkCount = 0;
+    checked.forEach(function(cb) {
+      if (cb.dataset.ethical === '1') ethicalCount++;
+      else darkCount++;
+    });
+    var score = Math.round((ethicalCount / (ethicalCount + darkCount)) * 100);
+    var disp = document.getElementById('score-display');
+    var fill = document.getElementById('score-fill-bar');
+    var label = document.getElementById('score-label-text');
+    var feedback = document.getElementById('score-feedback-text');
+    if (!disp || !fill || !label || !feedback) return;
+    disp.classList.add('visible');
+    fill.style.width = score + '%';
+    if (score >= 80) {
+      fill.style.background = '#00cc66';
+      label.style.color = '#00cc66';
+      label.textContent = score + '% Ethical';
+      feedback.textContent = 'Strong ethical design. Users will trust your product. Long-term retention will follow.';
+    } else if (score >= 50) {
+      fill.style.background = '#ffaa00';
+      label.style.color = '#ffaa00';
+      label.textContent = score + '% Mixed';
+      feedback.textContent = 'Some ethical compromises detected. Consider which dark patterns you kept — and whether they truly serve users.';
+    } else {
+      fill.style.background = '#ff4444';
+      label.style.color = '#ff4444';
+      label.textContent = score + '% Dark Pattern Heavy';
+      feedback.textContent = 'High dark pattern usage detected. Short-term numbers may rise — but trust will erode fast. Users will leave.';
+    }
+  };
+
+  /* ── Judge It ── */
+  var judgeAnswers = {
+    1: { correct: 'ethical', explanation: '✓ Ethical: Real verified reviews with an honest count. This is genuine social proof — one of the most powerful and legitimate tools in design. It helps users make informed decisions.' },
+    2: { correct: 'dark', explanation: '⚠ Dark Pattern: "43 people viewing" counters are frequently fabricated or exaggerated. "Only 2 left" is a common manipulation even when inventory is plentiful. This is manufactured scarcity.' },
+    3: { correct: 'ethical', explanation: '✓ Ethical: Full price transparency before payment is a mark of honest design. No hidden fees, no last-step surprises. Users can make an informed choice.' },
+    4: { correct: 'dark', explanation: '⚠ Dark Pattern: Pre-checked opt-ins exploit inertia — most users won\'t uncheck what was already ticked. GDPR and Pakistan\'s PDPA both consider this deceptive. Consent must be active, not passive.' }
+  };
+
+  window.judgeIt = function(btn, choice, cardNum) {
+    var cardData = judgeAnswers[cardNum];
+    if (!cardData) return;
+    var feedback = document.getElementById('judge-feedback-' + cardNum);
+    var allBtns = btn.closest('.judge-buttons').querySelectorAll('.judge-btn');
+    allBtns.forEach(function(b) { b.classList.add('revealed'); b.disabled = true; });
+    var isCorrect = choice === cardData.correct;
+    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+    var correctBtn = btn.closest('.judge-buttons').querySelectorAll('.judge-btn')[cardData.correct === 'ethical' ? 0 : 1];
+    if (correctBtn && !isCorrect) correctBtn.classList.add('correct');
+    if (feedback) {
+      feedback.classList.add('visible');
+      feedback.classList.add(cardData.correct === 'ethical' ? 'ethical-feedback' : 'dark-feedback');
+      feedback.textContent = cardData.explanation;
+    }
+  };
+
+  /* ── Technique Pills (Audit) ── */
+  window.toggleTechPill = function(btn) {
+    btn.classList.toggle('selected');
+    btn.setAttribute('aria-pressed', btn.classList.contains('selected').toString());
+  };
+
+  /* ── Ethics Value Display ── */
+  window.updateEthicsValue = function(val) {
+    var el = document.getElementById('ethics-value-display');
+    if (!el) return;
+    var v = parseInt(val);
+    var label;
+    if (v <= 20) label = 'Deeply Unethical';
+    else if (v <= 40) label = 'Questionable';
+    else if (v <= 60) label = 'Acceptable';
+    else if (v <= 80) label = 'Mostly Ethical';
+    else label = 'Fully Ethical';
+    el.textContent = v + ' — ' + label;
+  };
+
+  /* ── Save Audit ── */
+  window.saveAudit = function() {
+    var pills = document.querySelectorAll('#audit-technique-picker .tech-pill.selected');
+    var techniques = [];
+    pills.forEach(function(p) { techniques.push(p.textContent); });
+    var explain = document.getElementById('audit-explain');
+    var redesign = document.getElementById('audit-redesign');
+    var rating = document.getElementById('ethics-rating');
+    var explanationText = explain ? explain.value.trim() : '';
+    var redesignText = redesign ? redesign.value.trim() : '';
+    var ratingVal = rating ? parseInt(rating.value) : 50;
+    if (techniques.length === 0 && !explanationText) {
+      alert('Please identify at least some techniques and write your analysis before saving.');
+      return;
+    }
+    var portfolioData = {
+      level: LEVEL,
+      type: 'Persuasion Audit',
+      techniques: techniques,
+      explanation: explanationText,
+      redesignSuggestion: redesignText,
+      ethicsRating: ratingVal,
+      savedAt: new Date().toISOString()
+    };
+    lsSet(key('portfolio_level_' + LEVEL), JSON.stringify(portfolioData));
+    var result = document.getElementById('audit-result');
+    var body = document.getElementById('audit-result-body');
+    if (result && body) {
+      result.classList.add('visible');
+      var techStr = techniques.length > 0 ? techniques.join(', ') : '(none selected)';
+      body.innerHTML =
+        '<p><strong style="color:var(--level-color);">Techniques identified:</strong> ' + techStr + '</p>' +
+        (explanationText ? '<p style="margin-top:12px;"><strong style="color:var(--level-color);">Your analysis:</strong> ' + explanationText + '</p>' : '') +
+        (redesignText ? '<p style="margin-top:12px;"><strong style="color:var(--level-color);">Your ethical redesign:</strong> ' + redesignText + '</p>' : '') +
+        '<p style="margin-top:12px;"><strong style="color:var(--level-color);">Ethics rating:</strong> ' + ratingVal + '/100</p>' +
+        '<p style="margin-top:16px; color:var(--text-muted); font-size:0.85rem;">Saved to portfolio. Complete the level below to unlock your badge.</p>';
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    var saveBtn = document.getElementById('audit-save-btn');
+    if (saveBtn) { saveBtn.textContent = '✓ Saved to Portfolio'; saveBtn.disabled = true; }
+  };
+
+  /* ── Save Reflection ── */
+  window.saveReflection = function() {
+    var input = document.getElementById('reflection-answer');
+    var msg = document.getElementById('reflection-saved-msg');
+    if (!input || !input.value.trim()) { alert('Please write your reflection before saving.'); return; }
+    var existing = {};
+    try { existing = JSON.parse(lsGet(key('portfolio_level_' + LEVEL))) || {}; } catch(e) {}
+    existing.reflection = input.value.trim();
+    existing.reflectionSavedAt = new Date().toISOString();
+    lsSet(key('portfolio_level_' + LEVEL), JSON.stringify(existing));
+    if (msg) msg.style.display = 'block';
+  };
+
+  /* ── Complete Level ── */
+  window.completeLevel = function() {
+    lsSet(key('level_' + LEVEL + '_complete'), 'true');
+    lsSet(key('level_' + LEVEL + '_xp'), LEVEL_XP.toString());
+
+    var total = 0;
+    for (var i = 1; i <= 12; i++) {
+      var xp = parseInt(lsGet(key('level_' + i + '_xp'))) || 0;
+      total += xp;
+    }
+    lsSet(key('xp_total'), total.toString());
+    updateNavXP();
+
+    var btn = document.getElementById('complete-btn');
+    var msg = document.getElementById('complete-msg');
+    if (btn) { btn.textContent = '✓ Level Complete'; btn.classList.add('completed'); btn.disabled = true; }
+    if (msg) msg.style.display = 'block';
+
+    try {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors: ['#FF4500', '#FF6633', '#fff', '#cc3700'] });
+        setTimeout(function() {
+          confetti({ particleCount: 60, spread: 100, origin: { y: 0.5 }, colors: ['#FF4500', '#FF6633'] });
+        }, 400);
+      }
+    } catch(e) {}
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        var badgeWrap = document.getElementById('badge-svg-wrap');
+        if (badgeWrap) {
+          gsap.fromTo(badgeWrap, { scale: 1 }, { scale: 1.15, duration: 0.3, ease: 'back.out(2)', yoyo: true, repeat: 1 });
+        }
+        var xpEl = document.getElementById('xp-reward-display');
+        if (xpEl) {
+          gsap.fromTo(xpEl, { opacity: 0.5, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' });
+        }
+      }
+    } catch(e) {}
+  };
+
+  /* ── GSAP Animations ── */
+  function initAnimations() {
+    try {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+      var fadeEls = document.querySelectorAll('.fade-in');
+      fadeEls.forEach(function(el) {
+        gsap.fromTo(el, { opacity: 0, y: 28 }, {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el, start: 'top 88%', toggleActions: 'play none none none'
+          }
+        });
+      });
+      var header = document.querySelector('.level-header');
+      if (header) {
+        var title = header.querySelector('.level-title');
+        var tagline = header.querySelector('.level-tagline');
+        var meta = header.querySelector('.level-meta');
+        if (meta) gsap.fromTo(meta, { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.1 });
+        if (title) gsap.fromTo(title, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.7, delay: 0.2, ease: 'power3.out' });
+        if (tagline) gsap.fromTo(tagline, { opacity: 0 }, { opacity: 1, duration: 0.6, delay: 0.5 });
+      }
+    } catch(e) {}
+  }
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    updateNavXP();
+    checkAlreadyComplete();
+    initAnimations();
+    updateEthicsValue(50);
+  });
+
+})();
+</script>
+</body>
+</html>

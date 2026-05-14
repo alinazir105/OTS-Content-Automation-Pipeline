@@ -1,0 +1,2352 @@
+<!-- COURSE: Basic Design Theory | LEVEL: 9 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 9 — Texture, Pattern and Depth | Basic Design Theory | OTS Skills Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --level-color: #B8860B;
+  --level-color-light: #D4A017;
+  --level-color-dark: #8B6508;
+  --level-color-pale: rgba(184,134,11,0.12);
+  --level-color-mid: rgba(184,134,11,0.3);
+  --bg-primary: #1a1410;
+  --bg-secondary: #231c14;
+  --bg-card: #2a2118;
+  --bg-card-alt: #2f2519;
+  --text-primary: #f0e8d8;
+  --text-secondary: #c8bba0;
+  --text-muted: #8a7a62;
+  --border-color: rgba(184,134,11,0.25);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  --radius: 6px;
+  --font-display: 'Playfair Display', serif;
+  --font-display2: 'Bebas Neue', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background-color:var(--bg-primary);
+  color:var(--text-primary);
+  line-height:1.7;
+  overflow-x:hidden;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}
+}
+
+/* ── STICKY NAV ── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;
+  background:rgba(26,20,16,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-color);
+}
+.nav-logo{
+  font-family:var(--font-display2);
+  font-size:1rem;letter-spacing:0.12em;
+  color:var(--level-color);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.nav-course{
+  font-family:var(--font-body);
+  font-size:0.75rem;font-weight:700;
+  color:var(--text-secondary);
+  letter-spacing:0.08em;text-transform:uppercase;
+  display:none;
+}
+@media(min-width:600px){.nav-course{display:block;}}
+.nav-xp{
+  font-family:var(--font-display2);
+  font-size:1rem;letter-spacing:0.08em;
+  color:var(--level-color);
+  white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+.level-progress-bar{
+  position:fixed;top:56px;left:0;right:0;z-index:999;
+  height:3px;background:rgba(255,255,255,0.06);
+}
+.level-progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--level-color-dark),var(--level-color));
+  width:75%;
+  transition:width 0.6s ease;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{
+  padding:80px 24px 0;
+  font-size:0.72rem;color:var(--text-muted);
+  letter-spacing:0.06em;
+}
+.breadcrumb a{color:var(--level-color);text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+.breadcrumb span{margin:0 6px;opacity:0.5;}
+
+/* ── SECTION WRAPPER ── */
+.section{
+  padding:72px 24px;
+  max-width:1100px;
+  margin:0 auto;
+}
+.section-label{
+  font-family:var(--font-display2);
+  font-size:0.75rem;letter-spacing:0.2em;
+  color:var(--level-color);
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:block;
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:700;
+  line-height:1.2;
+  margin-bottom:20px;
+}
+.section-body{
+  font-size:1.05rem;color:var(--text-secondary);
+  max-width:720px;line-height:1.8;
+}
+.divider{
+  border:none;
+  border-top:1px solid var(--border-color);
+  margin:0;
+}
+
+/* ── LEVEL HEADER ── */
+#level-header{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:100px 24px 64px;
+  position:relative;overflow:hidden;
+  background:var(--bg-primary);
+}
+.header-texture-bg{
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(184,134,11,0.03) 20px,
+      rgba(184,134,11,0.03) 21px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(184,134,11,0.03) 20px,
+      rgba(184,134,11,0.03) 21px
+    );
+  z-index:0;
+}
+.header-grain{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  z-index:1;
+  pointer-events:none;
+}
+.header-content{position:relative;z-index:2;max-width:1100px;margin:0 auto;width:100%;}
+.level-meta{
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.level-num{
+  font-family:var(--font-display2);
+  font-size:0.85rem;letter-spacing:0.2em;
+  color:var(--text-muted);
+  text-transform:uppercase;
+}
+.difficulty-badge{
+  background:var(--level-color);
+  color:#0a0800;
+  font-family:var(--font-display2);
+  font-size:0.75rem;letter-spacing:0.15em;
+  padding:4px 14px;border-radius:2px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.xp-badge{
+  border:1px solid var(--level-color);
+  color:var(--level-color);
+  font-family:var(--font-display2);
+  font-size:0.85rem;letter-spacing:0.12em;
+  padding:4px 14px;border-radius:2px;
+}
+.header-title{
+  font-family:var(--font-display);
+  font-size:clamp(2.8rem,8vw,7rem);
+  font-weight:900;
+  line-height:1.0;
+  margin-bottom:16px;
+  color:var(--text-primary);
+}
+.header-title em{
+  font-style:italic;
+  color:var(--level-color);
+}
+.header-tagline{
+  font-family:var(--font-display);
+  font-size:clamp(1rem,2.5vw,1.5rem);
+  font-style:italic;
+  color:var(--text-secondary);
+  margin-bottom:40px;
+  max-width:600px;
+}
+.header-accent-line{
+  width:80px;height:3px;
+  background:var(--level-color);
+  margin-bottom:48px;
+}
+.scroll-cue{
+  display:flex;align-items:center;gap:12px;
+  color:var(--text-muted);font-size:0.8rem;letter-spacing:0.1em;
+  text-transform:uppercase;
+  opacity:0;animation:fadeUp 1s 1.5s ease forwards;
+}
+.scroll-line{
+  width:40px;height:1px;
+  background:var(--level-color);
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── BIG QUESTION ── */
+#big-question{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+  position:relative;overflow:hidden;
+}
+#big-question::before{
+  content:'?';
+  position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-display);font-size:40vw;font-weight:900;
+  color:rgba(184,134,11,0.04);line-height:1;
+  pointer-events:none;
+}
+.big-question-inner{max-width:1100px;margin:0 auto;}
+.big-q-text{
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem,4vw,3rem);
+  font-weight:700;
+  line-height:1.3;
+  color:var(--text-primary);
+  max-width:800px;
+  position:relative;z-index:1;
+}
+.big-q-text em{color:var(--level-color);font-style:italic;}
+
+/* ── LOOK AROUND YOU ── */
+#look-around{
+  background:var(--bg-primary);
+  padding:80px 24px;
+}
+.look-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;margin-top:36px;
+}
+.look-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:28px;
+  position:relative;overflow:hidden;
+  transition:transform 0.3s,border-color 0.3s;
+}
+.look-card::before{
+  content:'';
+  position:absolute;inset:0;
+  opacity:0.5;
+  pointer-events:none;
+}
+.look-card:nth-child(1)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+}
+.look-card:nth-child(2)::before{
+  background:repeating-linear-gradient(0deg,transparent,transparent 8px,rgba(184,134,11,0.06) 8px,rgba(184,134,11,0.06) 9px),
+             repeating-linear-gradient(90deg,transparent,transparent 8px,rgba(184,134,11,0.06) 8px,rgba(184,134,11,0.06) 9px);
+}
+.look-card:nth-child(3)::before{
+  background:radial-gradient(circle at 30% 30%,rgba(184,134,11,0.15) 0%,transparent 60%),
+             radial-gradient(circle at 70% 70%,rgba(184,134,11,0.1) 0%,transparent 50%);
+}
+.look-card:nth-child(4)::before{
+  background:repeating-conic-gradient(rgba(184,134,11,0.05) 0deg,transparent 2deg,transparent 8deg,rgba(184,134,11,0.05) 10deg);
+}
+.look-card:hover{transform:translateY(-4px);border-color:var(--level-color);}
+.look-card-icon{font-size:2rem;margin-bottom:16px;}
+.look-card h3{
+  font-family:var(--font-display);
+  font-size:1.1rem;font-weight:700;
+  margin-bottom:10px;color:var(--text-primary);
+}
+.look-card p{font-size:0.9rem;color:var(--text-secondary);line-height:1.6;}
+
+/* ── THE CONCEPT ── */
+#the-concept{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+}
+.concept-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:32px;margin-top:40px;
+}
+@media(min-width:768px){
+  .concept-grid{grid-template-columns:1fr 1fr;}
+}
+@media(min-width:1200px){
+  .concept-grid{grid-template-columns:1fr 1fr 1fr;}
+}
+.concept-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.concept-card-demo{
+  height:140px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  position:relative;overflow:hidden;
+}
+.concept-card-body{padding:20px;}
+.concept-card h3{
+  font-family:var(--font-display);
+  font-weight:700;font-size:1.1rem;
+  margin-bottom:10px;color:var(--level-color);
+}
+.concept-card p{font-size:0.9rem;color:var(--text-secondary);line-height:1.6;}
+
+/* texture demos */
+.demo-grain{
+  background:#2a2118;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+  position:relative;
+}
+.demo-grain::after{
+  content:'GRAIN TEXTURE';
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display2);letter-spacing:0.15em;font-size:0.9rem;
+  color:rgba(240,232,216,0.6);
+}
+.demo-pattern{
+  background:
+    repeating-linear-gradient(45deg,#2a2118 0,#2a2118 10px,#2f2519 10px,#2f2519 20px);
+  position:relative;
+}
+.demo-pattern::after{
+  content:'PATTERN';
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display2);letter-spacing:0.15em;font-size:0.9rem;
+  color:rgba(184,134,11,0.9);
+}
+.demo-depth{
+  background:var(--bg-card);
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  position:relative;
+}
+.demo-depth-shape{
+  width:60px;height:60px;border-radius:6px;
+  background:var(--level-color);
+  display:flex;align-items:center;justify-content:center;
+}
+.demo-depth-shape.raised{
+  box-shadow:0 8px 24px rgba(0,0,0,0.6),0 2px 4px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);
+  transform:translateY(-4px);
+}
+.demo-depth-shape.flat{
+  box-shadow:none;
+  opacity:0.6;
+}
+
+/* ── SEE IT LIVE ── */
+#see-it-live{
+  background:var(--bg-primary);
+  padding:80px 24px;
+}
+.tabs{
+  display:flex;gap:4px;flex-wrap:wrap;
+  border-bottom:1px solid var(--border-color);
+  margin-bottom:32px;
+}
+.tab-btn{
+  background:transparent;
+  border:none;border-bottom:3px solid transparent;
+  padding:12px 20px;
+  font-family:var(--font-body);
+  font-size:0.9rem;font-weight:700;
+  color:var(--text-muted);
+  cursor:pointer;
+  transition:color 0.2s,border-color 0.2s;
+  white-space:nowrap;
+  min-height:48px;
+}
+.tab-btn:hover{color:var(--text-secondary);}
+.tab-btn.active{
+  color:var(--level-color);
+  border-bottom-color:var(--level-color);
+}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Flat vs Dimensional */
+.flat-dim-wrap{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+@media(max-width:600px){.flat-dim-wrap{grid-template-columns:1fr;}}
+.fd-card{
+  border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--border-color);
+}
+.fd-label{
+  text-align:center;padding:12px;
+  font-family:var(--font-display2);
+  font-size:0.85rem;letter-spacing:0.12em;
+  background:var(--bg-card-alt);
+  color:var(--text-secondary);
+}
+.fd-preview{
+  height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:20px;
+}
+.fd-flat{background:#2a2118;}
+.fd-flat .poster-element{
+  width:140px;height:36px;background:var(--level-color);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display2);font-size:0.85rem;letter-spacing:0.1em;color:#0a0800;
+}
+.fd-dimensional{
+  background:#1a1410;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+}
+.fd-dimensional .poster-element{
+  width:140px;height:36px;background:var(--level-color);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display2);font-size:0.85rem;letter-spacing:0.1em;color:#0a0800;
+  box-shadow:0 6px 20px rgba(0,0,0,0.6),0 2px 4px rgba(184,134,11,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.fd-dimensional .poster-bg-text{
+  font-family:var(--font-display);font-size:2.5rem;font-weight:900;
+  color:rgba(240,232,216,0.08);letter-spacing:0.05em;
+}
+
+/* Texture Scale */
+.texture-scale{margin-top:8px;}
+.texture-scale-label{
+  font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;
+  font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+}
+.texture-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  margin-bottom:20px;
+}
+@media(max-width:500px){.texture-grid{grid-template-columns:repeat(2,1fr);}}
+.texture-swatch{
+  height:80px;border-radius:4px;
+  border:2px solid transparent;
+  cursor:pointer;
+  display:flex;align-items:flex-end;
+  padding:6px;
+  transition:border-color 0.2s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.texture-swatch:hover{transform:scale(1.04);border-color:var(--level-color);}
+.texture-swatch.selected{border-color:var(--level-color);}
+.texture-swatch span{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;
+  background:rgba(0,0,0,0.6);padding:2px 5px;border-radius:2px;
+  color:#fff;position:relative;z-index:1;
+}
+
+/* pattern canvas tab */
+.pattern-controls{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  margin-bottom:16px;
+}
+.pattern-controls label{
+  font-size:0.85rem;color:var(--text-secondary);
+  display:flex;align-items:center;gap:8px;
+}
+.pattern-controls input[type=color]{
+  width:36px;height:36px;border:2px solid var(--border-color);
+  border-radius:4px;padding:2px;background:transparent;cursor:pointer;
+}
+.pattern-controls select{
+  background:var(--bg-card);border:1px solid var(--border-color);
+  color:var(--text-primary);padding:8px 12px;border-radius:4px;
+  font-family:var(--font-body);font-size:0.85rem;cursor:pointer;
+  min-height:48px;
+}
+#pattern-canvas-wrap{
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--bg-card);
+}
+#pattern-canvas{display:block;width:100%;max-width:600px;}
+
+/* ── TRY IT YOURSELF ── */
+#try-it{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+}
+.mood-board-wrap{
+  margin-top:32px;
+}
+.mood-board-intro{
+  font-size:0.95rem;color:var(--text-secondary);margin-bottom:24px;
+  max-width:680px;
+}
+.texture-items{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:12px;margin-bottom:24px;
+}
+.texture-item{
+  border:2px solid var(--border-color);
+  border-radius:var(--radius);
+  height:100px;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:border-color 0.2s,transform 0.2s;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:8px;
+}
+.texture-item:hover{transform:scale(1.03);}
+.texture-item.selected{border-color:var(--level-color);}
+.texture-item-label{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  background:rgba(0,0,0,0.65);color:#fff;padding:3px 6px;border-radius:2px;
+  position:relative;z-index:1;
+}
+.axis-rating{margin-top:24px;}
+.axis-row{
+  margin-bottom:20px;
+}
+.axis-label{
+  font-size:0.85rem;font-weight:700;color:var(--text-secondary);
+  margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;
+}
+.axis-track{
+  position:relative;
+  height:48px;display:flex;align-items:center;
+}
+.axis-ends{
+  display:flex;justify-content:space-between;
+  font-size:0.75rem;color:var(--text-muted);
+  margin-bottom:4px;
+}
+.axis-slider{
+  width:100%;
+  accent-color:var(--level-color);
+  cursor:pointer;
+  height:4px;
+}
+.save-moodboard-btn{
+  margin-top:28px;
+  background:var(--level-color);
+  color:#0a0800;
+  border:none;
+  font-family:var(--font-display2);
+  font-size:1rem;letter-spacing:0.1em;
+  padding:14px 32px;border-radius:2px;
+  cursor:pointer;
+  transition:background 0.2s,transform 0.2s;
+  min-height:48px;
+}
+.save-moodboard-btn:hover{background:var(--level-color-light);transform:translateY(-2px);}
+
+/* Ratings table */
+.ratings-preview{
+  margin-top:24px;
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:20px;
+  display:none;
+}
+.ratings-preview.visible{display:block;}
+.ratings-preview h4{
+  font-family:var(--font-display);font-weight:700;
+  margin-bottom:12px;color:var(--level-color);
+}
+.rating-table{width:100%;border-collapse:collapse;}
+.rating-table td{
+  padding:8px 12px;
+  font-size:0.85rem;color:var(--text-secondary);
+  border-bottom:1px solid var(--border-color);
+}
+.rating-table td:first-child{font-weight:700;color:var(--text-primary);}
+
+/* ── LAYER IT ── */
+#layer-it{
+  background:var(--bg-primary);
+  padding:80px 24px;
+}
+.layer-activity{margin-top:32px;}
+.layer-controls{
+  display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;
+}
+.layer-toggle{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:12px 20px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;
+  transition:border-color 0.2s,background 0.2s;
+  min-height:48px;
+}
+.layer-toggle:hover{border-color:var(--level-color);}
+.layer-toggle.active{
+  border-color:var(--level-color);
+  background:var(--level-color-pale);
+}
+.layer-toggle input[type=checkbox]{
+  accent-color:var(--level-color);
+  width:18px;height:18px;cursor:pointer;
+}
+.layer-toggle span{
+  font-size:0.9rem;font-weight:700;
+  color:var(--text-secondary);
+  letter-spacing:0.05em;
+}
+.layer-preview-container{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+@media(max-width:600px){.layer-preview-container{grid-template-columns:1fr;}}
+.layer-preview{
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.layer-preview-label{
+  text-align:center;padding:10px;
+  font-family:var(--font-display2);font-size:0.75rem;letter-spacing:0.15em;
+  background:var(--bg-card-alt);color:var(--text-muted);
+}
+#poster-flat,.poster-enhanced{
+  height:260px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:12px;padding:24px;
+  position:relative;
+  background:#2a2118;
+  transition:all 0.4s ease;
+}
+.poster-title-text{
+  font-family:var(--font-display);font-weight:900;
+  font-size:1.4rem;color:var(--text-primary);
+  text-align:center;position:relative;z-index:2;
+  transition:text-shadow 0.4s;
+}
+.poster-subtitle-text{
+  font-family:var(--font-body);font-size:0.85rem;
+  color:var(--text-secondary);text-align:center;
+  position:relative;z-index:2;
+}
+.poster-btn-text{
+  background:var(--level-color);
+  color:#0a0800;padding:8px 20px;
+  border-radius:2px;font-family:var(--font-display2);
+  font-size:0.85rem;letter-spacing:0.1em;
+  position:relative;z-index:2;
+  transition:box-shadow 0.4s;
+}
+
+/* ── JUDGE IT ── */
+#judge-it{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+}
+.judge-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+  margin-top:32px;
+}
+@media(max-width:600px){.judge-grid{grid-template-columns:1fr;}}
+.judge-card{
+  border-radius:var(--radius);overflow:hidden;
+  border:2px solid var(--border-color);
+  cursor:pointer;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.judge-card:hover{transform:translateY(-3px);}
+.judge-card.voted-good{border-color:#4ade80;}
+.judge-card.voted-bad{border-color:#f87171;}
+.judge-preview{
+  height:180px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:10px;padding:20px;
+  position:relative;overflow:hidden;
+}
+.judge-label{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;
+  background:var(--bg-card-alt);
+}
+.judge-label span{
+  font-size:0.85rem;color:var(--text-secondary);
+  font-weight:700;
+}
+.judge-votes{display:flex;gap:8px;}
+.vote-btn{
+  background:transparent;border:1px solid var(--border-color);
+  border-radius:3px;padding:6px 12px;
+  cursor:pointer;font-size:0.85rem;
+  min-height:40px;
+  transition:background 0.2s,border-color 0.2s,color 0.2s;
+  color:var(--text-secondary);
+}
+.vote-btn:hover{border-color:var(--level-color);color:var(--level-color);}
+.vote-btn.good:hover,.vote-btn.good.active{background:#4ade8020;border-color:#4ade80;color:#4ade80;}
+.vote-btn.bad:hover,.vote-btn.bad.active{background:#f8717120;border-color:#f87171;color:#f87171;}
+.judge-feedback{
+  background:var(--bg-card);
+  border-top:1px solid var(--border-color);
+  padding:12px 16px;
+  font-size:0.8rem;color:var(--text-secondary);
+  display:none;
+  line-height:1.5;
+}
+.judge-feedback.show{display:block;}
+
+/* ── IN THE WILD ── */
+#in-the-wild{
+  background:var(--bg-primary);
+  padding:80px 24px;
+}
+.wild-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;margin-top:36px;
+}
+.wild-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:transform 0.3s,border-color 0.3s;
+}
+.wild-card:hover{transform:translateY(-4px);border-color:var(--level-color);}
+.wild-thumb{
+  height:140px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  font-size:2.5rem;
+}
+.wild-body{padding:20px;}
+.wild-body h3{
+  font-family:var(--font-display);
+  font-weight:700;font-size:1rem;
+  margin-bottom:8px;color:var(--level-color);
+}
+.wild-body p{font-size:0.85rem;color:var(--text-secondary);line-height:1.6;}
+
+/* ── LEVEL CHALLENGE ── */
+#level-challenge{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+}
+.challenge-brief{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-left:4px solid var(--level-color);
+  border-radius:var(--radius);
+  padding:28px;
+  margin-top:32px;
+  margin-bottom:32px;
+}
+.challenge-brief h3{
+  font-family:var(--font-display);font-weight:700;
+  font-size:1.3rem;margin-bottom:12px;
+  color:var(--level-color);
+}
+.challenge-brief p{font-size:0.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;}
+.challenge-brief ul{
+  padding-left:20px;
+  font-size:0.9rem;color:var(--text-secondary);
+  line-height:2;
+}
+.challenge-canvas-wrap{
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-card);
+  margin-top:24px;
+}
+.challenge-canvas-toolbar{
+  display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;
+  background:var(--bg-card-alt);
+  border-bottom:1px solid var(--border-color);
+  align-items:center;
+}
+.toolbar-btn{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:3px;
+  padding:8px 14px;
+  font-size:0.8rem;font-weight:700;letter-spacing:0.06em;
+  color:var(--text-secondary);
+  cursor:pointer;
+  min-height:48px;
+  transition:border-color 0.2s,color 0.2s,background 0.2s;
+  text-transform:uppercase;
+}
+.toolbar-btn:hover{border-color:var(--level-color);color:var(--level-color);}
+.toolbar-btn.active{background:var(--level-color-pale);border-color:var(--level-color);color:var(--level-color);}
+.toolbar-sep{width:1px;height:32px;background:var(--border-color);margin:0 4px;}
+.toolbar-label{font-size:0.75rem;color:var(--text-muted);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
+#challenge-canvas{display:block;width:100%;cursor:crosshair;}
+
+/* ── REFLECTION ── */
+#reflection{
+  background:var(--bg-primary);
+  padding:80px 24px;
+}
+.reflection-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:40px;
+  max-width:760px;
+  position:relative;overflow:hidden;
+}
+.reflection-card::before{
+  content:'"';
+  position:absolute;top:-10px;left:20px;
+  font-family:var(--font-display);font-size:10rem;
+  color:var(--level-color-pale);
+  pointer-events:none;line-height:1;
+  font-weight:900;
+}
+.reflection-question{
+  font-family:var(--font-display);
+  font-size:clamp(1.1rem,2.5vw,1.6rem);
+  font-style:italic;font-weight:700;
+  color:var(--text-primary);
+  margin-bottom:24px;
+  position:relative;z-index:1;
+}
+.reflection-input{
+  width:100%;
+  background:var(--bg-secondary);
+  border:1px solid var(--border-color);
+  border-radius:4px;
+  padding:16px;
+  font-family:var(--font-body);font-size:0.95rem;
+  color:var(--text-primary);
+  resize:vertical;min-height:120px;
+  line-height:1.7;
+  transition:border-color 0.2s;
+}
+.reflection-input:focus{outline:none;border-color:var(--level-color);}
+.reflection-save{
+  margin-top:16px;
+  background:transparent;
+  border:1px solid var(--level-color);
+  color:var(--level-color);
+  font-family:var(--font-display2);
+  font-size:0.9rem;letter-spacing:0.1em;
+  padding:12px 28px;border-radius:2px;
+  cursor:pointer;
+  min-height:48px;
+  transition:background 0.2s,color 0.2s;
+}
+.reflection-save:hover{background:var(--level-color-pale);}
+.reflection-saved{
+  display:none;
+  margin-top:12px;
+  color:#4ade80;font-size:0.85rem;font-weight:700;
+}
+.reflection-saved.show{display:block;}
+
+/* ── BADGE + XP UNLOCK ── */
+#badge-unlock{
+  background:var(--bg-secondary);
+  padding:80px 24px;
+  text-align:center;
+}
+.badge-container{
+  max-width:480px;
+  margin:0 auto;
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:48px 32px;
+  position:relative;overflow:hidden;
+}
+.badge-container::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(184,134,11,0.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.badge-icon{
+  width:120px;height:120px;
+  margin:0 auto 28px;
+  border-radius:50%;
+  border:3px solid var(--level-color);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-card-alt);
+  position:relative;z-index:1;
+  font-size:3rem;
+  box-shadow:0 0 40px rgba(184,134,11,0.2);
+  transition:box-shadow 0.4s;
+}
+.badge-icon.earned{
+  box-shadow:0 0 60px rgba(184,134,11,0.5),0 0 20px rgba(184,134,11,0.3);
+  background:var(--level-color-pale);
+}
+.badge-name{
+  font-family:var(--font-display);
+  font-size:1.5rem;font-weight:900;
+  color:var(--level-color);
+  margin-bottom:8px;
+  position:relative;z-index:1;
+}
+.badge-desc{
+  font-size:0.9rem;color:var(--text-secondary);
+  margin-bottom:28px;
+  line-height:1.6;
+  position:relative;z-index:1;
+}
+.xp-reward-display{
+  font-family:var(--font-display2);
+  font-size:2.5rem;letter-spacing:0.1em;
+  color:var(--level-color);
+  margin-bottom:24px;
+  position:relative;z-index:1;
+}
+.complete-btn{
+  background:var(--level-color);
+  color:#0a0800;
+  border:none;
+  font-family:var(--font-display2);
+  font-size:1.1rem;letter-spacing:0.12em;
+  padding:16px 40px;border-radius:2px;
+  cursor:pointer;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+  min-height:56px;
+  display:inline-block;
+  position:relative;z-index:1;
+}
+.complete-btn:hover{
+  background:var(--level-color-light);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(184,134,11,0.4);
+}
+.complete-btn:disabled{
+  opacity:0.5;cursor:not-allowed;transform:none;
+  box-shadow:none;
+}
+.completion-message{
+  display:none;
+  margin-top:24px;
+  padding:16px;
+  background:rgba(74,222,128,0.1);
+  border:1px solid #4ade80;
+  border-radius:var(--radius);
+  color:#4ade80;font-size:0.9rem;
+  font-weight:700;
+  position:relative;z-index:1;
+}
+.completion-message.show{display:block;}
+
+/* ── NAVIGATION FOOTER ── */
+.level-nav{
+  background:var(--bg-primary);
+  border-top:1px solid var(--border-color);
+  padding:32px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+  max-width:1100px;
+  margin:0 auto;
+}
+.nav-link{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;
+  color:var(--text-secondary);
+  font-size:0.9rem;font-weight:700;
+  padding:12px 20px;
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  transition:border-color 0.2s,color 0.2s;
+  min-height:48px;
+}
+.nav-link:hover{border-color:var(--level-color);color:var(--level-color);}
+.nav-link.next{
+  background:var(--level-color);
+  border-color:var(--level-color);
+  color:#0a0800;
+}
+.nav-link.next:hover{background:var(--level-color-light);border-color:var(--level-color-light);}
+
+/* ── PORTFOLIO SAVE BANNER ── */
+.portfolio-save{
+  background:var(--level-color-pale);
+  border:1px solid var(--level-color);
+  border-radius:var(--radius);
+  padding:16px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+  margin-top:24px;
+}
+.portfolio-save p{
+  font-size:0.9rem;color:var(--text-secondary);
+  font-weight:700;
+}
+.portfolio-save p strong{color:var(--level-color);}
+.portfolio-save-btn{
+  background:var(--level-color);
+  color:#0a0800;border:none;
+  font-family:var(--font-display2);
+  font-size:0.85rem;letter-spacing:0.1em;
+  padding:10px 24px;border-radius:2px;
+  cursor:pointer;min-height:48px;
+  transition:background 0.2s;
+}
+.portfolio-save-btn:hover{background:var(--level-color-light);}
+
+/* ── TEXTURE SWATCHES ACTUAL ── */
+.tx1{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4' fill='%23b8860b'/%3E%3Crect width='200' height='200' fill='rgba(42,33,24,0.7)'/%3E%3C/svg%3E") center/cover;}
+.tx2{background:repeating-linear-gradient(0deg,#2a2118 0,#2a2118 3px,#1a1410 3px,#1a1410 6px);}
+.tx3{background:repeating-linear-gradient(45deg,#2a2118 0,#2a2118 8px,#231c14 8px,#231c14 16px);}
+.tx4{background:radial-gradient(circle,#2f2519 30%,#1a1410 70%); background-size:20px 20px;}
+.tx5{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='2' fill='rgba(184,134,11,0.3)'/%3E%3C/svg%3E") repeat #1a1410;}
+.tx6{background:repeating-conic-gradient(#2a2118 0deg 5deg,#1a1410 5deg 10deg);}
+.tx7{background:linear-gradient(160deg,#3d2e1a 0%,#1a1410 40%,#2f2519 100%);}
+.tx8{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect x='0' y='0' width='20' height='20' fill='%232a2118'/%3E%3Crect x='20' y='20' width='20' height='20' fill='%232a2118'/%3E%3Crect x='20' y='0' width='20' height='20' fill='%231a1410'/%3E%3Crect x='0' y='20' width='20' height='20' fill='%231a1410'/%3E%3C/svg%3E") repeat;}
+.tx9{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.6' fill='%23b8860b'/%3E%3Crect width='200' height='200' fill='rgba(26,20,16,0.7)'/%3E%3C/svg%3E") center/cover;}
+.tx10{background:repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(184,134,11,0.08) 20px,rgba(184,134,11,0.08) 21px), repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(184,134,11,0.08) 20px,rgba(184,134,11,0.08) 21px), #1a1410;}
+.tx11{background:conic-gradient(from 0deg,#2a2118,#3d2e1a,#1a1410,#2a2118) center/40px 40px repeat;}
+.tx12{background:linear-gradient(180deg,#1a1410 0%,#b8860b22 50%,#1a1410 100%);}
+
+/* ── UTILITY ── */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;}
+.mt-8{margin-top:8px;}
+.mt-16{margin-top:16px;}
+.mt-24{margin-top:24px;}
+.text-gold{color:var(--level-color);}
+.bold{font-weight:700;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg-secondary);}
+::-webkit-scrollbar-thumb{background:var(--level-color-dark);border-radius:3px;}
+
+/* FOCUS STYLES */
+*:focus-visible{outline:2px solid var(--level-color);outline-offset:3px;}
+
+/* Depth demo controls */
+.shadow-slider-wrap{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-top:16px;
+}
+.shadow-slider-wrap label{
+  font-size:0.85rem;color:var(--text-secondary);
+  font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  display:block;margin-bottom:8px;
+}
+.shadow-slider-wrap input[type=range]{
+  width:100%;accent-color:var(--level-color);cursor:pointer;
+  margin-bottom:20px;
+}
+.shadow-demo-box{
+  width:120px;height:80px;
+  background:var(--level-color);
+  border-radius:6px;
+  margin:24px auto;
+  transition:all 0.3s;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display2);font-size:0.8rem;letter-spacing:0.1em;color:#0a0800;
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="top-nav" role="navigation" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy Home">OTS SKILLS ACADEMY</a>
+  <span class="nav-course">Basic Design Theory</span>
+  <div class="nav-xp" id="nav-xp" aria-live="polite">⚡ 0 XP</div>
+</nav>
+
+<!-- LEVEL PROGRESS BAR -->
+<div class="level-progress-bar" role="progressbar" aria-label="Level 9 of 12" aria-valuenow="9" aria-valuemin="1" aria-valuemax="12">
+  <div class="level-progress-fill" style="width:75%;"></div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span aria-hidden="true">→</span>
+  <a href="index.html">Basic Design Theory</a>
+  <span aria-hidden="true">→</span>
+  Level 9
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SECTION 1: LEVEL HEADER
+════════════════════════════════════════════ -->
+<section id="level-header" aria-labelledby="level-title">
+  <div class="header-texture-bg" aria-hidden="true"></div>
+  <div class="header-grain" aria-hidden="true"></div>
+  <div class="header-content">
+    <div class="level-meta">
+      <span class="level-num">Level 9</span>
+      <span class="difficulty-badge">Advanced</span>
+      <span class="xp-badge">500 XP</span>
+    </div>
+    <h1 class="header-title" id="level-title">
+      Texture,<br><em>Pattern</em><br>and Depth
+    </h1>
+    <div class="header-accent-line" aria-hidden="true"></div>
+    <p class="header-tagline">"Design has a feel — even on a flat screen."</p>
+    <div class="scroll-cue" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 2: THE BIG QUESTION
+════════════════════════════════════════════ -->
+<section id="big-question" aria-labelledby="bq-heading">
+  <div class="big-question-inner">
+    <span class="section-label">The Big Question</span>
+    <h2 class="big-q-text" id="bq-heading">
+      When you run your finger across a phone screen, it feels <em>completely flat</em> — so why does some design feel rough, soft, heavy, or luxurious?
+    </h2>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 3: LOOK AROUND YOU
+════════════════════════════════════════════ -->
+<section id="look-around" aria-labelledby="look-heading">
+  <div class="section">
+    <span class="section-label">Look Around You</span>
+    <h2 class="section-title" id="look-heading">Before we begin — observe</h2>
+    <p class="section-body">Right now, wherever you are, look at four things near you. Notice how they feel visually — not physically. A piece of cloth, a wall, a piece of paper, a screen.</p>
+    <div class="look-cards">
+      <div class="look-card">
+        <div class="look-card-icon" aria-hidden="true">🧱</div>
+        <h3>A wall or floor</h3>
+        <p>Is it smooth? Rough? Does it have a pattern? How does looking at it make you feel — cold, warm, rough, refined?</p>
+      </div>
+      <div class="look-card">
+        <div class="look-card-icon" aria-hidden="true">📄</div>
+        <h3>A piece of paper or packaging</h3>
+        <p>Notice any texture printed onto it. Is it matte or glossy? Does the surface feel casual or formal to your eye?</p>
+      </div>
+      <div class="look-card">
+        <div class="look-card-icon" aria-hidden="true">🌿</div>
+        <h3>Something natural nearby</h3>
+        <p>Wood, a leaf, fabric — natural things have textures that communicate warmth, age, organic life. Why do we find them beautiful?</p>
+      </div>
+      <div class="look-card">
+        <div class="look-card-icon" aria-hidden="true">📱</div>
+        <h3>Your screen right now</h3>
+        <p>It is physically flat and smooth — yet this very page might feel dimensional. How? That's exactly what this level teaches.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 4: THE CONCEPT
+════════════════════════════════════════════ -->
+<section id="the-concept" aria-labelledby="concept-heading">
+  <div class="section">
+    <span class="section-label">The Concept</span>
+    <h2 class="section-title" id="concept-heading">Three Tools of Dimension</h2>
+    <p class="section-body">Texture, pattern, and depth are the designer's tools for making flat surfaces feel physical. They communicate material, quality, age, and emotion without a single word.</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-demo demo-grain" role="img" aria-label="Grain texture example"></div>
+        <div class="concept-card-body">
+          <h3>Visual Texture</h3>
+          <p>Texture is the implied surface quality. It is not physically rough — but it looks rough. Paper grain, fabric weave, concrete — all communicate mood. Grain = handmade, human, warm. Smooth = digital, modern, precise.</p>
+        </div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-demo demo-pattern" role="img" aria-label="Pattern example"></div>
+        <div class="concept-card-body">
+          <h3>Pattern</h3>
+          <p>Pattern is organised repetition. It creates rhythm, richness, and cultural meaning. Islamic geometric patterns, Sindhi ajrak, Japanese asanoha — patterns carry identity. In design, pattern fills space meaningfully, not randomly.</p>
+        </div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-demo demo-depth" role="img" aria-label="Depth example with shadow">
+          <div class="demo-depth-shape flat" aria-label="Flat shape, no shadow">
+            <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="5" y="5" width="20" height="20" fill="#0a0800" rx="2"/></svg>
+          </div>
+          <div class="demo-depth-shape raised" aria-label="Raised shape with shadow">
+            <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="5" y="5" width="20" height="20" fill="#0a0800" rx="2"/></svg>
+          </div>
+        </div>
+        <div class="concept-card-body">
+          <h3>Depth and Shadow</h3>
+          <p>Shadow creates the illusion of layers and light. Elements with shadow appear to float above the surface. Depth creates hierarchy — important things come forward, supporting elements recede. Even 1px of shadow tells a story.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shadow-slider-wrap" style="max-width:600px;margin-top:40px;">
+      <h3 style="font-family:var(--font-display);font-weight:700;color:var(--level-color);margin-bottom:16px;">Depth Control: Shadow Slider</h3>
+      <label for="shadow-x">Horizontal Shadow: <span id="shadow-x-val">4</span>px</label>
+      <input type="range" id="shadow-x" min="0" max="20" value="4" aria-label="Horizontal shadow offset">
+      <label for="shadow-y">Vertical Shadow: <span id="shadow-y-val">8</span>px</label>
+      <input type="range" id="shadow-y" min="0" max="40" value="8" aria-label="Vertical shadow offset">
+      <label for="shadow-blur">Blur Radius: <span id="shadow-blur-val">20</span>px</label>
+      <input type="range" id="shadow-blur" min="0" max="60" value="20" aria-label="Shadow blur radius">
+      <label for="shadow-opacity">Opacity: <span id="shadow-opacity-val">60</span>%</label>
+      <input type="range" id="shadow-opacity" min="0" max="100" value="60" aria-label="Shadow opacity">
+      <div class="shadow-demo-box" id="shadow-demo-box">DEPTH</div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">Drag the sliders. Watch how depth and dimension change. This is how every button, card, and panel on every app you've used is designed.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 5: SEE IT LIVE
+════════════════════════════════════════════ -->
+<section id="see-it-live" aria-labelledby="sil-heading">
+  <div class="section">
+    <span class="section-label">See It Live</span>
+    <h2 class="section-title" id="sil-heading">Interactive Explorations</h2>
+
+    <div class="tabs" role="tablist" aria-label="Interactive demos">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-flat" id="tab-btn-flat">Flat vs Dimensional</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-textures" id="tab-btn-textures">Texture Scale</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-pattern" id="tab-btn-pattern">Pattern Builder</button>
+    </div>
+
+    <!-- TAB: FLAT VS DIMENSIONAL -->
+    <div class="tab-panel active" id="tab-flat" role="tabpanel" aria-labelledby="tab-btn-flat">
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:20px;max-width:640px;">
+        The same poster design — once flat, once with texture and depth applied. Same content. Completely different feeling. Which feels more premium?
+      </p>
+      <div class="flat-dim-wrap">
+        <div class="fd-card">
+          <div class="fd-label">Without Texture &amp; Depth</div>
+          <div class="fd-preview fd-flat" aria-label="Flat design example">
+            <div style="font-family:var(--font-display);font-weight:900;font-size:1.3rem;color:var(--text-primary);text-align:center;">KARACHI<br>DESIGN WEEK</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);">14 – 20 March</div>
+            <div class="poster-element">Register Now</div>
+          </div>
+        </div>
+        <div class="fd-card">
+          <div class="fd-label">With Texture &amp; Depth</div>
+          <div class="fd-preview fd-dimensional" aria-label="Design with texture and depth example">
+            <div class="poster-bg-text" aria-hidden="true" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;white-space:nowrap;">DESIGN</div>
+            <div style="font-family:var(--font-display);font-weight:900;font-size:1.3rem;color:var(--text-primary);text-align:center;text-shadow:0 2px 12px rgba(0,0,0,0.8);position:relative;z-index:2;">KARACHI<br>DESIGN WEEK</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);position:relative;z-index:2;">14 – 20 March</div>
+            <div class="poster-element" style="box-shadow:0 6px 20px rgba(0,0,0,0.6),0 2px 4px rgba(184,134,11,0.3),inset 0 1px 0 rgba(255,255,255,0.15);position:relative;z-index:2;">Register Now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TEXTURE SCALE -->
+    <div class="tab-panel" id="tab-textures" role="tabpanel" aria-labelledby="tab-btn-textures">
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:20px;max-width:640px;">
+        Rate 12 textures on two scales: how formal or casual they feel, and how warm or cold. Click a texture to select it, then move the sliders.
+      </p>
+      <div class="texture-scale">
+        <div class="texture-scale-label">Select a texture to rate:</div>
+        <div class="texture-grid" role="group" aria-label="Texture samples">
+          <div class="texture-swatch tx1" data-idx="0" tabindex="0" role="button" aria-label="Texture 1: Noise grain"><span>Noise</span></div>
+          <div class="texture-swatch tx2" data-idx="1" tabindex="0" role="button" aria-label="Texture 2: Fine lines"><span>Lines</span></div>
+          <div class="texture-swatch tx3" data-idx="2" tabindex="0" role="button" aria-label="Texture 3: Diagonal stripe"><span>Stripe</span></div>
+          <div class="texture-swatch tx4" data-idx="3" tabindex="0" role="button" aria-label="Texture 4: Radial dots"><span>Radial</span></div>
+          <div class="texture-swatch tx5" data-idx="4" tabindex="0" role="button" aria-label="Texture 5: Dot grid"><span>Dots</span></div>
+          <div class="texture-swatch tx6" data-idx="5" tabindex="0" role="button" aria-label="Texture 6: Conic pattern"><span>Conic</span></div>
+          <div class="texture-swatch tx7" data-idx="6" tabindex="0" role="button" aria-label="Texture 7: Gradient wash"><span>Gradient</span></div>
+          <div class="texture-swatch tx8" data-idx="7" tabindex="0" role="button" aria-label="Texture 8: Checkerboard"><span>Check</span></div>
+          <div class="texture-swatch tx9" data-idx="8" tabindex="0" role="button" aria-label="Texture 9: Turbulence"><span>Turbulence</span></div>
+          <div class="texture-swatch tx10" data-idx="9" tabindex="0" role="button" aria-label="Texture 10: Grid"><span>Grid</span></div>
+          <div class="texture-swatch tx11" data-idx="10" tabindex="0" role="button" aria-label="Texture 11: Conic repeat"><span>Conic 2</span></div>
+          <div class="texture-swatch tx12" data-idx="11" tabindex="0" role="button" aria-label="Texture 12: Vignette"><span>Vignette</span></div>
+        </div>
+
+        <div id="texture-rating-panel" style="display:none;" aria-live="polite">
+          <p id="rating-texture-name" style="font-weight:700;color:var(--level-color);margin-bottom:16px;font-size:0.95rem;"></p>
+          <div class="axis-row">
+            <div class="axis-label">Formal → Casual</div>
+            <div class="axis-ends"><span>Formal</span><span>Casual</span></div>
+            <input type="range" class="axis-slider" id="fc-slider" min="1" max="10" value="5" aria-label="Formal to casual scale">
+          </div>
+          <div class="axis-row">
+            <div class="axis-label">Cold → Warm</div>
+            <div class="axis-ends"><span>Cold</span><span>Warm</span></div>
+            <input type="range" class="axis-slider" id="cw-slider" min="1" max="10" value="5" aria-label="Cold to warm scale">
+          </div>
+          <button class="save-moodboard-btn" id="save-texture-rating" style="margin-top:0;font-size:0.85rem;padding:10px 24px;">Save Rating</button>
+        </div>
+
+        <div id="ratings-summary" class="ratings-preview">
+          <h4>Your Texture Ratings</h4>
+          <table class="rating-table" aria-label="Texture ratings">
+            <tbody id="ratings-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PATTERN BUILDER -->
+    <div class="tab-panel" id="tab-pattern" role="tabpanel" aria-labelledby="tab-btn-pattern">
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:20px;max-width:640px;">
+        Build a repeating pattern from basic shapes and two colors. Change the shape, colors, and size. See the pattern tile across the canvas.
+      </p>
+      <div class="pattern-controls">
+        <label>
+          Shape:
+          <select id="pattern-shape" aria-label="Pattern shape">
+            <option value="circle">Circle</option>
+            <option value="square">Square</option>
+            <option value="diamond">Diamond</option>
+            <option value="triangle">Triangle</option>
+            <option value="cross">Cross</option>
+            <option value="ajrak">Ajrak Star</option>
+          </select>
+        </label>
+        <label>
+          Color 1:
+          <input type="color" id="pattern-color1" value="#B8860B" aria-label="Pattern color 1">
+        </label>
+        <label>
+          Color 2:
+          <input type="color" id="pattern-color2" value="#2a2118" aria-label="Pattern color 2">
+        </label>
+        <label>
+          Size:
+          <select id="pattern-size" aria-label="Pattern size">
+            <option value="20">Small</option>
+            <option value="36" selected>Medium</option>
+            <option value="56">Large</option>
+          </select>
+        </label>
+      </div>
+      <div id="pattern-canvas-wrap">
+        <canvas id="pattern-canvas" height="300" aria-label="Pattern preview canvas"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 6: TRY IT YOURSELF — TEXTURE MOOD BOARD
+════════════════════════════════════════════ -->
+<section id="try-it" aria-labelledby="try-heading">
+  <div class="section">
+    <span class="section-label">Try It Yourself</span>
+    <h2 class="section-title" id="try-heading">Texture Mood Board</h2>
+    <div class="mood-board-wrap">
+      <p class="mood-board-intro">Rate all 12 textures below on two axes: <strong>Formal/Casual</strong> and <strong>Cold/Warm</strong>. Select a texture, rate it using the sliders, and save. Build your complete Texture Mood Board for your portfolio.</p>
+
+      <div class="texture-items" role="group" aria-label="Texture mood board items">
+        <div class="texture-item tx1" data-tx="0" tabindex="0" role="button" aria-label="Noise grain texture"><span class="texture-item-label">Noise Grain</span></div>
+        <div class="texture-item tx2" data-tx="1" tabindex="0" role="button" aria-label="Fine lines texture"><span class="texture-item-label">Fine Lines</span></div>
+        <div class="texture-item tx3" data-tx="2" tabindex="0" role="button" aria-label="Diagonal stripe texture"><span class="texture-item-label">Diagonal</span></div>
+        <div class="texture-item tx4" data-tx="3" tabindex="0" role="button" aria-label="Radial dots texture"><span class="texture-item-label">Radial</span></div>
+        <div class="texture-item tx5" data-tx="4" tabindex="0" role="button" aria-label="Dot grid texture"><span class="texture-item-label">Dot Grid</span></div>
+        <div class="texture-item tx6" data-tx="5" tabindex="0" role="button" aria-label="Conic pattern texture"><span class="texture-item-label">Conic</span></div>
+        <div class="texture-item tx7" data-tx="6" tabindex="0" role="button" aria-label="Gradient wash texture"><span class="texture-item-label">Gradient</span></div>
+        <div class="texture-item tx8" data-tx="7" tabindex="0" role="button" aria-label="Checkerboard texture"><span class="texture-item-label">Checker</span></div>
+        <div class="texture-item tx9" data-tx="8" tabindex="0" role="button" aria-label="Turbulence texture"><span class="texture-item-label">Turbulence</span></div>
+        <div class="texture-item tx10" data-tx="9" tabindex="0" role="button" aria-label="Grid texture"><span class="texture-item-label">Grid</span></div>
+        <div class="texture-item tx11" data-tx="10" tabindex="0" role="button" aria-label="Conic repeat texture"><span class="texture-item-label">Conic 2</span></div>
+        <div class="texture-item tx12" data-tx="11" tabindex="0" role="button" aria-label="Vignette texture"><span class="texture-item-label">Vignette</span></div>
+      </div>
+
+      <div id="moodboard-rating-panel" style="display:none;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:24px;max-width:600px;" aria-live="polite">
+        <p id="moodboard-tx-name" style="font-weight:700;color:var(--level-color);margin-bottom:16px;font-size:1rem;"></p>
+        <div class="axis-row">
+          <div class="axis-label">Formal → Casual</div>
+          <div class="axis-ends"><span>Formal</span><span>Casual</span></div>
+          <input type="range" class="axis-slider" id="mb-fc-slider" min="1" max="10" value="5" aria-label="Formal to casual">
+        </div>
+        <div class="axis-row">
+          <div class="axis-label">Cold → Warm</div>
+          <div class="axis-ends"><span>Cold</span><span>Warm</span></div>
+          <input type="range" class="axis-slider" id="mb-cw-slider" min="1" max="10" value="5" aria-label="Cold to warm">
+        </div>
+        <button class="save-moodboard-btn" id="save-mb-rating">Save to Mood Board</button>
+      </div>
+
+      <div id="moodboard-display" class="ratings-preview" style="max-width:600px;">
+        <h4>My Texture Mood Board</h4>
+        <table class="rating-table" aria-label="Mood board ratings">
+          <tbody id="moodboard-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="portfolio-save">
+        <p><strong>Portfolio Entry:</strong> Your Texture Mood Board — 12 textures rated across two dimensions</p>
+        <button class="portfolio-save-btn" id="save-to-portfolio">Save to Portfolio</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 6b: LAYER IT (also part of activities)
+════════════════════════════════════════════ -->
+<section id="layer-it" aria-labelledby="layer-heading">
+  <div class="section">
+    <span class="section-label">Layer It</span>
+    <h2 class="section-title" id="layer-heading">Add Texture, Shadow, and Depth to a Flat Poster</h2>
+    <p class="section-body">Toggle each design layer on and off. Watch how each addition transforms a flat, lifeless layout into something dimensional and expressive.</p>
+
+    <div class="layer-activity">
+      <div class="layer-controls" role="group" aria-label="Layer toggles">
+        <label class="layer-toggle" id="toggle-grain">
+          <input type="checkbox" id="check-grain" aria-label="Toggle grain texture">
+          <span>Paper Grain</span>
+        </label>
+        <label class="layer-toggle" id="toggle-shadow">
+          <input type="checkbox" id="check-shadow" aria-label="Toggle drop shadow">
+          <span>Drop Shadow</span>
+        </label>
+        <label class="layer-toggle" id="toggle-pattern">
+          <input type="checkbox" id="check-pattern" aria-label="Toggle background pattern">
+          <span>Background Pattern</span>
+        </label>
+        <label class="layer-toggle" id="toggle-depth">
+          <input type="checkbox" id="check-depth" aria-label="Toggle depth overlay">
+          <span>Depth Overlay</span>
+        </label>
+      </div>
+
+      <div class="layer-preview-container">
+        <div class="layer-preview">
+          <div class="layer-preview-label">Always Flat</div>
+          <div id="poster-flat" aria-label="Flat poster, no effects">
+            <div class="poster-title-text">Truck Art<br>Exhibition</div>
+            <div class="poster-subtitle-text">Karachi Arts Council</div>
+            <div class="poster-btn-text">Learn More</div>
+          </div>
+        </div>
+        <div class="layer-preview">
+          <div class="layer-preview-label">Your Version</div>
+          <div id="poster-enhanced" style="height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;position:relative;background:#2a2118;transition:all 0.4s ease;" aria-label="Enhanced poster with toggleable effects" aria-live="polite">
+            <div id="pattern-overlay" style="position:absolute;inset:0;opacity:0;transition:opacity 0.4s;" aria-hidden="true"></div>
+            <div id="depth-overlay" style="position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,134,11,0.2) 0%,transparent 60%);transition:opacity 0.4s;" aria-hidden="true"></div>
+            <div id="grain-overlay" style="position:absolute;inset:0;opacity:0;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.75%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix type=%27saturate%27 values=%270%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%270.3%27/%3E%3C/svg%3E');transition:opacity 0.4s;" aria-hidden="true"></div>
+            <div class="poster-title-text" id="enhanced-title" style="z-index:2;">Truck Art<br>Exhibition</div>
+            <div class="poster-subtitle-text" style="z-index:2;">Karachi Arts Council</div>
+            <div class="poster-btn-text" id="enhanced-btn" style="z-index:2;">Learn More</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 7: JUDGE IT
+════════════════════════════════════════════ -->
+<section id="judge-it" aria-labelledby="judge-heading">
+  <div class="section">
+    <span class="section-label">Judge It</span>
+    <h2 class="section-title" id="judge-heading">Evaluate Texture and Depth Choices</h2>
+    <p class="section-body">Four design examples. For each, decide: is the use of texture and depth effective, or does it hurt the design? Vote and see the reasoning.</p>
+
+    <div class="judge-grid">
+      <!-- Card 1: Good -->
+      <div class="judge-card" data-answer="good" data-feedback="Correct. The subtle paper texture adds warmth and craft-feel appropriate for a handmade goods brand. The shadow depth clearly separates the product from background. Purposeful use." aria-label="Design example 1">
+        <div class="judge-preview" style="background:#2a2118;" aria-label="Handmade goods poster with subtle paper texture">
+          <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.7%27 numOctaves=%223%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix type=%27saturate%27 values=%270%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%270.15%27/%3E%3C/svg%3E');">
+            <div style="font-family:var(--font-display);font-weight:900;font-size:1.1rem;color:#f0e8d8;text-shadow:0 2px 8px rgba(0,0,0,0.5);">HANDMADE<br>GOODS</div>
+            <div style="background:var(--level-color);padding:6px 16px;border-radius:2px;font-family:var(--font-display2);font-size:0.7rem;letter-spacing:0.1em;color:#0a0800;box-shadow:0 4px 12px rgba(0,0,0,0.5);">SHOP NOW</div>
+          </div>
+        </div>
+        <div class="judge-label">
+          <span>Handmade Goods Poster</span>
+          <div class="judge-votes">
+            <button class="vote-btn good" data-vote="good" aria-label="Vote effective">✓ Effective</button>
+            <button class="vote-btn bad" data-vote="bad" aria-label="Vote ineffective">✕ Not Effective</button>
+          </div>
+        </div>
+        <div class="judge-feedback" aria-live="polite"></div>
+      </div>
+
+      <!-- Card 2: Bad -->
+      <div class="judge-card" data-answer="bad" data-feedback="That's the issue. A hospital emergency department needs maximum clarity and trust. Heavy texture and competing patterns create visual noise that can slow reading speed. In life-critical design, texture should be minimal or absent." aria-label="Design example 2">
+        <div class="judge-preview" style="background:repeating-conic-gradient(#b8860b22 0deg 5deg,#1a1410 5deg 10deg);" aria-label="Hospital poster with busy repeating conic pattern">
+          <div style="font-family:var(--font-display2);font-size:1.2rem;letter-spacing:0.1em;color:#f87171;text-align:center;">EMERGENCY<br>DEPARTMENT</div>
+          <div style="font-size:0.7rem;color:var(--text-secondary);">FLOOR 3 — TURN LEFT</div>
+        </div>
+        <div class="judge-label">
+          <span>Hospital Wayfinding Sign</span>
+          <div class="judge-votes">
+            <button class="vote-btn good" data-vote="good" aria-label="Vote effective">✓ Effective</button>
+            <button class="vote-btn bad" data-vote="bad" aria-label="Vote ineffective">✕ Not Effective</button>
+          </div>
+        </div>
+        <div class="judge-feedback" aria-live="polite"></div>
+      </div>
+
+      <!-- Card 3: Good -->
+      <div class="judge-card" data-answer="good" data-feedback="Perfect. This uses Islamic geometric pattern authentically — the pattern carries cultural meaning and creates richness appropriate for a premium cultural event. The depth layers create a layered, ceremonial quality." aria-label="Design example 3">
+        <div class="judge-preview" style="background:var(--bg-card);position:relative;" aria-label="Cultural festival poster with geometric pattern">
+          <div style="position:absolute;inset:0;background:repeating-conic-gradient(rgba(184,134,11,0.12) 0deg 10deg,transparent 10deg 20deg),repeating-linear-gradient(45deg,transparent,transparent 15px,rgba(184,134,11,0.05) 15px,rgba(184,134,11,0.05) 16px);"></div>
+          <div style="position:relative;z-index:1;text-align:center;">
+            <div style="font-family:var(--font-display);font-weight:900;font-size:1rem;color:var(--level-color);text-shadow:0 2px 8px rgba(0,0,0,0.8);">CULTURAL<br>HERITAGE FESTIVAL</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:4px;">Lahore · November</div>
+          </div>
+        </div>
+        <div class="judge-label">
+          <span>Heritage Festival Poster</span>
+          <div class="judge-votes">
+            <button class="vote-btn good" data-vote="good" aria-label="Vote effective">✓ Effective</button>
+            <button class="vote-btn bad" data-vote="bad" aria-label="Vote ineffective">✕ Not Effective</button>
+          </div>
+        </div>
+        <div class="judge-feedback" aria-live="polite"></div>
+      </div>
+
+      <!-- Card 4: Bad -->
+      <div class="judge-card" data-answer="bad" data-feedback="This is texture overload. Three competing texture layers fighting each other creates visual chaos. Texture should support one primary feeling, not try to be everything at once. Less is dimensional; more is just noisy." aria-label="Design example 4">
+        <div class="judge-preview" style="background:repeating-linear-gradient(0deg,#2a2118 0,#2a2118 4px,#1a1410 4px,#1a1410 8px),repeating-linear-gradient(90deg,rgba(184,134,11,0.1) 0,rgba(184,134,11,0.1) 2px,transparent 2px,transparent 20px);" aria-label="Over-textured menu design">
+          <div style="font-family:var(--font-display2);font-size:1.2rem;letter-spacing:0.1em;color:var(--text-primary);text-shadow:0 1px 3px rgba(0,0,0,0.9);">RESTAURANT<br>MENU</div>
+          <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;">Starter · Main · Dessert</div>
+        </div>
+        <div class="judge-label">
+          <span>Restaurant Menu Cover</span>
+          <div class="judge-votes">
+            <button class="vote-btn good" data-vote="good" aria-label="Vote effective">✓ Effective</button>
+            <button class="vote-btn bad" data-vote="bad" aria-label="Vote ineffective">✕ Not Effective</button>
+          </div>
+        </div>
+        <div class="judge-feedback" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 8: IN THE WILD
+════════════════════════════════════════════ -->
+<section id="in-the-wild" aria-labelledby="wild-heading">
+  <div class="section">
+    <span class="section-label">In the Wild</span>
+    <h2 class="section-title" id="wild-heading">Texture, Pattern and Depth in the Real World</h2>
+    <div class="wild-grid">
+      <div class="wild-card">
+        <div class="wild-thumb" style="background:repeating-linear-gradient(135deg,#8B0000 0,#8B0000 12px,#1a0000 12px,#1a0000 24px),repeating-linear-gradient(45deg,rgba(255,215,0,0.15) 0,rgba(255,215,0,0.15) 6px,transparent 6px,transparent 12px);" aria-label="Ajrak pattern texture">
+          <span style="font-family:var(--font-display2);letter-spacing:0.1em;color:rgba(255,255,255,0.8);text-shadow:0 2px 4px rgba(0,0,0,0.6);" aria-hidden="true">AJRAK</span>
+        </div>
+        <div class="wild-body">
+          <h3>Sindhi Ajrak</h3>
+          <p>The iconic block-print textile uses precise geometric repetition and deep indigo/red contrasts. Pattern here is identity — you know where it's from instantly. Used in branding, fashion, and editorial design globally.</p>
+        </div>
+      </div>
+      <div class="wild-card">
+        <div class="wild-thumb" style="background:linear-gradient(135deg,#ff6b00,#cc3300,#990000);position:relative;" aria-label="Truck art colors">
+          <div style="position:absolute;inset:0;background:repeating-conic-gradient(rgba(255,215,0,0.2) 0deg 3deg,transparent 3deg 8deg,rgba(255,255,255,0.1) 8deg 10deg,transparent 10deg 18deg);" aria-hidden="true"></div>
+          <span style="font-family:var(--font-display2);font-size:0.85rem;letter-spacing:0.12em;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.8);position:relative;z-index:1;" aria-hidden="true">TRUCK ART</span>
+        </div>
+        <div class="wild-body">
+          <h3>Pakistani Truck Art</h3>
+          <p>Maximum layering — flowers, calligraphy, geometric borders, landscapes, all stacked with intentional depth and pattern. Every surface is a canvas. This is visual texture as cultural expression at its most exuberant.</p>
+        </div>
+      </div>
+      <div class="wild-card">
+        <div class="wild-thumb" style="background:#1a1a2e;position:relative;" aria-label="Material Design depth UI">
+          <div style="width:100px;height:60px;background:#6c5ce7;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,0.7),0 4px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-display2);font-size:0.7rem;letter-spacing:0.1em;color:#fff;" aria-hidden="true">CARD UI</div>
+        </div>
+        <div class="wild-body">
+          <h3>Material Design (Google)</h3>
+          <p>Google's design language is built on the metaphor of physical paper with depth. Cards float above surfaces. Buttons cast shadows. Elevation is a language — the higher the shadow, the more important the element.</p>
+        </div>
+      </div>
+      <div class="wild-card">
+        <div class="wild-thumb" style="background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.65%27 numOctaves=%223%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix type=%27saturate%27 values=%270%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23n)%27 opacity=%270.5%27 fill=%23b8860b/%3E%3Crect width=%27200%27 height=%27200%27 fill=%27rgba(90,60,30,0.6)%27/%3E%3C/svg%3E') center/cover;" aria-label="Luxury paper texture">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:rgba(240,232,216,0.9);text-shadow:0 2px 6px rgba(0,0,0,0.8);" aria-hidden="true">PAPER GOODS</span>
+        </div>
+        <div class="wild-body">
+          <h3>Luxury Packaging &amp; Print</h3>
+          <p>High-end brands use tactile paper stocks, embossing, foil, and grain to communicate premium quality. The texture you see on packaging often mimics the texture printed on it. Visual and physical texture in harmony.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 9: LEVEL CHALLENGE — PATTERN DESIGN
+════════════════════════════════════════════ -->
+<section id="level-challenge" aria-labelledby="challenge-heading">
+  <div class="section">
+    <span class="section-label">Level Challenge</span>
+    <h2 class="section-title" id="challenge-heading">Create Your Pattern Design</h2>
+
+    <div class="challenge-brief">
+      <h3>The Brief</h3>
+      <p>Design a repeating pattern that could be used as <strong>gift wrap, fabric, or wallpaper</strong>. Your pattern must be built from no more than 2 shapes and 2 colors. Make it feel intentional — a pattern with meaning, not random decoration.</p>
+      <p>Inspired by Sindhi ajrak, Islamic geometric patterns, or anything from your own visual culture.</p>
+      <ul>
+        <li>Use 2 shapes maximum</li>
+        <li>Use 2 colors maximum</li>
+        <li>The pattern must repeat cleanly</li>
+        <li>Name your pattern and describe what feeling it creates</li>
+      </ul>
+    </div>
+
+    <div class="challenge-canvas-wrap">
+      <div class="challenge-canvas-toolbar">
+        <span class="toolbar-label">Shape:</span>
+        <button class="toolbar-btn active" data-shape="circle" aria-label="Circle shape" aria-pressed="true">●</button>
+        <button class="toolbar-btn" data-shape="square" aria-label="Square shape" aria-pressed="false">■</button>
+        <button class="toolbar-btn" data-shape="diamond" aria-label="Diamond shape" aria-pressed="false">◆</button>
+        <button class="toolbar-btn" data-shape="triangle" aria-label="Triangle shape" aria-pressed="false">▲</button>
+        <button class="toolbar-btn" data-shape="cross" aria-label="Cross shape" aria-pressed="false">✚</button>
+        <div class="toolbar-sep" aria-hidden="true"></div>
+        <span class="toolbar-label">Color A:</span>
+        <input type="color" id="challenge-color-a" value="#B8860B" style="width:36px;height:36px;border:2px solid var(--border-color);border-radius:4px;padding:2px;background:transparent;cursor:pointer;" aria-label="Challenge color A">
+        <span class="toolbar-label">Color B:</span>
+        <input type="color" id="challenge-color-b" value="#1a1410" style="width:36px;height:36px;border:2px solid var(--border-color);border-radius:4px;padding:2px;background:transparent;cursor:pointer;" aria-label="Challenge color B">
+        <div class="toolbar-sep" aria-hidden="true"></div>
+        <span class="toolbar-label">Size:</span>
+        <select id="challenge-size" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-primary);padding:8px 12px;border-radius:4px;font-family:var(--font-body);font-size:0.8rem;cursor:pointer;min-height:48px;" aria-label="Pattern tile size">
+          <option value="20">Small</option>
+          <option value="36" selected>Medium</option>
+          <option value="56">Large</option>
+        </select>
+        <div class="toolbar-sep" aria-hidden="true"></div>
+        <button class="toolbar-btn" id="challenge-clear" aria-label="Clear canvas">Clear</button>
+      </div>
+      <canvas id="challenge-canvas" height="360" aria-label="Pattern design canvas"></canvas>
+    </div>
+
+    <div style="margin-top:20px;max-width:600px;">
+      <label for="pattern-name" style="display:block;font-size:0.85rem;font-weight:700;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Name Your Pattern</label>
+      <input type="text" id="pattern-name" placeholder="e.g. 'Desert Stars', 'River Flow', 'Karachi Grid'" style="width:100%;background:var(--bg-card);border:1px solid var(--border-color);border-radius:4px;padding:14px 16px;font-family:var(--font-body);font-size:0.95rem;color:var(--text-primary);margin-bottom:12px;" aria-label="Pattern name">
+      <label for="pattern-desc" style="display:block;font-size:0.85rem;font-weight:700;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">What feeling does it create?</label>
+      <textarea id="pattern-desc" placeholder="Describe the mood, feeling, or cultural reference of your pattern..." style="width:100%;background:var(--bg-card);border:1px solid var(--border-color);border-radius:4px;padding:14px 16px;font-family:var(--font-body);font-size:0.95rem;color:var(--text-primary);resize:vertical;min-height:80px;line-height:1.6;" aria-label="Pattern description"></textarea>
+    </div>
+
+    <div class="portfolio-save" style="margin-top:24px;">
+      <p><strong>Portfolio Entry 9:</strong> My Pattern Design — saved as tiled output with name and description</p>
+      <button class="portfolio-save-btn" id="save-challenge">Save Pattern to Portfolio</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 10: REFLECTION PROMPT
+════════════════════════════════════════════ -->
+<section id="reflection" aria-labelledby="reflection-heading">
+  <div class="section">
+    <span class="section-label">Reflection Prompt</span>
+    <h2 class="section-title" id="reflection-heading">Think Beyond the Screen</h2>
+    <div class="reflection-card">
+      <p class="reflection-question">"A designer chose a smooth, flat white for a children's hospital app — no texture, no depth, just clean white. Another designer used soft paper grain and warm shadows. Which feels safer to a frightened child, and why — and what does your answer reveal about the relationship between visual texture and human emotion?"</p>
+      <textarea class="reflection-input" id="reflection-text" placeholder="Write your thoughts here..." aria-label="Reflection response"></textarea>
+      <button class="reflection-save" id="save-reflection" aria-label="Save reflection">Save Reflection</button>
+      <p class="reflection-saved" id="reflection-saved" role="status">✓ Reflection saved to your portfolio</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+  SECTION 11: BADGE + XP UNLOCK
+════════════════════════════════════════════ -->
+<section id="badge-unlock" aria-labelledby="badge-heading">
+  <div class="section" style="padding-top:0;">
+    <span class="section-label">Level Complete</span>
+    <h2 class="section-title" id="badge-heading" style="text-align:center;margin-bottom:40px;">Claim Your Badge</h2>
+    <div class="badge-container">
+      <div class="badge-icon" id="badge-icon" aria-label="Texture Weaver badge">🧵</div>
+      <div class="badge-name">Texture Weaver</div>
+      <div class="badge-desc">You understand that design has a feel — even on flat screens. You can use texture, pattern, and depth to create dimension, emotion, and meaning in visual design.</div>
+      <div class="xp-reward-display" aria-label="XP reward: 500 XP">⚡ 500 XP</div>
+      <button class="complete-btn" id="complete-btn" aria-label="Complete level and earn 500 XP">Complete Level 9</button>
+      <p class="completion-message" id="completion-message" role="status">🎉 Level 9 complete! You've earned 500 XP and the Texture Weaver badge. Your Pattern Design is saved to your portfolio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVEL NAVIGATION -->
+<nav aria-label="Level navigation" style="background:var(--bg-primary);border-top:1px solid var(--border-color);padding:32px 24px;">
+  <div class="level-nav">
+    <a href="level-08.html" class="nav-link prev" aria-label="Previous level: Grid and Alignment">
+      ← Level 8: Grid &amp; Alignment
+    </a>
+    <a href="index.html" class="nav-link" aria-label="Back to course home">
+      Home
+    </a>
+    <a href="level-10.html" class="nav-link next" aria-label="Next level: Design for People">
+      Level 10: Design for People →
+    </a>
+  </div>
+</nav>
+
+<!-- GSAP & CANVAS-CONFETTI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── CONSTANTS ──
+  var COURSE = 'basic-design-theory';
+  var LEVEL = 9;
+  var LEVEL_XP = 500;
+  var PREFIX = 'ots_skills_' + COURSE;
+
+  var TEXTURE_NAMES = [
+    'Noise Grain','Fine Lines','Diagonal Stripe','Radial Dots',
+    'Dot Grid','Conic','Gradient Wash','Checkerboard',
+    'Turbulence','Grid Lines','Conic 2','Vignette'
+  ];
+
+  // ── SAFE STORAGE ──
+  function storageGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function storageSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  // ── INIT STARTED_AT ──
+  if (!storageGet(PREFIX + '_started_at')) {
+    storageSet(PREFIX + '_started_at', new Date().toISOString());
+  }
+
+  // ── XP COUNTER ──
+  function computeTotalXP() {
+    var xpMap = [100,150,200,250,300,350,400,450,500,600,700,1000];
+    var total = 0;
+    for (var i = 1; i <= 12; i++) {
+      if (storageGet(PREFIX + '_level_' + i + '_complete') === 'true') {
+        total += xpMap[i - 1];
+      }
+    }
+    return total;
+  }
+
+  function updateXPDisplay() {
+    var el = document.getElementById('nav-xp');
+    if (el) el.textContent = '⚡ ' + computeTotalXP() + ' XP';
+  }
+
+  updateXPDisplay();
+
+  // ── SHADOW DEMO ──
+  var shadowX = document.getElementById('shadow-x');
+  var shadowY = document.getElementById('shadow-y');
+  var shadowBlur = document.getElementById('shadow-blur');
+  var shadowOpacity = document.getElementById('shadow-opacity');
+  var shadowBox = document.getElementById('shadow-demo-box');
+
+  function updateShadow() {
+    if (!shadowBox) return;
+    var x = shadowX ? shadowX.value : 4;
+    var y = shadowY ? shadowY.value : 8;
+    var b = shadowBlur ? shadowBlur.value : 20;
+    var o = shadowOpacity ? shadowOpacity.value : 60;
+    var xv = document.getElementById('shadow-x-val');
+    var yv = document.getElementById('shadow-y-val');
+    var bv = document.getElementById('shadow-blur-val');
+    var ov = document.getElementById('shadow-opacity-val');
+    if (xv) xv.textContent = x;
+    if (yv) yv.textContent = y;
+    if (bv) bv.textContent = b;
+    if (ov) ov.textContent = o;
+    shadowBox.style.boxShadow = x + 'px ' + y + 'px ' + b + 'px rgba(0,0,0,' + (o/100) + ')';
+  }
+
+  if (shadowX) shadowX.addEventListener('input', updateShadow);
+  if (shadowY) shadowY.addEventListener('input', updateShadow);
+  if (shadowBlur) shadowBlur.addEventListener('input', updateShadow);
+  if (shadowOpacity) shadowOpacity.addEventListener('input', updateShadow);
+  updateShadow();
+
+  // ── TABS ──
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      tabPanels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      var target = btn.getAttribute('aria-controls');
+      var panel = document.getElementById(target);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // ── TEXTURE SCALE (See It Live tab) ──
+  var texRatings = {};
+  var selectedTexIdx = null;
+
+  var swatches = document.querySelectorAll('.texture-swatch');
+  var ratingPanel = document.getElementById('texture-rating-panel');
+  var ratingTexName = document.getElementById('rating-texture-name');
+  var fcSlider = document.getElementById('fc-slider');
+  var cwSlider = document.getElementById('cw-slider');
+  var saveTexRating = document.getElementById('save-texture-rating');
+  var ratingsSummary = document.getElementById('ratings-summary');
+  var ratingsTbody = document.getElementById('ratings-tbody');
+
+  function selectTexSwatch(idx) {
+    selectedTexIdx = idx;
+    swatches.forEach(function(s) { s.classList.remove('selected'); });
+    swatches[idx].classList.add('selected');
+    if (ratingPanel) ratingPanel.style.display = 'block';
+    if (ratingTexName) ratingTexName.textContent = 'Rating: ' + TEXTURE_NAMES[idx];
+    if (fcSlider) fcSlider.value = texRatings[idx] ? texRatings[idx].fc : 5;
+    if (cwSlider) cwSlider.value = texRatings[idx] ? texRatings[idx].cw : 5;
+  }
+
+  swatches.forEach(function(s) {
+    s.addEventListener('click', function() { selectTexSwatch(parseInt(s.dataset.idx)); });
+    s.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTexSwatch(parseInt(s.dataset.idx)); }});
+  });
+
+  if (saveTexRating) {
+    saveTexRating.addEventListener('click', function() {
+      if (selectedTexIdx === null) return;
+      texRatings[selectedTexIdx] = {
+        fc: fcSlider ? parseInt(fcSlider.value) : 5,
+        cw: cwSlider ? parseInt(cwSlider.value) : 5
+      };
+      updateRatingsTable();
+    });
+  }
+
+  function updateRatingsTable() {
+    if (!ratingsTbody) return;
+    ratingsTbody.innerHTML = '';
+    var keys = Object.keys(texRatings);
+    if (keys.length === 0) return;
+    if (ratingsSummary) ratingsSummary.classList.add('visible');
+    keys.forEach(function(k) {
+      var r = texRatings[k];
+      var tr = document.createElement('tr');
+      var fcLabel = r.fc <= 4 ? 'Formal' : r.fc >= 7 ? 'Casual' : 'Neutral';
+      var cwLabel = r.cw <= 4 ? 'Cold' : r.cw >= 7 ? 'Warm' : 'Neutral';
+      tr.innerHTML = '<td>' + TEXTURE_NAMES[parseInt(k)] + '</td><td>' + fcLabel + ' (' + r.fc + '/10)</td><td>' + cwLabel + ' (' + r.cw + '/10)</td>';
+      ratingsTbody.appendChild(tr);
+    });
+  }
+
+  // ── PATTERN BUILDER (See It Live) ──
+  var patternCanvas = document.getElementById('pattern-canvas');
+  var patternCtx = patternCanvas ? patternCanvas.getContext('2d') : null;
+  var patternShape = document.getElementById('pattern-shape');
+  var patternColor1 = document.getElementById('pattern-color1');
+  var patternColor2 = document.getElementById('pattern-color2');
+  var patternSize = document.getElementById('pattern-size');
+
+  function drawPatternShape(ctx, shape, x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = Math.max(1, size * 0.06);
+    var s = size * 0.4;
+    ctx.beginPath();
+    switch(shape) {
+      case 'circle':
+        ctx.arc(x, y, s, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      case 'square':
+        ctx.fillRect(x - s, y - s, s * 2, s * 2);
+        break;
+      case 'diamond':
+        ctx.moveTo(x, y - s);
+        ctx.lineTo(x + s, y);
+        ctx.lineTo(x, y + s);
+        ctx.lineTo(x - s, y);
+        ctx.closePath();
+        ctx.fill();
+        break;
+      case 'triangle':
+        ctx.moveTo(x, y - s);
+        ctx.lineTo(x + s, y + s * 0.7);
+        ctx.lineTo(x - s, y + s * 0.7);
+        ctx.closePath();
+        ctx.fill();
+        break;
+      case 'cross':
+        var t = s * 0.3;
+        ctx.fillRect(x - t, y - s, t * 2, s * 2);
+        ctx.fillRect(x - s, y - t, s * 2, t * 2);
+        break;
+      case 'ajrak':
+        // 8-pointed star (simplified)
+        ctx.save();
+        ctx.translate(x, y);
+        for (var i = 0; i < 8; i++) {
+          ctx.save();
+          ctx.rotate(i * Math.PI / 4);
+          ctx.beginPath();
+          ctx.moveTo(0, -s);
+          ctx.lineTo(s * 0.3, -s * 0.3);
+          ctx.lineTo(s, 0);
+          ctx.lineTo(s * 0.3, s * 0.3);
+          ctx.lineTo(0, s);
+          ctx.lineTo(-s * 0.3, s * 0.3);
+          ctx.lineTo(-s, 0);
+          ctx.lineTo(-s * 0.3, -s * 0.3);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.restore();
+        break;
+    }
+  }
+
+  function renderPattern(ctx, canvas, shape, c1, c2, tileSize) {
+    if (!ctx) return;
+    var w = canvas.width;
+    var h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = c2;
+    ctx.fillRect(0, 0, w, h);
+    var cols = Math.ceil(w / tileSize) + 1;
+    var rows = Math.ceil(h / tileSize) + 1;
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var x = c * tileSize + tileSize / 2;
+        var y = r * tileSize + tileSize / 2;
+        // offset every other row
+        if (r % 2 === 1) x += tileSize / 2;
+        drawPatternShape(ctx, shape, x, y, tileSize, c1);
+      }
+    }
+  }
+
+  function updatePatternCanvas() {
+    if (!patternCanvas || !patternCtx) return;
+    var w = patternCanvas.parentElement ? patternCanvas.parentElement.clientWidth : 600;
+    patternCanvas.width = Math.min(w, 600);
+    patternCanvas.height = 300;
+    var shape = patternShape ? patternShape.value : 'circle';
+    var c1 = patternColor1 ? patternColor1.value : '#B8860B';
+    var c2 = patternColor2 ? patternColor2.value : '#2a2118';
+    var size = patternSize ? parseInt(patternSize.value) : 36;
+    renderPattern(patternCtx, patternCanvas, shape, c1, c2, size);
+  }
+
+  if (patternShape) patternShape.addEventListener('change', updatePatternCanvas);
+  if (patternColor1) patternColor1.addEventListener('input', updatePatternCanvas);
+  if (patternColor2) patternColor2.addEventListener('input', updatePatternCanvas);
+  if (patternSize) patternSize.addEventListener('change', updatePatternCanvas);
+
+  setTimeout(updatePatternCanvas, 100);
+
+  // ── MOOD BOARD (Try It Yourself) ──
+  var mbRatings = {};
+  var mbSelectedIdx = null;
+
+  var moodboardItems = document.querySelectorAll('.texture-item');
+  var mbPanel = document.getElementById('moodboard-rating-panel');
+  var mbTxName = document.getElementById('moodboard-tx-name');
+  var mbFcSlider = document.getElementById('mb-fc-slider');
+  var mbCwSlider = document.getElementById('mb-cw-slider');
+  var saveMbRating = document.getElementById('save-mb-rating');
+  var moodboardDisplay = document.getElementById('moodboard-display');
+  var moodboardTbody = document.getElementById('moodboard-tbody');
+
+  function selectMoodItem(idx) {
+    mbSelectedIdx = idx;
+    moodboardItems.forEach(function(item) { item.classList.remove('selected'); });
+    moodboardItems[idx].classList.add('selected');
+    if (mbPanel) mbPanel.style.display = 'block';
+    if (mbTxName) mbTxName.textContent = 'Rating: ' + TEXTURE_NAMES[idx];
+    if (mbFcSlider) mbFcSlider.value = mbRatings[idx] ? mbRatings[idx].fc : 5;
+    if (mbCwSlider) mbCwSlider.value = mbRatings[idx] ? mbRatings[idx].cw : 5;
+  }
+
+  moodboardItems.forEach(function(item) {
+    item.addEventListener('click', function() { selectMoodItem(parseInt(item.dataset.tx)); });
+    item.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMoodItem(parseInt(item.dataset.tx)); }});
+  });
+
+  if (saveMbRating) {
+    saveMbRating.addEventListener('click', function() {
+      if (mbSelectedIdx === null) return;
+      mbRatings[mbSelectedIdx] = {
+        fc: mbFcSlider ? parseInt(mbFcSlider.value) : 5,
+        cw: mbCwSlider ? parseInt(mbCwSlider.value) : 5
+      };
+      updateMoodBoard();
+    });
+  }
+
+  function updateMoodBoard() {
+    if (!moodboardTbody) return;
+    moodboardTbody.innerHTML = '';
+    var keys = Object.keys(mbRatings);
+    if (keys.length === 0) return;
+    if (moodboardDisplay) moodboardDisplay.classList.add('visible');
+    keys.forEach(function(k) {
+      var r = mbRatings[k];
+      var tr = document.createElement('tr');
+      var fcLabel = r.fc <= 4 ? 'Formal' : r.fc >= 7 ? 'Casual' : 'Neutral';
+      var cwLabel = r.cw <= 4 ? 'Cold' : r.cw >= 7 ? 'Warm' : 'Neutral';
+      tr.innerHTML = '<td>' + TEXTURE_NAMES[parseInt(k)] + '</td><td>' + fcLabel + '</td><td>' + cwLabel + '</td>';
+      moodboardTbody.appendChild(tr);
+    });
+  }
+
+  var saveToPortfolio = document.getElementById('save-to-portfolio');
+  if (saveToPortfolio) {
+    saveToPortfolio.addEventListener('click', function() {
+      var data = JSON.stringify({ type: 'moodboard', ratings: mbRatings, timestamp: new Date().toISOString() });
+      storageSet(PREFIX + '_portfolio_level_' + LEVEL, data);
+      saveToPortfolio.textContent = '✓ Saved!';
+      setTimeout(function() { saveToPortfolio.textContent = 'Save to Portfolio'; }, 2000);
+    });
+  }
+
+  // ── LAYER IT ──
+  var checkGrain = document.getElementById('check-grain');
+  var checkShadow = document.getElementById('check-shadow');
+  var checkPattern = document.getElementById('check-pattern');
+  var checkDepth = document.getElementById('check-depth');
+  var posterEnhanced = document.getElementById('poster-enhanced');
+  var grainOverlay = document.getElementById('grain-overlay');
+  var depthOverlay = document.getElementById('depth-overlay');
+  var patternLayerOverlay = document.getElementById('pattern-overlay');
+  var enhancedTitle = document.getElementById('enhanced-title');
+  var enhancedBtn = document.getElementById('enhanced-btn');
+
+  function updateLayers() {
+    if (!posterEnhanced) return;
+    var grain = checkGrain && checkGrain.checked;
+    var shadow = checkShadow && checkShadow.checked;
+    var pat = checkPattern && checkPattern.checked;
+    var depth = checkDepth && checkDepth.checked;
+
+    // toggle parent labels
+    ['toggle-grain','toggle-shadow','toggle-pattern','toggle-depth'].forEach(function(id, i) {
+      var el = document.getElementById(id);
+      var checks = [grain, shadow, pat, depth];
+      if (el) { if (checks[i]) el.classList.add('active'); else el.classList.remove('active'); }
+    });
+
+    if (grainOverlay) grainOverlay.style.opacity = grain ? '1' : '0';
+    if (patternLayerOverlay) {
+      patternLayerOverlay.style.opacity = pat ? '1' : '0';
+      patternLayerOverlay.style.background = pat ? 'repeating-linear-gradient(45deg,#2a2118 0,#2a2118 12px,#1a1410 12px,#1a1410 24px)' : '';
+    }
+    if (depthOverlay) depthOverlay.style.opacity = depth ? '1' : '0';
+
+    if (enhancedTitle) {
+      enhancedTitle.style.textShadow = shadow ? '0 4px 16px rgba(0,0,0,0.8)' : 'none';
+    }
+    if (enhancedBtn) {
+      enhancedBtn.style.boxShadow = shadow ? '0 6px 20px rgba(0,0,0,0.6),0 2px 4px rgba(184,134,11,0.3)' : 'none';
+    }
+  }
+
+  if (checkGrain) checkGrain.addEventListener('change', updateLayers);
+  if (checkShadow) checkShadow.addEventListener('change', updateLayers);
+  if (checkPattern) checkPattern.addEventListener('change', updateLayers);
+  if (checkDepth) checkDepth.addEventListener('change', updateLayers);
+
+  // click on labels
+  ['toggle-grain','toggle-shadow','toggle-pattern','toggle-depth'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', function(e) {
+        var inp = el.querySelector('input');
+        if (inp && e.target !== inp) {
+          inp.checked = !inp.checked;
+          updateLayers();
+        }
+      });
+    }
+  });
+
+  // ── JUDGE IT ──
+  var judgeCards = document.querySelectorAll('.judge-card');
+  judgeCards.forEach(function(card) {
+    var voteBtns = card.querySelectorAll('.vote-btn');
+    var feedback = card.querySelector('.judge-feedback');
+    var correctAnswer = card.dataset.answer;
+    var feedbackText = card.dataset.feedback;
+
+    voteBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var vote = btn.dataset.vote;
+        voteBtns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        if (feedback) {
+          feedback.textContent = feedbackText;
+          feedback.classList.add('show');
+          if (vote === correctAnswer) {
+            feedback.style.borderLeft = '3px solid #4ade80';
+            feedback.style.background = 'rgba(74,222,128,0.05)';
+          } else {
+            feedback.style.borderLeft = '3px solid #fbbf24';
+            feedback.style.background = 'rgba(251,191,36,0.05)';
+          }
+        }
+      });
+      btn.addEventListener('keydown', function(e) { if (e.key === 'Enter') btn.click(); });
+    });
+  });
+
+  // ── CHALLENGE CANVAS ──
+  var challengeCanvas = document.getElementById('challenge-canvas');
+  var challengeCtx = challengeCanvas ? challengeCanvas.getContext('2d') : null;
+  var challengeColorA = document.getElementById('challenge-color-a');
+  var challengeColorB = document.getElementById('challenge-color-b');
+  var challengeSize = document.getElementById('challenge-size');
+  var challengeClear = document.getElementById('challenge-clear');
+  var currentChallengeShape = 'circle';
+
+  var challengeToolBtns = document.querySelectorAll('[data-shape]');
+  challengeToolBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentChallengeShape = btn.dataset.shape;
+      challengeToolBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed','true');
+      updateChallengeCanvas();
+    });
+  });
+
+  function updateChallengeCanvas() {
+    if (!challengeCanvas || !challengeCtx) return;
+    var w = challengeCanvas.parentElement ? challengeCanvas.parentElement.clientWidth : 700;
+    challengeCanvas.width = Math.max(w, 200);
+    challengeCanvas.height = 360;
+    var c1 = challengeColorA ? challengeColorA.value : '#B8860B';
+    var c2 = challengeColorB ? challengeColorB.value : '#1a1410';
+    var sz = challengeSize ? parseInt(challengeSize.value) : 36;
+    renderPattern(challengeCtx, challengeCanvas, currentChallengeShape, c1, c2, sz);
+  }
+
+  if (challengeColorA) challengeColorA.addEventListener('input', updateChallengeCanvas);
+  if (challengeColorB) challengeColorB.addEventListener('input', updateChallengeCanvas);
+  if (challengeSize) challengeSize.addEventListener('change', updateChallengeCanvas);
+  if (challengeClear) {
+    challengeClear.addEventListener('click', function() {
+      if (challengeCtx && challengeCanvas) {
+        var c2 = challengeColorB ? challengeColorB.value : '#1a1410';
+        challengeCtx.fillStyle = c2;
+        challengeCtx.fillRect(0, 0, challengeCanvas.width, challengeCanvas.height);
+      }
+    });
+  }
+
+  setTimeout(updateChallengeCanvas, 150);
+
+  var saveChallenge = document.getElementById('save-challenge');
+  if (saveChallenge) {
+    saveChallenge.addEventListener('click', function() {
+      var name = document.getElementById('pattern-name');
+      var desc = document.getElementById('pattern-desc');
+      var data = JSON.stringify({
+        type: 'pattern-design',
+        name: name ? name.value : '',
+        description: desc ? desc.value : '',
+        shape: currentChallengeShape,
+        colorA: challengeColorA ? challengeColorA.value : '#B8860B',
+        colorB: challengeColorB ? challengeColorB.value : '#1a1410',
+        size: challengeSize ? challengeSize.value : '36',
+        timestamp: new Date().toISOString()
+      });
+      storageSet(PREFIX + '_portfolio_level_' + LEVEL, data);
+      saveChallenge.textContent = '✓ Pattern Saved!';
+      setTimeout(function() { saveChallenge.textContent = 'Save Pattern to Portfolio'; }, 2500);
+    });
+  }
+
+  // ── REFLECTION ──
+  var savedReflectionText = storageGet(PREFIX + '_reflection_level_' + LEVEL);
+  var reflectionInput = document.getElementById('reflection-text');
+  if (reflectionInput && savedReflectionText) reflectionInput.value = savedReflectionText;
+
+  var saveReflectionBtn = document.getElementById('save-reflection');
+  var reflectionSavedMsg = document.getElementById('reflection-saved');
+  if (saveReflectionBtn) {
+    saveReflectionBtn.addEventListener('click', function() {
+      if (!reflectionInput) return;
+      storageSet(PREFIX + '_reflection_level_' + LEVEL, reflectionInput.value);
+      if (reflectionSavedMsg) reflectionSavedMsg.classList.add('show');
+      setTimeout(function() { if (reflectionSavedMsg) reflectionSavedMsg.classList.remove('show'); }, 3000);
+    });
+  }
+
+  // ── LEVEL COMPLETION ──
+  var isComplete = storageGet(PREFIX + '_level_' + LEVEL + '_complete') === 'true';
+  var completeBtn = document.getElementById('complete-btn');
+  var completionMsg = document.getElementById('completion-message');
+  var badgeIcon = document.getElementById('badge-icon');
+
+  if (isComplete) {
+    if (completeBtn) { completeBtn.textContent = '✓ Level Complete'; completeBtn.disabled = true; }
+    if (completionMsg) completionMsg.classList.add('show');
+    if (badgeIcon) badgeIcon.classList.add('earned');
+    updateXPDisplay();
+  }
+
+  if (completeBtn) {
+    completeBtn.addEventListener('click', function() {
+      if (isComplete) return;
+      isComplete = true;
+
+      storageSet(PREFIX + '_level_' + LEVEL + '_complete', 'true');
+      storageSet(PREFIX + '_level_' + LEVEL + '_xp', LEVEL_XP.toString());
+
+      var totalXP = computeTotalXP();
+      storageSet(PREFIX + '_xp_total', totalXP.toString());
+
+      completeBtn.textContent = '✓ Level Complete';
+      completeBtn.disabled = true;
+      if (completionMsg) completionMsg.classList.add('show');
+      if (badgeIcon) badgeIcon.classList.add('earned');
+
+      updateXPDisplay();
+
+      // Confetti
+      try {
+        if (typeof confetti === 'function') {
+          var gold = '#B8860B';
+          var light = '#D4A017';
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: [gold, light, '#f0e8d8', '#fff8dc'] });
+          setTimeout(function() {
+            confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 }, angle: 60, colors: [gold, light] });
+            confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 }, angle: 120, colors: [gold, '#fff8dc'] });
+          }, 400);
+        }
+      } catch(e) {}
+
+      // GSAP badge pulse
+      try {
+        if (typeof gsap !== 'undefined' && badgeIcon) {
+          gsap.fromTo(badgeIcon, { scale: 1 }, { scale: 1.2, duration: 0.3, ease: 'back.out(2)', yoyo: true, repeat: 1 });
+        }
+      } catch(e) {}
+    });
+  }
+
+  // ── GSAP SCROLL ANIMATIONS ──
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reducedMotion) {
+        var animEls = document.querySelectorAll('.concept-card, .look-card, .wild-card, .judge-card');
+        animEls.forEach(function(el, i) {
+          gsap.fromTo(el,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1, y: 0,
+              duration: 0.6,
+              delay: (i % 3) * 0.1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 88%',
+                once: true
+              }
+            }
+          );
+        });
+
+        gsap.fromTo('.header-title',
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.3 }
+        );
+        gsap.fromTo('.header-tagline',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', delay: 0.6 }
+        );
+        gsap.fromTo('.header-accent-line',
+          { scaleX: 0, transformOrigin: 'left' },
+          { scaleX: 1, duration: 0.8, ease: 'power2.out', delay: 0.5 }
+        );
+      }
+    }
+  } catch(e) {}
+
+  // ── RESPONSIVE CANVAS RESIZE ──
+  function handleResize() {
+    updatePatternCanvas();
+    updateChallengeCanvas();
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(handleResize, 200);
+  });
+
+  // ── KEYBOARD NAV FOR TEXTURE SWATCHES ──
+  swatches.forEach(function(s) {
+    s.setAttribute('tabindex', '0');
+  });
+  moodboardItems.forEach(function(item) {
+    item.setAttribute('tabindex', '0');
+  });
+
+})();
+</script>
+</body>
+</html>

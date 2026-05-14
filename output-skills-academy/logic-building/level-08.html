@@ -1,0 +1,2844 @@
+<!-- COURSE: Logic Building | LEVEL: 8 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 8 — Loop It | Logic Building | OTS Skills Academy</title>
+<meta name="description" content="Level 8: Loop It — Repetition is not boring. It's powerful. Learn loops, repetition, exit conditions, and infinite loops.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --accent-primary: #FFC300;
+  --accent-secondary: #FFD60A;
+  --accent-glow: rgba(255,195,0,0.3);
+  --accent-orbit: rgba(255,195,0,0.15);
+  --accent-danger: #FF4757;
+  --accent-green: #00F5A0;
+  --text-primary: #FFFFFF;
+  --text-secondary: #AAAAAA;
+  --text-muted: #666666;
+  --border: rgba(255,195,0,0.2);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --nav-height: 64px;
+  --max-width: 1100px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════ ORBITAL BACKGROUND ═══════════════ */
+.orbital-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,195,0,0.06);
+  animation: orbit-rotate linear infinite;
+  transform-origin: center;
+}
+
+.orbit-ring:nth-child(1) { width: 600px; height: 600px; top: -200px; right: -200px; animation-duration: 30s; }
+.orbit-ring:nth-child(2) { width: 900px; height: 900px; top: -350px; right: -350px; animation-duration: 50s; animation-direction: reverse; }
+.orbit-ring:nth-child(3) { width: 400px; height: 400px; bottom: 100px; left: -100px; animation-duration: 25s; }
+.orbit-ring:nth-child(4) { width: 200px; height: 200px; bottom: 200px; left: 100px; animation-duration: 15s; animation-direction: reverse; }
+
+.orbit-dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-primary);
+  animation: orbit-dot-move linear infinite;
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-dot-move {
+  0% { transform: rotate(0deg) translateX(100px) rotate(0deg); opacity: 0.8; }
+  50% { opacity: 0.3; }
+  100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); opacity: 0.8; }
+}
+
+/* ═══════════════ STICKY NAV ═══════════════ */
+.sticky-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,195,0,0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.nav-inner {
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-mark {
+  background: var(--accent-primary);
+  color: #000;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.nav-course {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-center {
+  display: none;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.nav-xp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent-primary);
+  min-width: 100px;
+}
+
+.nav-level-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  background: var(--accent-primary);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+@media (min-width: 768px) {
+  .nav-center { display: block; font-size: 14px; color: var(--text-secondary); font-family: 'DM Sans', sans-serif; }
+}
+
+/* PROGRESS BAR */
+.level-progress-bar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  z-index: 999;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  width: 66.67%; /* 8/12 */
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ═══════════════ BREADCRUMB ═══════════════ */
+.breadcrumb {
+  padding-top: calc(var(--nav-height) + 3px + 24px);
+  padding-bottom: 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.breadcrumb-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.breadcrumb-inner a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb-inner a:hover { color: var(--accent-primary); }
+.breadcrumb-sep { color: var(--text-muted); }
+.breadcrumb-current { color: var(--accent-primary); }
+
+/* ═══════════════ MAIN LAYOUT ═══════════════ */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  padding: 80px 24px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 48px 16px; }
+}
+
+.section-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 16px;
+}
+
+/* ═══════════════ LEVEL HEADER ═══════════════ */
+.level-header {
+  padding-top: calc(var(--nav-height) + 3px + 60px);
+  padding-bottom: 80px;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.level-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.level-number-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--accent-primary);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.difficulty-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.xp-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  background: var(--accent-secondary);
+  padding: 4px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.level-header-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.level-header-title .accent-word {
+  color: var(--accent-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.level-header-title .accent-word::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-primary);
+  box-shadow: 0 0 12px var(--accent-primary);
+  border-radius: 2px;
+}
+
+.level-header-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 32px;
+}
+
+.level-header-tagline span {
+  color: var(--accent-primary);
+}
+
+/* LOOP ANIMATION in header */
+.loop-visual {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+  height: 60px;
+}
+
+.loop-ticker {
+  display: flex;
+  gap: 24px;
+  animation: ticker-scroll 12s linear infinite;
+  white-space: nowrap;
+}
+
+.loop-ticker-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: rgba(255,195,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,195,0,0.1);
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.loop-ticker-item.highlight {
+  color: var(--accent-primary);
+  border-color: rgba(255,195,0,0.4);
+  background: rgba(255,195,0,0.05);
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ═══════════════ WHAT YOU'LL LEARN ═══════════════ */
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.learn-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.learn-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent-primary);
+}
+
+.learn-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.learn-card-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.learn-card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--accent-primary);
+}
+
+.learn-card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ═══════════════ WARM UP ZONE ═══════════════ */
+.warmup-section {
+  background: rgba(255,195,0,0.04);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+}
+
+@media (max-width: 768px) {
+  .warmup-section { padding: 24px 20px; }
+}
+
+.slider-container {
+  margin-top: 32px;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.slider-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 120px;
+}
+
+.count-slider {
+  flex: 1;
+  min-width: 200px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,195,0,0.2);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.count-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-primary);
+  transition: transform 0.2s;
+}
+
+.count-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.count-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  min-width: 60px;
+  text-align: right;
+}
+
+.sequence-display {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.2);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--accent-primary);
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.seq-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  animation: pop-in 0.2s ease;
+}
+
+.seq-num.active-num {
+  background: var(--accent-primary);
+  color: #000;
+  box-shadow: 0 0 12px var(--accent-primary);
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.warmup-question {
+  margin-top: 28px;
+  padding: 20px 24px;
+  background: rgba(255,195,0,0.08);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--accent-primary);
+}
+
+.warmup-question p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.warmup-answer-input {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  width: 100%;
+  max-width: 200px;
+  transition: border-color 0.3s;
+  outline: none;
+}
+
+.warmup-answer-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.btn-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-primary);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 48px;
+}
+
+.btn-check:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-check:active { transform: translateY(0); }
+
+.feedback-msg {
+  margin-top: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 24px;
+  transition: opacity 0.3s;
+}
+
+.feedback-msg.correct { color: var(--accent-green); }
+.feedback-msg.wrong { color: var(--accent-danger); }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(0,245,160,0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0,245,160,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,245,160,0); }
+}
+
+.shake { animation: shake 0.4s ease; }
+.pulse-correct { animation: pulse-green 0.6s ease; }
+
+/* ═══════════════ CORE CONCEPT ═══════════════ */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 28px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.concept-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.concept-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.concept-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.concept-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent-primary);
+}
+
+.concept-body {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.code-block {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent-primary);
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.code-block .kw { color: #FF79C6; }
+.code-block .num { color: var(--accent-secondary); }
+.code-block .comment { color: var(--text-muted); }
+.code-block .str { color: #50FA7B; }
+
+/* ═══════════════ INTERACTIVE CHALLENGE — Loop Builder ═══════════════ */
+.challenge-container {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,195,0,0.2);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .challenge-container { padding: 24px 16px; }
+}
+
+.challenge-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.challenge-tab {
+  flex: 1;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  min-height: 48px;
+}
+
+.challenge-tab:hover { color: var(--accent-primary); }
+
+.challenge-tab.active {
+  background: var(--accent-primary);
+  color: #000;
+}
+
+.challenge-panel { display: none; }
+.challenge-panel.active { display: block; }
+
+/* LOOP BUILDER */
+.loop-builder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .loop-builder { grid-template-columns: 1fr; }
+}
+
+.builder-blocks-pool {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-height: 250px;
+}
+
+.builder-pool-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.block-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,195,0,0.08);
+  border: 1px solid rgba(255,195,0,0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  cursor: grab;
+  transition: all 0.2s;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  user-select: none;
+  min-height: 48px;
+}
+
+.block-item:hover {
+  background: rgba(255,195,0,0.15);
+  border-color: rgba(255,195,0,0.4);
+  transform: translateY(-2px);
+}
+
+.block-item:active { cursor: grabbing; }
+
+.block-item.dragging {
+  opacity: 0.4;
+}
+
+.block-item.loop-block { border-left: 3px solid #FF79C6; }
+.block-item.action-block { border-left: 3px solid var(--accent-primary); }
+.block-item.condition-block { border-left: 3px solid #00D9F5; }
+
+.block-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-loop { background: #FF79C6; }
+.dot-action { background: var(--accent-primary); }
+.dot-condition { background: #00D9F5; }
+
+.builder-dropzone {
+  background: var(--bg-primary);
+  border: 2px dashed rgba(255,195,0,0.2);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-height: 280px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.builder-dropzone.drag-over {
+  border-color: var(--accent-primary);
+  background: rgba(255,195,0,0.05);
+}
+
+.builder-dropzone-hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 40px 20px;
+}
+
+.dropped-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  animation: slide-in 0.25s ease;
+  min-height: 48px;
+}
+
+.dropped-block.loop-block { border-left: 3px solid #FF79C6; }
+.dropped-block.action-block { border-left: 3px solid var(--accent-primary); }
+.dropped-block.condition-block { border-left: 3px solid #00D9F5; }
+
+@keyframes slide-in {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.remove-block-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s;
+  min-height: 32px; min-width: 32px;
+}
+
+.remove-block-btn:hover { color: var(--accent-danger); }
+
+.builder-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-primary);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 48px;
+}
+
+.btn-run:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 48px;
+}
+
+.btn-reset:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.loop-output {
+  margin-top: 20px;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  min-height: 80px;
+  color: var(--accent-primary);
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.output-line {
+  padding: 2px 0;
+  animation: type-in 0.1s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+@keyframes type-in {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* STICKER SCENARIO */
+.sticker-scenario {
+  margin-top: 8px;
+}
+
+.scenario-story {
+  background: rgba(255,195,0,0.06);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.scenario-story strong { color: var(--accent-primary); }
+
+.scenario-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.scenario-control {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.scenario-control-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.scenario-input {
+  background: transparent;
+  border: 1px solid rgba(255,195,0,0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.scenario-input:focus { border-color: var(--accent-primary); }
+
+.sticker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.1);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-height: 80px;
+  align-content: flex-start;
+}
+
+.sticker-item {
+  font-size: 22px;
+  animation: sticker-pop 0.15s ease;
+}
+
+@keyframes sticker-pop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.sticker-stats {
+  margin-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sticker-stat { display: flex; gap: 6px; }
+.sticker-stat-key { color: var(--text-muted); }
+.sticker-stat-val { color: var(--accent-primary); font-weight: 600; }
+
+/* ═══════════════ THINK DEEPER — Infinite Loop Trap ═══════════════ */
+.infinite-section {
+  margin-top: 32px;
+}
+
+.loop-examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.loop-example-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.loop-example-card:hover {
+  border-color: rgba(255,195,0,0.4);
+  transform: translateY(-4px);
+}
+
+.loop-example-card.selected-infinite {
+  border-color: var(--accent-danger);
+  background: rgba(255,71,87,0.08);
+  box-shadow: 0 0 20px rgba(255,71,87,0.2);
+}
+
+.loop-example-card.selected-finite {
+  border-color: var(--accent-green);
+  background: rgba(0,245,160,0.08);
+  box-shadow: 0 0 20px rgba(0,245,160,0.2);
+}
+
+.loop-example-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.loop-example-code {
+  background: var(--bg-primary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent-secondary);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.loop-example-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.loop-result-display {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  min-height: 56px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.loop-result-display.idle {
+  background: rgba(255,255,255,0.03);
+  color: var(--text-muted);
+  border: 1px dashed rgba(255,255,255,0.1);
+}
+
+.loop-result-display.correct {
+  background: rgba(0,245,160,0.1);
+  color: var(--accent-green);
+  border: 1px solid rgba(0,245,160,0.3);
+}
+
+.loop-result-display.wrong-answer {
+  background: rgba(255,71,87,0.1);
+  color: var(--accent-danger);
+  border: 1px solid rgba(255,71,87,0.3);
+}
+
+/* Glitch animation for infinite loop */
+@keyframes glitch {
+  0% { transform: skew(0); filter: none; }
+  10% { transform: skew(2deg); filter: hue-rotate(40deg); }
+  20% { transform: skew(-2deg); filter: hue-rotate(-40deg); }
+  30% { transform: skew(0); filter: none; }
+  40% { transform: skew(1deg) translateX(2px); color: #ff0; }
+  50% { transform: skew(-1deg) translateX(-2px); color: #f0f; }
+  60% { transform: skew(0); color: inherit; }
+  100% { transform: skew(0); filter: none; }
+}
+
+.glitch-anim {
+  animation: glitch 0.4s ease;
+}
+
+/* ═══════════════ REAL WORLD CONNECTION ═══════════════ */
+.real-world-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.real-world-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 28px;
+  border: 1px solid rgba(255,195,0,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.real-world-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), transparent);
+}
+
+.real-world-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.rw-emoji { font-size: 36px; margin-bottom: 12px; }
+.rw-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent-primary);
+  margin-bottom: 8px;
+}
+.rw-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ═══════════════ LEVEL COMPLETE / BADGE ═══════════════ */
+.badge-section {
+  background: linear-gradient(135deg, rgba(255,195,0,0.08) 0%, rgba(255,195,0,0.02) 100%);
+  border: 1px solid rgba(255,195,0,0.25);
+  border-radius: var(--radius-lg);
+  padding: 60px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .badge-section { padding: 40px 20px; }
+}
+
+.badge-section::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255,195,0,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.badge-visual {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+
+.badge-hexagon {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  box-shadow: 0 0 40px var(--accent-glow);
+  animation: badge-pulse 2s ease infinite;
+}
+
+@keyframes badge-pulse {
+  0%,100% { box-shadow: 0 0 20px var(--accent-glow); }
+  50% { box-shadow: 0 0 50px rgba(255,195,0,0.5); }
+}
+
+.badge-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 8px;
+}
+
+.badge-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.xp-reward-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 20px;
+  padding: 12px 28px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 32px;
+}
+
+.complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-primary);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 40px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-height: 56px;
+}
+
+.complete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.complete-btn.completed {
+  background: var(--accent-green);
+  cursor: default;
+  transform: none;
+}
+
+.completion-msg {
+  margin-top: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  color: var(--accent-green);
+  min-height: 24px;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.completion-msg.visible { opacity: 1; }
+
+/* ═══════════════ NAVIGATION ═══════════════ */
+.level-nav {
+  background: var(--bg-card);
+  border-top: 1px solid rgba(255,195,0,0.1);
+  padding: 32px 24px;
+}
+
+.level-nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-link-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,195,0,0.15);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  transition: all 0.3s;
+  min-width: 160px;
+  min-height: 72px;
+}
+
+.nav-link-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.nav-link-dir {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.nav-link-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.nav-center-home {
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.nav-center-home:hover { color: var(--accent-primary); }
+
+/* ═══════════════ DIVIDER ═══════════════ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,195,0,0.2), transparent);
+  margin: 0 24px;
+}
+
+/* ═══════════════ HEADINGS ═══════════════ */
+h2.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+h2.section-title .accent { color: var(--accent-primary); }
+
+.section-intro {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+/* ORBIT SPINNER for visual decoration */
+.orbit-spinner {
+  width: 60px; height: 60px;
+  border: 2px solid rgba(255,195,0,0.1);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  display: inline-block;
+  margin: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* TOOLTIP */
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  background: rgba(255,195,0,0.2);
+  border-radius: 50%;
+  font-size: 11px;
+  color: var(--accent-primary);
+  cursor: help;
+  margin-left: 6px;
+}
+
+.tooltip:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  border: 1px solid rgba(255,195,0,0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  z-index: 100;
+  margin-bottom: 6px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ═══════════════ COUNTER DISPLAY ═══════════════ */
+.counter-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.counter-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(255,195,0,0.1);
+  border: 1px solid rgba(255,195,0,0.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  transition: all 0.15s;
+}
+
+.counter-number.active {
+  background: var(--accent-primary);
+  color: #000;
+  box-shadow: 0 0 16px var(--accent-primary);
+  transform: scale(1.1);
+}
+
+.counter-arrow {
+  color: rgba(255,195,0,0.3);
+  font-size: 18px;
+}
+
+/* ═══════════════ TOUCH DRAG SUPPORT OVERLAY ═══════════════ */
+.touch-drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.85;
+  transform: scale(1.05);
+  background: rgba(255,195,0,0.15);
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  display: none;
+}
+
+/* ═══════════════ SCROLL FADE INIT ═══════════════ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.fade-up:nth-child(1) { transition-delay: 0.1s; }
+.fade-up:nth-child(2) { transition-delay: 0.2s; }
+.fade-up:nth-child(3) { transition-delay: 0.3s; }
+.fade-up:nth-child(4) { transition-delay: 0.4s; }
+
+</style>
+</head>
+<body>
+
+<!-- Orbital Background -->
+<div class="orbital-bg" aria-hidden="true">
+  <div class="orbit-ring"></div>
+  <div class="orbit-ring"></div>
+  <div class="orbit-ring"></div>
+  <div class="orbit-ring"></div>
+  <div class="orbit-dot" style="top:30%;right:20%;animation-duration:20s;"></div>
+  <div class="orbit-dot" style="top:60%;left:15%;animation-duration:14s;animation-direction:reverse;"></div>
+</div>
+
+<!-- Touch drag ghost -->
+<div class="touch-drag-ghost" id="touchGhost"></div>
+
+<!-- ═══ STICKY NAV ═══ -->
+<nav class="sticky-nav" role="navigation" aria-label="Course navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy home">
+      <span class="nav-logo-mark">OTS Skills Academy</span>
+    </a>
+    <span class="nav-course" aria-label="Course name">Logic Building</span>
+    <div class="nav-right">
+      <span class="nav-level-badge" aria-label="Level 8">LVL 8</span>
+      <div class="nav-xp" aria-label="Total XP earned" id="navXpDisplay">
+        <span>⚡</span>
+        <span id="navXpValue">0</span>
+        <span>XP</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Level progress bar -->
+<div class="level-progress-bar" role="progressbar" aria-valuenow="8" aria-valuemin="1" aria-valuemax="12" aria-label="Level 8 of 12">
+  <div class="level-progress-fill"></div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 1: LEVEL HEADER        -->
+<!-- ═══════════════════════════════ -->
+
+<!-- Breadcrumb -->
+<div class="breadcrumb" role="navigation" aria-label="Breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">OTS Skills Academy</a>
+    <span class="breadcrumb-sep">→</span>
+    <a href="index.html">Logic Building</a>
+    <span class="breadcrumb-sep">→</span>
+    <span class="breadcrumb-current">Level 8</span>
+  </div>
+</div>
+
+<header class="level-header" id="top">
+  <div class="level-header-inner">
+    <div class="level-header-meta fade-up">
+      <span class="level-number-tag">LEVEL 8</span>
+      <span class="difficulty-badge">CHALLENGER</span>
+      <span class="xp-badge">⚡ 450 XP</span>
+    </div>
+
+    <h1 class="level-header-title fade-up">
+      <span class="accent-word">Loop</span>&nbsp;It
+    </h1>
+
+    <p class="level-header-tagline fade-up">
+      <span>"Repetition is not boring. It's powerful."</span>
+    </p>
+
+    <!-- Ticker loop visual -->
+    <div class="loop-visual fade-up" aria-hidden="true">
+      <div class="loop-ticker" id="loopTicker">
+        <span class="loop-ticker-item highlight"><span>🔁</span> repeat 30 times</span>
+        <span class="loop-ticker-item"><span>⬆️</span> while x &lt; 100</span>
+        <span class="loop-ticker-item highlight"><span>🛑</span> exit condition</span>
+        <span class="loop-ticker-item"><span>♾️</span> infinite loop</span>
+        <span class="loop-ticker-item highlight"><span>🔄</span> for each student</span>
+        <span class="loop-ticker-item"><span>⚡</span> countdown: 5..4..3</span>
+        <span class="loop-ticker-item highlight"><span>🔁</span> repeat 30 times</span>
+        <span class="loop-ticker-item"><span>⬆️</span> while x &lt; 100</span>
+        <span class="loop-ticker-item highlight"><span>🛑</span> exit condition</span>
+        <span class="loop-ticker-item"><span>♾️</span> infinite loop</span>
+        <span class="loop-ticker-item highlight"><span>🔄</span> for each student</span>
+        <span class="loop-ticker-item"><span>⚡</span> countdown: 5..4..3</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 2: WHAT YOU'LL LEARN   -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="learn-heading">
+  <div class="section-label">What You'll Learn</div>
+  <h2 class="section-title" id="learn-heading">
+    Four Big Ideas About <span class="accent">Loops</span>
+  </h2>
+  <p class="section-intro">By the end of Level 8, you'll understand why computers repeat things — and how to control exactly when to stop.</p>
+
+  <div class="learn-grid">
+    <div class="learn-card fade-up">
+      <div class="learn-card-icon">🔁</div>
+      <div class="learn-card-title">What is a Loop?</div>
+      <div class="learn-card-desc">Understand why repeating instructions is more powerful than writing them out one by one.</div>
+    </div>
+    <div class="learn-card fade-up">
+      <div class="learn-card-icon">🎚️</div>
+      <div class="learn-card-title">Count &amp; Countdown</div>
+      <div class="learn-card-desc">Use a counter to loop through even numbers, odd numbers, and countdowns with precision.</div>
+    </div>
+    <div class="learn-card fade-up">
+      <div class="learn-card-icon">🛑</div>
+      <div class="learn-card-title">Exit Conditions</div>
+      <div class="learn-card-desc">Every loop needs a way to stop. Learn what an exit condition is and why it matters.</div>
+    </div>
+    <div class="learn-card fade-up">
+      <div class="learn-card-icon">♾️</div>
+      <div class="learn-card-title">Infinite Loops</div>
+      <div class="learn-card-desc">Identify when a loop has no exit — a dangerous bug — and how to fix it.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 3: WARM-UP ZONE        -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="warmup-heading">
+  <div class="section-label">Warm-Up Zone</div>
+  <h2 class="section-title" id="warmup-heading">
+    Count With Me <span class="accent">Slider</span>
+  </h2>
+  <p class="section-intro">Drag the slider and watch a loop count — even numbers, odd numbers, and countdowns. Then answer the challenge question.</p>
+
+  <div class="warmup-section fade-up">
+    <div class="slider-container">
+
+      <!-- Even Numbers Slider -->
+      <div class="slider-row">
+        <span class="slider-label">Loop count:</span>
+        <input type="range" class="count-slider" id="evenSlider" min="1" max="10" value="5"
+               aria-label="Choose how many even numbers to generate">
+        <span class="slider-value" id="evenSliderVal">10</span>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <button class="btn-check" id="btnEven" onclick="generateSequence('even')" aria-label="Show even numbers">
+          Even Numbers
+        </button>
+        <button class="btn-check" id="btnOdd" onclick="generateSequence('odd')" aria-label="Show odd numbers" style="background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);">
+          Odd Numbers
+        </button>
+        <button class="btn-check" id="btnCountdown" onclick="generateSequence('countdown')" aria-label="Show countdown" style="background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);">
+          Countdown 🚀
+        </button>
+      </div>
+
+      <div class="sequence-display" id="sequenceDisplay" aria-live="polite" aria-label="Generated sequence">
+        <span style="color:var(--text-muted);font-size:14px;">← Tap a button above to run the loop</span>
+      </div>
+
+      <!-- Counter visual -->
+      <div class="counter-visual" id="counterVisual" aria-hidden="true"></div>
+
+    </div>
+
+    <!-- Challenge question -->
+    <div class="warmup-question">
+      <p>🧠 <strong>Think about it:</strong> If a loop runs <em>even numbers</em> from 2 to 20, how many times does the loop repeat?</p>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;">
+        <input type="number" class="warmup-answer-input" id="warmupInput" placeholder="Your answer" min="1" max="50"
+               aria-label="Enter your answer to the warm-up question">
+        <button class="btn-check" onclick="checkWarmup()" aria-label="Check your answer">Check ✓</button>
+      </div>
+      <div class="feedback-msg" id="warmupFeedback" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 4: CORE CONCEPT        -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="concept-heading">
+  <div class="section-label">Core Concept</div>
+  <h2 class="section-title" id="concept-heading">
+    Loops: Repetition <span class="accent">With Control</span>
+  </h2>
+  <p class="section-intro">A loop is an instruction that says: <em>"Keep doing this… until I tell you to stop."</em> Without loops, we'd have to write the same thing hundreds of times.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card fade-up">
+      <div class="concept-card-header">
+        <div class="concept-icon">🔁</div>
+        <div class="concept-title">FOR Loop</div>
+      </div>
+      <div class="concept-body">Use when you <strong>know exactly how many times</strong> to repeat. Like handing a sticker to each of 30 students.</div>
+      <div class="code-block">
+        <span class="kw">FOR</span> each student <span class="kw">FROM</span> <span class="num">1</span> <span class="kw">TO</span> <span class="num">30</span>:<br>
+        &nbsp;&nbsp;give sticker<br>
+        <span class="comment">→ Runs exactly 30 times</span>
+      </div>
+    </div>
+
+    <div class="concept-card fade-up">
+      <div class="concept-card-header">
+        <div class="concept-icon">⬆️</div>
+        <div class="concept-title">WHILE Loop</div>
+      </div>
+      <div class="concept-body">Use when you repeat <strong>as long as a condition is true</strong>. Like eating until you're full.</div>
+      <div class="code-block">
+        <span class="kw">WHILE</span> still_hungry:<br>
+        &nbsp;&nbsp;eat one bite<br>
+        <span class="comment">→ Stops when not hungry</span>
+      </div>
+    </div>
+
+    <div class="concept-card fade-up">
+      <div class="concept-card-header">
+        <div class="concept-icon">🛑</div>
+        <div class="concept-title">Exit Condition</div>
+      </div>
+      <div class="concept-body">The <strong>rule that stops the loop</strong>. Without it, the loop never ends. Always ask: "What makes this stop?"</div>
+      <div class="code-block">
+        counter = <span class="num">1</span><br>
+        <span class="kw">WHILE</span> counter &lt;= <span class="num">10</span>:<br>
+        &nbsp;&nbsp;counter = counter + <span class="num">1</span><br>
+        <span class="comment">→ Exit when counter = 11</span>
+      </div>
+    </div>
+
+    <div class="concept-card fade-up">
+      <div class="concept-card-header">
+        <div class="concept-icon">♾️</div>
+        <div class="concept-title">Infinite Loop</div>
+      </div>
+      <div class="concept-body">When the exit condition is <strong>never reached</strong>, the loop runs forever. This freezes programs — a bug to avoid!</div>
+      <div class="code-block">
+        counter = <span class="num">1</span><br>
+        <span class="kw">WHILE</span> counter &lt;= <span class="num">10</span>:<br>
+        &nbsp;&nbsp;<span class="comment">← counter never changes!</span><br>
+        <span class="comment">→ Loops forever ♾️</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 5: INTERACTIVE CHALLENGE -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="challenge-heading">
+  <div class="section-label">Interactive Challenge</div>
+  <h2 class="section-title" id="challenge-heading">
+    The <span class="accent">Loop Builder</span>
+  </h2>
+  <p class="section-intro">Two activities: Build a loop by dragging blocks into the right order, then simulate the sticker scenario.</p>
+
+  <div class="challenge-container">
+    <div class="challenge-tabs" role="tablist" aria-label="Challenge activities">
+      <button class="challenge-tab active" role="tab" aria-selected="true" aria-controls="panel-builder"
+              id="tab-builder" onclick="switchTab('builder')">🔨 Loop Builder</button>
+      <button class="challenge-tab" role="tab" aria-selected="false" aria-controls="panel-sticker"
+              id="tab-sticker" onclick="switchTab('sticker')">🎖️ Sticker Scenario</button>
+    </div>
+
+    <!-- TAB 1: Loop Builder (drag & drop) -->
+    <div class="challenge-panel active" id="panel-builder" role="tabpanel" aria-labelledby="tab-builder">
+      <p style="color:var(--text-secondary);font-size:15px;margin-bottom:24px;">
+        Build a loop that gives a sticker to each of <strong style="color:var(--accent-primary);">30 students</strong>.
+        Drag the blocks on the left into the correct order in the box on the right.
+      </p>
+
+      <div class="loop-builder">
+        <!-- Block pool (source) -->
+        <div>
+          <div class="builder-blocks-pool" id="blockPool">
+            <div class="builder-pool-title">Available Blocks</div>
+            <div class="block-item loop-block" draggable="true" data-block="for-loop" data-label="FOR student FROM 1 TO 30:" id="blk1">
+              <span class="block-dot dot-loop"></span> FOR student FROM 1 TO 30:
+            </div>
+            <div class="block-item action-block" draggable="true" data-block="give-sticker" data-label="  → give sticker" id="blk2">
+              <span class="block-dot dot-action"></span> &nbsp;&nbsp;→ give sticker
+            </div>
+            <div class="block-item condition-block" draggable="true" data-block="end-loop" data-label="END LOOP" id="blk3">
+              <span class="block-dot dot-condition"></span> END LOOP
+            </div>
+            <div class="block-item action-block" draggable="true" data-block="announce" data-label="  → say name aloud" id="blk4">
+              <span class="block-dot dot-action"></span> &nbsp;&nbsp;→ say name aloud
+            </div>
+            <div class="block-item loop-block" draggable="true" data-block="while-loop" data-label="WHILE stickers_left > 0:" id="blk5">
+              <span class="block-dot dot-loop"></span> WHILE stickers_left > 0:
+            </div>
+          </div>
+
+          <!-- Hint -->
+          <div style="margin-top:12px;padding:12px 16px;background:rgba(255,195,0,0.05);border-radius:8px;font-size:13px;color:var(--text-muted);">
+            💡 Tip: A complete loop needs: <strong style="color:var(--accent-primary);">LOOP START → ACTION(S) → END</strong>
+          </div>
+        </div>
+
+        <!-- Drop zone -->
+        <div>
+          <div class="builder-pool-title" style="color:var(--text-muted);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Your Loop</div>
+          <div class="builder-dropzone" id="dropZone" aria-label="Drop your loop blocks here"
+               role="list">
+            <div class="builder-dropzone-hint" id="dropHint">
+              Drag blocks here to build your loop ↓
+            </div>
+          </div>
+
+          <div class="builder-controls">
+            <button class="btn-run" onclick="runBuilderLoop()" aria-label="Run the loop">▶ Run Loop</button>
+            <button class="btn-reset" onclick="resetBuilder()" aria-label="Reset the loop builder">↺ Reset</button>
+          </div>
+
+          <div class="loop-output" id="loopOutput" aria-live="polite" aria-label="Loop output">
+            <span style="color:var(--text-muted);">Output will appear here after you Run Loop...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Sticker Scenario -->
+    <div class="challenge-panel" id="panel-sticker" role="tabpanel" aria-labelledby="tab-sticker">
+      <div class="sticker-scenario">
+        <div class="scenario-story">
+          <strong>The Scenario:</strong> Your teacher wants to give <strong>stickers</strong> to students as a reward.
+          Set the number of students and stickers per student, then hit <strong>Run Loop</strong> to see it happen step by step!
+        </div>
+
+        <div class="scenario-controls">
+          <div class="scenario-control">
+            <div class="scenario-control-label">Number of Students</div>
+            <input type="number" class="scenario-input" id="numStudents" value="10" min="1" max="30"
+                   aria-label="Number of students">
+          </div>
+          <div class="scenario-control">
+            <div class="scenario-control-label">Stickers Per Student</div>
+            <input type="number" class="scenario-input" id="stickersEach" value="2" min="1" max="5"
+                   aria-label="Stickers per student">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <button class="btn-run" onclick="runStickerLoop()" aria-label="Run the sticker loop">▶ Run Loop</button>
+          <button class="btn-reset" onclick="resetSticker()" aria-label="Reset sticker simulation">↺ Reset</button>
+        </div>
+
+        <div class="builder-pool-title" style="color:var(--text-muted);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">
+          Stickers distributed:
+        </div>
+        <div class="sticker-grid" id="stickerGrid" aria-live="polite" aria-label="Stickers distributed to students">
+          <span style="color:var(--text-muted);font-size:14px;width:100%;">Run the loop to start distributing stickers...</span>
+        </div>
+
+        <div class="sticker-stats" id="stickerStats"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 6: THINK DEEPER        -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="deeper-heading">
+  <div class="section-label">Think Deeper</div>
+  <h2 class="section-title" id="deeper-heading">
+    Infinite Loop <span class="accent">Trap</span>
+  </h2>
+  <p class="section-intro">Some of the loops below will run forever. Some will stop. Can you tell which is which? Click each loop to classify it. Score 5/6 to pass!</p>
+
+  <div class="infinite-section">
+    <div class="loop-examples-grid" id="loopExamplesGrid">
+
+      <div class="loop-example-card fade-up" data-type="infinite" id="lec1" onclick="classifyLoop('lec1','infinite')" role="button" tabindex="0" aria-label="Loop example 1 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec1','infinite')">
+        <div class="loop-example-label">Loop A</div>
+        <div class="loop-example-code">
+          x = 5<br>
+          WHILE x &gt; 0:<br>
+          &nbsp;&nbsp;print x<br>
+          <span style="color:#FF4757">← nothing changes!</span>
+        </div>
+        <div class="loop-example-desc">This loop checks if x > 0. x starts at 5. But x never changes inside the loop.</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec1','infinite')" aria-label="Mark loop A as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec1','finite')" aria-label="Mark loop A as finite">✅ Finite</button>
+        </div>
+      </div>
+
+      <div class="loop-example-card fade-up" data-type="finite" id="lec2" onclick="classifyLoop('lec2','finite')" role="button" tabindex="0" aria-label="Loop example 2 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec2','finite')">
+        <div class="loop-example-label">Loop B</div>
+        <div class="loop-example-code">
+          count = 1<br>
+          WHILE count &lt;= 10:<br>
+          &nbsp;&nbsp;print count<br>
+          &nbsp;&nbsp;count = count + 1
+        </div>
+        <div class="loop-example-desc">Count starts at 1 and increases by 1 each time. It will eventually reach 11.</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec2','infinite')" aria-label="Mark loop B as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec2','finite')" aria-label="Mark loop B as finite">✅ Finite</button>
+        </div>
+      </div>
+
+      <div class="loop-example-card fade-up" data-type="infinite" id="lec3" onclick="classifyLoop('lec3','infinite')" role="button" tabindex="0" aria-label="Loop example 3 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec3','infinite')">
+        <div class="loop-example-label">Loop C</div>
+        <div class="loop-example-code">
+          score = 0<br>
+          WHILE score &lt; 100:<br>
+          &nbsp;&nbsp;score = score - 1<br>
+          &nbsp;&nbsp;print score
+        </div>
+        <div class="loop-example-desc">Score starts at 0 and keeps decreasing. It will never reach 100 by going down!</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec3','infinite')" aria-label="Mark loop C as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec3','finite')" aria-label="Mark loop C as finite">✅ Finite</button>
+        </div>
+      </div>
+
+      <div class="loop-example-card fade-up" data-type="finite" id="lec4" onclick="classifyLoop('lec4','finite')" role="button" tabindex="0" aria-label="Loop example 4 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec4','finite')">
+        <div class="loop-example-label">Loop D</div>
+        <div class="loop-example-code">
+          FOR each player<br>
+          FROM 1 TO 11:<br>
+          &nbsp;&nbsp;assign jersey number<br>
+          END LOOP
+        </div>
+        <div class="loop-example-desc">This loop has a fixed range: 1 to 11. It will run exactly 11 times for a cricket team.</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec4','infinite')" aria-label="Mark loop D as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec4','finite')" aria-label="Mark loop D as finite">✅ Finite</button>
+        </div>
+      </div>
+
+      <div class="loop-example-card fade-up" data-type="finite" id="lec5" onclick="classifyLoop('lec5','finite')" role="button" tabindex="0" aria-label="Loop example 5 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec5','finite')">
+        <div class="loop-example-label">Loop E</div>
+        <div class="loop-example-code">
+          fuel = 100<br>
+          WHILE fuel &gt; 0:<br>
+          &nbsp;&nbsp;drive 1 km<br>
+          &nbsp;&nbsp;fuel = fuel - 5
+        </div>
+        <div class="loop-example-desc">Fuel starts at 100 and decreases by 5 each loop. It will reach 0 after 20 loops.</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec5','infinite')" aria-label="Mark loop E as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec5','finite')" aria-label="Mark loop E as finite">✅ Finite</button>
+        </div>
+      </div>
+
+      <div class="loop-example-card fade-up" data-type="infinite" id="lec6" onclick="classifyLoop('lec6','infinite')" role="button" tabindex="0" aria-label="Loop example 6 — click to classify" onkeydown="if(event.key==='Enter'||event.key===' ')classifyLoop('lec6','infinite')">
+        <div class="loop-example-label">Loop F</div>
+        <div class="loop-example-code">
+          WHILE true:<br>
+          &nbsp;&nbsp;check for new message<br>
+          &nbsp;&nbsp;display notification<br>
+          <span style="color:#FF4757">← no exit condition!</span>
+        </div>
+        <div class="loop-example-desc">This loop has the condition "true" — which is ALWAYS true. It never stops on its own.</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;" onclick="event.stopPropagation();classifyLoop('lec6','infinite')" aria-label="Mark loop F as infinite">♾️ Infinite</button>
+          <button class="btn-check" style="flex:1;font-size:12px;padding:8px;background:rgba(255,195,0,0.15);color:var(--accent-primary);border:1px solid var(--accent-primary);" onclick="event.stopPropagation();classifyLoop('lec6','finite')" aria-label="Mark loop F as finite">✅ Finite</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="loop-result-display idle" id="loopResult" aria-live="polite">
+      Click each loop above to classify it as Infinite ♾️ or Finite ✅
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:16px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--text-secondary);" id="loopScoreDisplay">
+      <span>Score: <strong id="loopScore" style="color:var(--accent-primary);">0</strong> / 6</span>
+      <span id="loopScoreMsg"></span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 7: REAL-WORLD          -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="realworld-heading">
+  <div class="section-label">Real-World Connection</div>
+  <h2 class="section-title" id="realworld-heading">
+    Loops Are <span class="accent">Everywhere</span>
+  </h2>
+  <p class="section-intro">Every time something repeats automatically in the digital world, there's a loop running behind it.</p>
+
+  <div class="real-world-grid">
+    <div class="real-world-card fade-up">
+      <div class="rw-emoji">▶️</div>
+      <div class="rw-title">YouTube Autoplay</div>
+      <div class="rw-desc">YouTube uses a loop: <em>WHILE you keep watching → suggest next video.</em> It only stops when you close the app. That's an intentional near-infinite loop!</div>
+    </div>
+
+    <div class="real-world-card fade-up">
+      <div class="rw-emoji">📶</div>
+      <div class="rw-title">WhatsApp Ping</div>
+      <div class="rw-desc">Your phone constantly runs a loop: <em>Check server for new messages → if found, notify → repeat every few seconds.</em> That's a WHILE loop running all day.</div>
+    </div>
+
+    <div class="real-world-card fade-up">
+      <div class="rw-emoji">🏏</div>
+      <div class="rw-title">Cricket Scorecard</div>
+      <div class="rw-desc">FOR each over FROM 1 TO 20: record runs. That's a FOR loop — exactly 20 overs, exactly 20 repetitions. T20 cricket in loop logic!</div>
+    </div>
+
+    <div class="real-world-card fade-up">
+      <div class="rw-emoji">🚦</div>
+      <div class="rw-title">Karachi Traffic Lights</div>
+      <div class="rw-desc">Traffic lights run a loop: Red → Green → Yellow → Red → … This loop only breaks when a traffic officer overrides it manually.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 8: BADGE + XP UNLOCK   -->
+<!-- ═══════════════════════════════ -->
+<section class="section" aria-labelledby="badge-heading">
+  <div class="section-label">Level Complete</div>
+  <h2 class="section-title" id="badge-heading">
+    Claim Your <span class="accent">Badge</span>
+  </h2>
+
+  <div class="badge-section fade-up">
+    <div class="badge-visual" aria-label="Level 8 Loop It badge">
+      <div class="badge-hexagon">🔁</div>
+    </div>
+
+    <div class="badge-title">Loop Architect</div>
+    <div class="badge-subtitle">You understand repetition, exit conditions, and the danger of infinite loops.</div>
+
+    <div class="xp-reward-display" aria-label="XP reward: 450 XP">
+      ⚡ +450 XP
+    </div>
+
+    <br>
+
+    <button class="complete-btn" id="completeBtn" onclick="completeLevel()" aria-label="Complete Level 8 and claim your badge">
+      🏆 Complete Level 8
+    </button>
+
+    <div class="completion-msg" id="completionMsg" aria-live="polite">
+      🎉 Level 8 Complete! You've earned the Loop Architect badge!
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════ -->
+<!-- SECTION 9: NAVIGATION          -->
+<!-- ═══════════════════════════════ -->
+<nav class="level-nav" aria-label="Level navigation">
+  <div class="level-nav-inner">
+    <a href="level-07.html" class="nav-link-card" aria-label="Go to Level 7: The Search">
+      <span style="font-size:24px;">←</span>
+      <div>
+        <div class="nav-link-dir">Previous</div>
+        <div class="nav-link-name">Level 7: The Search</div>
+      </div>
+    </a>
+
+    <a href="index.html" class="nav-center-home" aria-label="Go to course home">
+      🏠 Course Home
+    </a>
+
+    <a href="level-09.html" class="nav-link-card" aria-label="Go to Level 9: Break It Down">
+      <div style="text-align:right;">
+        <div class="nav-link-dir">Next</div>
+        <div class="nav-link-name">Level 9: Break It Down</div>
+      </div>
+      <span style="font-size:24px;">→</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ CDN SCRIPTS ═══ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// COURSE CONSTANTS
+// ═══════════════════════════════════════════════════════
+const COURSE_SLUG = 'logic-building';
+const LEVEL_NUM   = 8;
+const LEVEL_XP    = 450;
+
+// ═══════════════════════════════════════════════════════
+// LOCALSTORAGE HELPERS
+// ═══════════════════════════════════════════════════════
+function lsGet(key) {
+  try { return localStorage.getItem(key); } catch(e) { return null; }
+}
+
+function lsSet(key, val) {
+  try { localStorage.setItem(key, val); } catch(e) {}
+}
+
+function getTotalXP() {
+  let total = 0;
+  for (let i = 1; i <= 12; i++) {
+    const xp = parseInt(lsGet('ots_skills_' + COURSE_SLUG + '_level_' + i + '_xp') || '0', 10);
+    if (!isNaN(xp)) total += xp;
+  }
+  return total;
+}
+
+function updateNavXP() {
+  const el = document.getElementById('navXpValue');
+  if (el) el.textContent = getTotalXP();
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(function init() {
+  const startedKey = 'ots_skills_' + COURSE_SLUG + '_started_at';
+  if (!lsGet(startedKey)) lsSet(startedKey, new Date().toISOString());
+  updateNavXP();
+
+  // Mark already completed
+  if (lsGet('ots_skills_' + COURSE_SLUG + '_level_' + LEVEL_NUM + '_complete') === 'true') {
+    const btn = document.getElementById('completeBtn');
+    const msg = document.getElementById('completionMsg');
+    if (btn) { btn.textContent = '✅ Already Completed'; btn.classList.add('completed'); }
+    if (msg) { msg.classList.add('visible'); }
+  }
+})();
+
+// ═══════════════════════════════════════════════════════
+// GSAP ANIMATIONS
+// ═══════════════════════════════════════════════════════
+(function setupAnimations() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    document.querySelectorAll('.fade-up,.learn-card,.concept-card,.real-world-card,.loop-example-card').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    return;
+  }
+
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Header elements
+      gsap.utils.toArray('.level-header .fade-up').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 30 }, {
+          opacity: 1, y: 0, duration: 0.6, delay: i * 0.12,
+          ease: 'power2.out'
+        });
+      });
+
+      // Scroll-triggered cards
+      gsap.utils.toArray('.learn-card').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 24 }, {
+          opacity: 1, y: 0, duration: 0.5, delay: i * 0.1,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          ease: 'power2.out'
+        });
+      });
+
+      gsap.utils.toArray('.concept-card').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 24 }, {
+          opacity: 1, y: 0, duration: 0.5, delay: i * 0.1,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          ease: 'power2.out'
+        });
+      });
+
+      gsap.utils.toArray('.real-world-card').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 24 }, {
+          opacity: 1, y: 0, duration: 0.5, delay: i * 0.1,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          ease: 'power2.out'
+        });
+      });
+
+      gsap.utils.toArray('.loop-example-card').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 24 }, {
+          opacity: 1, y: 0, duration: 0.5, delay: i * 0.08,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          ease: 'power2.out'
+        });
+      });
+
+      // Fade-ups in non-header sections
+      gsap.utils.toArray('section .fade-up').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 20 }, {
+          opacity: 1, y: 0, duration: 0.5, delay: i * 0.08,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          ease: 'power2.out'
+        });
+      });
+
+    }
+  } catch(e) {
+    // fallback: make visible
+    document.querySelectorAll('.fade-up,.learn-card,.concept-card,.real-world-card,.loop-example-card').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+})();
+
+// ═══════════════════════════════════════════════════════
+// SECTION 3: WARM-UP SLIDER
+// ═══════════════════════════════════════════════════════
+(function setupSlider() {
+  const slider = document.getElementById('evenSlider');
+  const valDisplay = document.getElementById('evenSliderVal');
+  if (!slider || !valDisplay) return;
+
+  slider.addEventListener('input', function() {
+    valDisplay.textContent = this.value * 2;
+  });
+})();
+
+function generateSequence(type) {
+  const slider = document.getElementById('evenSlider');
+  const display = document.getElementById('sequenceDisplay');
+  const counterVis = document.getElementById('counterVisual');
+  if (!slider || !display) return;
+
+  const count = parseInt(slider.value, 10);
+  let nums = [];
+
+  if (type === 'even') {
+    for (let i = 1; i <= count; i++) nums.push(i * 2);
+  } else if (type === 'odd') {
+    for (let i = 0; i < count; i++) nums.push(i * 2 + 1);
+  } else if (type === 'countdown') {
+    for (let i = count; i >= 1; i--) nums.push(i);
+  }
+
+  display.innerHTML = '';
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  nums.forEach((n, i) => {
+    const span = document.createElement('span');
+    span.className = 'seq-num';
+    span.textContent = n;
+    if (prefersReduced) {
+      display.appendChild(span);
+    } else {
+      setTimeout(() => {
+        span.classList.add('active-num');
+        display.appendChild(span);
+        setTimeout(() => span.classList.remove('active-num'), 300);
+      }, i * 80);
+    }
+  });
+
+  // Counter visual
+  if (counterVis) {
+    counterVis.innerHTML = '';
+    const steps = Math.min(nums.length, 8);
+    for (let i = 0; i < steps; i++) {
+      const d = document.createElement('div');
+      d.className = 'counter-number';
+      d.textContent = nums[i];
+      counterVis.appendChild(d);
+      if (i < steps - 1) {
+        const arr = document.createElement('span');
+        arr.className = 'counter-arrow';
+        arr.textContent = '→';
+        counterVis.appendChild(arr);
+      }
+    }
+    if (nums.length > 8) {
+      const more = document.createElement('span');
+      more.style.color = 'var(--text-muted)';
+      more.style.fontSize = '14px';
+      more.textContent = '… +' + (nums.length - 8) + ' more';
+      counterVis.appendChild(more);
+    }
+  }
+}
+
+function checkWarmup() {
+  const input = document.getElementById('warmupInput');
+  const feedback = document.getElementById('warmupFeedback');
+  if (!input || !feedback) return;
+
+  const answer = parseInt(input.value, 10);
+  const correct = 10; // even numbers 2,4,6,8,10,12,14,16,18,20 = 10 iterations
+
+  if (answer === correct) {
+    feedback.textContent = '✅ Correct! 2→4→6→8…→20 is exactly 10 loops.';
+    feedback.className = 'feedback-msg correct';
+    input.classList.add('pulse-correct');
+    setTimeout(() => { if (input) input.classList.remove('pulse-correct'); }, 700);
+  } else {
+    feedback.textContent = '❌ Not quite. Hint: count 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 — how many numbers?';
+    feedback.className = 'feedback-msg wrong';
+    input.classList.add('shake');
+    setTimeout(() => { if (input) input.classList.remove('shake'); }, 500);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// SECTION 5 TAB SWITCHER
+// ═══════════════════════════════════════════════════════
+function switchTab(name) {
+  const tabs = document.querySelectorAll('.challenge-tab');
+  const panels = document.querySelectorAll('.challenge-panel');
+
+  tabs.forEach(t => {
+    const isActive = t.id === 'tab-' + name;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+
+  panels.forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + name);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// SECTION 5: LOOP BUILDER (DRAG & DROP)
+// ═══════════════════════════════════════════════════════
+(function setupDragDrop() {
+  let dragSrc = null;
+  let touchGhostEl = null;
+  let dragBlockData = null;
+
+  const pool = document.getElementById('blockPool');
+  const dropZone = document.getElementById('dropZone');
+  if (!pool || !dropZone) return;
+
+  // MOUSE drag
+  function onDragStart(e) {
+    dragSrc = e.currentTarget;
+    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.setData('text/plain', dragSrc.dataset.block);
+    setTimeout(() => { if (dragSrc) dragSrc.classList.add('dragging'); }, 0);
+  }
+
+  function onDragEnd(e) {
+    if (dragSrc) dragSrc.classList.remove('dragging');
+    dragSrc = null;
+    dropZone.classList.remove('drag-over');
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    dropZone.classList.add('drag-over');
+  }
+
+  function onDragLeave() {
+    dropZone.classList.remove('drag-over');
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const blockType = e.dataTransfer.getData('text/plain');
+    const src = pool.querySelector('[data-block="' + blockType + '"]');
+    if (!src) return;
+    addDroppedBlock(blockType, src.dataset.label, src.className);
+  }
+
+  dropZone.addEventListener('dragover', onDragOver);
+  dropZone.addEventListener('dragleave', onDragLeave);
+  dropZone.addEventListener('drop', onDrop);
+
+  pool.querySelectorAll('.block-item').forEach(item => {
+    item.addEventListener('dragstart', onDragStart);
+    item.addEventListener('dragend', onDragEnd);
+
+    // TOUCH drag
+    item.addEventListener('touchstart', onTouchStart, { passive: false });
+    item.addEventListener('touchmove', onTouchMove, { passive: false });
+    item.addEventListener('touchend', onTouchEnd);
+  });
+
+  function onTouchStart(e) {
+    dragBlockData = { block: this.dataset.block, label: this.dataset.label, cls: this.className };
+    const touch = e.touches[0];
+    const ghost = document.getElementById('touchGhost');
+    if (!ghost) return;
+    ghost.textContent = this.dataset.label;
+    ghost.style.display = 'block';
+    ghost.style.left = (touch.clientX - 60) + 'px';
+    ghost.style.top = (touch.clientY - 24) + 'px';
+    touchGhostEl = ghost;
+  }
+
+  function onTouchMove(e) {
+    e.preventDefault();
+    if (!touchGhostEl) return;
+    const touch = e.touches[0];
+    touchGhostEl.style.left = (touch.clientX - 60) + 'px';
+    touchGhostEl.style.top = (touch.clientY - 24) + 'px';
+    const rect = dropZone.getBoundingClientRect();
+    const over = touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                 touch.clientY >= rect.top && touch.clientY <= rect.bottom;
+    dropZone.classList.toggle('drag-over', over);
+  }
+
+  function onTouchEnd(e) {
+    if (touchGhostEl) touchGhostEl.style.display = 'none';
+    dropZone.classList.remove('drag-over');
+    if (!dragBlockData) return;
+    const touch = e.changedTouches[0];
+    const rect = dropZone.getBoundingClientRect();
+    const inZone = touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                   touch.clientY >= rect.top && touch.clientY <= rect.bottom;
+    if (inZone) {
+      addDroppedBlock(dragBlockData.block, dragBlockData.label, dragBlockData.cls);
+    }
+    dragBlockData = null;
+  }
+
+  function addDroppedBlock(blockType, label, originalClass) {
+    const hint = document.getElementById('dropHint');
+    if (hint) hint.style.display = 'none';
+
+    const div = document.createElement('div');
+    div.className = 'dropped-block';
+    if (originalClass.includes('loop-block')) div.classList.add('loop-block');
+    else if (originalClass.includes('action-block')) div.classList.add('action-block');
+    else if (originalClass.includes('condition-block')) div.classList.add('condition-block');
+
+    div.dataset.block = blockType;
+    div.setAttribute('role', 'listitem');
+
+    const span = document.createElement('span');
+    span.textContent = label;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-block-btn';
+    removeBtn.textContent = '×';
+    removeBtn.setAttribute('aria-label', 'Remove ' + label);
+    removeBtn.onclick = function() {
+      div.remove();
+      const remaining = dropZone.querySelectorAll('.dropped-block');
+      if (remaining.length === 0) {
+        const h = document.getElementById('dropHint');
+        if (h) h.style.display = 'block';
+      }
+    };
+
+    div.appendChild(span);
+    div.appendChild(removeBtn);
+    dropZone.appendChild(div);
+  }
+})();
+
+function runBuilderLoop() {
+  const dropZone = document.getElementById('dropZone');
+  const outputEl = document.getElementById('loopOutput');
+  if (!dropZone || !outputEl) return;
+
+  const dropped = Array.from(dropZone.querySelectorAll('.dropped-block'));
+  const blocks = dropped.map(d => d.dataset.block);
+
+  const CORRECT_SEQUENCE = ['for-loop', 'give-sticker', 'end-loop'];
+
+  outputEl.innerHTML = '';
+
+  const addLine = (text, color) => {
+    const line = document.createElement('div');
+    line.className = 'output-line';
+    line.style.color = color || 'inherit';
+    line.textContent = text;
+    outputEl.appendChild(line);
+  };
+
+  if (blocks.length === 0) {
+    addLine('⚠️ No blocks dropped! Drag blocks to build a loop.', 'var(--accent-danger)');
+    return;
+  }
+
+  if (blocks[0] === 'for-loop' && blocks.includes('give-sticker') && blocks.includes('end-loop') && !blocks.includes('while-loop')) {
+    const hasExtra = blocks.includes('announce');
+    addLine('▶ Running your loop...', 'var(--text-muted)');
+
+    let delay = 60;
+    const stickersPerLine = hasExtra ? 2 : 1;
+    for (let i = 1; i <= 30; i++) {
+      ((student, d) => {
+        setTimeout(() => {
+          const o = document.getElementById('loopOutput');
+          if (!o) return;
+          let msg = 'Student ' + student + ': 🏷️ sticker given';
+          if (hasExtra) msg += ' — Name called aloud';
+          const line = document.createElement('div');
+          line.className = 'output-line';
+          line.style.color = 'var(--accent-primary)';
+          line.textContent = msg;
+          o.appendChild(line);
+          o.scrollTop = o.scrollHeight;
+        }, d);
+      })(i, i * delay);
+    }
+
+    setTimeout(() => {
+      const o = document.getElementById('loopOutput');
+      if (!o) return;
+      const done = document.createElement('div');
+      done.className = 'output-line';
+      done.style.color = 'var(--accent-green)';
+      done.style.fontWeight = '600';
+      done.textContent = '✅ Loop complete! All 30 students received a sticker.';
+      o.appendChild(done);
+      o.scrollTop = o.scrollHeight;
+    }, 30 * delay + 100);
+
+  } else if (blocks.includes('while-loop') && !blocks.includes('for-loop')) {
+    addLine('⚠️ WHILE loop selected. This would work, but for a fixed count (30 students), FOR is cleaner!', 'var(--accent-warm)');
+    addLine('💡 Try: FOR student FROM 1 TO 30 → give sticker → END LOOP', 'var(--text-secondary)');
+  } else if (!blocks.includes('end-loop')) {
+    addLine('🐛 Bug! Your loop never ends — missing END LOOP!', 'var(--accent-danger)');
+    addLine('♾️ Infinite loop detected... system freezing... 💥', 'var(--accent-danger)');
+  } else if (!blocks.includes('give-sticker')) {
+    addLine('⚠️ Loop runs, but no sticker action! Add the "give sticker" block.', 'var(--accent-warm)');
+  } else {
+    addLine('⚠️ Check your block order: FOR → action → END LOOP', 'var(--accent-warm)');
+  }
+}
+
+function resetBuilder() {
+  const dropZone = document.getElementById('dropZone');
+  const outputEl = document.getElementById('loopOutput');
+  if (!dropZone) return;
+
+  dropZone.querySelectorAll('.dropped-block').forEach(b => b.remove());
+  const hint = document.getElementById('dropHint');
+  if (hint) hint.style.display = 'block';
+
+  if (outputEl) {
+    outputEl.innerHTML = '<span style="color:var(--text-muted);">Output will appear here after you Run Loop...</span>';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// STICKER SCENARIO
+// ═══════════════════════════════════════════════════════
+let stickerRunning = false;
+let stickerTimeout = null;
+
+function runStickerLoop() {
+  if (stickerRunning) return;
+  const numStudEl = document.getElementById('numStudents');
+  const stickersEachEl = document.getElementById('stickersEach');
+  const gridEl = document.getElementById('stickerGrid');
+  const statsEl = document.getElementById('stickerStats');
+  if (!numStudEl || !stickersEachEl || !gridEl) return;
+
+  const numStudents = Math.min(Math.max(parseInt(numStudEl.value, 10) || 10, 1), 30);
+  const stickersEach = Math.min(Math.max(parseInt(stickersEachEl.value, 10) || 2, 1), 5);
+
+  gridEl.innerHTML = '';
+  if (statsEl) statsEl.innerHTML = '';
+  stickerRunning = true;
+
+  const stickers = ['⭐', '🏅', '🎖️', '🏆', '✨'];
+  let studentCount = 0;
+
+  function doStudent(i) {
+    if (i > numStudents) {
+      stickerRunning = false;
+      if (statsEl) {
+        statsEl.innerHTML = `
+          <span class="sticker-stat"><span class="sticker-stat-key">Students:</span><span class="sticker-stat-val">${numStudents}</span></span>
+          <span class="sticker-stat"><span class="sticker-stat-key">Each got:</span><span class="sticker-stat-val">${stickersEach}</span></span>
+          <span class="sticker-stat"><span class="sticker-stat-key">Total:</span><span class="sticker-stat-val">${numStudents * stickersEach} stickers</span></span>
+          <span class="sticker-stat"><span class="sticker-stat-key">Loop ran:</span><span class="sticker-stat-val">${numStudents} times</span></span>
+        `;
+      }
+      return;
+    }
+
+    // Add label
+    const label = document.createElement('div');
+    label.style.cssText = 'width:100%;font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--text-muted);margin-top:6px;';
+    label.textContent = 'Student ' + i + ':';
+    gridEl.appendChild(label);
+
+    // Add stickers one by one
+    for (let s = 0; s < stickersEach; s++) {
+      const span = document.createElement('span');
+      span.className = 'sticker-item';
+      span.textContent = stickers[(i - 1) % stickers.length];
+      span.setAttribute('aria-label', 'Sticker for student ' + i);
+      gridEl.appendChild(span);
+    }
+
+    gridEl.scrollTop = gridEl.scrollHeight;
+    stickerTimeout = setTimeout(() => doStudent(i + 1), 120);
+  }
+
+  doStudent(1);
+}
+
+function resetSticker() {
+  stickerRunning = false;
+  if (stickerTimeout) { clearTimeout(stickerTimeout); stickerTimeout = null; }
+  const gridEl = document.getElementById('stickerGrid');
+  const statsEl = document.getElementById('stickerStats');
+  if (gridEl) gridEl.innerHTML = '<span style="color:var(--text-muted);font-size:14px;width:100%;">Run the loop to start distributing stickers...</span>';
+  if (statsEl) statsEl.innerHTML = '';
+}
+
+// ═══════════════════════════════════════════════════════
+// SECTION 6: INFINITE LOOP TRAP
+// ═══════════════════════════════════════════════════════
+const loopAnswers = {
+  lec1: 'infinite',
+  lec2: 'finite',
+  lec3: 'infinite',
+  lec4: 'finite',
+  lec5: 'finite',
+  lec6: 'infinite'
+};
+
+let loopScore = 0;
+const loopAnswered = {};
+
+function classifyLoop(cardId, userAnswer) {
+  if (loopAnswered[cardId]) return;
+
+  const card = document.getElementById(cardId);
+  if (!card) return;
+
+  const correct = loopAnswers[cardId];
+  const isCorrect = userAnswer === correct;
+
+  loopAnswered[cardId] = true;
+  loopScore += isCorrect ? 1 : 0;
+
+  card.classList.remove('selected-infinite', 'selected-finite');
+  if (isCorrect) {
+    card.classList.add(userAnswer === 'infinite' ? 'selected-infinite' : 'selected-finite');
+  } else {
+    // Show wrong then correct
+    card.classList.add(userAnswer === 'infinite' ? 'selected-infinite' : 'selected-finite');
+    card.classList.add('shake');
+    setTimeout(() => {
+      if (card) {
+        card.classList.remove('shake', 'selected-infinite', 'selected-finite');
+        card.classList.add(correct === 'infinite' ? 'selected-infinite' : 'selected-finite');
+      }
+    }, 600);
+  }
+
+  // Update score
+  const scoreEl = document.getElementById('loopScore');
+  if (scoreEl) scoreEl.textContent = loopScore;
+
+  const resultEl = document.getElementById('loopResult');
+  const msgEl = document.getElementById('loopScoreMsg');
+
+  const total = Object.keys(loopAnswered).length;
+
+  if (total === 6) {
+    if (loopScore >= 5) {
+      if (resultEl) {
+        resultEl.className = 'loop-result-display correct';
+        resultEl.textContent = '🎉 Excellent! ' + loopScore + '/6 correct! You can identify infinite loops!';
+      }
+      if (msgEl) msgEl.textContent = '✅ Passed!';
+    } else {
+      if (resultEl) {
+        resultEl.className = 'loop-result-display wrong-answer';
+        resultEl.textContent = 'You got ' + loopScore + '/6. Review: does the exit condition ever become true? If not → infinite!';
+      }
+      if (msgEl) msgEl.textContent = '💡 Try again by refreshing';
+    }
+  } else {
+    if (resultEl) {
+      resultEl.className = 'loop-result-display idle';
+      resultEl.textContent = total + ' of 6 classified — keep going!';
+    }
+  }
+
+  if (isCorrect && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(card, { scale: 0.97 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' });
+      }
+    } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// LEVEL COMPLETION
+// ═══════════════════════════════════════════════════════
+function completeLevel() {
+  const btn = document.getElementById('completeBtn');
+  const msg = document.getElementById('completionMsg');
+
+  lsSet('ots_skills_' + COURSE_SLUG + '_level_' + LEVEL_NUM + '_complete', 'true');
+  lsSet('ots_skills_' + COURSE_SLUG + '_level_' + LEVEL_NUM + '_xp', LEVEL_XP);
+
+  const total = getTotalXP();
+  lsSet('ots_skills_' + COURSE_SLUG + '_xp_total', total);
+  updateNavXP();
+
+  if (btn) {
+    btn.textContent = '✅ Level Complete!';
+    btn.classList.add('completed');
+    btn.disabled = true;
+  }
+  if (msg) msg.classList.add('visible');
+
+  // Confetti burst
+  try {
+    if (typeof confetti !== 'undefined') {
+      const colors = ['#FFC300', '#FFD60A', '#00F5A0', '#ffffff', '#FF6B6B'];
+
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 }, colors });
+      setTimeout(() => confetti({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0 }, colors }), 250);
+      setTimeout(() => confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 }, colors }), 400);
+
+      // Orbital burst
+      const end = Date.now() + 1500;
+      (function frame() {
+        if (Date.now() < end) {
+          confetti({ particleCount: 4, angle: Math.random() * 360, spread: 60, origin: { x: Math.random(), y: Math.random() * 0.6 }, colors, gravity: 0.6 });
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+  } catch(e) {}
+
+  // Badge pulse
+  const badge = document.querySelector('.badge-hexagon');
+  if (badge && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(badge, { scale: 1 }, { scale: 1.2, duration: 0.3, yoyo: true, repeat: 3, ease: 'power2.inOut' });
+      }
+    } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// INTERSECTION OBSERVER (fallback for non-GSAP fade)
+// ═══════════════════════════════════════════════════════
+(function setupObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+})();
+
+</script>
+</body>
+</html>

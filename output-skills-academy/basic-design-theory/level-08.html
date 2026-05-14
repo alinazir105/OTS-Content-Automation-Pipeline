@@ -1,0 +1,2923 @@
+<!-- COURSE: Basic Design Theory | LEVEL: 8 | OTS Skills Academy | v1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 8: Grid and Alignment — Basic Design Theory | OTS Skills Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Bebas+Neue&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --level-color: #00B894;
+  --level-color-dim: rgba(0,184,148,0.12);
+  --level-color-mid: rgba(0,184,148,0.35);
+  --bg: #f0faf7;
+  --bg-2: #e4f5ef;
+  --bg-3: #ffffff;
+  --text-primary: #0d1f1a;
+  --text-secondary: #2d4a42;
+  --text-muted: #5a7a72;
+  --grid-line: rgba(0,184,148,0.18);
+  --grid-line-strong: rgba(0,184,148,0.4);
+  --accent: #00B894;
+  --accent-dark: #007d65;
+  --white: #ffffff;
+  --shadow: 0 2px 16px rgba(0,184,148,0.10);
+  --shadow-md: 0 4px 32px rgba(0,184,148,0.16);
+  --font-display: 'Playfair Display', serif;
+  --font-display2: 'Bebas Neue', sans-serif;
+  --font-body: 'Source Sans 3', sans-serif;
+  --nav-h: 60px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* subtle grid background on body */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ═══════════════════════════════════════
+   STICKY NAV
+═══════════════════════════════════════ */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(240,250,247,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--level-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  gap: 12px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-mark {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+}
+
+.nav-logo-mark svg { width: 22px; height: 22px; }
+
+.nav-wordmark {
+  font-family: var(--font-display2);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.nav-wordmark span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-course-title {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  flex: 1;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 600px) { .nav-course-title { display: none; } }
+
+.nav-xp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--level-color-dim);
+  border: 1.5px solid var(--level-color);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: var(--font-display2);
+  font-size: 1rem;
+  color: var(--accent-dark);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* level progress bar */
+.level-progress-bar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  height: 4px;
+  background: var(--bg-2);
+  z-index: 999;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: calc(8 / 12 * 100%);
+  transition: width 0.6s ease;
+}
+
+/* ═══════════════════════════════════════
+   BREADCRUMB
+═══════════════════════════════════════ */
+.breadcrumb {
+  margin-top: calc(var(--nav-h) + 4px + 16px);
+  padding: 0 32px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { margin: 0 6px; }
+
+/* ═══════════════════════════════════════
+   LAYOUT CONTAINERS
+═══════════════════════════════════════ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+@media (max-width: 768px) { .container { padding: 0 18px; } }
+
+section {
+  padding: 64px 0;
+  position: relative;
+}
+
+section + section {
+  border-top: 1px solid var(--grid-line-strong);
+}
+
+/* ═══════════════════════════════════════
+   SECTION LABELS
+═══════════════════════════════════════ */
+.section-label {
+  font-family: var(--font-display2);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--grid-line-strong);
+  max-width: 80px;
+}
+
+/* ═══════════════════════════════════════
+   SECTION 1: LEVEL HEADER
+═══════════════════════════════════════ */
+#level-header {
+  background: var(--bg-3);
+  border-bottom: 3px solid var(--accent);
+  padding: 56px 0 48px;
+  /* grid-pattern overlay */
+  background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(rgba(0,184,148,0.04) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0,184,148,0.04) 2px, transparent 2px);
+  background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px;
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 768px) { .header-inner { grid-template-columns: 1fr; } }
+
+.level-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.level-number-badge {
+  font-family: var(--font-display2);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: var(--white);
+  background: var(--accent);
+  padding: 5px 14px;
+  border-radius: 4px;
+}
+
+.difficulty-badge {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  background: var(--level-color-dim);
+  border: 1.5px solid var(--accent);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.level-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.level-tagline {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.level-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.meta-value {
+  font-family: var(--font-display2);
+  font-size: 1.2rem;
+  color: var(--accent-dark);
+  letter-spacing: 0.06em;
+}
+
+.header-grid-viz {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) { .header-grid-viz { display: none; } }
+
+/* ═══════════════════════════════════════
+   SECTION 2: BIG QUESTION
+═══════════════════════════════════════ */
+#big-question {
+  background: var(--accent);
+  color: var(--white);
+  padding: 64px 0;
+  text-align: center;
+}
+
+.big-question-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.3;
+  max-width: 760px;
+  margin: 0 auto 20px;
+}
+
+.big-question-sub {
+  font-size: 1rem;
+  opacity: 0.88;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════
+   SECTION 3: LOOK AROUND YOU
+═══════════════════════════════════════ */
+#look-around {
+  background: var(--bg-3);
+}
+
+.look-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.look-card {
+  background: var(--bg);
+  border: 1.5px solid var(--grid-line-strong);
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.look-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.look-card-icon {
+  width: 48px; height: 48px;
+  margin-bottom: 14px;
+}
+
+.look-card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.look-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   SECTION 4: THE CONCEPT
+═══════════════════════════════════════ */
+#the-concept {
+  background: var(--bg);
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) { .concept-grid { grid-template-columns: 1fr; } }
+
+.concept-block h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent-dark);
+}
+
+.concept-block p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.concept-visual {
+  border: 1.5px solid var(--grid-line-strong);
+  border-radius: 8px;
+  background: var(--bg-3);
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.alignment-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.align-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.align-bar {
+  height: 10px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.align-bar.a { width: 80%; margin-left: 0; }
+.align-bar.b { width: 60%; margin-left: 0; }
+.align-bar.c { width: 40%; margin-left: 0; }
+
+.rule-thirds-demo {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #d4ede7;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rule-thirds-demo .vline {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,184,148,0.5);
+}
+.rule-thirds-demo .vline:nth-child(1) { left: 33.33%; }
+.rule-thirds-demo .vline:nth-child(2) { left: 66.66%; }
+.rule-thirds-demo .hline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: rgba(0,184,148,0.5);
+}
+.rule-thirds-demo .hline:nth-child(3) { top: 33.33%; }
+.rule-thirds-demo .hline:nth-child(4) { top: 66.66%; }
+
+.thirds-dot {
+  position: absolute;
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px rgba(0,184,148,0.3);
+}
+
+.concept-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.concept-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: var(--level-color-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent-dark);
+}
+
+/* ═══════════════════════════════════════
+   SECTION 5: SEE IT LIVE — Grid Toggle
+═══════════════════════════════════════ */
+#see-it-live {
+  background: var(--bg-3);
+}
+
+.see-live-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.toggle-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--accent-dark);
+  min-height: 48px;
+  letter-spacing: 0.04em;
+}
+
+.toggle-btn.active, .toggle-btn:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+
+.grid-demo-wrap {
+  border: 2px solid var(--grid-line-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-3);
+}
+
+.grid-overlay-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.grid-overlay-canvas.visible { opacity: 1; }
+
+.demo-layout {
+  padding: 32px;
+  min-height: 320px;
+  position: relative;
+  z-index: 1;
+}
+
+.demo-layout .demo-headline {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  max-width: 540px;
+}
+
+.demo-layout .demo-sub {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 420px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.demo-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) { .demo-columns { grid-template-columns: 1fr; } }
+
+.demo-col {
+  background: var(--level-color-dim);
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid var(--grid-line-strong);
+}
+
+.demo-col-title {
+  font-family: var(--font-display2);
+  font-size: 1rem;
+  color: var(--accent-dark);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+}
+
+.demo-col p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.grid-label {
+  background: var(--accent);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  position: absolute;
+  top: 12px; right: 12px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
+}
+
+.grid-label.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════
+   SECTION 6: TRY IT — SNAP TO GRID
+═══════════════════════════════════════ */
+#try-it {
+  background: var(--bg);
+}
+
+.try-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.try-instructions {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  background: var(--level-color-dim);
+  border-left: 3px solid var(--accent);
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+  max-width: 680px;
+}
+
+.snap-arena {
+  border: 2px solid var(--grid-line-strong);
+  border-radius: 10px;
+  position: relative;
+  background: var(--bg-3);
+  overflow: hidden;
+  min-height: 420px;
+  /* grid bg */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  touch-action: none;
+}
+
+.snap-grid-strong {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+  background-size: 120px 120px;
+}
+
+.snap-element {
+  position: absolute;
+  cursor: grab;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  user-select: none;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.snap-element:active { cursor: grabbing; }
+
+.snap-element.snapped {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(0,184,148,0.3);
+}
+
+.snap-element .snap-indicator {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.snap-element.snapped .snap-indicator { opacity: 1; }
+
+.snap-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.snap-counter {
+  font-family: var(--font-display2);
+  font-size: 1.1rem;
+  color: var(--accent-dark);
+  letter-spacing: 0.06em;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--accent-dark);
+  min-height: 48px;
+  letter-spacing: 0.04em;
+}
+
+.btn:hover, .btn.primary { background: var(--accent); color: var(--white); }
+.btn.primary { border-color: var(--accent); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ═══════════════════════════════════════
+   SECTION 6B: RULE OF THIRDS ACTIVITY
+═══════════════════════════════════════ */
+.thirds-activity-wrap {
+  margin-top: 40px;
+  border-top: 1px dashed var(--grid-line-strong);
+  padding-top: 32px;
+}
+
+.thirds-canvas-wrap {
+  position: relative;
+  display: inline-block;
+  border: 2px solid var(--grid-line-strong);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: crosshair;
+  max-width: 100%;
+}
+
+#thirds-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.thirds-result {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--level-color-dim);
+  border: 1px solid var(--accent);
+  font-size: 0.9rem;
+  color: var(--accent-dark);
+  font-weight: 600;
+  display: none;
+}
+
+.thirds-result.visible { display: block; }
+
+/* ═══════════════════════════════════════
+   SECTION 7: JUDGE IT
+═══════════════════════════════════════ */
+#judge-it {
+  background: var(--bg-3);
+}
+
+.judge-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.judge-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 600px) { .judge-pair { grid-template-columns: 1fr; } }
+
+.judge-card {
+  border-radius: 10px;
+  border: 2px solid var(--grid-line-strong);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.judge-card:hover { transform: translateY(-2px); }
+.judge-card.selected-good { border-color: var(--accent); background: var(--level-color-dim); }
+.judge-card.selected-bad { border-color: #e74c3c; background: rgba(231,76,60,0.07); }
+
+.judge-card-preview {
+  padding: 24px;
+  min-height: 140px;
+  background: var(--bg);
+}
+
+.judge-card-label {
+  padding: 10px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--bg-2);
+  color: var(--text-muted);
+}
+
+.judge-feedback {
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: none;
+  border-top: 1px solid var(--grid-line-strong);
+}
+
+.judge-feedback.visible { display: block; }
+.judge-feedback.good { color: var(--accent-dark); background: var(--level-color-dim); }
+.judge-feedback.bad { color: #c0392b; background: rgba(231,76,60,0.07); }
+
+/* bad layout preview */
+.bad-layout { display: flex; flex-direction: column; gap: 4px; }
+.bad-layout .bar { height: 8px; border-radius: 2px; background: #ccc; }
+.bad-layout .bar:nth-child(1) { width: 90%; margin-left: 0; }
+.bad-layout .bar:nth-child(2) { width: 30%; margin-left: 40%; }
+.bad-layout .bar:nth-child(3) { width: 60%; margin-left: 15%; }
+.bad-layout .bar:nth-child(4) { width: 80%; margin-left: 5%; }
+.bad-layout .bar:nth-child(5) { width: 45%; margin-left: 25%; }
+
+/* good layout preview */
+.good-layout { display: flex; flex-direction: column; gap: 6px; }
+.good-layout .bar { height: 8px; border-radius: 2px; background: var(--accent); }
+.good-layout .bar:nth-child(1) { width: 80%; }
+.good-layout .bar:nth-child(2) { width: 60%; }
+.good-layout .bar:nth-child(3) { width: 60%; }
+.good-layout .bar:nth-child(4) { width: 40%; }
+.good-layout .bar:nth-child(5) { width: 40%; }
+
+.judge-score {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════════════
+   SECTION 8: IN THE WILD
+═══════════════════════════════════════ */
+#in-the-wild {
+  background: var(--bg);
+}
+
+.wild-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.wild-card {
+  background: var(--bg-3);
+  border: 1.5px solid var(--grid-line-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.wild-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.wild-visual {
+  height: 120px;
+  background: var(--level-color-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--grid-line-strong);
+}
+
+.wild-body { padding: 16px; }
+
+.wild-body h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.wild-body p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   SECTION 9: LEVEL CHALLENGE
+═══════════════════════════════════════ */
+#level-challenge {
+  background: var(--bg-3);
+}
+
+.challenge-brief {
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 32px;
+  margin-top: 24px;
+  margin-bottom: 28px;
+}
+
+.challenge-brief h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--accent-dark);
+}
+
+.challenge-brief p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.challenge-steps {
+  list-style: none;
+  counter-reset: steps;
+  margin-top: 16px;
+}
+
+.challenge-steps li {
+  counter-increment: steps;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.challenge-steps li::before {
+  content: counter(steps);
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+/* POSTER BUILDER */
+.poster-builder {
+  border: 2px solid var(--grid-line-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.poster-toolbar {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--grid-line-strong);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tb-btn {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 4px;
+  border: 1.5px solid var(--accent);
+  cursor: pointer;
+  background: transparent;
+  color: var(--accent-dark);
+  transition: all 0.15s;
+  min-height: 36px;
+  letter-spacing: 0.04em;
+}
+
+.tb-btn.active, .tb-btn:hover { background: var(--accent); color: white; }
+
+.poster-canvas-wrap {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+}
+
+@media (max-width: 900px) { .poster-canvas-wrap { grid-template-columns: 1fr; } }
+
+#poster-canvas {
+  display: block;
+  width: 100%;
+  cursor: crosshair;
+  background: white;
+  border-right: 1px solid var(--grid-line-strong);
+  max-height: 460px;
+}
+
+.poster-sidebar {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 460px;
+}
+
+.poster-sidebar h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.color-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 32px; height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+  min-width: 32px;
+}
+
+.color-swatch.active { border-color: var(--text-primary) !important; }
+
+.tool-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.tool-btn {
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 9px 12px;
+  border-radius: 5px;
+  border: 1.5px solid var(--grid-line-strong);
+  cursor: pointer;
+  background: var(--bg-3);
+  color: var(--text-secondary);
+  text-align: left;
+  transition: all 0.15s;
+  min-height: 40px;
+}
+
+.tool-btn.active, .tool-btn:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--level-color-dim); }
+
+.save-section {
+  margin-top: 16px;
+  border-top: 1px solid var(--grid-line-strong);
+  padding-top: 14px;
+}
+
+.save-section textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--grid-line-strong);
+  border-radius: 5px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  background: var(--bg-3);
+  resize: none;
+  margin-bottom: 8px;
+}
+
+.save-section textarea:focus { outline: none; border-color: var(--accent); }
+
+/* ═══════════════════════════════════════
+   SECTION 10: REFLECTION
+═══════════════════════════════════════ */
+#reflection {
+  background: var(--accent);
+  color: white;
+  text-align: center;
+}
+
+.reflection-question {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-style: italic;
+  max-width: 700px;
+  margin: 0 auto 28px;
+  line-height: 1.5;
+}
+
+.reflection-input {
+  width: 100%;
+  max-width: 600px;
+  min-height: 100px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reflection-input::placeholder { color: rgba(255,255,255,0.6); }
+.reflection-input:focus { outline: none; border-color: white; }
+
+/* ═══════════════════════════════════════
+   SECTION 11: BADGE + XP
+═══════════════════════════════════════ */
+#badge-unlock {
+  background: var(--bg-3);
+  text-align: center;
+}
+
+.badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.badge-svg-wrap {
+  position: relative;
+  width: 160px; height: 160px;
+  opacity: 0.3;
+  transition: opacity 0.5s;
+  filter: grayscale(1);
+}
+
+.badge-svg-wrap.unlocked {
+  opacity: 1;
+  filter: none;
+}
+
+.badge-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.badge-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 340px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.xp-display {
+  font-family: var(--font-display2);
+  font-size: 2.4rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.unlock-status {
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.unlock-status.locked {
+  background: var(--bg-2);
+  color: var(--text-muted);
+  border: 1.5px solid var(--grid-line-strong);
+}
+
+.unlock-status.unlocked-status {
+  background: var(--accent);
+  color: white;
+}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════ */
+.bottom-nav {
+  background: var(--bg-2);
+  border-top: 2px solid var(--grid-line-strong);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  min-height: 48px;
+  padding: 8px 0;
+}
+
+.nav-link:hover { color: var(--accent); }
+
+.nav-link svg { flex-shrink: 0; }
+
+.nav-link.next-link {
+  background: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+}
+
+.nav-link.next-link:hover { background: var(--accent-dark); color: white; }
+
+/* ═══════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════ */
+.text-accent { color: var(--accent); }
+.text-muted { color: var(--text-muted); }
+
+h2.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.divider-rule {
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+  margin: 0 0 24px;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="top-nav" role="navigation" aria-label="Course navigation">
+  <a href="index.html" class="nav-logo" aria-label="OTS Skills Academy home">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="8" height="8" fill="white"/>
+        <rect x="12" y="2" width="8" height="8" fill="white" opacity="0.6"/>
+        <rect x="2" y="12" width="8" height="8" fill="white" opacity="0.6"/>
+        <rect x="12" y="12" width="8" height="8" fill="white" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="nav-wordmark">
+      OTS SKILLS ACADEMY
+      <span>Basic Design Theory</span>
+    </div>
+  </a>
+  <div class="nav-course-title">Level 8 of 12</div>
+  <div class="nav-xp" aria-live="polite" aria-label="XP total">
+    ⚡ <span id="xp-counter">0</span> XP
+  </div>
+</nav>
+
+<!-- PROGRESS BAR -->
+<div class="level-progress-bar" role="progressbar" aria-valuenow="8" aria-valuemin="1" aria-valuemax="12" aria-label="Level 8 of 12">
+  <div class="level-progress-fill"></div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="index.html">OTS Skills Academy</a>
+  <span aria-hidden="true">→</span>
+  <a href="index.html">Basic Design Theory</a>
+  <span aria-hidden="true">→</span>
+  Level 8: Grid and Alignment
+</div>
+
+<!-- ═══════════════════════════════════════
+  SECTION 1: LEVEL HEADER
+═══════════════════════════════════════ -->
+<section id="level-header" aria-labelledby="level-title">
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <div class="level-eyebrow">
+          <span class="level-number-badge">LEVEL 8</span>
+          <span class="difficulty-badge">Challenger</span>
+        </div>
+        <h1 class="level-title" id="level-title">Grid and<br>Alignment</h1>
+        <p class="level-tagline">"The invisible skeleton behind every great design."</p>
+        <div class="level-meta">
+          <div class="meta-item">
+            <span class="meta-label">XP Reward</span>
+            <span class="meta-value text-accent">450 XP</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">Challenger</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Identity Color</span>
+            <span class="meta-value">#00B894</span>
+          </div>
+        </div>
+      </div>
+      <!-- SVG Grid Visualization -->
+      <svg class="header-grid-viz" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <pattern id="grid-small" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,184,148,0.2)" stroke-width="0.5"/>
+          </pattern>
+          <pattern id="grid-large" width="60" height="60" patternUnits="userSpaceOnUse">
+            <rect width="60" height="60" fill="url(#grid-small)"/>
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(0,184,148,0.5)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="180" height="180" fill="white" rx="8"/>
+        <rect width="180" height="180" fill="url(#grid-large)" rx="8"/>
+        <!-- elements snapped to grid -->
+        <rect x="20" y="20" width="80" height="14" rx="2" fill="#00B894" opacity="0.9"/>
+        <rect x="20" y="40" width="60" height="8" rx="2" fill="#00B894" opacity="0.5"/>
+        <rect x="20" y="60" width="120" height="1" fill="#00B894" opacity="0.4"/>
+        <rect x="20" y="72" width="34" height="34" rx="3" fill="#00B894" opacity="0.15" stroke="#00B894" stroke-width="1"/>
+        <rect x="62" y="72" width="34" height="34" rx="3" fill="#00B894" opacity="0.15" stroke="#00B894" stroke-width="1"/>
+        <rect x="104" y="72" width="34" height="34" rx="3" fill="#00B894" opacity="0.15" stroke="#00B894" stroke-width="1"/>
+        <rect x="20" y="116" width="118" height="6" rx="2" fill="#00B894" opacity="0.2"/>
+        <rect x="20" y="128" width="80" height="6" rx="2" fill="#00B894" opacity="0.2"/>
+        <rect x="20" y="140" width="100" height="6" rx="2" fill="#00B894" opacity="0.2"/>
+        <!-- snap dots -->
+        <circle cx="20" cy="72" r="3" fill="#00B894"/>
+        <circle cx="62" cy="72" r="3" fill="#00B894"/>
+        <circle cx="104" cy="72" r="3" fill="#00B894"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 2: THE BIG QUESTION
+═══════════════════════════════════════ -->
+<section id="big-question" aria-labelledby="bq-heading">
+  <div class="container">
+    <div class="section-label" style="color:rgba(255,255,255,0.7);">THE BIG QUESTION</div>
+    <p class="big-question-text" id="bq-heading">
+      Why do some designs feel <em>organised</em> — and others feel like chaos — even when they contain exactly the same information?
+    </p>
+    <p class="big-question-sub">
+      The answer is invisible. It's a skeleton. And once you learn to see it, you will never look at a page the same way again.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 3: LOOK AROUND YOU
+═══════════════════════════════════════ -->
+<section id="look-around" aria-labelledby="la-heading">
+  <div class="container">
+    <div class="section-label">Look Around You</div>
+    <h2 class="section-heading" id="la-heading">Before We Begin — Look</h2>
+    <div class="divider-rule"></div>
+    <p style="font-size:1rem;color:var(--text-secondary);max-width:680px;line-height:1.7;margin-bottom:8px;">
+      Before any theory, open your eyes. Pick up <strong>any printed page</strong> near you — a newspaper, a school book, a packet of food. Look at it for 30 seconds.
+    </p>
+    <p style="font-size:1rem;color:var(--text-secondary);max-width:680px;line-height:1.7;margin-bottom:28px;">
+      Ask yourself: Do the elements line up? Are things evenly spaced? Does your eye move smoothly, or does it jump around? You're looking for the grid — even if you can't see it yet.
+    </p>
+    <div class="look-cards">
+      <div class="look-card fade-in">
+        <svg class="look-card-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="4" width="40" height="40" rx="4" fill="none" stroke="#00B894" stroke-width="2"/>
+          <line x1="18" y1="4" x2="18" y2="44" stroke="#00B894" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="30" y1="4" x2="30" y2="44" stroke="#00B894" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="4" y1="18" x2="44" y2="18" stroke="#00B894" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="4" y1="30" x2="44" y2="30" stroke="#00B894" stroke-width="1" stroke-dasharray="3 2"/>
+        </svg>
+        <h3>Newspapers</h3>
+        <p>Every column, every headline, every image sits on an invisible grid. The grid lets your eye flow without effort.</p>
+      </div>
+      <div class="look-card fade-in">
+        <svg class="look-card-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="6" y="8" width="36" height="32" rx="3" fill="none" stroke="#00B894" stroke-width="2"/>
+          <rect x="10" y="13" width="16" height="4" rx="1" fill="#00B894" opacity="0.7"/>
+          <rect x="10" y="20" width="28" height="2" rx="1" fill="#00B894" opacity="0.3"/>
+          <rect x="10" y="25" width="28" height="2" rx="1" fill="#00B894" opacity="0.3"/>
+          <rect x="10" y="30" width="20" height="2" rx="1" fill="#00B894" opacity="0.3"/>
+        </svg>
+        <h3>Websites</h3>
+        <p>Modern websites are built on 12-column grids. The spacing feels "right" because it follows mathematical rules.</p>
+      </div>
+      <div class="look-card fade-in">
+        <svg class="look-card-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="8" y="6" width="32" height="36" rx="3" fill="none" stroke="#00B894" stroke-width="2"/>
+          <line x1="24" y1="6" x2="24" y2="42" stroke="#00B894" stroke-width="1" opacity="0.4" stroke-dasharray="3 2"/>
+          <rect x="10" y="10" width="12" height="10" rx="1" fill="#00B894" opacity="0.2"/>
+          <rect x="26" y="10" width="12" height="10" rx="1" fill="#00B894" opacity="0.2"/>
+          <rect x="10" y="24" width="28" height="3" rx="1" fill="#00B894" opacity="0.4"/>
+          <rect x="10" y="30" width="20" height="2" rx="1" fill="#00B894" opacity="0.25"/>
+        </svg>
+        <h3>Magazines</h3>
+        <p>Magazine layouts use strict grids to give editorial content its sense of elegance, order, and visual drama.</p>
+      </div>
+      <div class="look-card fade-in">
+        <svg class="look-card-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="12" width="40" height="28" rx="3" fill="none" stroke="#00B894" stroke-width="2"/>
+          <rect x="16" y="4" width="16" height="8" rx="2" fill="none" stroke="#00B894" stroke-width="2"/>
+          <line x1="18" y1="20" x2="30" y2="20" stroke="#00B894" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="14" y1="28" x2="34" y2="28" stroke="#00B894" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="18" y1="34" x2="30" y2="34" stroke="#00B894" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <h3>Restaurant Menus</h3>
+        <p>A good menu uses alignment to group items by category. A bad one places things randomly — confusing and hard to scan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 4: THE CONCEPT
+═══════════════════════════════════════ -->
+<section id="the-concept" aria-labelledby="concept-heading">
+  <div class="container">
+    <div class="section-label">The Concept</div>
+    <h2 class="section-heading" id="concept-heading">Grid Systems & Alignment</h2>
+    <div class="divider-rule"></div>
+    <div class="concept-grid">
+      <div class="concept-block fade-in">
+        <h3>What is a Grid?</h3>
+        <p>A grid is an invisible network of lines that divides a page into columns and rows. It's a framework — never seen by the audience, but always felt. Think of it as the skeleton of your design.</p>
+        <p>Grids bring order, consistency, and rhythm. They let multiple elements coexist without competing.</p>
+        <div class="concept-pill-list">
+          <span class="concept-pill">Columns</span>
+          <span class="concept-pill">Gutters</span>
+          <span class="concept-pill">Margins</span>
+          <span class="concept-pill">Baseline</span>
+          <span class="concept-pill">Modules</span>
+        </div>
+      </div>
+      <div class="concept-block fade-in">
+        <h3>Alignment Rules</h3>
+        <p>Alignment means every element is positioned in deliberate relationship to another. Left-aligned text creates a clean left edge. Centre alignment creates formality. Justified text fills the column width.</p>
+        <div class="concept-visual">
+          <div class="alignment-demo" aria-label="Alignment demonstration">
+            <div class="align-row">
+              <div class="align-bar a" aria-hidden="true"></div>
+            </div>
+            <div class="align-row">
+              <div class="align-bar b" aria-hidden="true"></div>
+            </div>
+            <div class="align-row">
+              <div class="align-bar c" aria-hidden="true"></div>
+            </div>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:10px;">Left-aligned bars create a clean, readable edge — the eye flows down effortlessly.</p>
+        </div>
+      </div>
+      <div class="concept-block fade-in">
+        <h3>Rule of Thirds</h3>
+        <p>Divide your canvas into 9 equal parts with 2 horizontal and 2 vertical lines. Place your most important element at one of the 4 intersection points. This creates natural visual tension and interest.</p>
+        <div class="concept-visual">
+          <div class="rule-thirds-demo" role="img" aria-label="Rule of thirds grid showing 4 power points at intersections">
+            <div class="vline"></div>
+            <div class="vline"></div>
+            <div class="hline"></div>
+            <div class="hline"></div>
+            <div class="thirds-dot" style="left:33.33%;top:33.33%"></div>
+            <div class="thirds-dot" style="left:66.66%;top:33.33%"></div>
+            <div class="thirds-dot" style="left:33.33%;top:66.66%"></div>
+            <div class="thirds-dot" style="left:66.66%;top:66.66%"></div>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:10px;">The 4 power points (●) are where the eye naturally wants to look first.</p>
+        </div>
+      </div>
+      <div class="concept-block fade-in">
+        <h3>Golden Ratio — The Concept</h3>
+        <p>The golden ratio (≈1.618) appears throughout nature — shells, flowers, faces. When applied to layout, it creates proportions that feel inherently balanced and beautiful without our knowing why.</p>
+        <p>You don't need to calculate it precisely. The Rule of Thirds is a practical approximation. The key insight: <strong>don't center everything</strong>. Off-center is more alive.</p>
+        <div class="concept-pill-list">
+          <span class="concept-pill">1 : 1.618</span>
+          <span class="concept-pill">Fibonacci</span>
+          <span class="concept-pill">Nature's Ratio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 5: SEE IT LIVE
+═══════════════════════════════════════ -->
+<section id="see-it-live" aria-labelledby="sil-heading">
+  <div class="container">
+    <div class="section-label">See It Live</div>
+    <h2 class="section-heading" id="sil-heading">Aligned vs. Not — Toggle the Skeleton</h2>
+    <div class="divider-rule"></div>
+    <p class="see-live-intro">
+      Toggle the grid overlay on and off to see the invisible skeleton behind this layout. Notice how every element snaps to a column. When you hide the grid, the layout still <em>feels</em> ordered — because the structure is there, even when invisible.
+    </p>
+    <div class="toggle-bar">
+      <button class="toggle-btn active" id="btn-grid-off" aria-pressed="false">Grid OFF</button>
+      <button class="toggle-btn" id="btn-grid-on" aria-pressed="true">Grid ON</button>
+    </div>
+    <div class="grid-demo-wrap" role="region" aria-label="Interactive grid demonstration">
+      <canvas class="grid-overlay-canvas" id="grid-overlay" aria-hidden="true"></canvas>
+      <span class="grid-label" id="grid-label" aria-live="polite">GRID VISIBLE</span>
+      <div class="demo-layout">
+        <div class="demo-headline">Karachi Design Week</div>
+        <div class="demo-sub">Three days of workshops, talks, and exhibitions celebrating the visual culture of our city — from truck art to typography.</div>
+        <div class="demo-columns">
+          <div class="demo-col">
+            <div class="demo-col-title">Workshops</div>
+            <p>Hands-on sessions with local designers and artists from across Pakistan.</p>
+          </div>
+          <div class="demo-col">
+            <div class="demo-col-title">Talks</div>
+            <p>Speakers from advertising, publishing, architecture, and street art.</p>
+          </div>
+          <div class="demo-col">
+            <div class="demo-col-title">Exhibition</div>
+            <p>A curated display of 40 years of Pakistani graphic design in one gallery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 6: TRY IT YOURSELF
+═══════════════════════════════════════ -->
+<section id="try-it" aria-labelledby="try-heading">
+  <div class="container">
+    <div class="section-label">Try It Yourself</div>
+    <h2 class="section-heading" id="try-heading">Snap to Grid</h2>
+    <div class="divider-rule"></div>
+    <p class="try-intro">Drag each design element onto the canvas below. When an element is aligned to the grid (within 15px of a grid line), its border turns <strong style="color:var(--accent)">green</strong> and you get a ✓ indicator. Get all 7 elements snapped correctly to unlock points.</p>
+    <p class="try-instructions">
+      💡 <strong>Tip:</strong> The strong grid lines are every 120px. Elements snap when their edge is within ~15px of a grid line. On mobile, drag with your finger. Use the <strong>Undo</strong> button to reset.
+    </p>
+    <!-- Elements palette -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;" role="list" aria-label="Design elements to drag">
+      <div class="snap-element" id="el-headline" draggable="true" data-w="240" data-h="36"
+           style="width:240px;height:36px;background:#00B894;color:white;padding:0 12px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.08em;"
+           role="listitem" tabindex="0" aria-label="Headline element, drag to canvas">
+        HEADLINE TEXT
+        <span class="snap-indicator">✓ Aligned</span>
+      </div>
+      <div class="snap-element" id="el-sub" draggable="true" data-w="200" data-h="28"
+           style="width:200px;height:28px;background:var(--level-color-dim);color:var(--accent-dark);padding:0 10px;font-size:0.8rem;font-weight:600;border-color:var(--grid-line-strong);"
+           role="listitem" tabindex="0" aria-label="Subheading element, drag to canvas">
+        Subheading text here
+        <span class="snap-indicator">✓ Aligned</span>
+      </div>
+    </div>
+    <div class="snap-arena" id="snap-arena" role="region" aria-label="Grid alignment canvas">
+      <div class="snap-grid-strong" aria-hidden="true"></div>
+      <div id="placed-elements" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+    </div>
+    <div class="snap-controls">
+      <span class="snap-counter">Aligned: <span id="snap-count">0</span> / 7</span>
+      <button class="btn" id="undo-snap" aria-label="Undo last placed element">↩ Undo</button>
+      <button class="btn primary" id="check-snap" aria-label="Check alignment score">Check Alignment</button>
+    </div>
+
+    <!-- RULE OF THIRDS ACTIVITY -->
+    <div class="thirds-activity-wrap">
+      <div class="section-label" style="margin-bottom:8px;">Sub-Activity</div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:12px;color:var(--text-primary);">Rule of Thirds — Place the Focal Point</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);max-width:640px;line-height:1.7;margin-bottom:20px;">
+        Click (or tap) anywhere on the canvas to place your focal element. Then click "Compare Centre vs Thirds" to see how the same element feels different depending on placement. Where does the poster headline feel most powerful?
+      </p>
+      <div class="thirds-canvas-wrap">
+        <canvas id="thirds-canvas" width="600" height="360" aria-label="Click to place focal point on the canvas" tabindex="0"></canvas>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn primary" id="thirds-center" aria-label="Place element at center">Place at Centre</button>
+        <button class="btn" id="thirds-power" aria-label="Place element at power point">Place at Power Point</button>
+        <button class="btn" id="thirds-reset" aria-label="Reset canvas">Reset</button>
+      </div>
+      <div class="thirds-result" id="thirds-result" role="alert" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 7: JUDGE IT
+═══════════════════════════════════════ -->
+<section id="judge-it" aria-labelledby="judge-heading">
+  <div class="container">
+    <div class="section-label">Judge It</div>
+    <h2 class="section-heading" id="judge-heading">Good Grid vs. Bad Grid</h2>
+    <div class="divider-rule"></div>
+    <p class="judge-intro">For each pair below, decide which layout uses alignment and grid principles correctly. Click the one you think is <strong>good design</strong>. Then see why.</p>
+
+    <!-- Pair 1 -->
+    <p style="font-weight:700;font-size:0.85rem;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;">Pair 1 — Text Alignment</p>
+    <div class="judge-pair" role="group" aria-label="Judge text alignment pair">
+      <div class="judge-card" id="j1-a" data-pair="1" data-correct="false" tabindex="0" role="button" aria-label="Option A: Random alignment" aria-pressed="false">
+        <div class="judge-card-preview">
+          <div class="bad-layout" aria-label="Bad alignment: random bar positions">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          </div>
+          <p style="font-size:0.75rem;margin-top:12px;color:var(--text-muted);">Elements placed randomly — different alignment per line</p>
+        </div>
+        <div class="judge-card-label">OPTION A</div>
+        <div class="judge-feedback bad">✗ Random alignment forces the eye to hunt across the page. There's no anchor, no edge, no rhythm. Exhausting to read.</div>
+      </div>
+      <div class="judge-card" id="j1-b" data-pair="1" data-correct="true" tabindex="0" role="button" aria-label="Option B: Left-aligned layout" aria-pressed="false">
+        <div class="judge-card-preview">
+          <div class="good-layout" aria-label="Good alignment: consistent left edge">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          </div>
+          <p style="font-size:0.75rem;margin-top:12px;color:var(--text-muted);">All elements share a left edge — consistent baseline</p>
+        </div>
+        <div class="judge-card-label">OPTION B</div>
+        <div class="judge-feedback good">✓ Left alignment creates a clean vertical edge — your eye effortlessly tracks down the left side. Ordered, calm, readable.</div>
+      </div>
+    </div>
+
+    <!-- Pair 2 -->
+    <p style="font-weight:700;font-size:0.85rem;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;margin-top:24px;">Pair 2 — Headline Placement</p>
+    <div class="judge-pair" role="group" aria-label="Judge headline placement pair">
+      <div class="judge-card" id="j2-a" data-pair="2" data-correct="true" tabindex="0" role="button" aria-label="Option A: Rule of thirds headline" aria-pressed="false">
+        <div class="judge-card-preview">
+          <div style="position:relative;width:100%;height:100px;background:var(--bg-2);border-radius:4px;overflow:hidden;">
+            <div style="position:absolute;left:5%;top:28%;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--accent-dark);letter-spacing:0.1em;">HEADLINE HERE</div>
+            <div style="position:absolute;left:5%;top:28%;right:5%;height:1px;background:rgba(0,184,148,0.3);"></div>
+          </div>
+          <p style="font-size:0.75rem;margin-top:8px;color:var(--text-muted);">Headline placed at upper-third power point</p>
+        </div>
+        <div class="judge-card-label">OPTION A</div>
+        <div class="judge-feedback good">✓ Placing the headline at the upper-third creates visual tension and leaves breathing room. The design feels dynamic, not static.</div>
+      </div>
+      <div class="judge-card" id="j2-b" data-pair="2" data-correct="false" tabindex="0" role="button" aria-label="Option B: Centered headline" aria-pressed="false">
+        <div class="judge-card-preview">
+          <div style="position:relative;width:100%;height:100px;background:var(--bg-2);border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--text-muted);letter-spacing:0.1em;opacity:0.6;">HEADLINE HERE</span>
+          </div>
+          <p style="font-size:0.75rem;margin-top:8px;color:var(--text-muted);">Headline centred both horizontally and vertically</p>
+        </div>
+        <div class="judge-card-label">OPTION B</div>
+        <div class="judge-feedback bad">✗ Perfect centre placement is static. It lacks tension or visual interest. Nothing leads the eye anywhere. It just… sits there.</div>
+      </div>
+    </div>
+
+    <div class="judge-score">
+      <span id="judge-score-text" style="font-family:var(--font-display2);font-size:1.1rem;color:var(--accent-dark);letter-spacing:0.06em;">Score: <span id="judge-score-num">0</span> / 2</span>
+      <button class="btn" id="reset-judge" aria-label="Reset judge activity">Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 8: IN THE WILD
+═══════════════════════════════════════ -->
+<section id="in-the-wild" aria-labelledby="wild-heading">
+  <div class="container">
+    <div class="section-label">In The Wild</div>
+    <h2 class="section-heading" id="wild-heading">Grids Everywhere — Real World</h2>
+    <div class="divider-rule"></div>
+    <p style="font-size:1rem;color:var(--text-secondary);max-width:680px;line-height:1.7;margin-bottom:8px;">
+      Grids aren't invented by designers — they're discovered. Humans have been using proportion systems in architecture, manuscripts, and art for thousands of years. Here's where you see it in everyday life.
+    </p>
+    <div class="wild-grid">
+      <div class="wild-card fade-in">
+        <div class="wild-visual" aria-hidden="true">
+          <svg width="80" height="60" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="76" height="56" rx="3" fill="none" stroke="#00B894" stroke-width="1.5"/>
+            <line x1="27" y1="2" x2="27" y2="58" stroke="#00B894" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <line x1="53" y1="2" x2="53" y2="58" stroke="#00B894" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <rect x="5" y="6" width="20" height="3" rx="1" fill="#00B894" opacity="0.8"/>
+            <rect x="5" y="11" width="15" height="2" rx="1" fill="#00B894" opacity="0.4"/>
+            <rect x="5" y="16" width="18" height="2" rx="1" fill="#00B894" opacity="0.4"/>
+            <rect x="30" y="6" width="20" height="12" rx="2" fill="#00B894" opacity="0.15" stroke="#00B894" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div class="wild-body">
+          <h3>Dawn / Jang Newspapers</h3>
+          <p>Pakistan's major newspapers use strict multi-column grids. Count the columns — typically 5 or 6. Headlines span columns; photos respect the grid.</p>
+        </div>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-visual" aria-hidden="true">
+          <svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="60" height="60" rx="4" fill="none" stroke="#00B894" stroke-width="1.5"/>
+            <line x1="25" y1="5" x2="25" y2="65" stroke="#00B894" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <line x1="45" y1="5" x2="45" y2="65" stroke="#00B894" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <line x1="5" y1="25" x2="65" y2="25" stroke="#00B894" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <line x1="5" y1="45" x2="65" y2="45" stroke="#00B894" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <circle cx="25" cy="25" r="4" fill="#00B894" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="wild-body">
+          <h3>Instagram's 3×3 Grid</h3>
+          <p>Profiles that look great use the Rule of Thirds across their post grid. Images are composed so focal points appear at intersection points — naturally satisfying.</p>
+        </div>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-visual" aria-hidden="true">
+          <svg width="80" height="60" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="10" width="76" height="40" rx="3" fill="none" stroke="#00B894" stroke-width="1.5"/>
+            <rect x="8" y="2" width="20" height="8" rx="2" fill="#00B894" opacity="0.3"/>
+            <line x1="28" y1="10" x2="28" y2="50" stroke="#00B894" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <line x1="52" y1="10" x2="52" y2="50" stroke="#00B894" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <rect x="6" y="16" width="18" height="26" rx="2" fill="#00B894" opacity="0.15" stroke="#00B894" stroke-width="0.8"/>
+            <rect x="32" y="16" width="16" height="10" rx="1" fill="#00B894" opacity="0.2"/>
+            <rect x="32" y="28" width="16" height="10" rx="1" fill="#00B894" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="wild-body">
+          <h3>Pakistani Packaging</h3>
+          <p>Top-shelf Pakistani consumer products — from tea brands to pharmaceutical packaging — use grid-aligned layouts for clarity and shelf presence.</p>
+        </div>
+      </div>
+      <div class="wild-card fade-in">
+        <div class="wild-visual" aria-hidden="true">
+          <svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="60" height="60" rx="2" fill="none" stroke="#00B894" stroke-width="1.5"/>
+            <line x1="5" y1="23" x2="65" y2="23" stroke="#00B894" stroke-width="1"/>
+            <line x1="5" y1="47" x2="65" y2="47" stroke="#00B894" stroke-width="1"/>
+            <line x1="23" y1="5" x2="23" y2="65" stroke="#00B894" stroke-width="1"/>
+            <line x1="47" y1="5" x2="47" y2="65" stroke="#00B894" stroke-width="1"/>
+            <text x="35" y="40" text-anchor="middle" font-size="8" fill="#00B894" font-family="sans-serif" font-weight="bold">GRID</text>
+          </svg>
+        </div>
+        <div class="wild-body">
+          <h3>Islamic Geometric Art</h3>
+          <p>Islamic tilework and geometric art are built on mathematically precise grids — perfect repetition, proportion, and symmetry. One of the oldest design grid systems in history.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 9: LEVEL CHALLENGE
+═══════════════════════════════════════ -->
+<section id="level-challenge" aria-labelledby="challenge-heading">
+  <div class="container">
+    <div class="section-label">Level Challenge</div>
+    <h2 class="section-heading" id="challenge-heading">Design a Poster Using a Grid</h2>
+    <div class="divider-rule"></div>
+    <div class="challenge-brief" role="region" aria-label="Challenge brief">
+      <h3>The Brief: OTS Design Workshop Poster</h3>
+      <p>Design a simple poster for an upcoming design workshop. Your poster must demonstrate conscious use of a grid and alignment system. Every element must be intentionally placed.</p>
+      <p><strong>Constraint:</strong> You may only use horizontal and vertical lines to create your layout. No diagonals. No curves. Grid only.</p>
+      <ol class="challenge-steps">
+        <li>Activate the grid overlay to see your working framework</li>
+        <li>Place your headline at a Rule of Thirds power point (not the centre)</li>
+        <li>Add a subheading — align it to the same left margin as the headline</li>
+        <li>Add a body text block — choose a consistent column width</li>
+        <li>Add a rectangle (image placeholder) — snap it to the grid</li>
+        <li>Write one sentence in the notes: explain why you placed the headline where you did</li>
+      </ol>
+    </div>
+
+    <div class="poster-builder" role="application" aria-label="Poster builder canvas">
+      <div class="poster-toolbar">
+        <span class="toolbar-label">Tool:</span>
+        <div class="toolbar-group" role="group" aria-label="Drawing tools">
+          <button class="tb-btn active" id="tool-text" aria-pressed="true">T Text</button>
+          <button class="tb-btn" id="tool-rect" aria-pressed="false">▬ Shape</button>
+          <button class="tb-btn" id="tool-line" aria-pressed="false">— Line</button>
+        </div>
+        <span class="toolbar-label" style="margin-left:8px;">Grid:</span>
+        <div class="toolbar-group" role="group" aria-label="Grid controls">
+          <button class="tb-btn active" id="poster-grid-on" aria-pressed="true">Grid ON</button>
+          <button class="tb-btn" id="poster-grid-off" aria-pressed="false">Grid OFF</button>
+        </div>
+        <button class="tb-btn" id="poster-undo" style="margin-left:auto;" aria-label="Undo last action">↩ Undo</button>
+        <button class="tb-btn" id="poster-clear" aria-label="Clear canvas">✕ Clear</button>
+      </div>
+      <div class="poster-canvas-wrap">
+        <canvas id="poster-canvas" width="680" height="460" aria-label="Poster design canvas - click to draw" tabindex="0"></canvas>
+        <div class="poster-sidebar">
+          <h4>Color</h4>
+          <div class="color-row" role="group" aria-label="Color palette">
+            <div class="color-swatch active" data-color="#00B894" style="background:#00B894;" tabindex="0" role="button" aria-label="Mint green" aria-pressed="true"></div>
+            <div class="color-swatch" data-color="#007d65" style="background:#007d65;" tabindex="0" role="button" aria-label="Dark green" aria-pressed="false"></div>
+            <div class="color-swatch" data-color="#0d1f1a" style="background:#0d1f1a;" tabindex="0" role="button" aria-label="Black" aria-pressed="false"></div>
+            <div class="color-swatch" data-color="#e4f5ef" style="background:#e4f5ef;border:1px solid #ccc;" tabindex="0" role="button" aria-label="Light green" aria-pressed="false"></div>
+            <div class="color-swatch" data-color="#ffffff" style="background:#ffffff;border:1px solid #ccc;" tabindex="0" role="button" aria-label="White" aria-pressed="false"></div>
+          </div>
+          <h4>Font Size</h4>
+          <div class="tool-btn-group" role="group" aria-label="Font size options">
+            <button class="tool-btn active" data-size="32" aria-pressed="true">Large (Headline)</button>
+            <button class="tool-btn" data-size="20" aria-pressed="false">Medium (Subhead)</button>
+            <button class="tool-btn" data-size="14" aria-pressed="false">Small (Body)</button>
+          </div>
+          <h4 style="margin-top:4px;">Shape Size</h4>
+          <div class="tool-btn-group" role="group" aria-label="Shape size options">
+            <button class="tool-btn active" data-shape="lg" aria-pressed="true">Large Block</button>
+            <button class="tool-btn" data-shape="sm" aria-pressed="false">Small Block</button>
+          </div>
+          <div class="save-section">
+            <h4>Design Notes</h4>
+            <textarea id="poster-notes" placeholder="Explain your layout decisions... Why did you place elements where you did?" aria-label="Design decision notes"></textarea>
+            <button class="btn primary" id="save-poster" style="width:100%;" aria-label="Save to portfolio">💾 Save to Portfolio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="save-confirmation" style="display:none;margin-top:14px;padding:12px 18px;background:var(--level-color-dim);border:1.5px solid var(--accent);border-radius:6px;color:var(--accent-dark);font-weight:600;font-size:0.9rem;" role="alert" aria-live="polite">
+      ✓ Saved to your portfolio — Level 8 complete!
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 10: REFLECTION
+═══════════════════════════════════════ -->
+<section id="reflection" aria-labelledby="reflection-heading">
+  <div class="container">
+    <div class="section-label" style="color:rgba(255,255,255,0.7);">Reflection</div>
+    <h2 class="section-heading" style="color:white;" id="reflection-heading">Think Beyond the Screen</h2>
+    <div class="divider-rule" style="background:white;"></div>
+    <p class="reflection-question">
+      "If grids are invisible — and good design hides its structure — then how do you know if a design is working? What does 'feels right' actually mean?"
+    </p>
+    <textarea class="reflection-input" id="reflection-text" placeholder="Write your reflection here — there's no wrong answer. Think about a design you find beautiful and ask: what invisible structure is holding it together?" aria-label="Reflection response"></textarea>
+    <button class="btn" style="background:white;color:var(--accent-dark);border-color:white;margin:0 auto;display:block;" id="save-reflection" aria-label="Save reflection">Save Reflection</button>
+    <div id="reflection-saved" style="display:none;margin-top:12px;color:rgba(255,255,255,0.9);font-weight:600;font-size:0.9rem;" role="alert" aria-live="polite">Reflection saved ✓</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SECTION 11: BADGE + XP UNLOCK
+═══════════════════════════════════════ -->
+<section id="badge-unlock" aria-labelledby="badge-heading">
+  <div class="container">
+    <div class="section-label">Badge + XP Unlock</div>
+    <h2 class="section-heading" id="badge-heading">Complete Level 8</h2>
+    <div class="divider-rule"></div>
+    <div class="badge-container">
+      <div class="badge-svg-wrap" id="badge-wrap" aria-label="Level 8 badge">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" width="160" height="160" aria-hidden="true">
+          <defs>
+            <radialGradient id="badge-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00B894" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#007d65" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="80" cy="80" r="75" fill="url(#badge-glow)"/>
+          <circle cx="80" cy="80" r="70" fill="white" stroke="#00B894" stroke-width="3"/>
+          <circle cx="80" cy="80" r="62" fill="none" stroke="#00B894" stroke-width="1" stroke-dasharray="4 3"/>
+          <!-- Grid icon -->
+          <rect x="40" y="40" width="80" height="80" rx="4" fill="none" stroke="#00B894" stroke-width="2.5"/>
+          <line x1="66" y1="40" x2="66" y2="120" stroke="#00B894" stroke-width="1.5"/>
+          <line x1="94" y1="40" x2="94" y2="120" stroke="#00B894" stroke-width="1.5"/>
+          <line x1="40" y1="66" x2="120" y2="66" stroke="#00B894" stroke-width="1.5"/>
+          <line x1="40" y1="94" x2="120" y2="94" stroke="#00B894" stroke-width="1.5"/>
+          <circle cx="66" cy="66" r="4" fill="#00B894"/>
+          <circle cx="94" cy="94" r="4" fill="#00B894"/>
+          <!-- 8 label -->
+          <text x="80" y="152" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="11" fill="#00B894" letter-spacing="2">LEVEL 8</text>
+        </svg>
+      </div>
+      <div class="badge-title">Grid Master</div>
+      <div class="badge-subtitle">You understand the invisible skeleton. You can see the structure behind any design — and now you can build with it.</div>
+      <div class="xp-display">+450 XP</div>
+      <div class="unlock-status locked" id="unlock-status">
+        Complete all activities to unlock
+      </div>
+      <button class="btn primary" id="complete-level" style="font-size:1rem;padding:14px 36px;" aria-label="Mark level 8 as complete">
+        Mark Level Complete
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav" aria-label="Level navigation">
+  <a href="level-07.html" class="nav-link" aria-label="Previous level: Hierarchy">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    Previous: L7 Hierarchy
+  </a>
+  <a href="index.html" class="nav-link" aria-label="Back to course home">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2L2 10h3v8h4v-5h2v5h4v-8h3L10 2z" fill="currentColor"/></svg>
+    Course Home
+  </a>
+  <a href="level-09.html" class="nav-link next-link" aria-label="Next level: Texture, Pattern and Depth">
+    Next: L9 Texture
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </a>
+</nav>
+
+<!-- ═══════════════════════════════════════
+  CANVAS CONFETTI
+═══════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  const COURSE_SLUG = 'basic-design-theory';
+  const LEVEL = 8;
+  const LEVEL_XP = 450;
+
+  // ─── LocalStorage helpers ───────────────────────────────
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+  }
+
+  function getKey(suffix) {
+    return 'ots_skills_' + COURSE_SLUG + '_' + suffix;
+  }
+
+  function updateXPCounter() {
+    var total = parseInt(lsGet(getKey('xp_total')) || '0', 10);
+    var el = document.getElementById('xp-counter');
+    if (el) el.textContent = total;
+  }
+
+  function computeAndSaveXPTotal() {
+    var total = 0;
+    for (var i = 1; i <= 12; i++) {
+      var xp = parseInt(lsGet(getKey('level_' + i + '_xp')) || '0', 10);
+      total += xp;
+    }
+    lsSet(getKey('xp_total'), total);
+    return total;
+  }
+
+  // ─── Init started_at ────────────────────────────────────
+  if (!lsGet(getKey('started_at'))) {
+    lsSet(getKey('started_at'), new Date().toISOString());
+  }
+
+  updateXPCounter();
+
+  // ─── Completion state ───────────────────────────────────
+  var levelComplete = lsGet(getKey('level_' + LEVEL + '_complete')) === 'true';
+
+  function unlockBadge() {
+    var wrap = document.getElementById('badge-wrap');
+    var statusEl = document.getElementById('unlock-status');
+    if (wrap) { wrap.classList.add('unlocked'); }
+    if (statusEl) {
+      statusEl.textContent = '⚡ Level Complete — 450 XP Earned!';
+      statusEl.className = 'unlock-status unlocked-status';
+    }
+  }
+
+  if (levelComplete) { unlockBadge(); }
+
+  // ─── GSAP fallback ──────────────────────────────────────
+  var gsapAvailable = (typeof gsap !== 'undefined');
+
+  // ─── Fade-in animations ─────────────────────────────────
+  function setupFadeIns() {
+    var els = document.querySelectorAll('.fade-in');
+    if (!els.length) return;
+
+    if (gsapAvailable && typeof ScrollTrigger !== 'undefined') {
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        els.forEach(function(el) {
+          var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (prefersReduced) { el.style.opacity = 1; el.style.transform = 'none'; return; }
+          gsap.to(el, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%' }
+          });
+        });
+        return;
+      } catch(e) {}
+    }
+    // fallback
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function(el) { observer.observe(el); });
+  }
+
+  setupFadeIns();
+
+  // ─── SECTION 5: Grid Toggle ──────────────────────────────
+  var gridOnBtn = document.getElementById('btn-grid-on');
+  var gridOffBtn = document.getElementById('btn-grid-off');
+  var gridOverlay = document.getElementById('grid-overlay');
+  var gridLabel = document.getElementById('grid-label');
+  var gridDemoWrap = document.querySelector('.grid-demo-wrap');
+  var gridVisible = false;
+
+  function drawGridOverlay() {
+    if (!gridOverlay) return;
+    var parent = gridOverlay.parentElement;
+    if (!parent) return;
+    gridOverlay.width = parent.offsetWidth;
+    gridOverlay.height = parent.offsetHeight;
+    var ctx = gridOverlay.getContext('2d');
+    var w = gridOverlay.width;
+    var h = gridOverlay.height;
+    ctx.clearRect(0, 0, w, h);
+
+    var colCount = 12;
+    var margin = 32;
+    var gutter = 16;
+    var totalGutters = (colCount - 1) * gutter;
+    var colWidth = (w - 2 * margin - totalGutters) / colCount;
+
+    // column fills
+    ctx.fillStyle = 'rgba(0,184,148,0.07)';
+    for (var i = 0; i < colCount; i++) {
+      var x = margin + i * (colWidth + gutter);
+      ctx.fillRect(x, 0, colWidth, h);
+    }
+
+    // column borders
+    ctx.strokeStyle = 'rgba(0,184,148,0.4)';
+    ctx.lineWidth = 1;
+    for (var i2 = 0; i2 <= colCount; i2++) {
+      var xLine = margin + i2 * (colWidth + gutter) - (i2 > 0 ? gutter : 0);
+      ctx.beginPath();
+      ctx.moveTo(xLine, 0);
+      ctx.lineTo(xLine, h);
+      ctx.stroke();
+    }
+
+    // margin guides
+    ctx.strokeStyle = 'rgba(0,184,148,0.6)';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(margin, 0); ctx.lineTo(margin, h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w - margin, 0); ctx.lineTo(w - margin, h); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // label
+    ctx.fillStyle = 'rgba(0,184,148,0.8)';
+    ctx.font = '700 10px Source Sans 3, sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.fillText('12-COLUMN GRID | MARGIN: 32px | GUTTER: 16px', margin + 4, 6);
+  }
+
+  function toggleGrid(show) {
+    gridVisible = show;
+    if (!gridOverlay) return;
+    if (show) {
+      drawGridOverlay();
+      gridOverlay.classList.add('visible');
+      if (gridLabel) gridLabel.classList.add('visible');
+      if (gridOnBtn) { gridOnBtn.classList.add('active'); gridOnBtn.setAttribute('aria-pressed','true'); }
+      if (gridOffBtn) { gridOffBtn.classList.remove('active'); gridOffBtn.setAttribute('aria-pressed','false'); }
+    } else {
+      gridOverlay.classList.remove('visible');
+      if (gridLabel) gridLabel.classList.remove('visible');
+      if (gridOffBtn) { gridOffBtn.classList.add('active'); gridOffBtn.setAttribute('aria-pressed','false'); }
+      if (gridOnBtn) { gridOnBtn.classList.remove('active'); gridOnBtn.setAttribute('aria-pressed','true'); }
+    }
+  }
+
+  if (gridOnBtn) gridOnBtn.addEventListener('click', function() { toggleGrid(true); });
+  if (gridOffBtn) gridOffBtn.addEventListener('click', function() { toggleGrid(false); });
+
+  window.addEventListener('resize', function() { if (gridVisible) drawGridOverlay(); });
+
+  // ─── SECTION 6: Snap to Grid ────────────────────────────
+  var snapArena = document.getElementById('snap-arena');
+  var snapCountEl = document.getElementById('snap-count');
+  var SNAP_GRID = 120;
+  var SNAP_TOLERANCE = 18;
+  var placedHistory = [];
+  var snappedCount = 0;
+
+  var elementDefs = [
+    { id:'se-1', label:'HEADLINE', w:240, h:36, bg:'#00B894', color:'white', fontSize:'1rem', fontFamily:"'Bebas Neue',sans-serif" },
+    { id:'se-2', label:'Subheading', w:200, h:28, bg:'rgba(0,184,148,0.15)', color:'#007d65', fontSize:'0.8rem', fontFamily:'sans-serif' },
+    { id:'se-3', label:'Body Text', w:180, h:56, bg:'rgba(0,184,148,0.08)', color:'#2d4a42', fontSize:'0.72rem', fontFamily:'sans-serif' },
+    { id:'se-4', label:'IMAGE BLOCK', w:160, h:120, bg:'rgba(0,184,148,0.18)', color:'#007d65', fontSize:'0.75rem', fontFamily:'sans-serif' },
+    { id:'se-5', label:'CTA Button', w:120, h:36, bg:'#007d65', color:'white', fontSize:'0.75rem', fontFamily:'sans-serif' },
+    { id:'se-6', label:'Date/Time', w:140, h:28, bg:'transparent', color:'#5a7a72', fontSize:'0.75rem', fontFamily:'sans-serif', border:'1.5px solid #00B894' },
+    { id:'se-7', label:'Divider Line', w:240, h:4, bg:'#00B894', color:'transparent', fontSize:'0', fontFamily:'sans-serif' }
+  ];
+
+  function isNearGrid(val, gridSize, tol) {
+    var mod = val % gridSize;
+    return mod < tol || (gridSize - mod) < tol;
+  }
+
+  function updateSnapCount() {
+    if (snapCountEl) snapCountEl.textContent = snappedCount;
+  }
+
+  if (snapArena) {
+    var placedContainer = document.getElementById('placed-elements');
+
+    // Build palette
+    var palette = document.createElement('div');
+    palette.setAttribute('role','list');
+    palette.setAttribute('aria-label','Elements palette');
+    palette.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;';
+
+    elementDefs.forEach(function(def) {
+      var el = document.createElement('div');
+      el.className = 'snap-element';
+      el.id = 'palette-' + def.id;
+      el.setAttribute('draggable','true');
+      el.setAttribute('role','listitem');
+      el.setAttribute('tabindex','0');
+      el.setAttribute('aria-label', def.label + ' element, drag to canvas');
+      el.style.cssText = [
+        'width:' + def.w + 'px',
+        'height:' + def.h + 'px',
+        'background:' + def.bg,
+        'color:' + def.color,
+        'font-size:' + def.fontSize,
+        'font-family:' + def.fontFamily,
+        'padding:0 10px',
+        def.border ? 'border:' + def.border : ''
+      ].join(';');
+      el.textContent = def.label;
+
+      var ind = document.createElement('span');
+      ind.className = 'snap-indicator';
+      ind.textContent = '✓ Aligned';
+      el.appendChild(ind);
+
+      // drag start
+      el.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', def.id);
+        e.dataTransfer.effectAllowed = 'copy';
+      });
+
+      // touch drag
+      var touchDragging = false;
+      var touchClone = null;
+
+      el.addEventListener('touchstart', function(e) {
+        touchDragging = true;
+        var t = e.touches[0];
+        touchClone = el.cloneNode(true);
+        touchClone.style.position = 'fixed';
+        touchClone.style.opacity = '0.8';
+        touchClone.style.pointerEvents = 'none';
+        touchClone.style.zIndex = '9999';
+        touchClone.style.left = (t.clientX - def.w/2) + 'px';
+        touchClone.style.top = (t.clientY - def.h/2) + 'px';
+        document.body.appendChild(touchClone);
+        e.preventDefault();
+      }, { passive: false });
+
+      el.addEventListener('touchmove', function(e) {
+        if (!touchClone) return;
+        var t = e.touches[0];
+        touchClone.style.left = (t.clientX - def.w/2) + 'px';
+        touchClone.style.top = (t.clientY - def.h/2) + 'px';
+        e.preventDefault();
+      }, { passive: false });
+
+      el.addEventListener('touchend', function(e) {
+        if (!touchClone || !snapArena) return;
+        var t = e.changedTouches[0];
+        var arenaRect = snapArena.getBoundingClientRect();
+        var x = t.clientX - arenaRect.left;
+        var y = t.clientY - arenaRect.top;
+        if (touchClone.parentNode) touchClone.parentNode.removeChild(touchClone);
+        touchClone = null;
+        touchDragging = false;
+        if (x >= 0 && y >= 0 && x <= arenaRect.width && y <= arenaRect.height) {
+          placeElement(def, x - def.w/2, y - def.h/2);
+        }
+        e.preventDefault();
+      }, { passive: false });
+
+      palette.appendChild(el);
+    });
+
+    // Replace placeholder palette
+    var existingPalette = snapArena.previousElementSibling;
+    if (existingPalette && existingPalette.getAttribute('role') === 'list') {
+      existingPalette.parentNode.replaceChild(palette, existingPalette);
+    } else {
+      snapArena.parentNode.insertBefore(palette, snapArena);
+    }
+
+    // drag over
+    snapArena.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    });
+
+    snapArena.addEventListener('drop', function(e) {
+      e.preventDefault();
+      var id = e.dataTransfer.getData('text/plain');
+      var def2 = elementDefs.find(function(d) { return d.id === id; });
+      if (!def2) return;
+      var rect = snapArena.getBoundingClientRect();
+      var x = e.clientX - rect.left - def2.w/2;
+      var y = e.clientY - rect.top - def2.h/2;
+      placeElement(def2, x, y);
+    });
+
+    function placeElement(def2, rawX, rawY) {
+      var arenaW = snapArena.offsetWidth;
+      var arenaH = snapArena.offsetHeight;
+      var x = Math.max(0, Math.min(rawX, arenaW - def2.w));
+      var y = Math.max(0, Math.min(rawY, arenaH - def2.h));
+
+      var el2 = document.createElement('div');
+      el2.className = 'snap-element';
+      el2.style.cssText = [
+        'position:absolute',
+        'left:' + x + 'px',
+        'top:' + y + 'px',
+        'width:' + def2.w + 'px',
+        'height:' + def2.h + 'px',
+        'background:' + def2.bg,
+        'color:' + def2.color,
+        'font-size:' + def2.fontSize,
+        'font-family:' + def2.fontFamily,
+        'padding:0 10px',
+        def2.border ? 'border:' + def2.border : ''
+      ].join(';');
+      el2.textContent = def2.label;
+
+      var ind2 = document.createElement('span');
+      ind2.className = 'snap-indicator';
+      ind2.textContent = '✓ Aligned';
+      el2.appendChild(ind2);
+
+      var snapped = isNearGrid(x, SNAP_GRID, SNAP_TOLERANCE) || isNearGrid(y, SNAP_GRID, SNAP_TOLERANCE);
+      if (snapped) {
+        el2.classList.add('snapped');
+        snappedCount++;
+        updateSnapCount();
+      }
+
+      placedContainer.appendChild(el2);
+      placedHistory.push({ element: el2, wasSnapped: snapped });
+    }
+
+    // Undo
+    var undoBtn = document.getElementById('undo-snap');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', function() {
+        if (!placedHistory.length) return;
+        var last = placedHistory.pop();
+        if (last.wasSnapped) { snappedCount = Math.max(0, snappedCount - 1); updateSnapCount(); }
+        if (last.element && last.element.parentNode) last.element.parentNode.removeChild(last.element);
+      });
+    }
+
+    // Check
+    var checkBtn = document.getElementById('check-snap');
+    if (checkBtn) {
+      checkBtn.addEventListener('click', function() {
+        var msg = 'You\'ve aligned ' + snappedCount + ' out of ' + Math.min(placedHistory.length, 7) + ' placed elements to the grid.';
+        if (snappedCount >= 5) msg += ' Excellent grid discipline!';
+        else if (snappedCount >= 3) msg += ' Good start — try snapping the remaining elements.';
+        else msg += ' Keep going — align elements closer to the grid lines.';
+        alert(msg);
+      });
+    }
+  }
+
+  // ─── SECTION 6B: Rule of Thirds ─────────────────────────
+  var thirdsCanvas = document.getElementById('thirds-canvas');
+  var thirdsResult = document.getElementById('thirds-result');
+  var thirdsMode = null; // 'click', 'center', 'power'
+  var thirdsPoints = [];
+
+  function drawThirdsCanvas(markerX, markerY, label) {
+    if (!thirdsCanvas) return;
+    var ctx = thirdsCanvas.getContext('2d');
+    var w = thirdsCanvas.width;
+    var h = thirdsCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // background
+    ctx.fillStyle = '#e4f5ef';
+    ctx.fillRect(0, 0, w, h);
+
+    // grid lines
+    ctx.strokeStyle = 'rgba(0,184,148,0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    [w/3, 2*w/3].forEach(function(x) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    });
+    [h/3, 2*h/3].forEach(function(y) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    // power points
+    ctx.strokeStyle = 'rgba(0,184,148,0.7)';
+    ctx.lineWidth = 1;
+    [[w/3,h/3],[2*w/3,h/3],[w/3,2*h/3],[2*w/3,2*h/3]].forEach(function(pt) {
+      ctx.beginPath();
+      ctx.arc(pt[0], pt[1], 5, 0, Math.PI*2);
+      ctx.stroke();
+    });
+
+    // placeholder content
+    ctx.fillStyle = 'rgba(0,184,148,0.08)';
+    ctx.fillRect(20, 20, w-40, h/2-40);
+    ctx.fillStyle = 'rgba(0,184,148,0.12)';
+    ctx.fillRect(20, h/2+20, (w-60)/3, h/3-20);
+    ctx.fillRect(20+(w-60)/3+10, h/2+20, (w-60)/3, h/3-20);
+    ctx.fillRect(20+2*((w-60)/3)+20, h/2+20, (w-60)/3, h/3-20);
+
+    if (markerX !== null && markerY !== null) {
+      // draw marker
+      ctx.fillStyle = '#00B894';
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 14, 0, Math.PI*2);
+      ctx.fill();
+      ctx.stroke();
+
+      // label
+      ctx.fillStyle = '#007d65';
+      ctx.font = 'bold 12px Source Sans 3, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'white';
+      ctx.fillText('H', markerX, markerY);
+
+      // label above
+      ctx.fillStyle = '#007d65';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      var lx = Math.min(markerX + 18, w - 120);
+      ctx.fillText(label || 'Focal Point', lx, markerY - 8);
+    }
+  }
+
+  if (thirdsCanvas) {
+    drawThirdsCanvas(null, null);
+
+    thirdsCanvas.addEventListener('click', function(e) {
+      var rect = thirdsCanvas.getBoundingClientRect();
+      var scaleX = thirdsCanvas.width / rect.width;
+      var scaleY = thirdsCanvas.height / rect.height;
+      var x = (e.clientX - rect.left) * scaleX;
+      var y = (e.clientY - rect.top) * scaleY;
+      drawThirdsCanvas(x, y, 'Your Choice');
+      showThirdsResult(x, y);
+    });
+
+    thirdsCanvas.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        var x = thirdsCanvas.width / 2;
+        var y = thirdsCanvas.height / 2;
+        drawThirdsCanvas(x, y, 'Centre');
+        showThirdsResult(x, y);
+      }
+    });
+  }
+
+  var thirdsCenter = document.getElementById('thirds-center');
+  var thirdsPower = document.getElementById('thirds-power');
+  var thirdsReset = document.getElementById('thirds-reset');
+
+  if (thirdsCenter) {
+    thirdsCenter.addEventListener('click', function() {
+      if (!thirdsCanvas) return;
+      var cx = thirdsCanvas.width / 2;
+      var cy = thirdsCanvas.height / 2;
+      drawThirdsCanvas(cx, cy, 'CENTRE');
+      showThirdsResult(cx, cy);
+    });
+  }
+
+  if (thirdsPower) {
+    thirdsPower.addEventListener('click', function() {
+      if (!thirdsCanvas) return;
+      var px = thirdsCanvas.width / 3;
+      var py = thirdsCanvas.height / 3;
+      drawThirdsCanvas(px, py, 'POWER POINT');
+      showThirdsResult(px, py);
+    });
+  }
+
+  if (thirdsReset) {
+    thirdsReset.addEventListener('click', function() {
+      drawThirdsCanvas(null, null);
+      if (thirdsResult) { thirdsResult.classList.remove('visible'); thirdsResult.textContent = ''; }
+    });
+  }
+
+  function showThirdsResult(x, y) {
+    if (!thirdsCanvas || !thirdsResult) return;
+    var w = thirdsCanvas.width;
+    var h = thirdsCanvas.height;
+    var ppX = [w/3, 2*w/3];
+    var ppY = [h/3, 2*h/3];
+    var tolerance = 50;
+    var nearPowerPoint = ppX.some(function(px) { return Math.abs(x - px) < tolerance; }) &&
+                         ppY.some(function(py) { return Math.abs(y - py) < tolerance; });
+    var atCenter = Math.abs(x - w/2) < tolerance && Math.abs(y - h/2) < tolerance;
+
+    if (nearPowerPoint) {
+      thirdsResult.textContent = '✓ Power Point placement — this creates natural visual tension. The eye has room to explore the rest of the composition.';
+      thirdsResult.className = 'thirds-result visible';
+      thirdsResult.style.borderColor = 'var(--accent)';
+      thirdsResult.style.color = 'var(--accent-dark)';
+    } else if (atCenter) {
+      thirdsResult.textContent = '⚠ Centre placement — technically balanced, but visually static. Nothing draws the eye anywhere. Try a power point instead.';
+      thirdsResult.className = 'thirds-result visible';
+      thirdsResult.style.borderColor = '#e67e22';
+      thirdsResult.style.color = '#a04000';
+    } else {
+      thirdsResult.textContent = 'Custom placement — interesting. Is this near a power point? Move it slightly and see if the composition changes.';
+      thirdsResult.className = 'thirds-result visible';
+    }
+  }
+
+  // ─── SECTION 7: Judge It ─────────────────────────────────
+  var judgeCards = document.querySelectorAll('.judge-card');
+  var judgePairScores = {};
+  var totalJudgeScore = 0;
+  var judgeScoreEl = document.getElementById('judge-score-num');
+
+  if (judgeCards.length) {
+    judgeCards.forEach(function(card) {
+      card.addEventListener('click', function() { handleJudge(card); });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleJudge(card); }
+      });
+    });
+  }
+
+  function handleJudge(card) {
+    var pair = card.getAttribute('data-pair');
+    var correct = card.getAttribute('data-correct') === 'true';
+    if (judgePairScores[pair] !== undefined) return; // already answered
+
+    // find sibling
+    var sibling = document.querySelector('.judge-card[data-pair="' + pair + '"]:not([data-correct="' + card.getAttribute('data-correct') + '"])');
+
+    if (correct) {
+      card.classList.add('selected-good');
+      card.setAttribute('aria-pressed','true');
+      if (sibling) { sibling.classList.add('selected-bad'); sibling.setAttribute('aria-pressed','false'); }
+      totalJudgeScore++;
+      judgePairScores[pair] = true;
+    } else {
+      card.classList.add('selected-bad');
+      card.setAttribute('aria-pressed','true');
+      if (sibling) { sibling.classList.add('selected-good'); }
+      judgePairScores[pair] = false;
+    }
+
+    // show feedback
+    var feedbacks = document.querySelectorAll('.judge-card[data-pair="' + pair + '"] .judge-feedback');
+    feedbacks.forEach(function(fb) { fb.classList.add('visible'); });
+
+    if (judgeScoreEl) judgeScoreEl.textContent = totalJudgeScore;
+  }
+
+  var resetJudge = document.getElementById('reset-judge');
+  if (resetJudge) {
+    resetJudge.addEventListener('click', function() {
+      judgePairScores = {};
+      totalJudgeScore = 0;
+      if (judgeScoreEl) judgeScoreEl.textContent = 0;
+      judgeCards.forEach(function(c) {
+        c.classList.remove('selected-good', 'selected-bad');
+        c.setAttribute('aria-pressed','false');
+      });
+      document.querySelectorAll('.judge-feedback').forEach(function(fb) { fb.classList.remove('visible'); });
+    });
+  }
+
+  // ─── SECTION 9: Poster Builder ───────────────────────────
+  var posterCanvas = document.getElementById('poster-canvas');
+  var currentTool = 'text';
+  var currentColor = '#00B894';
+  var currentFontSize = 32;
+  var currentShapeSize = 'lg';
+  var posterHistory = [];
+  var posterGridVisible = true;
+  var isDrawingRect = false;
+  var rectStartX = 0, rectStartY = 0;
+
+  if (posterCanvas) {
+    var pCtx = posterCanvas.getContext('2d');
+
+    function resizePosterCanvas() {
+      var parent = posterCanvas.parentElement;
+      if (!parent) return;
+      var maxW = parent.offsetWidth - 300;
+      if (maxW < 300) maxW = parent.offsetWidth;
+      posterCanvas.style.width = maxW + 'px';
+    }
+
+    var pResizeObs = new ResizeObserver(function() { resizePosterCanvas(); });
+    pResizeObs.observe(posterCanvas.parentElement);
+    resizePosterCanvas();
+
+    function drawPosterGrid() {
+      if (!posterGridVisible) return;
+      var w = posterCanvas.width;
+      var h = posterCanvas.height;
+      var CELL = 40;
+      pCtx.save();
+      pCtx.strokeStyle = 'rgba(0,184,148,0.15)';
+      pCtx.lineWidth = 0.5;
+      for (var x = 0; x <= w; x += CELL) {
+        pCtx.beginPath(); pCtx.moveTo(x, 0); pCtx.lineTo(x, h); pCtx.stroke();
+      }
+      for (var y = 0; y <= h; y += CELL) {
+        pCtx.beginPath(); pCtx.moveTo(0, y); pCtx.lineTo(w, y); pCtx.stroke();
+      }
+      // stronger every 3
+      pCtx.strokeStyle = 'rgba(0,184,148,0.35)';
+      pCtx.lineWidth = 1;
+      for (var x2 = 0; x2 <= w; x2 += CELL * 3) {
+        pCtx.beginPath(); pCtx.moveTo(x2, 0); pCtx.lineTo(x2, h); pCtx.stroke();
+      }
+      for (var y2 = 0; y2 <= h; y2 += CELL * 3) {
+        pCtx.beginPath(); pCtx.moveTo(0, y2); pCtx.lineTo(w, y2); pCtx.stroke();
+      }
+      pCtx.restore();
+    }
+
+    function snapToGrid(val, cell) {
+      return Math.round(val / cell) * cell;
+    }
+
+    function saveToHistory() {
+      posterHistory.push(posterCanvas.toDataURL());
+    }
+
+    function renderBackground() {
+      pCtx.fillStyle = '#ffffff';
+      pCtx.fillRect(0, 0, posterCanvas.width, posterCanvas.height);
+    }
+
+    function redrawFromHistory() {
+      if (!posterHistory.length) {
+        renderBackground();
+        drawPosterGrid();
+        return;
+      }
+      var img = new Image();
+      var src = posterHistory[posterHistory.length - 1];
+      img.onload = function() {
+        renderBackground();
+        pCtx.drawImage(img, 0, 0);
+        drawPosterGrid();
+      };
+      img.src = src;
+    }
+
+    renderBackground();
+    drawPosterGrid();
+
+    // Tool buttons
+    var toolText = document.getElementById('tool-text');
+    var toolRect = document.getElementById('tool-rect');
+    var toolLine = document.getElementById('tool-line');
+
+    function setTool(t) {
+      currentTool = t;
+      [toolText, toolRect, toolLine].forEach(function(b) {
+        if (b) { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); }
+      });
+      var map = { text: toolText, rect: toolRect, line: toolLine };
+      if (map[t]) { map[t].classList.add('active'); map[t].setAttribute('aria-pressed','true'); }
+    }
+
+    if (toolText) toolText.addEventListener('click', function() { setTool('text'); });
+    if (toolRect) toolRect.addEventListener('click', function() { setTool('rect'); });
+    if (toolLine) toolLine.addEventListener('click', function() { setTool('line'); });
+
+    // Grid toggle
+    var pgOn = document.getElementById('poster-grid-on');
+    var pgOff = document.getElementById('poster-grid-off');
+    if (pgOn) pgOn.addEventListener('click', function() {
+      posterGridVisible = true;
+      pgOn.classList.add('active'); pgOn.setAttribute('aria-pressed','true');
+      if (pgOff) { pgOff.classList.remove('active'); pgOff.setAttribute('aria-pressed','false'); }
+      redrawFromHistory();
+    });
+    if (pgOff) pgOff.addEventListener('click', function() {
+      posterGridVisible = false;
+      pgOff.classList.add('active'); pgOff.setAttribute('aria-pressed','true');
+      if (pgOn) { pgOn.classList.remove('active'); pgOn.setAttribute('aria-pressed','false'); }
+      redrawFromHistory();
+    });
+
+    // Color swatches
+    var swatches = document.querySelectorAll('.color-swatch');
+    swatches.forEach(function(sw) {
+      sw.addEventListener('click', function() {
+        currentColor = sw.getAttribute('data-color');
+        swatches.forEach(function(s) { s.classList.remove('active'); s.setAttribute('aria-pressed','false'); });
+        sw.classList.add('active'); sw.setAttribute('aria-pressed','true');
+      });
+      sw.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sw.click(); }
+      });
+    });
+
+    // Font size buttons
+    var fontBtns = document.querySelectorAll('[data-size]');
+    fontBtns.forEach(function(fb) {
+      fb.addEventListener('click', function() {
+        currentFontSize = parseInt(fb.getAttribute('data-size'), 10);
+        fontBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+        fb.classList.add('active'); fb.setAttribute('aria-pressed','true');
+      });
+    });
+
+    // Shape size buttons
+    var shapeBtns = document.querySelectorAll('[data-shape]');
+    shapeBtns.forEach(function(sb) {
+      sb.addEventListener('click', function() {
+        currentShapeSize = sb.getAttribute('data-shape');
+        shapeBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+        sb.classList.add('active'); sb.setAttribute('aria-pressed','true');
+      });
+    });
+
+    // Canvas click
+    function getCanvasPos(e) {
+      var rect = posterCanvas.getBoundingClientRect();
+      var scaleX = posterCanvas.width / rect.width;
+      var scaleY = posterCanvas.height / rect.height;
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    }
+
+    posterCanvas.addEventListener('click', function(e) {
+      if (currentTool === 'text') {
+        var pos = getCanvasPos(e);
+        var gx = snapToGrid(pos.x, 40);
+        var gy = snapToGrid(pos.y, 40);
+        var texts = { 32: 'HEADLINE TEXT', 20: 'Subheading text', 14: 'Body text paragraph here.' };
+        saveToHistory();
+        pCtx.save();
+        pCtx.fillStyle = currentColor;
+        pCtx.font = 'bold ' + currentFontSize + 'px Bebas Neue, sans-serif';
+        pCtx.fillText(texts[currentFontSize] || 'TEXT', gx, gy);
+        pCtx.restore();
+        drawPosterGrid();
+      } else if (currentTool === 'line') {
+        var pos2 = getCanvasPos(e);
+        var gy2 = snapToGrid(pos2.y, 40);
+        saveToHistory();
+        pCtx.save();
+        pCtx.strokeStyle = currentColor;
+        pCtx.lineWidth = 2;
+        pCtx.beginPath();
+        pCtx.moveTo(40, gy2);
+        pCtx.lineTo(posterCanvas.width - 40, gy2);
+        pCtx.stroke();
+        pCtx.restore();
+        drawPosterGrid();
+      } else if (currentTool === 'rect') {
+        var pos3 = getCanvasPos(e);
+        var gx3 = snapToGrid(pos3.x, 40);
+        var gy3 = snapToGrid(pos3.y, 40);
+        var rw = currentShapeSize === 'lg' ? 240 : 120;
+        var rh = currentShapeSize === 'lg' ? 160 : 80;
+        saveToHistory();
+        pCtx.save();
+        pCtx.fillStyle = currentColor;
+        pCtx.globalAlpha = 0.25;
+        pCtx.fillRect(gx3, gy3, rw, rh);
+        pCtx.globalAlpha = 1;
+        pCtx.strokeStyle = currentColor;
+        pCtx.lineWidth = 2;
+        pCtx.strokeRect(gx3, gy3, rw, rh);
+        pCtx.restore();
+        drawPosterGrid();
+      }
+    });
+
+    // Undo
+    var undoPoster = document.getElementById('poster-undo');
+    if (undoPoster) {
+      undoPoster.addEventListener('click', function() {
+        if (posterHistory.length > 1) {
+          posterHistory.pop();
+          redrawFromHistory();
+        } else if (posterHistory.length === 1) {
+          posterHistory.pop();
+          renderBackground();
+          drawPosterGrid();
+        }
+      });
+    }
+
+    // Clear
+    var clearPoster = document.getElementById('poster-clear');
+    if (clearPoster) {
+      clearPoster.addEventListener('click', function() {
+        posterHistory = [];
+        renderBackground();
+        drawPosterGrid();
+      });
+    }
+
+    // Keyboard on canvas
+    posterCanvas.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        var cx = posterCanvas.width / 3;
+        var cy = posterCanvas.height / 3;
+        if (currentTool === 'text') {
+          saveToHistory();
+          pCtx.save();
+          pCtx.fillStyle = currentColor;
+          pCtx.font = 'bold ' + currentFontSize + 'px Bebas Neue, sans-serif';
+          pCtx.fillText('HEADLINE', cx, cy);
+          pCtx.restore();
+          drawPosterGrid();
+        }
+      }
+    });
+  }
+
+  // ─── Save Poster ──────────────────────────────────────────
+  var savePosterBtn = document.getElementById('save-poster');
+  var saveConfirmation = document.getElementById('save-confirmation');
+
+  if (savePosterBtn) {
+    savePosterBtn.addEventListener('click', function() {
+      var notes = document.getElementById('poster-notes');
+      var notesVal = notes ? notes.value : '';
+      var canvasData = posterCanvas ? posterCanvas.toDataURL() : '';
+      var portfolio = { canvas: canvasData, notes: notesVal, timestamp: new Date().toISOString() };
+      lsSet(getKey('portfolio_level_' + LEVEL), JSON.stringify(portfolio));
+
+      if (saveConfirmation) {
+        saveConfirmation.style.display = 'block';
+        setTimeout(function() {
+          if (saveConfirmation) saveConfirmation.style.display = 'none';
+        }, 4000);
+      }
+    });
+  }
+
+  // ─── Reflection ───────────────────────────────────────────
+  var saveReflection = document.getElementById('save-reflection');
+  var reflectionSaved = document.getElementById('reflection-saved');
+  if (saveReflection) {
+    saveReflection.addEventListener('click', function() {
+      var t = document.getElementById('reflection-text');
+      if (t && t.value.trim()) {
+        lsSet(getKey('reflection_level_' + LEVEL), t.value.trim());
+        if (reflectionSaved) { reflectionSaved.style.display = 'block'; }
+        setTimeout(function() { if (reflectionSaved) reflectionSaved.style.display = 'none'; }, 3000);
+      }
+    });
+  }
+
+  // ─── Complete Level ───────────────────────────────────────
+  var completeLevelBtn = document.getElementById('complete-level');
+  if (completeLevelBtn) {
+    completeLevelBtn.addEventListener('click', function() {
+      lsSet(getKey('level_' + LEVEL + '_complete'), 'true');
+      lsSet(getKey('level_' + LEVEL + '_xp'), LEVEL_XP);
+      var total = computeAndSaveXPTotal();
+      updateXPCounter();
+      unlockBadge();
+
+      // confetti
+      try {
+        if (typeof confetti !== 'undefined') {
+          var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            confetti({ particleCount: 140, spread: 80, colors: ['#00B894', '#007d65', '#00cca3', '#ffffff', '#e4f5ef'], origin: { y: 0.6 } });
+          }
+        }
+      } catch(e) {}
+
+      completeLevelBtn.textContent = '✓ Level Complete!';
+      completeLevelBtn.disabled = true;
+
+      // animate XP counter
+      if (gsapAvailable) {
+        try {
+          var xpEl = document.getElementById('xp-counter');
+          if (xpEl) {
+            var start = parseInt(xpEl.textContent, 10) || 0;
+            gsap.to({ val: start }, {
+              val: total,
+              duration: 1.2,
+              ease: 'power2.out',
+              onUpdate: function() {
+                if (xpEl) xpEl.textContent = Math.round(this.targets()[0].val);
+              }
+            });
+          }
+        } catch(e) { updateXPCounter(); }
+      }
+    });
+  }
+
+  // ─── Restore reflection if saved ─────────────────────────
+  (function() {
+    var saved = lsGet(getKey('reflection_level_' + LEVEL));
+    if (saved) {
+      var t = document.getElementById('reflection-text');
+      if (t) t.value = saved;
+    }
+  })();
+
+})();
+</script>
+</body>
+</html>
