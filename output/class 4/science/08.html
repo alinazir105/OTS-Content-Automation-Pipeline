@@ -10,6 +10,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -328,6 +333,37 @@ tr:hover{background:#d8f0cc}
       <li><div class="obj-check">✓</div> Explain methods of separating mixtures, such as handpicking, filtration, and sieving, with examples.</li>
       <li><div class="obj-check">✓</div> Recognize the importance of mixtures and solutions in everyday activities like cooking, cleaning, and medicine.</li>
     </ul>
+
+    <div class="enh-block enh-mission" data-enh="mission">
+      <div class="enh-mission-head">
+        <div>
+          <h3 class="enh-h3">🎯 Your Missions</h3>
+          <p class="enh-sub">Earn XP by playing the activities below. Reach <strong>250 XP</strong> to unlock the Junior Scientist badge!</p>
+        </div>
+        <div class="enh-mission-totals">
+          <div class="enh-mt-num" id="enh-mission-total">0</div>
+          <div class="enh-mt-label">XP earned</div>
+        </div>
+      </div>
+      <div class="enh-mission-grid">
+        <div class="enh-mission-item" data-mission="m1">
+          <div class="enh-ring" data-p="0"><span>0%</span></div>
+          <div class="enh-mtxt"><strong>Mission 1</strong><br>Spot mixtures around you</div>
+        </div>
+        <div class="enh-mission-item" data-mission="m2">
+          <div class="enh-ring" data-p="0"><span>0%</span></div>
+          <div class="enh-mtxt"><strong>Mission 2</strong><br>Master solute &amp; solvent</div>
+        </div>
+        <div class="enh-mission-item" data-mission="m3">
+          <div class="enh-ring" data-p="0"><span>0%</span></div>
+          <div class="enh-mtxt"><strong>Mission 3</strong><br>Pick the right separation</div>
+        </div>
+        <div class="enh-mission-item" data-mission="m4">
+          <div class="enh-ring" data-p="0"><span>0%</span></div>
+          <div class="enh-mtxt"><strong>Mission 4</strong><br>Use them in daily life</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- WHAT IS A MIXTURE -->
@@ -350,6 +386,31 @@ tr:hover{background:#d8f0cc}
         <li>🪙 <strong>Coins in a jar</strong> — different coins mixed together</li>
         <li>🍚 <strong>Rice and beans</strong> — both can be picked out separately</li>
       </ul>
+    </div>
+
+    <div class="enh-block enh-quickfire" data-enh="quickfire">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">⚡ Mixture or Not?</h3>
+        <div class="enh-streak-pill">Streak: <span id="enh-qf-streak">0</span> 🔥</div>
+      </div>
+      <p class="enh-sub">Tap the right answer for each item. Earn +5 XP each correct, +10 bonus for a 5-streak!</p>
+      <div class="enh-qf-stage" id="enh-qf-stage">
+        <div class="enh-qf-card" id="enh-qf-card">
+          <div class="enh-qf-emoji" id="enh-qf-emoji">🥤</div>
+          <div class="enh-qf-name" id="enh-qf-name">Lemonade</div>
+        </div>
+        <div class="enh-qf-progress"><span id="enh-qf-progress">0 / 8</span></div>
+        <div class="enh-qf-btns">
+          <button type="button" class="enh-btn enh-btn-green" data-qf="yes">✅ Mixture</button>
+          <button type="button" class="enh-btn enh-btn-amber" data-qf="no">❌ Not a Mixture</button>
+        </div>
+        <div class="enh-qf-feedback" id="enh-qf-feedback"></div>
+      </div>
+      <div class="enh-qf-done" id="enh-qf-done" style="display:none">
+        <h4 class="enh-h4">🎉 Round complete!</h4>
+        <p class="enh-sub">Score: <strong id="enh-qf-score">0 / 8</strong> · XP earned: <strong id="enh-qf-xp">0</strong></p>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-qf-restart">↺ Play Again</button>
+      </div>
     </div>
   </section>
 
@@ -410,6 +471,41 @@ graph TD
             <tr><td>Example</td><td>Saltwater, Milk</td><td>Salad, Sand &amp; water</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="enh-block enh-sort" data-enh="sort">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🧩 Sorting Bins</h3>
+      </div>
+      <p class="enh-sub">Drag each item into the correct bin. Earn +3 XP per correct placement.</p>
+      <div class="enh-sort-bins">
+        <div class="enh-bin" data-bin="homo">
+          <div class="enh-bin-title">🔵 Homogeneous</div>
+          <div class="enh-bin-drop" id="enh-bin-homo">Drop here</div>
+        </div>
+        <div class="enh-bin enh-bin-amber" data-bin="hetero">
+          <div class="enh-bin-title">🔶 Heterogeneous</div>
+          <div class="enh-bin-drop" id="enh-bin-hetero">Drop here</div>
+        </div>
+      </div>
+      <div class="enh-sort-chips" id="enh-sort-chips">
+        <div class="enh-chip" draggable="true" data-item="Saltwater" data-bin="homo">Saltwater</div>
+        <div class="enh-chip" draggable="true" data-item="Milk" data-bin="homo">Milk</div>
+        <div class="enh-chip" draggable="true" data-item="Fruit chaat" data-bin="hetero">Fruit chaat</div>
+        <div class="enh-chip" draggable="true" data-item="Salad" data-bin="hetero">Salad</div>
+        <div class="enh-chip" draggable="true" data-item="Air" data-bin="homo">Air</div>
+        <div class="enh-chip" draggable="true" data-item="Sand &amp; water" data-bin="hetero">Sand &amp; water</div>
+        <div class="enh-chip" draggable="true" data-item="Sweet tea" data-bin="homo">Sweet tea</div>
+        <div class="enh-chip" draggable="true" data-item="Trail mix" data-bin="hetero">Trail mix</div>
+      </div>
+      <div class="enh-row-btns">
+        <button type="button" class="enh-btn enh-btn-green" id="enh-sort-check">✅ Check</button>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-sort-reset">↺ Reset</button>
+      </div>
+      <div class="enh-sort-result" id="enh-sort-result"></div>
+      <div class="enh-chart-wrap" id="enh-sort-chart-wrap" style="display:none">
+        <canvas id="enh-sort-chart" width="220" height="220"></canvas>
       </div>
     </div>
   </section>
@@ -482,6 +578,46 @@ graph LR
       <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
         <button class="btn" id="next-step-btn" onclick="revealStep()">▶ Next Step</button>
         <button class="btn navy" onclick="resetSteps()">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="enh-block enh-soluvent" data-enh="soluvent">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🎯 Solute or Solvent?</h3>
+      </div>
+      <p class="enh-sub">For each scenario, choose the role of the <strong>highlighted</strong> substance.</p>
+      <div class="enh-sv-stage" id="enh-sv-stage">
+        <div class="enh-sv-question" id="enh-sv-question">Which is <strong>sugar</strong> when it dissolves in tea?</div>
+        <div class="enh-sv-btns">
+          <button type="button" class="enh-btn enh-btn-amber" data-sv="solute">🧂 Solute</button>
+          <button type="button" class="enh-btn enh-btn-green" data-sv="solvent">💧 Solvent</button>
+        </div>
+        <div class="enh-sv-feedback" id="enh-sv-feedback"></div>
+        <div class="enh-sv-progress" id="enh-sv-progress">0 / 6</div>
+      </div>
+      <div class="enh-sv-done" id="enh-sv-done" style="display:none">
+        <h4 class="enh-h4">🌟 Great work!</h4>
+        <p class="enh-sub">Score: <strong id="enh-sv-score">0 / 6</strong> · XP earned: <strong id="enh-sv-xp">0</strong></p>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-sv-restart">↺ Try Again</button>
+      </div>
+    </div>
+
+    <div class="enh-block enh-dissolve" data-enh="dissolve">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🧪 Dissolve Lab</h3>
+      </div>
+      <p class="enh-sub">Tap <strong>Add Sugar</strong> to drop sugar into the beaker. Watch each grain settle and fade away as it dissolves into the water.</p>
+      <div class="enh-sim-wrap">
+        <canvas id="enh-dissolve-canvas" class="enh-sim-canvas" width="360" height="280"></canvas>
+      </div>
+      <div class="enh-row-btns">
+        <button type="button" class="enh-btn enh-btn-amber" id="enh-dissolve-add">🧂 Add Sugar</button>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-dissolve-reset">↺ Clear Beaker</button>
+        <button type="button" class="enh-btn enh-btn-mini" id="enh-dissolve-sound" aria-label="Toggle sound">🔇</button>
+      </div>
+      <div class="enh-counter-row">
+        <span class="enh-count-chip">Grains added: <strong id="enh-dissolve-added">0</strong></span>
+        <span class="enh-count-chip">Dissolved: <strong id="enh-dissolve-gone">0</strong></span>
       </div>
     </div>
   </section>
@@ -558,6 +694,48 @@ graph TD
       </div>
       <div id="label-feedback" style="margin-top:12px;font-size:18px;font-weight:600;display:none"></div>
     </div>
+
+    <div class="enh-block enh-picker" data-enh="picker">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🧠 Pick the Best Method</h3>
+      </div>
+      <p class="enh-sub">For each mixture, choose the best way to separate it. +10 XP per correct.</p>
+      <div class="enh-pk-stage" id="enh-pk-stage">
+        <div class="enh-pk-mixture" id="enh-pk-mixture">Rice with small stones</div>
+        <div class="enh-pk-emoji" id="enh-pk-emoji">🍚🪨</div>
+        <div class="enh-pk-btns">
+          <button type="button" class="enh-btn enh-btn-green" data-pk="handpicking">✋ Handpicking</button>
+          <button type="button" class="enh-btn enh-btn-amber" data-pk="filtration">🧪 Filtration</button>
+          <button type="button" class="enh-btn enh-btn-navy" data-pk="sieving">🥣 Sieving</button>
+        </div>
+        <div class="enh-pk-feedback" id="enh-pk-feedback"></div>
+        <div class="enh-pk-progress" id="enh-pk-progress">0 / 6</div>
+      </div>
+      <div class="enh-pk-done" id="enh-pk-done" style="display:none">
+        <h4 class="enh-h4">🏅 Method Master!</h4>
+        <p class="enh-sub">Score: <strong id="enh-pk-score">0 / 6</strong> · XP earned: <strong id="enh-pk-xp">0</strong></p>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-pk-restart">↺ Play Again</button>
+      </div>
+    </div>
+
+    <div class="enh-block enh-filt" data-enh="filtration">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🧫 Filtration Lab</h3>
+      </div>
+      <p class="enh-sub">Tap <strong>Pour</strong> to release muddy water. The filter lets tiny water drops pass, but stops the sand.</p>
+      <div class="enh-sim-wrap">
+        <canvas id="enh-filt-canvas" class="enh-sim-canvas" width="360" height="320"></canvas>
+      </div>
+      <div class="enh-row-btns">
+        <button type="button" class="enh-btn enh-btn-green" id="enh-filt-pour">▶ Pour Mixture</button>
+        <button type="button" class="enh-btn enh-btn-navy" id="enh-filt-reset">↺ Clear</button>
+        <button type="button" class="enh-btn enh-btn-mini" id="enh-filt-sound" aria-label="Toggle sound">🔇</button>
+      </div>
+      <div class="enh-counter-row">
+        <span class="enh-count-chip enh-chip-blue">💧 Water collected: <strong id="enh-filt-water">0</strong></span>
+        <span class="enh-count-chip enh-chip-brown">🪨 Sand trapped: <strong id="enh-filt-sand">0</strong></span>
+      </div>
+    </div>
   </section>
 
   <!-- IMPORTANCE -->
@@ -580,6 +758,52 @@ graph TD
         <h4>Cleaning</h4>
         <p>Soap and water make a solution that helps clean dirt from surfaces, clothes and our hands. Detergents also form solutions with water.</p>
       </div>
+    </div>
+
+    <div class="enh-block enh-timeline" data-enh="timeline">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">⏰ A Day with Mixtures</h3>
+      </div>
+      <p class="enh-sub">Tap each card to flip and discover what's mixed inside. Each new flip earns +3 XP.</p>
+      <div class="enh-tl-track" id="enh-tl-track">
+        <div class="enh-tl-card" data-flip data-key="t1">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">7 AM</div><div class="enh-tl-emoji">🍵</div><div class="enh-tl-label">Morning Tea</div></div>
+            <div class="enh-tl-back"><strong>Sweet Milk Tea</strong><br>Solvent: Water + Milk<br>Solute: Sugar + Tea<br><em>Type: Solution</em></div>
+          </div>
+        </div>
+        <div class="enh-tl-card" data-flip data-key="t2">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">8 AM</div><div class="enh-tl-emoji">🪥</div><div class="enh-tl-label">Brushing Teeth</div></div>
+            <div class="enh-tl-back"><strong>Toothpaste &amp; Water</strong><br>Toothpaste is a paste-like mixture; water rinses it away.<br><em>Type: Mixture</em></div>
+          </div>
+        </div>
+        <div class="enh-tl-card" data-flip data-key="t3">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">1 PM</div><div class="enh-tl-emoji">🍛</div><div class="enh-tl-label">Lunch Curry</div></div>
+            <div class="enh-tl-back"><strong>Curry</strong><br>Spices, oil, water and veggies — a heterogeneous mixture you can see.<br><em>Type: Heterogeneous Mixture</em></div>
+          </div>
+        </div>
+        <div class="enh-tl-card" data-flip data-key="t4">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">4 PM</div><div class="enh-tl-emoji">🍋</div><div class="enh-tl-label">Lemonade</div></div>
+            <div class="enh-tl-back"><strong>Lemonade</strong><br>Solvent: Water<br>Solute: Sugar + Lemon juice<br><em>Type: Solution</em></div>
+          </div>
+        </div>
+        <div class="enh-tl-card" data-flip data-key="t5">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">7 PM</div><div class="enh-tl-emoji">🧼</div><div class="enh-tl-label">Soap &amp; Water</div></div>
+            <div class="enh-tl-back"><strong>Soapy Water</strong><br>Solvent: Water<br>Solute: Soap<br><em>Type: Solution</em></div>
+          </div>
+        </div>
+        <div class="enh-tl-card" data-flip data-key="t6">
+          <div class="enh-tl-inner">
+            <div class="enh-tl-front"><div class="enh-tl-time">9 PM</div><div class="enh-tl-emoji">💊</div><div class="enh-tl-label">Cough Syrup</div></div>
+            <div class="enh-tl-back"><strong>Medicine Syrup</strong><br>Solvent: Sweet liquid<br>Solute: Medicine<br><em>Type: Solution</em></div>
+          </div>
+        </div>
+      </div>
+      <div class="enh-tl-progress" id="enh-tl-progress">Flipped: 0 / 6</div>
     </div>
   </section>
 
@@ -611,6 +835,21 @@ graph TD
       <div class="tf-item" data-answer="F">
         <p>Mixing flour and sugar creates a solution.</p>
         <div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'T')">T</button><button class="tf-btn" onclick="checkTF(this,'F')">F</button></div>
+      </div>
+    </div>
+
+    <div class="enh-block enh-streak" data-enh="streak">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🔥 Streak Meter</h3>
+        <div class="enh-streak-pill">Best Streak: <span id="enh-tf-best">0</span></div>
+      </div>
+      <p class="enh-sub">Answer correctly in a row. Hit 3 or 6 in a row to trigger confetti! +5 XP per correct.</p>
+      <div class="enh-streak-bar" aria-hidden="true">
+        <div class="enh-streak-fill" id="enh-tf-fill"></div>
+      </div>
+      <div class="enh-streak-stats">
+        <span class="enh-count-chip">Current: <strong id="enh-tf-current">0</strong> 🔥</span>
+        <span class="enh-count-chip">Correct: <strong id="enh-tf-correct">0</strong></span>
       </div>
     </div>
   </section>
@@ -650,6 +889,79 @@ graph TD
         <button class="btn navy" onclick="resetBlanks()">↺ Try Again</button>
       </div>
       <div class="cloze-feedback" id="cloze-feedback"></div>
+    </div>
+
+    <div class="enh-block enh-flash" data-enh="flash">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">🃏 Key Terms Flashcards</h3>
+      </div>
+      <p class="enh-sub">Tap a card to flip it. Tap <strong>Mark as Learned</strong> on the back to earn +2 XP per card.</p>
+      <div class="enh-flash-grid" id="enh-flash-grid">
+        <div class="enh-flash-card" data-term="Mixture">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">🧩</div><div class="enh-flash-term">Mixture</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>Two or more substances combined <strong>without changing</strong> their basic properties.</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Solution">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">🍹</div><div class="enh-flash-term">Solution</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>A homogeneous mixture where one substance <strong>dissolves</strong> in another.</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Solute">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">🧂</div><div class="enh-flash-term">Solute</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>The substance that <strong>dissolves</strong> in a solvent (usually smaller amount).</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Solvent">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">💧</div><div class="enh-flash-term">Solvent</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>The substance in which the solute dissolves (usually <strong>larger</strong> amount).</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Filtration">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">🧪</div><div class="enh-flash-term">Filtration</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>Separating a <strong>solid from a liquid</strong> using a filter paper.</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Sieving">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">🥣</div><div class="enh-flash-term">Sieving</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>Separating particles of <strong>different sizes</strong> using a mesh sieve.</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+        <div class="enh-flash-card" data-term="Handpicking">
+          <div class="enh-flash-inner">
+            <div class="enh-flash-front"><div class="enh-flash-icon">✋</div><div class="enh-flash-term">Handpicking</div><div class="enh-flash-hint">Tap to flip</div></div>
+            <div class="enh-flash-back">
+              <p>Separating <strong>large, visible</strong> pieces by hand.</p>
+              <button type="button" class="enh-btn enh-btn-mini enh-flash-learn">✓ Mark as Learned</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="enh-flash-progress">Learned: <strong id="enh-flash-learned">0</strong> / 7</div>
     </div>
   </section>
 
@@ -719,6 +1031,28 @@ graph TD
             <tr><td>Rice and beans</td><td>Handpicking</td><td>Both are large and visible; easy to pick apart</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="enh-block enh-logbook" data-enh="logbook">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">📒 Lab Logbook</h3>
+      </div>
+      <p class="enh-sub">Tick each activity once you have tried it at home. Earn +15 XP per completed activity and the <strong>Scientist's Badge</strong> when all 5 are done!</p>
+      <div class="enh-log-list" id="enh-log-list">
+        <label class="enh-log-item"><input type="checkbox" class="enh-log-chk" data-act="a1"><span class="enh-log-mark">✓</span><span class="enh-log-text"><strong>Activity 1:</strong> Found 5 mixtures around my home</span></label>
+        <label class="enh-log-item"><input type="checkbox" class="enh-log-chk" data-act="a2"><span class="enh-log-mark">✓</span><span class="enh-log-text"><strong>Activity 2:</strong> Made a sugar solution (and tried sand!)</span></label>
+        <label class="enh-log-item"><input type="checkbox" class="enh-log-chk" data-act="a3"><span class="enh-log-mark">✓</span><span class="enh-log-text"><strong>Activity 3:</strong> Separated sand from water by filtering</span></label>
+        <label class="enh-log-item"><input type="checkbox" class="enh-log-chk" data-act="a4"><span class="enh-log-mark">✓</span><span class="enh-log-text"><strong>Activity 4:</strong> Used a sieve to separate flour and stones</span></label>
+        <label class="enh-log-item"><input type="checkbox" class="enh-log-chk" data-act="a5"><span class="enh-log-mark">✓</span><span class="enh-log-text"><strong>Activity 5:</strong> Picked the best separation method in class</span></label>
+      </div>
+      <div class="enh-log-foot">
+        <div class="enh-log-bar"><div class="enh-log-bar-fill" id="enh-log-bar-fill"></div></div>
+        <div class="enh-log-count"><span id="enh-log-count">0</span> / 5 done</div>
+      </div>
+      <div class="enh-badge" id="enh-log-badge" style="display:none">
+        <div class="enh-badge-medal">🥇</div>
+        <div class="enh-badge-text"><strong>Scientist's Badge unlocked!</strong><br>You completed every lab activity. Brilliant work!</div>
       </div>
     </div>
   </section>
@@ -919,6 +1253,22 @@ graph TD
       <div class="score-ring" id="score-ring">0/10</div>
       <h3 id="quiz-result-title">Great effort!</h3>
       <p id="quiz-result-msg">Keep practising!</p>
+    </div>
+
+    <div class="enh-block enh-boss" data-enh="boss" id="enh-boss" style="display:none">
+      <div class="enh-block-head">
+        <h3 class="enh-h3">📈 Topic Breakdown</h3>
+      </div>
+      <p class="enh-sub">Here's how you did on each topic. Each correct answer earned <strong>20 bonus XP</strong>.</p>
+      <div class="enh-boss-grid">
+        <div class="enh-boss-chart">
+          <canvas id="enh-boss-radar" width="300" height="300"></canvas>
+        </div>
+        <ul class="enh-boss-list" id="enh-boss-list"></ul>
+      </div>
+      <div class="enh-boss-foot">
+        <div class="enh-count-chip">Bonus XP: <strong id="enh-boss-xp">0</strong></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1267,6 +1617,1214 @@ function resetQuiz() {
   const result = document.getElementById('quiz-result');
   result.classList.remove('show');
 }
+</script>
+
+<style id="enh-styles">
+/* ENHANCEMENT STYLES — all selectors prefixed with .enh- so they cannot collide with the existing theme */
+.enh-block{background:#fff;border-radius:16px;padding:24px;margin:24px 0;border:1px solid rgba(106,176,76,0.18);box-shadow:0 4px 20px rgba(0,0,0,0.06);width:100%;max-width:100%;box-sizing:border-box}
+.enh-block-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.enh-h3{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:clamp(1.05rem,2.2vw,1.25rem);margin:0}
+.enh-h4{font-family:'Poppins',sans-serif;font-weight:600;color:var(--navy);font-size:1.1rem;margin:0 0 8px}
+.enh-sub{color:var(--muted);font-size:16px;margin:0 0 14px;line-height:1.6}
+
+.enh-btn{background:var(--green);color:#fff;border:none;padding:12px 22px;border-radius:30px;font-family:'Poppins',sans-serif;font-weight:700;font-size:16px;cursor:pointer;transition:transform 0.2s,background 0.2s,box-shadow 0.2s;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.enh-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 16px rgba(106,176,76,0.25)}
+.enh-btn:disabled{background:#aaa;cursor:not-allowed;transform:none;box-shadow:none}
+.enh-btn-green{background:var(--green)}
+.enh-btn-amber{background:var(--amber)}
+.enh-btn-navy{background:var(--navy)}
+.enh-btn-amber:hover:not(:disabled){box-shadow:0 6px 16px rgba(240,147,43,0.25)}
+.enh-btn-navy:hover:not(:disabled){box-shadow:0 6px 16px rgba(44,62,80,0.25)}
+.enh-btn-mini{padding:8px 16px;font-size:14px;min-height:40px}
+
+.enh-row-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.enh-counter-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.enh-count-chip{background:var(--light-green);color:var(--navy);font-weight:600;padding:6px 14px;border-radius:18px;font-size:15px;display:inline-block}
+.enh-chip-blue{background:#e3f0fb;color:#1565a0}
+.enh-chip-brown{background:#f4e6d4;color:#7a4f1e}
+.enh-streak-pill{background:var(--amber);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;padding:6px 14px;border-radius:18px}
+
+/* ===== Global XP badge ===== */
+#enh-xp-badge{position:fixed;top:14px;right:14px;z-index:700;background:linear-gradient(135deg,var(--green),#4f9036);color:#fff;border-radius:30px;padding:8px 14px 8px 8px;font-family:'Poppins',sans-serif;font-weight:700;display:flex;align-items:center;gap:8px;font-size:15px;box-shadow:0 4px 16px rgba(0,0,0,0.18);user-select:none;transition:transform 0.3s, background 0.4s}
+#enh-xp-badge .enh-xp-medal{width:30px;height:30px;background:#fff;color:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800}
+#enh-xp-badge.enh-xp-pulse{transform:scale(1.12)}
+#enh-xp-badge.enh-xp-unlocked{background:linear-gradient(135deg,#f0c04a,var(--amber))}
+@media(max-width:768px){#enh-xp-badge{top:auto;bottom:88px;right:10px;font-size:14px;padding:6px 12px 6px 6px}#enh-xp-badge .enh-xp-medal{width:26px;height:26px;font-size:1rem}}
+
+/* ===== Mission card ===== */
+.enh-mission{background:linear-gradient(135deg,#f8fff5,#eef7e3)}
+.enh-mission-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.enh-mission-totals{text-align:center;background:var(--navy);color:#fff;border-radius:14px;padding:10px 18px;min-width:90px}
+.enh-mt-num{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.6rem;color:var(--green);line-height:1}
+.enh-mt-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.85}
+.enh-mission-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.enh-mission-item{background:#fff;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;border:1px solid rgba(106,176,76,0.2)}
+.enh-ring{width:60px;height:60px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p,0) * 3.6deg),#e0e9d8 0deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.enh-ring::after{content:'';position:absolute;inset:6px;background:#fff;border-radius:50%}
+.enh-ring span{position:relative;z-index:1;font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:13px}
+.enh-mtxt{font-size:15px;color:var(--text);line-height:1.5}
+@media(max-width:480px){.enh-mission-grid{grid-template-columns:1fr}}
+
+/* ===== Quick-fire ===== */
+.enh-qf-stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+.enh-qf-card{background:linear-gradient(135deg,var(--light-green),#fff);border-radius:18px;padding:28px 24px;border:2px solid var(--green);text-align:center;width:100%;max-width:380px;box-shadow:0 4px 16px rgba(106,176,76,0.15)}
+.enh-qf-emoji{font-size:4rem;margin-bottom:6px;line-height:1}
+.enh-qf-name{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:1.3rem}
+.enh-qf-progress{font-family:'Poppins',sans-serif;font-weight:700;color:var(--muted);font-size:15px}
+.enh-qf-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.enh-qf-feedback{font-weight:700;font-size:16px;min-height:22px;text-align:center}
+.enh-qf-feedback.ok{color:var(--green)}
+.enh-qf-feedback.bad{color:#e74c3c}
+.enh-qf-done{text-align:center;padding:18px}
+
+/* ===== Sorting bins ===== */
+.enh-sort-bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.enh-bin{background:var(--light-green);border:2px dashed var(--green);border-radius:14px;padding:14px;min-height:110px}
+.enh-bin-amber{background:var(--light-amber);border-color:var(--amber)}
+.enh-bin-title{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:17px;margin-bottom:10px}
+.enh-bin-drop{min-height:60px;color:#999;font-size:15px;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;border-radius:8px;padding:6px;transition:background 0.2s}
+.enh-bin-drop.enh-drag-over{background:rgba(106,176,76,0.18)}
+.enh-sort-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;min-height:48px}
+.enh-chip{background:var(--navy);color:#fff;padding:10px 16px;border-radius:18px;font-size:15px;cursor:grab;font-family:'Inter',sans-serif;user-select:none;min-height:44px;display:inline-flex;align-items:center;transition:transform 0.2s,opacity 0.2s,background 0.2s}
+.enh-chip:active{cursor:grabbing;transform:scale(1.06)}
+.enh-chip.enh-chip-correct{background:var(--green)}
+.enh-chip.enh-chip-wrong{background:#e74c3c}
+.enh-sort-result{margin-top:14px;font-weight:700;font-size:16px}
+.enh-chart-wrap{display:flex;justify-content:center;margin-top:16px}
+@media(max-width:480px){.enh-sort-bins{grid-template-columns:1fr}}
+
+/* ===== Solute / Solvent ===== */
+.enh-sv-stage{text-align:center}
+.enh-sv-question{font-family:'Poppins',sans-serif;font-weight:600;color:var(--navy);font-size:clamp(1rem,2.2vw,1.15rem);padding:18px;background:var(--light-green);border-radius:14px;margin-bottom:14px;line-height:1.5}
+.enh-sv-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.enh-sv-feedback{font-weight:700;font-size:15px;min-height:22px;line-height:1.5}
+.enh-sv-feedback.ok{color:var(--green)}
+.enh-sv-feedback.bad{color:#e74c3c}
+.enh-sv-progress{margin-top:10px;color:var(--muted);font-weight:600;font-size:14px}
+.enh-sv-done{text-align:center;padding:18px}
+
+/* ===== Sim wrapper ===== */
+.enh-sim-wrap{background:linear-gradient(180deg,#0a1f2d 0%,#0e2c40 100%);border-radius:14px;padding:10px;display:flex;justify-content:center;border:1px solid rgba(106,176,76,0.2)}
+.enh-sim-canvas{width:100%;max-width:360px;height:auto;display:block;border-radius:8px;touch-action:manipulation}
+
+/* ===== Method picker ===== */
+.enh-pk-stage{text-align:center}
+.enh-pk-mixture{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:1.15rem;margin-bottom:6px}
+.enh-pk-emoji{font-size:2.8rem;margin-bottom:14px}
+.enh-pk-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:10px}
+.enh-pk-feedback{font-weight:700;font-size:15px;min-height:22px;line-height:1.5}
+.enh-pk-feedback.ok{color:var(--green)}
+.enh-pk-feedback.bad{color:#e74c3c}
+.enh-pk-progress{color:var(--muted);font-weight:600;font-size:14px;margin-top:8px}
+.enh-pk-done{text-align:center;padding:18px}
+
+/* ===== Timeline ===== */
+.enh-tl-track{display:grid;grid-template-columns:repeat(6,minmax(160px,1fr));gap:14px;overflow-x:auto;padding:8px 4px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.enh-tl-card{perspective:800px;cursor:pointer;scroll-snap-align:center}
+.enh-tl-inner{position:relative;width:100%;aspect-ratio:3/4;transform-style:preserve-3d;transition:transform 0.55s}
+.enh-tl-card.flipped .enh-tl-inner{transform:rotateY(180deg)}
+.enh-tl-front,.enh-tl-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.08);font-size:13px}
+.enh-tl-front{background:linear-gradient(135deg,var(--light-green),#fff);color:var(--navy);border:1px solid rgba(106,176,76,0.3)}
+.enh-tl-back{background:linear-gradient(135deg,var(--navy),#1a2d40);color:#fff;transform:rotateY(180deg);font-size:12.5px;line-height:1.55}
+.enh-tl-time{font-family:'Poppins',sans-serif;font-weight:700;color:var(--amber);font-size:14px;letter-spacing:1px}
+.enh-tl-emoji{font-size:2.4rem;margin:6px 0}
+.enh-tl-label{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:15px}
+.enh-tl-progress{margin-top:12px;color:var(--muted);font-weight:600;font-size:14px;text-align:center}
+@media(max-width:768px){.enh-tl-track{grid-template-columns:repeat(6,78vw)}}
+
+/* ===== Streak meter ===== */
+.enh-streak-bar{width:100%;height:14px;background:#e0e9d8;border-radius:8px;overflow:hidden;margin:12px 0}
+.enh-streak-fill{width:0%;height:100%;background:linear-gradient(90deg,#f0c04a,var(--amber),#e74c3c);transition:width 0.4s ease}
+.enh-streak-stats{display:flex;flex-wrap:wrap;gap:10px}
+
+/* ===== Flashcards ===== */
+.enh-flash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.enh-flash-card{perspective:800px;cursor:pointer}
+.enh-flash-inner{position:relative;width:100%;aspect-ratio:5/4;transform-style:preserve-3d;transition:transform 0.5s}
+.enh-flash-card.flipped .enh-flash-inner{transform:rotateY(180deg)}
+.enh-flash-front,.enh-flash-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.08)}
+.enh-flash-front{background:linear-gradient(135deg,var(--light-amber),#fff);border:1px solid rgba(240,147,43,0.3)}
+.enh-flash-back{background:linear-gradient(135deg,#fff,var(--light-green));transform:rotateY(180deg);border:1px solid rgba(106,176,76,0.3)}
+.enh-flash-icon{font-size:2.2rem}
+.enh-flash-term{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:1.1rem;margin-top:4px}
+.enh-flash-hint{font-size:12px;color:var(--muted);margin-top:6px;letter-spacing:0.5px}
+.enh-flash-back p{font-size:14px;color:var(--navy);line-height:1.45;margin:0 0 10px}
+.enh-flash-card.enh-flash-learned .enh-flash-front{background:linear-gradient(135deg,#d4f0c0,#e8f8de);border-color:var(--green)}
+.enh-flash-card.enh-flash-learned .enh-flash-front::after{content:'✓ Learned';position:absolute;top:8px;right:10px;background:var(--green);color:#fff;font-size:11px;padding:2px 8px;border-radius:8px;font-weight:700}
+.enh-flash-progress{margin-top:14px;color:var(--muted);font-weight:600;font-size:15px;text-align:center}
+@media(max-width:768px){.enh-flash-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.enh-flash-grid{grid-template-columns:1fr}}
+
+/* ===== Logbook ===== */
+.enh-log-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.enh-log-item{position:relative;display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:14px 16px;border:1px solid rgba(106,176,76,0.2);cursor:pointer;transition:background 0.2s,border-color 0.2s}
+.enh-log-item:hover{background:var(--light-green);border-color:var(--green)}
+.enh-log-chk{position:absolute;opacity:0;pointer-events:none}
+.enh-log-mark{width:32px;height:32px;border-radius:8px;background:#fff;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;color:transparent;font-family:'Poppins',sans-serif;font-weight:800;font-size:18px;flex-shrink:0;transition:background 0.2s,color 0.2s}
+.enh-log-item input:checked + .enh-log-mark{background:var(--green);color:#fff}
+.enh-log-item input:checked ~ .enh-log-text{color:var(--green)}
+.enh-log-text{font-size:17px;line-height:1.55;color:var(--text)}
+.enh-log-foot{display:flex;align-items:center;gap:12px;margin-top:14px}
+.enh-log-bar{flex:1;height:12px;background:#e0e9d8;border-radius:6px;overflow:hidden}
+.enh-log-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--amber));transition:width 0.4s}
+.enh-log-count{font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:15px}
+.enh-badge{background:linear-gradient(135deg,#f5e070,var(--amber));border-radius:14px;padding:16px;margin-top:14px;display:flex;align-items:center;gap:14px;color:#fff}
+.enh-badge-medal{font-size:3rem;line-height:1}
+.enh-badge-text{font-size:16px;line-height:1.5}
+
+/* ===== Boss panel ===== */
+.enh-boss{background:linear-gradient(135deg,#fff,#f6fbf2)}
+.enh-boss-grid{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:center}
+.enh-boss-chart{display:flex;justify-content:center}
+.enh-boss-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.enh-boss-list li{background:#fff;border-radius:10px;padding:10px 14px;border-left:4px solid var(--green);font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.enh-boss-list li strong{font-family:'Poppins',sans-serif}
+.enh-boss-foot{margin-top:14px;display:flex;justify-content:flex-end}
+@media(max-width:768px){.enh-boss-grid{grid-template-columns:1fr}.enh-boss-chart canvas{max-width:240px;max-height:240px}}
+
+/* prevent horizontal scrollbar from canvas children */
+.enh-sim-wrap canvas{max-width:100%}
+</style>
+
+<script id="enh-script">
+(function(){
+  if (window.__enhUnit8) return;
+  window.__enhUnit8 = true;
+
+  // ============= STORAGE =============
+  const STORE_KEY = 'enh.unit8.xp';
+  const ACT_KEY   = 'enh.unit8.activities';
+  const FLASH_KEY = 'enh.unit8.flash';
+  const TL_KEY    = 'enh.unit8.tl';
+
+  function load(key, fallback){
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch(e){ return fallback; }
+  }
+  function save(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
+  }
+
+  // ============= XP STATE =============
+  const xpState = load(STORE_KEY, { total:0, sources:{}, unlocked:false });
+  if (!xpState.sources) xpState.sources = {};
+  const sourceCaps = { qf:50, sort:24, sv:30, flash:14, pk:60, tl:18, log:75, tf:30, boss:200 };
+
+  function addXp(points, source){
+    if (!points || points <= 0) return;
+    const cap = sourceCaps[source] != null ? sourceCaps[source] : 9999;
+    const cur = xpState.sources[source] || 0;
+    const room = Math.max(0, cap - cur);
+    const grant = Math.min(points, room);
+    if (grant <= 0) return;
+    xpState.sources[source] = cur + grant;
+    xpState.total = (xpState.total || 0) + grant;
+    save(STORE_KEY, xpState);
+    paintBadge();
+    paintMission();
+    if (xpState.total >= 250 && !xpState.unlocked){
+      xpState.unlocked = true;
+      save(STORE_KEY, xpState);
+      unlockBadge();
+    }
+  }
+
+  document.addEventListener('enh:xp', function(e){
+    if (!e.detail) return;
+    addXp(e.detail.points, e.detail.source);
+  });
+
+  function fireConfetti(opts){
+    try {
+      if (typeof confetti === 'function'){
+        confetti(Object.assign({particleCount:80,spread:60,origin:{y:0.7},colors:['#6AB04C','#F0932B','#2C3E50','#f5e070']}, opts||{}));
+      }
+    } catch(e){}
+  }
+
+  // ============= XP BADGE =============
+  let badge;
+  function buildBadge(){
+    badge = document.createElement('div');
+    badge.id = 'enh-xp-badge';
+    badge.innerHTML = '<div class="enh-xp-medal">⭐</div><div><span id="enh-xp-num">0</span> XP</div>';
+    document.body.appendChild(badge);
+    if (xpState.unlocked){
+      badge.classList.add('enh-xp-unlocked');
+      badge.innerHTML = '<div class="enh-xp-medal">🥇</div><div>Junior Scientist!</div>';
+    }
+    paintBadge();
+  }
+  function paintBadge(){
+    if (!badge) return;
+    const num = document.getElementById('enh-xp-num');
+    if (num) num.textContent = xpState.total || 0;
+    badge.classList.add('enh-xp-pulse');
+    setTimeout(function(){ badge.classList.remove('enh-xp-pulse'); }, 350);
+  }
+  function unlockBadge(){
+    if (!badge) return;
+    badge.classList.add('enh-xp-unlocked');
+    badge.innerHTML = '<div class="enh-xp-medal">🥇</div><div>Junior Scientist!</div>';
+    fireConfetti({particleCount:160,spread:100,origin:{y:0.35}});
+  }
+
+  // ============= MISSIONS =============
+  function paintMission(){
+    const grid = document.querySelector('.enh-mission .enh-mission-grid');
+    if (!grid) return;
+    const total = document.getElementById('enh-mission-total');
+    if (total) total.textContent = xpState.total || 0;
+    const missions = {
+      m1: { sources:['qf','sort'], cap:74 },
+      m2: { sources:['sv','flash'], cap:44 },
+      m3: { sources:['pk'], cap:60 },
+      m4: { sources:['tl','log'], cap:93 }
+    };
+    Object.keys(missions).forEach(function(key){
+      const m = missions[key];
+      let earned = 0;
+      m.sources.forEach(function(s){ earned += (xpState.sources[s]||0); });
+      const pct = Math.round(Math.min(100, (earned/m.cap)*100));
+      const item = grid.querySelector('[data-mission="'+key+'"]');
+      if (item){
+        const ring = item.querySelector('.enh-ring');
+        const span = ring.querySelector('span');
+        ring.style.setProperty('--p', pct);
+        if (span) span.textContent = pct + '%';
+      }
+    });
+  }
+
+  // ============= AUDIO (Howler optional) =============
+  let audioCtx = null;
+  function beep(freq, dur){
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.frequency.value = freq;
+      o.type = 'sine';
+      g.gain.value = 0.08;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start();
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      o.stop(audioCtx.currentTime + dur);
+    } catch(e){}
+  }
+
+  // ============= READY =============
+  function ready(fn){
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  ready(function(){
+    buildBadge();
+    paintMission();
+    initQuickfire();
+    initSort();
+    initSoluvent();
+    initDissolve();
+    initPicker();
+    initFiltration();
+    initTimeline();
+    initStreak();
+    initFlashcards();
+    initLogbook();
+    initBoss();
+  });
+
+  // ============= 2. QUICK-FIRE =============
+  function initQuickfire(){
+    const stage = document.getElementById('enh-qf-stage');
+    if (!stage) return;
+    const items = [
+      { emoji:'🥤', name:'Lemonade', mix:true },
+      { emoji:'💧', name:'Pure water', mix:false },
+      { emoji:'🥗', name:'Fruit salad', mix:true },
+      { emoji:'⚙️', name:'A single iron nail', mix:false },
+      { emoji:'☕', name:'Tea with sugar', mix:true },
+      { emoji:'💎', name:'Pure gold ring', mix:false },
+      { emoji:'🌫️', name:'Air (oxygen + nitrogen)', mix:true },
+      { emoji:'🍌', name:'A single banana', mix:false }
+    ];
+    let idx=0, correct=0, streak=0, earned=0;
+    const emojiEl = document.getElementById('enh-qf-emoji');
+    const nameEl  = document.getElementById('enh-qf-name');
+    const progEl  = document.getElementById('enh-qf-progress');
+    const fbEl    = document.getElementById('enh-qf-feedback');
+    const streakEl= document.getElementById('enh-qf-streak');
+    const doneEl  = document.getElementById('enh-qf-done');
+    const scoreEl = document.getElementById('enh-qf-score');
+    const xpEl    = document.getElementById('enh-qf-xp');
+
+    function paint(){
+      const it = items[idx];
+      emojiEl.textContent = it.emoji;
+      nameEl.textContent  = it.name;
+      progEl.textContent  = (idx+1)+' / '+items.length;
+      fbEl.textContent    = '';
+      fbEl.className      = 'enh-qf-feedback';
+    }
+
+    stage.querySelectorAll('[data-qf]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if (idx >= items.length) return;
+        const want = btn.dataset.qf === 'yes';
+        const it = items[idx];
+        if (want === it.mix){
+          correct++; streak++;
+          fbEl.textContent = '✅ Correct!';
+          fbEl.className = 'enh-qf-feedback ok';
+          earned += 5;
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:5,source:'qf'}}));
+          if (streak > 0 && streak % 5 === 0){
+            fbEl.textContent = '✅ Correct! 🔥 5-streak bonus +10!';
+            earned += 10;
+            document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:10,source:'qf'}}));
+            fireConfetti({particleCount:70,spread:55});
+          }
+        } else {
+          fbEl.textContent = '❌ Not quite — ' + it.name + ' is ' + (it.mix?'a mixture.':'a single (pure) substance.');
+          fbEl.className = 'enh-qf-feedback bad';
+          streak = 0;
+        }
+        streakEl.textContent = streak;
+        idx++;
+        setTimeout(function(){
+          if (idx >= items.length){
+            stage.style.display = 'none';
+            doneEl.style.display = 'block';
+            scoreEl.textContent = correct + ' / ' + items.length;
+            xpEl.textContent = earned;
+            if (correct === items.length) fireConfetti({particleCount:120,spread:80});
+          } else {
+            paint();
+          }
+        }, 900);
+      });
+    });
+
+    document.getElementById('enh-qf-restart').addEventListener('click', function(){
+      idx=0; correct=0; streak=0; earned=0;
+      streakEl.textContent = '0';
+      doneEl.style.display = 'none';
+      stage.style.display = 'flex';
+      paint();
+    });
+    paint();
+  }
+
+  // ============= 3. SORTING BINS =============
+  function initSort(){
+    const block = document.querySelector('.enh-sort');
+    if (!block) return;
+    const chipsRow = document.getElementById('enh-sort-chips');
+    const homo = document.getElementById('enh-bin-homo');
+    const hetero = document.getElementById('enh-bin-hetero');
+    const checkBtn = document.getElementById('enh-sort-check');
+    const resetBtn = document.getElementById('enh-sort-reset');
+    const result = document.getElementById('enh-sort-result');
+    const chartWrap = document.getElementById('enh-sort-chart-wrap');
+    let chart = null;
+
+    function getZoneEl(bin){ return bin === 'homo' ? homo : hetero; }
+    function clearPlaceholder(zone){
+      const txt = Array.from(zone.childNodes).filter(function(n){ return n.nodeType === 3; });
+      txt.forEach(function(n){ zone.removeChild(n); });
+    }
+    function ensurePlaceholder(zone){
+      if (!zone.querySelector('.enh-chip') && !zone.textContent.trim()){
+        zone.textContent = 'Drop here';
+      }
+    }
+
+    function moveChipToBin(chip, bin){
+      const zone = getZoneEl(bin);
+      clearPlaceholder(zone);
+      // Reset placeholder of previous zone
+      [homo,hetero].forEach(function(z){ if (z !== zone) ensurePlaceholder(z); });
+      // Reset placeholder of chips row
+      chip.dataset.placedBin = bin;
+      chip.classList.remove('enh-chip-correct','enh-chip-wrong');
+      zone.appendChild(chip);
+    }
+
+    // HTML5 drag
+    let dragged = null;
+    block.addEventListener('dragstart', function(e){
+      const chip = e.target.closest('.enh-chip');
+      if (!chip) return;
+      dragged = chip;
+      try { e.dataTransfer.setData('text/plain', chip.dataset.item || ''); } catch(_){}
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    block.addEventListener('dragend', function(){ dragged = null; });
+
+    [homo, hetero].forEach(function(zone){
+      zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('enh-drag-over'); });
+      zone.addEventListener('dragleave', function(){ zone.classList.remove('enh-drag-over'); });
+      zone.addEventListener('drop', function(e){
+        e.preventDefault();
+        zone.classList.remove('enh-drag-over');
+        if (!dragged) return;
+        moveChipToBin(dragged, zone === homo ? 'homo' : 'hetero');
+      });
+    });
+
+    // Touch fallback
+    let touchClone=null, touchChip=null, lastZone=null;
+    block.addEventListener('touchstart', function(e){
+      const chip = e.target.closest('.enh-chip');
+      if (!chip) return;
+      touchChip = chip;
+      const t = e.touches[0];
+      touchClone = chip.cloneNode(true);
+      touchClone.style.position = 'fixed';
+      touchClone.style.left = (t.clientX-40)+'px';
+      touchClone.style.top = (t.clientY-20)+'px';
+      touchClone.style.zIndex = '9999';
+      touchClone.style.opacity = '0.85';
+      touchClone.style.pointerEvents = 'none';
+      document.body.appendChild(touchClone);
+    }, {passive:true});
+    document.addEventListener('touchmove', function(e){
+      if (!touchClone || !touchChip) return;
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX-40)+'px';
+      touchClone.style.top = (t.clientY-20)+'px';
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const zone = el ? el.closest('.enh-bin-drop') : null;
+      if (lastZone && lastZone !== zone) lastZone.classList.remove('enh-drag-over');
+      if (zone){ zone.classList.add('enh-drag-over'); lastZone = zone; }
+    }, {passive:true});
+    document.addEventListener('touchend', function(){
+      if (!touchClone) return;
+      try { document.body.removeChild(touchClone); } catch(_){}
+      touchClone = null;
+      if (lastZone && touchChip){
+        lastZone.classList.remove('enh-drag-over');
+        moveChipToBin(touchChip, lastZone === homo ? 'homo' : 'hetero');
+      }
+      touchChip = null; lastZone = null;
+    });
+
+    checkBtn.addEventListener('click', function(){
+      let correct=0, total=0;
+      block.querySelectorAll('.enh-chip').forEach(function(chip){
+        total++;
+        chip.classList.remove('enh-chip-correct','enh-chip-wrong');
+        const placed = chip.dataset.placedBin;
+        const should = chip.dataset.bin;
+        if (placed && placed === should){
+          chip.classList.add('enh-chip-correct');
+          correct++;
+        } else if (placed){
+          chip.classList.add('enh-chip-wrong');
+        }
+      });
+      result.textContent = '✅ ' + correct + ' of ' + total + ' sorted correctly!';
+      result.style.color = correct === total ? 'var(--green)' : 'var(--amber)';
+      if (correct > 0){
+        document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:correct*3,source:'sort'}}));
+      }
+      if (correct === total) fireConfetti({particleCount:100,spread:80});
+      chartWrap.style.display = 'flex';
+      const canvas = document.getElementById('enh-sort-chart');
+      if (window.Chart && canvas){
+        if (chart) chart.destroy();
+        chart = new Chart(canvas, {
+          type:'doughnut',
+          data:{
+            labels:['Correct','Incorrect / not placed'],
+            datasets:[{ data:[correct, total-correct], backgroundColor:['#6AB04C','#e74c3c'], borderWidth:0 }]
+          },
+          options:{
+            responsive:false,
+            plugins:{ legend:{ position:'bottom', labels:{ font:{ family:'Inter', size:13 } } } },
+            animation:{ duration:600 }
+          }
+        });
+      }
+    });
+
+    resetBtn.addEventListener('click', function(){
+      block.querySelectorAll('.enh-chip').forEach(function(chip){
+        chip.classList.remove('enh-chip-correct','enh-chip-wrong');
+        chip.removeAttribute('data-placed-bin');
+        chipsRow.appendChild(chip);
+      });
+      homo.textContent = 'Drop here';
+      hetero.textContent = 'Drop here';
+      result.textContent = '';
+      chartWrap.style.display = 'none';
+      if (chart){ chart.destroy(); chart = null; }
+    });
+  }
+
+  // ============= 4a. SOLUTE / SOLVENT =============
+  function initSoluvent(){
+    const stage = document.getElementById('enh-sv-stage');
+    if (!stage) return;
+    const items = [
+      { txt:'When <strong>sugar</strong> dissolves in tea, sugar is the…', a:'solute',  ex:'Sugar dissolves into the tea — sugar is the solute.' },
+      { txt:'In saltwater, <strong>water</strong> is the…',                a:'solvent', ex:'Water surrounds and dissolves the salt — it is the solvent.' },
+      { txt:'In lemonade, <strong>lemon juice</strong> is the…',           a:'solute',  ex:'Lemon juice dissolves in water — it is a solute.' },
+      { txt:'In tea, <strong>hot water</strong> is the…',                  a:'solvent', ex:'Hot water does the dissolving — it is the solvent.' },
+      { txt:'In cough syrup, the <strong>medicine</strong> is the…',       a:'solute',  ex:'Medicine is dissolved into the sweet liquid — it is the solute.' },
+      { txt:'In a saltwater solution, <strong>salt</strong> is the…',      a:'solute',  ex:'Salt disappears into the water — it is the solute.' }
+    ];
+    let idx=0, correct=0, earned=0;
+    const qEl=document.getElementById('enh-sv-question');
+    const fbEl=document.getElementById('enh-sv-feedback');
+    const progEl=document.getElementById('enh-sv-progress');
+    const doneEl=document.getElementById('enh-sv-done');
+    const scoreEl=document.getElementById('enh-sv-score');
+    const xpEl=document.getElementById('enh-sv-xp');
+
+    function paint(){
+      qEl.innerHTML = items[idx].txt;
+      progEl.textContent = (idx+1)+' / '+items.length;
+      fbEl.textContent='';
+      fbEl.className='enh-sv-feedback';
+    }
+    stage.querySelectorAll('[data-sv]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if (idx >= items.length) return;
+        if (btn.dataset.sv === items[idx].a){
+          correct++; earned += 5;
+          fbEl.textContent = '✅ ' + items[idx].ex;
+          fbEl.className='enh-sv-feedback ok';
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:5,source:'sv'}}));
+        } else {
+          fbEl.textContent = '❌ ' + items[idx].ex;
+          fbEl.className='enh-sv-feedback bad';
+        }
+        idx++;
+        setTimeout(function(){
+          if (idx >= items.length){
+            stage.style.display='none';
+            doneEl.style.display='block';
+            scoreEl.textContent = correct+' / '+items.length;
+            xpEl.textContent = earned;
+            if (correct === items.length) fireConfetti({particleCount:90,spread:70});
+          } else paint();
+        }, 1500);
+      });
+    });
+    document.getElementById('enh-sv-restart').addEventListener('click', function(){
+      idx=0;correct=0;earned=0;
+      doneEl.style.display='none';
+      stage.style.display='block';
+      paint();
+    });
+    paint();
+  }
+
+  // ============= 4b. DISSOLVE SIM =============
+  function initDissolve(){
+    const canvas = document.getElementById('enh-dissolve-canvas');
+    if (!canvas) return;
+    if (typeof Matter === 'undefined'){
+      // graceful skip
+      const wrap = canvas.closest('.enh-sim-wrap');
+      if (wrap) wrap.innerHTML = '<div style="color:#fff;padding:30px;text-align:center">Lab requires Matter.js</div>';
+      return;
+    }
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const Engine = Matter.Engine, Bodies = Matter.Bodies, World = Matter.World;
+    const engine = Engine.create();
+    engine.gravity.y = 1;
+
+    const isMobile = window.matchMedia('(max-width:768px)').matches;
+    const CAP = isMobile ? 30 : 60;
+
+    // Beaker walls
+    const wallL = Bodies.rectangle(60,    200, 6, 200, {isStatic:true});
+    const wallR = Bodies.rectangle(W-60,  200, 6, 200, {isStatic:true});
+    const floor = Bodies.rectangle(W/2,   280, W-120, 8, {isStatic:true});
+    World.add(engine.world, [wallL, wallR, floor]);
+
+    const grains = [];
+    let added=0, dissolved=0;
+    const addedEl = document.getElementById('enh-dissolve-added');
+    const goneEl  = document.getElementById('enh-dissolve-gone');
+    const soundBtn = document.getElementById('enh-dissolve-sound');
+    let soundOn = false;
+    soundBtn.addEventListener('click', function(){
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? '🔊' : '🔇';
+    });
+
+    function addGrain(){
+      if (grains.length >= CAP) return;
+      const x = 80 + Math.random()*(W-160);
+      const b = Bodies.circle(x, 30, 4 + Math.random()*2, { restitution:0.2, friction:0.6, density:0.002 });
+      World.add(engine.world, b);
+      grains.push({ body:b, born: performance.now(), opacity:1, settled:false, fadeStart:0 });
+      added++;
+      addedEl.textContent = added;
+      if (soundOn) beep(880 + Math.random()*60, 0.07);
+    }
+
+    document.getElementById('enh-dissolve-add').addEventListener('click', function(){
+      const burst = isMobile ? 5 : 8;
+      for (let i=0;i<burst;i++) setTimeout(addGrain, i*60);
+    });
+    document.getElementById('enh-dissolve-reset').addEventListener('click', function(){
+      grains.forEach(function(g){ World.remove(engine.world, g.body); });
+      grains.length = 0;
+      added=0; dissolved=0;
+      addedEl.textContent = '0';
+      goneEl.textContent  = '0';
+    });
+
+    let running = true;
+    let lastTime = 0;
+    function loop(t){
+      if (!running) return;
+      const dt = Math.min(33, t - (lastTime||t));
+      lastTime = t;
+      Engine.update(engine, dt);
+      ctx.clearRect(0,0,W,H);
+      // water tint
+      ctx.fillStyle = 'rgba(80,180,255,0.18)';
+      ctx.fillRect(60, 120, W-120, 160);
+      // beaker outline
+      ctx.strokeStyle = '#7ed0ff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(56, 80); ctx.lineTo(56, 284);
+      ctx.lineTo(W-56, 284); ctx.lineTo(W-56, 80);
+      ctx.stroke();
+      // water surface ripple
+      ctx.strokeStyle = 'rgba(140,210,255,0.7)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(60, 120);
+      const tm = t/600;
+      for (let xi=60; xi<W-60; xi+=8){
+        ctx.lineTo(xi, 120 + Math.sin((xi+tm*40)/30)*1.6);
+      }
+      ctx.stroke();
+      // grains
+      for (let i=grains.length-1; i>=0; i--){
+        const g = grains[i];
+        const settled = g.body.position.y > 250 || (Math.hypot(g.body.velocity.x, g.body.velocity.y) < 0.3 && (t - g.born) > 700);
+        if (settled && !g.settled){ g.settled = true; g.fadeStart = t; }
+        if (g.settled){
+          const fadeAge = t - g.fadeStart;
+          g.opacity = Math.max(0, 1 - fadeAge / 1800);
+        }
+        if (g.opacity <= 0){
+          World.remove(engine.world, g.body);
+          grains.splice(i,1);
+          dissolved++;
+          goneEl.textContent = dissolved;
+          continue;
+        }
+        ctx.globalAlpha = g.opacity;
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = '#f0e6b8';
+        ctx.lineWidth = 1;
+        const p = g.body.position;
+        const r = g.body.circleRadius || 5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+        ctx.fill(); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    try {
+      const io = new IntersectionObserver(function(entries){
+        const e = entries[0];
+        if (e.isIntersecting){
+          if (!running){ running = true; lastTime = performance.now(); requestAnimationFrame(loop); }
+        } else { running = false; }
+      }, { threshold:0.05 });
+      io.observe(canvas);
+    } catch(_){}
+  }
+
+  // ============= 5a. METHOD PICKER =============
+  function initPicker(){
+    const stage = document.getElementById('enh-pk-stage');
+    if (!stage) return;
+    const items = [
+      { emoji:'🍚🪨', mix:'Rice with small stones',           a:'handpicking', ex:'Stones are large and visible — easiest to handpick.' },
+      { emoji:'🏖️💧', mix:'Sand mixed with water',           a:'filtration',  ex:'A solid in a liquid — use a filter to separate.' },
+      { emoji:'🌾🪨', mix:'Flour with tiny pebbles',          a:'sieving',     ex:'Different-sized solids — a sieve separates them.' },
+      { emoji:'🟢🏖️', mix:'Marbles mixed with sand',         a:'sieving',     ex:'A sieve traps big marbles and lets sand through.' },
+      { emoji:'🍃🫖', mix:'Tea leaves floating in tea',       a:'filtration',  ex:'A strainer keeps leaves and lets tea pour through.' },
+      { emoji:'🥜🌰', mix:'Mixed nuts (peanuts, almonds…)',   a:'handpicking', ex:'Each nut is large and visible — pick by hand.' }
+    ];
+    let idx=0, correct=0, earned=0;
+    const eEl=document.getElementById('enh-pk-emoji');
+    const mEl=document.getElementById('enh-pk-mixture');
+    const fbEl=document.getElementById('enh-pk-feedback');
+    const progEl=document.getElementById('enh-pk-progress');
+    const doneEl=document.getElementById('enh-pk-done');
+    const scoreEl=document.getElementById('enh-pk-score');
+    const xpEl=document.getElementById('enh-pk-xp');
+
+    function paint(){
+      eEl.textContent = items[idx].emoji;
+      mEl.textContent = items[idx].mix;
+      progEl.textContent = (idx+1)+' / '+items.length;
+      fbEl.textContent=''; fbEl.className='enh-pk-feedback';
+    }
+    stage.querySelectorAll('[data-pk]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if (idx >= items.length) return;
+        if (btn.dataset.pk === items[idx].a){
+          correct++; earned += 10;
+          fbEl.textContent = '✅ ' + items[idx].ex;
+          fbEl.className='enh-pk-feedback ok';
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:10,source:'pk'}}));
+        } else {
+          fbEl.textContent = '❌ Not quite — ' + items[idx].ex;
+          fbEl.className='enh-pk-feedback bad';
+        }
+        idx++;
+        setTimeout(function(){
+          if (idx >= items.length){
+            stage.style.display='none';
+            doneEl.style.display='block';
+            scoreEl.textContent = correct+' / '+items.length;
+            xpEl.textContent = earned;
+            if (correct === items.length) fireConfetti({particleCount:110,spread:80});
+          } else paint();
+        }, 1600);
+      });
+    });
+    document.getElementById('enh-pk-restart').addEventListener('click', function(){
+      idx=0;correct=0;earned=0;
+      doneEl.style.display='none';
+      stage.style.display='block';
+      paint();
+    });
+    paint();
+  }
+
+  // ============= 5b. FILTRATION SIM =============
+  function initFiltration(){
+    const canvas = document.getElementById('enh-filt-canvas');
+    if (!canvas) return;
+    if (typeof Matter === 'undefined'){
+      const wrap = canvas.closest('.enh-sim-wrap');
+      if (wrap) wrap.innerHTML = '<div style="color:#fff;padding:30px;text-align:center">Lab requires Matter.js</div>';
+      return;
+    }
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const Engine=Matter.Engine, Bodies=Matter.Bodies, World=Matter.World;
+    const engine = Engine.create();
+    engine.gravity.y = 1;
+
+    const isMobile = window.matchMedia('(max-width:768px)').matches;
+    const CAP = isMobile ? 40 : 80;
+    const BURST = isMobile ? 26 : 40;
+
+    // Categories
+    const CAT_WALL  = 0x0001;
+    const CAT_WATER = 0x0002;
+    const CAT_SAND  = 0x0004;
+    const CAT_SHELF = 0x0008;
+
+    // Funnel walls (vertical columns to keep particles in center)
+    const colL = Bodies.rectangle(W/2-44, 100, 6, 100, { isStatic:true, collisionFilter:{ category:CAT_WALL, mask:0xFFFF } });
+    const colR = Bodies.rectangle(W/2+44, 100, 6, 100, { isStatic:true, collisionFilter:{ category:CAT_WALL, mask:0xFFFF } });
+    // Filter shelf — sand collides with it, water passes
+    const filterY = 160;
+    const shelf = Bodies.rectangle(W/2, filterY, 80, 6, {
+      isStatic:true,
+      collisionFilter:{ category:CAT_SHELF, mask: CAT_SAND }
+    });
+    // Beaker
+    const beakerL = Bodies.rectangle(W/2-80, 250, 6, 100, { isStatic:true, collisionFilter:{ category:CAT_WALL, mask:0xFFFF } });
+    const beakerR = Bodies.rectangle(W/2+80, 250, 6, 100, { isStatic:true, collisionFilter:{ category:CAT_WALL, mask:0xFFFF } });
+    const beakerFloor = Bodies.rectangle(W/2, 300, 170, 8, { isStatic:true, collisionFilter:{ category:CAT_WALL, mask:0xFFFF } });
+    World.add(engine.world, [colL, colR, shelf, beakerL, beakerR, beakerFloor]);
+
+    const drops = [];
+    let waterCount=0, sandCount=0, pouring=false, burstIdx=0, pourStart=0;
+
+    const waterEl=document.getElementById('enh-filt-water');
+    const sandEl=document.getElementById('enh-filt-sand');
+    const soundBtn=document.getElementById('enh-filt-sound');
+    let soundOn=false;
+    let lastDrip = 0;
+    soundBtn.addEventListener('click', function(){
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? '🔊' : '🔇';
+    });
+
+    function spawn(isWater){
+      if (drops.length >= CAP) return;
+      const x = W/2 + (Math.random()-0.5) * 50;
+      const r = isWater ? 3 : 6 + Math.random()*1.5;
+      const b = Bodies.circle(x, 30, r, {
+        restitution: isWater ? 0.05 : 0.1,
+        friction: 0.4,
+        density: isWater ? 0.001 : 0.005,
+        collisionFilter: { category: isWater ? CAT_WATER : CAT_SAND, mask: 0xFFFF }
+      });
+      // Water excludes shelf
+      if (isWater) b.collisionFilter.mask = CAT_WALL | CAT_WATER | CAT_SAND;
+      World.add(engine.world, b);
+      drops.push({ body:b, water:isWater, counted:false });
+    }
+
+    document.getElementById('enh-filt-pour').addEventListener('click', function(){
+      if (pouring) return;
+      pouring = true;
+      burstIdx = 0;
+      pourStart = performance.now();
+    });
+    document.getElementById('enh-filt-reset').addEventListener('click', function(){
+      drops.forEach(function(d){ World.remove(engine.world, d.body); });
+      drops.length = 0;
+      waterCount=0; sandCount=0;
+      waterEl.textContent='0';
+      sandEl.textContent='0';
+      pouring=false; burstIdx=0;
+    });
+
+    let running=true, lastTime=0;
+    function loop(t){
+      if (!running) return;
+      const dt = Math.min(33, t-(lastTime||t));
+      lastTime = t;
+      if (pouring && burstIdx < BURST){
+        if ((t - pourStart) > burstIdx * 90){
+          spawn(Math.random() < 0.65);
+          burstIdx++;
+        }
+        if (burstIdx >= BURST) pouring = false;
+      }
+      Engine.update(engine, dt);
+
+      // Counts
+      for (let i=0; i<drops.length; i++){
+        const d = drops[i];
+        if (d.counted) continue;
+        const p = d.body.position;
+        if (d.water && p.y > 250){
+          d.counted = true;
+          waterCount++;
+          waterEl.textContent = waterCount;
+          if (soundOn && (t - lastDrip) > 90){ lastDrip = t; beep(540 + Math.random()*60, 0.05); }
+        } else if (!d.water && p.y > filterY - 18 && p.y < filterY + 4 && Math.hypot(d.body.velocity.x, d.body.velocity.y) < 0.5){
+          d.counted = true;
+          sandCount++;
+          sandEl.textContent = sandCount;
+        }
+      }
+
+      // Draw
+      ctx.clearRect(0,0,W,H);
+      // funnel (cosmetic)
+      ctx.strokeStyle = '#9ad0ff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(W/2-90, 50); ctx.lineTo(W/2-44, 150);
+      ctx.moveTo(W/2+90, 50); ctx.lineTo(W/2+44, 150);
+      ctx.stroke();
+      // filter paper
+      ctx.fillStyle = 'rgba(255,250,210,0.85)';
+      ctx.fillRect(W/2-40, filterY-3, 80, 6);
+      ctx.strokeStyle = '#e0d094';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(W/2-40, filterY-3, 80, 6);
+      ctx.fillStyle = '#8c7a4a';
+      for (let hx = W/2-34; hx<W/2+34; hx+=8){
+        ctx.fillRect(hx, filterY-1, 2, 2);
+      }
+      // beaker outline
+      ctx.strokeStyle = '#9ad0ff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(W/2-80, 200); ctx.lineTo(W/2-80, 304);
+      ctx.lineTo(W/2+80, 304); ctx.lineTo(W/2+80, 200);
+      ctx.stroke();
+      // collected water pool
+      const poolH = Math.min(95, waterCount * 2.5);
+      if (poolH > 0){
+        ctx.fillStyle = 'rgba(100,200,255,0.4)';
+        ctx.fillRect(W/2-77, 300-poolH, 154, poolH);
+      }
+      // drops
+      for (let i=0; i<drops.length; i++){
+        const d = drops[i];
+        const p = d.body.position;
+        const r = d.body.circleRadius;
+        if (d.water){ ctx.fillStyle = '#5bbcff'; ctx.strokeStyle = '#357fb8'; }
+        else { ctx.fillStyle = '#b58859'; ctx.strokeStyle = '#7a4f1e'; }
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+        ctx.fill(); ctx.stroke();
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    try {
+      const io = new IntersectionObserver(function(entries){
+        const e = entries[0];
+        if (e.isIntersecting){
+          if (!running){ running=true; lastTime=performance.now(); requestAnimationFrame(loop); }
+        } else { running=false; }
+      }, { threshold:0.05 });
+      io.observe(canvas);
+    } catch(_){}
+  }
+
+  // ============= 6. TIMELINE =============
+  function initTimeline(){
+    const track = document.getElementById('enh-tl-track');
+    if (!track) return;
+    const progEl = document.getElementById('enh-tl-progress');
+    const flipped = load(TL_KEY, {});
+
+    function updateProg(){
+      const n = Object.keys(flipped).filter(function(k){return flipped[k];}).length;
+      if (progEl) progEl.textContent = 'Flipped: ' + n + ' / 6';
+    }
+
+    track.querySelectorAll('[data-flip]').forEach(function(card){
+      const key = card.dataset.key;
+      if (flipped[key]) card.classList.add('flipped');
+      card.addEventListener('click', function(){
+        card.classList.toggle('flipped');
+        if (!flipped[key] && card.classList.contains('flipped')){
+          flipped[key] = true;
+          save(TL_KEY, flipped);
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:3,source:'tl'}}));
+          updateProg();
+        }
+      });
+    });
+    updateProg();
+  }
+
+  // ============= 7. STREAK METER =============
+  function initStreak(){
+    const block = document.querySelector('.enh-streak');
+    if (!block) return;
+    const tfGrid = document.getElementById('tf-grid');
+    if (!tfGrid) return;
+    const fillEl = document.getElementById('enh-tf-fill');
+    const bestEl = document.getElementById('enh-tf-best');
+    const curEl  = document.getElementById('enh-tf-current');
+    const corEl  = document.getElementById('enh-tf-correct');
+    let current=0, best=0, totalCorrect=0;
+
+    tfGrid.addEventListener('click', function(e){
+      const btn = e.target.closest('.tf-btn');
+      if (!btn) return;
+      // Wait a tick for existing checkTF to apply classes
+      setTimeout(function(){
+        const item = btn.closest('.tf-item');
+        if (!item) return;
+        const isCorrect = item.classList.contains('correct-item');
+        const isWrong  = item.classList.contains('wrong-item');
+        if (!isCorrect && !isWrong) return;
+        if (item.dataset.enhScored) return;
+        item.dataset.enhScored = '1';
+        if (isCorrect){
+          current++; totalCorrect++;
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:5,source:'tf'}}));
+          if (current > best){ best = current; bestEl.textContent = best; }
+          if (current === 3 || current === 6) fireConfetti({particleCount:60+current*15,spread:60});
+        } else {
+          current = 0;
+        }
+        curEl.textContent = current;
+        corEl.textContent = totalCorrect;
+        const pct = Math.min(100, (current/6)*100);
+        fillEl.style.width = pct + '%';
+      }, 50);
+    });
+  }
+
+  // ============= 8. FLASHCARDS =============
+  function initFlashcards(){
+    const grid = document.getElementById('enh-flash-grid');
+    if (!grid) return;
+    const learned = load(FLASH_KEY, {});
+    const progEl = document.getElementById('enh-flash-learned');
+    function updateProg(){
+      const n = Object.keys(learned).filter(function(k){return learned[k];}).length;
+      if (progEl) progEl.textContent = n;
+      grid.querySelectorAll('.enh-flash-card').forEach(function(c){
+        if (learned[c.dataset.term]) c.classList.add('enh-flash-learned');
+      });
+    }
+    updateProg();
+
+    grid.querySelectorAll('.enh-flash-card').forEach(function(card){
+      card.addEventListener('click', function(e){
+        if (e.target.closest('.enh-flash-learn')) return;
+        card.classList.toggle('flipped');
+      });
+      const learnBtn = card.querySelector('.enh-flash-learn');
+      if (learnBtn){
+        learnBtn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const term = card.dataset.term;
+          if (!learned[term]){
+            learned[term] = true;
+            save(FLASH_KEY, learned);
+            document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:2,source:'flash'}}));
+            updateProg();
+            learnBtn.textContent = '✓ Learned!';
+            learnBtn.disabled = true;
+          }
+        });
+        if (learned[card.dataset.term]){
+          learnBtn.textContent = '✓ Learned!';
+          learnBtn.disabled = true;
+        }
+      }
+    });
+  }
+
+  // ============= 9. LOGBOOK =============
+  function initLogbook(){
+    const list = document.getElementById('enh-log-list');
+    if (!list) return;
+    const bar = document.getElementById('enh-log-bar-fill');
+    const cnt = document.getElementById('enh-log-count');
+    const badgeEl = document.getElementById('enh-log-badge');
+    const state = load(ACT_KEY, {});
+
+    function refresh(){
+      let done = 0;
+      list.querySelectorAll('.enh-log-chk').forEach(function(chk){
+        const k = chk.dataset.act;
+        chk.checked = !!state[k];
+        if (state[k]) done++;
+      });
+      cnt.textContent = done;
+      bar.style.width = (done/5)*100 + '%';
+      if (done === 5){
+        badgeEl.style.display = 'flex';
+      }
+    }
+
+    list.querySelectorAll('.enh-log-chk').forEach(function(chk){
+      chk.addEventListener('change', function(){
+        const k = chk.dataset.act;
+        const wasChecked = !!state[k];
+        state[k] = chk.checked;
+        save(ACT_KEY, state);
+        if (!wasChecked && chk.checked){
+          document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:15,source:'log'}}));
+        }
+        const allDone = Object.keys(state).filter(function(k2){return state[k2];}).length === 5;
+        refresh();
+        if (allDone && badgeEl.style.display !== 'flex'){
+          badgeEl.style.display = 'flex';
+        }
+        if (allDone) fireConfetti({particleCount:150,spread:90,origin:{y:0.6}});
+      });
+    });
+    refresh();
+  }
+
+  // ============= 10. BOSS PANEL =============
+  function initBoss(){
+    const qr = document.getElementById('quiz-result');
+    const boss = document.getElementById('enh-boss');
+    if (!qr || !boss) return;
+    let bossChart = null;
+    let scored = false;
+
+    const topicMap = {
+      Mixtures:        [4, 8],
+      Solutions:       [3, 9],
+      'Solute/Solvent':[1, 7],
+      Separation:      [2, 5, 6, 10]
+    };
+
+    function readScores(){
+      const result = { Mixtures:0, Solutions:0, 'Solute/Solvent':0, Separation:0 };
+      Object.keys(topicMap).forEach(function(t){
+        topicMap[t].forEach(function(qi){
+          const card = document.getElementById('qc-'+qi);
+          if (!card) return;
+          const hasWrong = !!card.querySelector('.quiz-option.wrong');
+          const hasCorrect = !!card.querySelector('.quiz-option.correct');
+          if (hasCorrect && !hasWrong) result[t]++;
+        });
+      });
+      return result;
+    }
+
+    function renderBoss(){
+      if (scored) return;
+      scored = true;
+      const scores = readScores();
+      const caps = { Mixtures:2, Solutions:2, 'Solute/Solvent':2, Separation:4 };
+      let totalRight = 0;
+      Object.keys(scores).forEach(function(t){ totalRight += scores[t]; });
+      const bonus = totalRight * 20;
+      document.dispatchEvent(new CustomEvent('enh:xp',{detail:{points:bonus,source:'boss'}}));
+
+      const list = document.getElementById('enh-boss-list');
+      list.innerHTML = '';
+      Object.keys(scores).forEach(function(t){
+        const li = document.createElement('li');
+        li.innerHTML = '<span>' + t + '</span><strong>' + scores[t] + ' / ' + caps[t] + '</strong>';
+        list.appendChild(li);
+      });
+      document.getElementById('enh-boss-xp').textContent = bonus;
+      boss.style.display = 'block';
+
+      const canvas = document.getElementById('enh-boss-radar');
+      if (window.Chart && canvas){
+        if (bossChart) bossChart.destroy();
+        const labels = Object.keys(scores);
+        const data = labels.map(function(t){ return caps[t] ? (scores[t]/caps[t])*100 : 0; });
+        bossChart = new Chart(canvas, {
+          type:'radar',
+          data:{
+            labels: labels,
+            datasets:[{
+              label:'Accuracy %',
+              data: data,
+              backgroundColor: 'rgba(106,176,76,0.25)',
+              borderColor: '#6AB04C',
+              borderWidth: 2,
+              pointBackgroundColor: '#F0932B'
+            }]
+          },
+          options:{
+            responsive:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ r:{ min:0, max:100, ticks:{ display:false }, pointLabels:{ font:{ family:'Inter', size:12 } } } },
+            animation:{ duration:700 }
+          }
+        });
+      }
+      if (totalRight >= 8) fireConfetti({particleCount:180,spread:110,origin:{y:0.4}});
+    }
+
+    try {
+      const mo = new MutationObserver(function(){
+        if (qr.classList.contains('show')) renderBoss();
+        else { scored = false; boss.style.display = 'none'; }
+      });
+      mo.observe(qr, { attributes:true, attributeFilter:['class'] });
+    } catch(_){}
+  }
+})();
 </script>
 </body>
 </html>
