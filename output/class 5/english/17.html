@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: english | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 17: Comprehensions | Class 5 English</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --orange: #E67E22;
+    --green: #27AE60;
+    --light-bg: #F0F8FF;
+    --card-bg: #FFFFFF;
+    --border: #DDE3E7;
+    --shadow: 0 4px 24px rgba(34,166,179,0.10);
+  }
+  html { scroll-behavior: smooth; font-size: 18px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(17px, 2.5vw, 19px);
+    background: var(--warm-white);
+    color: #2D3436;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; }
+  h2 { font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+  h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; }
+  h4 { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: #22A6B3; z-index: 9999;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-text { color: #fff; font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 700; }
+  #curtain .curtain-sub { color: rgba(255,255,255,0.8); font-size: 1.1rem; }
+  .curtain-loader {
+    width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; }
+  .content-container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* DESKTOP TOC */
+  .page-layout { display: flex; width: 100%; }
+  .toc-sidebar {
+    width: 270px; min-width: 270px; position: sticky; top: 0;
+    height: 100vh; overflow-y: auto; background: #fff;
+    border-right: 2px solid var(--border); padding: 30px 20px;
+    z-index: 100;
+  }
+  .toc-sidebar h4 { color: var(--teal); margin-bottom: 18px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+  .toc-sidebar a {
+    display: block; padding: 9px 14px; border-radius: 8px;
+    color: var(--slate); text-decoration: none; font-size: 15px;
+    transition: all 0.2s; margin-bottom: 4px; border-left: 3px solid transparent;
+  }
+  .toc-sidebar a:hover, .toc-sidebar a.active {
+    background: var(--light-bg); color: var(--teal); border-left-color: var(--teal);
+  }
+  .main-content { flex: 1; min-width: 0; }
+
+  /* HERO */
+  .hero {
+    width: 100%; min-height: 70vh; background: linear-gradient(135deg, #22A6B3 0%, #4834D4 100%);
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: 80px 40px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.2); color: #fff;
+    padding: 8px 22px; border-radius: 50px; font-size: 15px; font-weight: 600;
+    margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.3);
+  }
+  .hero h1 { color: #fff; margin-bottom: 18px; line-height: 1.1; }
+  .hero p { color: rgba(255,255,255,0.9); font-size: clamp(1rem, 2.5vw, 1.3rem); max-width: 700px; margin: 0 auto 30px; }
+  .hero-stats { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .hero-stat { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 24px; text-align: center; color: #fff; min-width: 120px; }
+  .hero-stat .num { font-size: 2rem; font-weight: 800; font-family: 'Poppins', sans-serif; }
+  .hero-stat .lbl { font-size: 14px; opacity: 0.85; }
+
+  /* SECTIONS */
+  section { padding: 60px 0; }
+  section:nth-child(even) { background: var(--light-bg); }
+
+  .section-title { text-align: center; margin-bottom: 40px; }
+  .section-title h2 { color: var(--indigo); }
+  .section-title p { color: var(--slate); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 700px; margin: 10px auto 0; }
+  .section-label {
+    display: inline-block; background: var(--teal); color: #fff;
+    padding: 5px 18px; border-radius: 50px; font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+  }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone {
+    border: 2.5px dashed var(--teal); border-radius: 18px; padding: 30px;
+    background: linear-gradient(135deg, rgba(34,166,179,0.05), rgba(72,52,212,0.05));
+    margin: 30px 0; position: relative;
+  }
+  .discovery-zone::before { content: '🔍'; position: absolute; top: -18px; left: 20px; font-size: 30px; background: var(--warm-white); padding: 0 8px; }
+  section:nth-child(even) .discovery-zone::before { background: var(--light-bg); }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--card-bg); border-radius: 18px; padding: 28px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    transition: transform 0.3s, box-shadow 0.3s; width: 100%; max-width: 100%;
+    opacity: 1; transform: none;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 36px rgba(34,166,179,0.18); }
+  .card-icon { font-size: 2.5rem; margin-bottom: 14px; }
+  .card h3 { color: var(--indigo); margin-bottom: 10px; }
+  .card p { color: var(--slate); line-height: 1.7; font-size: clamp(15px, 2vw, 17px); }
+
+  /* PASSAGE CARDS */
+  .passage-card {
+    background: #fff; border-radius: 18px; overflow: hidden;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    margin-bottom: 32px; opacity: 1; transform: none; width: 100%; max-width: 100%;
+  }
+  .passage-header {
+    background: linear-gradient(90deg, var(--teal), var(--indigo));
+    padding: 18px 28px; display: flex; align-items: center; gap: 16px;
+  }
+  .passage-number {
+    background: rgba(255,255,255,0.25); color: #fff; width: 42px; height: 42px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .passage-header h3 { color: #fff; margin: 0; font-size: 1.4rem; }
+  .passage-body { padding: 28px; }
+  .passage-text {
+    background: var(--light-bg); border-left: 4px solid var(--teal);
+    padding: 20px 24px; border-radius: 0 12px 12px 0; margin-bottom: 24px;
+    font-size: clamp(16px, 2.2vw, 18px); line-height: 1.85; color: #2D3436;
+  }
+  .passage-emoji { font-size: 4rem; float: right; margin-left: 20px; margin-bottom: 10px; }
+
+  /* QUESTIONS */
+  .questions-section h4 { color: var(--indigo); margin-bottom: 16px; font-size: 1.1rem; }
+  .question-item {
+    background: #f8f9fa; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px;
+    border-left: 3px solid var(--teal); cursor: pointer; transition: all 0.2s;
+  }
+  .question-item:hover { background: var(--light-bg); }
+  .question-item .q-text { font-weight: 600; color: #2D3436; font-size: clamp(15px, 2vw, 17px); margin-bottom: 0; display: flex; justify-content: space-between; align-items: center; }
+  .question-item .q-text span { color: var(--teal); font-size: 0.85em; }
+  .answer-reveal {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+    color: var(--slate); font-size: clamp(14px, 2vw, 16px); line-height: 1.7;
+  }
+  .answer-reveal.open { max-height: 200px; padding-top: 12px; }
+  .answer-badge {
+    display: inline-block; background: var(--green); color: #fff;
+    padding: 3px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 8px;
+  }
+
+  /* FLIP CARDS */
+  .flip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .flip-card { perspective: 1000px; height: 200px; cursor: pointer; }
+  .flip-card-inner {
+    width: 100%; height: 100%; position: relative;
+    transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(.4,2,.6,1);
+  }
+  .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; padding: 24px; text-align: center; gap: 12px;
+  }
+  .flip-front { background: linear-gradient(135deg, var(--teal), #1a8a94); color: #fff; }
+  .flip-back { background: linear-gradient(135deg, var(--indigo), #6c5ce7); color: #fff; transform: rotateY(180deg); }
+  .flip-front h4, .flip-back h4 { color: #fff; font-size: 1.1rem; margin: 0; }
+  .flip-front p, .flip-back p { font-size: 0.9rem; opacity: 0.9; margin: 0; }
+  .flip-icon { font-size: 2.5rem; }
+
+  /* DRAG & DROP */
+  .drag-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .drag-source { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .drag-source h4 { color: var(--slate); font-size: 1rem; margin-bottom: 14px; text-align: center; }
+  .draggable-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 60px; }
+  .drag-item {
+    background: var(--teal); color: #fff; padding: 8px 16px; border-radius: 20px;
+    font-size: 14px; font-weight: 600; cursor: grab; user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s; border: none;
+  }
+  .drag-item:active { cursor: grabbing; transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .drag-item.dragging { opacity: 0.5; }
+  .drop-zone {
+    border: 2.5px dashed var(--border); border-radius: 14px; padding: 20px;
+    min-height: 120px; transition: background 0.2s, border-color 0.2s;
+  }
+  .drop-zone.drag-over { background: rgba(34,166,179,0.08); border-color: var(--teal); }
+  .drop-zone h4 { font-size: 1rem; margin-bottom: 12px; }
+  .drop-zone.info-zone h4 { color: var(--teal); }
+  .drop-zone.fiction-zone h4 { color: var(--indigo); }
+  .drop-zone.fable-zone h4 { color: var(--orange); }
+  .drag-check-btn {
+    background: var(--teal); color: #fff; border: none; padding: 12px 32px;
+    border-radius: 50px; font-size: 17px; font-weight: 600; cursor: pointer;
+    margin-top: 20px; transition: background 0.2s;
+  }
+  .drag-check-btn:hover { background: #1a8a94; }
+  .drag-feedback { margin-top: 14px; font-size: 17px; font-weight: 600; min-height: 28px; }
+  .drag-feedback.correct { color: var(--green); }
+  .drag-feedback.wrong { color: #e74c3c; }
+
+  /* HINT PANELS */
+  .hint-panel { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 16px 0; }
+  .hint-toggle {
+    width: 100%; background: linear-gradient(90deg, rgba(34,166,179,0.1), rgba(72,52,212,0.1));
+    border: none; padding: 16px 22px; text-align: left; cursor: pointer;
+    font-size: 17px; font-weight: 600; color: var(--indigo); display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Poppins', sans-serif;
+  }
+  .hint-toggle::after { content: '▼'; transition: transform 0.3s; font-size: 14px; }
+  .hint-toggle.open::after { transform: rotate(180deg); }
+  .hint-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .hint-body.open { max-height: 500px; }
+  .hint-content { padding: 20px 22px; font-size: clamp(15px, 2vw, 17px); color: var(--slate); line-height: 1.8; }
+
+  /* FORMULA CALLOUT */
+  .formula-callout {
+    background: #1e1e2e; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+    border-left: 4px solid var(--teal);
+  }
+  .formula-callout code {
+    font-family: 'Courier New', monospace; color: #a6e3a1; font-size: clamp(14px, 2vw, 16px); display: block; line-height: 2;
+  }
+  .formula-callout .formula-label { color: #cdd6f4; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* QUIZ */
+  .quiz-container { max-width: 900px; margin: 0 auto; }
+  .quiz-progress-bar { height: 8px; background: var(--border); border-radius: 50px; overflow: hidden; margin-bottom: 30px; }
+  .quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--indigo)); transition: width 0.4s; border-radius: 50px; }
+  .quiz-question-box {
+    background: #fff; border-radius: 18px; padding: 32px; box-shadow: var(--shadow);
+    border: 1px solid var(--border); display: none;
+  }
+  .quiz-question-box.active { display: block; }
+  .quiz-q-num { color: var(--teal); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .quiz-q-text { font-size: clamp(17px, 2.5vw, 20px); font-weight: 600; color: #2D3436; margin-bottom: 24px; line-height: 1.5; }
+  .quiz-passage-ref { background: var(--light-bg); border-left: 3px solid var(--teal); padding: 12px 16px; border-radius: 0 10px 10px 0; margin-bottom: 20px; font-size: 15px; color: var(--slate); font-style: italic; }
+  .quiz-options { display: grid; gap: 12px; }
+  .quiz-option {
+    background: #f8f9fa; border: 2px solid var(--border); border-radius: 12px;
+    padding: 14px 20px; cursor: pointer; font-size: clamp(15px, 2vw, 17px);
+    transition: all 0.2s; text-align: left; font-family: 'Inter', sans-serif;
+    min-height: 48px;
+  }
+  .quiz-option:hover { background: var(--light-bg); border-color: var(--teal); }
+  .quiz-option.correct { background: #d5f5e3; border-color: var(--green); color: var(--green); }
+  .quiz-option.wrong { background: #fde8e8; border-color: #e74c3c; color: #e74c3c; }
+  .quiz-option.disabled { pointer-events: none; }
+  .quiz-input { width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; font-size: 17px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; }
+  .quiz-input:focus { border-color: var(--teal); }
+  .quiz-input.correct { border-color: var(--green); background: #d5f5e3; }
+  .quiz-input.wrong { border-color: #e74c3c; background: #fde8e8; }
+  .quiz-feedback { margin-top: 14px; font-size: 17px; font-weight: 600; min-height: 28px; }
+  .quiz-nav { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
+  .btn-quiz { padding: 12px 28px; border: none; border-radius: 50px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { background: #1a8a94; }
+  .btn-secondary { background: var(--border); color: var(--slate); }
+  .btn-secondary:hover { background: #c8d0d4; }
+  .quiz-score-box { display: none; text-align: center; padding: 40px; }
+  .quiz-score-box.show { display: block; }
+  .score-circle { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--indigo)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .score-circle span { color: #fff; font-size: 2.5rem; font-weight: 800; font-family: 'Poppins', sans-serif; }
+  .score-msg { font-size: 1.3rem; font-weight: 600; color: var(--indigo); margin-bottom: 10px; }
+
+  /* SVG ANIMATIONS */
+  .svg-chart-wrap { background: #fff; border-radius: 18px; padding: 24px; box-shadow: var(--shadow); margin: 20px 0; overflow: hidden; }
+  .chart-title { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--indigo); margin-bottom: 16px; }
+  .bar-chart { width: 100%; height: 220px; }
+  .bar-rect { transition: height 0.8s ease; }
+
+  /* VOCABULARY TABLE */
+  .vocab-table-wrap { overflow-x: auto; border-radius: 14px; box-shadow: var(--shadow); }
+  .vocab-table { width: 100%; border-collapse: collapse; background: #fff; }
+  .vocab-table th { background: linear-gradient(90deg, var(--teal), var(--indigo)); color: #fff; padding: 14px 18px; text-align: left; font-size: 16px; font-family: 'Poppins', sans-serif; }
+  .vocab-table td { padding: 13px 18px; font-size: clamp(15px, 2vw, 16px); border-bottom: 1px solid var(--border); }
+  .vocab-table tr:nth-child(even) td { background: var(--light-bg); }
+  .vocab-table tr:hover td { background: rgba(34,166,179,0.07); cursor: pointer; }
+  .row-expanded { display: none; }
+  .row-expanded td { background: #f0f8ff !important; padding: 16px 18px; color: var(--slate); font-size: 15px; }
+  .row-expanded.open { display: table-row; }
+
+  /* PRACTICE EXERCISE */
+  .practice-item {
+    background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 18px;
+    border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .practice-item h4 { color: var(--teal); margin-bottom: 12px; font-size: 1.05rem; }
+  .practice-textarea {
+    width: 100%; padding: 14px 16px; border: 2px solid var(--border);
+    border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 16px;
+    resize: vertical; min-height: 80px; transition: border-color 0.2s; outline: none;
+  }
+  .practice-textarea:focus { border-color: var(--teal); }
+  .check-answer-btn {
+    background: var(--indigo); color: #fff; border: none; padding: 10px 24px;
+    border-radius: 50px; font-size: 16px; cursor: pointer; margin-top: 10px; font-weight: 600; transition: background 0.2s;
+  }
+  .check-answer-btn:hover { background: #3a28b0; }
+  .practice-feedback { margin-top: 10px; font-size: 16px; font-weight: 500; min-height: 24px; }
+
+  /* MERMAID */
+  .mermaid-wrap { background: #fff; border-radius: 18px; padding: 24px; box-shadow: var(--shadow); margin: 20px 0; overflow: auto; }
+  .mermaid { font-size: 16px !important; }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-bottom-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 2px solid var(--border); z-index: 200;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 8px 12px; gap: 8px;
+  }
+  .mobile-bottom-nav a {
+    display: inline-flex; align-items: center; white-space: nowrap;
+    padding: 10px 16px; border-radius: 50px; background: var(--light-bg);
+    color: var(--slate); text-decoration: none; font-size: 14px; font-weight: 600;
+    min-height: 48px; transition: all 0.2s;
+  }
+  .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover { background: var(--teal); color: #fff; }
+  .mobile-bottom-nav-inner { display: flex; gap: 8px; min-width: max-content; }
+
+  /* CHALLENGE SECTION */
+  .challenge-box {
+    background: linear-gradient(135deg, #1e1e2e, #2d2d44);
+    border-radius: 20px; padding: 36px; color: #fff; margin: 20px 0;
+  }
+  .challenge-box h3 { color: #a6e3a1; margin-bottom: 16px; }
+  .challenge-box p { color: #cdd6f4; line-height: 1.8; font-size: clamp(16px, 2vw, 18px); margin-bottom: 16px; }
+  .challenge-box ul { color: #cdd6f4; padding-left: 24px; line-height: 2.1; font-size: clamp(15px, 2vw, 17px); }
+  .challenge-textarea {
+    width: 100%; padding: 16px; border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; background: rgba(255,255,255,0.07); color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 17px; resize: vertical; min-height: 120px;
+    margin-top: 16px; outline: none; transition: border-color 0.2s;
+  }
+  .challenge-textarea:focus { border-color: var(--teal); }
+  .challenge-submit {
+    background: var(--teal); color: #fff; border: none; padding: 12px 30px;
+    border-radius: 50px; font-size: 17px; font-weight: 700; cursor: pointer;
+    margin-top: 12px; font-family: 'Poppins', sans-serif; transition: background 0.2s;
+  }
+  .challenge-submit:hover { background: #1a8a94; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .toc-sidebar { display: none; }
+    .mobile-bottom-nav { display: flex; }
+    .page-layout { display: block; }
+    main { padding-bottom: 80px; }
+    .hero { min-height: 60vh; padding: 60px 20px; }
+    .content-container { padding: 0 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .flip-grid { grid-template-columns: 1fr 1fr; }
+    .drag-container { grid-template-columns: 1fr; }
+    .hero-stats { gap: 14px; }
+    section { padding: 40px 0; }
+    .passage-emoji { float: none; display: block; margin: 0 0 16px; }
+  }
+  @media (max-width: 480px) {
+    .flip-grid { grid-template-columns: 1fr; }
+    .quiz-nav { flex-direction: column; }
+    .btn-quiz { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-loader"></div>
+  <div class="curtain-text">📖 Unit 17</div>
+  <div class="curtain-sub">Comprehensions — Class 5 English</div>
+</div>
+
+<div class="page-wrapper">
+  <div class="page-layout">
+
+    <!-- DESKTOP TOC -->
+    <nav class="toc-sidebar" id="toc">
+      <h4>📚 Contents</h4>
+      <a href="#introduction" class="toc-link">Introduction</a>
+      <a href="#background" class="toc-link">What is Comprehension?</a>
+      <a href="#core-concept" class="toc-link">Reading Strategies</a>
+      <a href="#passages" class="toc-link">All 9 Passages</a>
+      <a href="#vocabulary" class="toc-link">Key Vocabulary</a>
+      <a href="#practice" class="toc-link">Practice</a>
+      <a href="#did-you-know" class="toc-link">Did You Know?</a>
+      <a href="#drag-drop" class="toc-link">Classify Passages</a>
+      <a href="#challenge" class="toc-link">Challenge</a>
+      <a href="#quiz" class="toc-link">Quiz</a>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- HERO -->
+      <section class="hero" id="introduction">
+        <div class="hero-content">
+          <div class="hero-badge">📖 Unit 17 · Class 5 English</div>
+          <h1 id="hero-title">Comprehensions</h1>
+          <p>Read, understand, and answer — build powerful reading skills through 9 exciting passages covering nature, animals, fables, and real-world stories.</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num">9</div><div class="lbl">Passages</div></div>
+            <div class="hero-stat"><div class="num">36</div><div class="lbl">Questions</div></div>
+            <div class="hero-stat"><div class="num">4</div><div class="lbl">Text Types</div></div>
+            <div class="hero-stat"><div class="num">10</div><div class="lbl">Quiz Questions</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BACKGROUND -->
+      <section id="background">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Background</div>
+            <h2>What is Comprehension?</h2>
+            <p>Comprehension means fully understanding what you read — not just the words, but the ideas, feelings, and messages behind them.</p>
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <div class="card-icon">📝</div>
+              <h3>Literal Understanding</h3>
+              <p>Finding information directly stated in the text. "What percentage of Earth is covered by water?" — the answer is written in the passage.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🧠</div>
+              <h3>Inferential Understanding</h3>
+              <p>Reading between the lines. Understanding ideas not directly stated, like the lesson a character learns from their experience.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">💬</div>
+              <h3>Critical Thinking</h3>
+              <p>Evaluating the text — forming opinions about characters, events, and messages. Why are honeybees important? What would you do?</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🔗</div>
+              <h3>Making Connections</h3>
+              <p>Linking what you read to your own life, other books, or the world around you to deepen understanding.</p>
+            </div>
+          </div>
+          <div class="discovery-zone">
+            <h4>🔍 Discovery Zone: The 3-Level Reading Model</h4>
+            <div class="mermaid-wrap">
+              <div class="mermaid">
+graph TD
+  A["📖 Reading a Text"] --> B["Level 1: Literal\n(What does it say?)"]
+  A --> C["Level 2: Inferential\n(What does it mean?)"]
+  A --> D["Level 3: Critical\n(What do you think?)"]
+  B --> E["Find facts & details"]
+  C --> F["Understand themes & feelings"]
+  D --> G["Form opinions & evaluate"]
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CORE CONCEPT: READING STRATEGIES -->
+      <section id="core-concept">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Core Concept</div>
+            <h2>Reading Strategies</h2>
+            <p>Use these proven strategies to tackle any comprehension passage with confidence.</p>
+          </div>
+          <div class="formula-callout">
+            <div class="formula-label">The DEAR Strategy for Comprehension</div>
+            <code>D — Decode: Read the passage carefully, noting key words</code>
+            <code>E — Examine: Identify topic, main idea, and supporting details</code>
+            <code>A — Analyse: Think about the WHY and HOW, not just the WHAT</code>
+            <code>R — Respond: Write clear, complete sentences using evidence from the text</code>
+          </div>
+          <div class="hint-panel">
+            <button class="hint-toggle" onclick="toggleHint(this)">💡 Hint: How to Write a Great Answer</button>
+            <div class="hint-body">
+              <div class="hint-content">
+                <strong>Structure your answer like this:</strong><br><br>
+                <strong>1.</strong> Restate part of the question in your answer.<br>
+                <strong>2.</strong> Use evidence from the passage (quote or paraphrase).<br>
+                <strong>3.</strong> Explain your answer if it's an opinion or inference question.<br><br>
+                <em>Example: Q: "What lesson did the farmer learn?"</em><br>
+                <em>A: "The farmer learned that patience and care can lead to great rewards, because his mango tree only produced fruit after several years of daily care."</em>
+              </div>
+            </div>
+          </div>
+          <div class="hint-panel">
+            <button class="hint-toggle" onclick="toggleHint(this)">📊 Hint: Types of Questions in This Unit</button>
+            <div class="hint-body">
+              <div class="hint-content">
+                <strong>Factual Questions</strong> — Ask for specific information from the text. Look for numbers, names, and actions.<br><br>
+                <strong>Explanatory Questions</strong> — Ask "How" or "Why". Explain a process or reason using the passage.<br><br>
+                <strong>Vocabulary Questions</strong> — Ask about word meanings in context.<br><br>
+                <strong>Moral/Lesson Questions</strong> — Ask what a character learned or what message the author is giving.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALL 9 PASSAGES -->
+      <section id="passages">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Worked Examples</div>
+            <h2>All 9 Passages</h2>
+            <p>Read each passage carefully, then click each question to reveal a model answer.</p>
+          </div>
+
+          <!-- PASSAGE 1 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">1</div>
+              <h3>The Journey of Water</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">💧</span>
+                Water is one of the most important natural resources on Earth. It covers about 70% of our planet, but only a small amount is fresh and drinkable. Water goes through a continuous cycle. First, it evaporates from rivers, lakes, and oceans due to the heat of the sun. The vapour rises into the sky, where it cools and forms clouds. These clouds eventually release the water as rain, bringing fresh water back to the land. This cycle is called the water cycle, and it is vital for all living things.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What percentage of the Earth is covered in water? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>About 70% of the Earth is covered in water.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) What happens to water when the sun heats it? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>When the sun heats water, it evaporates from rivers, lakes, and oceans, turning into water vapour that rises into the sky.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) How do clouds form? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Clouds form when the water vapour rises into the sky and cools down, causing it to condense into clouds.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) What is the water cycle, and why is it important? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The water cycle is the continuous process by which water evaporates, forms clouds, and falls as rain. It is important because it brings fresh water back to the land and is vital for all living things.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 2 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">2</div>
+              <h3>The Life of a Honeybee</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🐝</span>
+                Honeybees are small but very hardworking insects. They live in groups called colonies, which can have thousands of bees. Each bee in the colony has a specific job. The queen bee's job is to lay eggs, while the worker bees gather nectar from flowers. They bring this nectar back to the hive and turn it into honey. Honeybees communicate with each other through a special dance to tell others where flowers are. Without honeybees, many plants would not be able to grow, as they help in pollination.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What is a group of bees called? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>A group of bees is called a colony.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) What is the queen bee's main job? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The queen bee's main job is to lay eggs.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) How do worker bees communicate with each other? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Worker bees communicate with each other through a special dance, which tells other bees where flowers can be found.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) Why are honeybees important for plants? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Honeybees are important for plants because they help in pollination. Without them, many plants would not be able to grow.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 3 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">3</div>
+              <h3>The Story of the Mango Tree</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🌳</span>
+                Once upon a time, a farmer planted a tiny mango seed in his garden. Every day, he watered the seed and took care of it. Slowly, the seed grew into a small plant and then into a tall tree. After several years, the tree produced its first sweet, juicy mangoes. The farmer shared the mangoes with his family and friends. Everyone praised the farmer for his hard work. From that day on, the mango tree continued to give delicious fruit every year, reminding the farmer that patience and care can lead to great rewards.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What did the farmer plant in his garden? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The farmer planted a tiny mango seed in his garden.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) How did the farmer take care of the seed? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Every day, the farmer watered the seed and took care of it patiently.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What did the tree produce after several years? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>After several years, the tree produced its first sweet, juicy mangoes.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) What lesson did the farmer learn from the mango tree? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The farmer learned that patience and care can lead to great rewards. He had to tend to the tree for many years before it bore fruit.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 4 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">4</div>
+              <h3>The Brave Little Bird</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🐦</span>
+                Once, there was a little bird who lived in a small nest high up in a tree. The bird was afraid of flying. Every day, it would watch other birds soar through the sky but was too scared to try itself. One day, the wind blew strongly, and the little bird's nest began to shake. The bird had no choice but to jump out of the nest. To its surprise, when it flapped its wings, it started to fly! The bird realized that flying wasn't so scary after all, and from that day on, it flew happily with the other birds.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) Where did the little bird live? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The little bird lived in a small nest high up in a tree.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) Why was the little bird afraid? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The little bird was afraid of flying. Even though it watched other birds soar through the sky every day, it was too scared to try itself.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What happened when the wind blew? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>When the wind blew strongly, the little bird's nest began to shake, forcing the bird to jump out. When it flapped its wings, it discovered it could fly.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) What lesson did the little bird learn in the end? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The little bird learned that facing your fears can lead to wonderful discoveries. Flying, which it had been afraid of, turned out to not be scary at all.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 5 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">5</div>
+              <h3>The Elephant's Strength</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🐘</span>
+                Elephants are known for their strength and size. They are the largest land animals on Earth. Despite their size, elephants are gentle creatures. They use their trunks to lift heavy objects, drink water, and even pick up small things like berries. Elephants live in herds, and they take care of each other. If a baby elephant is in danger, the entire herd will protect it. Their strength and unity make them one of the most respected animals in the jungle.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What are elephants known for? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Elephants are known for their strength and size. They are the largest land animals on Earth.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) How do elephants use their trunks? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Elephants use their trunks to lift heavy objects, drink water, and pick up small things like berries.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What happens if a baby elephant is in danger? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>If a baby elephant is in danger, the entire herd comes together to protect it.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) Why are elephants respected in the jungle? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Elephants are respected in the jungle because of their great strength and unity. They are gentle yet powerful, and they always protect each other.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 6 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">6</div>
+              <h3>A Day at the Beach</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🏖️</span>
+                Ali and his family decided to spend a day at the beach. The sun was shining, and the sky was clear. Ali built a big sandcastle, while his little sister collected seashells along the shore. The family enjoyed the picnic with sandwiches and cold drinks. Later, they all went for a swim in the cool, refreshing water. As the sun began to set, Ali looked at the beautiful colours in the sky and thought it was the perfect way to end a wonderful day.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) Where did Ali and his family spend the day? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Ali and his family spent the day at the beach.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) What did Ali do at the beach? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Ali built a big sandcastle at the beach. He also went for a swim with his family later.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What did the family eat for their picnic? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The family ate sandwiches and cold drinks for their picnic.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) What did Ali think about the sunset? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Ali thought the sunset was beautiful. He looked at the lovely colours in the sky and felt it was the perfect way to end a wonderful day.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 7 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">7</div>
+              <h3>The Value of Hard Work</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🏏</span>
+                There was a young boy named Ahmad who dreamed of becoming a great cricket player. Every day, after school, he would practise in the park for hours. At first, he wasn't very good, but he didn't give up. His friends teased him, but Ahmad kept practising. Over time, his skills improved, and he was finally selected for the school cricket team. Ahmad's hard work paid off, and he became the best player on the team.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What was Ahmad's dream? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Ahmad's dream was to become a great cricket player.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) How did Ahmad practise to improve his skills? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Every day after school, Ahmad went to the park and practised cricket for hours. He kept practising even when his friends teased him.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What did his friends do when he wasn't good at cricket? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>His friends teased him when he wasn't good at cricket. However, Ahmad did not give up and continued to practise.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) What happened after Ahmad's hard work? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>After his hard work paid off, Ahmad's skills improved and he was selected for the school cricket team. He eventually became the best player on the team.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 8 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">8</div>
+              <h3>The Clever Fox</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🦊</span>
+                One hot afternoon, a thirsty fox wandered through the forest looking for water. He came across a tall jar with some water at the bottom. However, the fox couldn't reach the water. After thinking for a moment, the clever fox had an idea. He started dropping small stones into the jar. Slowly, the water level rose, and soon the fox was able to drink. He felt proud of his cleverness and walked away happily; his thirst quenched.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) What was the fox looking for? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The fox was looking for water because he was thirsty.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) Why couldn't the fox drink the water at first? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The fox couldn't drink the water because it was at the bottom of a tall jar, and he couldn't reach it.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) How did the fox solve his problem? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The clever fox dropped small stones into the jar one by one. This raised the water level until he could reach it and drink.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) How did the fox feel after he drank the water? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>The fox felt proud of his cleverness. He walked away happily with his thirst quenched.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSAGE 9 -->
+          <div class="passage-card">
+            <div class="passage-header">
+              <div class="passage-number">9</div>
+              <h3>The Helpful Robot</h3>
+            </div>
+            <div class="passage-body">
+              <div class="passage-text">
+                <span class="passage-emoji">🤖</span>
+                In the future, people live with robots that help them with daily tasks. One day, Sara's robot, Max, helped her with her homework. Max could answer questions and find information quickly. When Sara was done, Max cleaned the house while Sara played outside. Max was programmed to help with many things, but Sara also liked spending time with her robot friend. They worked as a team to get things done faster.
+              </div>
+              <div class="questions-section">
+                <h4>📌 Questions & Model Answers</h4>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">1) Who is Max, and what does he do? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Max is Sara's robot. He helps her with daily tasks such as homework and cleaning the house.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">2) How did Max help Sara with her homework? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Max helped Sara by answering questions and finding information quickly.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">3) What did Max do after Sara finished her homework? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>After Sara finished her homework, Max cleaned the house while Sara went outside to play.</div>
+                </div>
+                <div class="question-item" onclick="toggleAnswer(this)">
+                  <div class="q-text">4) Why did Sara like spending time with Max? <span>Click to reveal ▾</span></div>
+                  <div class="answer-reveal"><span class="answer-badge">Answer</span>Sara liked spending time with Max because Max was not just a helper — Max was also her friend. They worked as a team to get things done faster.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VOCABULARY TABLE -->
+      <section id="vocabulary">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Key Vocabulary</div>
+            <h2>Important Words</h2>
+            <p>Click any row to expand and see the word used in a sentence from the passages.</p>
+          </div>
+          <div class="vocab-table-wrap">
+            <table class="vocab-table" id="vocabTable">
+              <thead>
+                <tr>
+                  <th>Word</th>
+                  <th>Passage</th>
+                  <th>Meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Evaporate</strong></td>
+                  <td>1 — The Journey of Water</td>
+                  <td>To turn from liquid into vapour/gas</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"Water evaporates from rivers, lakes, and oceans due to the heat of the sun." — The vapour then rises and forms clouds.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Colony</strong></td>
+                  <td>2 — The Life of a Honeybee</td>
+                  <td>A group of animals living together</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"They live in groups called colonies, which can have thousands of bees." — Each member has a specific role.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Pollination</strong></td>
+                  <td>2 — The Life of a Honeybee</td>
+                  <td>The process by which pollen is transferred between plants, enabling them to reproduce</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"Without honeybees, many plants would not be able to grow, as they help in pollination." — Bees carry pollen from flower to flower.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Patience</strong></td>
+                  <td>3 — The Mango Tree</td>
+                  <td>The ability to wait calmly for a long time</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"…reminding the farmer that patience and care can lead to great rewards." — The farmer waited years for the tree to bear fruit.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Herd</strong></td>
+                  <td>5 — The Elephant's Strength</td>
+                  <td>A large group of animals that live and travel together</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"Elephants live in herds, and they take care of each other." — The whole herd protects a baby in danger.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Quenched</strong></td>
+                  <td>8 — The Clever Fox</td>
+                  <td>Satisfied one's thirst by drinking</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"He felt proud of his cleverness and walked away happily; his thirst quenched." — The fox was no longer thirsty after drinking.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Vital</strong></td>
+                  <td>1 — The Journey of Water</td>
+                  <td>Absolutely necessary or essential</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"This cycle is called the water cycle, and it is vital for all living things." — Without it, life on Earth could not exist.</td></tr>
+                <tr onclick="toggleRow(this)">
+                  <td><strong>Programmed</strong></td>
+                  <td>9 — The Helpful Robot</td>
+                  <td>Instructed by a computer to perform tasks</td>
+                </tr>
+                <tr class="row-expanded"><td colspan="3">"Max was programmed to help with many things…" — A robot's actions are set by its computer instructions.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- BAR CHART showing word frequencies -->
+          <div class="svg-chart-wrap" style="margin-top: 30px;">
+            <div class="chart-title">📊 Passage Word Count Overview</div>
+            <svg class="bar-chart" id="wordCountChart" viewBox="0 0 700 220" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#22A6B3"/>
+                  <stop offset="100%" stop-color="#4834D4"/>
+                </linearGradient>
+              </defs>
+              <!-- Y axis labels -->
+              <text x="28" y="30" fill="#636E72" font-size="11" text-anchor="middle">120</text>
+              <text x="28" y="65" fill="#636E72" font-size="11" text-anchor="middle">90</text>
+              <text x="28" y="100" fill="#636E72" font-size="11" text-anchor="middle">60</text>
+              <text x="28" y="135" fill="#636E72" font-size="11" text-anchor="middle">30</text>
+              <!-- Grid lines -->
+              <line x1="40" y1="25" x2="695" y2="25" stroke="#eee" stroke-width="1"/>
+              <line x1="40" y1="60" x2="695" y2="60" stroke="#eee" stroke-width="1"/>
+              <line x1="40" y1="95" x2="695" y2="95" stroke="#eee" stroke-width="1"/>
+              <line x1="40" y1="130" x2="695" y2="130" stroke="#eee" stroke-width="1"/>
+              <line x1="40" y1="165" x2="695" y2="165" stroke="#e0e0e0" stroke-width="1.5"/>
+              <!-- Bars: heights proportional to ~word counts -->
+              <rect class="bar-rect" x="50" y="55" width="55" height="110" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="120" y="65" width="55" height="100" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="190" y="60" width="55" height="105" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="260" y="70" width="55" height="95" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="330" y="65" width="55" height="100" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="400" y="75" width="55" height="90" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="470" y="70" width="55" height="95" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="540" y="80" width="55" height="85" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <rect class="bar-rect" x="610" y="75" width="55" height="90" fill="url(#barGrad)" rx="6" opacity="0.9"/>
+              <!-- X axis labels -->
+              <text x="77" y="182" fill="#636E72" font-size="10" text-anchor="middle">P1</text>
+              <text x="147" y="182" fill="#636E72" font-size="10" text-anchor="middle">P2</text>
+              <text x="217" y="182" fill="#636E72" font-size="10" text-anchor="middle">P3</text>
+              <text x="287" y="182" fill="#636E72" font-size="10" text-anchor="middle">P4</text>
+              <text x="357" y="182" fill="#636E72" font-size="10" text-anchor="middle">P5</text>
+              <text x="427" y="182" fill="#636E72" font-size="10" text-anchor="middle">P6</text>
+              <text x="497" y="182" fill="#636E72" font-size="10" text-anchor="middle">P7</text>
+              <text x="567" y="182" fill="#636E72" font-size="10" text-anchor="middle">P8</text>
+              <text x="637" y="182" fill="#636E72" font-size="10" text-anchor="middle">P9</text>
+              <!-- X axis sublabels -->
+              <text x="280" y="200" fill="#b0b0b0" font-size="10" text-anchor="middle">Passage Number (P1–P9)</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRACTICE SECTION -->
+      <section id="practice">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Practice</div>
+            <h2>Write Your Own Answers</h2>
+            <p>Practise answering comprehension questions in complete sentences. Type your answer and check it against the model.</p>
+          </div>
+          <div class="practice-item">
+            <h4>📝 Passage 7 — The Value of Hard Work</h4>
+            <p style="color:var(--slate); margin-bottom:12px; font-size:16px;">In your own words, explain the main message of the passage. What does Ahmad's story teach us?</p>
+            <textarea class="practice-textarea" id="prac1" placeholder="Type your answer here in complete sentences..."></textarea>
+            <button class="check-answer-btn" onclick="checkPractice('prac1', 'prac1-fb', 'hard work, practice, never give up, dedication, perseverance')">Check Answer</button>
+            <div class="practice-feedback" id="prac1-fb"></div>
+          </div>
+          <div class="practice-item">
+            <h4>📝 Passage 8 — The Clever Fox</h4>
+            <p style="color:var(--slate); margin-bottom:12px; font-size:16px;">How did the fox show intelligence? Describe his solution step by step.</p>
+            <textarea class="practice-textarea" id="prac2" placeholder="Type your answer here in complete sentences..."></textarea>
+            <button class="check-answer-btn" onclick="checkPractice('prac2', 'prac2-fb', 'stones, jar, water level, rose, drink, clever, idea')">Check Answer</button>
+            <div class="practice-feedback" id="prac2-fb"></div>
+          </div>
+          <div class="practice-item">
+            <h4>📝 Passage 4 — The Brave Little Bird</h4>
+            <p style="color:var(--slate); margin-bottom:12px; font-size:16px;">Do you think the wind was a blessing or a problem for the bird? Explain your opinion with reasons from the text.</p>
+            <textarea class="practice-textarea" id="prac3" placeholder="Type your opinion here with evidence from the passage..."></textarea>
+            <button class="check-answer-btn" onclick="checkPractice('prac3', 'prac3-fb', 'blessing, fly, wings, happy, afraid, discover, forced, nest')">Check Answer</button>
+            <div class="practice-feedback" id="prac3-fb"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DID YOU KNOW — FLIP CARDS -->
+      <section id="did-you-know">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Did You Know?</div>
+            <h2>Fascinating Facts</h2>
+            <p>Hover or tap each card to flip it and discover amazing facts connected to our passages!</p>
+          </div>
+          <div class="flip-grid">
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-card-inner">
+                <div class="flip-front">
+                  <div class="flip-icon">💧</div>
+                  <h4>The Water Cycle</h4>
+                  <p>Tap to discover an amazing fact!</p>
+                </div>
+                <div class="flip-back">
+                  <div class="flip-icon">🌊</div>
+                  <h4>Water is Ancient!</h4>
+                  <p>The water you drink today may have been drunk by a dinosaur! Water is recycled through Earth's cycle for billions of years.</p>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-card-inner">
+                <div class="flip-front">
+                  <div class="flip-icon">🐝</div>
+                  <h4>Honeybees</h4>
+                  <p>Tap to discover an amazing fact!</p>
+                </div>
+                <div class="flip-back">
+                  <div class="flip-icon">🍯</div>
+                  <h4>Lifetime of Honey</h4>
+                  <p>A single honeybee makes only 1/12 of a teaspoon of honey in its entire lifetime. It takes thousands of bees to fill one jar!</p>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-card-inner">
+                <div class="flip-front">
+                  <div class="flip-icon">🐘</div>
+                  <h4>Elephants</h4>
+                  <p>Tap to discover an amazing fact!</p>
+                </div>
+                <div class="flip-back">
+                  <div class="flip-icon">🧠</div>
+                  <h4>Amazing Memory</h4>
+                  <p>Elephants have extraordinary memories — they can remember individual humans and other elephants they met decades ago!</p>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-card-inner">
+                <div class="flip-front">
+                  <div class="flip-icon">🦊</div>
+                  <h4>The Clever Fox Story</h4>
+                  <p>Tap to discover an amazing fact!</p>
+                </div>
+                <div class="flip-back">
+                  <div class="flip-icon">🐦</div>
+                  <h4>Based on Aesop!</h4>
+                  <p>The Clever Fox story is inspired by Aesop's famous fable "The Crow and the Pitcher", written over 2,500 years ago in Ancient Greece!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DRAG & DROP CLASSIFICATION -->
+      <section id="drag-drop">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Activity</div>
+            <h2>Classify the Passages</h2>
+            <p>Drag each passage into its correct category: Informational, Fiction, or Fable/Moral Story.</p>
+          </div>
+          <div class="drag-container" id="dragContainer">
+            <div class="drag-source">
+              <h4>📚 Passages to Sort</h4>
+              <div class="draggable-items" id="dragPool">
+                <div class="drag-item" draggable="true" data-id="p1" data-cat="info">P1: Water Cycle</div>
+                <div class="drag-item" draggable="true" data-id="p2" data-cat="info">P2: Honeybee</div>
+                <div class="drag-item" draggable="true" data-id="p3" data-cat="fable">P3: Mango Tree</div>
+                <div class="drag-item" draggable="true" data-id="p4" data-cat="fable">P4: Brave Bird</div>
+                <div class="drag-item" draggable="true" data-id="p5" data-cat="info">P5: Elephants</div>
+                <div class="drag-item" draggable="true" data-id="p6" data-cat="fiction">P6: Day at Beach</div>
+                <div class="drag-item" draggable="true" data-id="p7" data-cat="fable">P7: Hard Work</div>
+                <div class="drag-item" draggable="true" data-id="p8" data-cat="fable">P8: Clever Fox</div>
+                <div class="drag-item" draggable="true" data-id="p9" data-cat="fiction">P9: Helpful Robot</div>
+              </div>
+            </div>
+            <div class="drop-zone info-zone" data-zone="info">
+              <h4>🔬 Informational</h4>
+              <div class="draggable-items" id="zone-info"></div>
+            </div>
+            <div class="drop-zone fiction-zone" data-zone="fiction">
+              <h4>📖 Fiction/Narrative</h4>
+              <div class="draggable-items" id="zone-fiction"></div>
+            </div>
+          </div>
+          <div class="drop-zone fable-zone" data-zone="fable" style="margin-top:16px;">
+            <h4>🌟 Fable / Moral Story</h4>
+            <div class="draggable-items" id="zone-fable"></div>
+          </div>
+          <div style="text-align: center; margin-top: 20px;">
+            <button class="drag-check-btn" onclick="checkDragDrop()">✅ Check My Answers</button>
+            <button class="drag-check-btn" onclick="resetDragDrop()" style="background: var(--slate); margin-left: 12px;">🔄 Reset</button>
+            <div class="drag-feedback" id="drag-feedback"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHALLENGE -->
+      <section id="challenge">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Challenge</div>
+            <h2>Extended Writing Challenge</h2>
+            <p>Push your thinking further with these challenging tasks.</p>
+          </div>
+          <div class="challenge-box">
+            <h3>🏆 Challenge Task 1: Compare & Contrast</h3>
+            <p>Both "The Value of Hard Work" (Passage 7) and "The Story of the Mango Tree" (Passage 3) carry a similar moral lesson. Write a paragraph comparing the two stories. Consider:</p>
+            <ul>
+              <li>What lesson does each story teach?</li>
+              <li>How are the main characters similar or different?</li>
+              <li>Which story do you find more powerful and why?</li>
+            </ul>
+            <textarea class="challenge-textarea" placeholder="Write your comparative paragraph here..."></textarea>
+            <button class="challenge-submit" onclick="this.textContent='✅ Saved! Compare with a classmate.'">Submit Response</button>
+          </div>
+          <div class="challenge-box" style="margin-top: 24px;">
+            <h3>🏆 Challenge Task 2: Creative Extension</h3>
+            <p>Choose ONE passage from this unit. Write a NEW paragraph that could follow the ending of that story. For example: What happened the next day for the Brave Little Bird? What did the Clever Fox do the following summer? Use descriptive language and keep the same tone as the original.</p>
+            <textarea class="challenge-textarea" placeholder="Which passage did you choose? Write your extension paragraph here..."></textarea>
+            <button class="challenge-submit" onclick="this.textContent='✅ Saved! Great creative writing!'">Submit Response</button>
+          </div>
+          <div class="hint-panel" style="margin-top: 24px;">
+            <button class="hint-toggle" onclick="toggleHint(this)">💡 Challenge Hint: Useful Linking Words</button>
+            <div class="hint-body">
+              <div class="hint-content">
+                <strong>For Comparing:</strong> Similarly, both, likewise, in the same way, just as...<br><br>
+                <strong>For Contrasting:</strong> However, on the other hand, whereas, unlike, in contrast...<br><br>
+                <strong>For Concluding:</strong> In conclusion, overall, therefore, this shows that...<br><br>
+                <strong>For Stories:</strong> The following day, after some time, meanwhile, suddenly, as a result...
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz">
+        <div class="content-container">
+          <div class="section-title">
+            <div class="section-label">Quiz</div>
+            <h2>Test Your Understanding</h2>
+            <p>10 questions based on all 9 passages. Read carefully before answering!</p>
+          </div>
+          <div class="quiz-container">
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quizProgress" style="width: 0%"></div>
+            </div>
+            <div id="quizArea">
+              <!-- Q1 -->
+              <div class="quiz-question-box active" id="q1">
+                <div class="quiz-q-num">Question 1 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 1 — The Journey of Water</div>
+                <div class="quiz-q-text">What percentage of the Earth is covered in water?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. 50%</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. 70%</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. 90%</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. 30%</button>
+                </div>
+                <div class="quiz-feedback" id="q1-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(1)">Next →</button>
+                </div>
+              </div>
+              <!-- Q2 -->
+              <div class="quiz-question-box" id="q2">
+                <div class="quiz-q-num">Question 2 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 2 — The Life of a Honeybee</div>
+                <div class="quiz-q-text">How do honeybees communicate with each other?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. By buzzing loudly</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">B. By touching antennae</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">C. Through a special dance</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. By making a trail of honey</button>
+                </div>
+                <div class="quiz-feedback" id="q2-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(2)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(2)">Next →</button>
+                </div>
+              </div>
+              <!-- Q3 -->
+              <div class="quiz-question-box" id="q3">
+                <div class="quiz-q-num">Question 3 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 3 — The Story of the Mango Tree</div>
+                <div class="quiz-q-text">What is the main lesson the farmer learned from the mango tree?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Trees grow faster when given special food</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. Patience and care can lead to great rewards</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. Mangoes are the most delicious fruit</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Sharing food makes people famous</button>
+                </div>
+                <div class="quiz-feedback" id="q3-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(3)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(3)">Next →</button>
+                </div>
+              </div>
+              <!-- Q4 -->
+              <div class="quiz-question-box" id="q4">
+                <div class="quiz-q-num">Question 4 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 4 — The Brave Little Bird</div>
+                <div class="quiz-q-text">What forced the little bird to leave its nest and fly?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Its mother pushed it out</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">B. It got bored of staying in the nest</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">C. A strong wind made the nest shake</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Another bird took over the nest</button>
+                </div>
+                <div class="quiz-feedback" id="q4-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(4)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(4)">Next →</button>
+                </div>
+              </div>
+              <!-- Q5 -->
+              <div class="quiz-question-box" id="q5">
+                <div class="quiz-q-num">Question 5 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 5 — The Elephant's Strength</div>
+                <div class="quiz-q-text">What do elephants use their trunks for? Name THREE uses mentioned in the passage.</div>
+                <textarea class="quiz-input" id="q5-input" placeholder="Type your answer here..."></textarea>
+                <div class="quiz-feedback" id="q5-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(5)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="checkTextAnswer(5, ['lift', 'drink', 'pick', 'berries', 'water', 'heavy'])">Check Answer</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(5)" id="q5-next" style="display:none;">Next →</button>
+                </div>
+              </div>
+              <!-- Q6 -->
+              <div class="quiz-question-box" id="q6">
+                <div class="quiz-q-num">Question 6 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 6 — A Day at the Beach</div>
+                <div class="quiz-q-text">What two activities did Ali's little sister do at the beach?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Built a sandcastle and went swimming</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. Collected seashells along the shore</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. Ate sandwiches and played in the sand</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Watched the sunset and swam in the sea</button>
+                </div>
+                <div class="quiz-feedback" id="q6-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(6)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(6)">Next →</button>
+                </div>
+              </div>
+              <!-- Q7 -->
+              <div class="quiz-question-box" id="q7">
+                <div class="quiz-q-num">Question 7 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 7 — The Value of Hard Work</div>
+                <div class="quiz-q-text">Despite friends teasing him, Ahmad kept practising cricket. What does this tell us about Ahmad's character?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. He was stubborn and ignored everyone</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. He was determined and resilient</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. He had no friends and was lonely</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. He was angry at his friends</button>
+                </div>
+                <div class="quiz-feedback" id="q7-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(7)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(7)">Next →</button>
+                </div>
+              </div>
+              <!-- Q8 -->
+              <div class="quiz-question-box" id="q8">
+                <div class="quiz-q-num">Question 8 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 8 — The Clever Fox</div>
+                <div class="quiz-q-text">The word "quenched" in the last sentence means:</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Increased</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">B. Wasted</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">C. Satisfied / relieved</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Created</button>
+                </div>
+                <div class="quiz-feedback" id="q8-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(8)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(8)">Next →</button>
+                </div>
+              </div>
+              <!-- Q9 -->
+              <div class="quiz-question-box" id="q9">
+                <div class="quiz-q-num">Question 9 of 10</div>
+                <div class="quiz-passage-ref">📖 Passage 9 — The Helpful Robot</div>
+                <div class="quiz-q-text">What did Max do AFTER Sara finished her homework?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Max went outside to play</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. Max cleaned the house</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. Max answered more questions</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Max shut down for the night</button>
+                </div>
+                <div class="quiz-feedback" id="q9-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(9)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="nextQuestion(9)">Next →</button>
+                </div>
+              </div>
+              <!-- Q10 -->
+              <div class="quiz-question-box" id="q10">
+                <div class="quiz-q-num">Question 10 of 10</div>
+                <div class="quiz-passage-ref">📖 All Passages — General Comprehension</div>
+                <div class="quiz-q-text">Which TWO passages both have the theme of "overcoming fear or difficulty through action"?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">A. Passage 1 (Water Cycle) and Passage 2 (Honeybee)</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, true)">B. Passage 4 (Brave Bird) and Passage 7 (Hard Work)</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">C. Passage 5 (Elephants) and Passage 6 (Beach)</button>
+                  <button class="quiz-option" onclick="answerMCQ(this, false)">D. Passage 3 (Mango) and Passage 9 (Robot)</button>
+                </div>
+                <div class="quiz-feedback" id="q10-fb"></div>
+                <div class="quiz-nav">
+                  <button class="btn-quiz btn-secondary" onclick="prevQuestion(10)">← Back</button>
+                  <button class="btn-quiz btn-primary" onclick="showScore()">🏁 See My Score</button>
+                </div>
+              </div>
+            </div>
+            <!-- SCORE -->
+            <div class="quiz-score-box" id="scoreBox">
+              <div class="score-circle"><span id="scoreNum">0/10</span></div>
+              <div class="score-msg" id="scoreMsg">Great job!</div>
+              <p id="scoreDesc" style="color: var(--slate); font-size: 17px; margin-bottom: 24px;"></p>
+              <button class="btn-quiz btn-primary" onclick="restartQuiz()">🔄 Try Again</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" id="mobileNav">
+  <div class="mobile-bottom-nav-inner">
+    <a href="#introduction">🏠 Intro</a>
+    <a href="#background">📚 Background</a>
+    <a href="#core-concept">🧠 Strategies</a>
+    <a href="#passages">📖 Passages</a>
+    <a href="#vocabulary">📝 Vocab</a>
+    <a href="#practice">✏️ Practice</a>
+    <a href="#did-you-know">💡 Facts</a>
+    <a href="#drag-drop">🔀 Classify</a>
+    <a href="#challenge">🏆 Challenge</a>
+    <a href="#quiz">❓ Quiz</a>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) { console.warn('Mermaid error', e); }
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero title char-by-char
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        const text = heroTitle.textContent;
+        heroTitle.innerHTML = '';
+        text.split('').forEach((char, i) => {
+          const span = document.createElement('span');
+          span.textContent = char === ' ' ? '\u00A0' : char;
+          span.style.opacity = '0';
+          span.style.display = 'inline-block';
+          heroTitle.appendChild(span);
+          gsap.to(span, { opacity: 1, y: 0, duration: 0.05, delay: 0.05 + i * 0.06, ease: 'power2.out', from: { y: 20 } });
+        });
+      }
+
+      // Passage cards scroll animation
+      gsap.utils.toArray('.passage-card').forEach((card, i) => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
+          opacity: 0, y: 40, duration: 0.7, delay: i * 0.05, ease: 'power2.out'
+        });
+      });
+
+      // Cards animation
+      gsap.utils.toArray('.card').forEach((card, i) => {
+        gsap.from(card, {
+          scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' },
+          opacity: 0, y: 30, duration: 0.5, delay: i * 0.08, ease: 'power2.out'
+        });
+      });
+
+      // Bar chart animation
+      const bars = document.querySelectorAll('.bar-rect');
+      if (bars.length > 0) {
+        const originalHeights = [];
+        const originalYs = [];
+        bars.forEach(bar => {
+          originalHeights.push(parseFloat(bar.getAttribute('height')));
+          originalYs.push(parseFloat(bar.getAttribute('y')));
+          bar.setAttribute('height', '0');
+          bar.setAttribute('y', '165');
+        });
+        ScrollTrigger.create({
+          trigger: '#wordCountChart',
+          start: 'top 85%',
+          onEnter: () => {
+            bars.forEach((bar, i) => {
+              gsap.to(bar, {
+                attr: { height: originalHeights[i], y: originalYs[i] },
+                duration: 0.9, delay: i * 0.1, ease: 'power2.out'
+              });
+            });
+          }
+        });
+      }
+
+    }
+  } catch(e) { console.warn('GSAP error', e); }
+
+  // CURTAIN DISMISS
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.8, delay: 0.5, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    } else {
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // TOC SCROLLSPY
+  try {
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const tocLinks = document.querySelectorAll('.toc-link, .mobile-bottom-nav a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => observer.observe(s));
+  } catch(e) { console.warn('Scrollspy error', e); }
+
+  // DRAG AND DROP
+  initDragDrop();
+
+});
+
+// TOGGLE FUNCTIONS
+function toggleAnswer(el) {
+  const reveal = el.querySelector('.answer-reveal');
+  if (reveal) reveal.classList.toggle('open');
+}
+
+function toggleHint(btn) {
+  btn.classList.toggle('open');
+  const body = btn.nextElementSibling;
+  if (body) body.classList.toggle('open');
+}
+
+function toggleRow(tr) {
+  const next = tr.nextElementSibling;
+  if (next && next.classList.contains('row-expanded')) {
+    next.classList.toggle('open');
+  }
+}
+
+// PRACTICE CHECK
+function checkPractice(inputId, fbId, keywords) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  if (!input || !fb) return;
+  const val = input.value.toLowerCase().trim();
+  if (val.length < 15) {
+    fb.textContent = '✏️ Please write a more complete answer.';
+    fb.style.color = '#e67e22';
+    return;
+  }
+  const kws = keywords.split(',').map(k => k.trim());
+  let found = 0;
+  kws.forEach(kw => { if (val.includes(kw)) found++; });
+  if (found >= 2) {
+    fb.textContent = '✅ Great answer! You included key ideas from the passage.';
+    fb.style.color = '#27AE60';
+  } else {
+    fb.textContent = '💡 Good start! Try to include more detail from the passage. Look for key words.';
+    fb.style.color = '#e67e22';
+  }
+}
+
+// DRAG & DROP
+function initDragDrop() {
+  try {
+    const items = document.querySelectorAll('.drag-item');
+    const zones = document.querySelectorAll('.drop-zone');
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.dataset.id);
+        item.classList.add('dragging');
+      });
+      item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    });
+
+    zones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+      });
+      zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const id = e.dataTransfer.getData('text/plain');
+        const draggedItem = document.querySelector(`[data-id="${id}"]`);
+        if (draggedItem) {
+          const zoneItems = zone.querySelector('.draggable-items');
+          if (zoneItems) {
+            zoneItems.appendChild(draggedItem);
+            draggedItem.style.background = '#636E72';
+          }
+        }
+      });
+    });
+
+    // Touch support
+    items.forEach(item => {
+      item.addEventListener('touchstart', e => {
+        item._touchStartX = e.touches[0].clientX;
+        item._touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      item.addEventListener('touchend', e => {
+        const touch = e.changedTouches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        const zone = el ? el.closest('.drop-zone') : null;
+        if (zone) {
+          const zoneItems = zone.querySelector('.draggable-items');
+          if (zoneItems) {
+            zoneItems.appendChild(item);
+            item.style.background = '#636E72';
+          }
+        }
+      });
+    });
+  } catch(e) { console.warn('DnD error', e); }
+}
+
+function checkDragDrop() {
+  const feedback = document.getElementById('drag-feedback');
+  let correct = 0; let total = 9;
+  const items = document.querySelectorAll('.drag-item');
+  items.forEach(item => {
+    const parent = item.closest('.drop-zone');
+    if (parent) {
+      const zone = parent.dataset.zone;
+      if (zone === item.dataset.cat) {
+        correct++;
+        item.style.background = '#27AE60';
+      } else {
+        item.style.background = '#e74c3c';
+      }
+    }
+  });
+  if (correct === total) {
+    feedback.textContent = `🎉 Perfect! All ${total} passages correctly classified!`;
+    feedback.className = 'drag-feedback correct';
+  } else {
+    feedback.textContent = `✅ ${correct} out of ${total} correct. Red items need to be moved. Try again!`;
+    feedback.className = 'drag-feedback wrong';
+  }
+}
+
+function resetDragDrop() {
+  const pool = document.getElementById('dragPool');
+  if (!pool) return;
+  const items = document.querySelectorAll('.drag-item');
+  items.forEach(item => {
+    pool.appendChild(item);
+    item.style.background = '#22A6B3';
+  });
+  const fb = document.getElementById('drag-feedback');
+  if (fb) { fb.textContent = ''; fb.className = 'drag-feedback'; }
+}
+
+// QUIZ LOGIC
+let quizScore = 0;
+let currentQ = 1;
+const totalQ = 10;
+
+function answerMCQ(btn, isCorrect) {
+  const box = btn.closest('.quiz-question-box');
+  const qNum = box.id.replace('q', '');
+  const fb = document.getElementById(`q${qNum}-fb`);
+  const opts = box.querySelectorAll('.quiz-option');
+  opts.forEach(o => { o.classList.add('disabled'); o.disabled = true; });
+  if (isCorrect) {
+    btn.classList.add('correct');
+    if (fb) { fb.textContent = '✅ Correct! Well done!'; fb.style.color = '#27AE60'; }
+    quizScore++;
+  } else {
+    btn.classList.add('wrong');
+    opts.forEach(o => {
+      if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct');
+    });
+    if (fb) { fb.textContent = '❌ Not quite. The correct answer is highlighted in green.'; fb.style.color = '#e74c3c'; }
+  }
+  updateProgress();
+}
+
+function checkTextAnswer(qNum, keywords) {
+  const input = document.getElementById(`q${qNum}-input`);
+  const fb = document.getElementById(`q${qNum}-fb`);
+  const nextBtn = document.getElementById(`q${qNum}-next`);
+  if (!input || !fb) return;
+  const val = input.value.toLowerCase().trim();
+  let found = 0;
+  keywords.forEach(kw => { if (val.includes(kw)) found++; });
+  if (found >= 3) {
+    input.classList.add('correct');
+    if (fb) { fb.textContent = '✅ Correct! Elephants use their trunks to lift heavy objects, drink water, and pick up small things like berries.'; fb.style.color = '#27AE60'; }
+    quizScore++;
+  } else {
+    input.classList.add('wrong');
+    if (fb) { fb.textContent = '❌ Not complete. Elephants use their trunks to: 1) lift heavy objects, 2) drink water, 3) pick up small things like berries.'; fb.style.color = '#e74c3c'; }
+  }
+  input.disabled = true;
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+  updateProgress();
+}
+
+function nextQuestion(current) {
+  const curr = document.getElementById(`q${current}`);
+  const next = document.getElementById(`q${current + 1}`);
+  if (curr) curr.classList.remove('active');
+  if (next) next.classList.add('active');
+  currentQ = current + 1;
+  updateProgress();
+}
+
+function prevQuestion(current) {
+  const curr = document.getElementById(`q${current}`);
+  const prev = document.getElementById(`q${current - 1}`);
+  if (curr) curr.classList.remove('active');
+  if (prev) prev.classList.add('active');
+  currentQ = current - 1;
+  updateProgress();
+}
+
+function updateProgress() {
+  const bar = document.getElementById('quizProgress');
+  if (bar) bar.style.width = ((currentQ - 1) / totalQ * 100) + '%';
+}
+
+function showScore() {
+  const quizArea = document.getElementById('quizArea');
+  const scoreBox = document.getElementById('scoreBox');
+  const scoreNum = document.getElementById('scoreNum');
+  const scoreMsg = document.getElementById('scoreMsg');
+  const scoreDesc = document.getElementById('scoreDesc');
+  if (quizArea) quizArea.style.display = 'none';
+  if (scoreBox) scoreBox.classList.add('show');
+  if (scoreNum) scoreNum.textContent = `${quizScore}/10`;
+  const bar = document.getElementById('quizProgress');
+  if (bar) bar.style.width = '100%';
+  let msg, desc;
+  if (quizScore >= 9) { msg = '🏆 Outstanding!'; desc = 'Excellent work! You have a superb understanding of all the passages. Keep it up!'; }
+  else if (quizScore >= 7) { msg = '⭐ Great Job!'; desc = 'Very good! You understood most of the passages well. Review the ones you missed.'; }
+  else if (quizScore >= 5) { msg = '👍 Good Effort!'; desc = 'A solid attempt. Go back and re-read a few passages to strengthen your understanding.'; }
+  else { msg = '📚 Keep Practising!'; desc = 'Comprehension takes practice. Read the passages again slowly and look for key information.'; }
+  if (scoreMsg) scoreMsg.textContent = msg;
+  if (scoreDesc) scoreDesc.textContent = desc;
+}
+
+function restartQuiz() {
+  quizScore = 0; currentQ = 1;
+  const quizArea = document.getElementById('quizArea');
+  const scoreBox = document.getElementById('scoreBox');
+  if (quizArea) quizArea.style.display = 'block';
+  if (scoreBox) scoreBox.classList.remove('show');
+  const allQ = document.querySelectorAll('.quiz-question-box');
+  allQ.forEach((q, i) => {
+    q.classList.remove('active');
+    if (i === 0) q.classList.add('active');
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong', 'disabled');
+      o.disabled = false;
+    });
+    const fb = q.querySelector('.quiz-feedback');
+    if (fb) { fb.textContent = ''; fb.style.color = ''; }
+    const inp = q.querySelector('.quiz-input');
+    if (inp) { inp.value = ''; inp.classList.remove('correct', 'wrong'); inp.disabled = false; }
+    const nextBtn = q.querySelector('[id$="-next"]');
+    if (nextBtn) nextBtn.style.display = 'none';
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

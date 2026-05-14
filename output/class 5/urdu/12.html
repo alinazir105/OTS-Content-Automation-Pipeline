@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<!-- CLASS: 5 | SUBJECT: urdu | VERSION: 1.0 -->
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تتلی - اردو نظم | کلاس ۵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --gold: #F9A825;
+    --bg: #F0FAFB;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(34,166,179,0.12);
+  }
+
+  html { scroll-behavior: smooth; width: 100%; }
+
+  body {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(18px, 2.5vw, 20px);
+    background: var(--bg);
+    color: #2d3436;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    line-height: 2.2;
+  }
+
+  h1 { font-size: clamp(2.8rem, 7vw, 5rem); font-family: 'Noto Nastaliq Urdu', serif; }
+  h2 { font-size: clamp(2.2rem, 4.5vw, 3.2rem); font-family: 'Noto Nastaliq Urdu', serif; }
+  h3 { font-size: clamp(1.6rem, 3vw, 2rem); font-family: 'Noto Nastaliq Urdu', serif; }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: linear-gradient(135deg, var(--teal), var(--indigo));
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-text { color: white; font-size: 2.5rem; font-family: 'Noto Nastaliq Urdu', serif; }
+  #curtain .butterfly-loader { font-size: 4rem; animation: flutter 0.6s ease-in-out infinite alternate; }
+  @keyframes flutter { from { transform: rotate(-15deg) scale(1); } to { transform: rotate(15deg) scale(1.1); } }
+
+  /* STICKY TOC */
+  #toc-sidebar {
+    position: fixed; top: 100px; right: 20px; width: 220px;
+    background: white; border-radius: 16px; box-shadow: var(--shadow);
+    padding: 20px; z-index: 100; border-right: 4px solid var(--teal);
+  }
+  #toc-sidebar h4 { color: var(--teal); font-size: 1.1rem; margin-bottom: 12px; border-bottom: 2px dashed var(--teal); padding-bottom: 8px; }
+  #toc-sidebar a {
+    display: block; padding: 8px 10px; margin: 4px 0; border-radius: 8px;
+    text-decoration: none; color: var(--slate); font-size: 0.95rem;
+    transition: all 0.3s; font-family: 'Noto Nastaliq Urdu', serif;
+    line-height: 1.8;
+  }
+  #toc-sidebar a.active, #toc-sidebar a:hover { background: var(--teal); color: white; }
+
+  /* MOBILE BOTTOM NAV */
+  #mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; border-top: 2px solid var(--teal);
+    overflow-x: auto; z-index: 200; padding: 8px 4px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+  }
+  #mobile-nav .nav-inner { display: flex; gap: 6px; min-width: max-content; padding: 0 8px; }
+  #mobile-nav a {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 8px 14px; border-radius: 10px; text-decoration: none;
+    color: var(--slate); font-size: 0.85rem; min-height: 56px; min-width: 70px;
+    font-family: 'Noto Nastaliq Urdu', serif; white-space: nowrap; background: var(--bg);
+    border: 1px solid #e0e0e0;
+  }
+  #mobile-nav a.active, #mobile-nav a:hover { background: var(--teal); color: white; }
+
+  /* HERO */
+  #hero {
+    width: 100vw; min-height: 100vh; background: linear-gradient(135deg, #0a7a83 0%, var(--teal) 40%, var(--indigo) 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 60px 20px;
+  }
+  #hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+  }
+  .hero-content { text-align: center; z-index: 2; position: relative; }
+  .hero-title { color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.3); margin-bottom: 20px; }
+  .hero-subtitle { color: rgba(255,255,255,0.9); font-size: clamp(1.2rem, 2.5vw, 1.6rem); margin-bottom: 30px; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 24px;
+    border-radius: 50px; font-size: 1.1rem; margin: 8px;
+  }
+  .butterfly-deco { font-size: 4rem; position: absolute; animation: drift 6s ease-in-out infinite; }
+  .butterfly-deco:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+  .butterfly-deco:nth-child(2) { top: 25%; right: 8%; animation-delay: 1.5s; }
+  .butterfly-deco:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 3s; }
+  .butterfly-deco:nth-child(4) { bottom: 30%; right: 12%; animation-delay: 4.5s; }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(-10deg); }
+    50% { transform: translateY(-30px) rotate(10deg); }
+  }
+
+  /* MAIN LAYOUT */
+  main { width: 100%; padding-right: 260px; }
+
+  /* SECTIONS */
+  section { width: 100%; padding: 60px 0; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-header h2 { color: var(--indigo); }
+  .section-header p { color: var(--slate); font-size: clamp(1rem, 2vw, 1.2rem); margin-top: 12px; }
+
+  /* POEM SECTION */
+  #poem { background: linear-gradient(180deg, #f0fafb 0%, #e8f8f9 100%); }
+  .poem-card {
+    background: white; border-radius: 24px; box-shadow: var(--shadow);
+    padding: 48px 60px; position: relative; overflow: hidden;
+    border-top: 6px solid var(--teal);
+  }
+  .poem-card::before {
+    content: '🦋'; position: absolute; top: 20px; left: 30px;
+    font-size: 3rem; opacity: 0.15;
+  }
+  .poem-card::after {
+    content: '🦋'; position: absolute; bottom: 20px; right: 30px;
+    font-size: 3rem; opacity: 0.15;
+  }
+  .poem-author { text-align: center; color: var(--teal); font-size: 1.2rem; margin-bottom: 32px; }
+  .poem-verse { text-align: center; margin-bottom: 28px; padding: 20px; border-radius: 12px; line-height: 2.8; }
+  .poem-verse:nth-child(odd) { background: rgba(34,166,179,0.06); }
+  .poem-verse:nth-child(even) { background: rgba(72,52,212,0.04); }
+  .poem-line { display: block; font-size: clamp(1.1rem, 2.2vw, 1.4rem); color: #2d3436; }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone {
+    border: 2.5px dashed var(--teal); border-radius: 20px;
+    padding: 36px; margin: 32px 0; background: rgba(34,166,179,0.04);
+    position: relative;
+  }
+  .discovery-zone::before { content: '🔍'; position: absolute; top: -18px; right: 24px; font-size: 2rem; }
+  .discovery-zone h3 { color: var(--teal); margin-bottom: 20px; }
+
+  /* VOCABULARY TABLE */
+  .vocab-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  .vocab-table th {
+    background: var(--teal); color: white; padding: 16px 20px;
+    font-size: clamp(1rem, 1.8vw, 1.2rem); text-align: right;
+  }
+  .vocab-table td { padding: 14px 20px; font-size: clamp(0.95rem, 1.6vw, 1.1rem); cursor: pointer; transition: background 0.2s; }
+  .vocab-table tr:nth-child(even) td { background: rgba(34,166,179,0.07); }
+  .vocab-table tr:nth-child(odd) td { background: white; }
+  .vocab-table tr:hover td { background: rgba(72,52,212,0.08); }
+  .vocab-table .expand-row { display: none; background: rgba(72,52,212,0.06); }
+  .vocab-table .expand-row td { padding: 12px 40px; font-size: 1rem; color: var(--indigo); }
+  .vocab-table .expand-row.visible { display: table-row; }
+  .table-wrap { overflow-x: auto; }
+
+  /* DID YOU KNOW - FLIP CARDS */
+  .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-top: 28px; }
+  .flip-card { perspective: 1000px; height: 200px; cursor: pointer; }
+  .flip-card-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.7s; transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-card-front, .flip-card-back {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px; text-align: center; font-size: clamp(1rem, 1.8vw, 1.15rem);
+  }
+  .flip-card-front { background: linear-gradient(135deg, var(--teal), #1a8a96); color: white; }
+  .flip-card-front .icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+  .flip-card-back { background: linear-gradient(135deg, var(--indigo), #6c5ce7); color: white; transform: rotateY(180deg); line-height: 2; }
+
+  /* QUESTIONS */
+  .question-card {
+    background: white; border-radius: 18px; padding: 32px; margin-bottom: 24px;
+    box-shadow: var(--shadow); border-right: 5px solid var(--indigo);
+    opacity: 1; transform: none;
+  }
+  .question-card h4 { color: var(--indigo); margin-bottom: 16px; font-size: clamp(1.1rem, 2vw, 1.3rem); }
+  .question-card p { color: var(--slate); line-height: 2.4; font-size: clamp(1rem, 1.8vw, 1.15rem); }
+  .hint-btn {
+    background: var(--gold); border: none; color: #2d3436; padding: 10px 22px;
+    border-radius: 50px; cursor: pointer; font-size: 1rem; margin-top: 16px;
+    font-family: 'Noto Nastaliq Urdu', serif; min-height: 48px; transition: transform 0.2s;
+  }
+  .hint-btn:hover { transform: scale(1.05); }
+  .hint-panel { display: none; background: rgba(249,168,37,0.1); border: 1px dashed var(--gold); border-radius: 12px; padding: 16px; margin-top: 14px; color: #7c5800; font-size: 1rem; line-height: 2; }
+  .hint-panel.open { display: block; }
+
+  /* DRAG & DROP */
+  .drag-section { background: white; }
+  .drag-board { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+  .drag-category {
+    flex: 1; min-width: 200px; background: var(--bg); border-radius: 18px;
+    border: 3px dashed var(--teal); padding: 24px; min-height: 200px;
+  }
+  .drag-category h4 { color: var(--teal); margin-bottom: 18px; font-size: 1.2rem; text-align: center; }
+  .drag-items { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 24px; }
+  .drag-item {
+    background: linear-gradient(135deg, var(--teal), var(--indigo)); color: white;
+    padding: 10px 20px; border-radius: 50px; cursor: grab; user-select: none;
+    font-size: 1rem; min-height: 48px; display: flex; align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s; border: none;
+  }
+  .drag-item:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(72,52,212,0.3); }
+  .drag-item.dragging { opacity: 0.5; }
+  .drop-zone { min-height: 120px; padding: 12px; border-radius: 12px; transition: background 0.2s; }
+  .drop-zone.over { background: rgba(34,166,179,0.15); }
+
+  /* MCQ QUIZ */
+  #quiz { background: linear-gradient(180deg, #e8f8f9 0%, #f0f0ff 100%); }
+  .quiz-container { background: white; border-radius: 24px; padding: 48px; box-shadow: var(--shadow); }
+  .quiz-progress { background: #e0e0e0; border-radius: 50px; height: 10px; margin-bottom: 36px; overflow: hidden; }
+  .quiz-progress-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--indigo)); border-radius: 50px; transition: width 0.5s; }
+  .quiz-question { display: none; }
+  .quiz-question.active { display: block; }
+  .quiz-question h3 { color: var(--indigo); margin-bottom: 28px; line-height: 2.2; font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .quiz-opt {
+    background: var(--bg); border: 2px solid #e0e0e0; border-radius: 14px;
+    padding: 16px 22px; cursor: pointer; font-size: clamp(1rem, 1.8vw, 1.15rem);
+    transition: all 0.3s; text-align: right; font-family: 'Noto Nastaliq Urdu', serif;
+    min-height: 56px; line-height: 2;
+  }
+  .quiz-opt:hover { border-color: var(--teal); background: rgba(34,166,179,0.08); }
+  .quiz-opt.correct { background: rgba(0,184,148,0.15); border-color: #00b894; color: #006144; }
+  .quiz-opt.wrong { background: rgba(255,118,117,0.15); border-color: #ff7675; color: #8b0000; }
+  .quiz-nav { display: flex; gap: 14px; margin-top: 32px; justify-content: flex-start; }
+  .quiz-btn {
+    background: var(--indigo); color: white; border: none; padding: 14px 32px;
+    border-radius: 50px; cursor: pointer; font-size: 1.1rem; min-height: 52px;
+    font-family: 'Noto Nastaliq Urdu', serif; transition: transform 0.2s, background 0.2s;
+  }
+  .quiz-btn:hover { transform: scale(1.05); background: #3826b8; }
+  .quiz-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .quiz-score { text-align: center; display: none; }
+  .quiz-score.visible { display: block; }
+  .score-circle {
+    width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 24px;
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: white; box-shadow: 0 8px 32px rgba(72,52,212,0.3);
+  }
+  .score-msg { font-size: 1.4rem; color: var(--indigo); }
+
+  /* CALLIGRAPHY SVG DECORATION */
+  .calligraphy-deco { text-align: center; margin: 24px 0; opacity: 0.7; }
+  .calligraphy-deco svg { max-width: 100%; overflow: visible; }
+
+  /* FORMULA CALLOUT */
+  .formula-callout {
+    background: #1a1a2e; color: #00f5d4; font-family: 'Courier New', monospace;
+    border-radius: 14px; padding: 24px 32px; margin: 24px 0;
+    font-size: clamp(1rem, 1.8vw, 1.2rem); border-right: 5px solid var(--teal);
+    direction: rtl; line-height: 2.4;
+  }
+
+  /* CHART - SVG animated bar */
+  .chart-container { background: white; border-radius: 20px; padding: 32px; box-shadow: var(--shadow); margin: 28px 0; }
+  .chart-container h3 { color: var(--indigo); margin-bottom: 24px; text-align: center; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 16px; height: 200px; padding: 0 16px; justify-content: center; }
+  .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .chart-bar {
+    width: 60px; background: linear-gradient(180deg, var(--teal), var(--indigo));
+    border-radius: 8px 8px 0 0; transition: height 1s ease;
+    height: 0; min-height: 0;
+  }
+  .chart-bar-label { font-size: 0.95rem; color: var(--slate); text-align: center; line-height: 1.8; max-width: 70px; }
+
+  /* POEM ANALYSIS */
+  .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .analysis-card {
+    background: white; border-radius: 18px; padding: 28px; box-shadow: var(--shadow);
+    border-top: 5px solid var(--teal); opacity: 1; transform: none;
+  }
+  .analysis-card .icon-big { font-size: 2.8rem; margin-bottom: 14px; }
+  .analysis-card h4 { color: var(--indigo); margin-bottom: 10px; }
+  .analysis-card p { color: var(--slate); font-size: clamp(1rem, 1.7vw, 1.1rem); line-height: 2.2; }
+
+  /* SECTION BG ALTERNATION */
+  section:nth-child(even) { background: white; }
+  section:nth-child(odd) { background: var(--bg); }
+  #hero { background: linear-gradient(135deg, #0a7a83 0%, var(--teal) 40%, var(--indigo) 100%) !important; }
+  #poem { background: linear-gradient(180deg, #f0fafb 0%, #e8f8f9 100%) !important; }
+  #quiz { background: linear-gradient(180deg, #e8f8f9 0%, #f0f0ff 100%) !important; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    main { padding-right: 0; }
+    #toc-sidebar { display: none; }
+    #mobile-nav { display: flex; }
+    body { padding-bottom: 80px; }
+  }
+  @media (max-width: 768px) {
+    main { padding-right: 0; }
+    #toc-sidebar { display: none; }
+    #mobile-nav { display: flex; }
+    body { padding-bottom: 80px; }
+    .container { padding: 0 16px; }
+    section { padding: 40px 0; }
+    #hero { min-height: 60vh; padding: 40px 16px; }
+    .poem-card { padding: 28px 20px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .drag-board { flex-direction: column; }
+    .quiz-container { padding: 28px 20px; }
+    .chart-bar { width: 40px; }
+    .flip-grid { grid-template-columns: 1fr; }
+    .analysis-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: 2.5rem; }
+    .butterfly-deco { font-size: 2.5rem; }
+  }
+
+  /* ANSWER INPUT */
+  .text-answer {
+    width: 100%; padding: 14px 18px; border: 2px solid #ddd; border-radius: 12px;
+    font-size: 1.1rem; font-family: 'Noto Nastaliq Urdu', serif; direction: rtl;
+    margin-top: 12px; outline: none; transition: border 0.3s;
+    background: var(--bg); min-height: 56px;
+  }
+  .text-answer:focus { border-color: var(--teal); }
+
+  /* CHAR ANIMATION TARGET */
+  #hero-title-animated span { display: inline-block; }
+
+  /* SCROLL ANIMATE - default visible */
+  .scroll-reveal { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="butterfly-loader">🦋</div>
+  <div class="curtain-text">تتلی</div>
+  <div style="color:rgba(255,255,255,0.7); font-size:1.1rem; font-family:'Noto Nastaliq Urdu',serif;">سبق لوڈ ہو رہا ہے...</div>
+</div>
+
+<!-- TOC SIDEBAR (Desktop) -->
+<nav id="toc-sidebar" aria-label="فہرست">
+  <h4>📚 فہرست</h4>
+  <a href="#hero" class="toc-link">🏠 تعارف</a>
+  <a href="#poem" class="toc-link">📜 نظم</a>
+  <a href="#vocabulary" class="toc-link">📖 الفاظ</a>
+  <a href="#analysis" class="toc-link">🔍 تجزیہ</a>
+  <a href="#questions" class="toc-link">❓ سوالات</a>
+  <a href="#drag-drop" class="toc-link">🎯 مشق</a>
+  <a href="#writing" class="toc-link">✍️ لکھائی</a>
+  <a href="#quiz" class="toc-link">🏆 کوئز</a>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobile-nav" aria-label="موبائل فہرست">
+  <div class="nav-inner">
+    <a href="#hero">🏠 تعارف</a>
+    <a href="#poem">📜 نظم</a>
+    <a href="#vocabulary">📖 الفاظ</a>
+    <a href="#analysis">🔍 تجزیہ</a>
+    <a href="#questions">❓ سوالات</a>
+    <a href="#drag-drop">🎯 مشق</a>
+    <a href="#writing">✍️ لکھائی</a>
+    <a href="#quiz">🏆 کوئز</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="butterfly-deco">🦋</div>
+  <div class="butterfly-deco">🦋</div>
+  <div class="butterfly-deco">🌸</div>
+  <div class="butterfly-deco">🌺</div>
+  <div class="hero-content">
+    <div style="margin-bottom:16px;">
+      <span class="hero-badge">کلاس ۵</span>
+      <span class="hero-badge">سبق ۱۵</span>
+      <span class="hero-badge">اردو</span>
+    </div>
+    <h1 class="hero-title" id="hero-title-animated">تتلی</h1>
+    <p class="hero-subtitle">اختر شیرانی کی خوبصورت نظم</p>
+    <p style="color:rgba(255,255,255,0.8); font-size:1.1rem; max-width:600px; margin:0 auto;">
+      باغ میں رہنے والی تتلی کی دلکش کہانی — جو ہمیں محبت، علم اور فطرت سے جوڑتی ہے
+    </p>
+  </div>
+</section>
+
+<!-- POEM SECTION -->
+<section id="poem">
+  <div class="container">
+    <div class="section-header">
+      <h2>🦋 نظم: تتلی</h2>
+      <p>شاعر: اختر شیرانی</p>
+    </div>
+
+    <!-- Calligraphy SVG Decoration -->
+    <div class="calligraphy-deco">
+      <svg width="600" height="60" viewBox="0 0 600 60" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="30" x2="240" y2="30" stroke="#22A6B3" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <circle cx="300" cy="30" r="18" fill="none" stroke="#4834D4" stroke-width="2"/>
+        <text x="300" y="36" text-anchor="middle" font-size="18" fill="#4834D4">🦋</text>
+        <line x1="360" y1="30" x2="600" y2="30" stroke="#22A6B3" stroke-width="1.5" stroke-dasharray="6,4"/>
+      </svg>
+    </div>
+
+    <div class="poem-card">
+      <p class="poem-author">✦ اختر شیرانی ✦</p>
+
+      <div class="poem-verse">
+        <span class="poem-line">باغ میں رہنے والی تتلی &nbsp; پھول سے گنے والی تتلی</span>
+        <span class="poem-line">چُپکے چُپکے گانے والی &nbsp; بستی سے شرمانے والی</span>
+      </div>
+
+      <div class="poem-verse">
+        <span class="poem-line">اچھی تتلی حال سُنا دے &nbsp; مجھ کو تُو اِک بات بتا دے</span>
+        <span class="poem-line">باغ سے اتنی اُلفت کیوں ہے؟ &nbsp; شہر سے تجھ کو نفرت کیوں ہے؟</span>
+      </div>
+
+      <div class="poem-verse">
+        <span class="poem-line">کیوں نہیں جاتی چمن سے باہر؟ &nbsp; اپنے سبز وطن سے باہر</span>
+        <span class="poem-line">ہاں میں سمجھا، ہاں میں سمجھا &nbsp; پھول ہیں تیری جان، میں سمجھا</span>
+      </div>
+
+      <div class="poem-verse">
+        <span class="poem-line">پھولوں پر تُو دل سے فدا ہے &nbsp; پھولوں کا رس تیری غذا ہے</span>
+        <span class="poem-line">ہر غنچے پر گرتی ہے تُو &nbsp; خوش بو لیتی پھرتی ہے تُو</span>
+      </div>
+
+      <div class="poem-verse">
+        <span class="poem-line">یکساں صبح و شام ہے تجھ کو &nbsp; اپنے کام سے کام ہے تجھ کو</span>
+        <span class="poem-line">کاش! مجھے بھی شوق ہو، تتلی &nbsp; کام کا یوں ہی ذوق ہو، تتلی</span>
+      </div>
+
+      <div class="poem-verse">
+        <span class="poem-line">پھول سے جتنی تجھ کو ہے اُلفت &nbsp; مجھ کو کتابوں سے ہو محبت</span>
+        <span class="poem-line">علم کے ہر دم پھول چنوں میں &nbsp; کھیلنے والے کی نہ سنوں میں</span>
+      </div>
+    </div>
+
+    <!-- Did You Know Flip Cards -->
+    <div class="flip-grid" style="margin-top:48px;">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="icon">💡</span>کیا آپ جانتے ہیں؟</div>
+          <div class="flip-card-back">اختر شیرانی کو "شاعرِ محبت" بھی کہا جاتا ہے۔ انہوں نے بچوں کے لیے بہت خوبصورت نظمیں لکھیں۔</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="icon">🦋</span>تتلی کی خوراک</div>
+          <div class="flip-card-back">تتلی پھولوں کا رس (نیکٹر) پیتی ہے۔ یہ رس اس کی غذا ہے اور یہ پھولوں کو پولینیٹ بھی کرتی ہے۔</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="icon">📚</span>نظم کا پیغام</div>
+          <div class="flip-card-back">شاعر چاہتا ہے کہ اسے بھی کتابوں سے اتنی محبت ہو جتنی تتلی کو پھولوں سے ہے۔</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="icon">🌸</span>تتلی کا وطن</div>
+          <div class="flip-card-back">تتلی باغ کو اپنا وطن سمجھتی ہے۔ وہ بستی اور شہر کی بجائے سبز چمن میں رہنا پسند کرتی ہے۔</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOCABULARY SECTION -->
+<section id="vocabulary">
+  <div class="container">
+    <div class="section-header">
+      <h2>📖 الفاظ اور معنی</h2>
+      <p>کسی لفظ پر کلک کریں — مزید معلومات دیکھیں</p>
+    </div>
+
+    <div class="discovery-zone">
+      <h3>الفاظِ نظم</h3>
+      <div class="table-wrap">
+        <table class="vocab-table" id="vocabTable">
+          <thead>
+            <tr>
+              <th>لفظ</th>
+              <th>معنی</th>
+              <th>مثال</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="vocab-main" onclick="toggleExpand('row1')">
+              <td><strong>ذوق</strong></td>
+              <td>شوق، دلچسپی</td>
+              <td>مجھے پڑھنے کا ذوق ہے</td>
+            </tr>
+            <tr class="expand-row" id="row1">
+              <td colspan="3">ذوق کا مطلب ہے کسی کام میں گہری دلچسپی اور شوق ہونا۔ جب کوئی کام بڑی لگن سے کیا جائے تو کہتے ہیں اسے اس کام کا ذوق ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row2')">
+              <td><strong>نفرت</strong></td>
+              <td>کسی چیز سے ناپسندیدگی یا بیزاری</td>
+              <td>برائی سے نفرت کرو</td>
+            </tr>
+            <tr class="expand-row" id="row2">
+              <td colspan="3">نفرت اُلفت کی ضد ہے۔ جب کوئی شخص کسی چیز کو ناپسند کرے یا اس سے دور رہنا چاہے تو یہ نفرت کہلاتی ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row3')">
+              <td><strong>اُلفت</strong></td>
+              <td>محبت، پیار</td>
+              <td>تتلی کو پھولوں سے اُلفت ہے</td>
+            </tr>
+            <tr class="expand-row" id="row3">
+              <td colspan="3">اُلفت ایک گہری محبت کا نام ہے۔ جب دل کسی چیز یا شخص سے بہت زیادہ لگاؤ محسوس کرے تو اسے اُلفت کہتے ہیں۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row4')">
+              <td><strong>بستی</strong></td>
+              <td>گاؤں یا چھوٹا آبادی والا علاقہ</td>
+              <td>ہماری بستی بہت خوبصورت ہے</td>
+            </tr>
+            <tr class="expand-row" id="row4">
+              <td colspan="3">بستی سے مراد ایسی جگہ ہے جہاں لوگ آباد ہوں۔ یہ عموماً گاؤں یا چھوٹے قصبے کے لیے استعمال ہوتا ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row5')">
+              <td><strong>غنچہ</strong></td>
+              <td>بن کھلا پھول، کلی</td>
+              <td>باغ میں غنچے کھل رہے ہیں</td>
+            </tr>
+            <tr class="expand-row" id="row5">
+              <td colspan="3">غنچہ اس پھول کو کہتے ہیں جو ابھی کھلا نہ ہو۔ یہ کلی کی شکل میں ہوتا ہے اور جب پوری طرح کھل جائے تو پھول بن جاتا ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row6')">
+              <td><strong>فدا</strong></td>
+              <td>قربان، دل سے محبت کرنا</td>
+              <td>وہ اپنے وطن پر فدا ہے</td>
+            </tr>
+            <tr class="expand-row" id="row6">
+              <td colspan="3">فدا ہونے کا مطلب ہے کسی پر خود کو قربان کر دینا یا اس سے بہت زیادہ محبت کرنا۔ یہ محبت کی اعلیٰ شکل ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row7')">
+              <td><strong>یکساں</strong></td>
+              <td>ایک جیسا، برابر</td>
+              <td>اس کا رویہ سب کے ساتھ یکساں ہے</td>
+            </tr>
+            <tr class="expand-row" id="row7">
+              <td colspan="3">یکساں کا مطلب ہے دونوں طرف سے یا ہر وقت ایک جیسا۔ تتلی کے لیے صبح اور شام یکساں ہیں کیونکہ وہ ہر وقت اپنا کام کرتی رہتی ہے۔</td>
+            </tr>
+            <tr class="vocab-main" onclick="toggleExpand('row8')">
+              <td><strong>چمن</strong></td>
+              <td>باغ، سبز جگہ جہاں پھول ہوں</td>
+              <td>چمن میں بہار آ گئی</td>
+            </tr>
+            <tr class="expand-row" id="row8">
+              <td colspan="3">چمن ایک خوبصورت باغ یا سبز جگہ کو کہتے ہیں جہاں پھول اور درخت ہوں۔ یہ لفظ اکثر شاعری میں استعمال ہوتا ہے۔</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYSIS SECTION -->
+<section id="analysis">
+  <div class="container">
+    <div class="section-header">
+      <h2>🔍 نظم کا تجزیہ</h2>
+      <p>نظم کے مختلف پہلو سمجھیں</p>
+    </div>
+
+    <!-- Animated Bar Chart -->
+    <div class="chart-container scroll-reveal" id="chartSection">
+      <h3>نظم کے موضوعات</h3>
+      <div class="chart-bars" id="barChart">
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" data-height="160" id="bar1" style="height:0"></div>
+          <div class="chart-bar-label">فطرت سے محبت</div>
+        </div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" data-height="140" id="bar2" style="height:0; background:linear-gradient(180deg,#4834D4,#6c5ce7)"></div>
+          <div class="chart-bar-label">علم کی اہمیت</div>
+        </div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" data-height="120" id="bar3" style="height:0; background:linear-gradient(180deg,#F9A825,#e17b00)"></div>
+          <div class="chart-bar-label">محنت و لگن</div>
+        </div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" data-height="100" id="bar4" style="height:0; background:linear-gradient(180deg,#00b894,#007a63)"></div>
+          <div class="chart-bar-label">تتلی کی زندگی</div>
+        </div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" data-height="80" id="bar5" style="height:0; background:linear-gradient(180deg,#e84393,#a30060)"></div>
+          <div class="chart-bar-label">شاعر کی تمنا</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">🌿</div>
+        <h4>تتلی کا وطن</h4>
+        <p>تتلی باغ اور چمن میں رہتی ہے۔ وہ شہر اور بستی سے دور رہ کر اپنے سبز وطن میں خوش رہتی ہے۔</p>
+      </div>
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">🍯</div>
+        <h4>تتلی کی غذا</h4>
+        <p>پھولوں کا رس تتلی کی غذا ہے۔ وہ ہر غنچے پر جاتی ہے اور خوشبو لیتی پھرتی ہے۔</p>
+      </div>
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">⏰</div>
+        <h4>صبح و شام یکساں</h4>
+        <p>تتلی کے لیے صبح اور شام برابر ہیں۔ وہ ہمیشہ اپنے کام میں لگی رہتی ہے — یہ محنت کی علامت ہے۔</p>
+      </div>
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">📖</div>
+        <h4>شاعر کی تمنا</h4>
+        <p>شاعر چاہتا ہے کہ اسے کتابوں سے اتنی محبت ہو جتنی تتلی کو پھولوں سے ہے — علم کا پیغام۔</p>
+      </div>
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">🌺</div>
+        <h4>تتلی کی خوبی</h4>
+        <p>نظم میں تتلی کی یہ خوبی بیان کی گئی کہ وہ دل لگا کر کام کرتی ہے اور اپنے کام سے کام رکھتی ہے۔</p>
+      </div>
+      <div class="analysis-card scroll-reveal">
+        <div class="icon-big">✍️</div>
+        <h4>شاعر</h4>
+        <p>اختر شیرانی اردو کے مشہور شاعر تھے۔ انہیں "شاعرِ محبت" کہا جاتا ہے۔ انہوں نے یہ نظم تتلی پر لکھی۔</p>
+      </div>
+    </div>
+
+    <div class="formula-callout" style="margin-top:40px;">
+      نظم کا مرکزی خیال: تتلی کی محنت اور لگن سے سبق لے کر &nbsp; علم حاصل کرو
+    </div>
+  </div>
+</section>
+
+<!-- QUESTIONS SECTION -->
+<section id="questions">
+  <div class="container">
+    <div class="section-header">
+      <h2>❓ سوالات و جوابات</h2>
+      <p>سوالات پڑھیں اور اشارے دیکھنے کے لیے بٹن دبائیں</p>
+    </div>
+
+    <h3 style="color:var(--teal); margin-bottom:24px;">(۱) مختصر جوابات</h3>
+
+    <div class="question-card scroll-reveal">
+      <h4>سوال ۱: تتلی کے لیے صبح و شام یکساں کیوں ہیں؟</h4>
+      <p>تتلی کے لیے صبح اور شام یکساں اس لیے ہیں کیونکہ وہ ہر وقت اپنے کام میں لگی رہتی ہے۔ وہ ہمیشہ پھولوں پر جاتی رہتی ہے، خوشبو لیتی رہتی ہے اور پھولوں کا رس پیتی رہتی ہے۔ صبح ہو یا شام — اس کا کام ایک ہی رہتا ہے۔</p>
+      <button class="hint-btn" onclick="toggleHint('h1')">💡 اشارہ دیکھیں</button>
+      <div class="hint-panel" id="h1">اشارہ: نظم کی اس سطر پر غور کریں — "یکساں صبح و شام ہے تجھ کو، اپنے کام سے کام ہے تجھ کو"</div>
+    </div>
+
+    <div class="question-card scroll-reveal">
+      <h4>سوال ۲: اس نظم میں تتلی کی کون سی خوبی بیان کی گئی ہے؟</h4>
+      <p>اس نظم میں تتلی کی یہ خوبیاں بیان کی گئی ہیں: وہ محنتی ہے، ہمیشہ اپنے کام میں لگی رہتی ہے، پھولوں سے محبت کرتی ہے، خوشبو اور رس حاصل کرنا اس کا کام ہے، اور وہ شہر کی بجائے فطرت میں رہنا پسند کرتی ہے۔</p>
+      <button class="hint-btn" onclick="toggleHint('h2')">💡 اشارہ دیکھیں</button>
+      <div class="hint-panel" id="h2">اشارہ: نظم میں تتلی کی محنت، لگن اور پھولوں سے محبت کا ذکر ہے۔</div>
+    </div>
+
+    <div class="question-card scroll-reveal">
+      <h4>سوال ۳: شاعر نے اپنے لیے کیا دعا مانگی ہے؟</h4>
+      <p>شاعر نے دعا مانگی ہے کہ اسے بھی کتابوں سے اتنی محبت ہو جتنی تتلی کو پھولوں سے ہے۔ وہ چاہتا ہے کہ وہ ہر علم کے پھول چنے اور کھیلنے والوں کی بات نہ سنے۔ کاش اسے بھی کام کا شوق اور ذوق ہو۔</p>
+      <button class="hint-btn" onclick="toggleHint('h3')">💡 اشارہ دیکھیں</button>
+      <div class="hint-panel" id="h3">اشارہ: نظم کی آخری دو سطریں پڑھیں: "پھول سے جتنی تجھ کو ہے اُلفت..."</div>
+    </div>
+
+    <h3 style="color:var(--teal); margin: 40px 0 24px;">(۲) بیانیہ جوابات</h3>
+
+    <div class="question-card scroll-reveal">
+      <h4>سوال ۱: اس نظم سے ہمیں کیا سبق ملتا ہے؟</h4>
+      <p>اس نظم سے ہمیں یہ سبق ملتا ہے کہ ہمیں اپنے کام سے محبت اور لگن ہونی چاہیے۔ جس طرح تتلی پھولوں سے محبت کرتی ہے اور اپنا کام پوری لگن سے کرتی ہے، اسی طرح ہمیں بھی پڑھائی سے محبت کرنی چاہیے اور علم حاصل کرنے کا ذوق رکھنا چاہیے۔</p>
+      <button class="hint-btn" onclick="toggleHint('h4')">💡 اشارہ دیکھیں</button>
+      <div class="hint-panel" id="h4">اشارہ: تتلی کی محنت اور کتابوں سے محبت کا موازنہ کریں۔</div>
+    </div>
+
+    <div class="question-card scroll-reveal">
+      <h4>سوال ۲: تتلی کہاں رہتی ہے؟ اور تتلی کو باغ سے اُلفت کیوں ہے؟</h4>
+      <p>تتلی باغ اور چمن میں رہتی ہے۔ وہ اپنے سبز وطن سے باہر نہیں جاتی کیونکہ باغ میں پھول ہیں، غنچے ہیں، خوشبو ہے اور اس کی غذا یعنی پھولوں کا رس موجود ہے۔ باغ اس کا گھر ہے اور وہاں اسے اپنا کام ملتا ہے اس لیے باغ سے اس کی اُلفت ہے۔</p>
+      <button class="hint-btn" onclick="toggleHint('h5')">💡 اشارہ دیکھیں</button>
+      <div class="hint-panel" id="h5">اشارہ: "پھول ہیں تیری جان" اور "پھولوں کا رس تیری غذا ہے" — ان سطروں پر غور کریں۔</div>
+    </div>
+  </div>
+</section>
+
+<!-- DRAG & DROP SECTION -->
+<section id="drag-drop">
+  <div class="container">
+    <div class="section-header">
+      <h2>🎯 درست جواب لگائیں</h2>
+      <p>الفاظ کو درست خانے میں ڈریگ کریں</p>
+    </div>
+
+    <div class="drag-section" style="background:transparent;">
+      <div class="drag-items" id="dragItems">
+        <div class="drag-item" draggable="true" data-category="watan">باغ</div>
+        <div class="drag-item" draggable="true" data-category="ghiza">پھولوں کا رس</div>
+        <div class="drag-item" draggable="true" data-category="watan">چمن</div>
+        <div class="drag-item" draggable="true" data-category="ghiza">خوشبو</div>
+        <div class="drag-item" draggable="true" data-category="khobi">محنتی</div>
+        <div class="drag-item" draggable="true" data-category="watan">سبز وطن</div>
+        <div class="drag-item" draggable="true" data-category="khobi">لگن سے کام</div>
+        <div class="drag-item" draggable="true" data-category="ghiza">غنچوں کا رس</div>
+        <div class="drag-item" draggable="true" data-category="khobi">پھولوں سے محبت</div>
+      </div>
+
+      <div class="drag-board">
+        <div class="drag-category">
+          <h4>🌿 تتلی کا وطن</h4>
+          <div class="drop-zone" id="zone-watan" data-category="watan"></div>
+        </div>
+        <div class="drag-category">
+          <h4>🍯 تتلی کی غذا</h4>
+          <div class="drop-zone" id="zone-ghiza" data-category="ghiza"></div>
+        </div>
+        <div class="drag-category">
+          <h4>⭐ تتلی کی خوبی</h4>
+          <div class="drop-zone" id="zone-khobi" data-category="khobi"></div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:24px;">
+        <button class="quiz-btn" onclick="checkDragDrop()" style="margin-left:12px;">✅ جانچ کریں</button>
+        <button class="quiz-btn" onclick="resetDragDrop()" style="background:var(--slate);">🔄 دوبارہ شروع</button>
+      </div>
+      <div id="dragResult" style="text-align:center; margin-top:20px; font-size:1.3rem; display:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MCQ QUIZ (Q3 Type) -->
+<section id="mcq-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>✔ نظم پڑھیں اور صحیح جواب چنیں</h2>
+    </div>
+    <div style="display:grid; gap:24px;">
+
+      <div class="question-card">
+        <h4>سوال ۱: تتلی کا وطن ہے:</h4>
+        <div class="drag-board" style="gap:12px; flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q1" value="wrong" style="width:20px;height:20px;"> جنگل</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q1" value="correct" style="width:20px;height:20px;"> باغ ✓</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q1" value="wrong" style="width:20px;height:20px;"> بستی</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q1" value="wrong" style="width:20px;height:20px;"> درخت</label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h4>سوال ۲: تتلی کی غذا ہے:</h4>
+        <div class="drag-board" style="gap:12px; flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q2" value="wrong" style="width:20px;height:20px;"> پتے</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q2" value="correct" style="width:20px;height:20px;"> پھولوں کا رس ✓</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q2" value="wrong" style="width:20px;height:20px;"> گھاس</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q2" value="wrong" style="width:20px;height:20px;"> پھول کاریں</label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h4>سوال ۳: تتلی ہر غنچے سے لیتی پھرتی ہے:</h4>
+        <div class="drag-board" style="gap:12px; flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q3" value="correct" style="width:20px;height:20px;"> خوش بو ✓</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q3" value="wrong" style="width:20px;height:20px;"> رنگ</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q3" value="wrong" style="width:20px;height:20px;"> روشنی</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q3" value="wrong" style="width:20px;height:20px;"> ذائقہ</label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h4>سوال ۴: نظم تتلی کے شاعر ہیں:</h4>
+        <div class="drag-board" style="gap:12px; flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:140px;min-height:48px;"><input type="radio" name="q4" value="correct" style="width:20px;height:20px;"> اختر شیرانی ✓</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:140px;min-height:48px;"><input type="radio" name="q4" value="wrong" style="width:20px;height:20px;"> اسماعیل میرٹھی</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:140px;min-height:48px;"><input type="radio" name="q4" value="wrong" style="width:20px;height:20px;"> علامہ اقبال</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:140px;min-height:48px;"><input type="radio" name="q4" value="wrong" style="width:20px;height:20px;"> محمد حسین آزاد</label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h4>سوال ۵: تتلی کی جان ہے:</h4>
+        <div class="drag-board" style="gap:12px; flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q5" value="correct" style="width:20px;height:20px;"> پھول ✓</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q5" value="wrong" style="width:20px;height:20px;"> پھل</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q5" value="wrong" style="width:20px;height:20px;"> سمندر</label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;min-width:120px;min-height:48px;"><input type="radio" name="q5" value="wrong" style="width:20px;height:20px;"> دریا</label>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:16px;">
+        <button class="quiz-btn" onclick="checkMCQ()">✅ جانچ کریں</button>
+      </div>
+      <div id="mcqResult" style="display:none; text-align:center; font-size:1.3rem; margin-top:16px; padding:20px; background:white; border-radius:16px; box-shadow:var(--shadow);"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITING SECTION -->
+<section id="writing">
+  <div class="container">
+    <div class="section-header">
+      <h2>✍️ لکھائی کی مہارت</h2>
+      <p>ان اشعار کی تشریح سادہ جملوں میں لکھیں</p>
+    </div>
+
+    <div class="question-card">
+      <h4>شعر ۱: یک ساں صبح و شام ہے تجھ کو / اپنے کام سے کام ہے تجھ کو</h4>
+      <p style="color:var(--teal); margin-bottom:12px;">اس شعر کی تشریح:</p>
+      <p>اس شعر میں شاعر کہتا ہے کہ تتلی کے لیے صبح اور شام دونوں ایک جیسے ہیں۔ وہ ہر وقت اپنے کام میں لگی رہتی ہے۔ اسے کسی اور کام سے کوئی مطلب نہیں — وہ بس اپنا کام کرتی رہتی ہے۔ یہ اس کی محنت اور لگن کی عکاسی ہے۔</p>
+      <textarea class="text-answer" placeholder="یہاں اپنی تشریح لکھیں..." rows="3"></textarea>
+    </div>
+
+    <div class="question-card">
+      <h4>شعر ۲: پھول سے جتنی تجھ کو ہے اُلفت / مجھ کو کتابوں سے ہو محبت</h4>
+      <p style="color:var(--teal); margin-bottom:12px;">اس شعر کی تشریح:</p>
+      <p>اس شعر میں شاعر تمنا کرتا ہے کہ جتنی تتلی کو پھولوں سے محبت ہے اتنی ہی اسے کتابوں سے محبت ہو۔ شاعر کہتا ہے کہ تتلی پھولوں سے رس لیتی ہے، اسی طرح وہ کتابوں سے علم حاصل کرنا چاہتا ہے۔</p>
+      <textarea class="text-answer" placeholder="یہاں اپنی تشریح لکھیں..." rows="3"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section id="quiz">
+  <div class="container">
+    <div class="section-header">
+      <h2>🏆 دس سوالی کوئز</h2>
+      <p>نظم تتلی کے بارے میں اپنی معلومات جانچیں</p>
+    </div>
+
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar" id="progressBar" style="width:10%"></div>
+      </div>
+      <div id="questionCounter" style="text-align:left; color:var(--slate); margin-bottom:20px; font-size:1.1rem; font-family:'Inter',sans-serif;"></div>
+
+      <!-- Q1 -->
+      <div class="quiz-question active" data-q="1">
+        <h3>سوال ۱: نظم "تتلی" کے شاعر کون ہیں؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">علامہ اقبال</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">اختر شیرانی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">اسماعیل میرٹھی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">الطاف حسین حالی</button>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" data-q="2">
+        <h3>سوال ۲: تتلی کہاں رہتی ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">جنگل میں</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">دریا کنارے</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">باغ اور چمن میں</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">بستی میں</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" data-q="3">
+        <h3>سوال ۳: تتلی کی غذا کیا ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">پتے اور گھاس</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">پھولوں کا رس</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">پانی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">پھل</button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question" data-q="4">
+        <h3>سوال ۴: "ذوق" کا کیا مطلب ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">نفرت</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">شوق اور دلچسپی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">غصہ</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">خوف</button>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question" data-q="5">
+        <h3>سوال ۵: شاعر نے کیا تمنا کی؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کاش وہ تتلی ہوتا</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کاش وہ باغ میں رہتا</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">کاش اسے کتابوں سے محبت ہوتی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کاش وہ شہر سے دور جاتا</button>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question" data-q="6">
+        <h3>سوال ۶: "اُلفت" کا مطلب کیا ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">نفرت اور دشمنی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">محبت اور پیار</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">خوف اور ڈر</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">بیزاری</button>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question" data-q="7">
+        <h3>سوال ۷: تتلی شہر سے کیوں نفرت کرتی ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کیونکہ شہر خطرناک ہے</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">کیونکہ اس کا وطن باغ ہے اور وہاں پھول ہیں</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کیونکہ شہر میں آواز بہت ہے</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کیونکہ شہر میں پانی نہیں</button>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question" data-q="8">
+        <h3>سوال ۸: "غنچہ" کسے کہتے ہیں؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">مکمل کھلا پھول</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">بن کھلا پھول / کلی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">درخت کی ٹہنی</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">پتہ</button>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="quiz-question" data-q="9">
+        <h3>سوال ۹: "یکساں" کا مطلب کیا ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">مختلف</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">بہت زیادہ</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">ایک جیسا، برابر</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">کم</button>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="quiz-question" data-q="10">
+        <h3>سوال ۱۰: نظم کے آخر میں شاعر کیا چاہتا ہے؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="selectOpt(this, false)">تتلی بننا</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">باغبان بننا</button>
+          <button class="quiz-opt" onclick="selectOpt(this, true)">علم کے پھول چننا اور کھیلنے والوں کی نہ سننا</button>
+          <button class="quiz-opt" onclick="selectOpt(this, false)">شہر چھوڑ دینا</button>
+        </div>
+      </div>
+
+      <!-- Score -->
+      <div class="quiz-score" id="quizScore">
+        <div class="score-circle" id="scoreCircle">0/10</div>
+        <p class="score-msg" id="scoreMsg"></p>
+        <button class="quiz-btn" onclick="restartQuiz()" style="margin-top:24px;">🔄 دوبارہ کھیلیں</button>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="quiz-btn" id="nextBtn" onclick="nextQuestion()">اگلا سوال ←</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      // Register ScrollTrigger
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Dismiss curtain with GSAP
+      gsap.to('#curtain', { opacity: 0, duration: 0.8, delay: 1.2, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+
+      // Hero title character animation
+      const titleEl = document.getElementById('hero-title-animated');
+      if (titleEl) {
+        const text = titleEl.textContent;
+        titleEl.innerHTML = '';
+        text.split('').forEach(ch => {
+          const span = document.createElement('span');
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          span.style.opacity = '0';
+          span.style.display = 'inline-block';
+          titleEl.appendChild(span);
+        });
+        gsap.to('#hero-title-animated span', {
+          opacity: 1, y: 0, stagger: 0.1, duration: 0.5, delay: 1.5,
+          ease: 'back.out(1.7)'
+        });
+      }
+
+      // Scroll reveal for cards
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.scroll-reveal').forEach((el, i) => {
+          gsap.fromTo(el,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.7, delay: i * 0.05,
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+            }
+          );
+        });
+
+        // Bar chart animation
+        ScrollTrigger.create({
+          trigger: '#chartSection',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            document.querySelectorAll('.chart-bar').forEach(bar => {
+              const h = bar.getAttribute('data-height');
+              gsap.to(bar, { height: h + 'px', duration: 1.2, ease: 'power2.out' });
+            });
+          }
+        });
+
+        // Poem verses stagger
+        gsap.utils.toArray('.poem-verse').forEach((v, i) => {
+          gsap.fromTo(v,
+            { opacity: 0, x: 30 },
+            { opacity: 1, x: 0, duration: 0.6, delay: i * 0.1,
+              scrollTrigger: { trigger: v, start: 'top 88%', once: true }
+            }
+          );
+        });
+
+        // Analysis cards
+        gsap.utils.toArray('.analysis-card').forEach((card, i) => {
+          gsap.fromTo(card,
+            { opacity: 0, scale: 0.9 },
+            { opacity: 1, scale: 1, duration: 0.6, delay: i * 0.08,
+              scrollTrigger: { trigger: card, start: 'top 85%', once: true }
+            }
+          );
+        });
+      }
+
+    } else {
+      // No GSAP — just hide curtain
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // TOC SCROLLSPY
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const mobileLinks = document.querySelectorAll('#mobile-nav a');
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            [...tocLinks, ...mobileLinks].forEach(a => {
+              a.classList.remove('active');
+              if (a.getAttribute('href') === '#' + id) a.classList.add('active');
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+      sections.forEach(s => obs.observe(s));
+    }
+  } catch(e) { console.warn('Scrollspy error:', e); }
+
+  // DRAG & DROP
+  initDragDrop();
+
+  // QUIZ
+  initQuiz();
+
+  // Fallback bar chart (no GSAP)
+  setTimeout(() => {
+    document.querySelectorAll('.chart-bar').forEach(bar => {
+      if (bar.style.height === '0px' || bar.style.height === '0') {
+        const h = bar.getAttribute('data-height');
+        if (h) bar.style.height = h + 'px';
+      }
+    });
+  }, 2500);
+});
+
+// VOCABULARY TABLE TOGGLE
+function toggleExpand(id) {
+  const row = document.getElementById(id);
+  if (row) row.classList.toggle('visible');
+}
+
+// HINT PANEL
+function toggleHint(id) {
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.toggle('open');
+}
+
+// DRAG & DROP
+function initDragDrop() {
+  const items = document.querySelectorAll('.drag-item');
+  const zones = document.querySelectorAll('.drop-zone');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.dataset.category + '|' + item.textContent.trim());
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+
+    // Touch support
+    item.addEventListener('touchstart', handleTouchStart, {passive: true});
+    item.addEventListener('touchmove', handleTouchMove, {passive: false});
+    item.addEventListener('touchend', handleTouchEnd);
+  });
+
+  zones.forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      const data = e.dataTransfer.getData('text/plain');
+      const [cat, label] = data.split('|');
+      const newItem = document.createElement('div');
+      newItem.className = 'drag-item';
+      newItem.textContent = label;
+      newItem.dataset.category = cat;
+      newItem.draggable = true;
+      newItem.addEventListener('dragstart', ev => {
+        ev.dataTransfer.setData('text/plain', cat + '|' + label);
+        newItem.classList.add('dragging');
+      });
+      newItem.addEventListener('dragend', () => newItem.classList.remove('dragging'));
+      zone.appendChild(newItem);
+      // Remove from original
+      document.querySelectorAll('#dragItems .drag-item, .drop-zone .drag-item').forEach(i => {
+        if (i !== newItem && i.textContent.trim() === label) i.remove();
+      });
+    });
+  });
+}
+
+let touchDragItem = null;
+let touchClone = null;
+function handleTouchStart(e) {
+  touchDragItem = e.currentTarget;
+  const t = e.touches[0];
+  touchClone = touchDragItem.cloneNode(true);
+  touchClone.style.position = 'fixed';
+  touchClone.style.opacity = '0.7';
+  touchClone.style.pointerEvents = 'none';
+  touchClone.style.zIndex = '9000';
+  touchClone.style.left = (t.clientX - 40) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+  document.body.appendChild(touchClone);
+}
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 40) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+}
+function handleTouchEnd(e) {
+  if (!touchDragItem || !touchClone) return;
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el ? el.closest('.drop-zone') : null;
+  if (zone) {
+    const cat = touchDragItem.dataset.category;
+    const label = touchDragItem.textContent.trim();
+    const newItem = document.createElement('div');
+    newItem.className = 'drag-item';
+    newItem.textContent = label;
+    newItem.dataset.category = cat;
+    newItem.draggable = true;
+    newItem.addEventListener('dragstart', ev => ev.dataTransfer.setData('text/plain', cat + '|' + label));
+    zone.appendChild(newItem);
+    touchDragItem.remove();
+  }
+  touchClone.remove();
+  touchClone = null;
+  touchDragItem = null;
+}
+
+function checkDragDrop() {
+  const zones = document.querySelectorAll('.drop-zone');
+  let correct = 0, total = 0;
+  zones.forEach(zone => {
+    const expected = zone.dataset.category;
+    zone.querySelectorAll('.drag-item').forEach(item => {
+      total++;
+      if (item.dataset.category === expected) {
+        correct++;
+        item.style.background = 'linear-gradient(135deg, #00b894, #007a63)';
+      } else {
+        item.style.background = 'linear-gradient(135deg, #ff7675, #d63031)';
+      }
+    });
+  });
+  const result = document.getElementById('dragResult');
+  result.style.display = 'block';
+  if (total === 0) {
+    result.innerHTML = '⚠️ پہلے الفاظ کو خانوں میں رکھیں';
+    result.style.color = 'var(--slate)';
+  } else {
+    result.innerHTML = `✅ ${correct} درست / ${total} کل — ${Math.round(correct/total*100)}%`;
+    result.style.color = correct === total ? '#00b894' : 'var(--indigo)';
+  }
+}
+
+function resetDragDrop() {
+  const items = document.querySelectorAll('.drop-zone .drag-item');
+  const container = document.getElementById('dragItems');
+  items.forEach(item => {
+    item.style.background = 'linear-gradient(135deg, var(--teal), var(--indigo))';
+    item.draggable = true;
+    item.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item.dataset.category + '|' + item.textContent.trim()));
+    container.appendChild(item);
+  });
+  document.getElementById('dragResult').style.display = 'none';
+}
+
+// MCQ CHECK
+function checkMCQ() {
+  let correct = 0;
+  for (let i = 1; i <= 5; i++) {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (sel && sel.value === 'correct') correct++;
+  }
+  const res = document.getElementById('mcqResult');
+  res.style.display = 'block';
+  res.innerHTML = `🏆 آپ کے ${correct} جوابات درست ہیں 5 میں سے!`;
+  res.style.color = correct >= 4 ? '#00b894' : correct >= 2 ? 'var(--indigo)' : '#d63031';
+}
+
+// QUIZ
+let currentQ = 1;
+let score = 0;
+let answered = false;
+const totalQ = 10;
+
+function initQuiz() {
+  updateCounter();
+}
+
+function updateCounter() {
+  const el = document.getElementById('questionCounter');
+  if (el) el.textContent = `سوال ${currentQ} / ${totalQ}`;
+  const bar = document.getElementById('progressBar');
+  if (bar) bar.style.width = ((currentQ / totalQ) * 100) + '%';
+}
+
+function selectOpt(btn, isCorrect) {
+  if (answered) return;
+  answered = true;
+  const allOpts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => { o.disabled = true; });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score++;
+    try { if (typeof gsap !== 'undefined') gsap.fromTo(btn, {scale:1},{scale:1.05,duration:0.2,yoyo:true,repeat:1}); } catch(e){}
+  } else {
+    btn.classList.add('wrong');
+    allOpts.forEach(o => {
+      o.addEventListener('click', function(){}, {once:true});
+    });
+  }
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function nextQuestion() {
+  if (currentQ >= totalQ) {
+    showScore();
+    return;
+  }
+  const curr = document.querySelector(`.quiz-question[data-q="${currentQ}"]`);
+  if (curr) curr.classList.remove('active');
+  currentQ++;
+  answered = false;
+  const next = document.querySelector(`.quiz-question[data-q="${currentQ}"]`);
+  if (next) next.classList.add('active');
+  updateCounter();
+
+  if (currentQ === totalQ) {
+    const btn = document.getElementById('nextBtn');
+    if (btn) btn.textContent = 'نتیجہ دیکھیں ✓';
+  }
+}
+
+function showScore() {
+  document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+  const scoreDiv = document.getElementById('quizScore');
+  scoreDiv.classList.add('visible');
+  const circle = document.getElementById('scoreCircle');
+  if (circle) circle.textContent = score + '/10';
+  const msg = document.getElementById('scoreMsg');
+  if (score >= 9) msg.textContent = '🌟 شاباش! بہترین نتیجہ! آپ نے تمام سوالات کے درست جوابات دیے!';
+  else if (score >= 7) msg.textContent = '👏 بہت اچھا! آپ نے نظم اچھی طرح سمجھی ہے!';
+  else if (score >= 5) msg.textContent = '😊 ٹھیک ہے! کچھ اور مشق کریں۔';
+  else msg.textContent = '📚 دوبارہ نظم پڑھیں اور پھر کوشش کریں!';
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.style.display = 'none';
+  document.getElementById('questionCounter').textContent = 'کوئز مکمل!';
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo('#scoreCircle', { scale: 0, rotation: -180 }, { scale: 1, rotation: 0, duration: 0.8, ease: 'back.out(1.7)' });
+    }
+  } catch(e){}
+}
+
+function restartQuiz() {
+  currentQ = 1;
+  score = 0;
+  answered = false;
+
+  document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+  document.querySelector('.quiz-question[data-q="1"]').classList.add('active');
+
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('correct', 'wrong');
+    o.disabled = false;
+  });
+
+  const scoreDiv = document.getElementById('quizScore');
+  scoreDiv.classList.remove('visible');
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) { nextBtn.style.display = ''; nextBtn.textContent = 'اگلا سوال ←'; nextBtn.disabled = false; }
+
+  updateCounter();
+}
+</script>
+</body>
+</html>

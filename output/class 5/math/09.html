@@ -1,0 +1,1471 @@
+<!-- CLASS: 5 | SUBJECT: math | VERSION: 1.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 9: Information Handling | Class 5 Mathematics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --light-bg: #F0FAFA;
+    --card-shadow: 0 4px 24px rgba(34,166,179,0.13);
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(17px, 2.5vw, 20px);
+    background: var(--warm-white);
+    color: #2d3436;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; }
+  h2 { font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+  h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; }
+  h4 { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: var(--indigo);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  #curtain .curtain-title { color: white; font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 700; }
+  #curtain .curtain-sub { color: rgba(255,255,255,0.7); font-size: 1.1rem; }
+  .curtain-spinner {
+    width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  .hero {
+    width: 100vw; min-height: 80vh; background: linear-gradient(135deg, var(--indigo) 0%, var(--teal) 100%);
+    display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    padding: 60px 40px;
+  }
+  .hero-content { text-align: center; color: white; max-width: 900px; z-index: 2; }
+  .hero-badge { background: rgba(255,255,255,0.2); color: white; padding: 8px 22px; border-radius: 50px; font-size: 1rem; font-weight: 600; display: inline-block; margin-bottom: 20px; }
+  .hero h1 { color: white; line-height: 1.1; margin-bottom: 20px; }
+  .hero-sub { font-size: clamp(1rem, 2vw, 1.3rem); color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 30px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .hero-pill { background: rgba(255,255,255,0.15); color: white; padding: 8px 20px; border-radius: 50px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.3); }
+  .hero-bg-circle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  .hero-bg-circle.c1 { width: 400px; height: 400px; top: -100px; right: -100px; }
+  .hero-bg-circle.c2 { width: 250px; height: 250px; bottom: -50px; left: -50px; }
+
+  /* STICKY TOC */
+  .toc-sidebar {
+    position: fixed; top: 50%; left: 20px; transform: translateY(-50%);
+    background: white; border-radius: 16px; box-shadow: 0 4px 30px rgba(0,0,0,0.12);
+    padding: 20px 16px; z-index: 100; min-width: 200px; max-width: 220px;
+  }
+  .toc-sidebar h5 { font-family: 'Poppins', sans-serif; font-size: 0.85rem; color: var(--slate); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .toc-link { display: block; padding: 7px 12px; border-radius: 8px; font-size: 0.88rem; color: var(--slate); text-decoration: none; transition: all 0.2s; margin-bottom: 4px; border-left: 3px solid transparent; }
+  .toc-link:hover, .toc-link.active { background: var(--light-bg); color: var(--teal); border-left-color: var(--teal); }
+
+  /* MAIN CONTENT */
+  .main-content { padding-left: 260px; }
+
+  /* SECTIONS */
+  section { padding: 70px 0; }
+  section:nth-child(even) { background: var(--light-bg); }
+
+  .section-label { color: var(--teal); font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .section-title { margin-bottom: 14px; }
+  .section-desc { color: var(--slate); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 700px; line-height: 1.7; }
+
+  /* CARDS */
+  .card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 30px; width: 100%; max-width: 100%; opacity: 1; transform: none; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone { border: 2.5px dashed var(--teal); border-radius: var(--radius); padding: 30px; background: #f8fffe; position: relative; margin: 30px 0; }
+  .discovery-zone::before { content: '🔍'; position: absolute; top: -16px; left: 24px; font-size: 1.6rem; background: white; padding: 0 6px; }
+
+  /* FORMULA CALLOUT */
+  .formula-callout { background: #1e1e2e; border-radius: var(--radius); padding: 28px 32px; color: #cdd6f4; font-family: 'Courier New', monospace; font-size: clamp(1rem, 2.2vw, 1.25rem); line-height: 1.8; margin: 24px 0; }
+  .formula-callout .formula-label { color: #89dceb; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-family: 'Inter', sans-serif; }
+  .formula-highlight { color: #f9e2af; font-weight: 700; font-size: 1.3em; }
+
+  /* DID YOU KNOW FLIP CARD */
+  .flip-cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin: 30px 0; }
+  .flip-card { height: 200px; perspective: 1000px; cursor: pointer; }
+  .flip-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
+  .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 24px; text-align: center; gap: 10px; }
+  .flip-front { background: linear-gradient(135deg, var(--teal), var(--indigo)); color: white; }
+  .flip-front .flip-icon { font-size: 2.5rem; }
+  .flip-front .flip-label { font-size: 1rem; font-weight: 600; }
+  .flip-back { background: white; border: 2px solid var(--teal); transform: rotateY(180deg); color: #2d3436; }
+  .flip-back p { font-size: 0.95rem; line-height: 1.5; }
+
+  /* WORKED EXAMPLES */
+  .example-step { display: flex; gap: 16px; margin-bottom: 16px; align-items: flex-start; }
+  .step-number { background: var(--teal); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; margin-top: 4px; }
+  .step-content { flex: 1; font-size: 1rem; line-height: 1.7; }
+
+  /* CHART CONTAINER */
+  .chart-container { width: 100%; background: white; border-radius: var(--radius); padding: 30px; box-shadow: var(--card-shadow); }
+  .chart-title { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: #2d3436; }
+
+  /* SVG BAR CHART */
+  .svg-chart { width: 100%; overflow: visible; }
+  .bar-rect { transform-origin: bottom; }
+
+  /* TALLY TABLE */
+  .tally-table { width: 100%; border-collapse: collapse; font-size: clamp(0.9rem, 2vw, 1rem); }
+  .tally-table th { background: var(--teal); color: white; padding: 14px 16px; text-align: left; font-family: 'Poppins', sans-serif; font-size: 1rem; }
+  .tally-table td { padding: 12px 16px; border-bottom: 1px solid #eee; vertical-align: middle; font-size: 1rem; }
+  .tally-table tr:nth-child(even) td { background: #f8fffe; }
+  .tally-table tr:hover td { background: #e6f7f9; transition: background 0.2s; }
+  .tally-table tr.expandable { cursor: pointer; }
+  .tally-table .expanded-row td { background: #fffde7; font-size: 0.95rem; color: var(--slate); }
+  .tally-marks { font-family: 'Courier New', monospace; font-size: 1.1rem; letter-spacing: 2px; }
+
+  /* PRACTICE */
+  .practice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .practice-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--card-shadow); }
+  .practice-card h4 { color: var(--indigo); margin-bottom: 12px; }
+  .practice-input { width: 100%; padding: 12px 16px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.05rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; }
+  .practice-input:focus { border-color: var(--teal); }
+  .check-btn { background: var(--teal); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-size: 1rem; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; margin-top: 12px; transition: background 0.2s; }
+  .check-btn:hover { background: var(--indigo); }
+  .feedback { margin-top: 10px; font-size: 0.95rem; font-weight: 600; min-height: 24px; }
+  .feedback.correct { color: #00b894; }
+  .feedback.wrong { color: #d63031; }
+
+  /* DRAG & DROP */
+  .dnd-container { display: flex; gap: 24px; flex-wrap: wrap; margin: 20px 0; }
+  .dnd-source-pool { flex: 1; min-width: 200px; }
+  .dnd-categories { display: flex; gap: 16px; flex-wrap: wrap; flex: 2; }
+  .dnd-category { flex: 1; min-width: 160px; background: white; border: 2.5px dashed var(--teal); border-radius: var(--radius); padding: 18px; min-height: 150px; }
+  .dnd-category h5 { color: var(--teal); font-size: 1rem; margin-bottom: 12px; font-family: 'Poppins', sans-serif; }
+  .dnd-item { background: linear-gradient(135deg, var(--teal), var(--indigo)); color: white; padding: 10px 16px; border-radius: 10px; margin-bottom: 8px; cursor: grab; font-size: 0.95rem; user-select: none; display: inline-block; }
+  .dnd-item:active { cursor: grabbing; opacity: 0.7; }
+  .dnd-category.drag-over { background: #e6f7f9; border-style: solid; }
+
+  /* HINT PANEL */
+  .hint-panel { margin: 12px 0; }
+  .hint-toggle { background: none; border: 2px solid var(--teal); color: var(--teal); padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-family: 'Poppins', sans-serif; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .hint-toggle:hover { background: var(--teal); color: white; }
+  .hint-content { display: none; background: #e6f7f9; border-radius: 0 0 10px 10px; padding: 16px 20px; font-size: 0.95rem; line-height: 1.6; border: 1px solid var(--teal); border-top: none; }
+  .hint-content.open { display: block; }
+
+  /* QUIZ */
+  .quiz-wrapper { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 40px; }
+  .quiz-progress { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--indigo)); border-radius: 4px; transition: width 0.4s; }
+  .quiz-question { font-size: clamp(1.05rem, 2vw, 1.2rem); font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .quiz-option { background: #f8f9fa; border: 2px solid #eee; border-radius: 12px; padding: 14px 18px; cursor: pointer; font-size: 1rem; transition: all 0.2s; text-align: left; min-height: 48px; }
+  .quiz-option:hover { border-color: var(--teal); background: #e6f7f9; }
+  .quiz-option.selected { border-color: var(--indigo); background: #eef; }
+  .quiz-option.correct { border-color: #00b894; background: #e8f8f5; color: #00b894; }
+  .quiz-option.wrong { border-color: #d63031; background: #fdecea; color: #d63031; }
+  .quiz-input-row { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+  .quiz-num-input { padding: 12px 18px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.1rem; width: 160px; outline: none; }
+  .quiz-num-input:focus { border-color: var(--teal); }
+  .quiz-btn { background: var(--indigo); color: white; border: none; padding: 13px 32px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; transition: background 0.2s; min-height: 48px; }
+  .quiz-btn:hover { background: var(--teal); }
+  .quiz-feedback { font-size: 1rem; font-weight: 600; min-height: 28px; margin-bottom: 16px; }
+  .quiz-counter { color: var(--slate); font-size: 0.95rem; margin-bottom: 16px; }
+  .quiz-result { text-align: center; padding: 40px 0; }
+  .quiz-score { font-size: 4rem; font-weight: 800; color: var(--indigo); }
+  .quiz-result p { font-size: 1.2rem; color: var(--slate); margin-top: 10px; }
+  .quiz-restart { background: var(--teal); color: white; border: none; padding: 14px 36px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: 'Poppins', sans-serif; }
+
+  /* CHALLENGE */
+  .challenge-box { background: linear-gradient(135deg, #2d3436, #636e72); border-radius: var(--radius); padding: 40px; color: white; }
+  .challenge-box h3 { color: #f9e2af; margin-bottom: 16px; }
+  .challenge-question { font-size: 1.05rem; line-height: 1.7; margin-bottom: 20px; }
+  .challenge-input { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 12px 18px; border-radius: 10px; font-size: 1rem; width: 120px; outline: none; }
+  .challenge-input::placeholder { color: rgba(255,255,255,0.5); }
+  .challenge-btn { background: #f9e2af; color: #2d3436; border: none; padding: 12px 28px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-left: 12px; font-family: 'Poppins', sans-serif; }
+  .challenge-feedback { margin-top: 14px; font-size: 1rem; font-weight: 600; min-height: 28px; }
+
+  /* CHART SVG INTERACTIVE */
+  .bar-animated { transition: all 0.1s; }
+  .bar-animated:hover { filter: brightness(1.15); cursor: pointer; }
+
+  /* TABLE WRAPPER */
+  .table-wrapper { overflow-x: auto; border-radius: var(--radius); }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
+  .badge-teal { background: #e6f7f9; color: var(--teal); }
+  .badge-indigo { background: #eef; color: var(--indigo); }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box { background: linear-gradient(135deg, #e6f7f9, #eef); border-radius: var(--radius); padding: 24px; border-left: 5px solid var(--teal); margin: 20px 0; }
+  .highlight-box p { font-size: 1rem; line-height: 1.7; }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-bottom-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 200; overflow-x: auto; padding: 0 8px;
+  }
+  .mobile-bottom-nav ul { display: flex; list-style: none; padding: 0; margin: 0; white-space: nowrap; }
+  .mobile-bottom-nav ul li a { display: block; padding: 16px 14px; color: var(--slate); text-decoration: none; font-size: 0.78rem; font-weight: 600; font-family: 'Poppins', sans-serif; text-align: center; min-height: 48px; }
+  .mobile-bottom-nav ul li a.active { color: var(--teal); }
+
+  /* NUMBER LINE / VISUAL AIDS */
+  .visual-avg { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+  .avg-box { background: var(--teal); color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; }
+  .avg-arrow { font-size: 1.4rem; color: var(--slate); }
+  .avg-result { background: var(--indigo); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 1.2rem; }
+
+  /* TOOLTIP */
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-text { visibility: hidden; background: #2d3436; color: white; text-align: center; border-radius: 8px; padding: 8px 14px; position: absolute; z-index: 10; bottom: 125%; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.85rem; pointer-events: none; }
+  .tooltip-wrap:hover .tooltip-text { visibility: visible; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .toc-sidebar { display: none; }
+    .main-content { padding-left: 0; }
+  }
+  @media (max-width: 768px) {
+    .container { padding: 0 18px; }
+    section { padding: 40px 0; }
+    .hero { min-height: 60vh; padding: 40px 18px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .dnd-container { flex-direction: column; }
+    .toc-sidebar { display: none; }
+    .main-content { padding-left: 0; padding-bottom: 80px; }
+    .mobile-bottom-nav { display: block; }
+    .flip-cards-row { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+    .practice-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    .challenge-box { padding: 24px; }
+    .quiz-wrapper { padding: 24px; }
+    body { font-size: 18px; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 12px; }
+    .card { padding: 20px; }
+    .quiz-options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="curtain-spinner"></div>
+  <div class="curtain-title">Unit 9: Information Handling</div>
+  <div class="curtain-sub">Class 5 Mathematics</div>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <header class="hero" id="sec-intro">
+    <div class="hero-bg-circle c1"></div>
+    <div class="hero-bg-circle c2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">📊 Unit 9 • Class 5 Mathematics</div>
+      <h1 id="hero-title">Information Handling</h1>
+      <p class="hero-sub">Master averages, bar graphs, block graphs, data organization, and tally charts through interactive examples and activities.</p>
+      <div class="hero-pills">
+        <span class="hero-pill">📐 Average (Mean)</span>
+        <span class="hero-pill">📊 Bar & Block Graphs</span>
+        <span class="hero-pill">📋 Tally Charts</span>
+        <span class="hero-pill">🔢 Data Organization</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- STICKY TOC (Desktop) -->
+  <nav class="toc-sidebar" aria-label="Table of Contents">
+    <h5>Contents</h5>
+    <a href="#sec-intro" class="toc-link active">Introduction</a>
+    <a href="#sec-background" class="toc-link">Background</a>
+    <a href="#sec-average" class="toc-link">Average (Mean)</a>
+    <a href="#sec-examples" class="toc-link">Worked Examples</a>
+    <a href="#sec-graphs" class="toc-link">Bar & Block Graphs</a>
+    <a href="#sec-data" class="toc-link">Data & Tally</a>
+    <a href="#sec-practice" class="toc-link">Practice</a>
+    <a href="#sec-challenge" class="toc-link">Challenge</a>
+    <a href="#sec-quiz" class="toc-link">Quiz</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- BACKGROUND SECTION -->
+    <section id="sec-background">
+      <div class="container">
+        <p class="section-label">📖 Background</p>
+        <h2 class="section-title">What is Information Handling?</h2>
+        <p class="section-desc">Information handling is the process of collecting, organizing, displaying, and interpreting data to answer questions and make decisions. It is used every day — from cricket scorecards to weather reports!</p>
+
+        <div class="flip-cards-row" style="margin-top: 36px;">
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="flip-icon">🏏</span><span class="flip-label">Did You Know?</span></div>
+              <div class="flip-back"><p>Shahid Afridi's run rate of 7 runs per over is an example of an <strong>average</strong> — a single number that represents multiple values!</p></div>
+            </div>
+          </div>
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="flip-icon">📊</span><span class="flip-label">Did You Know?</span></div>
+              <div class="flip-back"><p>Bar graphs were first used in the 1700s by William Playfair to show economic data. Today they are used in every field!</p></div>
+            </div>
+          </div>
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="flip-icon">🔢</span><span class="flip-label">Did You Know?</span></div>
+              <div class="flip-back"><p>Tally marks have been used for thousands of years. Ancient peoples carved tally marks into bones and sticks to count things!</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 36px;">
+          <div class="mermaid">
+graph TD
+  A[📋 Information Handling] --> B[📐 Average / Mean]
+  A --> C[📊 Graphs]
+  A --> D[🔢 Data & Tally]
+  B --> B1[Sum ÷ Count]
+  C --> C1[Block / Column Graph]
+  C --> C2[Horizontal Bar Graph]
+  C --> C3[Vertical Bar Graph]
+  D --> D1[Collect Data]
+  D --> D2[Organize with Tally]
+  D --> D3[Create Frequency Table]
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVERAGE / MEAN -->
+    <section id="sec-average">
+      <div class="container">
+        <p class="section-label">📐 Core Concept</p>
+        <h2 class="section-title">Average (Arithmetic Mean)</h2>
+        <p class="section-desc">The average is the overall representative value of a set of numbers. It tells us what a "typical" value looks like in the data.</p>
+
+        <div class="formula-callout">
+          <div class="formula-label">📌 Formula</div>
+          <div><span class="formula-highlight">Average</span> = Sum of all quantities ÷ Total number of quantities</div>
+          <div style="margin-top: 12px; color: #a6e3a1; font-size: 0.95em;">Example: Average of 6, 10, 8, 4 → (6 + 10 + 8 + 4) ÷ 4 = 28 ÷ 4 = <span class="formula-highlight">7</span></div>
+        </div>
+
+        <div class="discovery-zone">
+          <h4 style="margin-bottom: 16px; color: var(--indigo);">🏏 The Cricket Example</h4>
+          <p style="margin-bottom: 12px;">Shahid Afridi made runs in 4 overs: <strong>6, 10, 8, 4</strong></p>
+          <div class="visual-avg">
+            <div class="avg-box">6</div><div class="avg-arrow">+</div>
+            <div class="avg-box">10</div><div class="avg-arrow">+</div>
+            <div class="avg-box">8</div><div class="avg-arrow">+</div>
+            <div class="avg-box">4</div><div class="avg-arrow">=</div>
+            <div class="avg-box" style="background:#2d3436;">28 total</div>
+            <div class="avg-arrow">÷ 4 overs =</div>
+            <div class="avg-result">7 runs/over</div>
+          </div>
+          <p style="margin-top: 12px; color: var(--slate);">The run rate of <strong>7</strong> is the average — it represents his performance across all overs.</p>
+        </div>
+
+        <!-- Interactive Average Calculator -->
+        <div class="card" style="margin-top: 30px;">
+          <h4 style="color: var(--indigo); margin-bottom: 16px;">🧮 Interactive Average Calculator</h4>
+          <p style="margin-bottom: 14px; color: var(--slate);">Enter numbers separated by commas and click Calculate:</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="avg-input" placeholder="e.g. 5, 8, 10, 12, 20" class="practice-input" style="flex: 1; min-width: 200px;" value="5, 8, 10, 12, 20">
+            <button class="check-btn" onclick="calculateAverage()">Calculate Average</button>
+          </div>
+          <div id="avg-result-display" style="margin-top: 16px; display: none;">
+            <div class="highlight-box">
+              <p id="avg-steps" style="font-size: 1rem;"></p>
+              <p id="avg-answer" style="font-size: 1.3rem; font-weight: 700; color: var(--indigo); margin-top: 8px;"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Properties Grid -->
+        <div class="card-grid" style="margin-top: 30px;">
+          <div class="card" style="border-top: 4px solid var(--teal);">
+            <h4 style="color: var(--teal);">🟢 When to Use Average</h4>
+            <ul style="padding-left: 20px; margin-top: 10px; line-height: 1.9; font-size: 1rem;">
+              <li>Finding run rate in cricket</li>
+              <li>Finding average speed of a vehicle</li>
+              <li>Finding average attendance in class</li>
+              <li>Finding average rainfall or temperature</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid var(--indigo);">
+            <h4 style="color: var(--indigo);">📝 Key Points</h4>
+            <ul style="padding-left: 20px; margin-top: 10px; line-height: 1.9; font-size: 1rem;">
+              <li>Always <strong>add</strong> all quantities first</li>
+              <li>Then <strong>divide</strong> by the count of quantities</li>
+              <li>Average lies between the smallest and largest value</li>
+              <li>Average may not be a whole number</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid #e17055;">
+            <h4 style="color: #e17055;">⚡ Quick Facts</h4>
+            <ul style="padding-left: 20px; margin-top: 10px; line-height: 1.9; font-size: 1rem;">
+              <li>First 5 even numbers: 2,4,6,8,10 → Average = <strong>6</strong></li>
+              <li>First 5 odd numbers: 1,3,5,7,9 → Average = <strong>5</strong></li>
+              <li>First 5 natural numbers: 1,2,3,4,5 → Average = <strong>3</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKED EXAMPLES -->
+    <section id="sec-examples">
+      <div class="container">
+        <p class="section-label">✏️ Worked Examples</p>
+        <h2 class="section-title">Step-by-Step Solutions</h2>
+
+        <div class="card-grid">
+          <!-- Example 1 -->
+          <div class="card">
+            <h4 style="color: var(--teal); margin-bottom: 20px;">Example 1: Find average of 5, 8, 10, 12, 20</h4>
+            <div class="example-step">
+              <div class="step-number">1</div>
+              <div class="step-content"><strong>Add all numbers:</strong><br>5 + 8 + 10 + 12 + 20 = <strong>55</strong></div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">2</div>
+              <div class="step-content"><strong>Count the quantities:</strong><br>There are <strong>5</strong> numbers</div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">3</div>
+              <div class="step-content"><strong>Divide:</strong><br>55 ÷ 5 = <strong>11</strong></div>
+            </div>
+            <div class="highlight-box">✅ Average = <strong>11</strong></div>
+          </div>
+
+          <!-- Example 2 -->
+          <div class="card">
+            <h4 style="color: var(--teal); margin-bottom: 20px;">Example 2: Class Attendance (6 days)</h4>
+            <p style="margin-bottom: 12px; color: var(--slate);">Attendance: 44, 40, 37, 42, 35, 36</p>
+            <div class="example-step">
+              <div class="step-number">1</div>
+              <div class="step-content"><strong>Total attendance:</strong><br>44+40+37+42+35+36 = <strong>234</strong></div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">2</div>
+              <div class="step-content"><strong>Number of days:</strong> <strong>6</strong></div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">3</div>
+              <div class="step-content"><strong>Average:</strong> 234 ÷ 6 = <strong>39</strong></div>
+            </div>
+            <div class="highlight-box">✅ Average attendance = <strong>39 students/day</strong></div>
+          </div>
+
+          <!-- Example 3 -->
+          <div class="card">
+            <h4 style="color: var(--teal); margin-bottom: 20px;">Example 3: Train Speed</h4>
+            <p style="margin-bottom: 12px; color: var(--slate);">Business train: 450 km in 6 hours</p>
+            <div class="example-step">
+              <div class="step-number">1</div>
+              <div class="step-content"><strong>Distance:</strong> 450 km</div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">2</div>
+              <div class="step-content"><strong>Time:</strong> 6 hours</div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">3</div>
+              <div class="step-content"><strong>Average Speed:</strong><br>450 ÷ 6 = <strong>75 km/hr</strong></div>
+            </div>
+            <div class="highlight-box">✅ Average speed = <strong>75 km/hr</strong></div>
+          </div>
+
+          <!-- Example 4 -->
+          <div class="card">
+            <h4 style="color: var(--teal); margin-bottom: 20px;">Example 4: Temperature in Karachi</h4>
+            <p style="margin-bottom: 12px; color: var(--slate);">Temperatures: 32°C, 34°C, 33°C, 31°C, 35°C</p>
+            <div class="example-step">
+              <div class="step-number">1</div>
+              <div class="step-content"><strong>Sum:</strong> 32+34+33+31+35 = <strong>165</strong></div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">2</div>
+              <div class="step-content"><strong>Count:</strong> 5 days</div>
+            </div>
+            <div class="example-step">
+              <div class="step-number">3</div>
+              <div class="step-content"><strong>Average:</strong> 165 ÷ 5 = <strong>33°C</strong></div>
+            </div>
+            <div class="highlight-box">✅ Average temperature = <strong>33°C</strong></div>
+          </div>
+        </div>
+
+        <!-- Hint for Exercise 9.1 -->
+        <div style="margin-top: 30px;">
+          <h3 style="margin-bottom: 20px;">Exercise 9.1 — Solved</h3>
+          <div class="table-wrapper">
+            <table class="tally-table">
+              <thead>
+                <tr><th>Numbers</th><th>Sum</th><th>Count</th><th>Average</th></tr>
+              </thead>
+              <tbody>
+                <tr class="expandable" onclick="toggleRow(this)">
+                  <td>10, 12, 14, 16, 18</td><td>70</td><td>5</td><td><strong>14</strong></td>
+                </tr>
+                <tr class="expandable" onclick="toggleRow(this)">
+                  <td>5, 8, 7, 9, 6, 4, 10</td><td>49</td><td>7</td><td><strong>7</strong></td>
+                </tr>
+                <tr class="expandable" onclick="toggleRow(this)">
+                  <td>2.0, 3.5, 4.0, 5.5, 6.5</td><td>21.5</td><td>5</td><td><strong>4.3</strong></td>
+                </tr>
+                <tr class="expandable" onclick="toggleRow(this)">
+                  <td>2, 3, 5, 7, 11, 13</td><td>41</td><td>6</td><td><strong>6.83</strong></td>
+                </tr>
+                <tr class="expandable" onclick="toggleRow(this)">
+                  <td>85, 90, 78, 88, 92, 95</td><td>528</td><td>6</td><td><strong>88</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top: 10px; color: var(--slate); font-size: 0.95rem;">💡 Click any row to see the full calculation hint.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAR & BLOCK GRAPHS -->
+    <section id="sec-graphs">
+      <div class="container">
+        <p class="section-label">📊 Visual Data</p>
+        <h2 class="section-title">Block, Column & Bar Graphs</h2>
+        <p class="section-desc">Graphs help us see data visually, compare quantities quickly, and find patterns at a glance.</p>
+
+        <div class="card-grid" style="margin-top: 28px;">
+          <div class="card" style="border-left: 5px solid var(--teal);">
+            <h4 style="color: var(--teal);">📊 Column / Block Graph</h4>
+            <p style="margin-top: 10px; font-size: 1rem; line-height: 1.7;">Vertical bars where each bar's height represents the quantity. Categories are on the horizontal axis, values on the vertical axis.</p>
+          </div>
+          <div class="card" style="border-left: 5px solid var(--indigo);">
+            <h4 style="color: var(--indigo);">📈 Horizontal Bar Graph</h4>
+            <p style="margin-top: 10px; font-size: 1rem; line-height: 1.7;">Bars are drawn horizontally. Categories are on the vertical axis, values on the horizontal axis. Good for comparing labels.</p>
+          </div>
+        </div>
+
+        <!-- Animated Bar Chart: Breakfast Foods -->
+        <div class="chart-container" style="margin-top: 30px;">
+          <div class="chart-title">🍳 Favourite Breakfast Foods — Class V Students</div>
+          <svg class="svg-chart" id="chart-breakfast" viewBox="0 0 600 260" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            <line x1="60" y1="20" x2="60" y2="210" stroke="#eee" stroke-width="1.5"/>
+            <line x1="60" y1="210" x2="580" y2="210" stroke="#636E72" stroke-width="2"/>
+            <!-- Y axis labels -->
+            <text x="50" y="215" text-anchor="end" font-size="13" fill="#636E72">0</text>
+            <text x="50" y="175" text-anchor="end" font-size="13" fill="#636E72">5</text>
+            <text x="50" y="135" text-anchor="end" font-size="13" fill="#636E72">10</text>
+            <text x="50" y="95" text-anchor="end" font-size="13" fill="#636E72">15</text>
+            <text x="50" y="55" text-anchor="end" font-size="13" fill="#636E72">20</text>
+            <!-- Grid horizontals -->
+            <line x1="60" y1="175" x2="580" y2="175" stroke="#eee" stroke-width="1"/>
+            <line x1="60" y1="135" x2="580" y2="135" stroke="#eee" stroke-width="1"/>
+            <line x1="60" y1="95" x2="580" y2="95" stroke="#eee" stroke-width="1"/>
+            <!-- Bars: Fresh Fruit=10, Toast/Bread=5, Eggs=15, Paratha=10, Cereal=5 -->
+            <!-- Scale: 1 unit = 8px, 0 = 210, 10=130, 5=170, 15=90 -->
+            <rect class="bar-animated" id="bar1" x="80" y="130" width="70" height="80" fill="#22A6B3" rx="5"/>
+            <rect class="bar-animated" id="bar2" x="180" y="170" width="70" height="40" fill="#4834D4" rx="5"/>
+            <rect class="bar-animated" id="bar3" x="280" y="90" width="70" height="120" fill="#22A6B3" rx="5"/>
+            <rect class="bar-animated" id="bar4" x="380" y="130" width="70" height="80" fill="#4834D4" rx="5"/>
+            <rect class="bar-animated" id="bar5" x="480" y="170" width="70" height="40" fill="#22A6B3" rx="5"/>
+            <!-- Labels -->
+            <text x="115" y="230" text-anchor="middle" font-size="11" fill="#636E72">Fresh Fruit</text>
+            <text x="215" y="230" text-anchor="middle" font-size="11" fill="#636E72">Toast/Bread</text>
+            <text x="315" y="230" text-anchor="middle" font-size="11" fill="#636E72">Eggs</text>
+            <text x="415" y="230" text-anchor="middle" font-size="11" fill="#636E72">Paratha</text>
+            <text x="515" y="230" text-anchor="middle" font-size="11" fill="#636E72">Cereal</text>
+            <!-- Values on top -->
+            <text x="115" y="125" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">10</text>
+            <text x="215" y="165" text-anchor="middle" font-size="13" fill="#4834D4" font-weight="700">5</text>
+            <text x="315" y="85" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">15</text>
+            <text x="415" y="125" text-anchor="middle" font-size="13" fill="#4834D4" font-weight="700">10</text>
+            <text x="515" y="165" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">5</text>
+          </svg>
+          <div class="highlight-box" style="margin-top: 16px;">
+            <p>🏆 <strong>Most favourite:</strong> Eggs (15 students) &nbsp;|&nbsp; 🤝 <strong>Equally favourite:</strong> Fresh Fruit & Paratha (10 each) &nbsp;|&nbsp; 📉 <strong>Least favourite:</strong> Toast/Bread & Cereal (5 each)</p>
+          </div>
+        </div>
+
+        <!-- Animated Bar Chart: Population of Karachi -->
+        <div class="chart-container" style="margin-top: 30px;">
+          <div class="chart-title">🏙️ Population of Karachi City (in Millions)</div>
+          <svg class="svg-chart" id="chart-karachi" viewBox="0 0 700 280" preserveAspectRatio="xMidYMid meet">
+            <line x1="70" y1="20" x2="70" y2="220" stroke="#eee" stroke-width="1.5"/>
+            <line x1="70" y1="220" x2="670" y2="220" stroke="#636E72" stroke-width="2"/>
+            <text x="60" y="225" text-anchor="end" font-size="12" fill="#636E72">0</text>
+            <text x="60" y="197" text-anchor="end" font-size="12" fill="#636E72">2.5</text>
+            <text x="60" y="170" text-anchor="end" font-size="12" fill="#636E72">5</text>
+            <text x="60" y="143" text-anchor="end" font-size="12" fill="#636E72">7.5</text>
+            <text x="60" y="116" text-anchor="end" font-size="12" fill="#636E72">10</text>
+            <text x="60" y="89" text-anchor="end" font-size="12" fill="#636E72">12.5</text>
+            <text x="60" y="62" text-anchor="end" font-size="12" fill="#636E72">15</text>
+            <text x="60" y="35" text-anchor="end" font-size="12" fill="#636E72">17.5</text>
+            <!-- Grid -->
+            <line x1="70" y1="35" x2="670" y2="35" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="62" x2="670" y2="62" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="89" x2="670" y2="89" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="116" x2="670" y2="116" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="143" x2="670" y2="143" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="170" x2="670" y2="170" stroke="#eee" stroke-width="1"/>
+            <line x1="70" y1="197" x2="670" y2="197" stroke="#eee" stroke-width="1"/>
+            <!-- Bars: 1990=10, 1995=12, 2000=13, 2005=15, 2010=17.5, 2015=18, 2020=19, 2023=21 -->
+            <!-- Scale: 1M = (220-35)/17.5 = 10.57px per M; 10M = 114.3px height, y = 220-height -->
+            <!-- Simplified: 1unit = 10px; 10M=100, 12M=120, 13M=130, 15M=150, 17.5M=175, 18M=180, 19M=190, 20.5M=205 -->
+            <rect class="bar-animated" x="80" y="120" width="50" height="100" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="158" y="100" width="50" height="120" fill="#4834D4" rx="4"/>
+            <rect class="bar-animated" x="236" y="90" width="50" height="130" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="314" y="70" width="50" height="150" fill="#4834D4" rx="4"/>
+            <rect class="bar-animated" x="392" y="45" width="50" height="175" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="470" y="40" width="50" height="180" fill="#4834D4" rx="4"/>
+            <rect class="bar-animated" x="548" y="30" width="50" height="190" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="610" y="20" width="50" height="200" fill="#4834D4" rx="4"/>
+            <!-- X Labels -->
+            <text x="105" y="240" text-anchor="middle" font-size="11" fill="#636E72">1990</text>
+            <text x="183" y="240" text-anchor="middle" font-size="11" fill="#636E72">1995</text>
+            <text x="261" y="240" text-anchor="middle" font-size="11" fill="#636E72">2000</text>
+            <text x="339" y="240" text-anchor="middle" font-size="11" fill="#636E72">2005</text>
+            <text x="417" y="240" text-anchor="middle" font-size="11" fill="#636E72">2010</text>
+            <text x="495" y="240" text-anchor="middle" font-size="11" fill="#636E72">2015</text>
+            <text x="573" y="240" text-anchor="middle" font-size="11" fill="#636E72">2020</text>
+            <text x="635" y="240" text-anchor="middle" font-size="11" fill="#636E72">2023</text>
+            <!-- Y axis title -->
+            <text x="15" y="130" text-anchor="middle" font-size="12" fill="#636E72" transform="rotate(-90,15,130)">Population (Millions)</text>
+          </svg>
+          <div class="card-grid" style="margin-top: 16px;">
+            <div class="highlight-box"><p>📅 <strong>1995:</strong> ~12 million &nbsp; <strong>2000:</strong> ~13 million &nbsp; <strong>2015:</strong> ~18 million</p></div>
+            <div class="highlight-box"><p>📉 <strong>Least:</strong> 1990 (10 million) &nbsp; 📈 <strong>Highest:</strong> 2023 (~20+ million)</p></div>
+          </div>
+        </div>
+
+        <!-- Horizontal Bar Chart: Yasir's Marks -->
+        <div class="chart-container" style="margin-top: 30px;">
+          <div class="chart-title">📚 Yasir's Marks in 5 Subjects (Grade V)</div>
+          <svg class="svg-chart" id="chart-yasir" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet">
+            <!-- Axis -->
+            <line x1="130" y1="20" x2="130" y2="260" stroke="#636E72" stroke-width="2"/>
+            <line x1="130" y1="260" x2="540" y2="260" stroke="#636E72" stroke-width="2"/>
+            <!-- X labels -->
+            <text x="130" y="278" text-anchor="middle" font-size="12" fill="#636E72">0</text>
+            <text x="214" y="278" text-anchor="middle" font-size="12" fill="#636E72">20</text>
+            <text x="298" y="278" text-anchor="middle" font-size="12" fill="#636E72">40</text>
+            <text x="382" y="278" text-anchor="middle" font-size="12" fill="#636E72">60</text>
+            <text x="466" y="278" text-anchor="middle" font-size="12" fill="#636E72">80</text>
+            <text x="530" y="278" text-anchor="middle" font-size="12" fill="#636E72">100</text>
+            <!-- Grid verticals -->
+            <line x1="214" y1="20" x2="214" y2="260" stroke="#eee" stroke-width="1"/>
+            <line x1="298" y1="20" x2="298" y2="260" stroke="#eee" stroke-width="1"/>
+            <line x1="382" y1="20" x2="382" y2="260" stroke="#eee" stroke-width="1"/>
+            <line x1="466" y1="20" x2="466" y2="260" stroke="#eee" stroke-width="1"/>
+            <!-- Bars: Math=80, English=70, Urdu=60, Science=70, SS=60 -->
+            <!-- Scale: 100 marks = 400px; 1 mark = 4px; x0=130 -->
+            <!-- Math: 80 → 320px width -->
+            <rect class="bar-animated" x="130" y="35" width="320" height="35" fill="#22A6B3" rx="4"/>
+            <text x="120" y="58" text-anchor="end" font-size="13" fill="#636E72">Math</text>
+            <text x="458" y="58" font-size="13" fill="#22A6B3" font-weight="700">80</text>
+            <!-- English: 70 → 280px -->
+            <rect class="bar-animated" x="130" y="85" width="280" height="35" fill="#4834D4" rx="4"/>
+            <text x="120" y="108" text-anchor="end" font-size="13" fill="#636E72">English</text>
+            <text x="418" y="108" font-size="13" fill="#4834D4" font-weight="700">70</text>
+            <!-- Urdu: 60 → 240px -->
+            <rect class="bar-animated" x="130" y="135" width="240" height="35" fill="#22A6B3" rx="4"/>
+            <text x="120" y="158" text-anchor="end" font-size="13" fill="#636E72">Urdu</text>
+            <text x="378" y="158" font-size="13" fill="#22A6B3" font-weight="700">60</text>
+            <!-- Science: 70 → 280px -->
+            <rect class="bar-animated" x="130" y="185" width="280" height="35" fill="#4834D4" rx="4"/>
+            <text x="120" y="208" text-anchor="end" font-size="13" fill="#636E72">Science</text>
+            <text x="418" y="208" font-size="13" fill="#4834D4" font-weight="700">70</text>
+            <!-- Social Studies: 60 → 240px -->
+            <rect class="bar-animated" x="130" y="225" width="240" height="35" fill="#22A6B3" rx="4"/>
+            <text x="120" y="248" text-anchor="end" font-size="13" fill="#636E72">S. Studies</text>
+            <text x="378" y="248" font-size="13" fill="#22A6B3" font-weight="700">60</text>
+          </svg>
+          <div class="highlight-box" style="margin-top: 16px;">
+            <p>🏆 <strong>Highest:</strong> Mathematics (80) &nbsp;|&nbsp; 📉 <strong>Lowest:</strong> Urdu & Social Studies (60 each) &nbsp;|&nbsp; 🤝 <strong>Equal:</strong> English & Science (70) &nbsp;|&nbsp; 📊 <strong>Total:</strong> 340</p>
+          </div>
+        </div>
+
+        <!-- Monthly Expenditure -->
+        <div class="chart-container" style="margin-top: 30px;">
+          <div class="chart-title">💰 Monthly Expenditure of a Family (in Rs Thousands)</div>
+          <svg class="svg-chart" id="chart-exp" viewBox="0 0 500 240" preserveAspectRatio="xMidYMid meet">
+            <line x1="60" y1="20" x2="60" y2="200" stroke="#eee" stroke-width="1.5"/>
+            <line x1="60" y1="200" x2="480" y2="200" stroke="#636E72" stroke-width="2"/>
+            <!-- Y axis -->
+            <text x="50" y="205" text-anchor="end" font-size="12" fill="#636E72">0</text>
+            <text x="50" y="180" text-anchor="end" font-size="12" fill="#636E72">3</text>
+            <text x="50" y="155" text-anchor="end" font-size="12" fill="#636E72">5</text>
+            <text x="50" y="125" text-anchor="end" font-size="12" fill="#636E72">7</text>
+            <text x="50" y="90" text-anchor="end" font-size="12" fill="#636E72">9</text>
+            <text x="50" y="55" text-anchor="end" font-size="12" fill="#636E72">10</text>
+            <!-- Grid -->
+            <line x1="60" y1="175" x2="480" y2="175" stroke="#eee" stroke-width="1"/>
+            <line x1="60" y1="150" x2="480" y2="150" stroke="#eee" stroke-width="1"/>
+            <line x1="60" y1="125" x2="480" y2="125" stroke="#eee" stroke-width="1"/>
+            <line x1="60" y1="100" x2="480" y2="100" stroke="#eee" stroke-width="1"/>
+            <!-- Bars: Jan=7, Feb=6, Mar=8, Apr=7, May=10 -->
+            <!-- Scale: 0=200, 1unit=18px; 7=200-7*14=102; 6=200-6*14=116; 8=200-8*14=88; May10=200-10*14=60 -->
+            <rect class="bar-animated" x="75" y="102" width="60" height="98" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="163" y="116" width="60" height="84" fill="#4834D4" rx="4"/>
+            <rect class="bar-animated" x="251" y="88" width="60" height="112" fill="#22A6B3" rx="4"/>
+            <rect class="bar-animated" x="339" y="102" width="60" height="98" fill="#4834D4" rx="4"/>
+            <rect class="bar-animated" x="410" y="60" width="60" height="140" fill="#22A6B3" rx="4"/>
+            <!-- Values -->
+            <text x="105" y="97" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">7K</text>
+            <text x="193" y="111" text-anchor="middle" font-size="13" fill="#4834D4" font-weight="700">6K</text>
+            <text x="281" y="83" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">8K</text>
+            <text x="369" y="97" text-anchor="middle" font-size="13" fill="#4834D4" font-weight="700">7K</text>
+            <text x="440" y="55" text-anchor="middle" font-size="13" fill="#22A6B3" font-weight="700">10K</text>
+            <!-- X Labels -->
+            <text x="105" y="218" text-anchor="middle" font-size="13" fill="#636E72">Jan</text>
+            <text x="193" y="218" text-anchor="middle" font-size="13" fill="#636E72">Feb</text>
+            <text x="281" y="218" text-anchor="middle" font-size="13" fill="#636E72">Mar</text>
+            <text x="369" y="218" text-anchor="middle" font-size="13" fill="#636E72">Apr</text>
+            <text x="440" y="218" text-anchor="middle" font-size="13" fill="#636E72">May</text>
+          </svg>
+          <div class="card-grid" style="margin-top: 16px;">
+            <div class="highlight-box">
+              <p>📉 <strong>Least:</strong> February (Rs 6,000) &nbsp;|&nbsp; 📈 <strong>Greatest:</strong> May (Rs 10,000)</p>
+            </div>
+            <div class="highlight-box">
+              <p>🤝 <strong>Equal months:</strong> January & April (Rs 7,000 each) &nbsp;|&nbsp; 📊 March expenditure: Rs 8,000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA & TALLY -->
+    <section id="sec-data">
+      <div class="container">
+        <p class="section-label">📋 Data Organization</p>
+        <h2 class="section-title">Data & Tally Charts</h2>
+        <p class="section-desc">Data is information collected from any field. Tally marks help us organize and count data efficiently.</p>
+
+        <div class="discovery-zone">
+          <h4 style="color: var(--indigo); margin-bottom: 12px;">What is Data?</h4>
+          <p style="margin-bottom: 10px; line-height: 1.7;">The information collected from any field of study is called <strong>data</strong>. It is mostly represented in numerical form.</p>
+          <p style="line-height: 1.7;"><strong>Examples of data:</strong> Favourite colours of students, ages of class members, marks in examinations, cricket game records, weather records.</p>
+        </div>
+
+        <!-- Tally method explanation -->
+        <div class="card" style="margin-top: 24px;">
+          <h4 style="color: var(--teal); margin-bottom: 16px;">📝 How Tally Marks Work</h4>
+          <div class="card-grid">
+            <div>
+              <p style="margin-bottom: 12px; line-height: 1.7;">Each occurrence of a value is marked with a vertical line <strong>|</strong></p>
+              <p style="margin-bottom: 12px; line-height: 1.7;">After 4 marks, the 5th is drawn as a diagonal slash across the 4: <span class="tally-marks" style="font-size:1.5rem;">||||</span></p>
+              <p style="line-height: 1.7;">This group of 5 makes counting quick and easy!</p>
+            </div>
+            <div>
+              <table class="tally-table">
+                <thead><tr><th>Count</th><th>Tally</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td class="tally-marks">|</td></tr>
+                  <tr><td>2</td><td class="tally-marks">||</td></tr>
+                  <tr><td>3</td><td class="tally-marks">|||</td></tr>
+                  <tr><td>4</td><td class="tally-marks">||||</td></tr>
+                  <tr><td>5</td><td class="tally-marks">||̶||</td></tr>
+                  <tr><td>6</td><td class="tally-marks">||̶||| |</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example: Maths Marks Tally -->
+        <div style="margin-top: 30px;">
+          <h3 style="margin-bottom: 16px;">Example: Mathematics Marks of Class V</h3>
+          <div class="discovery-zone">
+            <p style="margin-bottom: 10px;"><strong>Raw data:</strong> 32, 30, 31, 33, 33, 34, 34, 33, 32, 32, 34, 35, 35, 32, 33, 32, 31, 33, 32</p>
+            <p style="margin-bottom: 10px;"><strong>Ascending order:</strong> 30, 31, 31, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 34, 34, 34, 35, 35</p>
+          </div>
+          <div class="table-wrapper" style="margin-top: 16px;">
+            <table class="tally-table">
+              <thead>
+                <tr><th>Mark Obtained</th><th>Tally Marks</th><th>Number of Students</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>30</td><td class="tally-marks">|</td><td><strong>1</strong></td></tr>
+                <tr><td>31</td><td class="tally-marks">||</td><td><strong>2</strong></td></tr>
+                <tr><td>32</td><td class="tally-marks">||̶||| |</td><td><strong>6</strong></td></tr>
+                <tr><td>33</td><td class="tally-marks">||̶||| </td><td><strong>5</strong></td></tr>
+                <tr><td>34</td><td class="tally-marks">|||</td><td><strong>3</strong></td></tr>
+                <tr><td>35</td><td class="tally-marks">||</td><td><strong>2</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tally: Ages of customers -->
+        <div style="margin-top: 30px;">
+          <h3 style="margin-bottom: 16px;">Example: Ages of Market Survey Customers</h3>
+          <div class="table-wrapper">
+            <table class="tally-table">
+              <thead>
+                <tr><th>Age (years)</th><th>Tally Marks</th><th>Number of Customers</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>11</td><td class="tally-marks">|</td><td>1</td></tr>
+                <tr><td>12</td><td class="tally-marks">|||</td><td>3</td></tr>
+                <tr><td>15</td><td class="tally-marks">|||</td><td>3</td></tr>
+                <tr><td>17</td><td class="tally-marks">||</td><td>2</td></tr>
+                <tr><td>19</td><td class="tally-marks">||</td><td>2</td></tr>
+                <tr><td>20</td><td class="tally-marks">||̶|||</td><td>5</td></tr>
+                <tr><td>22</td><td class="tally-marks">|</td><td>1</td></tr>
+                <tr><td>25</td><td class="tally-marks">|</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Drag & Drop: Classify data type -->
+        <div style="margin-top: 36px;">
+          <h3 style="margin-bottom: 16px;">🎯 Drag & Drop: Classify the Data Type</h3>
+          <p style="margin-bottom: 18px; color: var(--slate);">Drag each item into the correct category.</p>
+          <div class="dnd-container" id="dnd-root">
+            <div class="dnd-source-pool">
+              <h5 style="font-family: 'Poppins',sans-serif; margin-bottom: 12px; color: var(--slate);">📦 Items to classify:</h5>
+              <div id="source-pool">
+                <span class="dnd-item" draggable="true" data-cat="numerical" id="dnd1">Exam Marks</span>
+                <span class="dnd-item" draggable="true" data-cat="categorical" id="dnd2">Favourite Colour</span>
+                <span class="dnd-item" draggable="true" data-cat="numerical" id="dnd3">Temperature (°C)</span>
+                <span class="dnd-item" draggable="true" data-cat="categorical" id="dnd4">Ice Cream Flavour</span>
+                <span class="dnd-item" draggable="true" data-cat="numerical" id="dnd5">Height (cm)</span>
+                <span class="dnd-item" draggable="true" data-cat="categorical" id="dnd6">Pet Type</span>
+              </div>
+            </div>
+            <div class="dnd-categories">
+              <div class="dnd-category" id="cat-numerical" data-cat="numerical">
+                <h5>🔢 Numerical Data</h5>
+                <p style="font-size:0.85rem; color:var(--slate); margin-bottom: 8px;">Numbers you can measure</p>
+              </div>
+              <div class="dnd-category" id="cat-categorical" data-cat="categorical">
+                <h5>🏷️ Categorical Data</h5>
+                <p style="font-size:0.85rem; color:var(--slate); margin-bottom: 8px;">Names or labels</p>
+              </div>
+            </div>
+          </div>
+          <button class="check-btn" onclick="checkDnD()" style="margin-top: 12px;">Check Answers</button>
+          <div id="dnd-feedback" class="feedback" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICE -->
+    <section id="sec-practice">
+      <div class="container">
+        <p class="section-label">✏️ Practice</p>
+        <h2 class="section-title">Exercise Problems</h2>
+        <p class="section-desc">Solve these real-life problems involving averages. Type your answer and click Check.</p>
+
+        <div class="practice-grid">
+          <div class="practice-card">
+            <h4>Q1: Rainfall in Lahore</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Rainfall over 5 days: 50mm, 60mm, 70mm, 80mm, 90mm.<br>Find the <strong>average rainfall</strong>.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 50+60+70+80+90 = 350. Count = 5. Average = 350 ÷ 5</div>
+            </div>
+            <input type="number" class="practice-input" id="q1-ans" placeholder="Your answer (mm)">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q1-ans', 70, 'q1-fb')">Check</button>
+            <div class="feedback" id="q1-fb"></div>
+          </div>
+
+          <div class="practice-card">
+            <h4>Q2: Weekly Allowance</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Allowances: Rs 50, Rs 60, Rs 70, Rs 80, Rs 90.<br>Find the <strong>average allowance</strong>.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 50+60+70+80+90 = 350. Count = 5. Average = ?</div>
+            </div>
+            <input type="number" class="practice-input" id="q2-ans" placeholder="Your answer (Rs)">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q2-ans', 70, 'q2-fb')">Check</button>
+            <div class="feedback" id="q2-fb"></div>
+          </div>
+
+          <div class="practice-card">
+            <h4>Q3: Plant Heights</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Heights: 20cm, 25cm, 30cm, 35cm, 40cm.<br>Find the <strong>average height</strong>.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 20+25+30+35+40 = 150. Count = 5.</div>
+            </div>
+            <input type="number" class="practice-input" id="q3-ans" placeholder="Your answer (cm)">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q3-ans', 30, 'q3-fb')">Check</button>
+            <div class="feedback" id="q3-fb"></div>
+          </div>
+
+          <div class="practice-card">
+            <h4>Q4: Steps per Day</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Steps: 5000, 6500, 4800, 7200, 5500, 6000, 5700.<br>Find the <strong>average steps/day</strong>.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 5000+6500+4800+7200+5500+6000+5700 = 40700. Count = 7.</div>
+            </div>
+            <input type="number" class="practice-input" id="q4-ans" placeholder="Your answer (steps)">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q4-ans', 5814, 'q4-fb', 10)">Check</button>
+            <div class="feedback" id="q4-fb"></div>
+          </div>
+
+          <div class="practice-card">
+            <h4>Q5: Average of 10, 12, 14, 16, 18</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Find the <strong>mean</strong> of these numbers.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 10+12+14+16+18. Count = 5.</div>
+            </div>
+            <input type="number" class="practice-input" id="q5-ans" placeholder="Your answer">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q5-ans', 14, 'q5-fb')">Check</button>
+            <div class="feedback" id="q5-fb"></div>
+          </div>
+
+          <div class="practice-card">
+            <h4>Q6: First 5 Even Numbers</h4>
+            <p style="margin: 10px 0; color: var(--slate); font-size: 1rem;">Numbers: 2, 4, 6, 8, 10.<br>Find the <strong>average</strong>.</p>
+            <div class="hint-panel">
+              <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+              <div class="hint-content">Sum = 2+4+6+8+10 = 30. Count = 5. Average = 30 ÷ 5 = ?</div>
+            </div>
+            <input type="number" class="practice-input" id="q6-ans" placeholder="Your answer">
+            <br>
+            <button class="check-btn" onclick="checkAnswer('q6-ans', 6, 'q6-fb')">Check</button>
+            <div class="feedback" id="q6-fb"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHALLENGE -->
+    <section id="sec-challenge">
+      <div class="container">
+        <p class="section-label">🚀 Challenge</p>
+        <h2 class="section-title">Brain Challenge Problems</h2>
+
+        <div class="challenge-box">
+          <h3>🏆 Level Up!</h3>
+          <div class="challenge-question" id="challenge-q">
+            <strong>Challenge 1:</strong> The average of 5 numbers is 18. Four of the numbers are 15, 20, 12, and 25. What is the <strong>fifth number</strong>?<br>
+            <span style="font-size: 0.95rem; opacity: 0.8; margin-top: 8px; display: block;">Hint: Total = Average × Count. Find total, then subtract the 4 known numbers.</span>
+          </div>
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <input type="number" class="challenge-input" id="challenge-input" placeholder="Answer">
+            <button class="challenge-btn" onclick="checkChallenge()">Submit</button>
+            <button class="challenge-btn" onclick="nextChallenge()" style="background: #a29bfe;">Next Challenge →</button>
+          </div>
+          <div class="challenge-feedback" id="challenge-fb"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="sec-quiz">
+      <div class="container">
+        <p class="section-label">🧠 Quiz Time</p>
+        <h2 class="section-title">Test Your Knowledge</h2>
+        <p class="section-desc">Answer all 10 questions. Mix of multiple choice and numerical answers.</p>
+
+        <div class="quiz-wrapper" style="margin-top: 28px;">
+          <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+          <div class="quiz-counter" id="quiz-counter">Question 1 of 10</div>
+          <div id="quiz-area">
+            <div class="quiz-question" id="quiz-question">Loading...</div>
+            <div id="quiz-options-area"></div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+            <button class="quiz-btn" id="quiz-next-btn" onclick="quizNext()" style="display:none;">Next Question →</button>
+          </div>
+          <div id="quiz-result" class="quiz-result" style="display:none;">
+            <div class="quiz-score" id="quiz-score-display">0/10</div>
+            <p id="quiz-result-msg">Well done!</p>
+            <button class="quiz-restart" onclick="restartQuiz()">🔄 Try Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- end main-content -->
+
+</div><!-- end page-wrapper -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+  <ul>
+    <li><a href="#sec-intro" class="mobile-nav-link">🏠 Home</a></li>
+    <li><a href="#sec-background" class="mobile-nav-link">📖 Background</a></li>
+    <li><a href="#sec-average" class="mobile-nav-link">📐 Average</a></li>
+    <li><a href="#sec-examples" class="mobile-nav-link">✏️ Examples</a></li>
+    <li><a href="#sec-graphs" class="mobile-nav-link">📊 Graphs</a></li>
+    <li><a href="#sec-data" class="mobile-nav-link">📋 Data</a></li>
+    <li><a href="#sec-practice" class="mobile-nav-link">🧮 Practice</a></li>
+    <li><a href="#sec-challenge" class="mobile-nav-link">🚀 Challenge</a></li>
+    <li><a href="#sec-quiz" class="mobile-nav-link">🧠 Quiz</a></li>
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── CURTAIN FALLBACK ──────────────────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; c.style.transition = 'opacity 0.4s'; setTimeout(() => c.style.display = 'none', 400); }
+  }, 2000);
+
+  // ── LENIS SMOOTH SCROLL ───────────────────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // ── MERMAID ───────────────────────────────────────────────────────
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid failed:', e); }
+
+  // ── GSAP ANIMATIONS ───────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero title character entrance
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        const text = heroTitle.textContent;
+        heroTitle.innerHTML = text.split('').map(ch => `<span class="char" style="display:inline-block;opacity:0;">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
+        gsap.to('.char', { opacity: 1, y: 0, stagger: 0.04, duration: 0.4, ease: 'power2.out', delay: 0.5 });
+      }
+
+      // Animate bars on scroll
+      const bars = document.querySelectorAll('.bar-animated');
+      bars.forEach(bar => {
+        const origHeight = parseFloat(bar.getAttribute('height')) || 0;
+        const origY = parseFloat(bar.getAttribute('y')) || 0;
+        bar.setAttribute('height', '0');
+        bar.setAttribute('y', origY + origHeight);
+        try {
+          ScrollTrigger.create({
+            trigger: bar.closest('svg') || bar,
+            start: 'top 85%',
+            onEnter: () => {
+              gsap.to(bar, {
+                attr: { height: origHeight, y: origY },
+                duration: 0.8,
+                ease: 'power2.out',
+                delay: Math.random() * 0.3
+              });
+            },
+            once: true
+          });
+        } catch(e) {}
+      });
+
+      // Cards fade in
+      const cards = document.querySelectorAll('.card, .practice-card, .chart-container');
+      cards.forEach((card, i) => {
+        card.style.opacity = '1';
+        try {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 90%', once: true },
+            opacity: 0, y: 30, duration: 0.5, ease: 'power2.out', delay: (i % 3) * 0.1
+          });
+        } catch(e) {}
+      });
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // ── TOC SCROLLSPY ─────────────────────────────────────────────────
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link, .mobile-nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ── QUIZ DATA ─────────────────────────────────────────────────────
+  const quizData = [
+    {
+      q: "What is the average (mean) of 6, 10, 8, and 4?",
+      type: "mcq",
+      options: ["5", "6", "7", "8"],
+      answer: 2
+    },
+    {
+      q: "The formula for average is:",
+      type: "mcq",
+      options: ["Sum × Count", "Sum ÷ Count", "Count ÷ Sum", "Sum + Count"],
+      answer: 1
+    },
+    {
+      q: "Find the average of 5, 8, 10, 12, and 20.",
+      type: "num",
+      answer: 11
+    },
+    {
+      q: "The average of the first 5 even numbers (2, 4, 6, 8, 10) is:",
+      type: "mcq",
+      options: ["4", "5", "6", "7"],
+      answer: 2
+    },
+    {
+      q: "A train travels 450 km in 6 hours. What is its average speed (km/hr)?",
+      type: "num",
+      answer: 75
+    },
+    {
+      q: "In a vertical bar graph, what is shown on the horizontal axis?",
+      type: "mcq",
+      options: ["Values/Quantities", "Categories/Items", "Average", "Tally Marks"],
+      answer: 1
+    },
+    {
+      q: "The attendance over 6 days was 44, 40, 37, 42, 35, 36. What is the average attendance?",
+      type: "num",
+      answer: 39
+    },
+    {
+      q: "Tally mark ||||  (with a slash) represents which number?",
+      type: "mcq",
+      options: ["4", "5", "6", "3"],
+      answer: 1
+    },
+    {
+      q: "Average temperature in Karachi for 5 days: 32°C, 34°C, 33°C, 31°C, 35°C. Average is:",
+      type: "num",
+      answer: 33
+    },
+    {
+      q: "Which type of graph is BEST for showing data organized by categories over time?",
+      type: "mcq",
+      options: ["Tally Chart", "Bar Graph", "Tally Marks only", "Number Line"],
+      answer: 1
+    }
+  ];
+
+  let currentQ = 0, score = 0, answered = false;
+
+  function loadQuestion() {
+    if (currentQ >= quizData.length) { showResult(); return; }
+    answered = false;
+    const q = quizData[currentQ];
+    document.getElementById('quiz-question').textContent = q.q;
+    document.getElementById('quiz-feedback').textContent = '';
+    document.getElementById('quiz-next-btn').style.display = 'none';
+    document.getElementById('quiz-counter').textContent = `Question ${currentQ + 1} of ${quizData.length}`;
+    document.getElementById('quiz-progress-fill').style.width = `${(currentQ / quizData.length) * 100}%`;
+
+    const area = document.getElementById('quiz-options-area');
+    area.innerHTML = '';
+
+    if (q.type === 'mcq') {
+      const grid = document.createElement('div');
+      grid.className = 'quiz-options';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => { if (!answered) selectOption(i, btn); };
+        grid.appendChild(btn);
+      });
+      area.appendChild(grid);
+    } else {
+      const row = document.createElement('div');
+      row.className = 'quiz-input-row';
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'quiz-num-input';
+      inp.id = 'quiz-num-answer';
+      inp.placeholder = 'Your answer';
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !answered) submitNumAnswer(); });
+      const btn = document.createElement('button');
+      btn.className = 'quiz-btn';
+      btn.textContent = 'Submit';
+      btn.onclick = () => { if (!answered) submitNumAnswer(); };
+      row.appendChild(inp);
+      row.appendChild(btn);
+      area.appendChild(row);
+    }
+  }
+
+  function selectOption(i, btn) {
+    if (answered) return;
+    answered = true;
+    const q = quizData[currentQ];
+    const opts = document.querySelectorAll('.quiz-option');
+    opts.forEach(o => o.style.pointerEvents = 'none');
+    btn.classList.add('selected');
+    if (i === q.answer) {
+      btn.classList.add('correct');
+      document.getElementById('quiz-feedback').textContent = '✅ Correct! Well done!';
+      document.getElementById('quiz-feedback').style.color = '#00b894';
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      opts[q.answer].classList.add('correct');
+      document.getElementById('quiz-feedback').textContent = `❌ Wrong. Correct answer: ${q.options[q.answer]}`;
+      document.getElementById('quiz-feedback').style.color = '#d63031';
+    }
+    document.getElementById('quiz-next-btn').style.display = 'inline-block';
+  }
+
+  function submitNumAnswer() {
+    if (answered) return;
+    answered = true;
+    const inp = document.getElementById('quiz-num-answer');
+    const val = parseFloat(inp.value);
+    const q = quizData[currentQ];
+    if (Math.abs(val - q.answer) < 0.5) {
+      document.getElementById('quiz-feedback').textContent = '✅ Correct!';
+      document.getElementById('quiz-feedback').style.color = '#00b894';
+      score++;
+      inp.style.borderColor = '#00b894';
+    } else {
+      document.getElementById('quiz-feedback').textContent = `❌ Wrong. Correct answer: ${q.answer}`;
+      document.getElementById('quiz-feedback').style.color = '#d63031';
+      inp.style.borderColor = '#d63031';
+    }
+    inp.disabled = true;
+    document.getElementById('quiz-next-btn').style.display = 'inline-block';
+  }
+
+  window.quizNext = function() {
+    currentQ++;
+    loadQuestion();
+  };
+
+  function showResult() {
+    document.getElementById('quiz-area').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    document.getElementById('quiz-score-display').textContent = `${score}/10`;
+    const msgs = [
+      "Keep practising! You'll get there! 💪",
+      "Good effort! Review the topics and try again! 📚",
+      "Nice work! You're getting better! 👍",
+      "Great job! Almost perfect! 🌟",
+      "Outstanding! You're a maths star! 🏆"
+    ];
+    const idx = Math.floor((score / 10) * (msgs.length - 1));
+    document.getElementById('quiz-result-msg').textContent = msgs[idx];
+    document.getElementById('quiz-progress-fill').style.width = '100%';
+  }
+
+  window.restartQuiz = function() {
+    currentQ = 0; score = 0;
+    document.getElementById('quiz-area').style.display = 'block';
+    document.getElementById('quiz-result').style.display = 'none';
+    loadQuestion();
+  };
+
+  loadQuestion();
+
+  // ── AVERAGE CALCULATOR ────────────────────────────────────────────
+  window.calculateAverage = function() {
+    const raw = document.getElementById('avg-input').value;
+    const nums = raw.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+    if (nums.length === 0) { alert('Please enter valid numbers separated by commas.'); return; }
+    const sum = nums.reduce((a, b) => a + b, 0);
+    const avg = sum / nums.length;
+    document.getElementById('avg-steps').innerHTML = `<strong>Sum:</strong> ${nums.join(' + ')} = <strong>${sum}</strong> &nbsp;|&nbsp; <strong>Count:</strong> ${nums.length}`;
+    document.getElementById('avg-answer').textContent = `Average = ${sum} ÷ ${nums.length} = ${avg % 1 === 0 ? avg : avg.toFixed(2)}`;
+    const rd = document.getElementById('avg-result-display');
+    rd.style.display = 'block';
+    try {
+      if (typeof gsap !== 'undefined') gsap.from(rd, { opacity: 0, y: 10, duration: 0.4 });
+    } catch(e) {}
+  };
+
+  // ── HINT TOGGLE ───────────────────────────────────────────────────
+  window.toggleHint = function(btn) {
+    const content = btn.nextElementSibling;
+    content.classList.toggle('open');
+    btn.textContent = content.classList.contains('open') ? '🙈 Hide Hint' : '💡 Show Hint';
+  };
+
+  // ── PRACTICE CHECK ────────────────────────────────────────────────
+  window.checkAnswer = function(inputId, correct, fbId, tolerance = 1) {
+    const val = parseFloat(document.getElementById(inputId).value);
+    const fb = document.getElementById(fbId);
+    if (isNaN(val)) { fb.textContent = 'Please enter a number.'; fb.className = 'feedback wrong'; return; }
+    if (Math.abs(val - correct) <= tolerance) {
+      fb.textContent = `✅ Correct! The answer is ${correct}.`;
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `❌ Not quite. Try again! (Hint: answer is close to ${correct})`;
+      fb.className = 'feedback wrong';
+    }
+  };
+
+  // ── TABLE ROW EXPAND ──────────────────────────────────────────────
+  window.toggleRow = function(row) {
+    const next = row.nextElementSibling;
+    if (next && next.classList.contains('expanded-row')) {
+      next.remove();
+    } else {
+      const cells = row.querySelectorAll('td');
+      const nums = cells[0].textContent;
+      const sum = cells[1].textContent;
+      const count = cells[2].textContent;
+      const avg = cells[3].textContent;
+      const expRow = document.createElement('tr');
+      expRow.className = 'expanded-row';
+      expRow.innerHTML = `<td colspan="4">📌 Calculation: Sum of (${nums}) = ${sum} ÷ ${count} numbers = <strong>${avg}</strong></td>`;
+      row.parentNode.insertBefore(expRow, row.nextSibling);
+    }
+  };
+
+  // ── DRAG AND DROP ─────────────────────────────────────────────────
+  let dragItem = null;
+
+  document.querySelectorAll('.dnd-item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      dragItem = item;
+      setTimeout(() => item.style.opacity = '0.5', 0);
+    });
+    item.addEventListener('dragend', () => {
+      dragItem = null;
+      item.style.opacity = '1';
+    });
+  });
+
+  document.querySelectorAll('.dnd-category').forEach(cat => {
+    cat.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      cat.classList.add('drag-over');
+    });
+    cat.addEventListener('dragleave', () => cat.classList.remove('drag-over'));
+    cat.addEventListener('drop', (e) => {
+      e.preventDefault();
+      cat.classList.remove('drag-over');
+      if (dragItem) {
+        cat.appendChild(dragItem);
+        dragItem.style.opacity = '1';
+      }
+    });
+  });
+
+  window.checkDnD = function() {
+    const fb = document.getElementById('dnd-feedback');
+    let correct = 0, total = 0;
+    document.querySelectorAll('.dnd-category').forEach(cat => {
+      const catType = cat.dataset.cat;
+      cat.querySelectorAll('.dnd-item').forEach(item => {
+        total++;
+        if (item.dataset.cat === catType) {
+          correct++;
+          item.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
+        } else {
+          item.style.background = 'linear-gradient(135deg, #d63031, #e17055)';
+        }
+      });
+    });
+    fb.textContent = total === 0 ? 'Please drag items to the categories first!' : `You got ${correct} out of ${total} correct!`;
+    fb.className = 'feedback ' + (correct === total && total > 0 ? 'correct' : 'wrong');
+  };
+
+  // ── CHALLENGE ─────────────────────────────────────────────────────
+  const challenges = [
+    {
+      q: "Challenge 1: The average of 5 numbers is 18. Four of them are 15, 20, 12, and 25. What is the fifth number?",
+      hint: "Total = 18 × 5 = 90. Sum of 4 = 15+20+12+25 = 72. Fifth = 90 - 72",
+      answer: 18
+    },
+    {
+      q: "Challenge 2: A student's average marks in 4 tests is 85. Total marks for 3 tests are 240. What were the marks in the 4th test?",
+      hint: "Total = 85 × 4 = 340. Marks in 4th test = 340 - 240",
+      answer: 100
+    },
+    {
+      q: "Challenge 3: The average of 2, 4, 6, 8, and x is 6. Find x.",
+      hint: "Sum = 6 × 5 = 30. So 2+4+6+8+x = 30 → x = 30 - 20",
+      answer: 10
+    }
+  ];
+  let currentChallenge = 0;
+
+  window.checkChallenge = function() {
+    const val = parseFloat(document.getElementById('challenge-input').value);
+    const fb = document.getElementById('challenge-fb');
+    const ch = challenges[currentChallenge];
+    if (isNaN(val)) { fb.textContent = 'Please enter a number.'; return; }
+    if (Math.abs(val - ch.answer) < 0.5) {
+      fb.textContent = `🎉 Correct! The answer is ${ch.answer}. ${ch.hint}`;
+      fb.style.color = '#a6e3a1';
+    } else {
+      fb.textContent = `❌ Not quite. Hint: ${ch.hint}`;
+      fb.style.color = '#f38ba8';
+    }
+  };
+
+  window.nextChallenge = function() {
+    currentChallenge = (currentChallenge + 1) % challenges.length;
+    document.getElementById('challenge-q').innerHTML = `<strong>${challenges[currentChallenge].q}</strong>`;
+    document.getElementById('challenge-input').value = '';
+    document.getElementById('challenge-fb').textContent = '';
+  };
+
+  // ── CURTAIN GSAP DISMISS ──────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', {
+        opacity: 0, duration: 0.6, delay: 1.2,
+        onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+    }
+  } catch(e) {}
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

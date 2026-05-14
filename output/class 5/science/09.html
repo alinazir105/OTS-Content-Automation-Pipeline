@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: science | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 9: Solar and Lunar Eclipses | Class 5 Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:clamp(17px,2.5vw,18px);background:#FEFEFE;color:#2d3436}
+:root{
+  --teal:#22A6B3;
+  --indigo:#4834D4;
+  --warm-white:#FEFEFE;
+  --slate:#636E72;
+  --orange:#f0932b;
+  --red:#eb4d4b;
+  --green:#6ab04c;
+  --yellow:#f9ca24;
+  --shadow:0 4px 20px rgba(0,0,0,0.1);
+  --radius:16px;
+}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#22A6B3,#4834D4);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .loader-text{color:#fff;font-family:'Poppins',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700}
+#curtain .spinner{width:50px;height:50px;border:4px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOC SIDEBAR */
+#toc{position:fixed;top:50%;left:0;transform:translateY(-50%);z-index:100;background:#fff;border-radius:0 var(--radius) var(--radius) 0;box-shadow:var(--shadow);padding:16px 10px;display:flex;flex-direction:column;gap:8px;max-height:90vh;overflow-y:auto}
+#toc a{display:block;width:12px;height:12px;border-radius:50%;background:#dfe6e9;transition:all 0.3s;position:relative}
+#toc a.active,#toc a:hover{background:var(--teal);transform:scale(1.4)}
+#toc a::after{content:attr(data-label);position:absolute;left:22px;top:50%;transform:translateY(-50%);background:#2d3436;color:#fff;padding:4px 10px;border-radius:8px;font-size:13px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;font-family:'Inter',sans-serif}
+#toc a:hover::after{opacity:1}
+
+/* BOTTOM NAV MOBILE */
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #dfe6e9;z-index:200;overflow-x:auto;padding:8px 0}
+#bottom-nav ul{display:flex;gap:4px;padding:0 8px;list-style:none;min-width:max-content}
+#bottom-nav a{display:block;padding:8px 12px;font-size:13px;color:var(--slate);text-decoration:none;white-space:nowrap;border-radius:8px;min-height:48px;display:flex;align-items:center;font-family:'Inter',sans-serif;font-weight:500}
+#bottom-nav a.active,#bottom-nav a:hover{background:var(--teal);color:#fff}
+
+/* HERO */
+.hero{width:100%;min-height:90vh;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-content{text-align:center;z-index:2;padding:40px 20px;max-width:900px;margin:0 auto}
+.hero h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;font-weight:800;line-height:1.1;margin-bottom:20px}
+.hero h1 span{color:var(--teal)}
+.hero p{font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 30px}
+.hero-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,0.15);color:#fff;padding:8px 18px;border-radius:50px;font-size:14px;font-weight:600;backdrop-filter:blur(10px)}
+.stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s infinite alternate}
+@keyframes twinkle{0%{opacity:0.2;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
+
+/* THREE.JS CANVAS */
+#eclipse-canvas-wrap{width:100%;background:#0f0f1a;border-radius:var(--radius);overflow:hidden;min-height:200px;position:relative}
+#eclipse-canvas-wrap canvas{display:block;width:100%!important}
+.three-fallback{display:none;min-height:200px;align-items:center;justify-content:center;font-size:80px;background:#0f0f1a;border-radius:var(--radius)}
+
+/* SECTIONS */
+section{width:100%;padding:80px 0;opacity:1;transform:none}
+.container{max-width:1500px;margin:0 auto;padding:0 40px}
+.section-label{display:inline-block;background:linear-gradient(90deg,var(--teal),var(--indigo));color:#fff;padding:6px 16px;border-radius:50px;font-size:13px;font-weight:700;font-family:'Poppins',sans-serif;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:8px;color:#2d3436}
+.section-subtitle{font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);margin-bottom:40px;max-width:700px}
+h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;margin-bottom:12px}
+
+/* DISCOVERY ZONE */
+.discovery-zone{border:2px dashed var(--teal);border-radius:var(--radius);padding:30px;background:linear-gradient(135deg,rgba(34,166,179,0.05),rgba(72,52,212,0.05));position:relative;margin-bottom:30px}
+.discovery-zone::before{content:'🔍';position:absolute;top:-16px;left:20px;font-size:28px;background:#FEFEFE;padding:0 6px}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:30px}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;width:100%;max-width:100%;opacity:1;transform:none;transition:transform 0.3s,box-shadow 0.3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.15)}
+.card-icon{font-size:48px;margin-bottom:16px;display:block}
+.card h3{font-size:clamp(1.2rem,2vw,1.5rem);margin-bottom:10px;color:#2d3436}
+.card p{font-size:clamp(16px,1.8vw,18px);color:var(--slate);line-height:1.7}
+
+/* ECLIPSE TYPES */
+.eclipse-type{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:flex;gap:20px;align-items:flex-start;margin-bottom:20px;opacity:1;transform:none}
+.eclipse-type-icon{font-size:40px;flex-shrink:0}
+.eclipse-type h4{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2vw,1.3rem);font-weight:700;margin-bottom:6px}
+.eclipse-type p{font-size:clamp(16px,1.8vw,18px);color:var(--slate);line-height:1.6}
+.type-badge{display:inline-block;padding:4px 12px;border-radius:50px;font-size:13px;font-weight:700;margin-bottom:8px;color:#fff}
+.solar-badge{background:var(--orange)}
+.lunar-badge{background:var(--indigo)}
+
+/* COMPARISON TABLE */
+.table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:clamp(15px,1.8vw,17px)}
+thead th{background:linear-gradient(90deg,var(--teal),var(--indigo));color:#fff;padding:18px 20px;text-align:left;font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(15px,1.8vw,17px)}
+tbody tr:nth-child(even){background:#f0f9fa}
+tbody tr:nth-child(odd){background:#fff}
+tbody td{padding:16px 20px;border-bottom:1px solid #dfe6e9;line-height:1.5;vertical-align:top}
+tbody tr{cursor:pointer;transition:background 0.2s}
+tbody tr:hover{background:rgba(34,166,179,0.1)}
+.expand-row{background:#e8f8fa!important;display:none}
+.expand-row td{padding:14px 20px;font-size:clamp(15px,1.7vw,16px);color:var(--slate)}
+
+/* FLIP CARDS */
+.flip-cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:30px}
+.flip-card{height:200px;perspective:1000px;cursor:pointer}
+.flip-card-inner{width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.6s;position:relative}
+.flip-card:hover .flip-card-inner,.flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.flip-front{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff}
+.flip-front .flip-icon{font-size:48px;margin-bottom:12px}
+.flip-front h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#fff}
+.flip-back{background:#fff;border:2px solid var(--teal);transform:rotateY(180deg)}
+.flip-back p{font-size:clamp(15px,1.8vw,17px);color:#2d3436;line-height:1.6}
+
+/* SAFETY SECTION */
+.safety-bg{background:linear-gradient(135deg,#1a1a2e,#16213e)}
+.safety-bg h2,.safety-bg .section-label{color:#fff}
+.safety-bg .section-subtitle{color:rgba(255,255,255,0.7)}
+.safety-card{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:28px;color:#fff;opacity:1;transform:none}
+.safety-card .s-icon{font-size:44px;margin-bottom:16px;display:block}
+.safety-card h4{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2vw,1.3rem);margin-bottom:10px;color:#fff}
+.safety-card p{font-size:clamp(15px,1.8vw,17px);color:rgba(255,255,255,0.8);line-height:1.6}
+.safety-card.danger{border-color:var(--red)}
+.safety-card.safe{border-color:var(--green)}
+.safety-card.info{border-color:var(--yellow)}
+
+/* DRAG AND DROP */
+.dnd-container{display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-top:24px}
+.dnd-items{background:#f8f9fa;border-radius:var(--radius);padding:20px;min-height:200px}
+.dnd-items h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.2rem);margin-bottom:16px;color:var(--slate)}
+.drag-item{background:#fff;border:2px solid #dfe6e9;border-radius:10px;padding:12px 16px;margin-bottom:10px;cursor:grab;font-size:clamp(15px,1.8vw,17px);font-weight:500;transition:all 0.2s;user-select:none}
+.drag-item:hover{border-color:var(--teal);background:#e8f8fa}
+.drag-item.dragging{opacity:0.4;cursor:grabbing}
+.drop-zones{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.drop-zone{border:2px dashed #b2bec3;border-radius:var(--radius);padding:20px;min-height:180px;transition:all 0.3s}
+.drop-zone.drag-over{border-color:var(--teal);background:rgba(34,166,179,0.08)}
+.drop-zone h4{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.1rem);margin-bottom:12px;text-align:center;padding:8px;border-radius:8px;color:#fff}
+.solar-zone h4{background:var(--orange)}
+.lunar-zone h4{background:var(--indigo)}
+.drop-zone .drag-item{font-size:clamp(14px,1.6vw,15px)}
+.dnd-check-btn{margin-top:16px;background:linear-gradient(90deg,var(--teal),var(--indigo));color:#fff;border:none;padding:14px 30px;border-radius:50px;font-size:clamp(15px,1.8vw,17px);font-weight:700;cursor:pointer;transition:transform 0.2s;font-family:'Poppins',sans-serif}
+.dnd-check-btn:hover{transform:scale(1.04)}
+.dnd-result{margin-top:14px;padding:14px;border-radius:10px;font-size:clamp(15px,1.8vw,17px);font-weight:600;display:none}
+.dnd-result.correct{background:#d4edda;color:#155724}
+.dnd-result.wrong{background:#f8d7da;color:#721c24}
+
+/* HINT PANELS */
+.hint-toggle{background:none;border:2px solid var(--teal);color:var(--teal);padding:10px 20px;border-radius:50px;font-size:clamp(14px,1.7vw,16px);font-weight:600;cursor:pointer;margin-top:12px;transition:all 0.2s;font-family:'Inter',sans-serif}
+.hint-toggle:hover{background:var(--teal);color:#fff}
+.hint-panel{background:#e8f8fa;border-left:4px solid var(--teal);border-radius:0 10px 10px 0;padding:16px;margin-top:10px;display:none;font-size:clamp(15px,1.8vw,17px);line-height:1.7;color:#2d3436}
+.hint-panel.open{display:block}
+
+/* QUIZ */
+.quiz-bg{background:linear-gradient(135deg,#4834D4,#22A6B3)}
+.quiz-bg h2,.quiz-bg .section-label{color:#fff}
+.quiz-bg .section-subtitle{color:rgba(255,255,255,0.8)}
+.quiz-card{background:#fff;border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);margin-bottom:24px;opacity:1;transform:none}
+.quiz-card .q-num{display:inline-block;background:linear-gradient(90deg,var(--teal),var(--indigo));color:#fff;width:36px;height:36px;border-radius:50%;text-align:center;line-height:36px;font-weight:700;font-size:16px;margin-bottom:12px}
+.quiz-card .question{font-family:'Poppins',sans-serif;font-size:clamp(1rem,2vw,1.15rem);font-weight:700;margin-bottom:18px;color:#2d3436}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.option-btn{background:#f8f9fa;border:2px solid #dfe6e9;border-radius:10px;padding:12px 16px;font-size:clamp(15px,1.7vw,16px);cursor:pointer;text-align:left;transition:all 0.2s;font-family:'Inter',sans-serif;min-height:48px}
+.option-btn:hover{border-color:var(--teal);background:#e8f8fa}
+.option-btn.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.option-btn.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.option-btn:disabled{cursor:default}
+.num-input-wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.num-input{border:2px solid #dfe6e9;border-radius:10px;padding:12px 16px;font-size:clamp(15px,1.7vw,17px);font-family:'Inter',sans-serif;width:220px;max-width:100%;min-height:48px}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.submit-ans{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:clamp(14px,1.7vw,16px);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;min-height:48px;transition:background 0.2s}
+.submit-ans:hover{background:var(--indigo)}
+.quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:clamp(14px,1.7vw,16px);font-weight:600;display:none}
+.quiz-feedback.correct{background:#d4edda;color:#155724}
+.quiz-feedback.wrong{background:#f8d7da;color:#721c24}
+.quiz-score-wrap{text-align:center;background:#fff;border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);display:none}
+.quiz-score-wrap .score-emoji{font-size:80px;display:block;margin-bottom:16px}
+.quiz-score-wrap h3{font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,3vw,2rem);margin-bottom:10px}
+.quiz-score-wrap p{font-size:clamp(16px,1.8vw,18px);color:var(--slate)}
+.quiz-submit-all{display:block;margin:30px auto 0;background:linear-gradient(90deg,var(--orange),var(--red));color:#fff;border:none;padding:16px 40px;border-radius:50px;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:transform 0.2s}
+.quiz-submit-all:hover{transform:scale(1.04)}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;overflow-x:auto;margin-top:24px}
+.mermaid{font-size:16px}
+
+/* FORMULA CALLOUT */
+.formula-callout{background:#1e1e2e;color:#a9dc76;font-family:'Courier New',monospace;border-radius:var(--radius);padding:24px 30px;margin:20px 0;font-size:clamp(15px,1.8vw,17px);line-height:1.8;box-shadow:var(--shadow)}
+.formula-callout .fc-label{color:#78dce8;font-weight:700;display:block;margin-bottom:8px;font-size:clamp(13px,1.5vw,15px)}
+
+/* SECTION COLORS */
+.bg-light{background:#f8f9fa}
+.bg-space{background:linear-gradient(180deg,#0f2027 0%,#203a43 50%,#2c5364 100%)}
+.bg-white{background:#FEFEFE}
+
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.2);z-index:1000}
+#progress-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--indigo));width:0%;transition:width 0.1s linear}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #toc{display:none}
+  #bottom-nav{display:block}
+  body{padding-bottom:80px}
+  .container{padding:0 16px}
+  section{padding:50px 0}
+  .dnd-container{grid-template-columns:1fr}
+  .drop-zones{grid-template-columns:1fr}
+  .options{grid-template-columns:1fr}
+  .hero{min-height:60vh}
+  .cards-grid{grid-template-columns:1fr}
+  .flip-cards-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:clamp(1.8rem,7vw,2.5rem)}
+  h2{font-size:clamp(1.6rem,5vw,2rem)}
+  .safety-card{padding:20px}
+  .quiz-card{padding:20px}
+  #eclipse-canvas-wrap{min-height:250px}
+}
+@media(max-width:480px){
+  .flip-cards-grid{grid-template-columns:1fr}
+  .eclipse-type{flex-direction:column}
+}
+
+/* ANIMATIONS - content always visible */
+.fade-in{opacity:1;transform:none}
+.slide-up{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- LOADING CURTAIN -->
+<div id="curtain">
+  <div class="spinner"></div>
+  <div class="loader-text">🌑 Loading Eclipse Unit...</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap"><div id="progress-bar"></div></div>
+
+<!-- DESKTOP TOC -->
+<nav id="toc" aria-label="Table of Contents">
+  <a href="#intro" data-label="Introduction" class="active"></a>
+  <a href="#solar" data-label="Solar Eclipse"></a>
+  <a href="#lunar" data-label="Lunar Eclipse"></a>
+  <a href="#compare" data-label="Compare"></a>
+  <a href="#safety" data-label="Safety"></a>
+  <a href="#practice" data-label="Practice"></a>
+  <a href="#quiz" data-label="Quiz"></a>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="bottom-nav" aria-label="Mobile Navigation">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#solar">Solar</a></li>
+    <li><a href="#lunar">Lunar</a></li>
+    <li><a href="#compare">Compare</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#practice">Practice</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="intro">
+  <div class="stars" id="stars-container"></div>
+  <div class="hero-content">
+    <div class="section-label">Unit 9 · Class 5 Science</div>
+    <h1 id="hero-title">Solar &amp; Lunar <span>Eclipses</span></h1>
+    <p>Discover how the Sun, Moon, and Earth align to create one of nature's most spectacular events.</p>
+    <div class="hero-badges">
+      <span class="badge">🌑 Solar Eclipse</span>
+      <span class="badge">🌕 Lunar Eclipse</span>
+      <span class="badge">🔭 3 Types</span>
+      <span class="badge">🛡️ Safety Tips</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3D SCENE -->
+<section class="bg-space" style="padding:60px 0">
+  <div class="container">
+    <div class="section-label">Interactive Model</div>
+    <h2 style="color:#fff">3D Eclipse Simulator</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,0.7)">Watch the Moon orbit Earth and see how eclipses form. Click on any object to learn more.</p>
+    <div id="eclipse-canvas-wrap">
+      <div class="three-fallback" id="three-fallback">🌑</div>
+    </div>
+    <div id="three-modal" style="display:none;position:absolute;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 8px 30px rgba(0,0,0,0.3);max-width:260px;z-index:50;font-size:16px;font-family:'Inter',sans-serif">
+      <strong id="modal-title" style="font-family:'Poppins',sans-serif;font-size:18px"></strong>
+      <p id="modal-desc" style="margin-top:8px;color:#636E72;font-size:16px"></p>
+      <button onclick="document.getElementById('three-modal').style.display='none'" style="margin-top:10px;background:var(--teal);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:15px">Close</button>
+    </div>
+  </div>
+</section>
+
+<!-- BACKGROUND / INTRO -->
+<section class="bg-white" id="background" style="padding:80px 0">
+  <div class="container">
+    <div class="section-label">Background</div>
+    <h2>What Is an Eclipse?</h2>
+    <p class="section-subtitle">An eclipse happens when the Sun, Moon, and Earth align, and one blocks the light of another.</p>
+    
+    <div class="discovery-zone">
+      <p style="font-size:clamp(16px,2vw,18px);line-height:1.8;color:#2d3436">The <strong>Sun, Moon, and Earth</strong> create eclipses when one blocks the light of another. Eclipses are fascinating astronomical events that have been observed by humans for thousands of years. There are two main types: <strong style="color:var(--orange)">Solar Eclipses</strong> (involving the Moon blocking the Sun) and <strong style="color:var(--indigo)">Lunar Eclipses</strong> (involving the Earth blocking the Moon).</p>
+    </div>
+
+    <div class="mermaid-wrap">
+      <div class="mermaid">
+graph LR
+  Sun["☀️ Sun"] --> |"light blocked by Moon"| SolarEclipse["🌑 Solar Eclipse"]
+  Sun --> |"light blocked by Earth"| LunarEclipse["🌕 Lunar Eclipse"]
+  SolarEclipse --> Total1["Total Solar"]
+  SolarEclipse --> Partial1["Partial Solar"]
+  SolarEclipse --> Annular["Annular Solar"]
+  LunarEclipse --> Total2["Total Lunar"]
+  LunarEclipse --> Partial2["Partial Lunar"]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLAR ECLIPSE -->
+<section class="bg-light" id="solar">
+  <div class="container">
+    <div class="section-label">Solar Eclipses</div>
+    <h2>What Is a Solar Eclipse? ☀️</h2>
+    <p class="section-subtitle">A solar eclipse occurs when the Moon comes between the Sun and Earth, blocking sunlight from reaching Earth.</p>
+
+    <div class="discovery-zone">
+      <p style="font-size:clamp(16px,2vw,18px);line-height:1.8">A <strong>solar eclipse</strong> occurs when the Moon comes in between the Sun and Earth, <strong>blocking sunlight</strong> from reaching the Earth. This makes the Sun appear dark for a short time. Solar eclipses can <em>only be seen from certain parts of the Earth</em> and they happen <strong>during the day</strong>.</p>
+      <button class="hint-toggle" onclick="toggleHint('hint-solar')">💡 Show Hint</button>
+      <div class="hint-panel" id="hint-solar">The Moon's shadow falls on specific areas of Earth. If you are in the <strong>umbra</strong> (dark central shadow), you see a total eclipse. In the <strong>penumbra</strong> (outer shadow), you see a partial eclipse.</div>
+    </div>
+
+    <h3 style="margin:40px 0 20px">Three Types of Solar Eclipses</h3>
+
+    <div class="eclipse-type" id="solar-type-1">
+      <div class="eclipse-type-icon">🌑</div>
+      <div>
+        <span class="type-badge solar-badge">Type 1</span>
+        <h4>Total Solar Eclipse</h4>
+        <p>The Moon <strong>completely blocks</strong> the Sun. The sky becomes very dark, and you can see the Sun's corona (outer atmosphere). This is the most dramatic type of solar eclipse.</p>
+      </div>
+    </div>
+
+    <div class="eclipse-type" id="solar-type-2">
+      <div class="eclipse-type-icon">🌗</div>
+      <div>
+        <span class="type-badge solar-badge">Type 2</span>
+        <h4>Partial Solar Eclipse</h4>
+        <p>The Moon blocks <strong>only part of the Sun</strong>. The Sun appears as a crescent shape. Most solar eclipses seen around the world are partial solar eclipses.</p>
+      </div>
+    </div>
+
+    <div class="eclipse-type" id="solar-type-3">
+      <div class="eclipse-type-icon">💍</div>
+      <div>
+        <span class="type-badge solar-badge">Type 3</span>
+        <h4>Annular Solar Eclipse</h4>
+        <p>The Moon blocks the <strong>center of the Sun</strong>, leaving a bright ring (annulus) around it. This happens when the Moon is farther from Earth and appears smaller than the Sun.</p>
+      </div>
+    </div>
+
+    <div class="formula-callout" style="margin-top:30px">
+      <span class="fc-label">// Solar Eclipse Alignment</span>
+      Sun → Moon → Earth (Moon between Sun and Earth)
+      <br>Result: Moon's shadow falls on Earth
+      <br>Visible from: Only specific regions on Earth
+      <br>Time of day: Daytime
+    </div>
+  </div>
+</section>
+
+<!-- LUNAR ECLIPSE -->
+<section class="bg-white" id="lunar">
+  <div class="container">
+    <div class="section-label">Lunar Eclipses</div>
+    <h2>What Is a Lunar Eclipse? 🌕</h2>
+    <p class="section-subtitle">A lunar eclipse occurs when the Earth comes between the Sun and the Moon, blocking sunlight from reaching the Moon.</p>
+
+    <div class="discovery-zone">
+      <p style="font-size:clamp(16px,2vw,18px);line-height:1.8">A <strong>lunar eclipse</strong> occurs when the Earth comes between the Sun and the Moon, blocking sunlight from reaching the Moon. The Moon appears <strong>dark or reddish</strong> in color. Lunar eclipses happen at <strong>night</strong> and can be seen from <em>anywhere on the night side of Earth</em>.</p>
+      <button class="hint-toggle" onclick="toggleHint('hint-lunar')">💡 Show Hint</button>
+      <div class="hint-panel" id="hint-lunar">During a total lunar eclipse, the Moon turns <strong>reddish</strong> — this is called the "Blood Moon." It happens because Earth's atmosphere bends some red light around Earth, which then reaches the Moon.</div>
+    </div>
+
+    <h3 style="margin:40px 0 20px">Two Types of Lunar Eclipses</h3>
+
+    <div class="eclipse-type" id="lunar-type-1">
+      <div class="eclipse-type-icon">🔴</div>
+      <div>
+        <span class="type-badge lunar-badge">Type 1</span>
+        <h4>Total Lunar Eclipse</h4>
+        <p>The <strong>entire Moon</strong> moves into the Earth's shadow. The Moon appears dark and may turn a reddish-orange color (Blood Moon). This is safe to watch with the naked eye.</p>
+      </div>
+    </div>
+
+    <div class="eclipse-type" id="lunar-type-2">
+      <div class="eclipse-type-icon">🌒</div>
+      <div>
+        <span class="type-badge lunar-badge">Type 2</span>
+        <h4>Partial Lunar Eclipse</h4>
+        <p>Only <strong>part of the Moon</strong> enters the Earth's shadow. One side of the Moon appears darker while the other side remains bright and visible.</p>
+      </div>
+    </div>
+
+    <div class="formula-callout" style="margin-top:30px">
+      <span class="fc-label">// Lunar Eclipse Alignment</span>
+      Sun → Earth → Moon (Earth between Sun and Moon)
+      <br>Result: Earth's shadow falls on the Moon
+      <br>Visible from: Anywhere on the night side of Earth
+      <br>Time of day: Night
+      <br>Moon color: Dark or reddish (Blood Moon)
+    </div>
+
+    <!-- Flip cards -->
+    <h3 style="margin:50px 0 10px">Did You Know? 🤔</h3>
+    <p style="color:var(--slate);font-size:clamp(15px,1.8vw,17px);margin-bottom:10px">Click or hover to reveal eclipse facts!</p>
+    <div class="flip-cards-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-front"><span class="flip-icon">🌍</span><h4>Earth's Shadow</h4></div>
+          <div class="flip-back"><p>Earth's shadow is much larger than the Moon, so during a total lunar eclipse, the Moon can be fully covered for up to <strong>104 minutes</strong>!</p></div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-front"><span class="flip-icon">🩸</span><h4>Blood Moon</h4></div>
+          <div class="flip-back"><p>The Moon turns red during a total lunar eclipse because Earth's atmosphere scatters blue light and lets <strong>red light</strong> pass through, like a sunset projected on the Moon.</p></div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-front"><span class="flip-icon">💍</span><h4>Ring of Fire</h4></div>
+          <div class="flip-back"><p>An annular solar eclipse is called the "Ring of Fire" because the Moon is farther away and appears <strong>smaller</strong>, leaving a glowing ring of sunlight visible around it.</p></div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-front"><span class="flip-icon">📅</span><h4>Monthly?</h4></div>
+          <div class="flip-back"><p>We don't see eclipses every month because the Moon's orbit is <strong>tilted about 5°</strong> compared to Earth's orbit. Perfect alignment is rare!</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="bg-light" id="compare">
+  <div class="container">
+    <div class="section-label">Comparison</div>
+    <h2>How Are Eclipses Different?</h2>
+    <p class="section-subtitle">Click on any row to expand and learn more details. Compare solar and lunar eclipses side by side.</p>
+
+    <div class="table-wrap">
+      <table id="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>☀️ Solar Eclipse</th>
+            <th>🌕 Lunar Eclipse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="toggleRow(this,'row1-exp')">
+            <td><strong>Time of occurrence</strong></td>
+            <td>During the day</td>
+            <td>At night</td>
+          </tr>
+          <tr class="expand-row" id="row1-exp"><td colspan="3">Solar eclipses can only happen during a <em>new moon</em> phase, while lunar eclipses can only happen during a <em>full moon</em> phase.</td></tr>
+          <tr onclick="toggleRow(this,'row2-exp')">
+            <td><strong>What is blocked?</strong></td>
+            <td>Moon blocks sunlight from reaching Earth</td>
+            <td>Earth blocks sunlight from reaching the Moon</td>
+          </tr>
+          <tr class="expand-row" id="row2-exp"><td colspan="3">In a solar eclipse, you are standing in the <em>Moon's shadow</em>. In a lunar eclipse, the <em>Moon is in Earth's shadow</em>.</td></tr>
+          <tr onclick="toggleRow(this,'row3-exp')">
+            <td><strong>Visibility</strong></td>
+            <td>Only from certain parts of Earth</td>
+            <td>Visible from anywhere on the night side of Earth</td>
+          </tr>
+          <tr class="expand-row" id="row3-exp"><td colspan="3">Solar eclipses are visible in a narrow path (the Moon's shadow). Lunar eclipses are visible to anyone where the Moon is above the horizon.</td></tr>
+          <tr onclick="toggleRow(this,'row4-exp')">
+            <td><strong>Duration</strong></td>
+            <td>Totality lasts only a few minutes</td>
+            <td>Can last over an hour</td>
+          </tr>
+          <tr class="expand-row" id="row4-exp"><td colspan="3">Total solar eclipse totality lasts only about 7 minutes at most. Total lunar eclipse can last up to about 104 minutes.</td></tr>
+          <tr onclick="toggleRow(this,'row5-exp')">
+            <td><strong>Safety to observe</strong></td>
+            <td>Dangerous — never look directly</td>
+            <td>Safe with naked eye</td>
+          </tr>
+          <tr class="expand-row" id="row5-exp"><td colspan="3">During a solar eclipse, harmful UV and infrared rays can damage your eyes even when the Sun is partially covered. Always use certified eclipse glasses.</td></tr>
+          <tr onclick="toggleRow(this,'row6-exp')">
+            <td><strong>Types</strong></td>
+            <td>Total, Partial, Annular</td>
+            <td>Total, Partial</td>
+          </tr>
+          <tr class="expand-row" id="row6-exp"><td colspan="3">Solar eclipses have an extra type — the Annular eclipse — which occurs when the Moon is farther away and appears too small to fully cover the Sun.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:clamp(14px,1.6vw,15px);color:var(--slate)">💡 Click on any row to expand for more details.</p>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="safety-bg" id="safety">
+  <div class="container">
+    <div class="section-label">Safety First!</div>
+    <h2>Safety During Eclipses 🛡️</h2>
+    <p class="section-subtitle">It's important to know how to observe eclipses safely. Follow these guidelines!</p>
+    <div class="cards-grid">
+      <div class="safety-card danger">
+        <span class="s-icon">🚫</span>
+        <h4>Never Look Directly!</h4>
+        <p>Never look directly at the Sun during a solar eclipse. The Sun's harmful rays can cause <strong>permanent eye damage</strong> or even blindness, even when the Sun is partially covered by the Moon.</p>
+      </div>
+      <div class="safety-card safe">
+        <span class="s-icon">👓</span>
+        <h4>Use Eclipse Glasses</h4>
+        <p>Always use <strong>special certified eclipse glasses</strong> (ISO 12312-2 standard) when observing a solar eclipse. Regular sunglasses are NOT safe — they do not filter enough harmful radiation.</p>
+      </div>
+      <div class="safety-card info">
+        <span class="s-icon">📦</span>
+        <h4>Pinhole Projector</h4>
+        <p>Use a <strong>pinhole projector</strong> to safely observe a solar eclipse. Make a small hole in a card, let sunlight pass through it, and project the image onto another surface. Simple and safe!</p>
+      </div>
+      <div class="safety-card safe">
+        <span class="s-icon">🌕</span>
+        <h4>Lunar Eclipses: Totally Safe</h4>
+        <p>Lunar eclipses are <strong>completely safe</strong> to watch with the naked eye! Since you're looking at the Moon (not the Sun), there's no danger. Enjoy watching the Moon turn reddish!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="bg-white" id="practice">
+  <div class="container">
+    <div class="section-label">Practice Activities</div>
+    <h2>Let's Practice! 📝</h2>
+    <p class="section-subtitle">Test your understanding with these interactive exercises.</p>
+
+    <!-- Fill in the Blanks -->
+    <h3 style="margin-bottom:20px">Fill in the Blanks</h3>
+    <div style="display:grid;gap:16px;margin-bottom:40px" id="fitb-container">
+    </div>
+    <button class="dnd-check-btn" onclick="checkFITB()">✅ Check Answers</button>
+    <div class="dnd-result" id="fitb-result"></div>
+
+    <!-- True or False -->
+    <h3 style="margin:50px 0 20px">True or False?</h3>
+    <div style="display:grid;gap:14px;margin-bottom:30px" id="tof-container"></div>
+    <button class="dnd-check-btn" onclick="checkTOF()">✅ Check True/False</button>
+    <div class="dnd-result" id="tof-result"></div>
+
+    <!-- Drag and Drop -->
+    <h3 style="margin:50px 0 20px">Sort the Eclipse Features 🏷️</h3>
+    <p style="color:var(--slate);font-size:clamp(15px,1.8vw,17px);margin-bottom:16px">Drag each feature into the correct eclipse category!</p>
+    <div class="dnd-container">
+      <div class="dnd-items">
+        <h4>Eclipse Features</h4>
+        <div id="drag-source"></div>
+      </div>
+      <div class="drop-zones">
+        <div class="drop-zone solar-zone" id="solar-drop" ondragover="ev.preventDefault()" ondrop="dropItem(event,'solar')">
+          <h4>☀️ Solar Eclipse</h4>
+          <div id="solar-items"></div>
+        </div>
+        <div class="drop-zone lunar-zone" id="lunar-drop" ondragover="ev.preventDefault()" ondrop="dropItem(event,'lunar')">
+          <h4>🌕 Lunar Eclipse</h4>
+          <div id="lunar-items"></div>
+        </div>
+      </div>
+    </div>
+    <button class="dnd-check-btn" onclick="checkDnD()">✅ Check Sorting</button>
+    <div class="dnd-result" id="dnd-result"></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-bg" id="quiz">
+  <div class="container">
+    <div class="section-label">Quiz Time!</div>
+    <h2 style="color:#fff">10-Question Eclipse Quiz 🎯</h2>
+    <p class="section-subtitle">Answer all 10 questions, then submit to see your score!</p>
+    <div id="quiz-container"></div>
+    <button class="quiz-submit-all" onclick="submitQuiz()">🏁 Submit All Answers</button>
+    <div class="quiz-score-wrap" id="quiz-score"></div>
+  </div>
+</section>
+
+<!-- ACTIVITY -->
+<section class="bg-light" id="activity" style="padding:80px 0">
+  <div class="container">
+    <div class="section-label">Hands-on Activity</div>
+    <h2>Create a Model of an Eclipse 🔦</h2>
+    <p class="section-subtitle">Simulate eclipses at home using simple materials!</p>
+    <div class="cards-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <div class="card" style="border-top:4px solid var(--teal)">
+        <span class="card-icon">🔦</span>
+        <h3>Materials Needed</h3>
+        <p>• A flashlight (Sun)<br>• A small ball (Moon)<br>• A larger ball (Earth)</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--orange)">
+        <span class="card-icon">1️⃣</span>
+        <h3>Step 1</h3>
+        <p>Place the flashlight on a table to act as the Sun. Make sure it's pointing in one direction.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--indigo)">
+        <span class="card-icon">2️⃣</span>
+        <h3>Step 2</h3>
+        <p>Hold the large ball (Earth) in front of the flashlight. Notice its shadow.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--green)">
+        <span class="card-icon">3️⃣</span>
+        <h3>Step 3 – Lunar Eclipse</h3>
+        <p>Put the smaller ball (Moon) behind the Earth. Observe the shadow on the Moon — this is a <strong>lunar eclipse</strong>!</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--red)">
+        <span class="card-icon">4️⃣</span>
+        <h3>Step 4 – Solar Eclipse</h3>
+        <p>Move the smaller ball between the flashlight and the Earth. Observe the shadow on Earth — this is a <strong>solar eclipse</strong>!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // Init all modules
+  initStars();
+  initLenis();
+  initGSAP();
+  initThreeJS();
+  initMermaid();
+  initFITB();
+  initTOF();
+  initDnD();
+  initQuiz();
+  initProgress();
+  initScrollspy();
+  initTableExpand();
+
+  // Dismiss curtain after everything
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(c, { opacity: 0, duration: 0.6, onComplete: () => c.style.display = 'none' });
+      } else {
+        c.style.display = 'none';
+      }
+    }
+  }, 800);
+});
+
+// STARS
+function initStars() {
+  const container = document.getElementById('stars-container');
+  if (!container) return;
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      width:${Math.random()*3+1}px;
+      height:${Math.random()*3+1}px;
+      animation-delay:${Math.random()*3}s;
+      animation-duration:${Math.random()*3+2}s;
+    `;
+    container.appendChild(star);
+  }
+}
+
+// LENIS
+function initLenis() {
+  try {
+    if (typeof Lenis === 'undefined') return;
+    const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  } catch(e) { console.warn('Lenis failed:', e); }
+}
+
+// GSAP
+function initGSAP() {
+  try {
+    if (typeof gsap === 'undefined') return;
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    // Hero title char-by-char
+    const title = document.getElementById('hero-title');
+    if (title) {
+      const text = title.innerHTML;
+      const words = text.split(' ');
+      title.innerHTML = words.map(w => `<span style="display:inline-block;opacity:1">${w}</span>`).join(' ');
+      const spans = title.querySelectorAll('span');
+      gsap.from(spans, { opacity: 0, y: 40, stagger: 0.15, duration: 0.8, ease: 'back.out(1.7)', delay: 0.5 });
+    }
+    // Animate eclipse types on scroll
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.utils.toArray('.eclipse-type').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 85%' },
+          x: -40, opacity: 0, duration: 0.6, delay: i * 0.15, ease: 'power2.out'
+        });
+      });
+      gsap.utils.toArray('.safety-card').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 88%' },
+          y: 30, opacity: 0, duration: 0.5, delay: i * 0.1
+        });
+      });
+      gsap.utils.toArray('.card').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 90%' },
+          scale: 0.95, opacity: 0, duration: 0.5, delay: i * 0.08
+        });
+      });
+    }
+  } catch(e) { console.warn('GSAP init failed:', e); }
+}
+
+// MERMAID
+function initMermaid() {
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    }
+  } catch(e) { console.warn('Mermaid failed:', e); }
+}
+
+// THREE.JS
+function initThreeJS() {
+  const wrap = document.getElementById('eclipse-canvas-wrap');
+  const fallback = document.getElementById('three-fallback');
+  if (!wrap) return;
+
+  let webglSupported = false;
+  try {
+    const testCanvas = document.createElement('canvas');
+    const ctx = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+    if (ctx) webglSupported = true;
+  } catch(e) {}
+
+  if (!webglSupported || typeof THREE === 'undefined') {
+    fallback.style.display = 'flex';
+    return;
+  }
+
+  try {
+    let renderer, camera, scene, animId;
+    let sun, earth, moon, moonOrbit;
+    let raycaster, mouse;
+
+    const objects = [];
+
+    function buildScene() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x050510);
+
+      // Stars
+      const starGeo = new THREE.BufferGeometry();
+      const starVerts = [];
+      for (let i = 0; i < 2000; i++) {
+        starVerts.push((Math.random()-0.5)*400, (Math.random()-0.5)*400, (Math.random()-0.5)*400);
+      }
+      starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
+      const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+      scene.add(new THREE.Points(starGeo, starMat));
+
+      // Sun
+      const sunGeo = new THREE.SphereGeometry(2.5, 32, 32);
+      const sunMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 });
+      sun = new THREE.Mesh(sunGeo, sunMat);
+      sun.userData = { name: '☀️ The Sun', desc: 'The Sun is the star at the center of our Solar System. It provides the light that creates eclipses when blocked.' };
+      scene.add(sun);
+      objects.push(sun);
+
+      // Sun glow
+      const glowGeo = new THREE.SphereGeometry(2.8, 32, 32);
+      const glowMat = new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.2 });
+      sun.add(new THREE.Mesh(glowGeo, glowMat));
+
+      // Earth
+      const earthGeo = new THREE.SphereGeometry(1.0, 32, 32);
+      const earthMat = new THREE.MeshPhongMaterial({ color: 0x2244aa, emissive: 0x001122 });
+      earth = new THREE.Mesh(earthGeo, earthMat);
+      earth.position.set(9, 0, 0);
+      earth.userData = { name: '🌍 The Earth', desc: 'Earth orbits the Sun. When Earth comes between the Sun and Moon, it causes a Lunar Eclipse.' };
+      scene.add(earth);
+      objects.push(earth);
+
+      // Earth continents
+      const contGeo = new THREE.SphereGeometry(1.02, 32, 32);
+      const contMat = new THREE.MeshPhongMaterial({ color: 0x22aa44, transparent: true, opacity: 0.7 });
+      earth.add(new THREE.Mesh(contGeo, contMat));
+
+      // Moon orbit pivot
+      moonOrbit = new THREE.Object3D();
+      moonOrbit.position.copy(earth.position);
+      scene.add(moonOrbit);
+
+      // Moon
+      const moonGeo = new THREE.SphereGeometry(0.35, 32, 32);
+      const moonMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, emissive: 0x111111 });
+      moon = new THREE.Mesh(moonGeo, moonMat);
+      moon.position.set(2.5, 0, 0);
+      moon.userData = { name: '🌕 The Moon', desc: 'The Moon orbits Earth. When it comes between Earth and the Sun, it causes a Solar Eclipse.' };
+      moonOrbit.add(moon);
+      objects.push(moon);
+
+      // Moon orbit ring
+      const ringGeo = new THREE.RingGeometry(2.45, 2.55, 64);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x555577, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      moonOrbit.add(ring);
+
+      // Earth orbit ring
+      const eRingGeo = new THREE.RingGeometry(8.9, 9.1, 64);
+      const eRingMat = new THREE.MeshBasicMaterial({ color: 0x333355, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+      const eRing = new THREE.Mesh(eRingGeo, eRingMat);
+      eRing.rotation.x = Math.PI / 2;
+      scene.add(eRing);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x222244, 0.5);
+      scene.add(ambientLight);
+      const sunLight = new THREE.PointLight(0xffffff, 2, 50);
+      sunLight.position.copy(sun.position);
+      scene.add(sunLight);
+    }
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setClearColor(0x050510, 1);
+    wrap.innerHTML = '';
+    wrap.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(55, 16/9, 0.1, 1000);
+    camera.position.set(0, 12, 18);
+    camera.lookAt(0, 0, 0);
+
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2(-9999, -9999);
+
+    buildScene();
+
+    const modal = document.getElementById('three-modal');
+
+    renderer.domElement.addEventListener('click', (e) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(objects);
+      if (intersects.length > 0) {
+        const obj = intersects[0].object;
+        const data = obj.userData;
+        if (data && data.name) {
+          document.getElementById('modal-title').textContent = data.name;
+          document.getElementById('modal-desc').textContent = data.desc;
+          modal.style.display = 'block';
+          modal.style.left = (e.clientX - wrap.getBoundingClientRect().left + 10) + 'px';
+          modal.style.top = (e.clientY - wrap.getBoundingClientRect().top + 10) + 'px';
+          wrap.style.position = 'relative';
+        }
+      }
+    });
+
+    let earthAngle = 0;
+    let moonAngle = 0;
+
+    function animate() {
+      animId = requestAnimationFrame(animate);
+      earthAngle += 0.004;
+      moonAngle += 0.03;
+      earth.position.x = Math.cos(earthAngle) * 9;
+      earth.position.z = Math.sin(earthAngle) * 9;
+      earth.rotation.y += 0.01;
+      moonOrbit.position.copy(earth.position);
+      moon.position.x = Math.cos(moonAngle) * 2.5;
+      moon.position.z = Math.sin(moonAngle) * 2.5;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    const observer = new ResizeObserver(entries => {
+      const w = entries[0].contentRect.width;
+      const h = Math.min(500, w * 0.5);
+      renderer.setSize(w, h);
+      renderer.domElement.style.width = w + 'px';
+      renderer.domElement.style.height = h + 'px';
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    });
+    observer.observe(wrap);
+
+    // Pause when off screen
+    if (typeof IntersectionObserver !== 'undefined') {
+      const visObs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          if (!animId) animate();
+        } else {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
+      });
+      visObs.observe(wrap);
+    }
+
+  } catch(e) {
+    console.warn('Three.js scene failed:', e);
+    fallback.style.display = 'flex';
+  }
+}
+
+// PROGRESS BAR
+function initProgress() {
+  const bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+  });
+}
+
+// SCROLLSPY
+function initScrollspy() {
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('#toc a');
+  const bottomLinks = document.querySelectorAll('#bottom-nav a');
+
+  if (typeof IntersectionObserver === 'undefined') return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+        bottomLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => obs.observe(s));
+}
+
+// TABLE ROW EXPAND
+function initTableExpand() {}
+function toggleRow(row, expId) {
+  const exp = document.getElementById(expId);
+  if (!exp) return;
+  const isOpen = exp.style.display === 'table-row';
+  // Close all
+  document.querySelectorAll('.expand-row').forEach(r => r.style.display = 'none');
+  if (!isOpen) exp.style.display = 'table-row';
+}
+
+// HINT TOGGLE
+function toggleHint(id) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  panel.classList.toggle('open');
+  const btn = panel.previousElementSibling;
+  if (btn) btn.textContent = panel.classList.contains('open') ? '🙈 Hide Hint' : '💡 Show Hint';
+}
+
+// FILL IN THE BLANKS
+const fitbQuestions = [
+  { text: 'A solar eclipse occurs when the ___ comes between the Sun and Earth.', answer: 'moon', hint: 'Think about what orbits Earth' },
+  { text: 'During a lunar eclipse, the ___ blocks sunlight from reaching the Moon.', answer: 'earth', hint: 'Think about what is between the Sun and Moon' },
+  { text: '___ eclipses happen during the day.', answer: 'solar', hint: 'Which type is associated with the Sun?' },
+  { text: 'A total lunar eclipse makes the Moon appear ___ in color.', answer: 'reddish', hint: 'What color is a Blood Moon?' },
+  { text: 'A ___ eclipse is safe to watch without any special glasses.', answer: 'lunar', hint: 'Which eclipse involves looking at the Moon, not the Sun?' },
+  { text: 'During a solar eclipse, the Moon casts a ___ on Earth.', answer: 'shadow', hint: 'What does a solid object create when it blocks light?' },
+  { text: 'A partial lunar eclipse happens when only a part of the Moon enters Earth\'s ___.', answer: 'shadow', hint: 'The dark area behind Earth' }
+];
+
+function initFITB() {
+  const container = document.getElementById('fitb-container');
+  if (!container) return;
+  fitbQuestions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.08)';
+    const parts = q.text.split('___');
+    div.innerHTML = `
+      <div style="font-size:clamp(16px,1.8vw,18px);font-weight:500;color:#2d3436;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span>${i+1}.</span>
+        <span>${parts[0]}</span>
+        <input id="fitb-${i}" type="text" placeholder="Type answer..." style="border:2px solid #dfe6e9;border-radius:8px;padding:8px 12px;font-size:clamp(15px,1.7vw,16px);font-family:'Inter',sans-serif;min-width:140px;max-width:200px;min-height:40px">
+        <span>${parts[1] || ''}</span>
+      </div>
+      <div id="fitb-fb-${i}" style="margin-top:8px;font-size:clamp(14px,1.6vw,15px);display:none"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function checkFITB() {
+  let correct = 0;
+  fitbQuestions.forEach((q, i) => {
+    const input = document.getElementById(`fitb-${i}`);
+    const fb = document.getElementById(`fitb-fb-${i}`);
+    if (!input || !fb) return;
+    const val = input.value.trim().toLowerCase();
+    const isCorrect = val === q.answer.toLowerCase();
+    if (isCorrect) {
+      correct++;
+      input.style.borderColor = '#28a745';
+      fb.style.cssText = 'display:block;color:#155724;background:#d4edda;padding:6px 10px;border-radius:6px;font-weight:600;font-size:clamp(14px,1.6vw,15px)';
+      fb.textContent = '✅ Correct! Answer: ' + q.answer;
+    } else {
+      input.style.borderColor = '#dc3545';
+      fb.style.cssText = 'display:block;color:#721c24;background:#f8d7da;padding:6px 10px;border-radius:6px;font-weight:600;font-size:clamp(14px,1.6vw,15px)';
+      fb.textContent = `❌ Correct answer: "${q.answer}"`;
+    }
+  });
+  const result = document.getElementById('fitb-result');
+  if (result) {
+    result.style.display = 'block';
+    result.className = 'dnd-result ' + (correct === fitbQuestions.length ? 'correct' : 'wrong');
+    result.textContent = `You got ${correct}/${fitbQuestions.length} correct! ${correct === fitbQuestions.length ? '🎉 Perfect!' : '📖 Keep practicing!'}`;
+  }
+}
+
+// TRUE OR FALSE
+const tofQuestions = [
+  { text: 'A lunar eclipse happens when the Moon blocks the Sun\'s light.', answer: false },
+  { text: 'A solar eclipse occurs only at night.', answer: false },
+  { text: 'You need special glasses to watch a solar eclipse safely.', answer: true },
+  { text: 'The Earth blocks sunlight during a lunar eclipse.', answer: true },
+  { text: 'The Moon turns reddish during a total lunar eclipse.', answer: true },
+  { text: 'A solar eclipse can be seen from anywhere on Earth.', answer: false },
+  { text: 'An annular eclipse shows a bright ring around the Moon.', answer: false },
+  { text: 'Lunar eclipses are dangerous to observe without protection.', answer: false }
+];
+
+function initTOF() {
+  const container = document.getElementById('tof-container');
+  if (!container) return;
+  tofQuestions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 10px rgba(0,0,0,0.08);display:flex;align-items:center;gap:16px;flex-wrap:wrap';
+    div.innerHTML = `
+      <span style="font-size:clamp(16px,1.8vw,18px);font-weight:500;flex:1;min-width:200px">${i+1}. ${q.text}</span>
+      <div style="display:flex;gap:10px;flex-shrink:0">
+        <button onclick="selectTOF(${i},true,this)" id="tof-t-${i}" style="background:#f8f9fa;border:2px solid #dfe6e9;border-radius:8px;padding:8px 18px;font-size:clamp(14px,1.7vw,16px);font-weight:600;cursor:pointer;min-height:44px;font-family:'Inter',sans-serif;transition:all 0.2s">TRUE</button>
+        <button onclick="selectTOF(${i},false,this)" id="tof-f-${i}" style="background:#f8f9fa;border:2px solid #dfe6e9;border-radius:8px;padding:8px 18px;font-size:clamp(14px,1.7vw,16px);font-weight:600;cursor:pointer;min-height:44px;font-family:'Inter',sans-serif;transition:all 0.2s">FALSE</button>
+      </div>
+      <div id="tof-fb-${i}" style="width:100%;display:none;font-size:clamp(14px,1.6vw,15px);font-weight:600"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+const tofSelections = {};
+function selectTOF(i, val, btn) {
+  tofSelections[i] = val;
+  const tBtn = document.getElementById(`tof-t-${i}`);
+  const fBtn = document.getElementById(`tof-f-${i}`);
+  if (tBtn && fBtn) {
+    tBtn.style.background = val ? 'var(--teal)' : '#f8f9fa';
+    tBtn.style.color = val ? '#fff' : '';
+    tBtn.style.borderColor = val ? 'var(--teal)' : '#dfe6e9';
+    fBtn.style.background = !val ? 'var(--indigo)' : '#f8f9fa';
+    fBtn.style.color = !val ? '#fff' : '';
+    fBtn.style.borderColor = !val ? 'var(--indigo)' : '#dfe6e9';
+  }
+}
+
+function checkTOF() {
+  let correct = 0;
+  tofQuestions.forEach((q, i) => {
+    const fb = document.getElementById(`tof-fb-${i}`);
+    if (!fb) return;
+    if (tofSelections[i] === undefined) {
+      fb.style.cssText = 'display:block;color:#856404;background:#fff3cd;padding:6px 10px;border-radius:6px;font-size:clamp(14px,1.6vw,15px)';
+      fb.textContent = '⚠️ Please select an answer! Correct: ' + (q.answer ? 'TRUE' : 'FALSE');
+      return;
+    }
+    const isCorrect = tofSelections[i] === q.answer;
+    if (isCorrect) {
+      correct++;
+      fb.style.cssText = 'display:block;color:#155724;background:#d4edda;padding:6px 10px;border-radius:6px;font-size:clamp(14px,1.6vw,15px)';
+      fb.textContent = '✅ Correct!';
+    } else {
+      fb.style.cssText = 'display:block;color:#721c24;background:#f8d7da;padding:6px 10px;border-radius:6px;font-size:clamp(14px,1.6vw,15px)';
+      fb.textContent = `❌ Incorrect. Correct answer: ${q.answer ? 'TRUE' : 'FALSE'}`;
+    }
+  });
+  const result = document.getElementById('tof-result');
+  if (result) {
+    result.style.display = 'block';
+    result.className = 'dnd-result ' + (correct === tofQuestions.length ? 'correct' : 'wrong');
+    result.textContent = `Score: ${correct}/${tofQuestions.length}. ${correct >= 6 ? '🌟 Great job!' : '📚 Review the lesson!'}`;
+  }
+}
+
+// DRAG AND DROP
+const dndItems = [
+  { id: 'd1', text: '🌅 Happens during the day', correct: 'solar' },
+  { id: 'd2', text: '🌙 Happens at night', correct: 'lunar' },
+  { id: 'd3', text: '👓 Requires special glasses', correct: 'solar' },
+  { id: 'd4', text: '👁️ Safe with naked eye', correct: 'lunar' },
+  { id: 'd5', text: '🌑 Moon blocks the Sun', correct: 'solar' },
+  { id: 'd6', text: '🌍 Earth blocks the Moon', correct: 'lunar' },
+  { id: 'd7', text: '💍 Can be Annular type', correct: 'solar' },
+  { id: 'd8', text: '🔴 Moon turns reddish', correct: 'lunar' },
+  { id: 'd9', text: '📍 Seen from specific regions', correct: 'solar' },
+  { id: 'd10', text: '🌐 Seen from night side of Earth', correct: 'lunar' }
+];
+
+function initDnD() {
+  const src = document.getElementById('drag-source');
+  if (!src) return;
+  // Shuffle
+  const shuffled = [...dndItems].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'drag-item';
+    div.id = item.id;
+    div.draggable = true;
+    div.textContent = item.text;
+    div.setAttribute('data-correct', item.correct);
+    div.addEventListener('dragstart', dragStart);
+    // Touch events
+    div.addEventListener('touchstart', touchStart, { passive: true });
+    div.addEventListener('touchend', touchEnd);
+    src.appendChild(div);
+  });
+
+  ['solar-drop','lunar-drop'].forEach(id => {
+    const zone = document.getElementById(id);
+    if (!zone) return;
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const itemId = e.dataTransfer.getData('text/plain');
+      const item = document.getElementById(itemId);
+      if (item) {
+        const targetId = id === 'solar-drop' ? 'solar-items' : 'lunar-items';
+        document.getElementById(targetId).appendChild(item);
+      }
+    });
+  });
+}
+
+let draggedEl = null;
+function dragStart(e) {
+  draggedEl = e.target;
+  e.dataTransfer.setData('text/plain', e.target.id);
+  setTimeout(() => { if (draggedEl) draggedEl.classList.add('dragging'); }, 0);
+}
+
+function dropItem(e, zone) {
+  e.preventDefault();
+  const itemId = e.dataTransfer.getData('text/plain');
+  const item = document.getElementById(itemId);
+  if (item) {
+    const targetId = zone === 'solar' ? 'solar-items' : 'lunar-items';
+    document.getElementById(targetId).appendChild(item);
+  }
+  if (draggedEl) draggedEl.classList.remove('dragging');
+}
+
+let touchItemEl = null;
+function touchStart(e) { touchItemEl = e.target; }
+function touchEnd(e) {
+  if (!touchItemEl) return;
+  const touch = e.changedTouches[0];
+  const dropSolar = document.getElementById('solar-drop');
+  const dropLunar = document.getElementById('lunar-drop');
+  [dropSolar, dropLunar].forEach(zone => {
+    const rect = zone.getBoundingClientRect();
+    if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+        touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+      const targetId = zone.id === 'solar-drop' ? 'solar-items' : 'lunar-items';
+      document.getElementById(targetId).appendChild(touchItemEl);
+    }
+  });
+  touchItemEl = null;
+}
+
+function checkDnD() {
+  let correct = 0;
+  let total = dndItems.length;
+  dndItems.forEach(item => {
+    const el = document.getElementById(item.id);
+    if (!el) return;
+    const parent = el.parentElement;
+    const inSolar = parent && parent.id === 'solar-items';
+    const inLunar = parent && parent.id === 'lunar-items';
+    if ((inSolar && item.correct === 'solar') || (inLunar && item.correct === 'lunar')) {
+      correct++;
+      el.style.background = '#d4edda';
+      el.style.borderColor = '#28a745';
+    } else if (inSolar || inLunar) {
+      el.style.background = '#f8d7da';
+      el.style.borderColor = '#dc3545';
+    }
+  });
+  const result = document.getElementById('dnd-result');
+  if (result) {
+    result.style.display = 'block';
+    result.className = 'dnd-result ' + (correct >= total * 0.8 ? 'correct' : 'wrong');
+    result.textContent = `${correct}/${total} correctly sorted! ${correct === total ? '🎉 Perfect sorting!' : '📖 Check the highlighted items!'}`;
+  }
+}
+
+// QUIZ
+const quizQuestions = [
+  {
+    type: 'mcq',
+    q: 'What happens during a solar eclipse?',
+    options: ['The Earth blocks sunlight from reaching the Moon','The Moon blocks sunlight from reaching Earth','The Sun blocks the Moon','The Moon disappears'],
+    answer: 1
+  },
+  {
+    type: 'mcq',
+    q: 'Which eclipse occurs at night?',
+    options: ['Solar Eclipse','Lunar Eclipse','Both Solar and Lunar','Neither'],
+    answer: 1
+  },
+  {
+    type: 'mcq',
+    q: 'What is the Moon\'s color during a total lunar eclipse?',
+    options: ['Yellow','Blue','Reddish','Green'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'Which object blocks sunlight during a lunar eclipse?',
+    options: ['The Moon','The Sun','The Earth','The Stars'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'Why is it unsafe to look at a solar eclipse directly?',
+    options: ['The Sun becomes too bright','The Moon blocks the light','It can damage your eyes','The Sun disappears'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'When can a lunar eclipse be observed?',
+    options: ['Only during the day','Only during a new moon','Only at night','Only during a solar eclipse'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'In an Annular Solar Eclipse, what does the Sun look like?',
+    options: ['Completely hidden','Half covered','A bright ring around the Moon','A blood-red color'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'How many main types of solar eclipses are there?',
+    options: ['1','2','3','4'],
+    answer: 2
+  },
+  {
+    type: 'mcq',
+    q: 'Which of the following is a SAFE way to observe a solar eclipse?',
+    options: ['Looking directly with sunglasses','Using a pinhole projector','Looking through a glass of water','Photographing with a phone without filter'],
+    answer: 1
+  },
+  {
+    type: 'mcq',
+    q: 'What type of eclipse happens when only PART of the Moon enters Earth\'s shadow?',
+    options: ['Total Lunar Eclipse','Total Solar Eclipse','Partial Lunar Eclipse','Annular Solar Eclipse'],
+    answer: 2
+  }
+];
+
+const quizAnswers = {};
+
+function initQuiz() {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  quizQuestions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = `quiz-q-${i}`;
+    let html = `<div class="q-num">${i+1}</div><div class="question">${q.q}</div>`;
+    html += `<div class="options">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="option-btn" id="opt-${i}-${j}" onclick="selectAnswer(${i},${j})">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="qfb-${i}"></div>`;
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qi, oi) {
+  quizAnswers[qi] = oi;
+  // Highlight selected
+  for (let j = 0; j < quizQuestions[qi].options.length; j++) {
+    const btn = document.getElementById(`opt-${qi}-${j}`);
+    if (btn) {
+      btn.style.background = j === oi ? 'rgba(34,166,179,0.15)' : '#f8f9fa';
+      btn.style.borderColor = j === oi ? 'var(--teal)' : '#dfe6e9';
+      btn.style.color = j === oi ? 'var(--teal)' : '';
+      btn.style.fontWeight = j === oi ? '700' : '';
+    }
+  }
+}
+
+function submitQuiz() {
+  let score = 0;
+  quizQuestions.forEach((q, i) => {
+    const selected = quizAnswers[i];
+    const fb = document.getElementById(`qfb-${i}`);
+    for (let j = 0; j < q.options.length; j++) {
+      const btn = document.getElementById(`opt-${i}-${j}`);
+      if (!btn) continue;
+      btn.disabled = true;
+      if (j === q.answer) {
+        btn.classList.add('correct');
+      } else if (j === selected && selected !== q.answer) {
+        btn.classList.add('wrong');
+      }
+    }
+    if (selected === q.answer) {
+      score++;
+      if (fb) { fb.style.display = 'block'; fb.className = 'quiz-feedback correct'; fb.textContent = '✅ Correct!'; }
+    } else {
+      if (fb) { fb.style.display = 'block'; fb.className = 'quiz-feedback wrong'; fb.textContent = `❌ Correct: "${q.options[q.answer]}"`; }
+    }
+  });
+
+  const scoreWrap = document.getElementById('quiz-score');
+  if (scoreWrap) {
+    scoreWrap.style.display = 'block';
+    const pct = Math.round((score/quizQuestions.length)*100);
+    let emoji = score >= 9 ? '🏆' : score >= 7 ? '🌟' : score >= 5 ? '👍' : '📖';
+    let msg = score >= 9 ? 'Outstanding! You\'re an eclipse expert!' : score >= 7 ? 'Great work! You know your eclipses!' : score >= 5 ? 'Good effort! Review a few more facts.' : 'Keep studying — you\'ll get there!';
+    scoreWrap.innerHTML = `
+      <span class="score-emoji">${emoji}</span>
+      <h3>You scored ${score}/${quizQuestions.length} (${pct}%)</h3>
+      <p>${msg}</p>
+      <button onclick="resetQuiz()" style="margin-top:20px;background:linear-gradient(90deg,var(--teal),var(--indigo));color:#fff;border:none;padding:14px 30px;border-radius:50px;font-size:clamp(15px,1.8vw,17px);font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">🔄 Try Again</button>
+    `;
+    scoreWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.querySelector('.quiz-submit-all').style.display = 'none';
+}
+
+function resetQuiz() {
+  const container = document.getElementById('quiz-container');
+  const scoreWrap = document.getElementById('quiz-score');
+  if (container) container.innerHTML = '';
+  if (scoreWrap) { scoreWrap.style.display = 'none'; scoreWrap.innerHTML = ''; }
+  Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+  initQuiz();
+  const submitBtn = document.querySelector('.quiz-submit-all');
+  if (submitBtn) submitBtn.style.display = 'block';
+}
+</script>
+</body>
+</html>

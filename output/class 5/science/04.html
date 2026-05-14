@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: science | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Chain – Class 5 Science | Digital School</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --orange: #E67E22;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --green: #27AE60;
+    --red: #E74C3C;
+    --bg: #F0F4F8;
+    --card-bg: #FFFFFF;
+    --text: #2D3436;
+  }
+  html { scroll-behavior: smooth; font-size: 18px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(17px, 2.5vw, 19px);
+    background: var(--bg);
+    color: var(--text);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; }
+  h2 { font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+  h3 { font-family: 'Poppins', sans-serif; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; }
+  h4 { font-family: 'Poppins', sans-serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: linear-gradient(135deg, #22A6B3, #4834D4);
+    z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-icon { font-size: 5rem; animation: spin 1s linear infinite; }
+  #curtain p { color: #fff; font-size: 1.4rem; font-family: 'Poppins', sans-serif; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; }
+  .container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* SIDEBAR TOC */
+  #toc-sidebar {
+    position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+    background: var(--card-bg); border-radius: 0 16px 16px 0;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    padding: 20px 14px; z-index: 100; width: 200px;
+  }
+  #toc-sidebar h4 { font-size: 0.85rem; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  #toc-sidebar a {
+    display: block; padding: 7px 10px; font-size: 0.82rem; color: var(--slate);
+    text-decoration: none; border-radius: 8px; transition: all 0.3s; margin-bottom: 4px; font-family: 'Inter', sans-serif;
+  }
+  #toc-sidebar a.active, #toc-sidebar a:hover { background: var(--teal); color: #fff; }
+
+  /* HERO */
+  .hero {
+    width: 100vw; min-height: 100vh; background: linear-gradient(135deg, #22A6B3 0%, #4834D4 100%);
+    display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    padding: 60px 20px;
+  }
+  .hero-content { text-align: center; color: #fff; position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 50px; padding: 8px 24px; font-size: 0.95rem; margin-bottom: 24px; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .hero h1 { color: #fff; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .hero p { font-size: clamp(1rem, 2.5vw, 1.3rem); opacity: 0.9; max-width: 700px; margin: 0 auto 30px; }
+  .hero-floats { position: absolute; inset: 0; pointer-events: none; }
+  .hero-floats span {
+    position: absolute; font-size: 3rem; opacity: 0.15; animation: float 6s ease-in-out infinite;
+  }
+  .hero-floats span:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+  .hero-floats span:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
+  .hero-floats span:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 2s; }
+  .hero-floats span:nth-child(4) { bottom: 25%; right: 20%; animation-delay: 0.5s; }
+  .hero-floats span:nth-child(5) { top: 50%; left: 2%; animation-delay: 3s; }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
+  .scroll-hint { margin-top: 40px; opacity: 0.7; font-size: 0.9rem; }
+  .scroll-hint span { display: block; font-size: 1.5rem; animation: bounce 1.5s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  /* SECTIONS */
+  section { padding: 80px 0; }
+  section:nth-child(even) { background: var(--warm-white); }
+  .section-label {
+    display: inline-block; background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: #fff; border-radius: 50px; padding: 6px 20px; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px;
+  }
+  .section-title { margin-bottom: 14px; }
+  .section-desc { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--slate); max-width: 700px; margin-bottom: 40px; }
+
+  /* CARDS */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--card-bg); border-radius: 20px; padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07); transition: transform 0.3s, box-shadow 0.3s;
+    width: 100%; max-width: 100%; opacity: 1; transform: none;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+  .card-icon { font-size: 2.8rem; margin-bottom: 16px; }
+  .card h4 { margin-bottom: 10px; }
+  .card p { font-size: clamp(0.95rem, 2vw, 1.05rem); color: var(--slate); line-height: 1.7; }
+  .card.teal-accent { border-top: 5px solid var(--teal); }
+  .card.indigo-accent { border-top: 5px solid var(--indigo); }
+  .card.orange-accent { border-top: 5px solid var(--orange); }
+  .card.green-accent { border-top: 5px solid var(--green); }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone {
+    border: 2.5px dashed var(--teal); border-radius: 20px; padding: 30px;
+    background: rgba(34,166,179,0.04); position: relative; margin: 30px 0;
+  }
+  .discovery-zone::before {
+    content: '🔍'; position: absolute; top: -18px; left: 20px;
+    font-size: 1.8rem; background: var(--bg); padding: 0 6px;
+  }
+  .discovery-zone h4 { color: var(--teal); margin-bottom: 10px; }
+
+  /* FORMULA CALLOUT */
+  .formula-callout {
+    background: #1E272E; color: #00D2D3; border-radius: 14px;
+    padding: 24px 30px; font-family: 'Courier New', monospace; font-size: clamp(1rem, 2vw, 1.2rem);
+    margin: 24px 0; line-height: 1.8;
+  }
+  .formula-callout .label { color: #A29BFE; font-size: 0.85rem; display: block; margin-bottom: 8px; }
+
+  /* FLIP CARDS */
+  .flip-cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .flip-card { perspective: 1000px; height: 200px; cursor: pointer; }
+  .flip-card-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; transition: transform 0.6s;
+  }
+  .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    padding: 20px; text-align: center;
+  }
+  .flip-front { background: linear-gradient(135deg, var(--teal), var(--indigo)); color: #fff; }
+  .flip-front .fi { font-size: 2.5rem; margin-bottom: 10px; }
+  .flip-front p { font-size: 1rem; font-weight: 600; }
+  .flip-back { background: var(--card-bg); color: var(--text); transform: rotateY(180deg); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+  .flip-back p { font-size: clamp(0.9rem, 1.8vw, 1rem); line-height: 1.6; color: var(--slate); }
+
+  /* FOOD CHAIN DIAGRAM */
+  .foodchain-visual {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+    background: var(--card-bg); border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+  .fc-step {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #F0F4F8, #E8EAF6);
+    border-radius: 16px; padding: 20px 18px; min-width: 120px; text-align: center;
+    transition: transform 0.3s; position: relative;
+  }
+  .fc-step:hover { transform: scale(1.06); }
+  .fc-step .emoji { font-size: 2.8rem; }
+  .fc-step .role { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+  .fc-step .name { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+  .fc-step.sun { background: linear-gradient(135deg, #FFF3CD, #FFE082); }
+  .fc-step.producer { background: linear-gradient(135deg, #D5F5E3, #A9DFBF); }
+  .fc-step.herbivore { background: linear-gradient(135deg, #D6EAF8, #AED6F1); }
+  .fc-step.carnivore { background: linear-gradient(135deg, #FADBD8, #F5B7B1); }
+  .fc-step.decomposer { background: linear-gradient(135deg, #E8DAEF, #D7BDE2); }
+  .fc-arrow { font-size: 2rem; color: var(--teal); font-weight: bold; }
+
+  /* CONSUMERS TABLE */
+  .data-table-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); }
+  thead tr { background: linear-gradient(135deg, var(--teal), var(--indigo)); color: #fff; }
+  thead th { padding: 16px 20px; text-align: left; font-size: clamp(0.95rem, 2vw, 1.05rem); font-family: 'Poppins', sans-serif; cursor: pointer; }
+  thead th:hover { background: rgba(255,255,255,0.15); }
+  tbody tr { border-bottom: 1px solid #F0F4F8; transition: background 0.2s; }
+  tbody tr:nth-child(even) { background: #F8FAFB; }
+  tbody tr:hover { background: rgba(34,166,179,0.08); cursor: pointer; }
+  tbody td { padding: 14px 20px; font-size: clamp(0.9rem, 1.8vw, 1rem); }
+  .expand-row td { background: rgba(34,166,179,0.05); font-style: italic; color: var(--slate); }
+
+  /* DRAG DROP */
+  .dragdrop-section { margin: 30px 0; }
+  .dd-items { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; min-height: 60px; padding: 16px; background: #F8FAFB; border-radius: 14px; border: 2px dashed #CBD5E0; }
+  .dd-item {
+    background: linear-gradient(135deg, var(--teal), var(--indigo)); color: #fff;
+    padding: 10px 18px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
+    cursor: grab; user-select: none; transition: transform 0.2s, opacity 0.2s;
+    touch-action: none;
+  }
+  .dd-item:hover { transform: scale(1.05); }
+  .dd-item.dragging { opacity: 0.5; }
+  .dd-zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .dd-zone {
+    border: 2.5px dashed #CBD5E0; border-radius: 16px; padding: 20px; min-height: 140px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .dd-zone.over { border-color: var(--teal); background: rgba(34,166,179,0.07); }
+  .dd-zone h4 { margin-bottom: 12px; font-size: 1rem; }
+  .dd-zone .zone-icon { font-size: 1.6rem; margin-right: 8px; }
+  .dd-zone .dropped-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dd-zone .dropped-item {
+    background: var(--card-bg); border: 2px solid var(--teal); color: var(--teal);
+    padding: 6px 14px; border-radius: 50px; font-size: 0.88rem; font-weight: 600;
+  }
+  #dd-feedback { margin-top: 16px; padding: 14px 20px; border-radius: 12px; font-weight: 600; display: none; }
+  #dd-feedback.correct { background: #D5F5E3; color: #1E8449; display: block; }
+  #dd-feedback.wrong { background: #FADBD8; color: #922B21; display: block; }
+  .btn {
+    background: linear-gradient(135deg, var(--teal), var(--indigo)); color: #fff;
+    border: none; border-radius: 50px; padding: 14px 32px; font-size: 1rem;
+    font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(72,52,212,0.3); }
+  .btn-secondary {
+    background: var(--card-bg); color: var(--indigo); border: 2.5px solid var(--indigo);
+    border-radius: 50px; padding: 12px 28px; font-size: 1rem;
+    font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--indigo); color: #fff; }
+
+  /* COLLAPSIBLE HINTS */
+  .hint-panel { margin: 16px 0; }
+  .hint-toggle {
+    background: linear-gradient(135deg, #FFF3CD, #FFE082); border: none; border-radius: 12px;
+    padding: 12px 20px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    width: 100%; text-align: left; display: flex; align-items: center; gap: 10px;
+    color: #795548; font-family: 'Poppins', sans-serif;
+  }
+  .hint-body {
+    background: #FFFDE7; border-left: 4px solid var(--orange); border-radius: 0 12px 12px 12px;
+    padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .hint-body.open { max-height: 400px; padding: 16px 20px; }
+  .hint-body p { font-size: 1rem; line-height: 1.7; color: var(--slate); }
+
+  /* QUIZ */
+  .quiz-wrap { background: var(--card-bg); border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .quiz-progress { height: 8px; background: #E0E0E0; border-radius: 50px; margin-bottom: 30px; overflow: hidden; }
+  .quiz-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--indigo)); border-radius: 50px; transition: width 0.5s; }
+  .quiz-question { margin-bottom: 24px; }
+  .quiz-question p { font-size: clamp(1.05rem, 2vw, 1.2rem); font-weight: 600; margin-bottom: 18px; line-height: 1.6; }
+  .quiz-options { display: grid; gap: 12px; }
+  .quiz-option {
+    background: #F8FAFB; border: 2.5px solid #E0E0E0; border-radius: 12px;
+    padding: 14px 20px; cursor: pointer; font-size: 1rem; text-align: left;
+    transition: all 0.25s; font-family: 'Inter', sans-serif; min-height: 52px;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: var(--teal); background: rgba(34,166,179,0.07); }
+  .quiz-option.correct { border-color: var(--green); background: #D5F5E3; color: #1E8449; }
+  .quiz-option.wrong { border-color: var(--red); background: #FADBD8; color: #922B21; }
+  .quiz-option:disabled { cursor: not-allowed; }
+  .quiz-input { width: 100%; padding: 14px 18px; border: 2.5px solid #E0E0E0; border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif; outline: none; }
+  .quiz-input:focus { border-color: var(--teal); }
+  .quiz-nav { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
+  .quiz-counter { font-size: 0.9rem; color: var(--slate); margin-bottom: 16px; }
+  .quiz-result { text-align: center; padding: 40px; }
+  .quiz-result .score-big { font-size: 4rem; font-weight: 800; font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--teal), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .quiz-result p { font-size: 1.2rem; color: var(--slate); margin: 10px 0; }
+  .quiz-feedback-msg { font-size: 1rem; color: var(--slate); margin-top: 8px; font-style: italic; }
+
+  /* SVG CHART */
+  .chart-container { background: var(--card-bg); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .bar-chart { display: flex; align-items: flex-end; gap: 24px; height: 200px; padding: 0 10px; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bar {
+    width: 100%; border-radius: 10px 10px 0 0; transition: height 0.8s ease;
+    position: relative;
+  }
+  .bar-label { font-size: 0.8rem; font-weight: 600; color: var(--slate); text-align: center; }
+  .bar-value { font-size: 0.85rem; font-weight: 700; color: var(--text); position: absolute; top: -24px; left: 50%; transform: translateX(-50%); }
+
+  /* MERMAID */
+  .mermaid-wrap { background: var(--card-bg); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); overflow-x: auto; }
+  .mermaid { font-size: 0.9rem !important; }
+
+  /* FILL BLANKS / T-F / MCQ Answers */
+  .answers-section { margin-top: 40px; }
+  .answer-reveal-btn { margin-bottom: 20px; }
+  .answers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; display: none; }
+  .answers-grid.visible { display: grid; }
+  .answer-card { background: #D5F5E3; border-left: 4px solid var(--green); border-radius: 12px; padding: 14px 18px; font-size: 1rem; }
+  .answer-card strong { color: #1E8449; display: block; margin-bottom: 4px; }
+
+  /* CHALLENGE */
+  .challenge-box {
+    background: linear-gradient(135deg, #1E272E, #2D3436); color: #fff;
+    border-radius: 24px; padding: 40px; position: relative; overflow: hidden;
+  }
+  .challenge-box::before {
+    content: '🧠'; position: absolute; right: 30px; top: 20px; font-size: 5rem; opacity: 0.15;
+  }
+  .challenge-box h3 { color: #00D2D3; margin-bottom: 14px; }
+  .challenge-box p { color: #DFE6E9; font-size: 1.05rem; line-height: 1.8; }
+  .challenge-box ul { color: #DFE6E9; padding-left: 24px; line-height: 2; }
+
+  /* MOBILE BOTTOM NAV */
+  #mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+    z-index: 200; overflow-x: auto; padding: 10px 12px;
+    flex-direction: row; gap: 8px;
+  }
+  #mobile-nav a {
+    flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 8px 14px; border-radius: 12px; text-decoration: none; color: var(--slate);
+    font-size: 0.72rem; font-family: 'Inter', sans-serif; min-height: 56px; min-width: 60px;
+    justify-content: center; transition: all 0.2s;
+  }
+  #mobile-nav a.active, #mobile-nav a:hover { background: rgba(34,166,179,0.1); color: var(--teal); }
+  #mobile-nav a span { font-size: 1.3rem; }
+
+  /* PRACTICE SECTION */
+  .practice-tabs { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+  .tab-btn {
+    background: var(--card-bg); border: 2.5px solid #E0E0E0; border-radius: 50px;
+    padding: 10px 22px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    font-family: 'Poppins', sans-serif; transition: all 0.25s; color: var(--slate); min-height: 48px;
+  }
+  .tab-btn.active { background: linear-gradient(135deg, var(--teal), var(--indigo)); color: #fff; border-color: transparent; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .practice-q { background: var(--card-bg); border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .practice-q p { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+  .fill-input { border: 2px solid #E0E0E0; border-radius: 8px; padding: 8px 14px; font-size: 1rem; font-family: 'Inter', sans-serif; min-width: 180px; outline: none; }
+  .fill-input:focus { border-color: var(--teal); }
+  .tf-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .tf-btn { background: #F8FAFB; border: 2px solid #E0E0E0; border-radius: 10px; padding: 10px 24px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; min-height: 48px; }
+  .tf-btn:hover { border-color: var(--teal); }
+  .tf-btn.selected-true { background: #D5F5E3; border-color: var(--green); color: #1E8449; }
+  .tf-btn.selected-false { background: #FADBD8; border-color: var(--red); color: #922B21; }
+  .check-practice { margin-top: 20px; }
+  .practice-feedback { margin-top: 12px; padding: 12px 18px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; display: none; }
+  .practice-feedback.show { display: block; }
+  .practice-feedback.correct { background: #D5F5E3; color: #1E8449; }
+  .practice-feedback.wrong { background: #FADBD8; color: #922B21; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    #toc-sidebar { display: none; }
+  }
+  @media (max-width: 768px) {
+    #toc-sidebar { display: none; }
+    #mobile-nav { display: flex; }
+    body { padding-bottom: 80px; }
+    .container { padding: 0 18px; }
+    section { padding: 50px 0; }
+    .hero { min-height: 60vh; }
+    .bar-chart { gap: 12px; }
+    .foodchain-visual { padding: 20px; gap: 6px; }
+    .fc-arrow { font-size: 1.4rem; }
+    .fc-step { min-width: 80px; padding: 14px 10px; }
+    .fc-step .emoji { font-size: 2rem; }
+    .quiz-wrap { padding: 24px 18px; }
+    .challenge-box { padding: 28px 22px; }
+    .dd-zones { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .fc-step .role { font-size: 0.6rem; }
+    .fc-step .name { font-size: 0.8rem; }
+    .flip-cards-row { grid-template-columns: 1fr 1fr; }
+    .flip-card { height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-icon">🌿</div>
+  <p>Loading Food Chain...</p>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrapper">
+
+  <!-- SIDEBAR TOC -->
+  <nav id="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#intro" data-section="intro">Introduction</a>
+    <a href="#background" data-section="background">Background</a>
+    <a href="#core" data-section="core">Core Concepts</a>
+    <a href="#examples" data-section="examples">Examples</a>
+    <a href="#practice" data-section="practice">Practice</a>
+    <a href="#challenge" data-section="challenge">Challenge</a>
+    <a href="#quiz" data-section="quiz">Quiz</a>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <nav id="mobile-nav">
+    <a href="#intro"><span>📖</span>Intro</a>
+    <a href="#background"><span>🌍</span>Background</a>
+    <a href="#core"><span>🔬</span>Core</a>
+    <a href="#examples"><span>⛓️</span>Examples</a>
+    <a href="#practice"><span>✏️</span>Practice</a>
+    <a href="#challenge"><span>🧠</span>Challenge</a>
+    <a href="#quiz"><span>🎯</span>Quiz</a>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="hero">
+    <div class="hero-floats">
+      <span>🌱</span><span>🦁</span><span>🐛</span><span>🍄</span><span>☀️</span>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Unit 4 · Class 5 Science</div>
+      <h1 id="hero-title">FOOD CHAIN</h1>
+      <p>Discover how energy flows through ecosystems — from the sun to plants, animals, and back to the soil through nature's incredible recyclers.</p>
+      <div class="scroll-hint">Scroll to explore <span>↓</span></div>
+    </div>
+  </header>
+
+  <!-- INTRODUCTION -->
+  <section id="intro">
+    <div class="container">
+      <div class="section-label">Introduction</div>
+      <h2 class="section-title">What Is a Food Chain?</h2>
+      <p class="section-desc">All living organisms depend on each other for food, shelter, and protection. The connection of "who eats whom" forms a food chain, showing how energy passes from one living thing to another.</p>
+
+      <div class="cards-grid">
+        <div class="card teal-accent">
+          <div class="card-icon">🤝</div>
+          <h4>Interdependence</h4>
+          <p>Every living organism in the universe depends on others for food, shelter, and protection to survive.</p>
+        </div>
+        <div class="card indigo-accent">
+          <div class="card-icon">⚡</div>
+          <h4>Energy Flow</h4>
+          <p>Food is the main source of energy. A food chain shows exactly how this energy moves from one organism to another.</p>
+        </div>
+        <div class="card orange-accent">
+          <div class="card-icon">☀️</div>
+          <h4>The Sun Starts It All</h4>
+          <p>Every food chain begins with the Sun — the ultimate source of energy for all living organisms in our universe.</p>
+        </div>
+        <div class="card green-accent">
+          <div class="card-icon">🔄</div>
+          <h4>Ecosystem Balance</h4>
+          <p>Food chains help maintain balance in ecosystems by ensuring energy and nutrients cycle continuously through nature.</p>
+        </div>
+      </div>
+
+      <div class="discovery-zone" style="margin-top: 40px;">
+        <h4>Discovery Zone: Food Chain Definition</h4>
+        <p>A <strong>food chain</strong> refers to the order of events in an ecosystem, which shows how energy is transferred from one organism to another. It usually starts with the <strong>Sun</strong>, which provides energy for plants to grow. This energy then moves through different organisms, step by step.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACKGROUND -->
+  <section id="background">
+    <div class="container">
+      <div class="section-label">Background</div>
+      <h2 class="section-title">How Energy Is Transferred</h2>
+      <p class="section-desc">Energy doesn't appear magically — it travels through a sequence of organisms, each depending on the one before it.</p>
+
+      <div class="formula-callout">
+        <span class="label">// Energy Transfer Pathway</span>
+        Sun → Producers (Plants) → Consumers (Animals) → Decomposers
+      </div>
+
+      <!-- Did You Know Flip Cards -->
+      <h3 style="margin-bottom: 20px;">Did You Know? 🤔</h3>
+      <div class="flip-cards-row">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-front"><div class="fi">☀️</div><p>The Sun's Role</p></div>
+            <div class="flip-back"><p>The Sun provides about 1,361 watts of energy per square metre to Earth. Plants capture only about 1% of this for photosynthesis!</p></div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-front"><div class="fi">🌿</div><p>Photosynthesis</p></div>
+            <div class="flip-back"><p>Plants use sunlight, water (H₂O), and carbon dioxide (CO₂) to produce glucose — their own food. This process is called photosynthesis.</p></div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-front"><div class="fi">🍄</div><p>Decomposers</p></div>
+            <div class="flip-back"><p>Without decomposers like bacteria and fungi, dead matter would pile up everywhere and plants would be starved of nutrients!</p></div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-front"><div class="fi">🔢</div><p>Energy Loss</p></div>
+            <div class="flip-back"><p>At each level of a food chain, about 90% of energy is lost as heat. Only 10% passes on — that's why food chains rarely have more than 5 links!</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE CONCEPTS -->
+  <section id="core">
+    <div class="container">
+      <div class="section-label">Core Concepts</div>
+      <h2 class="section-title">Producers, Consumers & Decomposers</h2>
+      <p class="section-desc">Every organism in a food chain has a specific role. Let's explore each one in detail.</p>
+
+      <!-- Producers -->
+      <div class="card teal-accent" style="margin-bottom: 28px;">
+        <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+          <div style="font-size:4rem;">🌿</div>
+          <div style="flex:1; min-width:220px;">
+            <h3 style="color: var(--teal);">Producers</h3>
+            <p style="margin-bottom: 12px;">Plants are the <strong>producers</strong> of the ecosystem. They make their own food using sunlight, water, and carbon dioxide through a process called <strong>photosynthesis</strong>. Organisms that can produce their own food are called producers.</p>
+            <div class="formula-callout" style="font-size:0.95rem; padding:16px 20px;">
+              <span class="label">// Photosynthesis</span>
+              Sunlight + Water + CO₂ → Glucose (Food) + Oxygen
+            </div>
+            <p><strong>Examples:</strong> Wheat 🌾, Grass 🌱, Mango Trees 🥭</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consumers -->
+      <div class="card indigo-accent" style="margin-bottom: 28px;">
+        <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+          <div style="font-size:4rem;">🦁</div>
+          <div style="flex:1; min-width:220px;">
+            <h3 style="color: var(--indigo);">Consumers</h3>
+            <p style="margin-bottom: 20px;">Consumers cannot make their own food. They depend on producers — eating plants or other animals for energy. There are three types of consumers:</p>
+            <div class="data-table-wrap">
+              <table id="consumers-table">
+                <thead>
+                  <tr>
+                    <th onclick="sortTable(0)">Type ↕</th>
+                    <th onclick="sortTable(1)">What They Eat ↕</th>
+                    <th onclick="sortTable(2)">Examples ↕</th>
+                    <th>Icon</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr onclick="expandRow(this, 'Herbivores have flat teeth adapted for grinding plants. Their digestive systems are designed to break down tough plant fibres.')">
+                    <td><strong>Herbivores</strong></td>
+                    <td>Plants only</td>
+                    <td>Goats, Cows, Rabbits</td>
+                    <td>🐄</td>
+                  </tr>
+                  <tr onclick="expandRow(this, 'Carnivores have sharp teeth and claws for catching and eating other animals. They are usually at the top of food chains.')">
+                    <td><strong>Carnivores</strong></td>
+                    <td>Other animals only</td>
+                    <td>Lions, Tigers, Eagles</td>
+                    <td>🦁</td>
+                  </tr>
+                  <tr onclick="expandRow(this, 'Omnivores are the most adaptable — they can eat both plants and animals, giving them more food sources to survive.')">
+                    <td><strong>Omnivores</strong></td>
+                    <td>Both plants & animals</td>
+                    <td>Humans, Bears, Crows</td>
+                    <td>🐻</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin-top:12px; font-size:0.9rem; color:var(--slate);">💡 Click a row to learn more!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decomposers -->
+      <div class="card orange-accent" style="margin-bottom: 28px;">
+        <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+          <div style="font-size:4rem;">🍄</div>
+          <div style="flex:1; min-width:220px;">
+            <h3 style="color: var(--orange);">Decomposers</h3>
+            <p style="margin-bottom: 14px;">Decomposers are tiny but mighty organisms like <strong>bacteria</strong> and <strong>fungi</strong>. They break down dead plants and animals into nutrients, which enrich the soil.</p>
+            <div class="discovery-zone">
+              <h4>Why Decomposers Are Critical</h4>
+              <p>Without decomposers, dead matter would pile up and plants would not get the nutrients they need to grow. Decomposers are nature's recyclers — they close the loop of the food chain!</p>
+            </div>
+            <p><strong>Examples:</strong> Bacteria 🦠, Fungi (Bracket fungus / Shelf fungus) 🍄, Earthworms 🪱</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Energy Flow Chart -->
+      <h3 style="margin-bottom: 20px;">Energy Flow in Ecosystem</h3>
+      <div class="chart-container">
+        <div class="bar-chart" id="energy-chart">
+          <div class="bar-group">
+            <div class="bar" style="background: linear-gradient(180deg,#FFD700,#FFA500); height: 180px; position:relative;" data-target="180">
+              <span class="bar-value">100%</span>
+            </div>
+            <div class="bar-label">☀️ Sun<br>Energy</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="background: linear-gradient(180deg,#27AE60,#1E8449); height: 0; position:relative;" data-target="108">
+              <span class="bar-value">10%</span>
+            </div>
+            <div class="bar-label">🌿 Producer<br>(Plant)</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="background: linear-gradient(180deg,#3498DB,#2980B9); height: 0; position:relative;" data-target="54">
+              <span class="bar-value">1%</span>
+            </div>
+            <div class="bar-label">🐄 Primary<br>Consumer</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="background: linear-gradient(180deg,#E74C3C,#C0392B); height: 0; position:relative;" data-target="27">
+              <span class="bar-value">0.1%</span>
+            </div>
+            <div class="bar-label">🦁 Secondary<br>Consumer</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="background: linear-gradient(180deg,#9B59B6,#8E44AD); height: 0; position:relative;" data-target="14">
+              <span class="bar-value">0.01%</span>
+            </div>
+            <div class="bar-label">🦊 Tertiary<br>Consumer</div>
+          </div>
+        </div>
+        <p style="font-size:0.9rem; color:var(--slate); margin-top:14px; text-align:center;">Only ~10% of energy passes to each next level in the food chain. Most is lost as heat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLES -->
+  <section id="examples">
+    <div class="container">
+      <div class="section-label">Worked Examples</div>
+      <h2 class="section-title">Food Chain in Action</h2>
+      <p class="section-desc">Let's trace how energy moves through a complete food chain — step by step.</p>
+
+      <!-- Visual Food Chain -->
+      <h3 style="margin-bottom: 20px;">Example 1: Grassland Food Chain</h3>
+      <div class="foodchain-visual" id="fc-visual">
+        <div class="fc-step sun">
+          <div class="emoji">☀️</div>
+          <div class="role" style="color:#E67E22;">Energy Source</div>
+          <div class="name">Sun</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step producer">
+          <div class="emoji">🌾</div>
+          <div class="role" style="color:#1E8449;">Producer</div>
+          <div class="name">Grass</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step herbivore">
+          <div class="emoji">🦗</div>
+          <div class="role" style="color:#2980B9;">Primary Consumer</div>
+          <div class="name">Grasshopper</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step carnivore">
+          <div class="emoji">🐦</div>
+          <div class="role" style="color:#C0392B;">Secondary Consumer</div>
+          <div class="name">Bird</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step carnivore" style="background: linear-gradient(135deg,#FCE4EC,#F48FB1);">
+          <div class="emoji">🦊</div>
+          <div class="role" style="color:#880E4F;">Tertiary Consumer</div>
+          <div class="name">Fox</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step decomposer">
+          <div class="emoji">🍄</div>
+          <div class="role" style="color:#6A1B9A;">Decomposer</div>
+          <div class="name">Fungi</div>
+        </div>
+      </div>
+
+      <!-- Example 2 -->
+      <h3 style="margin-top:40px; margin-bottom: 20px;">Example 2: Forest Food Chain</h3>
+      <div class="foodchain-visual">
+        <div class="fc-step sun">
+          <div class="emoji">☀️</div>
+          <div class="role" style="color:#E67E22;">Energy Source</div>
+          <div class="name">Sun</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step producer">
+          <div class="emoji">🌿</div>
+          <div class="role" style="color:#1E8449;">Producer</div>
+          <div class="name">Green Plant</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step herbivore">
+          <div class="emoji">🐇</div>
+          <div class="role" style="color:#2980B9;">Herbivore</div>
+          <div class="name">Rabbit</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step carnivore">
+          <div class="emoji">🦅</div>
+          <div class="role" style="color:#C0392B;">Carnivore</div>
+          <div class="name">Hawk</div>
+        </div>
+        <div class="fc-arrow">→</div>
+        <div class="fc-step decomposer">
+          <div class="emoji">🦠</div>
+          <div class="role" style="color:#6A1B9A;">Decomposer</div>
+          <div class="name">Bacteria</div>
+        </div>
+      </div>
+
+      <!-- Mermaid Hierarchy -->
+      <h3 style="margin-top:40px; margin-bottom: 20px;">Food Chain Hierarchy Map</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph TD
+    A["☀️ SUN - Energy Source"] --> B["🌿 PRODUCERS - Plants, Grass, Wheat, Mango"]
+    B --> C["🐄 PRIMARY CONSUMERS - Herbivores - Goat, Cow, Rabbit"]
+    C --> D["🦁 SECONDARY CONSUMERS - Carnivores - Lion, Eagle, Fox"]
+    D --> E["🦊 TERTIARY CONSUMERS - Top Carnivores - Tiger, Hawk"]
+    E --> F["🍄 DECOMPOSERS - Bacteria, Fungi"]
+    C --> F
+    D --> F
+    B --> F
+    F --> B
+    style A fill:#FFD700,stroke:#FFA500,color:#000
+    style B fill:#27AE60,stroke:#1E8449,color:#fff
+    style C fill:#3498DB,stroke:#2980B9,color:#fff
+    style D fill:#E74C3C,stroke:#C0392B,color:#fff
+    style E fill:#9B59B6,stroke:#8E44AD,color:#fff
+    style F fill:#795548,stroke:#5D4037,color:#fff
+        </div>
+      </div>
+
+      <!-- Hint Panel -->
+      <div class="hint-panel" style="margin-top:28px;">
+        <button class="hint-toggle" onclick="toggleHint(this)">
+          💡 Hint: How to identify each organism's role in a food chain
+          <span style="margin-left:auto;">▼</span>
+        </button>
+        <div class="hint-body">
+          <p><strong>Producers:</strong> They make their own food. Always plants. They appear right after the Sun in the chain.<br>
+          <strong>Primary consumers:</strong> Eat producers (plants). Always herbivores.<br>
+          <strong>Secondary consumers:</strong> Eat primary consumers. Usually carnivores or omnivores.<br>
+          <strong>Tertiary consumers:</strong> At the top of the chain. Rarely get eaten themselves.<br>
+          <strong>Decomposers:</strong> Break down dead matter from ALL levels. They don't appear in the middle of a chain — they work on everything!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice">
+    <div class="container">
+      <div class="section-label">Practice</div>
+      <h2 class="section-title">Test Your Knowledge</h2>
+      <p class="section-desc">Work through these activities from your textbook to strengthen your understanding.</p>
+
+      <div class="practice-tabs">
+        <button class="tab-btn active" onclick="switchTab('fill')">Fill in the Blanks</button>
+        <button class="tab-btn" onclick="switchTab('tf')">True or False</button>
+        <button class="tab-btn" onclick="switchTab('mcq')">Choose Correct</button>
+        <button class="tab-btn" onclick="switchTab('dragdrop')">Drag & Drop</button>
+      </div>
+
+      <!-- FILL IN THE BLANKS -->
+      <div class="tab-content active" id="tab-fill">
+        <div class="practice-q">
+          <p>1. ________ is the prime source of energy.</p>
+          <input class="fill-input" id="f1" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>2. ________ can make their own food.</p>
+          <input class="fill-input" id="f2" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>3. Animals that eat only plants are called ________.</p>
+          <input class="fill-input" id="f3" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>4. Lions and tigers are ________ because they eat other animals.</p>
+          <input class="fill-input" id="f4" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>5. Decomposers break down ________ plants and animals.</p>
+          <input class="fill-input" id="f5" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>6. ________ and fungi are examples of decomposers.</p>
+          <input class="fill-input" id="f6" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>7. Humans are ________ because they eat both plants and animals.</p>
+          <input class="fill-input" id="f7" placeholder="Type your answer..." type="text">
+        </div>
+        <div class="practice-q">
+          <p>8. Nutrients from decomposers enrich the ________.</p>
+          <input class="fill-input" id="f8" placeholder="Type your answer..." type="text">
+        </div>
+        <button class="btn check-practice" onclick="checkFill()">Check Answers</button>
+        <div class="practice-feedback" id="fill-feedback"></div>
+
+        <div class="answers-section">
+          <button class="btn-secondary answer-reveal-btn" onclick="revealFillAnswers()">Show All Answers</button>
+          <div class="answers-grid" id="fill-answers">
+            <div class="answer-card"><strong>1.</strong> Sun</div>
+            <div class="answer-card"><strong>2.</strong> Producers (Plants)</div>
+            <div class="answer-card"><strong>3.</strong> Herbivores</div>
+            <div class="answer-card"><strong>4.</strong> Carnivores</div>
+            <div class="answer-card"><strong>5.</strong> Dead</div>
+            <div class="answer-card"><strong>6.</strong> Bacteria</div>
+            <div class="answer-card"><strong>7.</strong> Omnivores</div>
+            <div class="answer-card"><strong>8.</strong> Soil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRUE OR FALSE -->
+      <div class="tab-content" id="tab-tf">
+        <div id="tf-questions">
+          <!-- Generated by JS -->
+        </div>
+        <button class="btn check-practice" onclick="checkTF()">Check Answers</button>
+        <div class="practice-feedback" id="tf-feedback"></div>
+        <div class="answers-section" style="margin-top:20px;">
+          <button class="btn-secondary answer-reveal-btn" onclick="revealTFAnswers()">Show All Answers</button>
+          <div class="answers-grid" id="tf-answers"></div>
+        </div>
+      </div>
+
+      <!-- MCQ -->
+      <div class="tab-content" id="tab-mcq">
+        <div id="mcq-questions">
+          <!-- Generated by JS -->
+        </div>
+        <button class="btn check-practice" onclick="checkMCQ()">Check Answers</button>
+        <div class="practice-feedback" id="mcq-feedback"></div>
+        <div class="answers-section" style="margin-top:20px;">
+          <button class="btn-secondary answer-reveal-btn" onclick="revealMCQAnswers()">Show All Answers</button>
+          <div class="answers-grid" id="mcq-answers"></div>
+        </div>
+      </div>
+
+      <!-- DRAG AND DROP -->
+      <div class="tab-content" id="tab-dragdrop">
+        <h4 style="margin-bottom:14px;">Classify these organisms into the correct category!</h4>
+        <p style="color:var(--slate); margin-bottom:20px; font-size:1rem;">Drag each organism to the correct box below:</p>
+        <div class="dd-items" id="dd-source">
+          <div class="dd-item" draggable="true" data-type="producer">🌾 Wheat</div>
+          <div class="dd-item" draggable="true" data-type="herbivore">🐄 Cow</div>
+          <div class="dd-item" draggable="true" data-type="carnivore">🦁 Lion</div>
+          <div class="dd-item" draggable="true" data-type="decomposer">🍄 Fungi</div>
+          <div class="dd-item" draggable="true" data-type="producer">🌱 Grass</div>
+          <div class="dd-item" draggable="true" data-type="herbivore">🐇 Rabbit</div>
+          <div class="dd-item" draggable="true" data-type="carnivore">🦅 Eagle</div>
+          <div class="dd-item" draggable="true" data-type="decomposer">🦠 Bacteria</div>
+          <div class="dd-item" draggable="true" data-type="omnivore">🐻 Bear</div>
+          <div class="dd-item" draggable="true" data-type="omnivore">👤 Human</div>
+        </div>
+        <div class="dd-zones">
+          <div class="dd-zone" data-accepts="producer">
+            <h4><span class="zone-icon">🌿</span>Producers</h4>
+            <div class="dropped-items"></div>
+          </div>
+          <div class="dd-zone" data-accepts="herbivore">
+            <h4><span class="zone-icon">🐄</span>Herbivores</h4>
+            <div class="dropped-items"></div>
+          </div>
+          <div class="dd-zone" data-accepts="carnivore">
+            <h4><span class="zone-icon">🦁</span>Carnivores</h4>
+            <div class="dropped-items"></div>
+          </div>
+          <div class="dd-zone" data-accepts="omnivore">
+            <h4><span class="zone-icon">🐻</span>Omnivores</h4>
+            <div class="dropped-items"></div>
+          </div>
+          <div class="dd-zone" data-accepts="decomposer">
+            <h4><span class="zone-icon">🍄</span>Decomposers</h4>
+            <div class="dropped-items"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:20px;">
+          <button class="btn" onclick="checkDD()">Check Classification</button>
+          <button class="btn-secondary" onclick="resetDD()">Reset</button>
+        </div>
+        <div id="dd-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGE -->
+  <section id="challenge">
+    <div class="container">
+      <div class="section-label">Challenge</div>
+      <h2 class="section-title">Think Deeper 🧠</h2>
+      <p class="section-desc">Ready to stretch your thinking? These critical thinking questions will push you further.</p>
+
+      <div class="challenge-box">
+        <h3>Critical Thinking Questions</h3>
+        <ul style="margin-top:18px; margin-bottom:30px;">
+          <li>Why are there more herbivores than carnivores in an ecosystem?</li>
+          <li>What would happen to an ecosystem if all the producers disappeared?</li>
+          <li>If decomposers disappeared, what effect would this have on plants?</li>
+          <li>Think about the food you eat — trace it back to its original energy source (the Sun).</li>
+          <li>Why do food chains rarely have more than 4–5 links?</li>
+        </ul>
+        <h3>Activity: Create Your Own Food Chain!</h3>
+        <p style="margin-top:12px; margin-bottom:14px;">Using the example below, create your own food chain including producers, herbivores, carnivores, and decomposers:</p>
+        <div style="background: rgba(255,255,255,0.1); border-radius:12px; padding:18px; margin-bottom:20px;">
+          <strong style="color:#00D2D3;">Example:</strong><br>
+          <span style="color:#DFE6E9;">Sun → Grass → Rabbit → Fox → Fungi</span>
+        </div>
+        <textarea id="my-foodchain" rows="4" style="width:100%; border-radius:12px; padding:16px; font-size:1rem; font-family:'Inter',sans-serif; border:none; resize:vertical; background:rgba(255,255,255,0.95); color:#2D3436;" placeholder="Write your own food chain here... e.g., Sun → __ → __ → __ → __"></textarea>
+        <button class="btn" style="margin-top:14px;" onclick="saveFoodChain()">Save My Food Chain ✅</button>
+        <div id="fc-saved" style="color:#00D2D3; margin-top:12px; font-weight:600; display:none;">Your food chain has been saved! Great work! 🎉</div>
+      </div>
+
+      <div class="hint-panel" style="margin-top:28px;">
+        <button class="hint-toggle" onclick="toggleHint(this)">
+          💡 Hint: Why more herbivores than carnivores?
+          <span style="margin-left:auto;">▼</span>
+        </button>
+        <div class="hint-body">
+          <p>Think about the <strong>10% energy rule</strong>. When a plant is eaten by a herbivore, only 10% of its energy passes on. When that herbivore is eaten by a carnivore, only 10% of that 10% passes on. So carnivores need to eat MANY herbivores to survive — meaning you need far more herbivores than carnivores in any ecosystem to support the food chain!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="container">
+      <div class="section-label">Quiz</div>
+      <h2 class="section-title">Final Quiz 🎯</h2>
+      <p class="section-desc">Answer all 10 questions to test your complete understanding of food chains.</p>
+
+      <div class="quiz-wrap">
+        <div id="quiz-screen">
+          <div class="quiz-progress">
+            <div class="quiz-bar" id="quiz-bar" style="width:0%"></div>
+          </div>
+          <div class="quiz-counter" id="quiz-counter">Question 1 of 10</div>
+          <div class="quiz-question" id="quiz-question"></div>
+          <div class="quiz-nav">
+            <button class="btn" id="quiz-next-btn" onclick="nextQuestion()">Next →</button>
+            <button class="btn-secondary" id="quiz-skip-btn" onclick="skipQuestion()">Skip</button>
+          </div>
+        </div>
+        <div id="quiz-result" class="quiz-result" style="display:none;">
+          <div class="score-big" id="score-big"></div>
+          <p id="score-label"></p>
+          <p id="score-msg" class="quiz-feedback-msg"></p>
+          <button class="btn" style="margin-top:24px;" onclick="restartQuiz()">Try Again 🔄</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid init failed', e); }
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis init failed', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero title character animation
+      const titleEl = document.getElementById('hero-title');
+      if (titleEl) {
+        const text = titleEl.textContent;
+        titleEl.innerHTML = '';
+        text.split('').forEach((ch, i) => {
+          const span = document.createElement('span');
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          span.style.display = 'inline-block';
+          span.style.opacity = '1';
+          titleEl.appendChild(span);
+          gsap.from(span, { opacity: 0, y: 40, rotationX: -90, duration: 0.6, delay: i * 0.05, ease: 'back.out(1.7)' });
+        });
+      }
+
+      // Cards scroll entrance
+      if (typeof ScrollTrigger !== 'undefined') {
+        document.querySelectorAll('.card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+            opacity: 0, y: 40, duration: 0.6, delay: (i % 4) * 0.1, ease: 'power2.out'
+          });
+        });
+
+        // Bar chart animation
+        const bars = document.querySelectorAll('#energy-chart .bar');
+        bars.forEach((bar, i) => {
+          const target = parseInt(bar.getAttribute('data-target'));
+          gsap.fromTo(bar,
+            { height: '0px' },
+            { height: target + 'px', duration: 1.2, ease: 'power2.out',
+              scrollTrigger: { trigger: '#energy-chart', start: 'top 80%' },
+              delay: i * 0.15
+            }
+          );
+        });
+
+        // Food chain steps
+        gsap.from('#fc-visual .fc-step', {
+          scrollTrigger: { trigger: '#fc-visual', start: 'top 80%' },
+          opacity: 0, y: 30, stagger: 0.15, duration: 0.6, ease: 'back.out(1.4)'
+        });
+
+        // Section titles
+        document.querySelectorAll('.section-title').forEach(el => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%' },
+            opacity: 0, x: -30, duration: 0.7, ease: 'power2.out'
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP init failed', e); }
+
+  // CURTAIN DISMISS with GSAP
+  try {
+    const curtain = document.getElementById('curtain');
+    if (curtain) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(curtain, { opacity: 0, duration: 0.8, delay: 0.5, onComplete: () => { curtain.style.display = 'none'; } });
+      } else {
+        setTimeout(() => { curtain.style.display = 'none'; }, 800);
+      }
+    }
+  } catch(e) {
+    const curtain = document.getElementById('curtain');
+    if (curtain) curtain.style.display = 'none';
+  }
+
+  // SCROLLSPY
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const tocLinks = document.querySelectorAll('#toc-sidebar a, #mobile-nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // INIT PRACTICE SECTIONS
+  buildTF();
+  buildMCQ();
+  initDragDrop();
+  initQuiz();
+  initTouchDragDrop();
+});
+
+// =====================
+// TABLE EXPAND
+// =====================
+function expandRow(row, info) {
+  const existing = row.nextElementSibling;
+  if (existing && existing.classList.contains('expand-row')) {
+    existing.remove();
+    return;
+  }
+  const newRow = document.createElement('tr');
+  newRow.className = 'expand-row';
+  newRow.innerHTML = `<td colspan="4">📚 ${info}</td>`;
+  row.parentNode.insertBefore(newRow, row.nextSibling);
+}
+
+function sortTable(col) {
+  const table = document.getElementById('consumers-table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr:not(.expand-row)'));
+  rows.sort((a, b) => {
+    const aT = a.cells[col].textContent.trim();
+    const bT = b.cells[col].textContent.trim();
+    return aT.localeCompare(bT);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// =====================
+// HINT TOGGLE
+// =====================
+function toggleHint(btn) {
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+  const arr = btn.querySelector('span');
+  if (arr) arr.textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+// =====================
+// TABS
+// =====================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['fill','tf','mcq','dragdrop'][i] === tab);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// =====================
+// FILL IN THE BLANKS
+// =====================
+const fillAnswers = ['sun','producers','herbivores','carnivores','dead','bacteria','omnivores','soil'];
+
+function checkFill() {
+  let correct = 0;
+  fillAnswers.forEach((ans, i) => {
+    const input = document.getElementById('f' + (i+1));
+    if (!input) return;
+    const val = input.value.trim().toLowerCase();
+    if (val === ans || val === ans + 's' || (ans === 'producers' && val === 'producer') || (ans === 'herbivores' && val === 'herbivore') || (ans === 'carnivores' && val === 'carnivore') || (ans === 'omnivores' && val === 'omnivore')) {
+      correct++;
+      input.style.borderColor = '#27AE60';
+    } else {
+      input.style.borderColor = '#E74C3C';
+    }
+  });
+  const fb = document.getElementById('fill-feedback');
+  fb.className = 'practice-feedback show ' + (correct >= 6 ? 'correct' : 'wrong');
+  fb.textContent = `You got ${correct}/8 correct! ${correct >= 6 ? '🎉 Great work!' : '📚 Review the lesson and try again!'}`;
+}
+
+function revealFillAnswers() {
+  document.getElementById('fill-answers').classList.toggle('visible');
+}
+
+// =====================
+// TRUE OR FALSE
+// =====================
+const tfData = [
+  { q: "Plants are producers because they depend on animals for food.", ans: false },
+  { q: "Carnivores eat both plants and animals.", ans: false },
+  { q: "The sun is the main source of energy for all food chains.", ans: true },
+  { q: "Decomposers return nutrients to the soil.", ans: true },
+  { q: "A goat is an example of a herbivore.", ans: true },
+  { q: "A food chain always ends with a carnivore.", ans: false },
+  { q: "Without decomposers, dead plants and animals would pile up.", ans: true },
+  { q: "Omnivores eat only plants.", ans: false }
+];
+
+function buildTF() {
+  const cont = document.getElementById('tf-questions');
+  if (!cont) return;
+  cont.innerHTML = tfData.map((item, i) => `
+    <div class="practice-q">
+      <p>${i+1}. ${item.q}</p>
+      <div class="tf-btns">
+        <button class="tf-btn" id="tf${i}-T" onclick="selectTF(${i},'T')">✅ True</button>
+        <button class="tf-btn" id="tf${i}-F" onclick="selectTF(${i},'F')">❌ False</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectTF(idx, val) {
+  const t = document.getElementById(`tf${idx}-T`);
+  const f = document.getElementById(`tf${idx}-F`);
+  if (!t || !f) return;
+  t.classList.remove('selected-true','selected-false');
+  f.classList.remove('selected-true','selected-false');
+  if (val === 'T') t.classList.add('selected-true');
+  else f.classList.add('selected-false');
+  t.dataset.selected = val;
+  f.dataset.selected = val;
+}
+
+function checkTF() {
+  let correct = 0;
+  tfData.forEach((item, i) => {
+    const t = document.getElementById(`tf${i}-T`);
+    if (!t) return;
+    const selected = t.dataset.selected;
+    const isCorrect = (selected === 'T' && item.ans) || (selected === 'F' && !item.ans);
+    if (isCorrect) correct++;
+  });
+  const fb = document.getElementById('tf-feedback');
+  fb.className = 'practice-feedback show ' + (correct >= 6 ? 'correct' : 'wrong');
+  fb.textContent = `You got ${correct}/8 correct! ${correct >= 6 ? '🎉 Excellent!' : '📚 Review and try again!'}`;
+}
+
+function revealTFAnswers() {
+  const grid = document.getElementById('tf-answers');
+  if (grid.innerHTML === '') {
+    grid.innerHTML = tfData.map((item, i) => `
+      <div class="answer-card"><strong>${i+1}.</strong> ${item.ans ? '✅ True' : '❌ False'}</div>
+    `).join('');
+  }
+  grid.classList.toggle('visible');
+}
+
+// =====================
+// MCQ PRACTICE
+// =====================
+const mcqData = [
+  { q: "What is the starting point of all food chains?", opts: ["Grass","Sun","Animals","Soil"], ans: 1 },
+  { q: "Which of the following is a producer?", opts: ["Tiger","Goat","Wheat","Eagle"], ans: 2 },
+  { q: "Decomposers are responsible for:", opts: ["Eating plants","Returning nutrients to the soil","Hunting prey","None of the above"], ans: 1 },
+  { q: "Which is an example of a carnivore?", opts: ["Cow","Lion","Human","Mushroom"], ans: 1 },
+  { q: "Animals that eat both plants and animals are called:", opts: ["Carnivores","Omnivores","Herbivores","Producers"], ans: 1 },
+  { q: "Grass, goat, and lion form a food chain. Which one is the producer?", opts: ["Grass","Goat","Lion","None"], ans: 0 },
+  { q: "What enriches the soil after plants and animals die?", opts: ["Sunlight","Decomposers","Carnivores","Water"], ans: 1 },
+  { q: "Humans are classified as:", opts: ["Herbivores","Carnivores","Omnivores","Producers"], ans: 2 }
+];
+
+function buildMCQ() {
+  const cont = document.getElementById('mcq-questions');
+  if (!cont) return;
+  cont.innerHTML = mcqData.map((item, i) => `
+    <div class="practice-q">
+      <p>${i+1}. ${item.q}</p>
+      ${item.opts.map((opt, j) => `
+        <button class="quiz-option" id="mcq${i}-${j}" onclick="selectMCQ(${i},${j})" style="margin-bottom:8px;">${opt}</button>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function selectMCQ(qi, oi) {
+  const opts = mcqData[qi].opts;
+  opts.forEach((_, j) => {
+    const btn = document.getElementById(`mcq${qi}-${j}`);
+    if (btn) { btn.classList.remove('correct','wrong'); btn.dataset.selected = ''; }
+  });
+  const chosen = document.getElementById(`mcq${qi}-${oi}`);
+  if (chosen) { chosen.dataset.selected = 'yes'; chosen.style.borderColor = 'var(--teal)'; chosen.style.background = 'rgba(34,166,179,0.1)'; }
+}
+
+function checkMCQ() {
+  let correct = 0;
+  mcqData.forEach((item, i) => {
+    item.opts.forEach((_, j) => {
+      const btn = document.getElementById(`mcq${i}-${j}`);
+      if (btn && btn.dataset.selected === 'yes') {
+        if (j === item.ans) { correct++; btn.classList.add('correct'); }
+        else { btn.classList.add('wrong'); }
+      }
+    });
+  });
+  const fb = document.getElementById('mcq-feedback');
+  fb.className = 'practice-feedback show ' + (correct >= 6 ? 'correct' : 'wrong');
+  fb.textContent = `You got ${correct}/8 correct! ${correct >= 6 ? '🎉 Well done!' : '📚 Review and try again!'}`;
+}
+
+function revealMCQAnswers() {
+  const grid = document.getElementById('mcq-answers');
+  if (grid.innerHTML === '') {
+    grid.innerHTML = mcqData.map((item, i) => `
+      <div class="answer-card"><strong>${i+1}.</strong> ${item.opts[item.ans]}</div>
+    `).join('');
+  }
+  grid.classList.toggle('visible');
+}
+
+// =====================
+// DRAG AND DROP
+// =====================
+let draggedItem = null;
+
+function initDragDrop() {
+  const items = document.querySelectorAll('.dd-item');
+  const zones = document.querySelectorAll('.dd-zone');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      draggedItem = item;
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+  });
+
+  zones.forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('over');
+    });
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('over');
+    });
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      if (draggedItem) {
+        const dropped = zone.querySelector('.dropped-items');
+        const span = document.createElement('span');
+        span.className = 'dropped-item';
+        span.textContent = draggedItem.textContent;
+        span.dataset.type = draggedItem.dataset.type;
+        dropped.appendChild(span);
+        draggedItem.remove();
+        draggedItem = null;
+      }
+    });
+  });
+}
+
+function initTouchDragDrop() {
+  const items = document.querySelectorAll('.dd-item');
+  items.forEach(item => {
+    let clone = null;
+    let startX, startY, offX, offY;
+
+    item.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      const rect = item.getBoundingClientRect();
+      offX = t.clientX - rect.left; offY = t.clientY - rect.top;
+      clone = item.cloneNode(true);
+      clone.style.position = 'fixed';
+      clone.style.opacity = '0.8';
+      clone.style.pointerEvents = 'none';
+      clone.style.zIndex = '9999';
+      clone.style.left = (t.clientX - offX) + 'px';
+      clone.style.top = (t.clientY - offY) + 'px';
+      document.body.appendChild(clone);
+      item.style.opacity = '0.3';
+    }, { passive: true });
+
+    item.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!clone) return;
+      const t = e.touches[0];
+      clone.style.left = (t.clientX - offX) + 'px';
+      clone.style.top = (t.clientY - offY) + 'px';
+    }, { passive: false });
+
+    item.addEventListener('touchend', (e) => {
+      if (!clone) return;
+      const t = e.changedTouches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      clone.remove(); clone = null;
+      item.style.opacity = '1';
+      const zone = el ? el.closest('.dd-zone') : null;
+      if (zone) {
+        const dropped = zone.querySelector('.dropped-items');
+        const span = document.createElement('span');
+        span.className = 'dropped-item';
+        span.textContent = item.textContent;
+        span.dataset.type = item.dataset.type;
+        dropped.appendChild(span);
+        item.remove();
+      }
+    });
+  });
+}
+
+function checkDD() {
+  const zones = document.querySelectorAll('.dd-zone');
+  let correct = 0, total = 0;
+  zones.forEach(zone => {
+    const accepts = zone.dataset.accepts;
+    const dropped = zone.querySelectorAll('.dropped-item');
+    dropped.forEach(item => {
+      total++;
+      if (item.dataset.type === accepts) correct++;
+    });
+  });
+  const fb = document.getElementById('dd-feedback');
+  fb.className = correct === total && total > 0 ? 'correct' : 'wrong';
+  fb.textContent = total === 0 ? '⚠️ Drag some organisms first!' : `${correct}/${total} correct! ${correct === total ? '🎉 Perfect classification!' : '❌ Some items are in the wrong category.'}`;
+}
+
+function resetDD() {
+  const source = document.getElementById('dd-source');
+  document.querySelectorAll('.dd-zone .dropped-item').forEach(el => {
+    const item = document.createElement('div');
+    item.className = 'dd-item';
+    item.draggable = true;
+    item.dataset.type = el.dataset.type;
+    item.textContent = el.textContent;
+    source.appendChild(item);
+    el.remove();
+  });
+  const fb = document.getElementById('dd-feedback');
+  fb.className = '';
+  fb.textContent = '';
+  initDragDrop();
+  initTouchDragDrop();
+}
+
+// =====================
+// FOOD CHAIN SAVE
+// =====================
+function saveFoodChain() {
+  const val = document.getElementById('my-foodchain').value.trim();
+  const saved = document.getElementById('fc-saved');
+  if (val.length > 5) {
+    saved.style.display = 'block';
+    setTimeout(() => { saved.style.display = 'none'; }, 3000);
+  }
+}
+
+// =====================
+// QUIZ
+// =====================
+const quizData = [
+  { type: 'mcq', q: "What is the ultimate source of energy in a food chain?", opts: ["Water","Soil","Sun","Wind"], ans: 2 },
+  { type: 'mcq', q: "Which of the following is an example of a producer?", opts: ["Goat","Bacteria","Wheat","Lion"], ans: 2 },
+  { type: 'mcq', q: "What is a herbivore?", opts: ["An animal that eats only animals","An animal that eats only plants","An animal that eats both plants and animals","A plant that makes its own food"], ans: 1 },
+  { type: 'mcq', q: "Which organisms break down dead plants and animals?", opts: ["Producers","Herbivores","Decomposers","Carnivores"], ans: 2 },
+  { type: 'mcq', q: "In the food chain: Grass → Grasshopper → Bird → Fox — what is the Grasshopper?", opts: ["Producer","Primary Consumer","Secondary Consumer","Decomposer"], ans: 1 },
+  { type: 'mcq', q: "What do decomposers return to the soil?", opts: ["Sunlight","Water","Nutrients","Oxygen"], ans: 2 },
+  { type: 'mcq', q: "Bears eat both plants and fish. They are classified as:", opts: ["Herbivores","Carnivores","Omnivores","Producers"], ans: 2 },
+  { type: 'mcq', q: "Which of these is NOT a decomposer?", opts: ["Bacteria","Fungi","Earthworm","Lion"], ans: 3 },
+  { type: 'text', q: "Name ONE example of a producer from the lesson.", ans: ['wheat','grass','mango','plant','green plant'] },
+  { type: 'text', q: "What process do plants use to make their own food?", ans: ['photosynthesis'] }
+];
+
+let currentQ = 0, score = 0, answered = false;
+
+function initQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = quizData[currentQ];
+  const bar = document.getElementById('quiz-bar');
+  const counter = document.getElementById('quiz-counter');
+  const qDiv = document.getElementById('quiz-question');
+  if (!q || !bar || !counter || !qDiv) return;
+
+  bar.style.width = ((currentQ / quizData.length) * 100) + '%';
+  counter.textContent = `Question ${currentQ + 1} of ${quizData.length}`;
+  answered = false;
+
+  if (q.type === 'mcq') {
+    qDiv.innerHTML = `
+      <p>${q.q}</p>
+      <div class="quiz-options">
+        ${q.opts.map((opt, i) => `<button class="quiz-option" onclick="answerMCQ(${i})">${opt}</button>`).join('')}
+      </div>
+    `;
+  } else {
+    qDiv.innerHTML = `
+      <p>${q.q}</p>
+      <input class="quiz-input" id="qinput" type="text" placeholder="Type your answer...">
+      <div class="quiz-feedback-msg" id="q-inline-fb"></div>
+    `;
+    document.getElementById('quiz-next-btn').textContent = 'Submit →';
+  }
+  document.getElementById('quiz-next-btn').textContent = q.type === 'text' ? 'Submit →' : 'Next →';
+}
+
+function answerMCQ(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[currentQ];
+  const btns = document.querySelectorAll('.quiz-option');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    if (i === idx && idx !== q.ans) b.classList.add('wrong');
+  });
+  if (idx === q.ans) score++;
+}
+
+function nextQuestion() {
+  const q = quizData[currentQ];
+  if (q.type === 'text' && !answered) {
+    const input = document.getElementById('qinput');
+    if (!input) return;
+    const val = input.value.trim().toLowerCase();
+    const isCorrect = q.ans.some(a => val.includes(a));
+    const fb = document.getElementById('q-inline-fb');
+    if (fb) {
+      fb.style.color = isCorrect ? '#27AE60' : '#E74C3C';
+      fb.textContent = isCorrect ? '✅ Correct!' : `❌ Correct answer: ${q.ans[0]}`;
+    }
+    if (isCorrect) score++;
+    answered = true;
+    input.disabled = true;
+    return;
+  }
+  currentQ++;
+  if (currentQ >= quizData.length) {
+    showResult();
+  } else {
+    renderQuizQ();
+  }
+}
+
+function skipQuestion() {
+  currentQ++;
+  if (currentQ >= quizData.length) showResult();
+  else renderQuizQ();
+}
+
+function showResult() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const res = document.getElementById('quiz-result');
+  res.style.display = 'block';
+  document.getElementById('score-big').textContent = `${score}/10`;
+  document.getElementById('score-label').textContent = score >= 8 ? '🌟 Outstanding!' : score >= 6 ? '🎉 Good Work!' : score >= 4 ? '📚 Keep Practising!' : '💪 Review the lesson!';
+  document.getElementById('score-msg').textContent = `You answered ${score} out of 10 questions correctly.`;
+  document.getElementById('quiz-bar').style.width = '100%';
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('#score-big', { scale: 0, rotation: -20, duration: 0.8, ease: 'back.out(2)' });
+    }
+  } catch(e) {}
+}
+
+function restartQuiz() {
+  initQuiz();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<!-- CLASS: 5 | SUBJECT: urdu | VERSION: 1.0 -->
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ہمیشہ سچ بولو - اردو سبق</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --gold: #F9CA24;
+    --orange: #F0932B;
+    --green: #6AB04C;
+    --red: #EB4D4B;
+    --light-teal: #e8f8fa;
+    --light-indigo: #f0eeff;
+    --font-urdu: 'Noto Nastaliq Urdu', serif;
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; font-size: 18px; }
+  body {
+    font-family: var(--font-urdu);
+    background: var(--warm-white);
+    color: #2d3436;
+    direction: rtl;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  #curtain {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: opacity 0.5s ease;
+  }
+  #curtain .loader-text {
+    color: white;
+    font-family: var(--font-urdu);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    text-align: center;
+  }
+  #curtain .loader-spinner {
+    width: 50px; height: 50px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* STICKY TOC */
+  #toc-sidebar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    background: white;
+    border-radius: 16px;
+    padding: 16px 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    width: 180px;
+    direction: rtl;
+  }
+  #toc-sidebar h4 {
+    font-family: var(--font-urdu);
+    font-size: 15px;
+    color: var(--indigo);
+    margin-bottom: 12px;
+    text-align: center;
+    border-bottom: 2px solid var(--teal);
+    padding-bottom: 8px;
+  }
+  #toc-sidebar ul { list-style: none; }
+  #toc-sidebar ul li { margin-bottom: 8px; }
+  #toc-sidebar ul li a {
+    font-family: var(--font-urdu);
+    font-size: 13px;
+    color: var(--slate);
+    text-decoration: none;
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    text-align: right;
+  }
+  #toc-sidebar ul li a:hover,
+  #toc-sidebar ul li a.active {
+    background: var(--light-teal);
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 40%, #22A6B3 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 80px 20px;
+  }
+  .hero-calligraphy {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-urdu);
+    font-size: clamp(6rem, 20vw, 18rem);
+    color: white;
+    pointer-events: none;
+    user-select: none;
+    direction: rtl;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-family: var(--font-urdu);
+    font-size: 18px;
+    padding: 8px 24px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .hero-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: white;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    direction: rtl;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-subtitle {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: rgba(255,255,255,0.85);
+    line-height: 2;
+    margin-bottom: 40px;
+  }
+  .hero-geometric {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    background: var(--gold);
+  }
+  .geo1 { width: 400px; height: 400px; top: -100px; left: -100px; }
+  .geo2 { width: 250px; height: 250px; bottom: -50px; right: 10%; }
+  .geo3 { width: 150px; height: 150px; top: 20%; right: 5%; }
+
+  /* ISLAMIC PATTERN SVG */
+  .islamic-divider {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    opacity: 0.4;
+  }
+
+  /* CONTENT WRAPPER */
+  .page-wrapper { width: 100%; }
+  .section-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 240px 0 40px;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 0;
+    position: relative;
+  }
+  section:nth-child(even) { background: #f8fffe; }
+  .section-label {
+    display: inline-block;
+    background: var(--teal);
+    color: white;
+    font-family: var(--font-urdu);
+    font-size: 18px;
+    padding: 6px 20px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--indigo);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    direction: rtl;
+  }
+  .section-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 2.5;
+    color: #2d3436;
+    direction: rtl;
+  }
+
+  /* OBJECTIVES CARDS */
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .obj-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-top: 4px solid var(--teal);
+    text-align: center;
+    opacity: 1;
+    transform: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .obj-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+  .obj-card .obj-icon { font-size: 3rem; margin-bottom: 16px; }
+  .obj-card h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: var(--indigo);
+    line-height: 2;
+    direction: rtl;
+  }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone {
+    border: 2px dashed var(--teal);
+    border-radius: 20px;
+    padding: 36px;
+    margin: 40px 0;
+    background: var(--light-teal);
+    position: relative;
+    opacity: 1;
+  }
+  .discovery-zone .dz-icon {
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    background: var(--teal);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .discovery-zone h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    color: var(--teal);
+    margin-bottom: 16px;
+    direction: rtl;
+  }
+
+  /* STORY SECTION */
+  .story-card {
+    background: linear-gradient(135deg, #fff9e6, #fff3cd);
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    border-right: 6px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '❝';
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 6rem;
+    color: var(--gold);
+    opacity: 0.2;
+    line-height: 1;
+  }
+  .story-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    line-height: 3;
+    color: #2d3436;
+    direction: rtl;
+    position: relative;
+    z-index: 1;
+  }
+  .story-highlight {
+    background: linear-gradient(120deg, rgba(34,166,179,0.2), rgba(34,166,179,0.1));
+    border-radius: 8px;
+    padding: 2px 8px;
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding: 20px 0;
+    margin-top: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--teal), var(--indigo));
+  }
+  .timeline-item {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-right: 50px;
+    opacity: 1;
+    transform: none;
+  }
+  .timeline-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    position: absolute;
+    right: 1px;
+    box-shadow: 0 0 0 4px rgba(34,166,179,0.2);
+  }
+  .timeline-content {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    flex: 1;
+  }
+  .timeline-content h4 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    color: var(--indigo);
+    margin-bottom: 8px;
+    direction: rtl;
+  }
+  .timeline-content p {
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    color: var(--slate);
+    line-height: 2.5;
+    direction: rtl;
+  }
+
+  /* DID YOU KNOW FLIP CARD */
+  .flip-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .flip-card {
+    height: 220px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 24px;
+    text-align: center;
+    direction: rtl;
+  }
+  .flip-card-front {
+    background: linear-gradient(135deg, var(--indigo), #6c5ce7);
+    color: white;
+  }
+  .flip-card-back {
+    background: linear-gradient(135deg, var(--teal), #00b894);
+    color: white;
+    transform: rotateY(180deg);
+  }
+  .flip-card-front h3, .flip-card-back h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 2;
+    margin-top: 12px;
+    direction: rtl;
+  }
+  .flip-card-front .flip-icon { font-size: 3rem; }
+  .flip-hint {
+    font-family: var(--font-urdu);
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 8px;
+  }
+
+  /* VOCABULARY TABLE */
+  .vocab-table-wrap { overflow-x: auto; margin-top: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-urdu);
+    direction: rtl;
+  }
+  .vocab-table th {
+    background: linear-gradient(135deg, var(--indigo), var(--teal));
+    color: white;
+    padding: 18px 24px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    text-align: right;
+    direction: rtl;
+  }
+  .vocab-table td {
+    padding: 16px 24px;
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    text-align: right;
+    direction: rtl;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .vocab-table tr:nth-child(even) td { background: var(--light-teal); }
+  .vocab-table tr:nth-child(odd) td { background: white; }
+  .vocab-table tr:hover td { background: var(--light-indigo); }
+  .vocab-expanded {
+    display: none;
+    background: var(--light-indigo);
+  }
+  .vocab-expanded td {
+    font-size: clamp(0.9rem, 1.7vw, 1.05rem);
+    color: var(--indigo);
+    font-style: italic;
+    padding: 12px 24px 18px;
+  }
+
+  /* DRAG AND DROP */
+  .drag-section { margin-top: 40px; }
+  .drag-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 32px;
+    min-height: 60px;
+    padding: 16px;
+    background: var(--light-teal);
+    border-radius: 16px;
+    border: 2px dashed var(--teal);
+    direction: rtl;
+  }
+  .drag-word {
+    background: white;
+    border: 2px solid var(--teal);
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    direction: rtl;
+  }
+  .drag-word:hover { background: var(--teal); color: white; transform: scale(1.05); }
+  .drag-word.dragging { opacity: 0.5; transform: scale(0.95); }
+  .drop-zones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .drop-zone {
+    min-height: 120px;
+    border-radius: 16px;
+    padding: 20px;
+    border: 3px dashed transparent;
+    transition: all 0.3s;
+    direction: rtl;
+  }
+  .drop-zone.good {
+    background: rgba(106, 176, 76, 0.1);
+    border-color: var(--green);
+  }
+  .drop-zone.bad {
+    background: rgba(235, 77, 75, 0.1);
+    border-color: var(--red);
+  }
+  .drop-zone.drag-over {
+    border-style: solid;
+    transform: scale(1.02);
+  }
+  .drop-zone h4 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+  .drop-zone.good h4 { color: var(--green); }
+  .drop-zone.bad h4 { color: var(--red); }
+  .drop-zone-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+    direction: rtl;
+  }
+  .dropped-item {
+    background: white;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.9rem, 1.7vw, 1rem);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    direction: rtl;
+    cursor: pointer;
+  }
+
+  /* FILL IN BLANKS */
+  .blanks-exercise {
+    background: white;
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    margin-top: 32px;
+  }
+  .blank-item {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 3;
+    direction: rtl;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .blank-input {
+    border: none;
+    border-bottom: 3px solid var(--teal);
+    background: transparent;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    direction: rtl;
+    text-align: center;
+    width: 140px;
+    padding: 4px 8px;
+    color: var(--indigo);
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .blank-input:focus { border-color: var(--indigo); }
+  .blank-input.correct { border-color: var(--green); background: rgba(106,176,76,0.1); }
+  .blank-input.incorrect { border-color: var(--red); background: rgba(235,77,75,0.1); }
+  .check-blanks-btn {
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 36px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    direction: rtl;
+  }
+  .check-blanks-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(72,52,212,0.3); }
+
+  /* QUIZ */
+  .quiz-container {
+    background: white;
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    margin-top: 40px;
+  }
+  .quiz-progress {
+    background: #e8ecef;
+    border-radius: 50px;
+    height: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .quiz-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--indigo));
+    border-radius: 50px;
+    transition: width 0.5s ease;
+  }
+  .quiz-question-num {
+    font-family: var(--font-urdu);
+    font-size: 18px;
+    color: var(--slate);
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+  .quiz-question-text {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #2d3436;
+    line-height: 2.5;
+    margin-bottom: 28px;
+    direction: rtl;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    direction: rtl;
+  }
+  .quiz-option {
+    background: var(--light-teal);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 18px 24px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: right;
+    direction: rtl;
+    min-height: 48px;
+  }
+  .quiz-option:hover { border-color: var(--teal); background: rgba(34,166,179,0.15); }
+  .quiz-option.selected { border-color: var(--indigo); background: var(--light-indigo); }
+  .quiz-option.correct { border-color: var(--green); background: rgba(106,176,76,0.2); color: var(--green); }
+  .quiz-option.wrong { border-color: var(--red); background: rgba(235,77,75,0.15); color: var(--red); }
+  .quiz-text-input {
+    width: 100%;
+    border: 2px solid var(--teal);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    direction: rtl;
+    text-align: right;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .quiz-text-input:focus { border-color: var(--indigo); }
+  .quiz-nav {
+    display: flex;
+    gap: 16px;
+    margin-top: 28px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .quiz-btn {
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    min-height: 48px;
+  }
+  .quiz-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(72,52,212,0.3); }
+  .quiz-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .quiz-hint-btn {
+    background: var(--light-indigo);
+    color: var(--indigo);
+    border: 2px solid var(--indigo);
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 48px;
+  }
+  .quiz-hint-btn:hover { background: var(--indigo); color: white; }
+  .hint-panel {
+    background: var(--light-indigo);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-family: var(--font-urdu);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    color: var(--indigo);
+    display: none;
+    direction: rtl;
+    border-right: 4px solid var(--indigo);
+  }
+  .quiz-result {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+    direction: rtl;
+  }
+  .quiz-result .result-emoji { font-size: 5rem; margin-bottom: 20px; }
+  .quiz-result h2 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    color: var(--indigo);
+    margin-bottom: 16px;
+    direction: rtl;
+  }
+  .quiz-result p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--slate);
+    direction: rtl;
+  }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: white;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-family: var(--font-heading);
+    padding: 20px 40px;
+    border-radius: 20px;
+    margin: 20px 0;
+    font-weight: 800;
+  }
+
+  /* FORMULA CALLOUT */
+  .formula-callout {
+    background: #1e1e2e;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .formula-callout::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gold);
+  }
+  .formula-callout p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #a9b1d6;
+    line-height: 2.8;
+    direction: rtl;
+  }
+  .formula-callout .formula-label {
+    color: var(--gold);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+    direction: rtl;
+  }
+  .formula-callout strong { color: #7dcfff; }
+
+  /* SHEIKH BIO CARD */
+  .bio-card {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border-radius: 24px;
+    padding: 48px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .bio-card::before {
+    content: '☪';
+    position: absolute;
+    left: 30px;
+    bottom: 20px;
+    font-size: 8rem;
+    opacity: 0.05;
+  }
+  .bio-card h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    color: var(--gold);
+    margin-bottom: 20px;
+    direction: rtl;
+  }
+  .bio-card p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 2.8;
+    color: rgba(255,255,255,0.9);
+    direction: rtl;
+  }
+  .bio-card .bio-highlight {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ANIMATED CHART */
+  .chart-container {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    margin-top: 32px;
+  }
+  .chart-title {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: var(--indigo);
+    margin-bottom: 24px;
+    direction: rtl;
+    text-align: center;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    height: 200px;
+    padding: 20px 0;
+    justify-content: center;
+    direction: ltr;
+  }
+  .bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 100px;
+  }
+  .bar {
+    width: 100%;
+    background: linear-gradient(to top, var(--teal), var(--indigo));
+    border-radius: 8px 8px 0 0;
+    height: 0;
+    transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .bar-val {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    color: var(--indigo);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .bar-label {
+    font-family: var(--font-urdu);
+    font-size: 13px;
+    color: var(--slate);
+    text-align: center;
+    direction: rtl;
+  }
+
+  /* MOBILE NAV */
+  #mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+    z-index: 200;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 8px;
+  }
+  #mobile-bottom-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    padding: 0;
+    min-width: max-content;
+  }
+  #mobile-bottom-nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px;
+    font-family: var(--font-urdu);
+    font-size: 13px;
+    color: var(--slate);
+    text-decoration: none;
+    min-height: 60px;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+    direction: rtl;
+  }
+  #mobile-bottom-nav ul li a.active { color: var(--teal); }
+  #mobile-bottom-nav ul li a .nav-icon { font-size: 1.4rem; }
+
+  /* CHALLENGE SECTION */
+  .challenge-card {
+    background: linear-gradient(135deg, #f0932b, #f9ca24);
+    border-radius: 24px;
+    padding: 40px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .challenge-card::before {
+    content: '🌟';
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    font-size: 3rem;
+    opacity: 0.3;
+  }
+  .challenge-card h3 {
+    font-family: var(--font-urdu);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: white;
+    margin-bottom: 16px;
+    direction: rtl;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .challenge-card p {
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,0.95);
+    line-height: 2.5;
+    direction: rtl;
+  }
+  .challenge-textarea {
+    width: 100%;
+    min-height: 140px;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 16px;
+    padding: 16px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    direction: rtl;
+    background: rgba(255,255,255,0.9);
+    margin-top: 16px;
+    resize: vertical;
+    outline: none;
+  }
+  .submit-challenge-btn {
+    background: white;
+    color: var(--orange);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 36px;
+    font-family: var(--font-urdu);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    cursor: pointer;
+    margin-top: 16px;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s;
+    min-height: 48px;
+  }
+  .submit-challenge-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+  /* CALLIGRAPHIC DECORATIONS */
+  .callig-deco {
+    text-align: center;
+    font-family: var(--font-urdu);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: rgba(34,166,179,0.2);
+    line-height: 1;
+    pointer-events: none;
+    direction: rtl;
+    margin: 20px 0;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .section-container { padding: 0 40px; }
+    #toc-sidebar { display: none; }
+    #mobile-bottom-nav { display: block; }
+    body { padding-bottom: 80px; }
+  }
+  @media (max-width: 768px) {
+    section { padding: 50px 0; }
+    .section-container { padding: 0 16px; }
+    .objectives-grid { grid-template-columns: 1fr; }
+    .flip-cards-grid { grid-template-columns: 1fr; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .drop-zones { grid-template-columns: 1fr; }
+    .story-card { padding: 28px 20px; }
+    .quiz-container { padding: 28px 20px; }
+    .bio-card { padding: 28px 20px; }
+    .blanks-exercise { padding: 24px 16px; }
+    .hero { min-height: 60vh; }
+    .geo1, .geo2, .geo3 { display: none; }
+    .vocab-table-wrap { border-radius: 12px; }
+    .timeline::before { right: 15px; }
+    .timeline-item { padding-right: 44px; }
+    .bar-chart { gap: 8px; }
+    .bar-item { max-width: 60px; }
+    .challenge-card { padding: 28px 20px; }
+    .bar-label { font-size: 11px; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(2rem, 10vw, 3rem); }
+    .section-title { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+    .drag-words { flex-direction: column; align-items: center; }
+    .drag-word { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">سبق لوڈ ہو رہا ہے۔۔۔</div>
+</div>
+
+<!-- DESKTOP TOC -->
+<nav id="toc-sidebar" aria-label="فہرست">
+  <h4>📖 فہرست</h4>
+  <ul>
+    <li><a href="#intro" class="toc-link">تعارف</a></li>
+    <li><a href="#objectives" class="toc-link">مقاصد</a></li>
+    <li><a href="#background" class="toc-link">پس منظر</a></li>
+    <li><a href="#story" class="toc-link">کہانی</a></li>
+    <li><a href="#vocabulary" class="toc-link">الفاظ</a></li>
+    <li><a href="#sheikh" class="toc-link">شیخ عبد القادر</a></li>
+    <li><a href="#exercise" class="toc-link">مشق</a></li>
+    <li><a href="#challenge" class="toc-link">چیلنج</a></li>
+    <li><a href="#quiz" class="toc-link">کوئز</a></li>
+  </ul>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-bottom-nav" aria-label="موبائل فہرست">
+  <ul>
+    <li><a href="#intro" class="mob-link"><span class="nav-icon">🏠</span>تعارف</a></li>
+    <li><a href="#objectives" class="mob-link"><span class="nav-icon">🎯</span>مقاصد</a></li>
+    <li><a href="#story" class="mob-link"><span class="nav-icon">📖</span>کہانی</a></li>
+    <li><a href="#vocabulary" class="mob-link"><span class="nav-icon">📝</span>الفاظ</a></li>
+    <li><a href="#sheikh" class="mob-link"><span class="nav-icon">☪</span>شیخ</a></li>
+    <li><a href="#exercise" class="mob-link"><span class="nav-icon">✏️</span>مشق</a></li>
+    <li><a href="#quiz" class="mob-link"><span class="nav-icon">🏆</span>کوئز</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero" id="intro">
+    <div class="hero-geometric geo1"></div>
+    <div class="hero-geometric geo2"></div>
+    <div class="hero-geometric geo3"></div>
+    <div class="hero-calligraphy" aria-hidden="true">سچ</div>
+    <div class="hero-content">
+      <div class="hero-badge">📚 اردو | جماعت پنجم</div>
+      <h1 class="hero-title" id="hero-title">ہمیشہ <span>سچ</span> بولو</h1>
+      <p class="hero-subtitle">
+        شیخ عبد القادر جیلانی ؒ کی زندگی سے سچائی اور دیانت داری کا سبق
+      </p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;direction:rtl;">
+        <a href="#objectives" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:50px;padding:14px 28px;font-family:var(--font-urdu);font-size:18px;text-decoration:none;transition:all 0.3s;min-height:48px;display:flex;align-items:center;">مقاصد دیکھیں</a>
+        <a href="#story" style="background:var(--gold);color:#1e1e2e;border-radius:50px;padding:14px 28px;font-family:var(--font-urdu);font-size:18px;text-decoration:none;font-weight:700;transition:all 0.3s;min-height:48px;display:flex;align-items:center;">کہانی پڑھیں ▶</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBJECTIVES -->
+  <section id="objectives">
+    <div class="section-container">
+      <span class="section-label">🎯 مقاصد</span>
+      <h2 class="section-title">اس سبق کے بعد طلبہ قابل ہو جائیں گے کہ وہ:</h2>
+      <div class="objectives-grid">
+        <div class="obj-card">
+          <div class="obj-icon">✅</div>
+          <h3>سچ بولنے کی اہمیت اور فوائد کو سمجھ سکیں</h3>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">🌟</div>
+          <h3>طلبہ میں سچائی اور دیانت داری جیسی خوبیاں اپنا سکیں</h3>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon">☪️</div>
+          <h3>شیخ عبد القادر جیلانی ؒ کے کردار کو جان کر ان کی ہدایات کو اپنی زندگی میں شامل کر سکیں</h3>
+        </div>
+      </div>
+      <div class="callig-deco">﷽</div>
+    </div>
+  </section>
+
+  <!-- BACKGROUND -->
+  <section id="background">
+    <div class="section-container">
+      <span class="section-label">📜 پس منظر</span>
+      <h2 class="section-title">سچائی کی اہمیت</h2>
+      <div class="discovery-zone">
+        <div class="dz-icon">🔍</div>
+        <h3>کیا آپ جانتے ہیں؟</h3>
+        <p class="section-text">
+          اسلام میں سچائی کو بہت اہمیت دی گئی ہے۔ رسول اللہ ﷺ نے فرمایا کہ سچائی نیکی کی طرف لے جاتی ہے اور نیکی جنت کی طرف۔ جھوٹ فساد اور برائی کا راستہ ہے۔ ہمیں ہمیشہ سچ بولنا چاہیے خواہ حالات کتنے بھی مشکل کیوں نہ ہوں۔
+        </p>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">سچائی کے فوائد</div>
+        <div class="bar-chart" id="barChart">
+          <div class="bar-item">
+            <div class="bar" data-height="160" style="height:0">
+              <span class="bar-val">بہت زیادہ</span>
+            </div>
+            <div class="bar-label">اعتماد</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar" data-height="140" style="height:0">
+              <span class="bar-val">زیادہ</span>
+            </div>
+            <div class="bar-label">دوستی</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar" data-height="120" style="height:0">
+              <span class="bar-val">اعلیٰ</span>
+            </div>
+            <div class="bar-label">عزت</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar" data-height="100" style="height:0">
+              <span class="bar-val">اچھا</span>
+            </div>
+            <div class="bar-label">کردار</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar" data-height="180" style="height:0">
+              <span class="bar-val">سب سے زیادہ</span>
+            </div>
+            <div class="bar-label">اللہ کی رضا</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="section-container">
+      <span class="section-label">📖 کہانی</span>
+      <h2 class="section-title">ہمیشہ سچ بولو</h2>
+      <div class="story-card">
+        <p class="story-text">
+          بہت دنوں کی بات ہے۔ جیلان کے قصبے میں ایک <span class="story-highlight">ہونہار لڑکا</span> رہتا تھا جس کا نام <span class="story-highlight">عبد القادر</span> تھا۔ اُسے بچپین ہی سے لکھنے پڑھنے کا بڑا شوق تھا۔ ابتدائی تعلیم اُس نے اپنے قصبے ہی میں حاصل کی۔ اس کے بعد اعلیٰ تعلیم حاصل کرنے کے لیے بغداد جانے کا ارادہ کیا۔ بغداد اُن دنوں علم و فن کا مرکز تھا۔ دور دور سے لوگ علم حاصل کرنے کے لیے وہاں جاتے تھے۔
+        </p>
+        <p class="story-text" style="margin-top:20px;">
+          اُس زمانے میں ریل گاڑی، موٹر اور ہوائی جہاز نہیں تھے۔ اکثر لوگ پیدل یا اونٹوں اور گھوڑوں پر سفر کرتے تھے۔ بہت سے لوگ <span class="story-highlight">قافلہ بنا کر</span> چلتے تھے تاکہ راستے میں وقت پڑے تو ایک دوسرے کی مدد کی جاسکے۔ عبد القادر جیلانی ؒ نے بھی ایک قافلے کے ہمراہ سفر کرنے کا فیصلہ کیا۔ گھر سے رخصت ہوتے وقت ماں نے چالیس دینار ان کے کپڑوں میں سی دیے اور نصیحت کی کہ: <strong>"بیٹا! ہر گز جھوٹ نہ بولنا۔ ہمیشہ سچ بولنا۔ اللہ تعالیٰ خوش ہوتا ہے اور اس کی نصیحت پر عمل کرنے کا وعدہ کیا اور قافلے کے ساتھ سفر پر روانہ ہو گیا۔"</strong>
+        </p>
+      </div>
+
+      <!-- TIMELINE -->
+      <h3 style="font-family:var(--font-urdu);font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--indigo);margin-top:48px;direction:rtl;">کہانی کے اہم واقعات</h3>
+      <div class="timeline">
+        <div class="timeline-item" style="position:relative;">
+          <div class="timeline-dot">1</div>
+          <div class="timeline-content">
+            <h4>سفر کا آغاز</h4>
+            <p>راستے میں ان کے قافلے پر ڈاکوؤں نے حملہ کر دیا اور قافلے والوں کا سارا مال واسباب لوٹ لیا۔</p>
+          </div>
+        </div>
+        <div class="timeline-item" style="position:relative;">
+          <div class="timeline-dot">2</div>
+          <div class="timeline-content">
+            <h4>سچ کا امتحان</h4>
+            <p>ایک ڈاکو نے عبد القادر سے پوچھا: "لڑکے، تیرے پاس کیا ہے؟" اُس نے کہا: "چالیس دینار ہیں"۔ ڈاکو نے اپنے سردار کے پاس لے گیا اور سارا ماجرا بیان کر دیا۔</p>
+          </div>
+        </div>
+        <div class="timeline-item" style="position:relative;">
+          <div class="timeline-dot">3</div>
+          <div class="timeline-content">
+            <h4>سردار کا سوال</h4>
+            <p>سردار نے پوچھا: "کیا تمھارے پاس واقعی چالیس دینار ہیں؟" عبد القادر نے جواب دیا: "ہاں"۔ سردار بولا: "کہاں ہیں؟" اُس نے بتایا کہ کپڑوں میں سی دیے ہیں۔ سردار نے وہ دینار نکال کر سامنے رکھ دیے۔</p>
+          </div>
+        </div>
+        <div class="timeline-item" style="position:relative;">
+          <div class="timeline-dot">4</div>
+          <div class="timeline-content">
+            <h4>لڑکے کا جواب</h4>
+            <p>سردار نے پوچھا: "تم نے ہمیں کیوں بتایا کہ تمھارے پاس اتنے دینار ہیں؟" لڑکے نے جواب دیا: "میری ماں کی نصیحت ہے کہ میں ہمیشہ سچ بولوں"۔</p>
+          </div>
+        </div>
+        <div class="timeline-item" style="position:relative;">
+          <div class="timeline-dot">5</div>
+          <div class="timeline-content">
+            <h4>ڈاکوؤں کی توبہ</h4>
+            <p>لڑکے کی اس بات کا سردار کے دل پر بڑا اثر ہوا۔ سوچا کہ "اگر یہ اپنی ماں کا اس قدر مانتا ہے تو ہم اپنے پیدا کرنے والے کا حکم کیوں نہیں مانتے؟" اسی وقت قافلے والوں کا مال واپس کر دیا اور آگے چل کر "عبد القادر جیلانی ؒ" کے نام سے مشہور ہوا۔ مسلمان اُن کا نام بڑے ادب اور احترام سے لیتے ہیں۔</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOCABULARY -->
+  <section id="vocabulary">
+    <div class="section-container">
+      <span class="section-label">📝 الفاظ</span>
+      <h2 class="section-title">الفاظ اور معنی</h2>
+      <p class="section-text">درج ذیل الفاظ کے معنی سمجھیں۔ ہر قطار پر کلک کریں مثال دیکھنے کے لیے:</p>
+      <div class="vocab-table-wrap">
+        <table class="vocab-table" id="vocabTable">
+          <thead>
+            <tr>
+              <th>الفاظ</th>
+              <th>معنی</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="vocab-row" data-example="ہم نے راستے میں ایک قافلے کے ساتھ سفر کیا۔">
+              <td>راستے</td>
+              <td>راہ یا چلنے کی جگہ</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: ہم نے راستے میں ایک قافلے کے ساتھ سفر کیا۔</td></tr>
+            <tr class="vocab-row" data-example="ماں نے بچے کو ہمیشہ سچ بولنے کی نصیحت کی۔">
+              <td>نصیحت</td>
+              <td>درست بات سمجھانا</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: ماں نے بچے کو ہمیشہ سچ بولنے کی نصیحت کی۔</td></tr>
+            <tr class="vocab-row" data-example="ماں نے کپڑوں میں چالیس دینار سی دیے۔">
+              <td>دینار</td>
+              <td>قدیم زمانے کے سونے کے سکے</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: ماں نے کپڑوں میں چالیس دینار سی دیے۔</td></tr>
+            <tr class="vocab-row" data-example="سردار کو سچ سن کر بڑا تعجب ہوا۔">
+              <td>تعجب</td>
+              <td>حیرت</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: سردار کو سچ سن کر بڑا تعجب ہوا۔</td></tr>
+            <tr class="vocab-row" data-example="عبد القادر جیلانی نے سچائی کی راہ اختیار کی۔">
+              <td>سچائی</td>
+              <td>حقیقت</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: عبد القادر جیلانی نے سچائی کی راہ اختیار کی۔</td></tr>
+            <tr class="vocab-row" data-example="بغداد اُن دنوں علم و فن کا مرکز تھا۔">
+              <td>قافلہ</td>
+              <td>ایک ساتھ سفر کرنے والا گروہ</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: قافلے نے بغداد کی طرف روانہ ہوا۔</td></tr>
+            <tr class="vocab-row" data-example="ڈاکوؤں نے مال لوٹ کر توبہ کی اور سب کچھ واپس کر دیا۔">
+              <td>توبہ</td>
+              <td>غلطی پر پشیمانی اور اصلاح کا ارادہ</td>
+            </tr>
+            <tr class="vocab-expanded"><td colspan="2">مثال: ڈاکوؤں نے مال لوٹ کر توبہ کی اور سب کچھ واپس کر دیا۔</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DID YOU KNOW FLIP CARDS -->
+      <h3 style="font-family:var(--font-urdu);font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--indigo);margin-top:48px;direction:rtl;">کیا آپ جانتے ہیں؟ (کارڈ پر کلک کریں)</h3>
+      <div class="flip-cards-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="flip-icon">🕌</span>
+              <h3>بغداد کا مرکز</h3>
+              <p class="flip-hint">کلک کریں</p>
+            </div>
+            <div class="flip-card-back">
+              <h3>بغداد اُن دنوں علم و فن کا مرکز تھا۔ دور دور سے لوگ وہاں علم حاصل کرنے آتے تھے۔</h3>
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="flip-icon">🐪</span>
+              <h3>قدیم سفر</h3>
+              <p class="flip-hint">کلک کریں</p>
+            </div>
+            <div class="flip-card-back">
+              <h3>اُس زمانے میں ریل گاڑی، موٹر اور ہوائی جہاز نہیں تھے۔ لوگ پیدل یا اونٹوں پر سفر کرتے تھے۔</h3>
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="flip-icon">💛</span>
+              <h3>ماں کی نصیحت</h3>
+              <p class="flip-hint">کلک کریں</p>
+            </div>
+            <div class="flip-card-back">
+              <h3>ماں نے رخصت کرتے وقت کہا: "ہر گز جھوٹ نہ بولنا، ہمیشہ سچ بولنا"۔ یہ نصیحت زندگی بھر کام آئی۔</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHEIKH BIO -->
+  <section id="sheikh">
+    <div class="section-container">
+      <span class="section-label">☪️ شیخ عبد القادر جیلانی ؒ</span>
+      <h2 class="section-title">کردار کا تعارف</h2>
+      <div class="bio-card">
+        <h3>شیخ عبد القادر جیلانی ؒ</h3>
+        <p>
+          شیخ عبد القادر جیلانی ؒ <span class="bio-highlight">جیلان</span> کے مشہور بزرگ ہیں۔ وہ بغداد کے لیے اس لیے گئے کیونکہ انہیں بچپین ہی سے علم حاصل کرنے کا بہت شوق تھا۔ انہوں نے ابتدائی تعلیم اپنے قصبے میں حاصل کی اور پھر <span class="bio-highlight">اعلیٰ تعلیم</span> کے لیے بغداد کا رُخ کیا۔
+        </p>
+        <p style="margin-top:20px;">
+          ان کی زندگی کا سب سے بڑا سبق <span class="bio-highlight">سچائی</span> ہے۔ انہوں نے ہمیشہ اپنی ماں کی نصیحت پر عمل کیا اور کبھی جھوٹ نہیں بولا۔ انہی کی وجہ سے ڈاکوؤں نے توبہ کی اور وہ <span class="bio-highlight">مسلمانوں کے مشہور بزرگ</span> بن گئے۔ مسلمان اُن کا نام بڑے ادب اور احترام سے لیتے ہیں۔
+        </p>
+      </div>
+
+      <!-- FORMULA CALLOUT -->
+      <div class="formula-callout">
+        <span class="formula-label">💡 سبق کا خلاصہ</span>
+        <p>
+          <strong>سچائی</strong> + <strong>دیانت داری</strong> = اللہ تعالیٰ کی رضا اور لوگوں کا اعتماد
+        </p>
+        <p style="margin-top:12px;">
+          جب ہم <strong>سچ بولتے ہیں</strong> تو اللہ خوش ہوتا ہے، لوگ ہم پر بھروسہ کرتے ہیں، اور ہمارا کردار مضبوط ہوتا ہے۔
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXERCISE -->
+  <section id="exercise">
+    <div class="section-container">
+      <span class="section-label">✏️ مشق</span>
+      <h2 class="section-title">سوالات کے جوابات</h2>
+
+      <!-- Q&A DISCOVERY ZONE -->
+      <div class="discovery-zone">
+        <div class="dz-icon">❓</div>
+        <h3>مختصر جوابات — سوال (1)</h3>
+        <div style="margin-top:16px;">
+          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 1:</strong> رخصت ہوتے وقت ماں نے عبد القادر کو کیا نصیحت کی تھی؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> ماں نے نصیحت کی کہ "ہر گز جھوٹ نہ بولنا۔ ہمیشہ سچ بولنا۔ اللہ تعالیٰ خوش ہوتا ہے اور اس کی نصیحت پر عمل کرنا آسان کر دیتا ہے۔"
+            </p>
+          </div>
+          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 2:</strong> راستے میں ان کے قافلے کو کیا حادثہ پیش آیا؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> راستے میں قافلے پر ڈاکوؤں نے حملہ کر دیا اور قافلے والوں کا سارا مال واسباب لوٹ لیا۔
+            </p>
+          </div>
+          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 3:</strong> ڈاکوؤں کے سردار نے توبہ کیوں کی؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> سردار نے سوچا کہ "اگر یہ لڑکا اپنی ماں کا اس قدر مانتا ہے تو ہم اپنے پیدا کرنے والے کا حکم کیوں نہیں مانتے؟" اس لیے اُس نے توبہ کی۔
+            </p>
+          </div>
+          <div style="background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 4:</strong> ڈاکوؤں نے قافلے والوں سے کیا سلوک کیا؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> پہلے ڈاکوؤں نے قافلے والوں کا سارا مال لوٹ لیا، لیکن بعد میں سردار نے توبہ کی اور قافلے والوں کا تمام مال واپس کر دیا۔
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAG AND DROP -->
+      <h3 style="font-family:var(--font-urdu);font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--indigo);margin-top:48px;margin-bottom:16px;direction:rtl;">درجہ بندی کریں — صفات کو ان کی جگہ رکھیں</h3>
+      <p class="section-text">نیچے دیے گئے الفاظ کو مناسب خانے میں ڈراگ کریں یا کلک کریں:</p>
+      <div class="drag-section">
+        <div class="drag-words" id="dragWords">
+          <div class="drag-word" draggable="true" data-category="good">سچ بولنا</div>
+          <div class="drag-word" draggable="true" data-category="bad">جھوٹ بولنا</div>
+          <div class="drag-word" draggable="true" data-category="good">دیانت داری</div>
+          <div class="drag-word" draggable="true" data-category="bad">دھوکہ دینا</div>
+          <div class="drag-word" draggable="true" data-category="good">وعدہ نبھانا</div>
+          <div class="drag-word" draggable="true" data-category="bad">مال لوٹنا</div>
+          <div class="drag-word" draggable="true" data-category="good">احترام کرنا</div>
+          <div class="drag-word" draggable="true" data-category="bad">برا کام کرنا</div>
+        </div>
+        <div class="drop-zones">
+          <div class="drop-zone good" id="dropGood" data-category="good">
+            <h4>✅ اچھی صفات</h4>
+            <div class="drop-zone-items" id="goodItems"></div>
+          </div>
+          <div class="drop-zone bad" id="dropBad" data-category="bad">
+            <h4>❌ بری صفات</h4>
+            <div class="drop-zone-items" id="badItems"></div>
+          </div>
+        </div>
+        <button onclick="resetDrag()" style="margin-top:16px;background:var(--slate);color:white;border:none;border-radius:50px;padding:12px 24px;font-family:var(--font-urdu);font-size:18px;cursor:pointer;min-height:48px;">دوبارہ شروع کریں</button>
+      </div>
+
+      <!-- FILL IN BLANKS -->
+      <h3 style="font-family:var(--font-urdu);font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--indigo);margin-top:48px;margin-bottom:8px;direction:rtl;">دیے گئے الفاظ سے خالی جگہ پُر کریں</h3>
+      <p class="section-text" style="margin-bottom:0;direction:rtl;font-size:17px;">(ماجرا، قافلوں، سچ، احترام)</p>
+      <div class="blanks-exercise">
+        <div class="blank-item">
+          <span>ہمیشہ</span>
+          <input class="blank-input" type="text" data-answer="سچ" placeholder="۔۔۔" aria-label="خالی جگہ 1">
+          <span>بولو، جھوٹ نہ بولو۔</span>
+        </div>
+        <div class="blank-item">
+          <span>پرانے زمانے میں لوگ</span>
+          <input class="blank-input" type="text" data-answer="قافلوں" placeholder="۔۔۔" aria-label="خالی جگہ 2">
+          <span>میں سفر کرتے تھے۔</span>
+        </div>
+        <div class="blank-item">
+          <span>ڈاکوؤں کے سردار نے عبد القادر کا سارا</span>
+          <input class="blank-input" type="text" data-answer="ماجرا" placeholder="۔۔۔" aria-label="خالی جگہ 3">
+          <span>بیان کر دیا۔</span>
+        </div>
+        <div class="blank-item">
+          <span>نیک بچے اپنے بزرگوں کا</span>
+          <input class="blank-input" type="text" data-answer="احترام" placeholder="۔۔۔" aria-label="خالی جگہ 4">
+          <span>کرتے ہیں۔</span>
+        </div>
+        <button class="check-blanks-btn" onclick="checkBlanks()">جانچیں ✓</button>
+        <div id="blanks-result" style="font-family:var(--font-urdu);font-size:18px;margin-top:16px;direction:rtl;display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGE -->
+  <section id="challenge">
+    <div class="section-container">
+      <span class="section-label">🌟 چیلنج</span>
+      <h2 class="section-title">تحریری مشق</h2>
+      <div class="challenge-card">
+        <h3>کہانی کا خلاصہ اپنے الفاظ میں لکھیے</h3>
+        <p>
+          اس کہانی سے ہمیں کیا سبق ملا؟ اپنی جماعت میں بتائیں کہ اس کہانی نے آپ کو کیا سکھایا۔ کم از کم 4 جملے لکھیں:
+        </p>
+        <textarea class="challenge-textarea" id="challengeText" placeholder="یہاں لکھیں..."></textarea>
+        <br>
+        <button class="submit-challenge-btn" onclick="submitChallenge()">جمع کروائیں 🎉</button>
+        <div id="challenge-feedback" style="font-family:var(--font-urdu);font-size:18px;color:white;margin-top:16px;direction:rtl;display:none;"></div>
+      </div>
+
+      <!-- BAYAN QUESTIONS -->
+      <div class="discovery-zone" style="margin-top:40px;">
+        <div class="dz-icon">📝</div>
+        <h3>بیانیہ جوابات — سوال (2)</h3>
+        <div style="margin-top:16px;">
+          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 1:</strong> یہ کہانی کس بزرگ کی ہے اور وہ بغداد کس لیے گئے؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> یہ کہانی شیخ عبد القادر جیلانی ؒ کی ہے۔ وہ بغداد اعلیٰ تعلیم حاصل کرنے کے لیے گئے کیونکہ بغداد اُن دنوں علم و فن کا مرکز تھا اور انہیں بچپن سے ہی علم حاصل کرنے کا شوق تھا۔
+            </p>
+          </div>
+          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.2rem);color:var(--indigo);direction:rtl;margin-bottom:12px;"><strong>سوال 2:</strong> ڈاکوؤں کے سردار کی عبد القادر جیلانی ؒ سے کیا باتیں ہوئیں؟</p>
+            <p style="font-family:var(--font-urdu);font-size:clamp(1rem,2vw,1.15rem);color:var(--slate);direction:rtl;line-height:2.5;">
+              <strong>جواب:</strong> سردار نے پوچھا "کیا تمھارے پاس واقعی چالیس دینار ہیں؟" عبد القادر نے کہا "ہاں"۔ سردار نے کہا "کہاں ہیں؟" اُنہوں نے بتایا کہ کپڑوں میں سی دیے ہیں۔ پھر پوچھا کہ تم نے ہمیں کیوں بتایا؟ عبد القادر نے کہا "میری ماں کی نصیحت ہے کہ میں ہمیشہ سچ بولوں"۔
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="section-container">
+      <span class="section-label">🏆 کوئز</span>
+      <h2 class="section-title">اپنی سمجھ جانچیں</h2>
+      <div class="quiz-container" id="quizContainer">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" id="quizProgressBar" style="width:10%"></div>
+        </div>
+        <div id="quizContent">
+          <!-- filled by JS -->
+        </div>
+        <div class="quiz-result" id="quizResult">
+          <div class="result-emoji" id="resultEmoji">🌟</div>
+          <h2 id="resultTitle">شاباش!</h2>
+          <div class="score-badge" id="scoreBadge">0/10</div>
+          <p id="resultMsg">آپ نے بہت اچھا کیا!</p>
+          <button class="quiz-btn" style="margin-top:24px;" onclick="resetQuiz()">دوبارہ کوشش کریں</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:linear-gradient(135deg,#0f3460,#16213e);color:white;padding:40px 0;text-align:center;direction:rtl;">
+    <div style="max-width:1500px;margin:0 auto;padding:0 40px;">
+      <div class="callig-deco" style="color:rgba(255,255,255,0.2);margin:0 0 20px;">﷽</div>
+      <p style="font-family:var(--font-urdu);font-size:18px;color:rgba(255,255,255,0.8);">
+        📚 اردو | جماعت پنجم | ڈیجیٹل اسکول
+      </p>
+      <p style="font-family:var(--font-urdu);font-size:17px;color:rgba(255,255,255,0.6);margin-top:12px;">
+        سبق: ہمیشہ سچ بولو — سچائی اور دیانت داری کا درس
+      </p>
+    </div>
+  </footer>
+
+</div><!-- end page-wrapper -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; setTimeout(() => c.style.display = 'none', 500); }
+  }, 2500);
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero title char animation
+      const title = document.getElementById('hero-title');
+      if (title) {
+        const text = title.innerHTML;
+        const words = text.split(' ');
+        title.innerHTML = words.map(w => `<span style="display:inline-block;opacity:0;transform:translateY(40px)">${w}</span>`).join(' ');
+        gsap.to('#hero-title span', {
+          opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'back.out(1.4)', delay: 0.3
+        });
+      }
+
+      // Section fade in
+      gsap.utils.toArray('section').forEach(sec => {
+        gsap.fromTo(sec.querySelector('.section-label'), { opacity: 0, x: 30 }, {
+          opacity: 1, x: 0, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
+        });
+      });
+
+      // Obj cards
+      gsap.utils.toArray('.obj-card').forEach((card, i) => {
+        gsap.fromTo(card, { opacity: 0, y: 50 }, {
+          opacity: 1, y: 0, duration: 0.6, delay: i * 0.1, ease: 'back.out(1.2)',
+          scrollTrigger: { trigger: card, start: 'top 85%', once: true }
+        });
+      });
+
+      // Timeline items
+      gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+        gsap.fromTo(item, { opacity: 0, x: -40 }, {
+          opacity: 1, x: 0, duration: 0.6, delay: i * 0.1,
+          scrollTrigger: { trigger: item, start: 'top 85%', once: true }
+        });
+      });
+
+      // Bar chart animation
+      ScrollTrigger.create({
+        trigger: '#barChart',
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          document.querySelectorAll('.bar').forEach(bar => {
+            const h = parseInt(bar.getAttribute('data-height') || 0);
+            gsap.to(bar, { height: h, duration: 1.2, ease: 'power2.out' });
+          });
+        }
+      });
+
+      // Discovery zones
+      gsap.utils.toArray('.discovery-zone').forEach(zone => {
+        gsap.fromTo(zone, { opacity: 0, scale: 0.97 }, {
+          opacity: 1, scale: 1, duration: 0.6,
+          scrollTrigger: { trigger: zone, start: 'top 85%', once: true }
+        });
+      });
+
+      // Bio card
+      gsap.fromTo('.bio-card', { opacity: 0, y: 60 }, {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: '.bio-card', start: 'top 80%', once: true }
+      });
+
+      // Story card
+      gsap.fromTo('.story-card', { opacity: 0, y: 40 }, {
+        opacity: 1, y: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.story-card', start: 'top 80%', once: true }
+      });
+    }
+  } catch(e) { console.warn('GSAP failed:', e); }
+
+  // CURTAIN HIDE
+  try {
+    const c = document.getElementById('curtain');
+    if (c) {
+      setTimeout(() => {
+        c.style.opacity = '0';
+        setTimeout(() => { c.style.display = 'none'; }, 500);
+      }, 1500);
+    }
+  } catch(e) {}
+
+  // SCROLLSPY TOC
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const mobLinks = document.querySelectorAll('.mob-link');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          tocLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+          mobLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => observer.observe(s));
+  } catch(e) {}
+
+  // VOCAB TABLE ROW EXPAND
+  try {
+    document.querySelectorAll('.vocab-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const next = row.nextElementSibling;
+        if (next && next.classList.contains('vocab-expanded')) {
+          next.style.display = next.style.display === 'table-row' ? 'none' : 'table-row';
+        }
+      });
+    });
+  } catch(e) {}
+
+  // DRAG AND DROP
+  try {
+    initDragDrop();
+  } catch(e) { console.warn('DnD failed:', e); }
+
+  // QUIZ
+  try {
+    initQuiz();
+  } catch(e) { console.warn('Quiz failed:', e); }
+});
+
+// ===================== DRAG AND DROP =====================
+function initDragDrop() {
+  const words = document.querySelectorAll('.drag-word');
+  const zones = document.querySelectorAll('.drop-zone');
+  let dragged = null;
+
+  words.forEach(word => {
+    word.addEventListener('dragstart', e => {
+      dragged = word;
+      word.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', word.textContent.trim());
+    });
+    word.addEventListener('dragend', () => {
+      word.classList.remove('dragging');
+    });
+    // Click to categorize on mobile
+    word.addEventListener('click', () => {
+      if (word.parentElement.id === 'dragWords') {
+        const cat = word.getAttribute('data-category');
+        dropIntoZone(word, cat);
+      } else {
+        // return to pool
+        word.parentElement.removeChild(word);
+        document.getElementById('dragWords').appendChild(word);
+      }
+    });
+  });
+
+  zones.forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (dragged) {
+        dropIntoZone(dragged, zone.getAttribute('data-category'));
+      }
+    });
+  });
+
+  function dropIntoZone(word, targetCat) {
+    const cat = word.getAttribute('data-category');
+    const zoneId = targetCat === 'good' ? 'goodItems' : 'badItems';
+    const container = document.getElementById(zoneId);
+    const clone = document.createElement('span');
+    clone.className = 'dropped-item';
+    clone.textContent = word.textContent.trim();
+    clone.style.borderRight = `4px solid ${cat === targetCat ? 'var(--green)' : 'var(--red)'}`;
+    clone.title = 'کلک کریں واپس کرنے کے لیے';
+    clone.addEventListener('click', () => {
+      container.removeChild(clone);
+      document.getElementById('dragWords').appendChild(word);
+    });
+    container.appendChild(clone);
+    if (word.parentElement) word.parentElement.removeChild(word);
+  }
+}
+
+function resetDrag() {
+  const pool = document.getElementById('dragWords');
+  document.getElementById('goodItems').innerHTML = '';
+  document.getElementById('badItems').innerHTML = '';
+  pool.innerHTML = '';
+  const items = [
+    {text:'سچ بولنا', cat:'good'},{text:'جھوٹ بولنا', cat:'bad'},
+    {text:'دیانت داری', cat:'good'},{text:'دھوکہ دینا', cat:'bad'},
+    {text:'وعدہ نبھانا', cat:'good'},{text:'مال لوٹنا', cat:'bad'},
+    {text:'احترام کرنا', cat:'good'},{text:'برا کام کرنا', cat:'bad'}
+  ];
+  items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'drag-word';
+    el.setAttribute('draggable', 'true');
+    el.setAttribute('data-category', item.cat);
+    el.textContent = item.text;
+    pool.appendChild(el);
+  });
+  try { initDragDrop(); } catch(e) {}
+}
+
+// ===================== BLANKS =====================
+function checkBlanks() {
+  const inputs = document.querySelectorAll('.blank-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const ans = inp.getAttribute('data-answer');
+    const val = inp.value.trim();
+    if (val === ans) {
+      inp.classList.remove('incorrect'); inp.classList.add('correct'); correct++;
+    } else {
+      inp.classList.remove('correct'); inp.classList.add('incorrect');
+    }
+  });
+  const res = document.getElementById('blanks-result');
+  res.style.display = 'block';
+  if (correct === inputs.length) {
+    res.style.color = 'var(--green)';
+    res.textContent = '🎉 شاباش! سب جوابات درست ہیں!';
+  } else {
+    res.style.color = 'var(--red)';
+    res.textContent = `آپ نے ${correct}/${inputs.length} درست جوابات دیے۔ دوبارہ کوشش کریں۔`;
+  }
+}
+
+// ===================== CHALLENGE =====================
+function submitChallenge() {
+  const text = document.getElementById('challengeText').value.trim();
+  const fb = document.getElementById('challenge-feedback');
+  fb.style.display = 'block';
+  if (text.length < 20) {
+    fb.textContent = '⚠️ براہ کرم کم از کم 4 جملے لکھیں۔';
+  } else {
+    fb.textContent = '✅ شاباش! آپ کا جواب جمع ہو گیا۔ بہت اچھا لکھا!';
+  }
+}
+
+// ===================== QUIZ =====================
+const quizData = [
+  {
+    q: 'عبد القادر جیلانی کہاں کے رہنے والے تھے؟',
+    opts: ['بغداد', 'جیلان', 'مکہ', 'مدینہ'],
+    ans: 1, hint: 'کہانی کے شروع میں ذکر ہے۔'
+  },
+  {
+    q: 'ماں نے رخصت کرتے وقت کتنے دینار کپڑوں میں سیے؟',
+    opts: ['بیس', 'تیس', 'چالیس', 'پچاس'],
+    ans: 2, hint: 'یہ سونے کے سکے تھے۔'
+  },
+  {
+    q: 'اُس زمانے میں لوگ سفر کیسے کرتے تھے؟',
+    opts: ['ریل گاڑی سے', 'ہوائی جہاز سے', 'اونٹوں اور گھوڑوں پر', 'موٹر گاڑی سے'],
+    ans: 2, hint: 'اُس زمانے میں جدید گاڑیاں نہیں تھیں۔'
+  },
+  {
+    q: 'قافلے پر حملہ کس نے کیا؟',
+    opts: ['دشمنوں نے', 'ڈاکوؤں نے', 'سپاہیوں نے', 'بچوں نے'],
+    ans: 1, hint: 'انہوں نے مال واسباب لوٹا۔'
+  },
+  {
+    q: 'عبد القادر نے ڈاکو کو اپنے پاس موجود دینار کے بارے میں کیا بتایا؟',
+    opts: ['جھوٹ بولا', 'کچھ نہ بتایا', 'سچ بتایا', 'بھاگ گیا'],
+    ans: 2, hint: 'ماں کی نصیحت یاد کریں۔'
+  },
+  {
+    q: 'ماں کی نصیحت کیا تھی؟',
+    opts: ['ہمیشہ خاموش رہو', 'ہمیشہ سچ بولو', 'ہمیشہ پڑھتے رہو', 'ہمیشہ محنت کرو'],
+    ans: 1, hint: 'یہ نصیحت کہانی کا مرکزی خیال ہے۔'
+  },
+  {
+    q: 'ڈاکوؤں کے سردار نے توبہ کیوں کی؟',
+    opts: ['ڈر کی وجہ سے', 'لڑکے کی سچائی سے متاثر ہو کر', 'پولیس نے پکڑا', 'پیسے ختم ہو گئے'],
+    ans: 1, hint: 'لڑکے کی بات نے اسے سوچنے پر مجبور کیا۔'
+  },
+  {
+    q: 'بغداد کس چیز کا مرکز تھا؟',
+    opts: ['تجارت کا', 'علم و فن کا', 'خوراک کا', 'کھیل کا'],
+    ans: 1, hint: 'لوگ وہاں علم حاصل کرنے جاتے تھے۔'
+  },
+  {
+    q: '"تعجب" کا معنی کیا ہے؟',
+    opts: ['خوشی', 'غصہ', 'حیرت', 'ڈر'],
+    ans: 2, hint: 'الفاظ و معنی والا حصہ دیکھیں۔'
+  },
+  {
+    q: 'ڈاکوؤں نے توبہ کے بعد قافلے والوں سے کیا کیا؟',
+    opts: ['مزید مال لیا', 'سب کو قید کیا', 'سارا مال واپس کر دیا', 'کچھ نہ کیا'],
+    ans: 2, hint: 'کہانی کا خوشگوار انجام یاد کریں۔'
+  }
+];
+
+let quizState = { current: 0, score: 0, answered: false };
+
+function initQuiz() {
+  quizState = { current: 0, score: 0, answered: false };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quizData[quizState.current];
+  const pct = ((quizState.current + 1) / quizData.length) * 100;
+  document.getElementById('quizProgressBar').style.width = pct + '%';
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizContent').style.display = '';
+
+  let html = `
+    <div class="quiz-question-num">سوال ${quizState.current + 1} / ${quizData.length}</div>
+    <div class="quiz-question-text">${q.q}</div>
+    <div class="quiz-options">
+  `;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="quiz-option" onclick="selectOption(this, ${i})">${opt}</button>`;
+  });
+  html += `</div>
+    <div id="quizHint" class="hint-panel"></div>
+    <div class="quiz-nav">
+      <button class="quiz-btn" id="nextBtn" onclick="nextQuestion()" disabled>اگلا سوال ▶</button>
+      <button class="quiz-hint-btn" onclick="showHint()">اشارہ 💡</button>
+    </div>
+  `;
+  document.getElementById('quizContent').innerHTML = html;
+  quizState.answered = false;
+}
+
+function selectOption(el, idx) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  const q = quizData[quizState.current];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach((o, i) => {
+    if (i === q.ans) o.classList.add('correct');
+    else o.classList.add('wrong');
+  });
+  el.classList.add('selected');
+  if (idx === q.ans) quizState.score++;
+  document.getElementById('nextBtn').disabled = false;
+
+  // GSAP bounce
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(el, { scale: 0.95 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
+    }
+  } catch(e) {}
+}
+
+function showHint() {
+  const hint = document.getElementById('quizHint');
+  if (hint) {
+    hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+    hint.textContent = '💡 اشارہ: ' + quizData[quizState.current].hint;
+  }
+}
+
+function nextQuestion() {
+  quizState.current++;
+  if (quizState.current >= quizData.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizContent').style.display = 'none';
+  const res = document.getElementById('quizResult');
+  res.style.display = 'block';
+  const pct = (quizState.score / quizData.length) * 100;
+  document.getElementById('scoreBadge').textContent = `${quizState.score} / ${quizData.length}`;
+  if (pct >= 80) {
+    document.getElementById('resultEmoji').textContent = '🌟';
+    document.getElementById('resultTitle').textContent = 'شاباش! بہت اچھا!';
+    document.getElementById('resultMsg').textContent = `آپ نے ${quizState.score} میں سے ${quizData.length} سوالوں کے درست جواب دیے! آپ کا کردار مضبوط ہے!`;
+  } else if (pct >= 50) {
+    document.getElementById('resultEmoji').textContent = '👍';
+    document.getElementById('resultTitle').textContent = 'اچھی کوشش!';
+    document.getElementById('resultMsg').textContent = `آپ نے ${quizState.score} سوالوں کے درست جواب دیے۔ دوبارہ پڑھ کر کوشش کریں!`;
+  } else {
+    document.getElementById('resultEmoji').textContent = '📚';
+    document.getElementById('resultTitle').textContent = 'مزید محنت کریں!';
+    document.getElementById('resultMsg').textContent = `آپ نے ${quizState.score} سوالوں کے درست جواب دیے۔ سبق دوبارہ پڑھیں!`;
+  }
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo('#quizResult', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7 });
+    }
+  } catch(e) {}
+}
+
+function resetQuiz() {
+  initQuiz();
+}
+</script>
+</body>
+</html>
