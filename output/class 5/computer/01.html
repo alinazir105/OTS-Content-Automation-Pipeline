@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step-wise Thinking | Class 5 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:clamp(17px,2.5vw,19px);color:#2d3436;background:#FEFEFE;overflow-x:hidden}
+
+/* CURTAIN */
+#curtain{position:fixed;inset:0;background:linear-gradient(135deg,#22A6B3,#4834D4);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s}
+#curtain .loader-text{font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);color:#fff;font-weight:700;margin-bottom:20px}
+#curtain .loader-bar{width:200px;height:6px;background:rgba(255,255,255,0.3);border-radius:3px;overflow:hidden}
+#curtain .loader-fill{height:100%;background:#fff;border-radius:3px;animation:fill 1.8s ease forwards}
+@keyframes fill{from{width:0}to{width:100%}}
+
+/* PALETTE VARS */
+:root{--teal:#22A6B3;--indigo:#4834D4;--warm:#FEFEFE;--slate:#636E72;--light-teal:#e8f8fa;--light-indigo:#eeeaff}
+
+/* STICKY TOC */
+#toc{position:fixed;top:100px;left:20px;width:220px;background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.1);padding:20px;z-index:100;max-height:calc(100vh - 140px);overflow-y:auto}
+#toc h3{font-family:'Poppins',sans-serif;font-size:0.9rem;color:var(--indigo);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+#toc ul{list-style:none}
+#toc ul li{margin-bottom:8px}
+#toc ul li a{text-decoration:none;color:var(--slate);font-size:0.85rem;padding:6px 10px;border-radius:8px;display:block;transition:all 0.3s;min-height:32px;display:flex;align-items:center}
+#toc ul li a.active,#toc ul li a:hover{background:var(--light-indigo);color:var(--indigo);font-weight:600}
+
+/* MAIN WRAPPER */
+#main-wrapper{margin-left:260px;padding-bottom:60px}
+
+/* HERO */
+#hero{width:100%;min-height:80vh;background:linear-gradient(135deg,#22A6B3 0%,#4834D4 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 40px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;padding:8px 20px;border-radius:50px;font-size:0.95rem;margin-bottom:20px;font-weight:600;letter-spacing:1px}
+#hero h1{font-family:'Poppins',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;font-weight:800;line-height:1.1;margin-bottom:20px}
+#hero p{font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 30px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.hero-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 18px;border-radius:50px;font-size:0.9rem;backdrop-filter:blur(10px)}
+
+/* SECTIONS */
+section{padding:70px 40px;max-width:1500px;margin:0 auto}
+section h2{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4vw,3rem);color:var(--indigo);margin-bottom:30px;position:relative}
+section h2::after{content:'';display:block;width:60px;height:4px;background:var(--teal);border-radius:2px;margin-top:10px}
+section h3{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,2.5vw,1.8rem);color:var(--teal);margin-bottom:16px}
+
+/* DISCOVERY ZONE */
+.discovery-zone{border:2.5px dashed var(--teal);border-radius:20px;padding:30px;margin:30px 0;background:var(--light-teal);position:relative}
+.discovery-zone::before{content:'🔍';position:absolute;top:-18px;left:24px;font-size:1.8rem;background:var(--light-teal);padding:0 8px}
+.discovery-zone h3{color:var(--indigo)}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:30px 0}
+.card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border-top:4px solid var(--teal);opacity:1;transform:none;transition:transform 0.3s,box-shadow 0.3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.13)}
+.card .icon{font-size:2.5rem;margin-bottom:16px}
+.card h4{font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--indigo);margin-bottom:10px}
+.card p{font-size:clamp(16px,2vw,18px);color:var(--slate);line-height:1.7}
+
+/* STEPS */
+.steps-list{display:flex;flex-direction:column;gap:20px;margin:30px 0}
+.step-item{display:flex;align-items:flex-start;gap:20px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 16px rgba(0,0,0,0.07);opacity:1;transform:none}
+.step-num{min-width:48px;height:48px;background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.2rem;flex-shrink:0}
+.step-content h4{font-family:'Poppins',sans-serif;font-size:1.1rem;color:var(--indigo);margin-bottom:6px}
+.step-content p{font-size:clamp(16px,2vw,18px);color:var(--slate)}
+
+/* FORMULA CALLOUT */
+.formula-callout{background:#1e1e2e;border-radius:16px;padding:28px 32px;margin:24px 0;font-family:'Courier New',monospace;color:#a8ff78;font-size:clamp(15px,2vw,18px);line-height:1.8;border-left:4px solid var(--teal)}
+.formula-callout .comment{color:#636E72;font-style:italic}
+
+/* DID YOU KNOW - FLIP CARDS */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin:30px 0}
+.flip-card{perspective:1000px;height:200px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform 0.7s;transform-style:preserve-3d}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.flip-front{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff;font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:600}
+.flip-front .flip-icon{font-size:2.5rem;display:block;margin-bottom:10px}
+.flip-back{background:#fff;border:2px solid var(--teal);transform:rotateY(180deg);color:var(--indigo);font-size:clamp(15px,2vw,17px);line-height:1.6}
+
+/* MERMAID */
+.mermaid-wrap{background:#fff;border-radius:20px;padding:30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin:30px 0;overflow-x:auto}
+.mermaid{min-height:120px}
+
+/* DRAG DROP */
+.drag-drop-area{margin:30px 0}
+.drag-items{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;padding:20px;background:#f0f0f0;border-radius:14px;min-height:70px}
+.drag-item{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff;padding:12px 20px;border-radius:10px;cursor:grab;font-size:clamp(15px,2vw,17px);font-weight:500;user-select:none;touch-action:none;min-height:48px;display:flex;align-items:center;transition:opacity 0.2s,transform 0.2s}
+.drag-item:active{cursor:grabbing;opacity:0.7;transform:scale(0.97)}
+.drop-zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.drop-zone{border:2.5px dashed var(--slate);border-radius:16px;padding:20px;min-height:140px;transition:border-color 0.3s,background 0.3s}
+.drop-zone.drag-over{border-color:var(--teal);background:var(--light-teal)}
+.drop-zone h4{font-family:'Poppins',sans-serif;font-size:1rem;color:var(--indigo);margin-bottom:12px;text-align:center}
+.drop-zone .dropped-items{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+.dropped-tag{background:var(--light-indigo);color:var(--indigo);padding:8px 14px;border-radius:8px;font-size:clamp(14px,2vw,16px);font-weight:500;cursor:pointer;min-height:36px;display:flex;align-items:center}
+.drag-feedback{margin-top:16px;padding:14px 20px;border-radius:10px;font-weight:600;font-size:clamp(15px,2vw,17px);display:none}
+.drag-feedback.show{display:block}
+.drag-feedback.correct{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.drag-feedback.wrong{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:30px 0;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+table{width:100%;border-collapse:collapse;background:#fff}
+thead{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff}
+th{padding:16px 20px;text-align:left;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:600;cursor:pointer}
+th:hover{background:rgba(255,255,255,0.1)}
+td{padding:14px 20px;font-size:clamp(15px,2vw,17px);color:#2d3436;border-bottom:1px solid #eee}
+tr:nth-child(even){background:#f8f9ff}
+tr:hover{background:var(--light-teal);cursor:pointer}
+.expand-row{display:none;background:var(--light-indigo)}
+.expand-row.open{display:table-row}
+.expand-row td{color:var(--indigo);font-size:clamp(14px,2vw,16px);padding:16px 20px;border-left:4px solid var(--teal)}
+
+/* HINT PANEL */
+.hint-panel{margin:16px 0}
+.hint-toggle{background:none;border:2px solid var(--teal);color:var(--teal);padding:10px 20px;border-radius:10px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;font-family:'Poppins',sans-serif;transition:all 0.3s;min-height:48px}
+.hint-toggle:hover{background:var(--teal);color:#fff}
+.hint-content{max-height:0;overflow:hidden;transition:max-height 0.4s ease;background:var(--light-teal);border-radius:0 0 12px 12px;padding:0 20px}
+.hint-content.open{max-height:400px;padding:20px}
+.hint-content p{font-size:clamp(15px,2vw,17px);color:var(--slate);line-height:1.7}
+
+/* QUIZ */
+#quiz-section{background:linear-gradient(135deg,#f8f9ff,#e8f8fa)}
+.quiz-container{background:#fff;border-radius:24px;padding:40px;box-shadow:0 8px 40px rgba(0,0,0,0.1);max-width:900px;margin:0 auto}
+.quiz-q{margin-bottom:28px;padding:24px;border-radius:16px;background:#f8f9ff;border-left:4px solid var(--teal)}
+.quiz-q p{font-size:clamp(16px,2vw,18px);color:#2d3436;font-weight:600;margin-bottom:14px}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:#fff;border:2px solid #ddd;border-radius:10px;padding:12px 18px;cursor:pointer;font-size:clamp(15px,2vw,17px);text-align:left;transition:all 0.2s;min-height:48px;font-family:'Inter',sans-serif}
+.quiz-opt:hover{border-color:var(--teal);background:var(--light-teal)}
+.quiz-opt.correct{border-color:#28a745;background:#d4edda;color:#155724}
+.quiz-opt.wrong{border-color:#dc3545;background:#f8d7da;color:#721c24}
+.quiz-input{width:100%;border:2px solid #ddd;border-radius:10px;padding:12px 18px;font-size:clamp(15px,2vw,17px);font-family:'Inter',sans-serif;margin-bottom:10px;transition:border-color 0.3s}
+.quiz-input:focus{outline:none;border-color:var(--teal)}
+.quiz-submit{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff;border:none;border-radius:10px;padding:12px 28px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;min-height:48px;font-family:'Poppins',sans-serif;transition:opacity 0.2s}
+.quiz-submit:hover{opacity:0.9}
+.quiz-feedback{margin-top:10px;font-size:clamp(14px,2vw,16px);font-weight:600;padding:8px 14px;border-radius:8px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#d4edda;color:#155724}
+.quiz-feedback.no{background:#f8d7da;color:#721c24}
+.quiz-score{text-align:center;font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--indigo);font-weight:700;display:none;margin-top:20px}
+.quiz-score.show{display:block}
+#submit-quiz{background:linear-gradient(135deg,var(--teal),var(--indigo));color:#fff;border:none;border-radius:14px;padding:16px 40px;font-size:clamp(16px,2vw,19px);font-weight:700;cursor:pointer;margin:20px auto 0;display:block;min-height:52px;font-family:'Poppins',sans-serif;transition:opacity 0.2s}
+#submit-quiz:hover{opacity:0.9}
+
+/* MS PAINT STEPS */
+.paint-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:30px 0}
+.paint-step{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 16px rgba(0,0,0,0.07);border-top:3px solid var(--teal);opacity:1;transform:none}
+.paint-step .num{width:36px;height:36px;background:var(--indigo);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;margin-bottom:12px}
+.paint-step h4{font-family:'Poppins',sans-serif;font-size:1rem;color:var(--teal);margin-bottom:8px}
+.paint-step p{font-size:clamp(15px,2vw,16px);color:var(--slate)}
+
+/* KEY CONCEPTS */
+.key-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin:30px 0}
+.key-card{background:linear-gradient(135deg,var(--light-teal),var(--light-indigo));border-radius:18px;padding:24px;border:2px solid rgba(72,52,212,0.15);opacity:1;transform:none;transition:transform 0.3s}
+.key-card:hover{transform:translateY(-4px)}
+.key-card .term{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;color:var(--indigo);margin-bottom:10px}
+.key-card .def{font-size:clamp(15px,2vw,17px);color:var(--slate);line-height:1.6}
+
+/* ANIMATED CODE BLOCK */
+.code-block{background:#1e1e2e;border-radius:16px;padding:28px;margin:24px 0;overflow-x:auto}
+.code-block pre{font-family:'Courier New',monospace;font-size:clamp(14px,2vw,16px);line-height:1.9;color:#cdd6f4}
+.code-kw{color:#cba6f7}
+.code-str{color:#a6e3a1}
+.code-num{color:#fab387}
+.code-cm{color:#6c7086;font-style:italic}
+
+/* MATCH EXERCISE */
+.match-exercise{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:30px 0}
+.match-col{display:flex;flex-direction:column;gap:12px}
+.match-col h4{font-family:'Poppins',sans-serif;color:var(--indigo);margin-bottom:8px}
+.match-item{padding:14px 18px;border-radius:12px;font-size:clamp(15px,2vw,17px);cursor:pointer;transition:all 0.2s;min-height:48px;display:flex;align-items:center}
+.match-term{background:var(--light-indigo);color:var(--indigo);border:2px solid transparent}
+.match-def{background:var(--light-teal);color:#2d3436;border:2px solid transparent}
+.match-item.selected{border-color:var(--indigo);font-weight:600}
+.match-item.matched{background:linear-gradient(135deg,#d4edda,#c3e6cb);border-color:#28a745;color:#155724;cursor:default}
+.match-item.wrong-match{border-color:#dc3545;background:#f8d7da;animation:shake 0.3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-feedback{margin-top:16px;padding:14px;border-radius:10px;font-weight:600;font-size:clamp(15px,2vw,17px);display:none}
+.match-feedback.show{display:block}
+
+/* MOBILE BOTTOM NAV */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--teal);z-index:200;overflow-x:auto;padding:8px 12px;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+#mobile-nav ul{display:flex;gap:8px;list-style:none;white-space:nowrap}
+#mobile-nav ul li a{display:flex;align-items:center;padding:10px 14px;border-radius:10px;color:var(--slate);font-size:0.8rem;font-weight:600;text-decoration:none;white-space:nowrap;min-height:48px;transition:all 0.3s}
+#mobile-nav ul li a.active,#mobile-nav ul li a:hover{background:var(--light-indigo);color:var(--indigo)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #toc{display:none}
+  #main-wrapper{margin-left:0;padding-bottom:90px}
+  #mobile-nav{display:block}
+  section{padding:50px 20px}
+  #hero{min-height:60vh;padding:60px 20px}
+  .match-exercise{grid-template-columns:1fr}
+  .drop-zones{grid-template-columns:1fr}
+  .quiz-container{padding:24px 16px}
+}
+@media(max-width:480px){
+  .cards-grid{grid-template-columns:1fr}
+  .key-grid{grid-template-columns:1fr}
+  .flip-grid{grid-template-columns:1fr}
+  .paint-steps{grid-template-columns:1fr}
+}
+
+/* SCROLL ANIMATIONS - base visible */
+.fade-in{opacity:1;transform:none}
+.slide-up{opacity:1;transform:none}
+
+/* SECTION BACKGROUNDS */
+#background-section{background:linear-gradient(180deg,#f8f9ff 0%,#FEFEFE 100%)}
+#core-section{background:#FEFEFE}
+#examples-section{background:linear-gradient(180deg,#FEFEFE,#f0f8ff)}
+#practice-section{background:#f8f9ff}
+#challenge-section{background:linear-gradient(135deg,#f0fffe,#f8f0ff)}
+#quiz-section{background:linear-gradient(135deg,#f8f9ff,#e8f8fa)}
+#ms-paint-section{background:#FEFEFE}
+
+.section-wrap{max-width:1500px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.section-wrap{padding:0 16px}}
+
+/* char animation targets */
+.char{display:inline-block}
+
+/* toggle sort indicator */
+th.sort-asc::after{content:' ↑'}
+th.sort-desc::after{content:' ↓'}
+
+/* Progress bar in quiz */
+.quiz-progress{height:6px;background:#eee;border-radius:3px;margin-bottom:24px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--indigo));border-radius:3px;transition:width 0.5s}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="loader-text">🖥️ Loading Lesson...</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- STICKY TOC -->
+<nav id="toc">
+  <h3>📋 Contents</h3>
+  <ul>
+    <li><a href="#hero">Introduction</a></li>
+    <li><a href="#background-section">Why It Matters</a></li>
+    <li><a href="#core-section">Core Concepts</a></li>
+    <li><a href="#examples-section">Worked Examples</a></li>
+    <li><a href="#practice-section">Practice</a></li>
+    <li><a href="#challenge-section">Challenge</a></li>
+    <li><a href="#ms-paint-section">MS Paint Activity</a></li>
+    <li><a href="#quiz-section">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <ul>
+    <li><a href="#hero">🏠 Intro</a></li>
+    <li><a href="#background-section">💡 Why</a></li>
+    <li><a href="#core-section">🧠 Core</a></li>
+    <li><a href="#examples-section">📖 Examples</a></li>
+    <li><a href="#practice-section">✏️ Practice</a></li>
+    <li><a href="#challenge-section">🏆 Challenge</a></li>
+    <li><a href="#ms-paint-section">🎨 Paint</a></li>
+    <li><a href="#quiz-section">❓ Quiz</a></li>
+  </ul>
+</nav>
+
+<div id="main-wrapper">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🖥️ Class 5 · Computer · Unit 1</div>
+      <h1 id="hero-title">Step-wise Thinking</h1>
+      <p>Break down big problems into small, clear steps — just like how computers think!</p>
+      <div class="hero-chips">
+        <span class="hero-chip">🧩 Algorithms</span>
+        <span class="hero-chip">📋 Sequencing</span>
+        <span class="hero-chip">🤖 Computer Logic</span>
+        <span class="hero-chip">🎯 Problem Solving</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARNING OBJECTIVES -->
+  <section id="background-section">
+    <div class="section-wrap">
+      <h2>Why Step-wise Thinking Matters</h2>
+      <div class="discovery-zone">
+        <h3>What is Step-wise Thinking?</h3>
+        <p>Step-wise thinking means <strong>breaking down a big task into smaller, easy steps</strong>, just like following instructions in a game or a recipe. By doing each step in the right order, we can complete the task without missing anything. This is how computers work too! They follow small steps called <em>instructions</em> to solve problems and complete tasks. In programming, these steps are called an <strong>algorithm</strong>.</p>
+      </div>
+
+      <h3 style="margin-top:40px">Learning Objectives</h3>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="icon">🔍</div>
+          <h4>Break Down Activities</h4>
+          <p>Understand how to break down activities into smaller, manageable steps that are easy to follow one at a time.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📐</div>
+          <h4>Importance of Sequencing</h4>
+          <p>Learn why the order of steps matters in problem-solving and programming — doing things in the wrong order causes mistakes!</p>
+        </div>
+        <div class="card">
+          <div class="icon">✍️</div>
+          <h4>Write Step-wise Instructions</h4>
+          <p>Write your own step-wise instructions to solve a problem or perform a task, just like a programmer would.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">3 Reasons It's Important</h3>
+      <div class="cards-grid">
+        <div class="card" style="border-color:#22A6B3">
+          <div class="icon">💡</div>
+          <h4>1. Easier to Understand</h4>
+          <p>Breaking down a big problem helps us understand each part better. Instead of feeling overwhelmed, we tackle one step at a time.</p>
+        </div>
+        <div class="card" style="border-color:#4834D4">
+          <div class="icon">📋</div>
+          <h4>2. Clear Instructions</h4>
+          <p>When we do things step-by-step, it's easy to see what comes next. Everyone follows the same clear path to the goal.</p>
+        </div>
+        <div class="card" style="border-color:#22A6B3">
+          <div class="icon">✅</div>
+          <h4>3. No Mistakes</h4>
+          <p>Following steps in order reduces mistakes, just like adding ingredients one at a time when cooking. The result is always better!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE CONCEPTS -->
+  <section id="core-section">
+    <div class="section-wrap">
+      <h2>Core Concepts &amp; Key Terms</h2>
+      <div class="key-grid">
+        <div class="key-card">
+          <div class="term">🪜 Step-wise Thinking</div>
+          <div class="def">Breaking down a big task into small, clear steps that are easy to follow in order.</div>
+        </div>
+        <div class="key-card">
+          <div class="term">📝 Algorithm</div>
+          <div class="def">A list of steps to solve a problem or complete a task. Computers follow algorithms to do their work.</div>
+        </div>
+        <div class="key-card">
+          <div class="term">🔢 Sequencing</div>
+          <div class="def">Putting steps in the correct order to avoid mistakes. Wrong order = wrong result!</div>
+        </div>
+        <div class="key-card">
+          <div class="term">👨‍💻 Programmer</div>
+          <div class="def">Someone who writes instructions (using special computer languages) to tell computers what to do — creating games, apps, and software.</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">How Algorithms Work</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph LR
+    A[🎯 Big Problem] --> B[Break into Steps]
+    B --> C[Step 1]
+    B --> D[Step 2]
+    B --> E[Step 3]
+    C --> F[Sequence in Order]
+    D --> F
+    E --> F
+    F --> G[✅ Algorithm Ready!]
+    G --> H[Computer Executes]
+    H --> I[🏆 Task Complete!]
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">What is an Algorithm?</h3>
+      <div class="formula-callout">
+        <span class="comment">// An algorithm is a set of clear instructions for a task</span><br>
+        <span class="code-kw">Algorithm</span> = Step 1 → Step 2 → Step 3 → ... → Final Step<br><br>
+        <span class="comment">// Rules for a good algorithm:</span><br>
+        ✔ Each step must be <span class="code-str">clear and specific</span><br>
+        ✔ Steps must be in the <span class="code-str">correct order</span> (sequenced)<br>
+        ✔ Must have a <span class="code-str">starting point</span> and <span class="code-str">ending point</span><br>
+        ✔ Must <span class="code-str">solve the problem</span> without missing anything
+      </div>
+
+      <!-- DID YOU KNOW FLIP CARDS -->
+      <h3 style="margin-top:40px">💡 Did You Know?</h3>
+      <div class="flip-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front"><span class="flip-icon">🤖</span>Computers Can't Guess!</div>
+            <div class="flip-back">Computers need <strong>exact</strong> instructions. They cannot guess what you mean. If you miss a step, the computer gets confused and makes errors!</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front"><span class="flip-icon">🍳</span>Recipes Are Algorithms!</div>
+            <div class="flip-back">A cooking recipe is actually an algorithm! It has a list of ingredients (inputs), clear steps in order, and a finished meal as the output.</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front"><span class="flip-icon">🎮</span>Games Use Algorithms</div>
+            <div class="flip-back">Every video game uses hundreds of algorithms to control characters, check scores, and respond to your actions — all in the blink of an eye!</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front"><span class="flip-icon">🗣️</span>Languages for Computers</div>
+            <div class="flip-back">Programmers write algorithms using special languages like Python, Java, PHP, JavaScript, Ruby, and SQL to communicate with computers.</div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--slate);font-size:0.95rem;margin-top:10px">👆 Click each card to reveal a fun fact!</p>
+    </div>
+  </section>
+
+  <!-- WORKED EXAMPLES -->
+  <section id="examples-section">
+    <div class="section-wrap">
+      <h2>Worked Examples</h2>
+
+      <h3>Example 1: Making a Cup of Tea ☕</h3>
+      <p style="margin-bottom:24px;color:var(--slate)">Here's how we break down a simple everyday task into step-wise instructions:</p>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Boil Water in a Kettle</h4>
+            <p>Fill the kettle with water and switch it on. Wait until the water is fully boiled.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Place a Tea Bag in a Cup</h4>
+            <p>Get a clean cup and place one tea bag inside it, ready for the water.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Pour the Hot Water into the Cup</h4>
+            <p>Carefully pour the hot water from the kettle into the cup with the tea bag.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Let the Tea Bag Steep</h4>
+            <p>Leave the tea bag in the hot water for a few minutes so the tea gets its flavour.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Add Sugar or Milk (Optional)</h4>
+            <p>If you like, add sugar or milk to taste. Remove the tea bag from the cup.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Stir and Enjoy Your Tea!</h4>
+            <p>Give it a good stir and enjoy your perfectly made cup of tea! ☕</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:50px">Example 2: Thinking Like a Computer 🤖</h3>
+      <p style="margin-bottom:20px;color:var(--slate)">Computers need exact instructions. Here's how we'd teach a computer to organize books on a shelf by height:</p>
+      <div class="discovery-zone">
+        <h3>Practical Example: Organizing Books on a Shelf</h3>
+        <div class="code-block">
+          <pre><span class="code-cm">// Algorithm: Organize books by height on a shelf</span>
+
+<span class="code-kw">Step 1:</span> Pick up the first book
+<span class="code-kw">Step 2:</span> Place it on the <span class="code-str">left side</span> of the shelf
+<span class="code-kw">Step 3:</span> Pick up the next book
+<span class="code-kw">Step 4:</span> Check if it is <span class="code-str">taller</span> than the book already on the shelf
+<span class="code-kw">Step 5:</span> <span class="code-num">IF yes</span> → place it on the <span class="code-str">right</span>
+         <span class="code-num">IF no</span>  → place it on the <span class="code-str">left</span>
+<span class="code-kw">Step 6:</span> <span class="code-str">Repeat</span> until ALL books are placed</pre>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">Algorithm Flowchart: Organizing Books</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph TD
+    A([🚀 Start]) --> B[Pick up the first book]
+    B --> C[Place it on the LEFT side of the shelf]
+    C --> D[Pick up the next book]
+    D --> E{Is it TALLER than the book on the shelf?}
+    E -- YES --> F[Place it on the RIGHT]
+    E -- NO --> G[Place it on the LEFT]
+    F --> H{Are there more books?}
+    G --> H
+    H -- YES --> D
+    H -- NO --> I([✅ All books organized! Done!])
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">Why Sequence Order Matters</h3>
+      <div class="cards-grid">
+        <div class="card" style="border-color:#dc3545">
+          <div class="icon">❌</div>
+          <h4>Wrong Order Example</h4>
+          <p>What if you poured water into the cup <em>before</em> boiling it? Or added the tea bag <em>after</em> removing the hot water? The result would be wrong!</p>
+        </div>
+        <div class="card" style="border-color:#28a745">
+          <div class="icon">✅</div>
+          <h4>Correct Order = Success</h4>
+          <p>Following steps in the <strong>correct sequence</strong> ensures the task is done perfectly every time. This is why sequencing is one of the most important skills in programming!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice-section">
+    <div class="section-wrap">
+      <h2>Practice Exercises</h2>
+
+      <!-- EXERCISE 1: MATCH -->
+      <h3>Exercise 1: Match the Terms ✏️</h3>
+      <p style="margin-bottom:20px;color:var(--slate)">Click a term on the left, then click its matching definition on the right.</p>
+      <div class="match-exercise" id="match-game">
+        <div class="match-col">
+          <h4>📚 Terms</h4>
+          <div class="match-item match-term" data-id="1">Algorithm</div>
+          <div class="match-item match-term" data-id="2">Sequencing</div>
+          <div class="match-item match-term" data-id="3">Step-wise Thinking</div>
+          <div class="match-item match-term" data-id="4">Computer</div>
+        </div>
+        <div class="match-col">
+          <h4>📖 Definitions</h4>
+          <div class="match-item match-def" data-id="2">Putting steps in the correct order</div>
+          <div class="match-item match-def" data-id="4">A machine that follows instructions to complete tasks</div>
+          <div class="match-item match-def" data-id="1">A list of steps to complete a task</div>
+          <div class="match-item match-def" data-id="3">Breaking down a big task into smaller steps</div>
+        </div>
+      </div>
+      <div class="match-feedback" id="match-feedback"></div>
+      <button onclick="resetMatch()" style="margin-top:12px;background:var(--indigo);color:#fff;border:none;border-radius:10px;padding:10px 22px;cursor:pointer;font-size:clamp(14px,2vw,16px);min-height:44px;font-family:'Poppins',sans-serif">🔄 Reset</button>
+
+      <!-- EXERCISE 2: FILL BLANKS -->
+      <h3 style="margin-top:50px">Exercise 2: Fill in the Blanks ✍️</h3>
+      <p style="margin-bottom:20px;color:var(--slate)">Complete each sentence using the correct word from the box.</p>
+      <div style="background:var(--light-indigo);border-radius:14px;padding:16px 24px;margin-bottom:24px;font-size:clamp(15px,2vw,17px)">
+        <strong>Word Bank:</strong> &nbsp;
+        <span style="background:var(--indigo);color:#fff;padding:4px 12px;border-radius:6px;margin:4px;display:inline-block">big task</span>
+        <span style="background:var(--indigo);color:#fff;padding:4px 12px;border-radius:6px;margin:4px;display:inline-block">exact instructions</span>
+        <span style="background:var(--indigo);color:#fff;padding:4px 12px;border-radius:6px;margin:4px;display:inline-block">algorithm</span>
+        <span style="background:var(--indigo);color:#fff;padding:4px 12px;border-radius:6px;margin:4px;display:inline-block">mistakes</span>
+        <span style="background:var(--indigo);color:#fff;padding:4px 12px;border-radius:6px;margin:4px;display:inline-block">boil</span>
+      </div>
+      <div id="fill-blanks">
+        <div style="margin-bottom:18px;padding:18px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06)">
+          <p style="font-size:clamp(16px,2vw,18px)">1. Stepwise thinking means breaking a <input type="text" class="blank-input" data-answer="big task" placeholder="____" style="border:none;border-bottom:2px solid var(--teal);background:transparent;font-size:inherit;padding:4px 8px;width:130px;font-family:'Inter',sans-serif"> into smaller steps.</p>
+        </div>
+        <div style="margin-bottom:18px;padding:18px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06)">
+          <p style="font-size:clamp(16px,2vw,18px)">2. Computers need <input type="text" class="blank-input" data-answer="exact instructions" placeholder="____" style="border:none;border-bottom:2px solid var(--teal);background:transparent;font-size:inherit;padding:4px 8px;width:180px;font-family:'Inter',sans-serif"> to complete tasks.</p>
+        </div>
+        <div style="margin-bottom:18px;padding:18px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06)">
+          <p style="font-size:clamp(16px,2vw,18px)">3. A set of instructions for a task is called an <input type="text" class="blank-input" data-answer="algorithm" placeholder="____" style="border:none;border-bottom:2px solid var(--teal);background:transparent;font-size:inherit;padding:4px 8px;width:140px;font-family:'Inter',sans-serif">.</p>
+        </div>
+        <div style="margin-bottom:18px;padding:18px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06)">
+          <p style="font-size:clamp(16px,2vw,18px)">4. Following steps in order reduces <input type="text" class="blank-input" data-answer="mistakes" placeholder="____" style="border:none;border-bottom:2px solid var(--teal);background:transparent;font-size:inherit;padding:4px 8px;width:120px;font-family:'Inter',sans-serif">.</p>
+        </div>
+        <div style="margin-bottom:18px;padding:18px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06)">
+          <p style="font-size:clamp(16px,2vw,18px)">5. To make a cup of tea, the first step is to <input type="text" class="blank-input" data-answer="boil" placeholder="____" style="border:none;border-bottom:2px solid var(--teal);background:transparent;font-size:inherit;padding:4px 8px;width:100px;font-family:'Inter',sans-serif"> water.</p>
+        </div>
+      </div>
+      <button onclick="checkBlanks()" style="background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 28px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;min-height:48px;font-family:'Poppins',sans-serif;margin-top:10px;margin-right:10px">✔ Check Answers</button>
+      <button onclick="resetBlanks()" style="background:#fff;color:var(--slate);border:2px solid var(--slate);border-radius:10px;padding:12px 28px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;min-height:48px;font-family:'Poppins',sans-serif;margin-top:10px">🔄 Reset</button>
+      <div id="blanks-feedback" style="margin-top:14px;display:none;padding:14px;border-radius:10px;font-weight:600;font-size:clamp(15px,2vw,17px)"></div>
+
+      <!-- EXERCISE 3: TRUE/FALSE TABLE -->
+      <h3 style="margin-top:50px">Exercise 3: True or False? 🔍</h3>
+      <p style="margin-bottom:20px;color:var(--slate)">Click on a row to expand it and see the explanation. Then decide TRUE or FALSE!</p>
+      <div class="table-wrap">
+        <table id="tf-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Statement</th>
+              <th>Your Answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tf-row" data-answer="false" data-idx="0">
+              <td>1</td>
+              <td>Step-wise thinking makes tasks harder to complete.</td>
+              <td><button class="tf-btn" onclick="tfAnswer(event, 0, 'true')">TRUE</button> <button class="tf-btn" onclick="tfAnswer(event, 0, 'false')">FALSE</button></td>
+            </tr>
+            <tr class="expand-row" id="exp-0"><td colspan="3">❌ FALSE — Step-wise thinking actually makes tasks <strong>easier</strong> by breaking them into small, manageable steps!</td></tr>
+            <tr class="tf-row" data-answer="true" data-idx="1">
+              <td>2</td>
+              <td>An algorithm is a list of steps to complete a task.</td>
+              <td><button class="tf-btn" onclick="tfAnswer(event, 1, 'true')">TRUE</button> <button class="tf-btn" onclick="tfAnswer(event, 1, 'false')">FALSE</button></td>
+            </tr>
+            <tr class="expand-row" id="exp-1"><td colspan="3">✅ TRUE — An algorithm is exactly that: a list of clear, ordered steps to solve a problem or complete a task.</td></tr>
+            <tr class="tf-row" data-answer="false" data-idx="2">
+              <td>3</td>
+              <td>Computers understand big tasks without any steps.</td>
+              <td><button class="tf-btn" onclick="tfAnswer(event, 2, 'true')">TRUE</button> <button class="tf-btn" onclick="tfAnswer(event, 2, 'false')">FALSE</button></td>
+            </tr>
+            <tr class="expand-row" id="exp-2"><td colspan="3">❌ FALSE — Computers need <strong>exact, step-by-step instructions</strong>. They cannot guess or understand vague commands.</td></tr>
+            <tr class="tf-row" data-answer="false" data-idx="3">
+              <td>4</td>
+              <td>Step-wise thinking is only useful for cooking.</td>
+              <td><button class="tf-btn" onclick="tfAnswer(event, 3, 'true')">TRUE</button> <button class="tf-btn" onclick="tfAnswer(event, 3, 'false')">FALSE</button></td>
+            </tr>
+            <tr class="expand-row" id="exp-3"><td colspan="3">❌ FALSE — Step-wise thinking is useful for <strong>everything</strong>: cooking, organizing, programming, drawing, sports, and much more!</td></tr>
+            <tr class="tf-row" data-answer="true" data-idx="4">
+              <td>5</td>
+              <td>Each step in an algorithm should be in the correct order.</td>
+              <td><button class="tf-btn" onclick="tfAnswer(event, 4, 'true')">TRUE</button> <button class="tf-btn" onclick="tfAnswer(event, 4, 'false')">FALSE</button></td>
+            </tr>
+            <tr class="expand-row" id="exp-4"><td colspan="3">✅ TRUE — The correct order (sequencing) is essential. If steps are out of order, the algorithm won't work correctly.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGE SECTION -->
+  <section id="challenge-section">
+    <div class="section-wrap">
+      <h2>🏆 Challenge: Drag &amp; Drop Classification</h2>
+      <p style="margin-bottom:10px;color:var(--slate)">Drag each item into the correct category — is it a <strong>Real-Life Algorithm</strong> or a <strong>Computer Algorithm</strong>?</p>
+
+      <div class="drag-drop-area">
+        <div class="drag-items" id="drag-pool">
+          <div class="drag-item" draggable="true" data-category="real" id="di1">🧹 Cleaning Your Room</div>
+          <div class="drag-item" draggable="true" data-category="computer" id="di2">💻 Sorting a List of Names</div>
+          <div class="drag-item" draggable="true" data-category="real" id="di3">🪥 Brushing Your Teeth</div>
+          <div class="drag-item" draggable="true" data-category="computer" id="di4">🎮 Game Character Moving</div>
+          <div class="drag-item" draggable="true" data-category="real" id="di5">🎨 Drawing a Picture</div>
+          <div class="drag-item" draggable="true" data-category="computer" id="di6">📧 Sending an Email</div>
+        </div>
+        <div class="drop-zones">
+          <div class="drop-zone" id="zone-real">
+            <h4>🌍 Real-Life Algorithm</h4>
+            <div class="dropped-items" id="dropped-real"></div>
+          </div>
+          <div class="drop-zone" id="zone-computer">
+            <h4>🖥️ Computer Algorithm</h4>
+            <div class="dropped-items" id="dropped-computer"></div>
+          </div>
+        </div>
+        <div class="drag-feedback" id="drag-feedback"></div>
+        <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+          <button onclick="checkDrag()" style="background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 24px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;min-height:48px;font-family:'Poppins',sans-serif">✔ Check</button>
+          <button onclick="resetDrag()" style="background:#fff;color:var(--slate);border:2px solid var(--slate);border-radius:10px;padding:12px 24px;cursor:pointer;font-size:clamp(15px,2vw,17px);font-weight:600;min-height:48px;font-family:'Poppins',sans-serif">🔄 Reset</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top:50px">Hint: How to Write Your Own Algorithm</h3>
+      <div class="hint-panel">
+        <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint for Writing Algorithms</button>
+        <div class="hint-content">
+          <p>To write your own step-wise instructions, follow this checklist:</p>
+          <ul style="margin:12px 0 0 20px;line-height:2">
+            <li><strong>Start</strong> with a clear beginning (e.g., "Pick up pencil")</li>
+            <li><strong>Use action words</strong>: Pick, Place, Pour, Check, Add, Stir</li>
+            <li><strong>Be specific</strong>: Don't say "do something" — say exactly what to do</li>
+            <li><strong>Keep the order correct</strong> — think about what must come first</li>
+            <li><strong>Include every small action</strong> — even obvious ones!</li>
+            <li><strong>End clearly</strong>: Know when the task is finished</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px">Try Writing Your Own Algorithm!</h3>
+      <p style="color:var(--slate);margin-bottom:20px">Choose a task below and think about the steps. Click to reveal sample algorithm:</p>
+      <div class="cards-grid">
+        <div class="card" style="cursor:pointer" onclick="toggleTask('task1')">
+          <div class="icon">🍋</div>
+          <h4>Making a Glass of Lemonade</h4>
+          <p>Click to see a sample algorithm!</p>
+          <div id="task1" style="display:none;margin-top:14px;border-top:2px solid var(--teal);padding-top:14px;font-size:clamp(14px,2vw,16px);color:var(--slate)">
+            <strong>Steps:</strong>
+            <ol style="margin-top:8px;margin-left:18px;line-height:2">
+              <li>Get a glass, lemon, sugar, water</li>
+              <li>Cut the lemon in half</li>
+              <li>Squeeze the lemon juice into the glass</li>
+              <li>Add 2 spoons of sugar</li>
+              <li>Pour cold water into the glass</li>
+              <li>Stir well until sugar dissolves</li>
+              <li>Add ice if you like</li>
+              <li>Enjoy your lemonade! 🍋</li>
+            </ol>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toggleTask('task2')">
+          <div class="icon">🍽️</div>
+          <h4>Setting the Table for Dinner</h4>
+          <p>Click to see a sample algorithm!</p>
+          <div id="task2" style="display:none;margin-top:14px;border-top:2px solid var(--teal);padding-top:14px;font-size:clamp(14px,2vw,16px);color:var(--slate)">
+            <strong>Steps:</strong>
+            <ol style="margin-top:8px;margin-left:18px;line-height:2">
+              <li>Wash your hands</li>
+              <li>Spread a tablecloth if needed</li>
+              <li>Place a plate in front of each chair</li>
+              <li>Put a fork on the left of each plate</li>
+              <li>Put a knife on the right of each plate</li>
+              <li>Place a glass above each plate</li>
+              <li>Add napkins for each person</li>
+              <li>Table is ready! 🍽️</li>
+            </ol>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toggleTask('task3')">
+          <div class="icon">🏠</div>
+          <h4>Drawing a House</h4>
+          <p>Click to see a sample algorithm!</p>
+          <div id="task3" style="display:none;margin-top:14px;border-top:2px solid var(--teal);padding-top:14px;font-size:clamp(14px,2vw,16px);color:var(--slate)">
+            <strong>Steps:</strong>
+            <ol style="margin-top:8px;margin-left:18px;line-height:2">
+              <li>Pick up a pencil and paper</li>
+              <li>Draw a large rectangle for the base</li>
+              <li>Draw a triangle on top for the roof</li>
+              <li>Draw a small rectangle for the door</li>
+              <li>Draw two squares for the windows</li>
+              <li>Add a chimney on the roof</li>
+              <li>Colour with your favourite colours</li>
+              <li>Your house is complete! 🏠</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MS PAINT ACTIVITY -->
+  <section id="ms-paint-section">
+    <div class="section-wrap">
+      <h2>🎨 Computer Activity: Drawing in MS Paint</h2>
+      <p style="color:var(--slate);margin-bottom:30px">Now let's apply step-wise thinking to draw a simple house using MS Paint! Follow these 8 steps carefully:</p>
+      <div class="paint-steps">
+        <div class="paint-step">
+          <div class="num">1</div>
+          <h4>Open MS Paint</h4>
+          <p>Click on the MS Paint application icon to open it on your computer.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">2</div>
+          <h4>Select a Shape Tool</h4>
+          <p>Choose the <strong>rectangle tool</strong> from the toolbar to draw the base of the house.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">3</div>
+          <h4>Draw the House Base</h4>
+          <p>Click and drag on the canvas to create a large rectangle — this is the body of the house.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">4</div>
+          <h4>Draw the Roof</h4>
+          <p>Select the <strong>triangle shape</strong> and place it on top of the rectangle to form the roof.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">5</div>
+          <h4>Add Windows</h4>
+          <p>Use the rectangle tool again to draw two or more <strong>smaller rectangles</strong> as windows.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">6</div>
+          <h4>Draw the Door</h4>
+          <p>Select the rectangle tool and draw a <strong>door</strong> at the bottom centre of the house.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">7</div>
+          <h4>Add Colours</h4>
+          <p>Use the <strong>paint bucket tool</strong> to fill in colours for the house walls, roof, windows, and door.</p>
+        </div>
+        <div class="paint-step">
+          <div class="num">8</div>
+          <h4>Save the Image</h4>
+          <p>Click <strong>File → Save</strong> to save your artwork. Choose a name and location for your file!</p>
+        </div>
+      </div>
+
+      <div class="discovery-zone" style="margin-top:20px">
+        <h3>🔍 Connection to Step-wise Thinking</h3>
+        <p>Notice how drawing a house in MS Paint follows the same principle as any algorithm! Each step must come in the correct order — you can't colour the house before drawing it, and you can't add windows before drawing the walls. This is <strong>sequencing</strong> in action!</p>
+      </div>
+
+      <!-- Animated SVG flowchart for MS Paint -->
+      <h3 style="margin-top:40px">MS Paint Steps Flowchart</h3>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph LR
+    A([🖱️ Open MS Paint]) --> B[Select Rectangle Tool]
+    B --> C[Draw House Base]
+    C --> D[Select Triangle Tool]
+    D --> E[Draw Roof]
+    E --> F[Draw Windows]
+    F --> G[Draw Door]
+    G --> H[Add Colours 🎨]
+    H --> I([💾 Save File!])
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz-section">
+    <div class="section-wrap">
+      <h2>❓ Knowledge Quiz</h2>
+      <p style="color:var(--slate);margin-bottom:30px">Test your understanding of Step-wise Thinking! Answer all 10 questions and see your score.</p>
+      <div class="quiz-container">
+        <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+
+        <!-- Q1 -->
+        <div class="quiz-q" id="qq1">
+          <p>1. What does "step-wise thinking" mean?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,1,'a')">A) Doing everything at once</button>
+            <button class="quiz-opt" onclick="selectOpt(this,1,'b')">B) Breaking a big task into smaller, manageable steps</button>
+            <button class="quiz-opt" onclick="selectOpt(this,1,'c')">C) Skipping difficult parts of a task</button>
+            <button class="quiz-opt" onclick="selectOpt(this,1,'d')">D) Only thinking about the final result</button>
+          </div>
+          <div class="quiz-feedback" id="qf1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-q" id="qq2">
+          <p>2. What is an algorithm?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,2,'a')">A) A type of computer hardware</button>
+            <button class="quiz-opt" onclick="selectOpt(this,2,'b')">B) A programming language like Python</button>
+            <button class="quiz-opt" onclick="selectOpt(this,2,'c')">C) A list of steps to solve a problem or complete a task</button>
+            <button class="quiz-opt" onclick="selectOpt(this,2,'d')">D) A computer screen display</button>
+          </div>
+          <div class="quiz-feedback" id="qf2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-q" id="qq3">
+          <p>3. What is "sequencing" in step-wise thinking?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,3,'a')">A) Writing steps in any random order</button>
+            <button class="quiz-opt" onclick="selectOpt(this,3,'b')">B) Putting steps in the correct order to avoid mistakes</button>
+            <button class="quiz-opt" onclick="selectOpt(this,3,'c')">C) Skipping unnecessary steps</button>
+            <button class="quiz-opt" onclick="selectOpt(this,3,'d')">D) Adding extra steps to make it longer</button>
+          </div>
+          <div class="quiz-feedback" id="qf3"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-q" id="qq4">
+          <p>4. What is the FIRST step in making a cup of tea?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,4,'a')">A) Add sugar or milk</button>
+            <button class="quiz-opt" onclick="selectOpt(this,4,'b')">B) Place a tea bag in a cup</button>
+            <button class="quiz-opt" onclick="selectOpt(this,4,'c')">C) Boil water in a kettle</button>
+            <button class="quiz-opt" onclick="selectOpt(this,4,'d')">D) Stir and enjoy</button>
+          </div>
+          <div class="quiz-feedback" id="qf4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-q" id="qq5">
+          <p>5. Why do computers need exact instructions?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,5,'a')">A) Because they are very slow machines</button>
+            <button class="quiz-opt" onclick="selectOpt(this,5,'b')">B) Because they cannot guess or understand vague commands</button>
+            <button class="quiz-opt" onclick="selectOpt(this,5,'c')">C) Because they are connected to the internet</button>
+            <button class="quiz-opt" onclick="selectOpt(this,5,'d')">D) Because programmers like writing long instructions</button>
+          </div>
+          <div class="quiz-feedback" id="qf5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-q" id="qq6">
+          <p>6. What does a programmer do?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,6,'a')">A) Designs the physical parts of a computer</button>
+            <button class="quiz-opt" onclick="selectOpt(this,6,'b')">B) Writes instructions in computer languages to tell computers what to do</button>
+            <button class="quiz-opt" onclick="selectOpt(this,6,'c')">C) Sells computers in shops</button>
+            <button class="quiz-opt" onclick="selectOpt(this,6,'d')">D) Repairs broken screens and keyboards</button>
+          </div>
+          <div class="quiz-feedback" id="qf6"></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-q" id="qq7">
+          <p>7. In the "Organizing Books on a Shelf" example, what happens if the new book is TALLER than the existing book?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,7,'a')">A) Place it on the left</button>
+            <button class="quiz-opt" onclick="selectOpt(this,7,'b')">B) Remove it from the shelf</button>
+            <button class="quiz-opt" onclick="selectOpt(this,7,'c')">C) Place it on the right</button>
+            <button class="quiz-opt" onclick="selectOpt(this,7,'d')">D) Start again from the beginning</button>
+          </div>
+          <div class="quiz-feedback" id="qf7"></div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-q" id="qq8">
+          <p>8. Which of the following is a benefit of step-wise thinking?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,8,'a')">A) It makes tasks more complicated</button>
+            <button class="quiz-opt" onclick="selectOpt(this,8,'b')">B) It reduces mistakes and makes tasks easier to understand</button>
+            <button class="quiz-opt" onclick="selectOpt(this,8,'c')">C) It is only useful for computers</button>
+            <button class="quiz-opt" onclick="selectOpt(this,8,'d')">D) It requires a computer to work</button>
+          </div>
+          <div class="quiz-feedback" id="qf8"></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="quiz-q" id="qq9">
+          <p>9. In MS Paint, which tool is used to fill in colours for your drawing?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="selectOpt(this,9,'a')">A) The pencil tool</button>
+            <button class="quiz-opt" onclick="selectOpt(this,9,'b')">B) The eraser tool</button>
+            <button class="quiz-opt" onclick="selectOpt(this,9,'c')">C) The paint bucket tool</button>
+            <button class="quiz-opt" onclick="selectOpt(this,9,'d')">D) The magnifier tool</button>
+          </div>
+          <div class="quiz-feedback" id="qf9"></div>
+        </div>
+
+        <!-- Q10 - numerical -->
+        <div class="quiz-q" id="qq10">
+          <p>10. How many steps are in the "Making a Cup of Tea" algorithm shown in this lesson?</p>
+          <input type="number" class="quiz-input" id="q10-input" placeholder="Enter a number..." min="1" max="20">
+          <button class="quiz-submit" onclick="checkNumerical()">Submit Answer</button>
+          <div class="quiz-feedback" id="qf10"></div>
+        </div>
+
+        <button id="submit-quiz" onclick="submitQuiz()">🏆 See My Final Score</button>
+        <div class="quiz-score" id="quiz-score"></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end main-wrapper -->
+
+<style>
+.tf-btn{background:var(--light-indigo);color:var(--indigo);border:2px solid var(--indigo);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:clamp(14px,2vw,16px);font-weight:600;margin:4px;min-height:44px;font-family:'Poppins',sans-serif;transition:all 0.2s}
+.tf-btn:hover{background:var(--indigo);color:#fff}
+.tf-btn.correct-tf{background:#d4edda;color:#155724;border-color:#28a745}
+.tf-btn.wrong-tf{background:#f8d7da;color:#721c24;border-color:#dc3545}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) { c.style.opacity = '0'; setTimeout(() => c.style.display = 'none', 500); }
+  }, 2500);
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid error:', e); }
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero title char by char
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        const text = heroTitle.textContent;
+        heroTitle.innerHTML = '';
+        text.split('').forEach((char, i) => {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = char === ' ' ? '\u00A0' : char;
+          heroTitle.appendChild(span);
+        });
+        gsap.from('.char', {
+          opacity: 0, y: 40, rotateX: -90, duration: 0.6,
+          stagger: 0.04, ease: 'back.out(1.7)', delay: 0.5
+        });
+      }
+
+      // Step items scroll animation
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.step-item').forEach((el, i) => {
+          gsap.from(el, {
+            opacity: 0, x: -40, duration: 0.6, delay: i * 0.1,
+            scrollTrigger: { trigger: el, start: 'top 85%' }
+          });
+        });
+
+        gsap.utils.toArray('.card').forEach((el, i) => {
+          gsap.from(el, {
+            opacity: 0, y: 30, duration: 0.5,
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          });
+        });
+
+        gsap.utils.toArray('.key-card').forEach((el, i) => {
+          gsap.from(el, {
+            opacity: 0, scale: 0.9, duration: 0.5, delay: i * 0.08,
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          });
+        });
+
+        gsap.utils.toArray('.paint-step').forEach((el, i) => {
+          gsap.from(el, {
+            opacity: 0, y: 20, duration: 0.4, delay: i * 0.06,
+            scrollTrigger: { trigger: el, start: 'top 90%' }
+          });
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP error:', e); }
+
+  // SCROLLSPY
+  const tocLinks = document.querySelectorAll('#toc a, #mobile-nav a');
+  const sections = ['hero','background-section','core-section','examples-section','practice-section','challenge-section','ms-paint-section','quiz-section'];
+
+  try {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  } catch(e) {}
+
+  // DRAG AND DROP
+  initDragDrop();
+
+  // Update quiz progress
+  updateQuizProgress();
+
+});
+
+// MATCH GAME
+let selectedTerm = null;
+let selectedDef = null;
+let matchedPairs = 0;
+
+document.querySelectorAll('.match-term').forEach(el => {
+  el.addEventListener('click', () => {
+    if (el.classList.contains('matched')) return;
+    document.querySelectorAll('.match-term').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedTerm = el;
+    if (selectedDef) checkMatch();
+  });
+});
+
+document.querySelectorAll('.match-def').forEach(el => {
+  el.addEventListener('click', () => {
+    if (el.classList.contains('matched')) return;
+    document.querySelectorAll('.match-def').forEach(d => d.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedDef = el;
+    if (selectedTerm) checkMatch();
+  });
+});
+
+function checkMatch() {
+  const fb = document.getElementById('match-feedback');
+  if (selectedTerm.dataset.id === selectedDef.dataset.id) {
+    selectedTerm.classList.add('matched');
+    selectedDef.classList.add('matched');
+    selectedTerm.classList.remove('selected');
+    selectedDef.classList.remove('selected');
+    matchedPairs++;
+    fb.className = 'match-feedback show';
+    fb.style.background = '#d4edda';
+    fb.style.color = '#155724';
+    fb.style.border = '1px solid #c3e6cb';
+    fb.textContent = matchedPairs === 4 ? '🎉 Excellent! All pairs matched correctly!' : '✅ Correct match! Keep going!';
+  } else {
+    selectedTerm.classList.add('wrong-match');
+    selectedDef.classList.add('wrong-match');
+    setTimeout(() => {
+      selectedTerm.classList.remove('wrong-match', 'selected');
+      selectedDef.classList.remove('wrong-match', 'selected');
+    }, 600);
+    fb.className = 'match-feedback show';
+    fb.style.background = '#f8d7da';
+    fb.style.color = '#721c24';
+    fb.style.border = '1px solid #f5c6cb';
+    fb.textContent = '❌ Not a match. Try again!';
+  }
+  selectedTerm = null;
+  selectedDef = null;
+}
+
+function resetMatch() {
+  matchedPairs = 0;
+  selectedTerm = null;
+  selectedDef = null;
+  document.querySelectorAll('.match-item').forEach(el => {
+    el.classList.remove('matched','selected','wrong-match');
+  });
+  const fb = document.getElementById('match-feedback');
+  fb.className = 'match-feedback';
+  fb.textContent = '';
+}
+
+// FILL IN BLANKS
+function checkBlanks() {
+  const inputs = document.querySelectorAll('.blank-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const userVal = inp.value.trim().toLowerCase();
+    const answer = inp.dataset.answer.toLowerCase();
+    if (userVal === answer) {
+      inp.style.borderBottomColor = '#28a745';
+      inp.style.background = '#d4edda';
+      correct++;
+    } else {
+      inp.style.borderBottomColor = '#dc3545';
+      inp.style.background = '#f8d7da';
+    }
+  });
+  const fb = document.getElementById('blanks-feedback');
+  fb.style.display = 'block';
+  if (correct === inputs.length) {
+    fb.style.background = '#d4edda';
+    fb.style.color = '#155724';
+    fb.style.border = '1px solid #c3e6cb';
+    fb.textContent = '🎉 Perfect! All ' + correct + ' answers are correct!';
+  } else {
+    fb.style.background = '#f8d7da';
+    fb.style.color = '#721c24';
+    fb.style.border = '1px solid #f5c6cb';
+    fb.textContent = correct + ' out of ' + inputs.length + ' correct. Check the highlighted boxes!';
+  }
+}
+
+function resetBlanks() {
+  document.querySelectorAll('.blank-input').forEach(inp => {
+    inp.value = '';
+    inp.style.borderBottomColor = 'var(--teal)';
+    inp.style.background = 'transparent';
+  });
+  const fb = document.getElementById('blanks-feedback');
+  fb.style.display = 'none';
+  fb.textContent = '';
+}
+
+// TRUE FALSE
+function tfAnswer(e, idx, answer) {
+  const row = document.querySelector(`[data-idx="${idx}"]`);
+  const correctAnswer = row.dataset.answer;
+  const expRow = document.getElementById('exp-' + idx);
+  const btns = row.querySelectorAll('.tf-btn');
+  btns.forEach(b => b.disabled = true);
+  if (answer === correctAnswer) {
+    e.target.classList.add('correct-tf');
+  } else {
+    e.target.classList.add('wrong-tf');
+    btns.forEach(b => { if (b.textContent.toLowerCase() === correctAnswer) b.classList.add('correct-tf'); });
+  }
+  if (expRow) expRow.classList.toggle('open');
+}
+
+// HINT PANEL
+function toggleHint(btn) {
+  const content = btn.nextElementSibling;
+  content.classList.toggle('open');
+  btn.textContent = content.classList.contains('open') ? '🙈 Hide Hint' : '💡 Show Hint for Writing Algorithms';
+}
+
+// TASK TOGGLE
+function toggleTask(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// DRAG AND DROP
+let dragSource = null;
+
+function initDragDrop() {
+  const items = document.querySelectorAll('.drag-item');
+  const zones = document.querySelectorAll('.drop-zone');
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSource = item;
+      e.dataTransfer.setData('text/plain', item.id);
+      setTimeout(() => item.style.opacity = '0.4', 0);
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+
+    // Touch support
+    item.addEventListener('touchstart', touchStart, { passive: true });
+    item.addEventListener('touchmove', touchMove, { passive: false });
+    item.addEventListener('touchend', touchEnd);
+  });
+
+  zones.forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain');
+      const el = document.getElementById(id);
+      if (el) {
+        const tag = document.createElement('div');
+        tag.className = 'dropped-tag';
+        tag.textContent = el.textContent;
+        tag.dataset.category = el.dataset.category;
+        tag.dataset.zoneId = zone.id;
+        tag.title = 'Click to remove';
+        tag.onclick = () => {
+          el.style.display = 'flex';
+          tag.remove();
+        };
+        zone.querySelector('.dropped-items').appendChild(tag);
+        el.style.display = 'none';
+      }
+    });
+  });
+}
+
+// Touch drag support
+let touchEl = null, touchClone = null;
+function touchStart(e) {
+  touchEl = e.currentTarget;
+  const rect = touchEl.getBoundingClientRect();
+  touchClone = touchEl.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;opacity:0.8;pointer-events:none;z-index:9999;width:${rect.width}px;top:${rect.top}px;left:${rect.left}px;`;
+  document.body.appendChild(touchClone);
+}
+function touchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const t = e.touches[0];
+  touchClone.style.top = (t.clientY - 24) + 'px';
+  touchClone.style.left = (t.clientX - 60) + 'px';
+}
+function touchEnd(e) {
+  if (!touchClone || !touchEl) return;
+  const t = e.changedTouches[0];
+  touchClone.remove();
+  touchClone = null;
+  const dropTarget = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = dropTarget ? dropTarget.closest('.drop-zone') : null;
+  if (zone) {
+    const tag = document.createElement('div');
+    tag.className = 'dropped-tag';
+    tag.textContent = touchEl.textContent;
+    tag.dataset.category = touchEl.dataset.category;
+    tag.dataset.zoneId = zone.id;
+    tag.title = 'Click to remove';
+    tag.onclick = () => { touchEl.style.display = 'flex'; tag.remove(); };
+    zone.querySelector('.dropped-items').appendChild(tag);
+    touchEl.style.display = 'none';
+  }
+  touchEl = null;
+}
+
+function checkDrag() {
+  const fb = document.getElementById('drag-feedback');
+  const allDropped = document.querySelectorAll('.dropped-tag');
+  if (allDropped.length === 0) {
+    fb.className = 'drag-feedback show wrong';
+    fb.textContent = '⚠️ Please drag some items into the categories first!';
+    return;
+  }
+  let correct = 0, total = allDropped.length;
+  allDropped.forEach(tag => {
+    const correctCategory = tag.dataset.category;
+    const zoneId = tag.dataset.zoneId;
+    if ((correctCategory === 'real' && zoneId === 'zone-real') || (correctCategory === 'computer' && zoneId === 'zone-computer')) {
+      correct++;
+    }
+  });
+  fb.className = 'drag-feedback show ' + (correct === total ? 'correct' : 'wrong');
+  fb.textContent = correct === total ? '🎉 Perfect! All items are in the correct category!' : `${correct}/${total} correct. Some items might be in the wrong category. Try again!`;
+}
+
+function resetDrag() {
+  document.querySelectorAll('.drop-zone .dropped-items').forEach(di => di.innerHTML = '');
+  document.querySelectorAll('.drag-item').forEach(item => item.style.display = 'flex');
+  const fb = document.getElementById('drag-feedback');
+  fb.className = 'drag-feedback';
+  fb.textContent = '';
+}
+
+// QUIZ
+const quizAnswers = {
+  1: 'b', 2: 'c', 3: 'b', 4: 'c', 5: 'b',
+  6: 'b', 7: 'c', 8: 'b', 9: 'c'
+};
+const quizSelected = {};
+const quizAnsweredQ10 = { done: false, correct: false };
+
+function selectOpt(btn, qNum, opt) {
+  if (quizSelected[qNum]) return;
+  const allOpts = document.querySelectorAll(`#qq${qNum} .quiz-opt`);
+  const correct = quizAnswers[qNum];
+  allOpts.forEach(b => b.disabled = true);
+  const fb = document.getElementById('qf' + qNum);
+  fb.className = 'quiz-feedback show';
+  if (opt === correct) {
+    btn.classList.add('correct');
+    quizSelected[qNum] = true;
+    fb.className += ' ok';
+    fb.textContent = '✅ Correct! Well done!';
+  } else {
+    btn.classList.add('wrong');
+    allOpts.forEach(b => { if (b.textContent.toLowerCase().startsWith(correct)) b.classList.add('correct'); });
+    quizSelected[qNum] = false;
+    fb.className += ' no';
+    fb.textContent = '❌ Not quite. The correct answer is option ' + correct.toUpperCase() + '.';
+  }
+  updateQuizProgress();
+}
+
+function checkNumerical() {
+  if (quizAnsweredQ10.done) return;
+  const val = parseInt(document.getElementById('q10-input').value);
+  const fb = document.getElementById('qf10');
+  fb.className = 'quiz-feedback show';
+  quizAnsweredQ10.done = true;
+  if (val === 6) {
+    fb.className += ' ok';
+    fb.textContent = '✅ Correct! There are 6 steps in the Making a Cup of Tea algorithm.';
+    quizAnsweredQ10.correct = true;
+  } else {
+    fb.className += ' no';
+    fb.textContent = '❌ Not quite! There are 6 steps: Boil, Tea bag, Pour, Steep, Add sugar/milk, Stir & enjoy.';
+    quizAnsweredQ10.correct = false;
+  }
+  updateQuizProgress();
+}
+
+function updateQuizProgress() {
+  const answered = Object.keys(quizSelected).length + (quizAnsweredQ10.done ? 1 : 0);
+  const pct = (answered / 10) * 100;
+  const fill = document.getElementById('quiz-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+function submitQuiz() {
+  let score = 0;
+  for (let i = 1; i <= 9; i++) {
+    if (quizSelected[i] === true) score++;
+  }
+  if (quizAnsweredQ10.correct) score++;
+
+  const scoreEl = document.getElementById('quiz-score');
+  scoreEl.className = 'quiz-score show';
+  let emoji = score >= 8 ? '🏆' : score >= 6 ? '😊' : score >= 4 ? '👍' : '📚';
+  let msg = score >= 8 ? 'Outstanding!' : score >= 6 ? 'Good job!' : score >= 4 ? 'Keep practising!' : 'Review the lesson and try again!';
+  scoreEl.innerHTML = `${emoji} Your Score: ${score}/10<br><span style="font-size:1.2rem;color:var(--slate)">${msg}</span>`;
+
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(scoreEl, { scale: 0.5, opacity: 0, duration: 0.8, ease: 'back.out(1.7)' });
+    }
+  } catch(e) {}
+}
+
+</script>
+</body>
+</html>

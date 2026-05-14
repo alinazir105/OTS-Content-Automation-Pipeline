@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6: Crafting Professional Presentations in MS PowerPoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #22A6B3;
+    --indigo: #4834D4;
+    --warm-white: #FEFEFE;
+    --slate: #636E72;
+    --orange: #E17055;
+    --green: #00B894;
+    --yellow: #FDCB6E;
+    --light-bg: #F0F4F8;
+    --card-bg: #FFFFFF;
+    --border: #DFE6E9;
+  }
+  html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(17px, 2.5vw, 18px);
+    background: var(--light-bg);
+    color: #2D3436;
+    line-height: 1.7;
+  }
+  h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; line-height: 1.2; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+  h2 { font-size: clamp(2rem, 4vw, 3rem); }
+  h3 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); }
+  h4 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+
+  /* CURTAIN */
+  #curtain {
+    position: fixed; inset: 0; background: var(--indigo); z-index: 9999;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;
+  }
+  #curtain .curtain-logo { font-family: 'Poppins', sans-serif; font-size: 2rem; color: #fff; font-weight: 800; }
+  #curtain .curtain-sub { color: rgba(255,255,255,0.7); font-size: 1.1rem; }
+  .curtain-spinner {
+    width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LAYOUT */
+  .page-wrapper { width: 100%; display: flex; }
+  .sidebar {
+    width: 260px; min-width: 260px; position: sticky; top: 0; height: 100vh;
+    background: #fff; border-right: 1px solid var(--border); padding: 30px 0;
+    overflow-y: auto; z-index: 100; flex-shrink: 0;
+  }
+  .sidebar-logo {
+    padding: 0 24px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
+  }
+  .sidebar-logo span { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--indigo); }
+  .sidebar-logo small { display: block; color: var(--slate); font-size: 0.82rem; }
+  .toc-list { list-style: none; padding: 0 16px; }
+  .toc-list li { margin-bottom: 4px; }
+  .toc-list a {
+    display: block; padding: 10px 14px; border-radius: 10px; color: var(--slate);
+    text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    transition: all 0.2s; border-left: 3px solid transparent;
+  }
+  .toc-list a:hover, .toc-list a.active {
+    background: linear-gradient(135deg, rgba(34,166,179,0.1), rgba(72,52,212,0.1));
+    color: var(--indigo); border-left-color: var(--teal);
+  }
+  .main-content { flex: 1; min-width: 0; padding-bottom: 100px; }
+  .content-inner { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  .hero {
+    width: 100%; background: linear-gradient(135deg, var(--indigo) 0%, var(--teal) 100%);
+    padding: 80px 40px; position: relative; overflow: hidden; min-height: 70vh;
+    display: flex; align-items: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-inner { max-width: 1500px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,0.2); color: #fff;
+    padding: 6px 18px; border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+    margin-bottom: 20px; letter-spacing: 1px;
+  }
+  .hero h1 { color: #fff; margin-bottom: 20px; }
+  .hero-char { display: inline-block; }
+  .hero-desc { color: rgba(255,255,255,0.85); font-size: clamp(1rem, 2vw, 1.2rem); max-width: 700px; margin-bottom: 32px; }
+  .hero-objectives {
+    display: flex; flex-wrap: wrap; gap: 14px;
+  }
+  .obj-chip {
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 12px;
+    padding: 10px 18px; color: #fff; font-size: 0.88rem; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .obj-chip span { font-size: 1.2rem; }
+
+  /* SECTIONS */
+  .section { padding: 70px 0; }
+  .section:nth-child(even) { background: #fff; }
+  .section-header { margin-bottom: 40px; }
+  .section-tag {
+    display: inline-block; background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: #fff; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 50px; margin-bottom: 12px;
+  }
+  .section-header h2 { color: #2D3436; margin-bottom: 12px; }
+  .section-header p { color: var(--slate); font-size: 1.05rem; max-width: 700px; }
+
+  /* DISCOVERY ZONE */
+  .discovery-zone {
+    border: 2px dashed var(--teal); border-radius: 16px; padding: 30px;
+    background: rgba(34,166,179,0.04); position: relative; margin: 30px 0;
+    opacity: 1; transform: none;
+  }
+  .discovery-zone::before {
+    content: '🔍'; position: absolute; top: -16px; left: 24px;
+    background: #fff; padding: 4px 8px; font-size: 1.4rem; line-height: 1;
+    border-radius: 50%;
+  }
+  .discovery-zone h4 { color: var(--teal); margin-bottom: 10px; }
+
+  /* CARDS */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--card-bg); border-radius: 18px; padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07); border: 1px solid var(--border);
+    opacity: 1; transform: none; width: 100%; max-width: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+  .card-icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .card h4 { margin-bottom: 10px; color: #2D3436; }
+  .card p { color: var(--slate); font-size: 1rem; }
+
+  /* STEPS */
+  .steps-container { display: flex; flex-direction: column; gap: 20px; }
+  .step {
+    display: flex; gap: 20px; align-items: flex-start;
+    background: #fff; border-radius: 16px; padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border);
+    opacity: 1; transform: none;
+  }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.2rem; color: #fff;
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+  }
+  .step-content h4 { margin-bottom: 6px; color: #2D3436; }
+  .step-content p { color: var(--slate); font-size: 1rem; }
+  .step-sub { margin-top: 8px; }
+  .step-sub li { color: var(--slate); font-size: 0.95rem; margin-left: 18px; }
+
+  /* FORMULA CALLOUT */
+  .formula-callout {
+    background: #1E272E; border-radius: 14px; padding: 24px 28px; margin: 24px 0;
+    border-left: 4px solid var(--teal);
+  }
+  .formula-callout .fc-label { color: var(--teal); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .formula-callout code { font-family: 'Courier New', monospace; color: #A8D8A8; font-size: 1rem; line-height: 1.8; display: block; }
+  .formula-callout .fc-note { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; }
+
+  /* DID YOU KNOW - FLIP CARDS */
+  .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .flip-card { perspective: 1000px; height: 200px; cursor: pointer; }
+  .flip-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; transition: transform 0.6s;
+  }
+  .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+    flex-direction: column; gap: 10px; text-align: center;
+  }
+  .flip-front {
+    background: linear-gradient(135deg, var(--indigo), var(--teal));
+    color: #fff;
+  }
+  .flip-front h4 { color: #fff; }
+  .flip-front .flip-icon { font-size: 2.5rem; }
+  .flip-front .flip-hint { font-size: 0.85rem; opacity: 0.8; }
+  .flip-back {
+    background: #fff; border: 2px solid var(--teal); transform: rotateY(180deg);
+    color: #2D3436;
+  }
+  .flip-back p { color: var(--slate); font-size: 0.95rem; }
+
+  /* DATA TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  thead th {
+    background: linear-gradient(135deg, var(--indigo), var(--teal)); color: #fff;
+    padding: 16px 18px; text-align: left; font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer; user-select: none;
+  }
+  thead th:hover { background: linear-gradient(135deg, #3a2ab0, #1d8f9a); }
+  tbody tr { transition: background 0.2s; cursor: pointer; }
+  tbody tr:nth-child(even) { background: #F7FAFC; }
+  tbody tr:hover { background: rgba(34,166,179,0.08); }
+  tbody td { padding: 14px 18px; font-size: 1rem; border-bottom: 1px solid var(--border); color: #2D3436; }
+  .expanded-row td { background: rgba(72,52,212,0.04); }
+  .row-detail { display: none; background: rgba(72,52,212,0.03); }
+  .row-detail.open { display: table-row; }
+  .row-detail td { padding: 16px 20px; color: var(--slate); font-size: 0.95rem; }
+
+  /* DRAG DROP */
+  .dragdrop-area { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+  .drag-items { flex: 1; min-width: 220px; }
+  .drag-items h4 { margin-bottom: 12px; color: var(--slate); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .draggable-item {
+    background: linear-gradient(135deg, var(--indigo), var(--teal)); color: #fff;
+    padding: 12px 18px; border-radius: 10px; margin-bottom: 10px; cursor: grab;
+    font-size: 0.95rem; font-weight: 600; user-select: none;
+    box-shadow: 0 3px 10px rgba(72,52,212,0.3); transition: transform 0.2s;
+  }
+  .draggable-item:hover { transform: scale(1.02); }
+  .draggable-item.dragging { opacity: 0.5; cursor: grabbing; }
+  .drop-zones { display: flex; flex-wrap: wrap; gap: 16px; flex: 2; min-width: 300px; }
+  .drop-zone {
+    flex: 1; min-width: 180px; min-height: 160px; border: 2px dashed var(--border);
+    border-radius: 14px; padding: 16px; background: #F8FAFC; transition: all 0.2s;
+  }
+  .drop-zone.drag-over { border-color: var(--teal); background: rgba(34,166,179,0.08); }
+  .drop-zone h5 { font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: var(--indigo); margin-bottom: 10px; }
+  .dropped-item {
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; margin-bottom: 8px; font-size: 0.9rem; color: #2D3436;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .dropped-item button {
+    background: none; border: none; color: var(--orange); cursor: pointer; font-size: 1rem; padding: 0;
+  }
+  #dd-feedback { margin-top: 16px; padding: 14px 18px; border-radius: 12px; font-weight: 600; display: none; }
+  .dd-correct { background: rgba(0,184,148,0.1); color: var(--green); border: 1px solid var(--green); }
+  .dd-wrong { background: rgba(225,112,85,0.1); color: var(--orange); border: 1px solid var(--orange); }
+
+  /* COLLAPSIBLE HINTS */
+  .hint-panel { margin: 16px 0; }
+  .hint-toggle {
+    background: linear-gradient(135deg, rgba(34,166,179,0.1), rgba(72,52,212,0.1));
+    border: 1px solid var(--teal); border-radius: 12px; padding: 14px 20px;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; color: var(--teal); font-size: 1rem; width: 100%;
+    transition: all 0.2s;
+  }
+  .hint-toggle:hover { background: linear-gradient(135deg, rgba(34,166,179,0.18), rgba(72,52,212,0.18)); }
+  .hint-arrow { transition: transform 0.3s; font-size: 1.2rem; }
+  .hint-toggle.open .hint-arrow { transform: rotate(180deg); }
+  .hint-body {
+    background: #fff; border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 12px 12px; padding: 20px; display: none;
+    color: var(--slate); font-size: 1rem;
+  }
+  .hint-body.open { display: block; }
+
+  /* QUIZ */
+  .quiz-wrapper { max-width: 100%; }
+  .quiz-progress-bar { background: var(--border); border-radius: 50px; height: 8px; margin-bottom: 30px; }
+  .quiz-progress-fill {
+    background: linear-gradient(135deg, var(--teal), var(--indigo));
+    height: 100%; border-radius: 50px; transition: width 0.4s;
+  }
+  .quiz-question-card {
+    background: #fff; border-radius: 18px; padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07); margin-bottom: 24px; display: none;
+  }
+  .quiz-question-card.active { display: block; }
+  .q-num { font-size: 0.8rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .q-text { font-size: 1.1rem; font-weight: 600; color: #2D3436; margin-bottom: 22px; }
+  .q-options { display: flex; flex-direction: column; gap: 12px; }
+  .q-option {
+    background: var(--light-bg); border: 2px solid var(--border); border-radius: 12px;
+    padding: 14px 20px; cursor: pointer; font-size: 1rem; font-weight: 500; color: #2D3436;
+    transition: all 0.2s; text-align: left; min-height: 52px;
+  }
+  .q-option:hover { border-color: var(--teal); background: rgba(34,166,179,0.06); }
+  .q-option.correct { background: rgba(0,184,148,0.1); border-color: var(--green); color: var(--green); }
+  .q-option.wrong { background: rgba(225,112,85,0.1); border-color: var(--orange); color: var(--orange); }
+  .q-option.disabled { pointer-events: none; }
+  .q-num-input {
+    width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px;
+    font-size: 1rem; font-family: 'Inter', sans-serif; outline: none; transition: border 0.2s;
+  }
+  .q-num-input:focus { border-color: var(--teal); }
+  .q-submit-btn {
+    margin-top: 16px; padding: 14px 32px; background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .q-submit-btn:hover { opacity: 0.9; }
+  .q-feedback { margin-top: 16px; padding: 12px 18px; border-radius: 10px; font-weight: 600; display: none; }
+  .q-next-btn {
+    margin-top: 14px; padding: 12px 28px; background: var(--indigo); color: #fff;
+    border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; display: none;
+  }
+  .quiz-result {
+    background: #fff; border-radius: 18px; padding: 40px; text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07); display: none;
+  }
+  .result-score { font-size: 4rem; font-weight: 800; font-family: 'Poppins', sans-serif; color: var(--indigo); }
+  .result-msg { font-size: 1.2rem; color: var(--slate); margin-top: 10px; }
+  .quiz-restart-btn {
+    margin-top: 24px; padding: 14px 36px; background: linear-gradient(135deg, var(--teal), var(--indigo));
+    color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ANIMATED SVG / MERMAID */
+  .mermaid-wrap { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin: 24px 0; overflow-x: auto; }
+  .mermaid { font-size: 0.9rem; }
+
+  /* DESIGN PRINCIPLES */
+  .principles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px; }
+  .principle-card {
+    background: #fff; border-radius: 18px; padding: 28px; border-left: 5px solid var(--teal);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.07); opacity: 1; transform: none;
+    transition: transform 0.2s;
+  }
+  .principle-card:nth-child(2) { border-left-color: var(--indigo); }
+  .principle-card:nth-child(3) { border-left-color: var(--orange); }
+  .principle-card:hover { transform: translateY(-4px); }
+  .principle-icon { font-size: 2.5rem; margin-bottom: 14px; }
+  .principle-card h4 { margin-bottom: 8px; color: #2D3436; }
+  .principle-card p { color: var(--slate); font-size: 1rem; }
+
+  /* LAB ACTIVITIES */
+  .lab-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .lab-card {
+    background: #fff; border-radius: 18px; padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07); border-top: 5px solid var(--teal);
+    opacity: 1; transform: none; width: 100%; max-width: 100%;
+  }
+  .lab-card:nth-child(2) { border-top-color: var(--indigo); }
+  .lab-card:nth-child(3) { border-top-color: var(--orange); }
+  .lab-card:nth-child(4) { border-top-color: var(--green); }
+  .lab-card:nth-child(5) { border-top-color: var(--yellow); }
+  .lab-num { font-size: 0.75rem; font-weight: 800; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .lab-card h4 { margin-bottom: 8px; }
+  .lab-card .obj-label { font-weight: 700; color: var(--indigo); font-size: 0.9rem; margin-top: 12px; margin-bottom: 4px; }
+  .lab-card p, .lab-card li { color: var(--slate); font-size: 1rem; }
+  .lab-card ol, .lab-card ul { margin-left: 20px; margin-top: 8px; }
+  .lab-card li { margin-bottom: 6px; }
+
+  /* KNOW THIS BOX */
+  .know-this {
+    background: linear-gradient(135deg, rgba(72,52,212,0.06), rgba(34,166,179,0.06));
+    border: 2px solid var(--indigo); border-radius: 16px; padding: 26px 30px; margin: 30px 0;
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+  .know-this .kt-icon { font-size: 2rem; flex-shrink: 0; }
+  .know-this h4 { color: var(--indigo); margin-bottom: 8px; }
+  .know-this p { color: var(--slate); font-size: 1rem; }
+
+  /* COMPARISON VISUAL */
+  .comparison-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0;
+  }
+  .comp-side { border-radius: 14px; padding: 22px; }
+  .comp-bad { background: rgba(225,112,85,0.08); border: 2px solid var(--orange); }
+  .comp-good { background: rgba(0,184,148,0.08); border: 2px solid var(--green); }
+  .comp-side h5 { font-family: 'Poppins', sans-serif; font-size: 1rem; margin-bottom: 12px; }
+  .comp-bad h5 { color: var(--orange); }
+  .comp-good h5 { color: var(--green); }
+  .comp-side p { color: var(--slate); font-size: 0.95rem; }
+
+  /* CANVAS CHART */
+  .chart-container { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin: 24px 0; }
+  .chart-container h4 { margin-bottom: 16px; color: #2D3436; }
+  canvas.bar-chart { width: 100%; max-height: 280px; display: block; }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-bottom-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 1px solid var(--border); z-index: 500;
+    overflow-x: auto; padding: 0; white-space: nowrap;
+  }
+  .mobile-bottom-nav a {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 10px 16px; color: var(--slate); text-decoration: none;
+    font-size: 0.75rem; font-weight: 600; min-height: 60px; justify-content: center;
+    transition: color 0.2s;
+  }
+  .mobile-bottom-nav a:hover { color: var(--teal); }
+  .mobile-bottom-nav a .nav-icon { font-size: 1.3rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  .animate-in { animation: fadeUp 0.5s ease forwards; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .sidebar { width: 220px; min-width: 220px; }
+    .content-inner { padding: 0 24px; }
+  }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .mobile-bottom-nav { display: flex; }
+    .main-content { padding-bottom: 80px; }
+    .content-inner { padding: 0 16px; }
+    .hero { padding: 50px 20px; min-height: 60vh; }
+    .section { padding: 50px 0; }
+    .cards-grid, .flip-grid, .principles-grid, .lab-cards { grid-template-columns: 1fr; }
+    .comparison-visual { grid-template-columns: 1fr; }
+    .dragdrop-area { flex-direction: column; }
+    .drop-zones { flex-direction: column; }
+    .step { flex-direction: column; }
+    .know-this { flex-direction: column; }
+    h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    h2 { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+  }
+  @media (max-width: 480px) {
+    .content-inner { padding: 0 12px; }
+    .hero { padding: 40px 16px; }
+    .quiz-question-card { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURTAIN -->
+<div id="curtain">
+  <div class="curtain-logo">Digital School</div>
+  <div class="curtain-sub">Unit 6 · MS PowerPoint</div>
+  <div class="curtain-spinner"></div>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrapper">
+  <!-- SIDEBAR TOC -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>Digital School</span>
+      <small>Class 5 · Computer · Unit 6</small>
+    </div>
+    <ul class="toc-list">
+      <li><a href="#intro" class="toc-link">🏠 Introduction</a></li>
+      <li><a href="#know-this" class="toc-link">💡 Know This</a></li>
+      <li><a href="#slide-master" class="toc-link">🎨 Slide Masters</a></li>
+      <li><a href="#sections" class="toc-link">📂 Sections</a></li>
+      <li><a href="#design-principles" class="toc-link">✏️ Design Principles</a></li>
+      <li><a href="#flowchart" class="toc-link">🗺️ Workflow</a></li>
+      <li><a href="#did-you-know" class="toc-link">🃏 Did You Know?</a></li>
+      <li><a href="#comparison" class="toc-link">🔍 Comparison</a></li>
+      <li><a href="#classify" class="toc-link">🎯 Classify</a></li>
+      <li><a href="#lab-activities" class="toc-link">🧪 Lab Activities</a></li>
+      <li><a href="#quiz" class="toc-link">📝 Quiz</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- HERO -->
+    <section class="hero" id="intro">
+      <div class="hero-inner">
+        <div class="hero-badge">UNIT 6</div>
+        <h1 id="hero-title">Crafting Professional Presentations in MS PowerPoint</h1>
+        <p class="hero-desc">In Grade 4, we learned the basics of creating and editing presentations. Now, we'll take it a step further by learning to design professional presentations with consistent layouts, clear structure, and thoughtful design choices. This will help you communicate your message effectively to any audience.</p>
+        <div class="hero-objectives">
+          <div class="obj-chip"><span>🎨</span> Develop consistent layouts using Slide Masters</div>
+          <div class="obj-chip"><span>📂</span> Organize slides efficiently with Sections</div>
+          <div class="obj-chip"><span>✏️</span> Apply basic design principles</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KNOW THIS -->
+    <section class="section" id="know-this">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Background</span>
+          <h2>Before We Begin</h2>
+        </div>
+        <div class="know-this">
+          <div class="kt-icon">💡</div>
+          <div>
+            <h4>Know This!</h4>
+            <p>PowerPoint 2016, 2019, 2021 and even Office 365 (now called Microsoft 365) share similar interface elements, but the design and functionality can vary slightly with newer updates. The steps in this unit work across all these versions.</p>
+          </div>
+        </div>
+
+        <div class="discovery-zone">
+          <h4>What You Already Know</h4>
+          <p>From Grade 4, you learned to create slides, add text and images, and run slideshows. This unit builds on those skills to create truly professional-looking presentations that impress any audience.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE MASTER -->
+    <section class="section" id="slide-master" style="background:#fff;">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Core Concept</span>
+          <h2>Using Slide Masters</h2>
+          <p>A Slide Master allows you to set up a uniform style for your entire presentation. Changes made to the Slide Master will automatically apply to every slide, helping keep a consistent look.</p>
+        </div>
+
+        <div class="cards-grid" style="margin-bottom:36px;">
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <h4>What is a Slide Master?</h4>
+            <p>A special "parent" slide that controls the fonts, colours, backgrounds, and layout for all slides in your presentation.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h4>Why Use It?</h4>
+            <p>Instead of formatting each slide individually, one change on the Slide Master updates every slide instantly — saving time and ensuring consistency.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏗️</div>
+            <h4>Custom Layouts</h4>
+            <p>You can also create custom slide layouts within the Slide Master for different sections of your presentation.</p>
+          </div>
+        </div>
+
+        <div class="formula-callout">
+          <div class="fc-label">Quick Path</div>
+          <code>View Tab → Slide Master → Edit → Close Master View</code>
+          <div class="fc-note">This is the fastest way to access and modify the Slide Master in PowerPoint.</div>
+        </div>
+
+        <h3 style="margin:32px 0 20px;">Steps to Use the Slide Master</h3>
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>Open the Slide Master</h4>
+              <p>Go to the <strong>View</strong> tab and click <strong>Slide Master</strong>. This view shows the master slide and all layouts underneath it.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>Edit the Slide Master</h4>
+              <p>Change fonts, colours, or backgrounds on the Slide Master and it will automatically apply to <em>all</em> slides.</p>
+              <ul class="step-sub">
+                <li>Click on any text to change the font family and size</li>
+                <li>Use the Background Styles button to set a theme colour</li>
+                <li>Add a logo that will appear on every slide</li>
+              </ul>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>Create Custom Layouts</h4>
+              <p>Add new layouts under the Slide Master if you want different styles for specific slides (e.g., a title slide layout vs. a content layout).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h4>Close the Slide Master</h4>
+              <p>Click the <strong>Close Master View</strong> button once you're done. All slides in your presentation will now follow the styles you set!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint-panel" style="margin-top:28px;">
+          <button class="hint-toggle" onclick="toggleHint(this)">
+            💡 Hint: What can you change in the Slide Master? <span class="hint-arrow">▼</span>
+          </button>
+          <div class="hint-body">
+            <ul style="margin-left:20px;">
+              <li>Background colour or image</li>
+              <li>Font family (e.g., Arial, Calibri, Poppins)</li>
+              <li>Font sizes for headings and body text</li>
+              <li>Slide number position and style</li>
+              <li>Logo or watermark position</li>
+              <li>Colour scheme (theme colours)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTIONS -->
+    <section class="section" id="sections">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Core Concept</span>
+          <h2>Organizing Slides with Sections</h2>
+          <p>In larger presentations, sections can help you manage and organize slides into logical parts — just like chapters in a book!</p>
+        </div>
+
+        <div class="cards-grid" style="margin-bottom:32px;">
+          <div class="card">
+            <div class="card-icon">📂</div>
+            <h4>Add a Section</h4>
+            <p>Right-click between slides in the left slide panel, then select <strong>Add Section</strong>. Give it a meaningful name like "Introduction" or "Conclusion."</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">✏️</div>
+            <h4>Manage Sections</h4>
+            <p>Right-click on a section name to rename, expand, or collapse it. You can also move entire sections to reorder your presentation.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🧭</div>
+            <h4>Benefits of Sections</h4>
+            <p>Sections make it much easier to navigate and keep track of slides, especially in long presentations with 20+ slides.</p>
+          </div>
+        </div>
+
+        <div class="formula-callout">
+          <div class="fc-label">How to Add a Section</div>
+          <code>Right-click between slides → Add Section → Type section name → Press Enter</code>
+          <div class="fc-note">Tip: Use names like "Introduction", "Main Content", "Body", "Conclusion"</div>
+        </div>
+
+        <div class="discovery-zone">
+          <h4>🔍 Why Sections Matter</h4>
+          <p>Imagine presenting a 30-slide project on "Climate Change." Without sections, finding "Slide 18 – Solutions" is tedious. With sections named "Causes", "Effects", and "Solutions", navigation is instant! You can even collapse sections you're not working on to reduce screen clutter.</p>
+        </div>
+
+        <div class="chart-container">
+          <h4>📊 Sections Make Presentations Easier to Manage</h4>
+          <canvas id="barChart" class="bar-chart" height="260"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN PRINCIPLES -->
+    <section class="section" id="design-principles" style="background:#fff;">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Design Knowledge</span>
+          <h2>Design Principles for Slides</h2>
+          <p>Creating a professional look is about more than just applying themes. Here are the key principles for designing great slides.</p>
+        </div>
+
+        <div class="principles-grid">
+          <div class="principle-card">
+            <div class="principle-icon">⬜</div>
+            <h4>1. Use of Whitespace</h4>
+            <p>Leave some empty spaces around your content. This helps make your slides look less cluttered and allows viewers to focus on what matters. Whitespace is not "wasted" space — it's breathing room for your ideas!</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-icon">🎨</div>
+            <h4>2. Colour and Contrast</h4>
+            <p>Choose colours that make text easy to read against the background. Use contrast to highlight key points. For example, dark text on a light background or white text on a dark background works best.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-icon">🔤</div>
+            <h4>3. Font Selection</h4>
+            <p>Choose simple, clean fonts like <strong>Arial</strong> or <strong>Calibri</strong> for readability. Avoid using too many font types or sizes in one presentation. Stick to 1–2 font families maximum.</p>
+          </div>
+        </div>
+
+        <div class="hint-panel" style="margin-top:28px;">
+          <button class="hint-toggle" onclick="toggleHint(this)">
+            🎨 Hint: The 3-Font Rule <span class="hint-arrow">▼</span>
+          </button>
+          <div class="hint-body">
+            <p>Professional designers follow the <strong>"3-Font Rule"</strong>: use a maximum of 3 different fonts in one presentation.</p>
+            <ul style="margin-left:20px; margin-top:10px;">
+              <li><strong>Font 1:</strong> For the main title (e.g., bold Poppins)</li>
+              <li><strong>Font 2:</strong> For slide headings (e.g., semi-bold Calibri)</li>
+              <li><strong>Font 3:</strong> For body text (e.g., regular Arial)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hint-panel">
+          <button class="hint-toggle" onclick="toggleHint(this)">
+            🌈 Hint: Colour Contrast Tips <span class="hint-arrow">▼</span>
+          </button>
+          <div class="hint-body">
+            <p>Good contrast combinations for slides:</p>
+            <ul style="margin-left:20px; margin-top:10px;">
+              <li>Dark navy background + white text ✅</li>
+              <li>White background + dark grey text ✅</li>
+              <li>Yellow background + yellow text ❌ (hard to read!)</li>
+              <li>Light grey background + white text ❌ (low contrast!)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLOWCHART -->
+    <section class="section" id="flowchart">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Workflow</span>
+          <h2>The Professional Presentation Workflow</h2>
+          <p>Follow these steps to build any professional presentation from scratch.</p>
+        </div>
+
+        <div class="mermaid-wrap">
+          <div class="mermaid">
+graph TD
+    A[🆕 Open PowerPoint] --> B[🎨 Open Slide Master View]
+    B --> C[Set Background, Fonts & Colours]
+    C --> D[Add Logo or Watermark]
+    D --> E[Close Master View]
+    E --> F[📝 Add Slide Content]
+    F --> G[📂 Create Sections]
+    G --> H[Name Sections: Introduction, Body, Conclusion]
+    H --> I[Apply Design Principles]
+    I --> J[✅ Review & Present]
+
+    style A fill:#4834D4,color:#fff,stroke:none
+    style J fill:#22A6B3,color:#fff,stroke:none
+    style B fill:#6c5ce7,color:#fff,stroke:none
+    style G fill:#00b894,color:#fff,stroke:none
+    style I fill:#e17055,color:#fff,stroke:none
+          </div>
+        </div>
+
+        <div class="mermaid-wrap">
+          <h4 style="margin-bottom:16px;">Slide Master Hierarchy</h4>
+          <div class="mermaid">
+graph TD
+    SM[🎨 Slide Master] --> TL[Title Slide Layout]
+    SM --> CL[Content Layout]
+    SM --> BL[Blank Layout]
+    SM --> IL[Image + Text Layout]
+    TL --> S1[Slide 1 - Title]
+    CL --> S2[Slide 2 - Body]
+    CL --> S3[Slide 3 - Body]
+    IL --> S4[Slide 4 - Image]
+    BL --> S5[Slide 5 - Custom]
+
+    style SM fill:#4834D4,color:#fff,stroke:none
+    style TL fill:#6c5ce7,color:#fff,stroke:none
+    style CL fill:#22A6B3,color:#fff,stroke:none
+    style BL fill:#636e72,color:#fff,stroke:none
+    style IL fill:#e17055,color:#fff,stroke:none
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DID YOU KNOW FLIP CARDS -->
+    <section class="section" id="did-you-know" style="background:#fff;">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Fun Facts</span>
+          <h2>Did You Know? 🃏</h2>
+          <p>Click each card to reveal a cool fact about PowerPoint and presentations!</p>
+        </div>
+        <div class="flip-grid">
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <div class="flip-icon">🎯</div>
+                <h4>PowerPoint was born when?</h4>
+                <div class="flip-hint">Click to find out!</div>
+              </div>
+              <div class="flip-back">
+                <p>PowerPoint was first released in <strong>1987</strong> — originally for Apple Mac computers! It was called "Presenter" before being renamed.</p>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <div class="flip-icon">📊</div>
+                <h4>How many slides per day?</h4>
+                <div class="flip-hint">Click to find out!</div>
+              </div>
+              <div class="flip-back">
+                <p>Over <strong>30 million</strong> PowerPoint presentations are made every single day around the world — that's 350 per second!</p>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <div class="flip-icon">🎨</div>
+                <h4>The Slide Master secret!</h4>
+                <div class="flip-hint">Click to find out!</div>
+              </div>
+              <div class="flip-back">
+                <p>A single change to the Slide Master can update <strong>hundreds of slides</strong> at once. Professional designers use this to rebrand entire decks in seconds!</p>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <div class="flip-icon">🔤</div>
+                <h4>Most used font?</h4>
+                <div class="flip-hint">Click to find out!</div>
+              </div>
+              <div class="flip-back">
+                <p><strong>Calibri</strong> became the default PowerPoint font in 2007 and is one of the most widely used fonts globally. Before that, it was Times New Roman!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="section" id="comparison">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Discovery Zone</span>
+          <h2>With vs Without Good Design</h2>
+          <p>See the difference good design principles make to a presentation slide.</p>
+        </div>
+        <div class="comparison-visual">
+          <div class="comp-side comp-bad">
+            <h5>❌ Poor Design</h5>
+            <p>• 8 different fonts used</p>
+            <p>• Yellow text on white background (no contrast!)</p>
+            <p>• Every inch crammed with text and images</p>
+            <p>• Inconsistent slide layouts throughout</p>
+            <p>• No whitespace — very cluttered</p>
+            <p>• No sections — hard to navigate</p>
+          </div>
+          <div class="comp-side comp-good">
+            <h5>✅ Professional Design</h5>
+            <p>• 1–2 clean fonts (Arial or Calibri)</p>
+            <p>• Dark text on light background (great contrast!)</p>
+            <p>• Generous whitespace around content</p>
+            <p>• Consistent layout from Slide Master</p>
+            <p>• Key points only — no text overload</p>
+            <p>• Sections named: Intro, Body, Conclusion</p>
+          </div>
+        </div>
+
+        <!-- Interactive Table -->
+        <h3 style="margin:40px 0 20px;">📋 PowerPoint Features Comparison</h3>
+        <div class="table-wrap">
+          <table id="feature-table">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">Feature ↕</th>
+                <th onclick="sortTable(1)">What It Does ↕</th>
+                <th onclick="sortTable(2)">Where to Find It ↕</th>
+                <th onclick="sortTable(3)">Benefit ↕</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="expandRow(this, 0)">
+                <td>Slide Master</td>
+                <td>Sets uniform style for all slides</td>
+                <td>View Tab → Slide Master</td>
+                <td>Consistent look</td>
+              </tr>
+              <tr class="row-detail" id="detail-0">
+                <td colspan="4">💡 <strong>More details:</strong> The Slide Master is the top slide in the master view. Any change here — fonts, colours, background — instantly applies to every slide in your presentation.</td>
+              </tr>
+              <tr onclick="expandRow(this, 1)">
+                <td>Sections</td>
+                <td>Groups slides into logical parts</td>
+                <td>Right-click in slide panel → Add Section</td>
+                <td>Easier navigation</td>
+              </tr>
+              <tr class="row-detail" id="detail-1">
+                <td colspan="4">💡 <strong>More details:</strong> Use sections to divide presentations into Introduction, Body, and Conclusion. You can collapse or expand sections and even move groups of slides at once.</td>
+              </tr>
+              <tr onclick="expandRow(this, 2)">
+                <td>Custom Layouts</td>
+                <td>Designs unique slide structures</td>
+                <td>Inside Slide Master View</td>
+                <td>Flexibility per slide</td>
+              </tr>
+              <tr class="row-detail" id="detail-2">
+                <td colspan="4">💡 <strong>More details:</strong> Custom layouts allow you to define different arrangements for different types of slides — for example, a "Two Column" layout or an "Image Only" layout.</td>
+              </tr>
+              <tr onclick="expandRow(this, 3)">
+                <td>Themes</td>
+                <td>Applies pre-made design styles</td>
+                <td>Design Tab → Themes</td>
+                <td>Quick professional look</td>
+              </tr>
+              <tr class="row-detail" id="detail-3">
+                <td colspan="4">💡 <strong>More details:</strong> Themes include coordinated colours, fonts, and backgrounds. You can apply a theme quickly and then further customize it through the Slide Master.</td>
+              </tr>
+              <tr onclick="expandRow(this, 4)">
+                <td>Background Styles</td>
+                <td>Changes slide background colour/image</td>
+                <td>Slide Master → Background Styles</td>
+                <td>Visual appeal</td>
+              </tr>
+              <tr class="row-detail" id="detail-4">
+                <td colspan="4">💡 <strong>More details:</strong> You can set a solid colour, gradient, picture, or texture as the background. A good background improves readability and aesthetics significantly.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--slate); font-size:0.9rem; margin-top:10px;">💡 Click on any row to see more details. Click column headers to sort!</p>
+      </div>
+    </section>
+
+    <!-- DRAG AND DROP -->
+    <section class="section" id="classify" style="background:#fff;">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Practice</span>
+          <h2>Classify These Features! 🎯</h2>
+          <p>Drag each PowerPoint feature to the correct category.</p>
+        </div>
+        <div class="dragdrop-area">
+          <div class="drag-items">
+            <h4>Features to Classify</h4>
+            <div id="drag-pool"></div>
+          </div>
+          <div class="drop-zones">
+            <div class="drop-zone" id="zone-design" data-zone="design" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
+              <h5>🎨 Design & Style</h5>
+              <div class="dropped-content"></div>
+            </div>
+            <div class="drop-zone" id="zone-organize" data-zone="organize" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
+              <h5>📂 Organization</h5>
+              <div class="dropped-content"></div>
+            </div>
+            <div class="drop-zone" id="zone-nav" data-zone="nav" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragleave="handleDragLeave(event)">
+              <h5>🧭 Navigation</h5>
+              <div class="dropped-content"></div>
+            </div>
+          </div>
+        </div>
+        <button onclick="checkDragDrop()" style="margin-top:20px; padding:14px 32px; background:linear-gradient(135deg,var(--teal),var(--indigo)); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;">Check Answers ✓</button>
+        <button onclick="resetDragDrop()" style="margin-top:20px; margin-left:12px; padding:14px 32px; background:var(--slate); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;">Reset 🔄</button>
+        <div id="dd-feedback"></div>
+      </div>
+    </section>
+
+    <!-- LAB ACTIVITIES -->
+    <section class="section" id="lab-activities">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Hands-On</span>
+          <h2>🧪 Lab Activities</h2>
+          <p>Complete these practical activities to master professional presentations in PowerPoint.</p>
+        </div>
+        <div class="lab-cards">
+          <div class="lab-card">
+            <div class="lab-num">Lab Activity 1</div>
+            <h4>First Professional Presentation</h4>
+            <div class="obj-label">Objective:</div>
+            <p>Practice all the skills from this chapter together.</p>
+            <div class="obj-label">Instructions:</div>
+            <ol>
+              <li>Create a new presentation with at least <strong>five slides</strong>.</li>
+              <li>Use the Slide Master to set a background and font style for the entire presentation.</li>
+              <li>Organize slides into two sections, naming them <strong>"Introduction"</strong> and <strong>"Main Content."</strong></li>
+              <li>Apply design principles learned in this chapter (whitespace, contrast, fonts).</li>
+            </ol>
+          </div>
+          <div class="lab-card">
+            <div class="lab-num">Lab Activity 2</div>
+            <h4>Consistent Slide Layout Using Slide Masters</h4>
+            <div class="obj-label">Objective:</div>
+            <p>To create a uniform look across slides.</p>
+            <div class="obj-label">Instructions:</div>
+            <ol>
+              <li>Open a new PowerPoint file and go to the <strong>Slide Master</strong> view.</li>
+              <li>Select a theme and customize by changing font style and background colour.</li>
+              <li>Add a logo or watermark to the Slide Master.</li>
+              <li>Close the view to apply changes to all slides.</li>
+              <li>Save the presentation and present your layout to the class.</li>
+            </ol>
+          </div>
+          <div class="lab-card">
+            <div class="lab-num">Lab Activity 3</div>
+            <h4>Organizing Slides into Sections</h4>
+            <div class="obj-label">Objective:</div>
+            <p>To learn how to manage and organize slides using sections.</p>
+            <div class="obj-label">Instructions:</div>
+            <ol>
+              <li>Create a presentation with at least <strong>ten slides</strong>.</li>
+              <li>Divide the slides into three sections: <strong>Introduction, Body, and Conclusion.</strong></li>
+              <li>Name each section accordingly.</li>
+              <li>Collapse and expand sections to see how organization improves slide navigation.</li>
+            </ol>
+          </div>
+          <div class="lab-card">
+            <div class="lab-num">Lab Activity 4</div>
+            <h4>Effective Colour and Font Choices</h4>
+            <div class="obj-label">Objective:</div>
+            <p>To understand the impact of design choices on readability and aesthetics.</p>
+            <div class="obj-label">Instructions:</div>
+            <ol>
+              <li>Create a slide with a <strong>title</strong>, a paragraph of text, and an <strong>image.</strong></li>
+              <li>Apply a colour scheme with good contrast between text and background.</li>
+              <li>Experiment with different fonts and sizes to find the most readable.</li>
+              <li>Present your slide and explain your design choices.</li>
+            </ol>
+          </div>
+          <div class="lab-card">
+            <div class="lab-num">Lab Activity 5</div>
+            <h4>Whitespace and Alignment</h4>
+            <div class="obj-label">Objective:</div>
+            <p>To learn how whitespace and alignment affect presentation design.</p>
+            <div class="obj-label">Instructions:</div>
+            <ol>
+              <li>Create <strong>two versions</strong> of a slide on any topic.</li>
+              <li>Version 1: Fill the slide with text and images without any spacing.</li>
+              <li>Version 2: Use whitespace effectively, align text and images properly, keep it uncluttered.</li>
+              <li>Present both versions to the class and discuss the impact of whitespace on readability.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="section" id="quiz" style="background:#fff;">
+      <div class="content-inner">
+        <div class="section-header">
+          <span class="section-tag">Assessment</span>
+          <h2>📝 Knowledge Quiz</h2>
+          <p>Test your understanding of Unit 6! 10 questions to prove your PowerPoint mastery.</p>
+        </div>
+
+        <div class="quiz-wrapper">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quizProgress" style="width:0%"></div>
+          </div>
+
+          <!-- Q1 -->
+          <div class="quiz-question-card active" data-q="0">
+            <div class="q-num">Question 1 of 10</div>
+            <div class="q-text">What is a Slide Master in PowerPoint?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,0,0)">A feature that lets you add music to slides</button>
+              <button class="q-option" onclick="answerMCQ(this,0,1)">A special slide that controls the uniform style for your entire presentation</button>
+              <button class="q-option" onclick="answerMCQ(this,0,2)">A tool for inserting tables into slides</button>
+              <button class="q-option" onclick="answerMCQ(this,0,3)">A way to add animation effects</button>
+            </div>
+            <div class="q-feedback" id="fb-0"></div>
+            <button class="q-next-btn" id="next-0" onclick="nextQuestion(1)">Next Question →</button>
+          </div>
+
+          <!-- Q2 -->
+          <div class="quiz-question-card" data-q="1">
+            <div class="q-num">Question 2 of 10</div>
+            <div class="q-text">Which tab do you click to open the Slide Master in PowerPoint?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,1,0)">Home</button>
+              <button class="q-option" onclick="answerMCQ(this,1,1)">Insert</button>
+              <button class="q-option" onclick="answerMCQ(this,1,2)">View</button>
+              <button class="q-option" onclick="answerMCQ(this,1,3)">Design</button>
+            </div>
+            <div class="q-feedback" id="fb-1"></div>
+            <button class="q-next-btn" id="next-1" onclick="nextQuestion(2)">Next Question →</button>
+          </div>
+
+          <!-- Q3 -->
+          <div class="quiz-question-card" data-q="2">
+            <div class="q-num">Question 3 of 10</div>
+            <div class="q-text">How do you add a Section to a PowerPoint presentation?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,2,0)">Go to Insert tab → Section</button>
+              <button class="q-option" onclick="answerMCQ(this,2,1)">Right-click between slides in the slide panel → Add Section</button>
+              <button class="q-option" onclick="answerMCQ(this,2,2)">Press Ctrl + S</button>
+              <button class="q-option" onclick="answerMCQ(this,2,3)">Go to View tab → Sections</button>
+            </div>
+            <div class="q-feedback" id="fb-2"></div>
+            <button class="q-next-btn" id="next-2" onclick="nextQuestion(3)">Next Question →</button>
+          </div>
+
+          <!-- Q4 -->
+          <div class="quiz-question-card" data-q="3">
+            <div class="q-num">Question 4 of 10</div>
+            <div class="q-text">Which of these fonts is recommended for readability in presentations?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,3,0)">Wingdings</button>
+              <button class="q-option" onclick="answerMCQ(this,3,1)">Arial</button>
+              <button class="q-option" onclick="answerMCQ(this,3,2)">Curlz MT</button>
+              <button class="q-option" onclick="answerMCQ(this,3,3)">Stencil</button>
+            </div>
+            <div class="q-feedback" id="fb-3"></div>
+            <button class="q-next-btn" id="next-3" onclick="nextQuestion(4)">Next Question →</button>
+          </div>
+
+          <!-- Q5 -->
+          <div class="quiz-question-card" data-q="4">
+            <div class="q-num">Question 5 of 10</div>
+            <div class="q-text">What does "whitespace" mean in slide design?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,4,0)">Using a white background colour</button>
+              <button class="q-option" onclick="answerMCQ(this,4,1)">Leaving empty spaces around content to reduce clutter</button>
+              <button class="q-option" onclick="answerMCQ(this,4,2)">Adding blank slides between sections</button>
+              <button class="q-option" onclick="answerMCQ(this,4,3)">Removing all images from a slide</button>
+            </div>
+            <div class="q-feedback" id="fb-4"></div>
+            <button class="q-next-btn" id="next-4" onclick="nextQuestion(5)">Next Question →</button>
+          </div>
+
+          <!-- Q6 -->
+          <div class="quiz-question-card" data-q="5">
+            <div class="q-num">Question 6 of 10</div>
+            <div class="q-text">What button do you click to exit the Slide Master and return to normal editing?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,5,0)">Save and Exit</button>
+              <button class="q-option" onclick="answerMCQ(this,5,1)">Close Presentation</button>
+              <button class="q-option" onclick="answerMCQ(this,5,2)">Close Master View</button>
+              <button class="q-option" onclick="answerMCQ(this,5,3)">Back to Normal</button>
+            </div>
+            <div class="q-feedback" id="fb-5"></div>
+            <button class="q-next-btn" id="next-5" onclick="nextQuestion(6)">Next Question →</button>
+          </div>
+
+          <!-- Q7 -->
+          <div class="quiz-question-card" data-q="6">
+            <div class="q-num">Question 7 of 10</div>
+            <div class="q-text">Which is an example of good colour contrast for a slide?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,6,0)">Yellow text on a white background</button>
+              <button class="q-option" onclick="answerMCQ(this,6,1)">Dark blue text on a dark background</button>
+              <button class="q-option" onclick="answerMCQ(this,6,2)">White text on a dark navy background</button>
+              <button class="q-option" onclick="answerMCQ(this,6,3)">Light grey text on a white background</button>
+            </div>
+            <div class="q-feedback" id="fb-6"></div>
+            <button class="q-next-btn" id="next-6" onclick="nextQuestion(7)">Next Question →</button>
+          </div>
+
+          <!-- Q8 -->
+          <div class="quiz-question-card" data-q="7">
+            <div class="q-num">Question 8 of 10</div>
+            <div class="q-text">Why are sections useful in a large PowerPoint presentation?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,7,0)">They make slides more colourful</button>
+              <button class="q-option" onclick="answerMCQ(this,7,1)">They help you navigate and organize slides into logical groups</button>
+              <button class="q-option" onclick="answerMCQ(this,7,2)">They automatically add animations</button>
+              <button class="q-option" onclick="answerMCQ(this,7,3)">They delete unwanted slides</button>
+            </div>
+            <div class="q-feedback" id="fb-7"></div>
+            <button class="q-next-btn" id="next-7" onclick="nextQuestion(8)">Next Question →</button>
+          </div>
+
+          <!-- Q9 -->
+          <div class="quiz-question-card" data-q="8">
+            <div class="q-num">Question 9 of 10</div>
+            <div class="q-text">If you change the font on the Slide Master, it changes the font on...</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,8,0)">Only the first slide</button>
+              <button class="q-option" onclick="answerMCQ(this,8,1)">Only the slides you select</button>
+              <button class="q-option" onclick="answerMCQ(this,8,2)">All slides in the presentation</button>
+              <button class="q-option" onclick="answerMCQ(this,8,3)">Only the last slide</button>
+            </div>
+            <div class="q-feedback" id="fb-8"></div>
+            <button class="q-next-btn" id="next-8" onclick="nextQuestion(9)">Next Question →</button>
+          </div>
+
+          <!-- Q10 -->
+          <div class="quiz-question-card" data-q="9">
+            <div class="q-num">Question 10 of 10</div>
+            <div class="q-text">In Lab Activity 3, how many sections were students asked to divide their presentation into?</div>
+            <div class="q-options">
+              <button class="q-option" onclick="answerMCQ(this,9,0)">2 sections</button>
+              <button class="q-option" onclick="answerMCQ(this,9,1)">4 sections</button>
+              <button class="q-option" onclick="answerMCQ(this,9,2)">3 sections</button>
+              <button class="q-option" onclick="answerMCQ(this,9,3)">5 sections</button>
+            </div>
+            <div class="q-feedback" id="fb-9"></div>
+            <button class="q-next-btn" id="next-9" onclick="showResult()">See Results 🎉</button>
+          </div>
+
+          <!-- RESULT -->
+          <div class="quiz-result" id="quizResult">
+            <div id="resultEmoji" style="font-size:4rem; margin-bottom:16px;"></div>
+            <div class="result-score" id="resultScore"></div>
+            <div class="result-msg" id="resultMsg"></div>
+            <button class="quiz-restart-btn" onclick="restartQuiz()">Try Again 🔄</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <a href="#intro"><span class="nav-icon">🏠</span>Intro</a>
+  <a href="#know-this"><span class="nav-icon">💡</span>Know</a>
+  <a href="#slide-master"><span class="nav-icon">🎨</span>Master</a>
+  <a href="#sections"><span class="nav-icon">📂</span>Sections</a>
+  <a href="#design-principles"><span class="nav-icon">✏️</span>Design</a>
+  <a href="#lab-activities"><span class="nav-icon">🧪</span>Labs</a>
+  <a href="#quiz"><span class="nav-icon">📝</span>Quiz</a>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // CURTAIN FALLBACK
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // LENIS SMOOTH SCROLL
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis failed:', e); }
+
+  // MERMAID
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid failed:', e); }
+
+  // GSAP ANIMATIONS
+  try {
+    if (typeof gsap !== 'undefined') {
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Hero title character animation
+      const titleEl = document.getElementById('hero-title');
+      if (titleEl) {
+        const text = titleEl.textContent;
+        titleEl.innerHTML = '';
+        text.split('').forEach((ch, i) => {
+          const span = document.createElement('span');
+          span.className = 'hero-char';
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          span.style.opacity = '1';
+          titleEl.appendChild(span);
+        });
+        gsap.from('.hero-char', {
+          opacity: 0, y: 30, stagger: 0.02, duration: 0.5, ease: 'power2.out', delay: 0.3
+        });
+      }
+
+      // Curtain dismiss
+      gsap.to('#curtain', {
+        opacity: 0, duration: 0.6, delay: 0.8, onComplete: () => {
+          const c = document.getElementById('curtain');
+          if (c) c.style.display = 'none';
+        }
+      });
+
+      // Scroll animations for cards and steps
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.utils.toArray('.card, .step, .principle-card, .lab-card, .flip-card').forEach(el => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+            y: 20, opacity: 0, duration: 0.5, ease: 'power2.out'
+          });
+        });
+
+        gsap.utils.toArray('.discovery-zone').forEach(el => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+            x: -20, opacity: 0, duration: 0.5
+          });
+        });
+      }
+    } else {
+      // Dismiss curtain without GSAP
+      const c = document.getElementById('curtain');
+      if (c) c.style.display = 'none';
+    }
+  } catch(e) {
+    console.warn('GSAP error:', e);
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // SCROLLSPY TOC
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove('active'));
+            const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { threshold: 0.3 });
+      sections.forEach(s => observer.observe(s));
+    }
+  } catch(e) {}
+
+  // BAR CHART CANVAS
+  try {
+    const canvas = document.getElementById('barChart');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      const data = [
+        { label: 'No Sections\n10 slides', value: 35, color: '#E17055' },
+        { label: 'With 2 Sections\n10 slides', value: 65, color: '#FDCB6E' },
+        { label: 'With 3 Sections\n20 slides', value: 88, color: '#00B894' },
+        { label: 'With 5 Sections\n30 slides', value: 97, color: '#22A6B3' },
+      ];
+      const labels = ['No Sections (10)', '2 Sections (10)', '3 Sections (20)', '5 Sections (30)'];
+      const colors = ['#E17055','#FDCB6E','#00B894','#22A6B3'];
+      const values = [35,65,88,97];
+      let animated = false;
+      let currentValues = [0,0,0,0];
+
+      function drawChart(progress) {
+        const w = canvas.parentElement.clientWidth - 48;
+        const h = 260;
+        canvas.width = w;
+        canvas.height = h;
+        ctx.clearRect(0,0,w,h);
+        const barW = (w - 80) / values.length - 16;
+        const maxH = h - 60;
+        values.forEach((v, i) => {
+          const barH = (v / 100) * maxH * progress;
+          const x = 40 + i * ((w - 80) / values.length);
+          const y = h - 40 - barH;
+          const grad = ctx.createLinearGradient(x, y, x, y + barH);
+          grad.addColorStop(0, colors[i]);
+          grad.addColorStop(1, colors[i] + '99');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.roundRect(x, y, barW, barH, 6);
+          ctx.fill();
+          ctx.fillStyle = '#2D3436';
+          ctx.font = '600 13px Inter';
+          ctx.textAlign = 'center';
+          ctx.fillText(Math.round(v * progress) + '%', x + barW/2, y - 8);
+          ctx.fillStyle = '#636E72';
+          ctx.font = '12px Inter';
+          const labelLines = labels[i].split(' ');
+          labelLines.forEach((line, li) => {
+            ctx.fillText(line, x + barW/2, h - 24 + li * 14);
+          });
+        });
+        ctx.fillStyle = '#636E72';
+        ctx.font = '12px Inter';
+        ctx.textAlign = 'left';
+        ctx.fillText('Navigation Ease (%)', 0, 16);
+      }
+
+      drawChart(1);
+      window.addEventListener('resize', () => drawChart(1));
+
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.create({
+          trigger: canvas,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            if (!animated) {
+              animated = true;
+              gsap.to({}, { duration: 1, onUpdate: function() { drawChart(this.progress()); }, ease: 'power2.out' });
+            }
+          }
+        });
+      }
+    }
+  } catch(e) { console.warn('Chart error:', e); }
+
+  // DRAG AND DROP SETUP
+  const ddItems = [
+    { id: 'dd1', text: 'Slide Master', zone: 'design' },
+    { id: 'dd2', text: 'Background Colour', zone: 'design' },
+    { id: 'dd3', text: 'Font Selection', zone: 'design' },
+    { id: 'dd4', text: 'Sections', zone: 'organize' },
+    { id: 'dd5', text: 'Naming Sections', zone: 'organize' },
+    { id: 'dd6', text: 'Custom Layouts', zone: 'organize' },
+    { id: 'dd7', text: 'Collapse/Expand', zone: 'nav' },
+    { id: 'dd8', text: 'Slide Panel', zone: 'nav' },
+    { id: 'dd9', text: 'Jump to Section', zone: 'nav' },
+  ];
+
+  function renderDragPool() {
+    const pool = document.getElementById('drag-pool');
+    if (!pool) return;
+    pool.innerHTML = '';
+    ddItems.filter(item => !item.placed).forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'draggable-item';
+      div.draggable = true;
+      div.id = item.id;
+      div.textContent = item.text;
+      div.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', item.id);
+        div.classList.add('dragging');
+      });
+      div.addEventListener('dragend', () => div.classList.remove('dragging'));
+      pool.appendChild(div);
+    });
+  }
+
+  window.handleDragOver = function(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+  };
+  window.handleDragLeave = function(e) {
+    e.currentTarget.classList.remove('drag-over');
+  };
+  window.handleDrop = function(e) {
+    e.preventDefault();
+    const zone = e.currentTarget;
+    zone.classList.remove('drag-over');
+    const id = e.dataTransfer.getData('text/plain');
+    const item = ddItems.find(i => i.id === id);
+    if (!item || item.placed) return;
+    item.placed = zone.dataset.zone;
+    const dropped = document.createElement('div');
+    dropped.className = 'dropped-item';
+    dropped.innerHTML = `<span>${item.text}</span><button onclick="removeDrop('${id}',this)">✕</button>`;
+    zone.querySelector('.dropped-content').appendChild(dropped);
+    renderDragPool();
+  };
+  window.removeDrop = function(id, btn) {
+    const item = ddItems.find(i => i.id === id);
+    if (item) item.placed = null;
+    btn.parentElement.remove();
+    renderDragPool();
+  };
+  window.checkDragDrop = function() {
+    const fb = document.getElementById('dd-feedback');
+    const placed = ddItems.filter(i => i.placed);
+    if (placed.length === 0) {
+      fb.textContent = '⚠️ Please drag some items to the zones first!';
+      fb.className = 'dd-wrong'; fb.style.display = 'block'; return;
+    }
+    const correct = placed.filter(i => i.placed === i.zone).length;
+    const total = placed.length;
+    if (correct === ddItems.length && placed.length === ddItems.length) {
+      fb.textContent = `🎉 Perfect! All ${ddItems.length} items correctly classified!`;
+      fb.className = 'dd-correct';
+    } else {
+      fb.textContent = `✅ ${correct} of ${total} placed items are correct. Keep trying!`;
+      fb.className = correct >= total * 0.6 ? 'dd-correct' : 'dd-wrong';
+    }
+    fb.style.display = 'block';
+  };
+  window.resetDragDrop = function() {
+    ddItems.forEach(i => i.placed = null);
+    document.querySelectorAll('.dropped-content').forEach(c => c.innerHTML = '');
+    document.getElementById('dd-feedback').style.display = 'none';
+    renderDragPool();
+  };
+  renderDragPool();
+
+  // QUIZ DATA
+  const correctAnswers = [1, 2, 1, 1, 1, 2, 2, 1, 2, 2];
+  const explanations = [
+    'A Slide Master controls the uniform style for the entire presentation.',
+    'The Slide Master is found under the View tab in PowerPoint.',
+    'You right-click between slides in the slide panel to add a section.',
+    'Arial and Calibri are recommended for their readability in presentations.',
+    'Whitespace means leaving empty space around content to reduce clutter.',
+    'You click "Close Master View" to exit the Slide Master.',
+    'White text on dark navy provides excellent contrast for readability.',
+    'Sections help organize slides into logical groups for easier navigation.',
+    'Changes to the Slide Master apply to ALL slides in the presentation.',
+    'Lab Activity 3 asks students to create 3 sections: Introduction, Body, Conclusion.',
+  ];
+  let quizScore = 0;
+  let quizCurrent = 0;
+
+  window.answerMCQ = function(btn, qIdx, optIdx) {
+    const card = btn.closest('.quiz-question-card');
+    const options = card.querySelectorAll('.q-option');
+    const fb = document.getElementById(`fb-${qIdx}`);
+    const nextBtn = document.getElementById(`next-${qIdx}`);
+    options.forEach(o => o.classList.add('disabled'));
+    if (optIdx === correctAnswers[qIdx]) {
+      btn.classList.add('correct');
+      fb.textContent = `✅ Correct! ${explanations[qIdx]}`;
+      fb.style.background = 'rgba(0,184,148,0.1)';
+      fb.style.color = '#00B894';
+      fb.style.border = '1px solid #00B894';
+      quizScore++;
+    } else {
+      btn.classList.add('wrong');
+      options[correctAnswers[qIdx]].classList.add('correct');
+      fb.textContent = `❌ Not quite. ${explanations[qIdx]}`;
+      fb.style.background = 'rgba(225,112,85,0.1)';
+      fb.style.color = '#E17055';
+      fb.style.border = '1px solid #E17055';
+    }
+    fb.style.display = 'block';
+    nextBtn.style.display = 'inline-block';
+    const progress = ((qIdx + 1) / 10) * 100;
+    document.getElementById('quizProgress').style.width = progress + '%';
+  };
+
+  window.nextQuestion = function(next) {
+    const cards = document.querySelectorAll('.quiz-question-card');
+    cards.forEach(c => c.classList.remove('active'));
+    if (cards[next]) cards[next].classList.add('active');
+    quizCurrent = next;
+  };
+
+  window.showResult = function() {
+    const cards = document.querySelectorAll('.quiz-question-card');
+    cards.forEach(c => c.classList.remove('active'));
+    document.getElementById('quizProgress').style.width = '100%';
+    const result = document.getElementById('quizResult');
+    result.style.display = 'block';
+    const score = document.getElementById('resultScore');
+    const msg = document.getElementById('resultMsg');
+    const emoji = document.getElementById('resultEmoji');
+    score.textContent = `${quizScore} / 10`;
+    if (quizScore >= 9) { emoji.textContent = '🏆'; msg.textContent = 'Outstanding! You\'re a PowerPoint professional!'; }
+    else if (quizScore >= 7) { emoji.textContent = '🌟'; msg.textContent = 'Great job! You really understand professional presentations!'; }
+    else if (quizScore >= 5) { emoji.textContent = '👍'; msg.textContent = 'Good effort! Review the Slide Master and Sections sections and try again.'; }
+    else { emoji.textContent = '📚'; msg.textContent = 'Keep studying! Re-read the unit carefully and try again.'; }
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from(result, { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  };
+
+  window.restartQuiz = function() {
+    quizScore = 0; quizCurrent = 0;
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizProgress').style.width = '0%';
+    const cards = document.querySelectorAll('.quiz-question-card');
+    cards.forEach((c, i) => {
+      c.classList.remove('active');
+      if (i === 0) c.classList.add('active');
+      c.querySelectorAll('.q-option').forEach(o => {
+        o.classList.remove('correct','wrong','disabled');
+      });
+      const fb = c.querySelector('.q-feedback');
+      if (fb) { fb.style.display = 'none'; fb.textContent = ''; }
+      const nb = c.querySelector('.q-next-btn');
+      if (nb) nb.style.display = 'none';
+    });
+  };
+});
+
+// HINT TOGGLE
+function toggleHint(btn) {
+  btn.classList.toggle('open');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// TABLE SORT
+function sortTable(colIdx) {
+  const table = document.getElementById('feature-table');
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr:not(.row-detail)'));
+  let asc = table.dataset.sort === String(colIdx) && table.dataset.dir === 'asc' ? false : true;
+  table.dataset.sort = colIdx;
+  table.dataset.dir = asc ? 'asc' : 'desc';
+  rows.sort((a, b) => {
+    const at = a.cells[colIdx]?.textContent.trim() || '';
+    const bt = b.cells[colIdx]?.textContent.trim() || '';
+    return asc ? at.localeCompare(bt) : bt.localeCompare(at);
+  });
+  rows.forEach((row, i) => {
+    const detail = document.getElementById(`detail-${row.dataset ? row.dataset.idx : i}`);
+    tbody.appendChild(row);
+  });
+}
+
+// TABLE ROW EXPAND
+function expandRow(row, idx) {
+  const detail = document.getElementById(`detail-${idx}`);
+  if (detail) {
+    detail.classList.toggle('open');
+    row.classList.toggle('expanded-row');
+  }
+}
+</script>
+</body>
+</html>

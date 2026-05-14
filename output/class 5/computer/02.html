@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- CLASS: 5 | SUBJECT: computer | VERSION: 1.0 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Introduction to Scratch | Class 5 Computer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:clamp(17px,2.5vw,19px);background:#FEFEFE;color:#2d3436;line-height:1.7}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.2}
+h1{font-size:clamp(2.5rem,6vw,4.5rem)}
+h2{font-size:clamp(2rem,4vw,3rem)}
+h3{font-size:clamp(1.4rem,2.5vw,1.8rem)}
+h4{font-size:clamp(1.1rem,2vw,1.4rem)}
+
+/* Curtain */
+#curtain{position:fixed;inset:0;background:#22A6B3;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .logo{font-family:'Poppins',sans-serif;font-size:2rem;color:#fff;font-weight:800}
+#curtain .spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Layout */
+.page-wrapper{width:100%;max-width:100%}
+.content-container{max-width:1500px;margin:0 auto;padding:0 40px}
+.layout-grid{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:start}
+
+/* Sticky TOC */
+#toc{position:sticky;top:100px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border-left:4px solid #22A6B3}
+#toc h4{font-family:'Poppins',sans-serif;color:#22A6B3;margin-bottom:16px;font-size:1rem;text-transform:uppercase;letter-spacing:1px}
+#toc ul{list-style:none}
+#toc ul li{margin-bottom:8px}
+#toc ul li a{text-decoration:none;color:#636E72;font-size:15px;font-weight:500;transition:color 0.2s,padding-left 0.2s;display:block;padding:4px 8px;border-radius:6px}
+#toc ul li a:hover,#toc ul li a.active{color:#22A6B3;background:#e8f8fa;padding-left:14px}
+
+/* Hero */
+.hero{width:100%;background:linear-gradient(135deg,#22A6B3 0%,#4834D4 100%);min-height:70vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:60px 0}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat}
+.hero-content{position:relative;z-index:2;max-width:1500px;margin:0 auto;padding:0 40px}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;padding:8px 20px;border-radius:50px;font-size:15px;font-weight:600;margin-bottom:24px;backdrop-filter:blur(10px)}
+.hero h1{color:#fff;margin-bottom:20px}
+.hero p{color:rgba(255,255,255,0.9);font-size:clamp(17px,2.5vw,21px);max-width:700px;margin-bottom:32px}
+.hero-objectives{display:flex;flex-wrap:wrap;gap:12px}
+.hero-obj{background:rgba(255,255,255,0.15);color:#fff;padding:10px 18px;border-radius:8px;font-size:15px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2)}
+
+/* Sections */
+.section{padding:80px 0;opacity:1;transform:none}
+.section-alt{background:#f8f9fa}
+.section-header{text-align:center;margin-bottom:60px}
+.section-header .badge{display:inline-block;background:#e8f8fa;color:#22A6B3;padding:6px 16px;border-radius:50px;font-size:14px;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.section-header h2{color:#2d3436;margin-bottom:16px}
+.section-header p{color:#636E72;font-size:clamp(17px,2.5vw,19px);max-width:700px;margin:0 auto}
+
+/* Cards */
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.07);width:100%;opacity:1;transform:none;transition:transform 0.3s,box-shadow 0.3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+
+/* Discovery Zone */
+.discovery-zone{border:2px dashed #22A6B3;border-radius:16px;padding:32px;background:#f0fbfc;position:relative}
+.discovery-zone::before{content:'🔍';position:absolute;top:-16px;left:24px;background:#f0fbfc;padding:0 8px;font-size:1.4rem}
+
+/* Interface Parts Grid */
+.parts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.part-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.07);border-top:4px solid var(--accent);opacity:1;transform:none}
+.part-card .icon{font-size:2.5rem;margin-bottom:16px}
+.part-card h4{font-family:'Poppins',sans-serif;color:#2d3436;margin-bottom:10px}
+.part-card p{color:#636E72;font-size:17px}
+
+/* Key Terms */
+.terms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.term-card{background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-left:4px solid #4834D4;opacity:1}
+.term-card .term{font-family:'Poppins',sans-serif;font-weight:700;color:#4834D4;font-size:1.1rem;margin-bottom:8px}
+.term-card p{color:#636E72;font-size:17px}
+
+/* Blocks Table */
+.table-wrap{overflow-x:auto;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.07)}
+table{width:100%;border-collapse:collapse;background:#fff;min-width:600px}
+thead{background:linear-gradient(135deg,#22A6B3,#4834D4)}
+thead th{color:#fff;padding:16px 20px;text-align:left;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600}
+tbody tr{transition:background 0.2s;cursor:pointer}
+tbody tr:nth-child(even){background:#f8f9fa}
+tbody tr:hover{background:#e8f8fa}
+tbody td{padding:14px 20px;font-size:17px;color:#2d3436;border-bottom:1px solid #eee}
+tbody tr.expanded-row{background:#e8f8fa}
+.row-detail{display:none;padding:12px 20px;background:#f0fbfc;font-size:16px;color:#636E72}
+.row-detail.show{display:table-row}
+
+/* Formula Callout */
+.formula-block{background:#1e272e;border-radius:12px;padding:24px 28px;margin:20px 0}
+.formula-block code{font-family:'Fira Code',monospace;color:#00d2d3;font-size:clamp(15px,2vw,17px);display:block;line-height:1.8;white-space:pre-wrap}
+.formula-block .label{color:#a29bfe;font-size:14px;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+
+/* Steps */
+.steps-container{display:flex;flex-direction:column;gap:20px}
+.step{display:flex;gap:20px;align-items:flex-start;background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);opacity:1}
+.step-num{min-width:44px;height:44px;background:linear-gradient(135deg,#22A6B3,#4834D4);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.step-content h4{font-family:'Poppins',sans-serif;color:#2d3436;margin-bottom:6px}
+.step-content p{color:#636E72;font-size:17px}
+
+/* Did You Know flip card */
+.flip-wrap{perspective:1000px;height:260px}
+.flip-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.8s}
+.flip-card.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:32px;text-align:center}
+.flip-front{background:linear-gradient(135deg,#4834D4,#22A6B3);color:#fff}
+.flip-front .flip-icon{font-size:3rem;margin-bottom:16px}
+.flip-front h3{color:#fff;font-size:1.4rem}
+.flip-back{background:#fff;border:2px solid #22A6B3;transform:rotateY(180deg)}
+.flip-back p{color:#2d3436;font-size:17px;line-height:1.7}
+.flip-back .flip-fact{font-size:3rem;margin-bottom:16px}
+
+/* Hint Panel */
+.hint-wrap{margin:16px 0}
+.hint-btn{background:none;border:2px solid #22A6B3;color:#22A6B3;padding:10px 20px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.2s;font-family:'Poppins',sans-serif}
+.hint-btn:hover{background:#22A6B3;color:#fff}
+.hint-content{display:none;background:#e8f8fa;border-left:4px solid #22A6B3;padding:16px 20px;border-radius:0 8px 8px 0;margin-top:8px;font-size:17px;color:#2d3436}
+.hint-content.open{display:block}
+
+/* Drag & Drop */
+.dnd-container{display:grid;grid-template-columns:1fr 2fr;gap:32px;align-items:start}
+.dnd-items{display:flex;flex-direction:column;gap:12px}
+.drag-item{background:#fff;border:2px solid #dfe6e9;border-radius:10px;padding:12px 18px;cursor:grab;font-size:17px;font-weight:500;transition:all 0.2s;user-select:none;display:flex;align-items:center;gap:10px}
+.drag-item:active{cursor:grabbing;transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.drag-item .di-icon{font-size:1.4rem}
+.dnd-categories{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.drop-zone{min-height:180px;border:2px dashed #b2bec3;border-radius:12px;padding:16px;transition:all 0.2s;background:#f8f9fa}
+.drop-zone.drag-over{border-color:#22A6B3;background:#e8f8fa}
+.drop-zone h4{font-family:'Poppins',sans-serif;color:#2d3436;margin-bottom:12px;font-size:1rem}
+.dropped-item{background:#22A6B3;color:#fff;border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:16px;display:flex;align-items:center;gap:8px}
+.dnd-result{margin-top:20px;padding:16px 20px;border-radius:10px;font-size:17px;display:none;font-weight:600}
+.dnd-result.correct{background:#d4edda;color:#155724;display:block}
+.dnd-result.partial{background:#fff3cd;color:#856404;display:block}
+.dnd-btn{background:linear-gradient(135deg,#22A6B3,#4834D4);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer;margin-top:16px;font-family:'Poppins',sans-serif;transition:opacity 0.2s}
+.dnd-btn:hover{opacity:0.9}
+
+/* Quiz */
+.quiz-container{max-width:900px;margin:0 auto}
+.quiz-progress{background:#eee;border-radius:50px;height:8px;margin-bottom:40px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:linear-gradient(90deg,#22A6B3,#4834D4);border-radius:50px;transition:width 0.4s ease}
+.quiz-question{background:#fff;border-radius:16px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,0.07);display:none}
+.quiz-question.active{display:block}
+.quiz-q-num{color:#22A6B3;font-size:15px;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.quiz-q-text{font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#2d3436;margin-bottom:28px;font-weight:600}
+.quiz-options{display:flex;flex-direction:column;gap:12px}
+.quiz-option{background:#f8f9fa;border:2px solid #dfe6e9;border-radius:10px;padding:14px 20px;cursor:pointer;font-size:17px;transition:all 0.2s;display:flex;align-items:center;gap:12px;min-height:52px}
+.quiz-option:hover:not(.disabled){background:#e8f8fa;border-color:#22A6B3}
+.quiz-option.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.quiz-option.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.quiz-option.disabled{cursor:default}
+.quiz-input{width:100%;padding:14px 18px;border:2px solid #dfe6e9;border-radius:10px;font-size:17px;font-family:'Inter',sans-serif;margin-bottom:16px;outline:none;transition:border 0.2s}
+.quiz-input:focus{border-color:#22A6B3}
+.quiz-input.correct-input{border-color:#28a745;background:#d4edda}
+.quiz-input.wrong-input{border-color:#dc3545;background:#f8d7da}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.quiz-feedback{padding:12px 18px;border-radius:8px;font-size:16px;margin-top:12px;font-weight:500;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#d4edda;color:#155724}
+.quiz-feedback.no{background:#f8d7da;color:#721c24}
+.quiz-btn{background:linear-gradient(135deg,#22A6B3,#4834D4);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity 0.2s;min-height:48px}
+.quiz-btn:hover{opacity:0.9}
+.quiz-btn:disabled{opacity:0.5;cursor:default}
+.quiz-score{text-align:center;padding:40px;display:none}
+.quiz-score h2{font-size:3rem;color:#4834D4;margin-bottom:16px}
+.quiz-score p{font-size:1.2rem;color:#636E72;margin-bottom:24px}
+.score-badge{display:inline-block;background:linear-gradient(135deg,#22A6B3,#4834D4);color:#fff;padding:20px 40px;border-radius:16px;font-size:2rem;font-weight:700;font-family:'Poppins',sans-serif}
+
+/* Blocks visual */
+.blocks-visual{display:flex;flex-direction:column;gap:6px}
+.scratch-block{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:8px;color:#fff;font-family:'Fira Code',monospace;font-size:16px;font-weight:500;cursor:default;width:fit-content;position:relative}
+.scratch-block::before{content:'⬟';margin-right:4px;font-size:1.1rem}
+.block-motion{background:#4C97FF}
+.block-looks{background:#9966FF}
+.block-sound{background:#CF63CF}
+.block-control{background:#FFAB19}
+.block-events{background:#FFBF00}
+.block-sensing{background:#5CB1D6}
+
+/* Animated chart */
+.chart-section{padding:40px 0}
+.chart-title{font-family:'Poppins',sans-serif;font-size:1.2rem;color:#2d3436;margin-bottom:24px;text-align:center}
+.bar-chart{display:flex;align-items:flex-end;gap:16px;height:200px;padding:0 20px;justify-content:center}
+.bar-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;max-width:120px}
+.bar{width:100%;border-radius:8px 8px 0 0;transition:height 0.8s ease;height:0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-size:13px;font-weight:700;font-family:'Poppins',sans-serif}
+.bar-label{font-size:13px;color:#636E72;font-weight:600;text-align:center}
+
+/* Flowchart diagram */
+.diagram-section{margin:40px 0}
+.mermaid{font-size:16px}
+
+/* Practice section */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.practice-card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.07);border-top:4px solid #4834D4;opacity:1}
+.practice-card h4{font-family:'Poppins',sans-serif;color:#2d3436;margin-bottom:12px}
+.practice-card ol{padding-left:20px;color:#636E72;font-size:17px}
+.practice-card ol li{margin-bottom:8px}
+
+/* Challenge */
+.challenge-box{background:linear-gradient(135deg,#4834D4,#22A6B3);border-radius:20px;padding:48px;color:#fff;text-align:center}
+.challenge-box h2{color:#fff;margin-bottom:16px}
+.challenge-box p{color:rgba(255,255,255,0.9);font-size:clamp(17px,2.5vw,19px);max-width:700px;margin:0 auto 32px}
+.challenge-tasks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:32px}
+.challenge-task{background:rgba(255,255,255,0.15);border-radius:12px;padding:20px;backdrop-filter:blur(10px)}
+.challenge-task .ct-num{font-size:2rem;font-weight:800;font-family:'Poppins',sans-serif;opacity:0.6;margin-bottom:8px}
+.challenge-task p{font-size:17px;color:rgba(255,255,255,0.95)}
+
+/* Mobile bottom nav */
+#mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -2px 16px rgba(0,0,0,0.12);z-index:1000;overflow-x:auto;padding:8px 0}
+#mobile-nav ul{display:flex;list-style:none;gap:0;min-width:max-content;padding:0 12px}
+#mobile-nav ul li a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;text-decoration:none;color:#636E72;font-size:13px;font-weight:500;border-radius:8px;min-height:56px;justify-content:center;white-space:nowrap}
+#mobile-nav ul li a span.nav-icon{font-size:1.3rem}
+#mobile-nav ul li a.active,#mobile-nav ul li a:hover{color:#22A6B3;background:#e8f8fa}
+
+/* Responsive */
+@media(max-width:1024px){.layout-grid{grid-template-columns:220px 1fr}}
+@media(max-width:768px){
+  #toc{display:none}
+  #mobile-nav{display:block}
+  .layout-grid{grid-template-columns:1fr}
+  .hero{min-height:60vh;padding:40px 0}
+  .hero-content,.content-container{padding:0 20px}
+  .section{padding:48px 0}
+  .dnd-container{grid-template-columns:1fr}
+  .dnd-categories{grid-template-columns:1fr}
+  .parts-grid{grid-template-columns:1fr}
+  body{padding-bottom:80px}
+  .hero-objectives{flex-direction:column}
+  .challenge-box{padding:32px 20px}
+  .flip-wrap{height:auto;min-height:220px}
+  .bar-chart{gap:8px}
+}
+@media(max-width:480px){
+  .content-container{padding:0 16px}
+  .hero-content{padding:0 16px}
+  h1{font-size:2rem}
+  h2{font-size:1.7rem}
+  .card{padding:20px}
+  .part-card,.term-card,.step{padding:16px}
+}
+
+/* Utility */
+.gradient-text{background:linear-gradient(135deg,#22A6B3,#4834D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mt-24{margin-top:24px}
+.mb-32{margin-bottom:32px}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.gap-16{gap:16px}
+.text-teal{color:#22A6B3}
+.text-indigo{color:#4834D4}
+.bg-gradient{background:linear-gradient(135deg,#22A6B3,#4834D4)}
+.rounded-full{border-radius:50px}
+.font-bold{font-weight:700}
+.char{display:inline-block}
+</style>
+</head>
+<body>
+
+<!-- Loading Curtain -->
+<div id="curtain">
+  <div class="logo">🐱 Scratch Time!</div>
+  <div class="spinner"></div>
+</div>
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero" id="sec-intro">
+    <div class="hero-content">
+      <div class="hero-badge">📚 Unit 2 · Class 5 Computer</div>
+      <h1 id="hero-title">Introduction to Scratch</h1>
+      <p>Discover the world of visual programming — create stories, games, and animations using colourful blocks that snap together like puzzle pieces!</p>
+      <div class="hero-objectives">
+        <div class="hero-obj">🎯 Understand what Scratch is</div>
+        <div class="hero-obj">🖥️ Learn the Scratch interface</div>
+        <div class="hero-obj">🐱 Create & control sprites</div>
+        <div class="hero-obj">🎮 Make animations & games</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content with TOC -->
+  <div class="content-container" style="padding-top:60px;padding-bottom:60px">
+    <div class="layout-grid">
+
+      <!-- Sticky TOC -->
+      <aside>
+        <nav id="toc">
+          <h4>📋 Contents</h4>
+          <ul>
+            <li><a href="#sec-what">What is Scratch?</a></li>
+            <li><a href="#sec-why">Why Use Scratch?</a></li>
+            <li><a href="#sec-interface">Scratch Interface</a></li>
+            <li><a href="#sec-terms">Key Terms</a></li>
+            <li><a href="#sec-blocks">Scratch Blocks</a></li>
+            <li><a href="#sec-first">First Project</a></li>
+            <li><a href="#sec-backgrounds">Backgrounds & Sounds</a></li>
+            <li><a href="#sec-animation">Simple Animation</a></li>
+            <li><a href="#sec-practice">Practice Activities</a></li>
+            <li><a href="#sec-challenge">Challenge</a></li>
+            <li><a href="#sec-quiz">Quiz</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main>
+
+        <!-- What is Scratch -->
+        <section class="section" id="sec-what">
+          <div class="section-header">
+            <div class="badge">Background</div>
+            <h2>What is <span class="gradient-text">Scratch?</span></h2>
+            <p>A visual programming language designed to make coding fun and accessible for everyone.</p>
+          </div>
+
+          <div class="discovery-zone">
+            <p style="font-size:18px;color:#2d3436;line-height:1.8">
+              <strong>Scratch</strong> is a visual programming language designed to help beginners create interactive stories, games, and animations. With Scratch, you don't need to write long lines of code. Instead, you use <strong style="color:#4834D4">colourful blocks</strong> that fit together like puzzle pieces, each containing predefined instructions for controlling characters called <strong style="color:#22A6B3">sprites</strong>.
+            </p>
+            <p style="font-size:17px;color:#636E72;margin-top:16px">Scratch makes learning programming simple and fun, making it especially ideal for kids.</p>
+          </div>
+
+          <div class="diagram-section mt-24">
+            <div class="mermaid">
+graph TD
+    A["🐱 Scratch"] --> B["📖 Interactive Stories"]
+    A --> C["🎮 Games"]
+    A --> D["✨ Animations"]
+    B --> E["Add sprites & dialogue"]
+    C --> F["Use sensing & control blocks"]
+    D --> G["Change costumes & backdrops"]
+    style A fill:#22A6B3,color:#fff,stroke:#22A6B3
+    style B fill:#4834D4,color:#fff,stroke:#4834D4
+    style C fill:#4834D4,color:#fff,stroke:#4834D4
+    style D fill:#4834D4,color:#fff,stroke:#4834D4
+    style E fill:#f0fbfc,stroke:#22A6B3
+    style F fill:#f0fbfc,stroke:#22A6B3
+    style G fill:#f0fbfc,stroke:#22A6B3
+            </div>
+          </div>
+        </section>
+
+        <!-- Why Use Scratch -->
+        <section class="section section-alt" id="sec-why">
+          <div class="section-header">
+            <div class="badge">Why Scratch?</div>
+            <h2>Why Use <span class="gradient-text">Scratch?</span></h2>
+          </div>
+
+          <div class="parts-grid">
+            <div class="part-card" style="--accent:#22A6B3">
+              <div class="icon">🧠</div>
+              <h4>Understand Coding Basics</h4>
+              <p>Learning Scratch helps you understand the fundamentals of coding and problem-solving in a visual way.</p>
+            </div>
+            <div class="part-card" style="--accent:#4834D4">
+              <div class="icon">💡</div>
+              <h4>Think Creatively</h4>
+              <p>Coding in Scratch teaches you to think creatively and work on exciting projects that come to life.</p>
+            </div>
+            <div class="part-card" style="--accent:#00b894">
+              <div class="icon">⚡</div>
+              <h4>Immediate Results</h4>
+              <p>See your code run instantly! Click the green flag and watch your creation perform right away.</p>
+            </div>
+            <div class="part-card" style="--accent:#e17055">
+              <div class="icon">🌍</div>
+              <h4>Used Worldwide</h4>
+              <p>Scratch was developed at MIT and is used by millions of students around the world to learn programming.</p>
+            </div>
+          </div>
+
+          <!-- Animated Bar Chart -->
+          <div class="chart-section">
+            <div class="chart-title">📊 Why Students Love Scratch</div>
+            <div class="bar-chart" id="barChart">
+              <div class="bar-wrap">
+                <div class="bar" style="background:#22A6B3" data-height="85" id="bar1">85%</div>
+                <div class="bar-label">Fun to Use</div>
+              </div>
+              <div class="bar-wrap">
+                <div class="bar" style="background:#4834D4" data-height="92" id="bar2">92%</div>
+                <div class="bar-label">Easy to Learn</div>
+              </div>
+              <div class="bar-wrap">
+                <div class="bar" style="background:#00b894" data-height="78" id="bar3">78%</div>
+                <div class="bar-label">Creative</div>
+              </div>
+              <div class="bar-wrap">
+                <div class="bar" style="background:#e17055" data-height="88" id="bar4">88%</div>
+                <div class="bar-label">Teaches Logic</div>
+              </div>
+              <div class="bar-wrap">
+                <div class="bar" style="background:#a29bfe" data-height="95" id="bar5">95%</div>
+                <div class="bar-label">Recommended</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Did You Know Flip Card -->
+          <div class="flip-wrap" style="margin-top:40px" onclick="this.querySelector('.flip-card').classList.toggle('flipped')" role="button" tabindex="0" aria-label="Flip card for fun fact" onkeypress="if(event.key==='Enter')this.querySelector('.flip-card').classList.toggle('flipped')">
+            <div class="flip-card">
+              <div class="flip-front">
+                <div class="flip-icon">🤔</div>
+                <h3>Did You Know?</h3>
+                <p style="color:rgba(255,255,255,0.8);margin-top:8px;font-size:16px">Click to reveal a fun fact!</p>
+              </div>
+              <div class="flip-back">
+                <div class="flip-fact">🏛️</div>
+                <p>Scratch was developed at the <strong>MIT Media Lab</strong> and is used by <strong>millions of students</strong> around the world to learn programming. It's completely free to use at scratch.mit.edu!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Scratch Interface -->
+        <section class="section" id="sec-interface">
+          <div class="section-header">
+            <div class="badge">Core Concept</div>
+            <h2>The Scratch <span class="gradient-text">Interface</span></h2>
+            <p>The Scratch screen has several important parts. Here's your guide to navigating it!</p>
+          </div>
+
+          <div class="parts-grid">
+            <div class="part-card" style="--accent:#22A6B3">
+              <div class="icon">🎭</div>
+              <h4>Stage</h4>
+              <p>The main area where you see your animations and characters in action. It's like a theatre stage where all the scenes play out.</p>
+            </div>
+            <div class="part-card" style="--accent:#4834D4">
+              <div class="icon">🐱</div>
+              <h4>Sprite Pane</h4>
+              <p>This shows all the sprites in your project. Each sprite is like a character or an object, and you can add or remove sprites here.</p>
+            </div>
+            <div class="part-card" style="--accent:#e17055">
+              <div class="icon">🧩</div>
+              <h4>Block Palette</h4>
+              <p>This area has all the different blocks you can use to control your sprites. Blocks are grouped by colour and function (e.g., Motion, Looks, Sound).</p>
+            </div>
+            <div class="part-card" style="--accent:#00b894">
+              <div class="icon">📝</div>
+              <h4>Script Area</h4>
+              <p>This is the workspace where you build scripts by snapping blocks together. Scripts are sequences of instructions that tell the sprites what to do.</p>
+            </div>
+          </div>
+
+          <!-- Interface Diagram -->
+          <div class="diagram-section mt-24">
+            <div class="mermaid">
+graph LR
+    BP["🧩 Block Palette\nCategories of blocks"] --> SA["📝 Script Area\nBuild your scripts here"]
+    SA --> ST["🎭 Stage\nSee sprites in action"]
+    ST --> SP["🐱 Sprite Pane\nManage your sprites"]
+    SP --> BD["🌄 Backdrop\nBackground of Stage"]
+    style BP fill:#FFAB19,color:#000,stroke:#FFAB19
+    style SA fill:#4C97FF,color:#fff,stroke:#4C97FF
+    style ST fill:#22A6B3,color:#fff,stroke:#22A6B3
+    style SP fill:#9966FF,color:#fff,stroke:#9966FF
+    style BD fill:#CF63CF,color:#fff,stroke:#CF63CF
+            </div>
+          </div>
+
+          <!-- Getting Started Steps -->
+          <div style="margin-top:40px">
+            <h3 style="margin-bottom:24px;color:#2d3436">🚀 Getting Started with Scratch</h3>
+            <div class="steps-container">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>Open a Web Browser</h4>
+                  <p>Open a web browser like Chrome or Firefox on your computer.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>Visit Scratch Website</h4>
+                  <p>Go to the website: <a href="https://scratch.mit.edu" target="_blank" style="color:#22A6B3;font-weight:600">https://scratch.mit.edu</a></p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <h4>Start a New Project</h4>
+                  <p>Click on <strong>"Create"</strong> at the top of the page to start a new project.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Terms -->
+        <section class="section section-alt" id="sec-terms">
+          <div class="section-header">
+            <div class="badge">Vocabulary</div>
+            <h2>Key Terms in <span class="gradient-text">Scratch</span></h2>
+            <p>Let's learn the important vocabulary you'll use in every Scratch project.</p>
+          </div>
+
+          <div class="terms-grid">
+            <div class="term-card">
+              <div class="term">🐱 Sprites</div>
+              <p>Characters or objects that you can move, change, and animate. Scratch has many sprites to choose from, or you can create your own.</p>
+            </div>
+            <div class="term-card">
+              <div class="term">🧩 Blocks</div>
+              <p>The building blocks of Scratch coding. Each block has a specific function, like moving a sprite or playing a sound. You snap blocks together to create scripts.</p>
+            </div>
+            <div class="term-card">
+              <div class="term">📜 Scripts</div>
+              <p>A set of blocks that work together to perform an action. For example, you can create a script to make a sprite move across the screen.</p>
+            </div>
+            <div class="term-card">
+              <div class="term">🌄 Backdrop</div>
+              <p>The background of the stage. It sets the scene for your animation or game, and you can change it to create different settings.</p>
+            </div>
+            <div class="term-card">
+              <div class="term">🎭 Stage</div>
+              <p>The main display area where sprites perform their actions. Think of it like a theatre stage where all the action happens.</p>
+            </div>
+            <div class="term-card">
+              <div class="term">👗 Costumes</div>
+              <p>Different appearances or outfits for a sprite. Switching costumes quickly creates the illusion of movement or animation.</p>
+            </div>
+          </div>
+
+          <!-- Interactive Table -->
+          <div class="table-wrap mt-24">
+            <table id="termsTable">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Category</th>
+                  <th>Function</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-detail="Sprites are the main characters. They can be animals, people, or any object. Click them to control them with scripts.">
+                  <td>🐱 Sprite</td>
+                  <td>Character</td>
+                  <td>A character/object you control</td>
+                </tr>
+                <tr data-detail="Blocks come in many colours. Blue blocks = Motion, Purple = Looks, Pink = Sound, Orange = Control, Yellow = Events.">
+                  <td>🧩 Block</td>
+                  <td>Instruction</td>
+                  <td>Contains a single instruction</td>
+                </tr>
+                <tr data-detail="Scripts start with an Events block (like 'when green flag clicked') and chain other blocks below it to form a program.">
+                  <td>📜 Script</td>
+                  <td>Program</td>
+                  <td>A chain of blocks for action</td>
+                </tr>
+                <tr data-detail="Backdrops are like scenes in a play. You can pick from Scratch's library or draw your own using the built-in paint tools.">
+                  <td>🌄 Backdrop</td>
+                  <td>Background</td>
+                  <td>Background of the Stage</td>
+                </tr>
+                <tr data-detail="The Stage is 480 pixels wide and 360 pixels tall. The center of the stage is coordinate (0, 0).">
+                  <td>🎭 Stage</td>
+                  <td>Display Area</td>
+                  <td>Where sprites perform actions</td>
+                </tr>
+                <tr data-detail="Costumes let you animate sprites. By switching costumes rapidly with a loop, you create smooth animations like walking.">
+                  <td>👗 Costume</td>
+                  <td>Appearance</td>
+                  <td>Different look for a sprite</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="color:#636E72;font-size:15px;margin-top:12px;text-align:center">💡 Click any row to expand and learn more!</p>
+        </section>
+
+        <!-- Scratch Blocks -->
+        <section class="section" id="sec-blocks">
+          <div class="section-header">
+            <div class="badge">Core Concept</div>
+            <h2>Scratch <span class="gradient-text">Blocks</span></h2>
+            <p>Here are the basic block categories you'll use often in Scratch.</p>
+          </div>
+
+          <div class="parts-grid">
+            <div class="card">
+              <h4 style="color:#4C97FF;margin-bottom:16px">🔵 Motion Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Control how sprites move around the stage.</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-motion">move 10 steps</div>
+                <div class="scratch-block block-motion">turn 15 degrees</div>
+                <div class="scratch-block block-motion">go to x: 0 y: 0</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="color:#9966FF;margin-bottom:16px">🟣 Looks Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Change the appearance of sprites.</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-looks">say [Hello!] for 2 secs</div>
+                <div class="scratch-block block-looks">change costume</div>
+                <div class="scratch-block block-looks">set size to 100%</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="color:#CF63CF;margin-bottom:16px">🩷 Sound Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Add sound effects and music to your project.</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-sound">play sound Meow</div>
+                <div class="scratch-block block-sound">stop all sounds</div>
+                <div class="scratch-block block-sound">set volume to 100</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="color:#FFAB19;margin-bottom:16px">🟠 Control Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Manage timing and looping of actions.</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-control">wait 1 second</div>
+                <div class="scratch-block block-control">repeat 10 times</div>
+                <div class="scratch-block block-control">forever</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="color:#FFBF00;margin-bottom:16px">🟡 Events Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Start actions in your script — the triggers!</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-events">when 🚩 clicked</div>
+                <div class="scratch-block block-events">when sprite clicked</div>
+                <div class="scratch-block block-events">when [space] pressed</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="color:#5CB1D6;margin-bottom:16px">🔷 Sensing Blocks</h4>
+              <p style="margin-bottom:16px;color:#636E72;font-size:17px">Detect collisions, mouse position, and more.</p>
+              <div class="blocks-visual">
+                <div class="scratch-block block-sensing">touching [mouse]?</div>
+                <div class="scratch-block block-sensing">if touching [wall]</div>
+                <div class="scratch-block block-sensing">distance to [sprite]</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flowchart of script execution -->
+          <div class="diagram-section mt-24">
+            <h3 style="margin-bottom:20px;text-align:center">How a Script Runs in Scratch</h3>
+            <div class="mermaid">
+flowchart TD
+    A["🚩 when green flag clicked\n(Events Block)"] --> B["move 10 steps\n(Motion Block)"]
+    B --> C["say Hello! for 2 seconds\n(Looks Block)"]
+    C --> D["play sound Meow\n(Sound Block)"]
+    D --> E{Repeat?}
+    E -- Yes --> B
+    E -- No --> F["🛑 Script Ends"]
+    style A fill:#FFBF00,color:#000,stroke:#FFBF00
+    style B fill:#4C97FF,color:#fff,stroke:#4C97FF
+    style C fill:#9966FF,color:#fff,stroke:#9966FF
+    style D fill:#CF63CF,color:#fff,stroke:#CF63CF
+    style E fill:#FFAB19,color:#000,stroke:#FFAB19
+    style F fill:#636E72,color:#fff,stroke:#636E72
+            </div>
+          </div>
+        </section>
+
+        <!-- First Project -->
+        <section class="section section-alt" id="sec-first">
+          <div class="section-header">
+            <div class="badge">Worked Example</div>
+            <h2>Your First <span class="gradient-text">Project</span></h2>
+            <p>Goal: Make a sprite move and say something!</p>
+          </div>
+
+          <div class="formula-block">
+            <div class="label">Script Structure</div>
+            <code>when green flag clicked
+  ↓
+move 10 steps          ← Motion Block
+  ↓
+say "Hello!" for 2 seconds  ← Looks Block
+  ↓
+(Optional) play sound   ← Sound Block</code>
+          </div>
+
+          <div class="steps-container mt-24">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Add a Sprite</h4>
+                <p>In the Sprite Pane, click on the <strong>Choose a Sprite</strong> button. Select a sprite (like a cat) from the library.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Create a Script</h4>
+                <p>In the Block Palette, go to the <strong>Events</strong> category and drag the <strong>"when green flag clicked"</strong> block to the Script Area. This block starts your script when you click the green flag.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Add Movement</h4>
+                <p>Go to the <strong>Motion</strong> category. Drag the <strong>"move 10 steps"</strong> block under the "when green flag clicked" block. Now, when you click the green flag, your sprite will move 10 steps forward.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>Add Dialogue</h4>
+                <p>Go to the <strong>Looks</strong> category. Drag the <strong>"say Hello! for 2 seconds"</strong> block under the "move 10 steps" block. Change "Hello!" to whatever you want your sprite to say.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <h4>Test Your Script</h4>
+                <p>Click the <strong>green flag 🚩</strong> at the top of the Stage. Your sprite should move and say something!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hint-wrap mt-24">
+            <button class="hint-btn" onclick="toggleHint(this)">💡 Hint: What if my sprite walks off screen?</button>
+            <div class="hint-content">
+              Add the block <strong>"if on edge, bounce"</strong> from the Motion category! This will make your sprite bounce back when it reaches the edge of the stage instead of disappearing.
+            </div>
+          </div>
+        </section>
+
+        <!-- Backgrounds & Sounds -->
+        <section class="section" id="sec-backgrounds">
+          <div class="section-header">
+            <div class="badge">Adding Detail</div>
+            <h2>Backgrounds & <span class="gradient-text">Sounds</span></h2>
+            <p>Make your projects more immersive by adding backdrops and sound effects.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px">
+            <div>
+              <h3 style="margin-bottom:20px;color:#2d3436">🌄 Changing the Backdrop</h3>
+              <div class="steps-container">
+                <div class="step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <p>In the Stage area, click on the <strong>Choose a Backdrop</strong> button.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <p>Select a background you like, such as a beach or a city. This will change the backdrop on the stage.</p>
+                  </div>
+                </div>
+              </div>
+              <h3 style="margin:24px 0 20px;color:#2d3436">🎵 Adding Sound</h3>
+              <div class="steps-container">
+                <div class="step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <p>Go to the <strong>Sound</strong> category in the Block Palette.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <p>Drag the <strong>"play sound Meow until done"</strong> block to your script. You can choose different sounds or even record your own!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 style="margin-bottom:20px;color:#2d3436">🎨 Drawing Your Own Backdrop</h3>
+              <div class="steps-container">
+                <div class="step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <h4>Open Scratch</h4>
+                    <p>Start a new project at scratch.mit.edu.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <h4>Go to Backdrop Editor</h4>
+                    <p>Click the Stage area → click <strong>"Backdrops"</strong> tab → click <strong>"Paint"</strong> to open the drawing tools.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-num">3</div>
+                  <div class="step-content">
+                    <h4>Draw Your Backdrop</h4>
+                    <p>Use <strong>Brush</strong> (freehand), <strong>Fill</strong> (colour areas), <strong>Rectangle/Circle</strong> (shapes), <strong>Line</strong> (straight lines).</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-num">4</div>
+                  <div class="step-content">
+                    <h4>Save & Set Backdrop</h4>
+                    <p>Click <strong>"OK"</strong> to save. Use <strong>"switch backdrop to [name]"</strong> from the Looks category in your script.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Simple Animation -->
+        <section class="section section-alt" id="sec-animation">
+          <div class="section-header">
+            <div class="badge">Worked Example</div>
+            <h2>Creating a Simple <span class="gradient-text">Animation</span></h2>
+            <p>Let's create a simple animation where a sprite dances!</p>
+          </div>
+
+          <div class="formula-block">
+            <div class="label">Dancing Animation Script</div>
+            <code>when green flag clicked
+  ↓
+switch backdrop to [dance stage]   ← Change scene
+  ↓
+repeat 10                          ← Control Block (loop)
+  next costume                     ← Looks Block
+  wait 0.2 seconds                 ← Control Block
+end
+  ↓
+play sound [dance music] until done  ← Sound Block</code>
+          </div>
+
+          <div class="steps-container mt-24">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Choose a Sprite</h4>
+                <p>Pick a sprite like a dancer from the Scratch library. Dancer sprites come with multiple costumes!</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Add Costumes</h4>
+                <p>Many sprites have different <strong>costumes</strong> that show different poses. These create the illusion of movement when switched quickly.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Change the Backdrop</h4>
+                <p>Go to the Stage area, click on the Backdrops tab, and choose a backdrop. Drag the <strong>"switch backdrop to [your backdrop]"</strong> block from Looks to the script area.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>Create a Loop</h4>
+                <p>Drag the <strong>"repeat 10"</strong> block from the Control category. Add <strong>"next costume"</strong> from Looks inside it. Add <strong>"wait 0.2 seconds"</strong> to control the speed.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <h4>Play Music</h4>
+                <p>Add a music track from the <strong>Sounds</strong> category. Now, when you click the green flag, your sprite will dance to the beat!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hint-wrap mt-24">
+            <button class="hint-btn" onclick="toggleHint(this)">💡 Hint: How do I make the animation loop forever?</button>
+            <div class="hint-content">
+              Replace the "repeat 10" block with a <strong>"forever"</strong> block from the Control category! The forever block never stops, so your sprite will keep dancing until you click the stop button (the red circle) next to the green flag.
+            </div>
+          </div>
+        </section>
+
+        <!-- Drag & Drop Practice -->
+        <section class="section" id="sec-practice">
+          <div class="section-header">
+            <div class="badge">Practice</div>
+            <h2>Classify the <span class="gradient-text">Blocks!</span></h2>
+            <p>Drag each block to the correct category — Motion, Looks, or Control.</p>
+          </div>
+
+          <div class="dnd-container" id="dndArea">
+            <div>
+              <h4 style="margin-bottom:16px;color:#2d3436">🧩 Blocks to Classify</h4>
+              <div class="dnd-items" id="dndItems">
+                <div class="drag-item" draggable="true" data-cat="motion" data-id="b1">
+                  <span class="di-icon">🔵</span> move 10 steps
+                </div>
+                <div class="drag-item" draggable="true" data-cat="looks" data-id="b2">
+                  <span class="di-icon">🟣</span> say Hello! for 2 secs
+                </div>
+                <div class="drag-item" draggable="true" data-cat="control" data-id="b3">
+                  <span class="di-icon">🟠</span> repeat 10
+                </div>
+                <div class="drag-item" draggable="true" data-cat="motion" data-id="b4">
+                  <span class="di-icon">🔵</span> turn 15 degrees
+                </div>
+                <div class="drag-item" draggable="true" data-cat="looks" data-id="b5">
+                  <span class="di-icon">🟣</span> next costume
+                </div>
+                <div class="drag-item" draggable="true" data-cat="control" data-id="b6">
+                  <span class="di-icon">🟠</span> wait 1 second
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="dnd-categories">
+                <div class="drop-zone" data-cat="motion">
+                  <h4>🔵 Motion Blocks</h4>
+                  <div class="drop-target" id="drop-motion"></div>
+                </div>
+                <div class="drop-zone" data-cat="looks">
+                  <h4>🟣 Looks Blocks</h4>
+                  <div class="drop-target" id="drop-looks"></div>
+                </div>
+                <div class="drop-zone" data-cat="control">
+                  <h4>🟠 Control Blocks</h4>
+                  <div class="drop-target" id="drop-control"></div>
+                </div>
+                <div style="grid-column:1/-1">
+                  <button class="dnd-btn" onclick="checkDND()">✅ Check Answers</button>
+                  <button class="dnd-btn" style="background:#636E72;margin-left:12px" onclick="resetDND()">🔄 Reset</button>
+                  <div class="dnd-result" id="dndResult"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lab Activities -->
+          <div style="margin-top:60px">
+            <h3 style="margin-bottom:24px;color:#2d3436">🔬 Lab Activities</h3>
+            <div class="practice-grid">
+              <div class="practice-card">
+                <h4>🎬 Lab 1: Simple Animation</h4>
+                <ol>
+                  <li>Open Scratch and start a new project.</li>
+                  <li>Select a sprite from the library or create your own.</li>
+                  <li>Use "move 10 steps" to make the sprite move.</li>
+                  <li>Add a block to make the sprite say "Hello!"</li>
+                  <li>Test by clicking the green flag.</li>
+                </ol>
+              </div>
+              <div class="practice-card">
+                <h4>💬 Lab 2: Talking Sprite</h4>
+                <ol>
+                  <li>Open Scratch and choose any sprite.</li>
+                  <li>Drag "when green flag clicked" to Script Area.</li>
+                  <li>Add "move 10 steps" from Motion.</li>
+                  <li>Add "say Hello!" from Looks.</li>
+                  <li>Click the green flag — watch it move and talk!</li>
+                </ol>
+              </div>
+              <div class="practice-card">
+                <h4>🤝 Lab 3: Two Sprites Talk</h4>
+                <ol>
+                  <li>Choose two sprites (e.g., a person and a pet).</li>
+                  <li>Make the sprites "talk" using the "say" block.</li>
+                  <li>Add different speech for each sprite.</li>
+                  <li>Use "wait" blocks to time their conversations.</li>
+                  <li>Add a backdrop for the setting.</li>
+                </ol>
+              </div>
+              <div class="practice-card">
+                <h4>🎮 Lab 4: Obstacle Game</h4>
+                <ol>
+                  <li>Choose a player character sprite.</li>
+                  <li>Create obstacles that move on screen.</li>
+                  <li>Use "if touching [obstacle]" block to react.</li>
+                  <li>Add sound effects when sprite hits obstacle.</li>
+                  <li>Move sprite with arrow keys or space bar.</li>
+                </ol>
+              </div>
+              <div class="practice-card">
+                <h4>❓ Lab 5: Quiz Game</h4>
+                <ol>
+                  <li>Create a sprite that asks a question.</li>
+                  <li>Add multiple choice options as clickable sprites.</li>
+                  <li>Use "if" blocks to check if answer is correct.</li>
+                  <li>Show "Correct!" or "Try Again" with "say" block.</li>
+                  <li>Track score using a variable.</li>
+                </ol>
+              </div>
+              <div class="practice-card">
+                <h4>🚶 Lab 6: Walking Character</h4>
+                <ol>
+                  <li>Choose a sprite with walking pose costumes.</li>
+                  <li>Use "repeat" to switch between costumes.</li>
+                  <li>Use "wait" to control animation speed.</li>
+                  <li>Move sprite with "glide" or "move" blocks.</li>
+                  <li>Add a backdrop scene for the sprite to walk through.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="section section-alt" id="sec-challenge">
+          <div class="content-container" style="padding:0">
+            <div class="challenge-box">
+              <h2>🏆 Challenge Time!</h2>
+              <p>You've learned the basics — now push yourself further with these creative challenges. Open Scratch and try to complete each one!</p>
+              <div class="challenge-tasks">
+                <div class="challenge-task">
+                  <div class="ct-num">01</div>
+                  <p>Create a sprite that moves in a <strong>square pattern</strong> using motion and repeat blocks.</p>
+                </div>
+                <div class="challenge-task">
+                  <div class="ct-num">02</div>
+                  <p>Make <strong>two sprites have a conversation</strong> with timing using wait blocks and say blocks.</p>
+                </div>
+                <div class="challenge-task">
+                  <div class="ct-num">03</div>
+                  <p>Design a <strong>simple quiz game</strong> with at least 3 questions and a score variable.</p>
+                </div>
+                <div class="challenge-task">
+                  <div class="ct-num">04</div>
+                  <p>Build a <strong>dance animation</strong> with music, costume changes, and a cool backdrop.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quiz -->
+        <section class="section" id="sec-quiz">
+          <div class="section-header">
+            <div class="badge">Assessment</div>
+            <h2>Unit 2 <span class="gradient-text">Quiz</span></h2>
+            <p>Test your knowledge of Scratch! Answer all 10 questions to see your score.</p>
+          </div>
+
+          <div class="quiz-container">
+            <div class="quiz-progress">
+              <div class="quiz-progress-bar" id="quizProgress" style="width:0%"></div>
+            </div>
+
+            <!-- Q1 -->
+            <div class="quiz-question active" data-q="0">
+              <div class="quiz-q-num">Question 1 of 10</div>
+              <div class="quiz-q-text">What is Scratch mainly used for?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">📖 Reading stories</div>
+                <div class="quiz-option" data-ans="1">💻 Coding and creating projects</div>
+                <div class="quiz-option" data-ans="0">🎨 Drawing pictures only</div>
+                <div class="quiz-option" data-ans="0">🎲 Playing pre-made games</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <span style="color:#636E72;font-size:16px">Select an answer above</span>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn0">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question" data-q="1">
+              <div class="quiz-q-num">Question 2 of 10</div>
+              <div class="quiz-q-text">In Scratch, what do you call the area where you see your animations and characters in action?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">📝 Script Area</div>
+                <div class="quiz-option" data-ans="0">🐱 Sprite Pane</div>
+                <div class="quiz-option" data-ans="1">🎭 Stage</div>
+                <div class="quiz-option" data-ans="0">🧩 Block Palette</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn1">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question" data-q="2">
+              <div class="quiz-q-num">Question 3 of 10</div>
+              <div class="quiz-q-text">What do blocks in Scratch represent?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">🐱 Characters</div>
+                <div class="quiz-option" data-ans="1">📋 Instructions</div>
+                <div class="quiz-option" data-ans="0">🌄 Backgrounds</div>
+                <div class="quiz-option" data-ans="0">🎵 Music tracks</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn2">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-question" data-q="3">
+              <div class="quiz-q-num">Question 4 of 10</div>
+              <div class="quiz-q-text">Which category of blocks is used to move sprites?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">🟠 Control</div>
+                <div class="quiz-option" data-ans="1">🔵 Motion</div>
+                <div class="quiz-option" data-ans="0">🟣 Looks</div>
+                <div class="quiz-option" data-ans="0">🟡 Events</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn3">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-question" data-q="4">
+              <div class="quiz-q-num">Question 5 of 10</div>
+              <div class="quiz-q-text">In Scratch, which block would you use to START a project?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">move 10 steps</div>
+                <div class="quiz-option" data-ans="1">when green flag clicked</div>
+                <div class="quiz-option" data-ans="0">say Hello!</div>
+                <div class="quiz-option" data-ans="0">forever loop</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn4">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-question" data-q="5">
+              <div class="quiz-q-num">Question 6 of 10</div>
+              <div class="quiz-q-text">What is a BACKDROP in Scratch?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">🐱 The main character sprite</div>
+                <div class="quiz-option" data-ans="0">🧩 A type of coding block</div>
+                <div class="quiz-option" data-ans="1">🌄 The background image of the Stage</div>
+                <div class="quiz-option" data-ans="0">🎵 A sound effect</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn5">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="quiz-question" data-q="6">
+              <div class="quiz-q-num">Question 7 of 10</div>
+              <div class="quiz-q-text">The backdrop in Scratch is the character you control. True or False?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">✅ True</div>
+                <div class="quiz-option" data-ans="1">❌ False</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn6">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="quiz-question" data-q="7">
+              <div class="quiz-q-num">Question 8 of 10</div>
+              <div class="quiz-q-text">Which block category manages timing and repeating actions (like loops)?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">🔵 Motion</div>
+                <div class="quiz-option" data-ans="0">🟣 Looks</div>
+                <div class="quiz-option" data-ans="1">🟠 Control</div>
+                <div class="quiz-option" data-ans="0">🔷 Sensing</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn7">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="quiz-question" data-q="8">
+              <div class="quiz-q-num">Question 9 of 10</div>
+              <div class="quiz-q-text">Where was Scratch originally developed?</div>
+              <div class="quiz-options">
+                <div class="quiz-option" data-ans="0">🏛️ Harvard University</div>
+                <div class="quiz-option" data-ans="1">🏛️ MIT (Massachusetts Institute of Technology)</div>
+                <div class="quiz-option" data-ans="0">🏛️ Stanford University</div>
+                <div class="quiz-option" data-ans="0">🏛️ Oxford University</div>
+              </div>
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="nextQuestion()" disabled id="nextBtn8">Next →</button>
+              </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="quiz-question" data-q="9">
+              <div class="quiz-q-num">Question 10 of 10</div>
+              <div class="quiz-q-text">To create a walking animation in Scratch, how many times should you repeat costume changes using a "repeat" block to make it loop smoothly? (Type the block value used in the lesson)</div>
+              <input type="number" class="quiz-input" id="numInput" placeholder="Enter a number..." min="1" max="100">
+              <div class="quiz-feedback"></div>
+              <div class="quiz-nav">
+                <button class="quiz-btn" style="background:#636E72" onclick="prevQuestion()">← Back</button>
+                <button class="quiz-btn" onclick="checkNumAnswer()">Submit ✓</button>
+              </div>
+            </div>
+
+            <!-- Score Screen -->
+            <div class="quiz-score" id="quizScore">
+              <div style="font-size:4rem;margin-bottom:16px">🎉</div>
+              <h2>Quiz Complete!</h2>
+              <p>You've completed the Unit 2 Scratch Quiz!</p>
+              <div class="score-badge" id="scoreBadge">0 / 10</div>
+              <div id="scoreMsg" style="margin-top:24px;font-size:18px;color:#636E72"></div>
+              <button class="quiz-btn" style="margin-top:32px" onclick="resetQuiz()">🔄 Try Again</button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background:#2d3436;color:#fff;padding:40px 0;text-align:center">
+    <div class="content-container">
+      <p style="font-size:1.2rem;font-weight:600;font-family:'Poppins',sans-serif;margin-bottom:8px">Unit 2: Introduction to Scratch</p>
+      <p style="color:#b2bec3;font-size:17px">Class 5 Computer Science · Digital School</p>
+      <p style="color:#636E72;font-size:15px;margin-top:16px">🐱 Keep coding and creating amazing projects with Scratch!</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav id="mobile-nav">
+  <ul>
+    <li><a href="#sec-intro"><span class="nav-icon">🏠</span>Home</a></li>
+    <li><a href="#sec-what"><span class="nav-icon">❓</span>What</a></li>
+    <li><a href="#sec-why"><span class="nav-icon">💡</span>Why</a></li>
+    <li><a href="#sec-interface"><span class="nav-icon">🖥️</span>Interface</a></li>
+    <li><a href="#sec-terms"><span class="nav-icon">📚</span>Terms</a></li>
+    <li><a href="#sec-blocks"><span class="nav-icon">🧩</span>Blocks</a></li>
+    <li><a href="#sec-first"><span class="nav-icon">🚀</span>First</a></li>
+    <li><a href="#sec-animation"><span class="nav-icon">🎬</span>Animate</a></li>
+    <li><a href="#sec-practice"><span class="nav-icon">🔬</span>Practice</a></li>
+    <li><a href="#sec-quiz"><span class="nav-icon">📝</span>Quiz</a></li>
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ─── CURTAIN FALLBACK (must be first) ───────────────────────────────────
+  setTimeout(() => {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }, 3000);
+
+  // ─── MERMAID INIT ────────────────────────────────────────────────────────
+  try {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    }
+  } catch(e) { console.warn('Mermaid error', e); }
+
+  // ─── LENIS SMOOTH SCROLL ─────────────────────────────────────────────────
+  try {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.8 });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch(e) { console.warn('Lenis error', e); }
+
+  // ─── CURTAIN GSAP DISMISS ────────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#curtain', { opacity: 0, duration: 0.6, delay: 0.8, onComplete: () => {
+        const c = document.getElementById('curtain');
+        if (c) c.style.display = 'none';
+      }});
+    }
+  } catch(e) {
+    const c = document.getElementById('curtain');
+    if (c) c.style.display = 'none';
+  }
+
+  // ─── HERO TITLE CHARACTER ANIMATION ─────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined') {
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        const text = heroTitle.textContent;
+        heroTitle.innerHTML = text.split('').map(ch => `<span class="char">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
+        gsap.from('.char', {
+          opacity: 0, y: 40, duration: 0.05,
+          stagger: 0.03, ease: 'power2.out', delay: 1.0
+        });
+      }
+    }
+  } catch(e) { console.warn('GSAP hero error', e); }
+
+  // ─── GSAP SCROLLTRIGGER ──────────────────────────────────────────────────
+  try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animate cards on scroll
+      gsap.utils.toArray('.part-card, .term-card, .step, .practice-card').forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          opacity: 0, y: 30, duration: 0.6, ease: 'power2.out'
+        });
+      });
+
+      // Animate bar chart
+      ScrollTrigger.create({
+        trigger: '#barChart',
+        start: 'top 80%',
+        once: true,
+        onEnter: () => { animateBars(); }
+      });
+    } else {
+      animateBars();
+    }
+  } catch(e) {
+    animateBars();
+    console.warn('ScrollTrigger error', e);
+  }
+
+  // ─── BAR CHART ANIMATION ────────────────────────────────────────────────
+  function animateBars() {
+    const bars = document.querySelectorAll('.bar');
+    bars.forEach(bar => {
+      const targetH = bar.getAttribute('data-height');
+      if (!targetH) return;
+      if (typeof gsap !== 'undefined') {
+        gsap.to(bar, { height: targetH + '%', duration: 1.2, ease: 'power2.out', delay: Math.random() * 0.3 });
+      } else {
+        bar.style.height = targetH + '%';
+      }
+    });
+  }
+
+  // ─── TOC SCROLLSPY ───────────────────────────────────────────────────────
+  try {
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('#toc a, #mobile-nav a');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  } catch(e) { console.warn('IntersectionObserver error', e); }
+
+  // ─── TABLE ROW EXPAND ────────────────────────────────────────────────────
+  const tableRows = document.querySelectorAll('#termsTable tbody tr');
+  tableRows.forEach(row => {
+    row.addEventListener('click', () => {
+      const detail = row.getAttribute('data-detail');
+      if (!detail) return;
+
+      // Remove existing detail rows
+      document.querySelectorAll('.row-detail').forEach(r => r.remove());
+      tableRows.forEach(r => r.classList.remove('expanded-row'));
+
+      if (row.classList.contains('was-open')) {
+        row.classList.remove('was-open');
+        return;
+      }
+
+      row.classList.add('expanded-row', 'was-open');
+      const detailRow = document.createElement('tr');
+      detailRow.className = 'row-detail show';
+      detailRow.innerHTML = `<td colspan="3">💡 ${detail}</td>`;
+      row.after(detailRow);
+    });
+  });
+
+  // ─── DRAG & DROP ─────────────────────────────────────────────────────────
+  const dragItems = document.querySelectorAll('.drag-item');
+  const dropZones = document.querySelectorAll('.drop-zone');
+  let draggedItem = null;
+
+  dragItems.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => { item.style.opacity = '0.4'; }, 0);
+    });
+    item.addEventListener('dragend', () => {
+      if (draggedItem) draggedItem.style.opacity = '1';
+      draggedItem = null;
+    });
+  });
+
+  dropZones.forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (draggedItem) {
+        const target = zone.querySelector('.drop-target');
+        if (target) {
+          const div = document.createElement('div');
+          div.className = 'dropped-item';
+          div.innerHTML = draggedItem.innerHTML;
+          div.setAttribute('data-id', draggedItem.getAttribute('data-id'));
+          div.setAttribute('data-cat', draggedItem.getAttribute('data-cat'));
+          div.setAttribute('data-zone', zone.getAttribute('data-cat'));
+          target.appendChild(div);
+          draggedItem.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  // Touch drag fallback for mobile
+  dragItems.forEach(item => {
+    item.addEventListener('touchstart', e => {
+      draggedItem = item;
+    }, { passive: true });
+  });
+
+  // ─── QUIZ ─────────────────────────────────────────────────────────────────
+  window.currentQ = 0;
+  window.score = 0;
+  window.answered = new Array(10).fill(false);
+  window.correct = new Array(10).fill(false);
+
+  window.nextQuestion = function() {
+    const qs = document.querySelectorAll('.quiz-question');
+    if (currentQ < qs.length - 1) {
+      qs[currentQ].classList.remove('active');
+      currentQ++;
+      qs[currentQ].classList.add('active');
+      updateProgress();
+    } else {
+      showScore();
+    }
+  };
+
+  window.prevQuestion = function() {
+    const qs = document.querySelectorAll('.quiz-question');
+    if (currentQ > 0) {
+      qs[currentQ].classList.remove('active');
+      currentQ--;
+      qs[currentQ].classList.add('active');
+      updateProgress();
+    }
+  };
+
+  function updateProgress() {
+    const total = 10;
+    const pct = (currentQ / total) * 100;
+    document.getElementById('quizProgress').style.width = pct + '%';
+  }
+
+  // Handle MCQ options
+  document.querySelectorAll('.quiz-options').forEach((optGroup, qIndex) => {
+    const opts = optGroup.querySelectorAll('.quiz-option');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (answered[qIndex]) return;
+        answered[qIndex] = true;
+        const isCorrect = opt.getAttribute('data-ans') === '1';
+
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.getAttribute('data-ans') === '1') o.classList.add('correct');
+        });
+
+        if (!isCorrect) {
+          opt.classList.add('wrong');
+        } else {
+          correct[qIndex] = true;
+          score++;
+        }
+
+        const fb = optGroup.parentElement.querySelector('.quiz-feedback');
+        if (fb) {
+          fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'no');
+          fb.textContent = isCorrect ? '✅ Correct! Well done!' : '❌ Not quite. The correct answer is highlighted in green.';
+        }
+
+        const nextBtn = document.getElementById('nextBtn' + qIndex);
+        if (nextBtn) nextBtn.disabled = false;
+      });
+    });
+  });
+
+  window.checkNumAnswer = function() {
+    const input = document.getElementById('numInput');
+    const val = parseInt(input.value);
+    const qIndex = 9;
+    if (answered[qIndex]) return;
+
+    const isCorrect = val === 10;
+    answered[qIndex] = true;
+
+    if (isCorrect) {
+      input.classList.add('correct-input');
+      correct[qIndex] = true;
+      score++;
+    } else {
+      input.classList.add('wrong-input');
+    }
+
+    const fb = document.querySelector('[data-q="9"] .quiz-feedback');
+    if (fb) {
+      fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'no');
+      fb.textContent = isCorrect ? '✅ Correct! The lesson uses "repeat 10" for the dancing animation.' : '❌ The answer is 10 — the lesson uses a "repeat 10" block for the dancing animation.';
+    }
+
+    setTimeout(() => showScore(), 1200);
+  };
+
+  function showScore() {
+    document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+    const scoreEl = document.getElementById('quizScore');
+    if (scoreEl) scoreEl.style.display = 'block';
+    document.getElementById('scoreBadge').textContent = score + ' / 10';
+    document.getElementById('quizProgress').style.width = '100%';
+
+    const msg = document.getElementById('scoreMsg');
+    if (score >= 9) msg.textContent = '🌟 Outstanding! You\'re a Scratch expert!';
+    else if (score >= 7) msg.textContent = '🎉 Great job! You really understand Scratch!';
+    else if (score >= 5) msg.textContent = '👍 Good effort! Review the sections you missed.';
+    else msg.textContent = '📚 Keep practicing! Re-read the lesson and try again.';
+
+    try {
+      if (typeof gsap !== 'undefined') {
+        gsap.from('#quizScore', { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.7)' });
+      }
+    } catch(e) {}
+  }
+
+  window.resetQuiz = function() {
+    currentQ = 0;
+    score = 0;
+    answered = new Array(10).fill(false);
+    correct = new Array(10).fill(false);
+
+    document.getElementById('quizScore').style.display = 'none';
+    document.getElementById('quizProgress').style.width = '0%';
+
+    document.querySelectorAll('.quiz-question').forEach((q, i) => {
+      q.classList.remove('active');
+      q.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('correct', 'wrong', 'disabled');
+      });
+      const fb = q.querySelector('.quiz-feedback');
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      const nb = document.getElementById('nextBtn' + i);
+      if (nb) nb.disabled = true;
+    });
+
+    const numInput = document.getElementById('numInput');
+    if (numInput) {
+      numInput.value = '';
+      numInput.classList.remove('correct-input', 'wrong-input');
+    }
+
+    document.querySelectorAll('.quiz-question')[0].classList.add('active');
+  };
+
+  // ─── HINT TOGGLE ─────────────────────────────────────────────────────────
+  window.toggleHint = function(btn) {
+    const content = btn.nextElementSibling;
+    if (!content) return;
+    content.classList.toggle('open');
+    btn.textContent = content.classList.contains('open') ? btn.textContent.replace('💡', '🔼') : btn.textContent.replace('🔼', '💡');
+  };
+
+  // ─── DND CHECK / RESET ───────────────────────────────────────────────────
+  window.checkDND = function() {
+    const dropped = document.querySelectorAll('.dropped-item');
+    let total = 0, correctCount = 0;
+    dropped.forEach(item => {
+      total++;
+      if (item.getAttribute('data-cat') === item.getAttribute('data-zone')) {
+        correctCount++;
+        item.style.background = '#00b894';
+      } else {
+        item.style.background = '#e17055';
+      }
+    });
+    const result = document.getElementById('dndResult');
+    if (total === 0) {
+      result.className = 'dnd-result partial';
+      result.textContent = '⚠️ Please drag some blocks to the categories first!';
+      return;
+    }
+    if (correctCount === total && total === 6) {
+      result.className = 'dnd-result correct';
+      result.textContent = `🎉 Perfect! All ${correctCount}/${total} blocks correctly classified!`;
+    } else {
+      result.className = 'dnd-result partial';
+      result.textContent = `🤔 ${correctCount}/${total} correct. Red items are in the wrong category — try again!`;
+    }
+  };
+
+  window.resetDND = function() {
+    document.querySelectorAll('.drag-item').forEach(item => {
+      item.style.display = 'flex';
+      item.style.opacity = '1';
+    });
+    document.querySelectorAll('.drop-target').forEach(t => t.innerHTML = '');
+    const result = document.getElementById('dndResult');
+    if (result) { result.className = 'dnd-result'; result.textContent = ''; }
+  };
+
+  // ─── FLIP CARD KEYBOARD ──────────────────────────────────────────────────
+  document.querySelectorAll('.flip-wrap').forEach(wrap => {
+    wrap.addEventListener('keypress', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        wrap.querySelector('.flip-card').classList.toggle('flipped');
+      }
+    });
+  });
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>
