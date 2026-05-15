@@ -191,6 +191,66 @@ canvas#measureViz{display:block;border-radius:14px}
   .card,.sidebar-card{padding:18px}
 }
 
+/* —— LIQUID LAB (touch / mouse, no camera) —— */
+#conversions #playlab.pl-in-conversions{
+  margin:0 0 28px;
+  padding:0 0 28px;
+  border-top:none;
+  border-bottom:2px dashed rgba(44,62,80,0.14);
+}
+#playlab .pl-shell{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:stretch;
+}
+@media(max-width:900px){
+  #playlab .pl-shell{grid-template-columns:1fr}
+}
+#playlab .pl-stage{
+  background:linear-gradient(180deg,#e8f4fc 0%,#f0f9ea 100%);
+  border-radius:16px;padding:24px;border:2px solid rgba(44,62,80,0.12);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;
+}
+#playlab .pl-jar-wrap{position:relative;width:min(200px,42vw);height:280px;margin:0 auto}
+#playlab .pl-jar{
+  position:absolute;inset:0;border-radius:0 0 28px 28px;border:4px solid rgba(44,62,80,0.35);
+  border-top:none;background:rgba(255,255,255,0.45);overflow:hidden;box-shadow:inset 0 -8px 24px rgba(106,176,76,0.12);
+}
+#playlab .pl-liquid{
+  position:absolute;left:4px;right:4px;bottom:4px;height:0%;
+  background:linear-gradient(180deg,#7ed56f 0%,#2c8a6a 100%);border-radius:0 0 20px 20px;
+  transition:height 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+#playlab .pl-liquid.pl-shake{animation:plShake 0.45s ease}
+@keyframes plShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+#playlab .pl-scale{
+  position:absolute;right:-36px;top:0;bottom:0;width:28px;border-left:2px solid rgba(44,62,80,0.25);
+  display:flex;flex-direction:column;justify-content:space-between;font-size:10px;font-weight:700;color:var(--navy);padding:4px 0;
+}
+#playlab .pl-readout{
+  text-align:center;margin-top:16px;font-family:'Poppins',sans-serif;font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:700;color:var(--navy);
+}
+#playlab .pl-readout span{color:var(--amber)}
+#playlab .pl-panel{background:#fff;border-radius:16px;padding:22px;box-shadow:0 6px 28px rgba(0,0,0,0.08);border:1px solid #e8f0e8}
+#playlab .pl-target{
+  font-size:clamp(1.05rem,2.2vw,1.25rem);line-height:1.5;margin-bottom:14px;padding:14px 16px;border-radius:12px;background:var(--light-green);border-left:5px solid var(--green);
+}
+#playlab .pl-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+#playlab .pl-btn{
+  flex:1 1 auto;min-width:72px;min-height:52px;border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;cursor:pointer;
+  background:var(--navy);color:#fff;transition:transform 0.15s,filter 0.15s;
+}
+#playlab .pl-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+#playlab .pl-btn:active{transform:scale(0.97)}
+#playlab .pl-btn.pl-amber{background:var(--amber)}
+#playlab .pl-btn.pl-green{background:var(--green)}
+#playlab .pl-btn.pl-muted{background:#95a5a6}
+#playlab .pl-hud{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px;font-size:15px}
+#playlab .pl-badge{background:var(--navy);color:#fff;padding:6px 14px;border-radius:20px;font-family:'Poppins',sans-serif;font-weight:700;font-size:13px}
+#playlab .pl-tip{
+  margin-top:14px;padding:12px 14px;border-radius:10px;background:#eef2f7;font-size:16px;line-height:1.55;color:var(--navy);
+}
+#playlab .pl-tip.pl-win{border-left:4px solid var(--green);background:#e8f8e0}
+#playlab .pl-tip.pl-lose{border-left:4px solid #e74c3c;background:#ffecec}
+
 /* UTILITY */
 .mt-16{margin-top:16px}
 .mb-16{margin-bottom:16px}
@@ -232,6 +292,7 @@ li{font-size:18px;margin-bottom:6px}
     <span class="active" data-section="hero" title="Intro"></span>
     <span data-section="concepts" title="Concepts"></span>
     <span data-section="conversions" title="Conversions"></span>
+    <span data-section="playlab" title="Liquid Lab"></span>
     <span data-section="addition" title="Addition"></span>
     <span data-section="subtraction" title="Subtraction"></span>
     <span data-section="wordproblems" title="Word Problems"></span>
@@ -250,6 +311,7 @@ li{font-size:18px;margin-bottom:6px}
       <div class="hero-stat"><div class="num">×÷</div><div class="lbl">Conversions</div></div>
       <div class="hero-stat"><div class="num">+−</div><div class="lbl">Add &amp; Subtract</div></div>
       <div class="hero-stat"><div class="num">10</div><div class="lbl">Quiz Questions</div></div>
+      <div class="hero-stat"><div class="num">🧪</div><div class="lbl">Liquid Lab</div></div>
     </div>
   </div>
 </section>
@@ -357,6 +419,54 @@ li{font-size:18px;margin-bottom:6px}
 <!-- CONVERSIONS SECTION -->
 <section id="conversions" style="background:var(--light-green);">
   <div class="section-wrap">
+
+    <!-- Liquid Lab — first in Conversions (L ↔ mℓ) -->
+    <div id="playlab" class="pl-in-conversions" role="region" aria-labelledby="playlab-h2">
+      <div class="section-label">Play &amp; Learn</div>
+      <h2 id="playlab-h2">Liquid Lab — Target Pour</h2>
+      <p class="mb-16">No camera needed. Use the buttons to pour water into the beaker, match the <strong>target</strong>, then tap <strong>Check</strong>. Every round reinforces litres ↔ millilitres.</p>
+      <div class="divider"></div>
+
+      <div class="card card-green anim-fade" style="border-top-width:5px">
+        <div class="pl-shell">
+          <div class="pl-stage">
+            <div style="font-size:42px;line-height:1;margin-bottom:8px" aria-hidden="true">🧪</div>
+            <div class="pl-jar-wrap" aria-label="Beaker visualization">
+              <div class="pl-jar">
+                <div class="pl-liquid" id="plLiquid"></div>
+              </div>
+              <div class="pl-scale" aria-hidden="true"><span>ℓ</span><span>½</span><span>0</span></div>
+            </div>
+            <div class="pl-readout" id="plReadout">Current: <span id="plCurMl">0</span> mℓ <span id="plCurL" style="opacity:0.85;font-weight:600"></span></div>
+          </div>
+          <div class="pl-panel">
+            <div class="pl-hud">
+              <span class="pl-badge" id="plRound">Round 1</span>
+              <span class="pl-badge" style="background:var(--amber)" id="plStreak">Streak: 0</span>
+              <span class="pl-badge" style="background:#5d6d7e" id="plBest">Best: 0</span>
+            </div>
+            <div class="pl-target" id="plMission">Loading…</div>
+            <p style="font-size:15px;color:#666;margin-bottom:12px">Pour in millilitres (remember: <strong>1 ℓ = 1,000 mℓ</strong>).</p>
+            <div class="pl-row">
+              <button type="button" class="pl-btn" data-add="50">+50 mℓ</button>
+              <button type="button" class="pl-btn" data-add="100">+100 mℓ</button>
+              <button type="button" class="pl-btn" data-add="250">+250 mℓ</button>
+            </div>
+            <div class="pl-row">
+              <button type="button" class="pl-btn pl-amber" data-add="500">+500 mℓ</button>
+              <button type="button" class="pl-btn pl-muted" data-add="-100">−100 mℓ</button>
+              <button type="button" class="pl-btn pl-muted" id="plEmpty">Empty</button>
+            </div>
+            <div class="pl-row" style="margin-top:8px">
+              <button type="button" class="pl-btn pl-green" id="plCheck" style="flex:2">✓ Check pour</button>
+              <button type="button" class="pl-btn" id="plSkip" style="flex:1">New target</button>
+            </div>
+            <div class="pl-tip" id="plTip">Tip: read the target in both mℓ and ℓ — they are the same amount!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="section-label">Conversions</div>
     <h2>Converting Litres &amp; Millilitres</h2>
     <div class="divider"></div>
@@ -821,6 +931,7 @@ li{font-size:18px;margin-bottom:6px}
     <a href="#hero">🏠 Intro</a>
     <a href="#concepts">📦 Concepts</a>
     <a href="#conversions">🔄 Convert</a>
+    <a href="#playlab">🧪 Lab</a>
     <a href="#addition">➕ Add</a>
     <a href="#subtraction">➖ Subtract</a>
     <a href="#wordproblems">📝 Problems</a>
@@ -917,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Progress dots update
-      const sections = ['hero','concepts','conversions','addition','subtraction','wordproblems','quiz'];
+      const sections = ['hero','concepts','conversions','playlab','addition','subtraction','wordproblems','quiz'];
       sections.forEach((id, i) => {
         const el = document.getElementById(id);
         const dot = document.querySelector(`.progress-dots span[data-section="${id}"]`);
@@ -1386,6 +1497,187 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =====================
+  // LIQUID LAB — target pour (touch / mouse, no MediaPipe)
+  // =====================
+  (function initLiquidLab() {
+    const liquid = document.getElementById('plLiquid');
+    const curMlEl = document.getElementById('plCurMl');
+    const curLEl = document.getElementById('plCurL');
+    const missionEl = document.getElementById('plMission');
+    const tipEl = document.getElementById('plTip');
+    const roundEl = document.getElementById('plRound');
+    const streakEl = document.getElementById('plStreak');
+    const bestEl = document.getElementById('plBest');
+    const btnCheck = document.getElementById('plCheck');
+    const btnSkip = document.getElementById('plSkip');
+    const btnEmpty = document.getElementById('plEmpty');
+    if (!liquid || !curMlEl || !missionEl || !tipEl || !btnCheck) return;
+
+    const CAP = 2500;
+    let current = 0;
+    let target = 600;
+    let round = 1;
+    let streak = 0;
+    let bestStreak = 0;
+    try {
+      const saved = parseInt(localStorage.getItem('math08_pl_best') || '0', 10);
+      if (!isNaN(saved)) bestStreak = saved;
+    } catch (e) {}
+
+    function levelFromStreak() {
+      return Math.min(8, 1 + Math.floor(streak / 3));
+    }
+
+    function toleranceMl() {
+      const lv = levelFromStreak();
+      return Math.max(22, 78 - lv * 7);
+    }
+
+    function fmtLitresFromMl(ml) {
+      if (ml % 1000 === 0) return (ml / 1000) + ' ℓ';
+      const s = (ml / 1000).toFixed(2);
+      return s.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '') + ' ℓ';
+    }
+
+    function syncLiquid() {
+      const pct = Math.min(100, Math.max(0, (current / CAP) * 100));
+      liquid.style.height = pct + '%';
+      curMlEl.textContent = String(Math.round(current));
+      curLEl.textContent = '= ' + fmtLitresFromMl(Math.round(current));
+    }
+
+    function randomTargetMl() {
+      const lv = levelFromStreak();
+      const minT = Math.min(2200, 250 + lv * 120);
+      const maxT = Math.min(2200, 550 + lv * 220);
+      const pool = [];
+      for (let x = minT; x <= maxT; x += 50) {
+        if (x >= 150) pool.push(x);
+      }
+      return pool[Math.floor(Math.random() * pool.length)] || 800;
+    }
+
+    function setMissionText() {
+      missionEl.innerHTML =
+        '<strong>Target:</strong> pour <strong>' +
+        target +
+        ' mℓ</strong> — the same volume as <strong>' +
+        fmtLitresFromMl(target) +
+        '</strong>.';
+    }
+
+    function newRound(resetStreak) {
+      if (resetStreak) streak = 0;
+      current = 0;
+      target = randomTargetMl();
+      setMissionText();
+      tipEl.className = 'pl-tip';
+      tipEl.textContent =
+        'Add with the buttons. If you go a bit over, use −100 mℓ or Empty. When it looks right, tap Check.';
+      roundEl.textContent = 'Round ' + round;
+      streakEl.textContent = 'Streak: ' + streak;
+      bestEl.textContent = 'Best: ' + bestStreak;
+      liquid.classList.remove('pl-shake');
+      syncLiquid();
+    }
+
+    function teachTip(ok) {
+      const t = target;
+      let msg = '';
+      if (ok) {
+        if (t % 1000 === 0) msg = 'Nice — that was a whole number of litres. Remember 1 ℓ = 1,000 mℓ.';
+        else if (t % 250 === 0) msg = 'Great job. Quarters of a litre (250 mℓ steps) show up in real measuring cups!';
+        else if (t < 1000) msg = 'Under one litre: compare mℓ to 1,000 to picture how full a one-litre bottle would be.';
+        else msg = 'Over one litre: you combined litres and extra millilitres — same idea as column addition!';
+        tipEl.className = 'pl-tip pl-win';
+        tipEl.textContent = '✅ Perfect pour! ' + msg;
+      } else {
+        const diff = Math.round(current - target);
+        const how = diff > 0 ? diff + ' mℓ too much' : Math.abs(diff) + ' mℓ short';
+        tipEl.className = 'pl-tip pl-lose';
+        tipEl.textContent =
+          'Almost — you are ' +
+          how +
+          '. Tolerance this round is ±' +
+          toleranceMl() +
+          ' mℓ. Adjust with the buttons and tap Check again — your streak stays until you nail it!';
+        liquid.classList.remove('pl-shake');
+        void liquid.offsetWidth;
+        liquid.classList.add('pl-shake');
+      }
+      try {
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(tipEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+        }
+      } catch (e2) {}
+    }
+
+    document.querySelectorAll('#playlab .pl-btn[data-add]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const d = parseInt(btn.getAttribute('data-add'), 10);
+        if (isNaN(d)) return;
+        const next = current + d;
+        if (next > CAP) {
+          tipEl.className = 'pl-tip pl-lose';
+          tipEl.textContent = 'Beaker holds at most ' + CAP + ' mℓ — empty a little or check your maths!';
+          current = CAP;
+        } else {
+          current = Math.max(0, next);
+        }
+        syncLiquid();
+      });
+    });
+
+    if (btnEmpty) {
+      btnEmpty.addEventListener('click', function () {
+        current = 0;
+        syncLiquid();
+      });
+    }
+
+    btnCheck.addEventListener('click', function () {
+      const tol = toleranceMl();
+      if (Math.abs(current - target) <= tol) {
+        streak += 1;
+        streakEl.textContent = 'Streak: ' + streak;
+        if (streak > bestStreak) {
+          bestStreak = streak;
+          try {
+            localStorage.setItem('math08_pl_best', String(bestStreak));
+          } catch (e3) {}
+        }
+        teachTip(true);
+        round += 1;
+        setTimeout(function () {
+          newRound(false);
+        }, 1400);
+      } else {
+        teachTip(false);
+      }
+    });
+
+    if (btnSkip) {
+      btnSkip.addEventListener('click', function () {
+        current = 0;
+        target = randomTargetMl();
+        round += 1;
+        setMissionText();
+        tipEl.className = 'pl-tip';
+        tipEl.textContent =
+          'Skipped to a fresh target. Your streak (' +
+          streak +
+          ') is unchanged — pour when you are ready!';
+        syncLiquid();
+        roundEl.textContent = 'Round ' + round;
+        streakEl.textContent = 'Streak: ' + streak;
+      });
+    }
+
+    bestEl.textContent = 'Best: ' + bestStreak;
+    newRound(false);
+  })();
+
+  // =====================
   // PROGRESS DOT CLICKS
   // =====================
   document.querySelectorAll('.progress-dots span').forEach(dot => {
@@ -1413,6 +1705,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, observerOpts);
   sections.forEach(s => sectionObserver.observe(s));
+  const playlabEl = document.getElementById('playlab');
+  if (playlabEl) sectionObserver.observe(playlabEl);
 
   // =====================
   // TWO COLUMN GRID MOBILE FIX
