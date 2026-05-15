@@ -1,0 +1,376 @@
+
+// ===== MULTIPLICATION BOXING =====
+const BX = {
+  useCam: false,
+  lastMode: 'cam',
+  running: false,
+  round: 0,
+  totalRounds: 8,
+  questions: [],
+  lockedSide: null,
+  resolving: false,
+  youHits: 0,
+  oppHits: 0,
+  playerHp: 100,
+  oppHp: 100,
+  stream: null,
+  mpCamera: null,
+  pose: null,
+  calibrating: true,
+  calFrames: 0,
+  baselineL: 0,
+  baselineR: 0,
+  smoothL: 0,
+  smoothR: 0,
+  dwellDir: 0,
+  dwellSince: 0,
+  PUNCH_THRESH: 0.1,
+  DWELL_MS: 580,
+  CAL_FRAMES: 22
+};
+
+function bxGenQuestions(n) {
+  const qs = [];
+  const used = new Set();
+  while (qs.length < n) {
+    const a = 2 + Math.floor(Math.random() * 11);
+    const b = 2 + Math.floor(Math.random() * 11);
+    const key = a + 'x' + b;
+    if (used.has(key)) continue;
+    used.add(key);
+    const correct = a * b;
+    let wrong = correct + (Math.random() < 0.5 ? -1 : 1) * (2 + Math.floor(Math.random() * 7));
+    if (wrong <= 0 || wrong === correct) wrong = correct + (correct > 10 ? 5 : 3);
+    const leftCorrect = Math.random() < 0.5;
+    qs.push({
+      a, b, correct,
+      left: leftCorrect ? correct : wrong,
+      right: leftCorrect ? wrong : correct,
+      correctSide: leftCorrect ? 0 : 1
+    });
+  }
+  return qs;
+}
+
+function bxStopPipeline() {
+  try { if (BX.pose) BX.pose.onResults(function() {}); } catch (e) {}
+  try { if (BX.mpCamera) { BX.mpCamera.stop(); BX.mpCamera = null; } } catch (e) {}
+  try { if (BX.pose && BX.pose.close) BX.pose.close(); } catch (e) {}
+  BX.pose = null;
+  if (BX.stream) {
+    BX.stream.getTracks().forEach(function(t) { try { t.stop(); } catch (e2) {} });
+    BX.stream = null;
+  }
+  var v = document.getElementById('boxingVideo');
+  if (v) try { v.srcObject = null; } catch (e3) {}
+  BX.running = false;
+}
+
+function bxOpen() {
+  var shell = document.getElementById('boxing-shell');
+  if (!shell) return;
+  shell.removeAttribute('hidden');
+  requestAnimationFrame(function() { shell.classList.add('is-open'); });
+  document.body.classList.add('boxing-no-scroll');
+  document.getElementById('boxingIntro').style.display = '';
+  document.getElementById('boxingArena').classList.remove('is-active');
+  document.getElementById('boxingEnd').style.display = 'none';
+}
+
+function bxClose() {
+  bxStopPipeline();
+  var shell = document.getElementById('boxing-shell');
+  if (shell) { shell.classList.remove('is-open'); shell.setAttribute('hidden', ''); }
+  document.body.classList.remove('boxing-no-scroll');
+}
+
+function bxFlash(text, ms) {
+  var el = document.getElementById('boxingFlash');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, ms || 850);
+}
+
+function bxSetHealth() {
+  var y = document.getElementById('boxingHealthYou');
+  var o = document.getElementById('boxingHealthOpp');
+  if (y) y.style.width = Math.max(0, BX.playerHp) + '%';
+  if (o) o.style.width = Math.max(0, BX.oppHp) + '%';
+}
+
+function bxClearOpts() {
+  ['boxingOptL', 'boxingOptR'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('hot', 'locked', 'correct', 'wrong', 'missing');
+    el.disabled = false;
+  });
+}
+
+function bxLockPick(side) {
+  if (!BX.running || BX.resolving || BX.lockedSide !== null) return;
+  if (side !== 0 && side !== 1) return;
+  BX.lockedSide = side;
+  bxClearOpts();
+  var L = document.getElementById('boxingOptL');
+  var R = document.getElementById('boxingOptR');
+  if (L) { L.classList.toggle('locked', side === 0); L.disabled = true; }
+  if (R) { R.classList.toggle('locked', side === 1); R.disabled = true; }
+  bxFlash('Locked!', 450);
+}
+
+function bxResolveRound() {
+  if (!BX.running || BX.resolving) return;
+  BX.resolving = true;
+  var q = BX.questions[BX.round];
+  var pick = BX.lockedSide;
+  var missing = pick === null;
+  var correct = !missing && pick === q.correctSide;
+  var opp = document.getElementById('boxingOpponent');
+  var ring = document.getElementById('boxingRing');
+  var gL = document.getElementById('boxingPGloveL');
+  var gR = document.getElementById('boxingPGloveR');
+  var L = document.getElementById('boxingOptL');
+  var R = document.getElementById('boxingOptR');
+
+  if (pick === 0 && gL) { gL.classList.add('punch-l'); setTimeout(function() { gL.classList.remove('punch-l'); }, 380); }
+  if (pick === 1 && gR) { gR.classList.add('punch-r'); setTimeout(function() { gR.classList.remove('punch-r'); }, 380); }
+
+  if (missing) {
+    if (L) L.classList.add('missing');
+    if (R) R.classList.add('missing');
+    BX.oppHits++;
+    BX.playerHp = Math.max(0, BX.playerHp - 12);
+    if (opp) { opp.classList.add('dodge'); setTimeout(function() { opp.classList.remove('dodge'); }, 480); }
+    if (ring) { ring.classList.add('boxing-screen-shake'); setTimeout(function() { ring.classList.remove('boxing-screen-shake'); }, 420); }
+    bxFlash('Missing — counter punch!', 900);
+  } else if (correct) {
+    BX.youHits++;
+    BX.oppHp = Math.max(0, BX.oppHp - 14);
+    if (opp) { opp.classList.add('hit'); setTimeout(function() { opp.classList.remove('hit'); }, 480); }
+    if (q.correctSide === 0) L.classList.add('correct'); else R.classList.add('correct');
+    bxFlash('Direct hit!', 750);
+  } else {
+    BX.oppHits++;
+    BX.playerHp = Math.max(0, BX.playerHp - 14);
+    if (opp) { opp.classList.add('dodge'); setTimeout(function() { opp.classList.remove('dodge'); }, 480); }
+    if (ring) { ring.classList.add('boxing-screen-shake'); setTimeout(function() { ring.classList.remove('boxing-screen-shake'); }, 420); }
+    if (q.correctSide === 0) L.classList.add('correct'); else R.classList.add('correct');
+    (pick === 0 ? L : R).classList.add('wrong');
+    bxFlash('Counter punch!', 850);
+  }
+  bxSetHealth();
+
+  setTimeout(function() {
+    BX.round++;
+    BX.lockedSide = null;
+    BX.resolving = false;
+    if (BX.round >= BX.totalRounds || BX.playerHp <= 0 || BX.oppHp <= 0) bxFinish();
+    else bxBeginRound();
+  }, 1700);
+}
+
+function bxBeginRound() {
+  var q = BX.questions[BX.round];
+  if (!q) return;
+  BX.lockedSide = null;
+  BX.resolving = false;
+  BX.calibrating = BX.useCam;
+  BX.calFrames = 0;
+  BX.baselineL = 0;
+  BX.baselineR = 0;
+  BX.dwellDir = 0;
+  bxClearOpts();
+
+  document.getElementById('boxingRoundBadge').textContent = 'Round ' + (BX.round + 1) + ' / ' + BX.totalRounds;
+  document.getElementById('boxingQuestion').textContent = q.a + ' \u00d7 ' + q.b + ' = ?';
+  document.getElementById('boxingValL').textContent = String(q.left);
+  document.getElementById('boxingValR').textContent = String(q.right);
+
+  var hint = document.getElementById('boxingPunchHint');
+  var cal = document.getElementById('boxingCal');
+  if (BX.useCam) {
+    if (hint) hint.textContent = 'Guard up — then jab toward an answer';
+    if (cal) cal.classList.add('show');
+  } else {
+    if (hint) hint.textContent = 'Tap left or right to punch';
+    if (cal) cal.classList.remove('show');
+    BX.calibrating = false;
+  }
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo('#boxingQuestion', { scale: 0.88, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(1.5)' });
+    }
+  } catch (e) {}
+}
+
+function bxFinish() {
+  bxStopPipeline();
+  document.getElementById('boxingArena').classList.remove('is-active');
+  document.getElementById('boxingEnd').style.display = 'block';
+  var won = BX.youHits > BX.oppHits && BX.playerHp > 0;
+  var draw = BX.youHits === BX.oppHits;
+  document.getElementById('boxingEndTitle').textContent = won ? 'You Win!' : (draw ? 'Draw!' : 'Knockout!');
+  document.getElementById('boxingEndStats').innerHTML =
+    'Your hits: <strong>' + BX.youHits + '</strong> &middot; Opponent: <strong>' + BX.oppHits + '</strong><br>' +
+    (won ? 'Champion multiplier — great work!' : 'Train your tables and rematch!');
+}
+
+function bxPunchSignals(lm) {
+  var ls = lm[11], rs = lm[12], lw = lm[15], rw = lm[16];
+  var mx = function(x) { return 1 - x; };
+  return { leftExt: mx(ls.x) - mx(lw.x), rightExt: mx(rw.x) - mx(rs.x) };
+}
+
+function bxOnPoseResults(results) {
+  if (!BX.running || BX.resolving || BX.lockedSide !== null || !BX.useCam) return;
+  var lm = results.poseLandmarks;
+  if (!lm) return;
+  var sig = bxPunchSignals(lm);
+  BX.smoothL = BX.smoothL * 0.5 + sig.leftExt * 0.5;
+  BX.smoothR = BX.smoothR * 0.5 + sig.rightExt * 0.5;
+
+  if (BX.calibrating) {
+    BX.baselineL = (BX.baselineL * BX.calFrames + BX.smoothL) / (BX.calFrames + 1);
+    BX.baselineR = (BX.baselineR * BX.calFrames + BX.smoothR) / (BX.calFrames + 1);
+    BX.calFrames++;
+    if (BX.calFrames >= BX.CAL_FRAMES) {
+      BX.calibrating = false;
+      document.getElementById('boxingCal').classList.remove('show');
+      document.getElementById('boxingPunchHint').textContent = 'Jab LEFT or RIGHT!';
+    }
+    return;
+  }
+
+  var dL = BX.smoothL - BX.baselineL;
+  var dR = BX.smoothR - BX.baselineR;
+  var dir = 0;
+  if (dL > BX.PUNCH_THRESH && dL > dR) dir = -1;
+  else if (dR > BX.PUNCH_THRESH && dR > dL) dir = 1;
+
+  var L = document.getElementById('boxingOptL');
+  var R = document.getElementById('boxingOptR');
+  var now = performance.now();
+
+  if (dir === 0) {
+    BX.dwellDir = 0;
+    if (L) L.classList.remove('hot');
+    if (R) R.classList.remove('hot');
+  } else {
+    if (dir !== BX.dwellDir) { BX.dwellDir = dir; BX.dwellSince = now; }
+    else if (now - BX.dwellSince > BX.DWELL_MS) {
+      bxLockPick(dir === -1 ? 0 : 1);
+      setTimeout(function() { if (!BX.resolving) bxResolveRound(); }, 500);
+      return;
+    }
+    if (L) L.classList.toggle('hot', dir === -1);
+    if (R) R.classList.toggle('hot', dir === 1);
+  }
+}
+
+async function bxStartCam() {
+  bxStopPipeline();
+  await new Promise(function(r) { setTimeout(r, 300); });
+  BX.lastMode = 'cam';
+  BX.useCam = true;
+  document.getElementById('boxingIntro').style.display = 'none';
+  document.getElementById('boxingEnd').style.display = 'none';
+  document.getElementById('boxingArena').classList.add('is-active');
+  document.getElementById('boxingCamPip').style.display = '';
+
+  var video = document.getElementById('boxingVideo');
+  try {
+    BX.stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false
+    });
+    video.srcObject = BX.stream;
+    await video.play().catch(function() {});
+  } catch (err) {
+    BX.useCam = false;
+    return bxStartTap();
+  }
+
+  if (typeof Pose === 'undefined' || typeof Camera === 'undefined') {
+    BX.useCam = false;
+    document.getElementById('boxingCamPip').style.display = 'none';
+    return bxStartTap();
+  }
+
+  var PV = '0.5.1675469404';
+  try {
+    BX.pose = new Pose({ locateFile: function(f) { return 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@' + PV + '/' + f; } });
+    BX.pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+    BX.pose.onResults(bxOnPoseResults);
+    BX.mpCamera = new Camera(video, {
+      onFrame: async function() { if (BX.pose) await BX.pose.send({ image: video }); },
+      width: 640, height: 480
+    });
+    BX.mpCamera.start();
+  } catch (e2) {
+    console.warn('Pose', e2);
+    BX.useCam = false;
+    document.getElementById('boxingCamPip').style.display = 'none';
+  }
+  bxStartMatch();
+}
+
+function bxStartTap() {
+  bxStopPipeline();
+  BX.lastMode = 'tap';
+  BX.useCam = false;
+  BX.calibrating = false;
+  document.getElementById('boxingIntro').style.display = 'none';
+  document.getElementById('boxingEnd').style.display = 'none';
+  document.getElementById('boxingArena').classList.add('is-active');
+  document.getElementById('boxingCamPip').style.display = 'none';
+  bxStartMatch();
+}
+
+function bxStartMatch() {
+  BX.questions = bxGenQuestions(BX.totalRounds);
+  BX.round = 0;
+  BX.youHits = 0;
+  BX.oppHits = 0;
+  BX.playerHp = 100;
+  BX.oppHp = 100;
+  BX.running = true;
+  bxSetHealth();
+  bxBeginRound();
+}
+
+function initBoxingGame() {
+  var open = document.getElementById('btnBoxingOpen');
+  if (open) open.addEventListener('click', bxOpen);
+  var close = document.getElementById('boxingClose');
+  if (close) close.addEventListener('click', bxClose);
+  var cam = document.getElementById('boxingBtnCam');
+  if (cam) cam.addEventListener('click', function() { bxStartCam(); });
+  var tap = document.getElementById('boxingBtnTap');
+  if (tap) tap.addEventListener('click', function() { bxStartTap(); });
+  var again = document.getElementById('boxingBtnAgain');
+  if (again) again.addEventListener('click', async function() {
+    document.getElementById('boxingEnd').style.display = 'none';
+    bxStopPipeline();
+    await new Promise(function(r) { setTimeout(r, 320); });
+    if (BX.lastMode === 'tap') bxStartTap(); else bxStartCam();
+  });
+  var optL = document.getElementById('boxingOptL');
+  var optR = document.getElementById('boxingOptR');
+  if (optL) optL.addEventListener('click', function() {
+    if (BX.lockedSide !== null || BX.resolving) return;
+    bxLockPick(0);
+    setTimeout(function() { bxResolveRound(); }, 500);
+  });
+  if (optR) optR.addEventListener('click', function() {
+    if (BX.lockedSide !== null || BX.resolving) return;
+    bxLockPick(1);
+    setTimeout(function() { bxResolveRound(); }, 500);
+  });
+  document.addEventListener('keydown', function(ev) {
+    var shell = document.getElementById('boxing-shell');
+    if (!shell || shell.hasAttribute('hidden')) return;
+    if (ev.key === 'Escape') bxClose();
+  });
+}
