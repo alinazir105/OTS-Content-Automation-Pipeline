@@ -1,0 +1,433 @@
+<!-- TRACK: Skill Based | COURSE: English Language | LEVEL: 2 | VERSION: 2.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rhyming Words | English Language Skill</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+<link rel="stylesheet" href="assets/playlab.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#6AB04C;--navy:#2C3E50;--amber:#F0932B;--white:#fff;
+  --light-green:#f0f9eb;--light-amber:#fff7ee;--border-radius:14px;
+  --shadow:0 4px 24px rgba(44,62,80,0.10);
+}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:'Inter',sans-serif;font-size:18px;line-height:1.7;color:var(--navy);background:#fff;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:700}
+
+#curtain{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#curtain .logo{font-family:'Poppins',sans-serif;font-size:1.8rem;color:#fff;font-weight:800}
+#curtain .sub{color:rgba(255,255,255,.75);font-size:1rem}
+.curtain-spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.sticky-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,32px);height:62px;box-shadow:0 2px 16px rgba(0,0,0,.18)}
+.sticky-header h1{font-family:'Poppins',sans-serif;font-size:clamp(.95rem,2.5vw,1.2rem);font-weight:700}
+.sticky-header .hub-link{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;font-weight:600;margin-right:12px}
+.sticky-header .hub-link:hover{color:var(--amber)}
+.progress-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:50%}
+.progress-dots span{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .3s,transform .3s;display:inline-block}
+.progress-dots span.active{background:var(--amber);transform:scale(1.2)}
+.progress-dots span.done{background:var(--green)}
+
+.hero{width:100%;min-height:55vh;background:linear-gradient(135deg,var(--navy) 55%,var(--green) 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 32px 56px}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);color:#fff;margin-bottom:12px}
+.hero p{font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,.9);max-width:640px;margin:0 auto}
+.hero-badge{background:var(--amber);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:.95rem;border-radius:30px;padding:6px 20px;margin-bottom:16px;display:inline-block}
+.hero-stars{color:var(--amber);font-size:1.2rem;letter-spacing:4px;margin-top:12px}
+
+.page-wrapper{padding-top:0}
+.content-section{width:100%;padding:56px 0}
+.content-section:nth-child(even){background:var(--light-green)}
+.content-section:nth-child(odd){background:#fff}
+.container{max-width:1500px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+.two-col{display:flex;gap:40px;align-items:flex-start}
+.main-col{flex:1;min-width:0;max-width:65%}
+.sidebar-col{flex:0 0 32%;max-width:32%;position:sticky;top:80px}
+@media(max-width:900px){.two-col{flex-direction:column}.main-col,.sidebar-col{max-width:100%;flex:1 1 100%}.sidebar-col{position:static}}
+
+.section-title{font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--navy);margin-bottom:8px}
+.section-subtitle{color:#666;margin-bottom:24px;font-size:1rem}
+.section-label{display:inline-block;background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:.82rem;border-radius:20px;padding:4px 14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+
+.highlight-box{background:var(--light-green);border-left:6px solid var(--green);border-radius:0 var(--border-radius) var(--border-radius) 0;padding:18px 22px;margin:16px 0}
+.highlight-box.amber{background:var(--light-amber);border-left-color:var(--amber)}
+.highlight-box h3{font-size:1.15rem;margin-bottom:6px;color:var(--navy)}
+.card{background:#fff;border-radius:var(--border-radius);box-shadow:var(--shadow);padding:24px;margin-bottom:20px}
+.card h3{font-size:1.2rem;margin-bottom:10px;color:var(--navy)}
+
+.sidebar-card{background:#fff;border-radius:var(--border-radius);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
+.sidebar-card h4{font-family:'Poppins',sans-serif;font-size:1.1rem;color:var(--navy);margin-bottom:10px;border-bottom:3px solid var(--green);padding-bottom:6px}
+.sidebar-card ul{list-style:none}
+.sidebar-card li{padding:6px 0;font-size:.95rem;border-bottom:1px solid #eee;display:flex;gap:8px}
+.sidebar-card li::before{content:'✦';color:var(--green);flex-shrink:0}
+
+.playlab-teaser{background:linear-gradient(180deg,#fff,var(--light-green));border-top:1px solid #e8ecf1;border-bottom:1px solid #e8ecf1}
+.playlab-teaser-inner{max-width:900px;margin:0 auto;text-align:center;padding:20px 0}
+.playlab-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+.playlab-pill{background:#fff;border:1px solid #dde4ec;border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:600}
+.playlab-launch{margin-top:16px;background:var(--amber);color:#fff;border:none;padding:14px 32px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 8px 24px rgba(240,147,43,.35);transition:transform .2s}
+.playlab-launch:hover{transform:translateY(-2px)}
+
+body.playlab-no-scroll{overflow:hidden}
+.playlab-shell{position:fixed;inset:0;z-index:10050;background:#f4f6f8;display:none;flex-direction:column;opacity:0;transition:opacity .35s}
+.playlab-shell.is-open{display:flex;opacity:1}
+.playlab-shell[hidden]{display:none!important}
+.playlab-close{position:absolute;top:14px;right:14px;z-index:30;background:#fff;color:var(--navy);border:1px solid #dde4ec;padding:10px 18px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+.playlab-game{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px 24px;min-height:0;overflow:auto}
+.playlab-hud{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);margin-bottom:16px;text-align:center}
+.playlab-score{color:var(--amber);font-size:1.2rem}
+.playlab-end{text-align:center;padding:32px}
+.playlab-end h3{font-size:1.5rem;margin-bottom:12px}
+.playlab-end .stars{font-size:2rem;color:var(--amber);letter-spacing:6px;margin:12px 0}
+
+.quiz-q{background:#fff;border-radius:var(--border-radius);padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-q .q-text{font-weight:600;margin-bottom:12px}
+.quiz-options{display:flex;flex-wrap:wrap;gap:10px}
+.quiz-opt{background:#f4f6f8;border:2px solid #e8ecf1;border-radius:10px;padding:10px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;transition:all .2s}
+.quiz-opt:hover{border-color:var(--green)}
+.quiz-opt.selected{border-color:var(--amber);background:var(--light-amber)}
+.quiz-opt.correct{border-color:var(--green);background:var(--light-green)}
+.quiz-opt.wrong{border-color:#e74c3c;background:#fff5f5}
+.quiz-submit{background:var(--green);color:#fff;border:none;padding:14px 32px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;margin-top:8px}
+.quiz-result{margin-top:20px;padding:20px;border-radius:var(--border-radius);background:var(--light-green);font-weight:600;display:none}
+.quiz-result.show{display:block}
+
+.level-nav{display:flex;justify-content:space-between;align-items:center;padding:32px 0 48px;gap:16px;flex-wrap:wrap}
+.level-nav a{font-family:'Poppins',sans-serif;font-weight:700;text-decoration:none;color:var(--navy);padding:12px 24px;border-radius:999px;border:2px solid #dde4ec;background:#fff;transition:all .2s}
+.level-nav a:hover{border-color:var(--green);background:var(--light-green)}
+.level-nav a.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.level-nav a.disabled{opacity:.4;pointer-events:none}
+
+#mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--navy);padding:8px 0;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
+#mobile-bottom-nav .nav-inner{display:flex;justify-content:space-around;max-width:600px;margin:0 auto}
+#mobile-bottom-nav a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.72rem;text-align:center;padding:6px 8px;font-weight:600}
+#mobile-bottom-nav a.active{color:var(--amber)}
+#mobile-bottom-nav .nav-icon{display:block;font-size:1.3rem;margin-bottom:2px}
+@media(max-width:768px){#mobile-bottom-nav{display:block}body{padding-bottom:64px}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Rich lesson content (not Play Lab) */
+.example-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:24px 0}
+.example-tile{background:#fff;border-radius:var(--border-radius);padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--green);text-align:center}
+.example-tile.amber{border-top-color:var(--amber)}
+.example-tile.navy{border-top-color:var(--navy)}
+.example-tile .ex-main{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:8px}
+.example-tile .ex-sub{font-size:.95rem;color:#555;line-height:1.5}
+
+.worked-example{background:#fff;border-radius:var(--border-radius);box-shadow:var(--shadow);padding:24px;margin:20px 0;border-left:6px solid var(--amber)}
+.worked-example h3{font-family:'Poppins',sans-serif;font-size:1.2rem;color:var(--navy);margin-bottom:14px}
+.worked-step{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #eee}
+.worked-step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font-family:'Poppins',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.step-body{font-size:1rem;line-height:1.6}
+.step-body strong{color:var(--navy)}
+
+.reading-passage{background:linear-gradient(135deg,#fff,var(--light-green));border-radius:var(--border-radius);padding:28px 32px;margin:20px 0;border:1px solid #e8ecf1;font-size:1.05rem;line-height:1.9}
+.reading-passage .reading-label{font-family:'Poppins',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:12px}
+.reading-passage em{color:var(--amber);font-style:normal;font-weight:700}
+
+.try-it-list{margin:20px 0}
+.try-item{background:#fff;border:2px solid #e8ecf1;border-radius:var(--border-radius);padding:18px 20px;margin-bottom:12px}
+.try-item .try-q{font-weight:600;margin-bottom:10px;color:var(--navy)}
+.try-reveal{background:var(--light-green);border:none;color:var(--navy);padding:8px 16px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer}
+.try-answer{display:none;margin-top:12px;padding:12px 16px;background:var(--light-green);border-radius:10px;font-weight:600;color:#2d5016}
+.try-answer.show{display:block}
+
+.compare-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.98rem}
+.compare-table th{background:var(--navy);color:#fff;padding:12px 14px;text-align:left;font-family:'Poppins',sans-serif}
+.compare-table td{padding:12px 14px;border-bottom:1px solid #e8ecf1}
+.compare-table tr:nth-child(even) td{background:var(--light-green)}
+
+.rule-pills{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.rule-pill{background:var(--green);color:#fff;padding:8px 16px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.9rem}
+.rule-pill.amber{background:var(--amber)}
+.rule-pill.navy{background:var(--navy)}
+
+.quiz-section-intro{color:#666;margin-bottom:20px;font-size:1rem}
+.quiz-q .q-text{font-weight:600;margin-bottom:12px;font-size:1.02rem}
+
+</style>
+</head>
+<body>
+<div id="curtain"><div class="logo">English Skills</div><div class="sub">Rhyme Bridge</div><div class="curtain-spinner"></div></div>
+
+<header class="sticky-header">
+  <h1>Rhyming Words</h1>
+  <div class="progress-dots" id="headerDots"><span data-section="sec-hero" class="active" title="hero"></span><span data-section="sec-learn" title="learn"></span><span data-section="sec-examples" title="examples"></span><span data-section="sec-worked" title="worked"></span><span data-section="sec-reading" title="reading"></span><span data-section="sec-try" title="try"></span><span data-section="sec-play" title="play"></span><span data-section="sec-quiz" title="quiz"></span></div>
+</header>
+
+<section class="hero" id="sec-hero">
+  <span class="hero-badge">Rhymes</span>
+  <h1>Rhyming Words</h1>
+  <p>Match words that end with the same sound, like cat and hat.</p>
+  <div class="hero-stars">★☆☆</div>
+</section>
+
+<main class="page-wrapper">
+<section class="content-section" id="sec-learn">
+  <div class="container two-col">
+    <div class="main-col">
+      <span class="section-label">Learn</span>
+      <h2 class="section-title">Rules &amp; Ideas</h2>
+      <p class="section-subtitle">Skill: Rhymes — read carefully before the examples and quiz.</p>
+      <div class="highlight-box"><h3>What is a rhyme?</h3><p>Words <strong>rhyme</strong> when their <strong>ending sounds</strong> match: cat/hat, log/dog, pen/hen.</p></div>
+<div class="highlight-box"><h3>Listen to the ending</h3><p>Say both words aloud. Clap on the part that sounds the same: cat-<strong>HAT</strong>.</p></div>
+<div class="highlight-box"><h3>Word families</h3><p>Rhyming words often share letters at the end: -at (cat, hat, mat), -en (pen, hen, ten).</p></div>
+<div class="highlight-box"><h3>Rhyme in poems</h3><p>Poems and songs use rhymes so lines sound musical and are easier to remember.</p></div>
+    </div>
+    <aside class="sidebar-col">
+      <div class="sidebar-card"><h4>Key Words</h4><ul><li><strong>rhyme</strong></li><li><strong>ending</strong></li><li><strong>match</strong></li><li><strong>pair</strong></li><li><strong>sound</strong></li><li><strong>word family</strong></li></ul></div>
+      <div class="sidebar-card"><h4>Remember</h4><p>Clap on the rhyming part: cat-HAT, pen-HEN.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="content-section" id="sec-examples">
+  <div class="container">
+    <span class="section-label">Examples</span>
+    <h2 class="section-title">See It in Action</h2>
+    <p class="section-subtitle">Study these examples before you practise on your own.</p>
+    <div class="example-grid"><div class="example-tile green"><div class="ex-main">cat ↔ hat</div><p class="ex-sub">-at family</p></div><div class="example-tile green"><div class="ex-main">log ↔ dog</div><p class="ex-sub">-og family</p></div><div class="example-tile amber"><div class="ex-main">pen ↔ hen</div><p class="ex-sub">-en family</p></div><div class="example-tile amber"><div class="ex-main">sun ↔ fun</div><p class="ex-sub">-un family</p></div><div class="example-tile navy"><div class="ex-main">ball ↔ tall</div><p class="ex-sub">-all family</p></div><div class="example-tile navy"><div class="ex-main">night ↔ light</div><p class="ex-sub">-ight family</p></div></div>
+  </div>
+</section>
+
+<section class="content-section" id="sec-worked">
+  <div class="container">
+    <span class="section-label">Worked examples</span>
+    <h2 class="section-title">Step by Step</h2>
+    <p class="section-subtitle">Follow each step — the same thinking helps in the quiz.</p>
+    <div class="worked-example"><h3>Find a rhyme for <em>cat</em></h3><div class="worked-step"><span class="step-num">1</span><div class="step-body">Say <strong>cat</strong> and listen: …at</div></div><div class="worked-step"><span class="step-num">2</span><div class="step-body">Try <strong>hat</strong> — ending sounds match!</div></div><div class="worked-step"><span class="step-num">3</span><div class="step-body">Not <strong>cup</strong> — different ending</div></div></div>
+<div class="worked-example"><h3>Find a rhyme for <em>tree</em></h3><div class="worked-step"><span class="step-num">1</span><div class="step-body">Ending of tree is …ee</div></div><div class="worked-step"><span class="step-num">2</span><div class="step-body"><strong>bee</strong> rhymes with tree</div></div><div class="worked-step"><span class="step-num">3</span><div class="step-body"><strong>dog</strong> does not rhyme</div></div></div>
+  </div>
+</section>
+
+<section class="content-section" id="sec-reading">
+  <div class="container">
+    <span class="section-label">Reading</span>
+    <h2 class="section-title">Short Passage</h2>
+    <div class="reading-passage"><div class="reading-label">Read &amp; notice</div><p>The <em>hen</em> sat on her <em>pen</em>. A <em>fun</em> day in the <em>sun</em>. The children sang a song about a <em>hat</em> and a <em>cat</em>. Circle the rhyming pairs!</p></div>
+  </div>
+</section>
+
+<section class="content-section" id="sec-try">
+  <div class="container">
+    <span class="section-label">Try it yourself</span>
+    <h2 class="section-title">Quick Checks</h2>
+    <p class="section-subtitle">Think first, then tap Show answer.</p>
+    <div class="try-it-list"><div class="try-item"><p class="try-q">1. Rhyme for <strong>log</strong>?</p><button type="button" class="try-reveal" data-try="0">Show answer</button><div class="try-answer" id="tryAns0">dog (or fog)</div></div>
+<div class="try-item"><p class="try-q">2. Do <em>cat</em> and <em>cup</em> rhyme?</p><button type="button" class="try-reveal" data-try="1">Show answer</button><div class="try-answer" id="tryAns1">No — different endings</div></div>
+<div class="try-item"><p class="try-q">3. Rhyme for <strong>ball</strong>?</p><button type="button" class="try-reveal" data-try="2">Show answer</button><div class="try-answer" id="tryAns2">tall, call, fall</div></div>
+<div class="try-item"><p class="try-q">4. Same family as <em>hen</em>?</p><button type="button" class="try-reveal" data-try="3">Show answer</button><div class="try-answer" id="tryAns3">pen, ten, den</div></div></div>
+  </div>
+</section>
+
+<section class="content-section playlab-teaser" id="sec-play">
+  <div class="container">
+    <div class="playlab-teaser-card">
+      <div class="playlab-game-icon">🎮</div>
+      <span class="section-label">Interactive Game</span>
+      <h2 class="section-title">Rhyme Bridge</h2>
+      <p class="section-subtitle">Arcade practice with score, combos, and lives.</p>
+      <div class="playlab-pills"><span class="playlab-pill">Same ending</span><span class="playlab-pill">Word families</span><span class="playlab-pill">Listen & match</span><span class="playlab-pill">Rhyme pairs</span></div>
+      <button type="button" class="playlab-launch" id="openPlaylab">Launch Game</button>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="sec-quiz">
+  <div class="container">
+    <span class="section-label">Practice Quiz</span>
+    <h2 class="section-title">Check Understanding</h2>
+    <p class="quiz-section-intro">Answer all 8 questions, then submit. You need at least 60% to pass.</p>
+    <div class="quiz-q" data-q="0" data-correct="0"><div class="q-text">1. Which rhymes with <em>log</em>?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">dog</button><button type="button" class="quiz-opt" data-idx="1">leg</button><button type="button" class="quiz-opt" data-idx="2">lap</button><button type="button" class="quiz-opt" data-idx="3">loge</button></div></div>
+<div class="quiz-q" data-q="1" data-correct="0"><div class="q-text">2. Which pair rhymes?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">sun–fun</button><button type="button" class="quiz-opt" data-idx="1">cat–cup</button><button type="button" class="quiz-opt" data-idx="2">pen–pig</button><button type="button" class="quiz-opt" data-idx="3">big–bag</button></div></div>
+<div class="quiz-q" data-q="2" data-correct="0"><div class="q-text">3. Rhyme for <em>hat</em>?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">mat</button><button type="button" class="quiz-opt" data-idx="1">hot</button><button type="button" class="quiz-opt" data-idx="2">hit</button><button type="button" class="quiz-opt" data-idx="3">hut</button></div></div>
+<div class="quiz-q" data-q="3" data-correct="0"><div class="q-text">4. Rhyme for <em>night</em>?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">light</button><button type="button" class="quiz-opt" data-idx="1">net</button><button type="button" class="quiz-opt" data-idx="2">note</button><button type="button" class="quiz-opt" data-idx="3">knight only — light works</button></div></div>
+<div class="quiz-q" data-q="4" data-correct="0"><div class="q-text">5. Words in -at family?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">cat</button><button type="button" class="quiz-opt" data-idx="1">dog</button><button type="button" class="quiz-opt" data-idx="2">sun</button><button type="button" class="quiz-opt" data-idx="3">pen</button></div></div>
+<div class="quiz-q" data-q="5" data-correct="0"><div class="q-text">6. <em>tree</em> rhymes with:</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">bee</button><button type="button" class="quiz-opt" data-idx="1">try</button><button type="button" class="quiz-opt" data-idx="2">three</button><button type="button" class="quiz-opt" data-idx="3">trek</button></div></div>
+<div class="quiz-q" data-q="6" data-correct="0"><div class="q-text">7. Do <em>hen</em> and <em>pen</em> rhyme?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">Yes</button><button type="button" class="quiz-opt" data-idx="1">No</button><button type="button" class="quiz-opt" data-idx="2">Sometimes</button><button type="button" class="quiz-opt" data-idx="3">Never</button></div></div>
+<div class="quiz-q" data-q="7" data-correct="0"><div class="q-text">8. Rhyme for <em>play</em>?</div><div class="quiz-options"><button type="button" class="quiz-opt" data-idx="0">day</button><button type="button" class="quiz-opt" data-idx="1">plow</button><button type="button" class="quiz-opt" data-idx="2">plea</button><button type="button" class="quiz-opt" data-idx="3">plate</button></div></div>
+    <button type="button" class="quiz-submit" id="quizSubmit">Check Answers</button>
+    <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+    <p class="level-footer">Standalone lesson — open any level file directly in your browser.</p>
+  </div>
+</section>
+</main>
+
+<div class="playlab-shell" id="playlabShell" hidden>
+  <header class="playlab-topbar">
+    <button type="button" class="playlab-close" id="closePlaylab">✕ Exit</button>
+    <h2>Rhyme Bridge</h2>
+    <div class="playlab-stats">
+      <span class="playlab-stat"><span class="lbl">Score</span><span class="val" id="plScore">0</span></span>
+      <span class="playlab-stat combo"><span class="lbl">Combo</span><span class="val" id="plCombo">—</span></span>
+      <span class="playlab-stat"><span class="lbl">Lives</span><span class="val" id="plLives">♥♥♥</span></span>
+      <span class="playlab-stat"><span class="lbl">Time</span><span class="val" id="plTimer">—</span></span>
+    </div>
+  </header>
+  <div class="playlab-objective" id="gameObjective"></div>
+  <div class="playlab-stage-wrap" id="playlabGameArea">
+    <div class="playlab-stage" id="gameStage"></div>
+    <div class="pl-toast" id="plToast"></div>
+  </div>
+  <footer class="playlab-footer">
+    <div class="pl-progress-track"><div class="pl-progress-bar" id="plProgressBar"></div></div>
+  </footer>
+  <div class="playlab-end" id="playlabEnd">
+    <h3>Mission Complete!</h3>
+    <div class="stars" id="playlabStars">★★★</div>
+    <p class="end-stats" id="endStats"></p>
+    <button type="button" class="playlab-launch" id="playlabRestart">Play Again</button>
+    <button type="button" class="playlab-launch" id="closePlaylab2" style="background:transparent;border:2px solid rgba(255,255,255,.4);box-shadow:none">Back to Lesson</button>
+  </div>
+</div>
+
+<nav id="mobile-bottom-nav" aria-label="Lesson sections">
+  <div class="nav-inner">
+    <a href="#sec-learn"><span class="nav-icon">📖</span>Learn</a>
+    <a href="#sec-examples"><span class="nav-icon">💡</span>Examples</a>
+    <a href="#sec-play"><span class="nav-icon">🎮</span>Game</a>
+    <a href="#sec-quiz"><span class="nav-icon">✓</span>Quiz</a>
+
+  </div>
+</nav>
+
+<script src="assets/game-engine.js"></script>
+<script src="assets/games/level-02.js"></script>
+<script>
+
+const CURRENT_LEVEL_NUM=2;
+function endGame(stars, score, combo) {
+  var end = document.getElementById('playlabEnd');
+  var area = document.getElementById('playlabGameArea');
+  if (end) end.classList.add('show');
+  if (area) area.style.display = 'none';
+  var st = document.getElementById('playlabStars');
+  if (st) st.textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars);
+  var es = document.getElementById('endStats');
+  if (es) es.textContent = 'Score: ' + (score || 0) + ' · Best combo: ×' + (combo || 1);
+}
+function openPlaylab() {
+  var shell = document.getElementById('playlabShell');
+  if (!shell) return;
+  shell.hidden = false;
+  shell.classList.add('is-open');
+  document.body.classList.add('playlab-no-scroll');
+  var end = document.getElementById('playlabEnd');
+  if (end) end.classList.remove('show');
+  var area = document.getElementById('playlabGameArea');
+  if (area) area.style.display = 'flex';
+  if (typeof initSkillGame === 'function') initSkillGame(CURRENT_LEVEL_NUM);
+}
+function closePlaylab() {
+  var shell = document.getElementById('playlabShell');
+  if (!shell) return;
+  shell.classList.remove('is-open');
+  shell.hidden = true;
+  document.body.classList.remove('playlab-no-scroll');
+  if (window._activeSkillGame) window._activeSkillGame.destroy();
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var lenis;
+  try {
+    lenis = new Lenis({ duration: 1.1 });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  } catch (e) {}
+  try {
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to('#curtain', {
+        opacity: 0, duration: 0.6, delay: 0.8,
+        onComplete: function() { var c = document.getElementById('curtain'); if (c) c.style.display = 'none'; }
+      });
+    }
+  } catch (e) {
+    setTimeout(function() { var c = document.getElementById('curtain'); if (c) c.style.display = 'none'; }, 1200);
+  }
+  var secIds = ['sec-hero','sec-learn','sec-examples','sec-worked','sec-reading','sec-try','sec-play','sec-quiz'];
+  document.querySelectorAll('.progress-dots span').forEach(function(dot, i) {
+    dot.onclick = function() {
+      var s = dot.dataset.section || secIds[i];
+      if (s) { var el = document.getElementById(s); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    };
+  });
+  secIds.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.progress-dots span').forEach(function(d) { d.classList.remove('active'); });
+          var d = document.querySelector('.progress-dots span[data-section="' + id + '"]');
+          if (d) d.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 }).observe(el);
+  });
+  var openBtn = document.getElementById('openPlaylab');
+  var closeBtn = document.getElementById('closePlaylab');
+  if (openBtn) openBtn.onclick = openPlaylab;
+  if (closeBtn) closeBtn.onclick = closePlaylab;
+  var close2 = document.getElementById('closePlaylab2');
+  if (close2) close2.onclick = closePlaylab;
+  var restart = document.getElementById('playlabRestart');
+  if (restart) restart.onclick = function() {
+    document.getElementById('playlabEnd').classList.remove('show');
+    document.getElementById('playlabGameArea').style.display = 'flex';
+    if (typeof restartSkillGame === 'function') restartSkillGame();
+  };
+  var answers = {};
+  document.querySelectorAll('.quiz-q').forEach(function(q) {
+    var qi = q.dataset.q;
+    answers[qi] = null;
+    q.querySelectorAll('.quiz-opt').forEach(function(opt) {
+      opt.onclick = function() {
+        q.querySelectorAll('.quiz-opt').forEach(function(o) { o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        answers[qi] = parseInt(opt.dataset.idx, 10);
+      };
+    });
+  });
+  var quizBtn = document.getElementById('quizSubmit');
+  if (quizBtn) quizBtn.onclick = function() {
+    var correct = 0, total = 0;
+    document.querySelectorAll('.quiz-q').forEach(function(q) {
+      total++;
+      var qi = q.dataset.q;
+      var ok = parseInt(q.dataset.correct, 10);
+      q.querySelectorAll('.quiz-opt').forEach(function(o) {
+        var idx = parseInt(o.dataset.idx, 10);
+        o.classList.remove('correct', 'wrong');
+        if (answers[qi] === idx) {
+          if (idx === ok) { o.classList.add('correct'); correct++; }
+          else o.classList.add('wrong');
+        } else if (idx === ok) o.classList.add('correct');
+      });
+    });
+    var res = document.getElementById('quizResult');
+    if (res) {
+      res.classList.add('show');
+      var need = Math.ceil(total * 0.6);
+      res.textContent = 'You got ' + correct + '/' + total + ' correct! (Pass: ' + need + '/' + total + ')';
+    }
+  };
+  document.querySelectorAll('.try-reveal').forEach(function(btn) {
+    btn.onclick = function() {
+      var el = document.getElementById('tryAns' + btn.dataset.try);
+      if (el) { el.classList.add('show'); btn.textContent = 'Answer shown'; btn.disabled = true; }
+    };
+  });
+});
+
+</script>
+</body>
+</html>

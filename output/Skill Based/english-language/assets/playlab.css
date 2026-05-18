@@ -1,0 +1,255 @@
+/* Play Lab — arcade-style game shell */
+body.playlab-no-scroll{overflow:hidden}
+
+.playlab-shell{
+  position:fixed;inset:0;z-index:10050;
+  background:linear-gradient(165deg,#0f1724 0%,#1e3a5f 45%,#243b55 100%);
+  display:none;flex-direction:column;
+  opacity:0;transition:opacity .35s ease;
+  color:#fff;
+}
+.playlab-shell.is-open{display:flex;opacity:1}
+.playlab-shell[hidden]{display:none!important}
+
+.playlab-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:12px clamp(12px,3vw,24px);
+  background:rgba(0,0,0,.35);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  flex-shrink:0;
+}
+.playlab-topbar h2{
+  font-family:'Poppins',sans-serif;font-size:clamp(.95rem,2.5vw,1.15rem);
+  font-weight:700;margin:0;flex:1;text-align:center;
+}
+.playlab-close,.playlab-restart{
+  background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);
+  padding:8px 16px;border-radius:999px;font-family:'Poppins',sans-serif;
+  font-weight:700;font-size:.85rem;cursor:pointer;transition:background .2s,transform .15s;
+}
+.playlab-close:hover,.playlab-restart:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+
+.playlab-stats{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:.82rem;
+}
+.playlab-stat{
+  background:rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;
+  display:flex;align-items:center;gap:6px;min-width:64px;
+}
+.playlab-stat .lbl{opacity:.7;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em}
+.playlab-stat .val{color:#F0932B;font-size:1rem}
+.playlab-stat .val.pop{animation:scorePop .2s ease}
+.playlab-stat.combo .val.hot{color:#6AB04C;animation:comboPulse .5s ease infinite}
+@keyframes scorePop{50%{transform:scale(1.25)}}
+@keyframes comboPulse{50%{opacity:.7}}
+
+.playlab-objective{
+  text-align:center;padding:10px 20px;font-size:.95rem;
+  background:rgba(106,176,76,.15);border-bottom:1px solid rgba(106,176,76,.25);
+  font-weight:600;flex-shrink:0;
+}
+
+.playlab-stage-wrap{
+  flex:1;position:relative;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px clamp(12px,3vw,28px) 8px;
+  overflow:hidden;
+}
+.playlab-stage{
+  width:min(100%,720px);height:min(100%,520px);
+  position:relative;border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  border:2px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.15);
+  overflow:hidden;
+}
+.pl-particles{position:absolute;inset:0;width:100%!important;height:100%!important;pointer-events:none;z-index:50}
+
+.playlab-footer{
+  padding:8px 24px 16px;flex-shrink:0;
+}
+.pl-progress-track{
+  height:8px;background:rgba(255,255,255,.15);border-radius:999px;overflow:hidden;
+}
+.pl-progress-bar{
+  height:100%;width:0;background:linear-gradient(90deg,#6AB04C,#F0932B);
+  border-radius:999px;transition:width .35s ease;
+}
+
+.pl-toast{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#F0932B;color:#1a1a1a;padding:10px 20px;border-radius:999px;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:.9rem;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;
+}
+.pl-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.playlab-end{
+  position:absolute;inset:0;z-index:80;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(15,23,36,.92);backdrop-filter:blur(8px);
+  text-align:center;padding:32px;
+}
+.playlab-end.show{display:flex}
+.playlab-end h3{font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,4vw,2rem);margin-bottom:8px}
+.playlab-end .stars{font-size:2.5rem;color:#F0932B;letter-spacing:8px;margin:12px 0}
+.playlab-end .end-stats{color:rgba(255,255,255,.85);margin-bottom:20px;font-size:1rem}
+.playlab-end .playlab-launch{
+  background:linear-gradient(135deg,#6AB04C,#4a9e32);color:#fff;border:none;
+  padding:14px 36px;border-radius:999px;font-family:'Poppins',sans-serif;
+  font-weight:800;font-size:1rem;cursor:pointer;margin:6px;
+  box-shadow:0 8px 28px rgba(106,176,76,.4);
+}
+
+/* ── Game-specific layouts ── */
+.g-word-target{
+  font-family:'Poppins',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);
+  font-weight:800;text-align:center;letter-spacing:.25em;
+  color:#fff;padding:16px;text-shadow:0 2px 12px rgba(0,0,0,.3);
+}
+.g-arena{position:absolute;inset:52px 12px 12px;background:linear-gradient(180deg,#5dade2 0%,#aed6f1 55%,#82e0aa 100%);border-radius:14px;overflow:hidden}
+.g-letter{
+  position:absolute;width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(145deg,#F0932B,#e67e22);color:#fff;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:1.35rem;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);border:3px solid rgba(255,255,255,.5);
+  user-select:none;transition:transform .1s;z-index:10;
+}
+.g-letter.wrong{animation:letterWrong .35s ease}
+.g-letter.gone{pointer-events:none;opacity:0;transform:scale(1.6)}
+@keyframes letterWrong{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+.g-rhyme-board{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;height:100%;padding:16px;align-items:center}
+.g-rhyme-col{display:flex;flex-direction:column;gap:10px}
+.g-rhyme-bridge{width:48px;height:4px;background:#F0932B;border-radius:2px;align-self:center;opacity:.3;transition:all .3s}
+.g-rhyme-bridge.live{opacity:1;height:100%;width:6px;background:linear-gradient(180deg,#6AB04C,#F0932B);border-radius:4px}
+.g-card{
+  background:#fff;color:#2C3E50;border-radius:14px;padding:16px;
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:1.15rem;
+  text-align:center;cursor:pointer;border:3px solid transparent;
+  box-shadow:0 4px 14px rgba(0,0,0,.12);transition:all .2s;
+}
+.g-card.selected{border-color:#F0932B;background:#fff7ee;transform:scale(1.03)}
+.g-card.matched{border-color:#6AB04C;background:#f0f9eb;opacity:.65;pointer-events:none}
+
+.g-toss-layout{display:flex;flex-direction:column;height:100%;padding:16px;gap:12px}
+.g-bins{display:flex;gap:12px;justify-content:center;flex:1}
+.g-bin{
+  flex:1;max-width:120px;border:3px dashed rgba(255,255,255,.5);border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:1.6rem;
+  background:rgba(255,255,255,.08);transition:all .2s;cursor:pointer;
+}
+.g-bin.target{background:rgba(106,176,76,.35);border-color:#6AB04C;border-style:solid}
+.g-bin.caught{animation:binCatch .4s ease}
+@keyframes binCatch{50%{transform:scale(1.08)}}
+.g-toss-queue{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.g-chip{
+  background:#2C3E50;color:#fff;padding:12px 18px;border-radius:999px;
+  font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);transition:transform .15s;
+}
+.g-chip.flying{pointer-events:none;position:fixed;z-index:100}
+
+.g-train{display:flex;flex-direction:column;height:100%;padding:16px;justify-content:center}
+.g-train-slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.g-slot{
+  min-width:100px;min-height:56px;border:2px dashed rgba(255,255,255,.4);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.15);font-size:.75rem;color:rgba(255,255,255,.6);
+}
+.g-slot.filled{background:rgba(106,176,76,.25);border-color:#6AB04C;border-style:solid}
+.g-car{
+  background:linear-gradient(180deg,#F0932B,#d35400);color:#fff;padding:12px 16px;
+  border-radius:10px;font-family:'Poppins',sans-serif;font-weight:700;cursor:grab;
+}
+.g-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+.g-canvas-game{width:100%;height:100%;display:block;cursor:crosshair;border-radius:14px}
+
+.g-sort{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:100%;padding:16px}
+.g-lane{
+  border-radius:14px;padding:12px;border:2px dashed rgba(255,255,255,.35);
+  display:flex;flex-direction:column;align-items:center;
+}
+.g-lane.noun{background:rgba(106,176,76,.2);border-color:#6AB04C}
+.g-lane.verb{background:rgba(240,147,43,.2);border-color:#F0932B}
+.g-lane h4{font-family:'Poppins',sans-serif;margin-bottom:8px}
+.g-tile{
+  background:#fff;color:#2C3E50;padding:12px 16px;border-radius:10px;
+  margin:6px;font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer;
+}
+
+.g-paint{display:flex;flex-direction:column;height:100%;padding:12px}
+.g-scene{flex:1;border-radius:12px;position:relative;overflow:hidden;background:#87CEEB}
+.g-adj-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.g-adj-btn{
+  background:#fff;color:#2C3E50;border:2px solid #6AB04C;padding:10px 16px;
+  border-radius:999px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;
+}
+.g-adj-btn.used{opacity:.45}
+
+.g-passage{
+  padding:20px;font-size:1.1rem;line-height:2;color:#fff;
+  max-width:560px;margin:auto;
+}
+.g-passage .w{cursor:pointer;padding:2px 6px;border-radius:6px}
+.g-passage .w:hover{background:rgba(240,147,43,.35)}
+.g-passage .w.hit{background:rgba(106,176,76,.5)}
+
+.g-time{text-align:center;padding:24px}
+.g-time-verb{font-family:'Poppins',sans-serif;font-size:2.5rem;font-weight:800;margin:16px 0}
+.g-time-slider{width:100%;max-width:360px;accent-color:#F0932B;height:10px}
+
+.g-comic{display:flex;flex-direction:column;gap:12px;padding:16px;overflow:auto;height:100%}
+.g-panel{background:#fff;color:#2C3E50;border-radius:12px;padding:14px;border:3px solid #2C3E50}
+.g-slot-drop{border:2px dashed #F0932B;min-height:40px;border-radius:8px;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#888}
+.g-slot-drop.filled{border-style:solid;border-color:#6AB04C;font-weight:700;color:#2C3E50}
+.g-connectors{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.g-conn{background:#2C3E50;color:#fff;padding:10px 16px;border-radius:999px;cursor:grab;font-weight:700}
+
+.g-echo{text-align:center;padding:20px}
+.g-echo-phrase{font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:700;margin:12px 0}
+.g-echo-mic{
+  width:72px;height:72px;border-radius:50%;border:none;background:#F0932B;
+  font-size:1.8rem;cursor:pointer;margin:12px auto;display:block;
+  box-shadow:0 8px 24px rgba(240,147,43,.45);
+}
+.g-echo-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.g-echo-chip{background:#fff;color:#2C3E50;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;border:2px solid #6AB04C}
+.g-echo-chip.done{background:#f0f9eb}
+
+.g-arch{padding:16px;height:100%;overflow:auto}
+.g-arch-steps{display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.g-arch-step{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.15);font-weight:700;font-size:.8rem}
+.g-arch-step.active{background:#F0932B}
+.g-arch-step.done{background:#6AB04C}
+.g-arch-input{width:100%;padding:12px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.2);color:#fff;font-size:1rem;margin:8px 0}
+.g-arch-err{background:rgba(231,76,60,.25);border-left:4px solid #e74c3c;padding:12px;margin:8px 0;border-radius:0 8px 8px 0;cursor:pointer}
+
+.shake{animation:shakeBox .4s ease}
+@keyframes shakeBox{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.playlab-teaser{
+  background:linear-gradient(135deg,#f0f9eb 0%,#fff 50%,#fff7ee 100%);
+  border-top:1px solid #e8ecf1;border-bottom:1px solid #e8ecf1;
+}
+.playlab-teaser-card{
+  max-width:720px;margin:0 auto;text-align:center;padding:32px 20px;
+  background:#fff;border-radius:20px;box-shadow:0 8px 32px rgba(44,62,80,.08);
+  border:1px solid #e8ecf1;
+}
+.playlab-game-icon{font-size:3rem;margin-bottom:8px}
+.playlab-launch{
+  margin-top:20px;background:linear-gradient(135deg,#F0932B,#e67e22);color:#fff;
+  border:none;padding:16px 40px;border-radius:999px;font-family:'Poppins',sans-serif;
+  font-weight:800;font-size:1.05rem;cursor:pointer;
+  box-shadow:0 10px 28px rgba(240,147,43,.4);transition:transform .2s,box-shadow .2s;
+}
+.playlab-launch:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(240,147,43,.5)}
+
+.level-footer{
+  text-align:center;padding:24px 0 48px;color:#888;font-size:.9rem;
+}
